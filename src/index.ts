@@ -2,6 +2,9 @@
 // The barrel is side-effect free ("sideEffects" lists CSS only), so bundlers
 // drop what an app does not import. Every module also has its own subpath
 // (@punji/ui/<module>), the same subpaths Punji's own code imports.
+export { PageLayout, PageHeader, ListSectionHeader, ChevronLeft, ChevronRight } from './layout/Layout.tsx';
+export { GroupedCell, RowList, ValueRow, DataRows, DataRow, Tile } from './rows/Rows.tsx';
+export { StatGrid, StatTile } from './stats/Stats.tsx';
 export { Chip, ChipRow, SegmentedControl, SegmentedSwitch, type ChipProps, type Option, type SegmentedProps } from './controls/Controls.tsx';
 export { Button, buttonClass, type ButtonVariant } from './button/Button.tsx';
 export { StatusPill } from './status-pill/StatusPill.tsx';
@@ -12,8 +15,12 @@ export { InlineConfirm } from './inline-confirm/InlineConfirm.tsx';
 export { Checkbox } from './checkbox/Checkbox.tsx';
 export { Card, type CardProps } from './card/Card.tsx';
 export { Select, ChevronDown, type SelectOption, type SelectProps, type ControlSize } from './select/Select.tsx';
+export { Figure, Delta } from './figures/Figures.tsx';
+export { Live, LiveFigure } from './live-figure/LiveFigure.tsx';
+export { useTweenedNumber, tweenAt, type LiveTint } from './live/live.ts';
 export { formatFigure, toneOf, parseNumber, searchSymbols, segmentTarget, type FigureKind, type DeltaWords, type SymbolOption } from './format/format.ts';
 export { EmptyState, Note, Skeleton, SkeletonText, ToneIcon } from './states/States.tsx';
+export { DataTable, DataListRow, Cell, type Column, type SortDir } from './table/Table.tsx';
 export { Field, NumberField, DateField, SelectField, SymbolField, TextAreaField } from './fields/Fields.tsx';
 export { CompanySearch } from './company-search/CompanySearch.tsx';
 export { RangeSlider } from './range-slider/RangeSlider.tsx';

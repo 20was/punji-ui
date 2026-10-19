@@ -26,7 +26,12 @@ npm ci --ignore-scripts
 | `npm run size` | size-limit budgets for every component and the CSS |
 | `npm run check:package` | publint, are-the-types-wrong and the tarball allowlist |
 
-Run `npm run verify` before you push. CI runs the same steps once; please do not
+Before pushing, run `npm run verify:deep`: `verify` plus every test again with
+2000 inputs per property test (`npm run test:deep`), so a rare input fails on
+your machine rather than in CI. A property failure prints its seed and path;
+pass them to that `fc.assert` (`{ seed, path }`) to replay it, fix the cause,
+then remove the pin. Tests never depend on `Math.random` or the clock: fake
+timers and fast-check's seeded inputs only. CI runs the same steps once; please do not
 push to "see if CI passes".
 
 ## How the kit is kept in sync with Punji

@@ -28,8 +28,8 @@ The figures below come from checks that run on every pull request; the last colu
 
 | | What it means | Checked by |
 | --- | --- | --- |
-| **Small** | Each module is 0.2 to 2.3 kB (minified and gzipped, React excluded; `Button` 576 B, `Select` 675 B, `CommandPalette` 2.23 kB), all of them together 6.44 kB; every module has a budget that fails the build when exceeded. | [size-limit](./.size-limit.json) |
-| **No runtime dependencies** | `dependencies` is empty. React 19 is the only peer. No CSS-in-JS runtime: styles are plain CSS (6.93 kB gzipped for every token and component, 1.02 kB for the tokens alone). | [package.json](./package.json), tarball check |
+| **Small** | Each module is 0.2 to 2.3 kB (minified and gzipped, React excluded; `Button` 576 B, `Select` 675 B, `DataTable` 618 B, `CommandPalette` 2.23 kB), all 31 together 8.52 kB; every module has a budget that fails the build when exceeded. | [size-limit](./.size-limit.json) |
+| **No runtime dependencies** | `dependencies` is empty. React 19 is the only peer. No CSS-in-JS runtime: styles are plain CSS (8.24 kB gzipped for every token and component, 1.02 kB for the tokens alone). | [package.json](./package.json), tarball check |
 | **Tree-shakeable** | ES modules, one file per module, `"sideEffects"` lists only CSS. Import from the root or from a subpath such as `@punji/ui/button`. | publint, [are-the-types-wrong](https://arethetypeswrong.github.io) |
 | **Accessible** | Real `<button>`, `<a>`, `<select>`, checkbox, radio and range elements, WAI-ARIA patterns (toggle group, tabs with a roving tab stop, switch, combobox, modal dialog with a focus trap, tooltip), arrow keys, Home and End, one visible focus ring, 44 px touch targets. axe-core runs in the tests and fails on any serious issue. | [Vitest + axe-core](./test) (roles, names, keyboard) |
 | **Themeable** | Every colour, size and radius is a `--pu-*` CSS variable inside a cascade layer, so your own CSS wins without `!important`. Light and dark follow the system, or force one with `data-theme`. | [token check](./scripts/check-css.mjs) |
@@ -144,20 +144,28 @@ subpath Punji's own code imports, and its documentation is on design.punji.app.
 | `Chip`, `ChipRow`, `SegmentedControl`, `SegmentedSwitch` | `@punji/ui/controls` | [Segmented control](https://design.punji.app/components/segmented-control) · [Chip](https://design.punji.app/components/chip) |
 | `Drawer` | `@punji/ui/drawer` | [Drawer](https://design.punji.app/components/drawer) |
 | `Field`, `NumberField`, `TextAreaField`, `DateField`, `SelectField`, `SymbolField` | `@punji/ui/fields` | [Field](https://design.punji.app/components/field) |
+| `Figure`, `Delta` | `@punji/ui/figures` | [Figure and Delta](https://design.punji.app/components/figure) |
 | `FloatingTooltip`, `IconHint` | `@punji/ui/floating-tooltip` | [Tooltip and InfoTip](https://design.punji.app/components/tooltip) |
 | `InfoTip`, `Tooltip` | `@punji/ui/info-tip` | [Tooltip and InfoTip](https://design.punji.app/components/tooltip) |
 | `InlineConfirm` | `@punji/ui/inline-confirm` | [Inline confirm](https://design.punji.app/components/inline-confirm) |
+| `PageLayout`, `PageHeader`, `ListSectionHeader`, `ChevronLeft`, `ChevronRight` | `@punji/ui/layout` | [Page layout and header](https://design.punji.app/components/page-layout) |
 | `ListFilter` | `@punji/ui/list-filter` | [List filter](https://design.punji.app/components/list-filter) |
+| `Live`, `LiveFigure` | `@punji/ui/live-figure` | [Live figure](https://design.punji.app/components/live-figure) |
 | `Sheet`, `ToastProvider`, `Dock` | `@punji/ui/overlay` | [Toast](https://design.punji.app/components/toast) · [Sheet](https://design.punji.app/components/sheet) |
 | `RangeSlider` | `@punji/ui/range-slider` | [Range slider](https://design.punji.app/components/range-slider) |
+| `GroupedCell`, `RowList`, `ValueRow`, `DataRows`, `DataRow`, `Tile` | `@punji/ui/rows` | [Rows and lists](https://design.punji.app/components/rows) |
 | `ChevronDown`, `Select` | `@punji/ui/select` | [Select](https://design.punji.app/components/select) |
 | `ShowMore` | `@punji/ui/show-more` | [Show more](https://design.punji.app/components/show-more) |
 | `EmptyState`, `ToneIcon`, `Note`, `Skeleton`, `SkeletonText` | `@punji/ui/states` | [Empty state and Note](https://design.punji.app/components/empty-state) · [Skeleton](https://design.punji.app/components/skeleton) |
+| `StatGrid`, `StatTile` | `@punji/ui/stats` | [Stat tile](https://design.punji.app/components/stat-tile) |
 | `StatusPill` | `@punji/ui/status-pill` | [Status pill](https://design.punji.app/components/status-pill) |
 | `Switch` | `@punji/ui/switch` | [Switch](https://design.punji.app/components/switch) |
+| `DataTable`, `DataListRow`, `Cell` | `@punji/ui/table` | [Data table](https://design.punji.app/components/data-table) |
 | `Tabs` | `@punji/ui/tabs` | [Tabs](https://design.punji.app/components/tabs) |
 | `moveIndex`, `moveChip` | `@punji/ui/command-keys` | [Formatting and live helpers](https://design.punji.app/utilities/formatting) |
+| `compactRs` | `@punji/ui/compact` | [Formatting and live helpers](https://design.punji.app/utilities/formatting) |
 | `isNum`, `formatFigure`, `toneOf`, `parseNumber`, `searchSymbols`, `segmentTarget` | `@punji/ui/format` | [Formatting and live helpers](https://design.punji.app/utilities/formatting) |
+| `TWEEN_MS`, `TINT_MS` | `@punji/ui/live` | [Formatting and live helpers](https://design.punji.app/utilities/formatting) |
 
 <!-- components:end -->
 

@@ -10,7 +10,10 @@ import { useState } from 'react';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { moveChip, moveIndex } from '../src/command-keys/commandKeys.ts';
-import { formatFigure, parseNumber, RangeSlider, SegmentedControl, segmentTarget, Tabs, toneOf } from '../src/index.ts';
+import { compactRs } from '../src/compact/compact.ts';
+import { easeOut, samePrinted } from '../src/live/live.ts';
+import { formatFigure, parseNumber, RangeSlider, SegmentedControl, segmentTarget, Tabs, toneOf, tweenAt } from '../src/index.ts';
+import { deep } from './fc.ts';
 
 afterEach(cleanup);
 
@@ -101,7 +104,7 @@ describe('SegmentedControl, for any options and key presses', () => {
           unmount();
         },
       ),
-      { numRuns: 40 },
+      deep(40),
     );
   });
 });
@@ -130,7 +133,7 @@ describe('Tabs, for any options and key presses', () => {
           unmount();
         },
       ),
-      { numRuns: 40 },
+      deep(40),
     );
   });
 });
@@ -182,7 +185,7 @@ describe('parseNumber, against the pattern it replaced', () => {
       fc.property(fc.stringMatching(/^[-0-9.]{0,8}$/), (s) => {
         expect(Number.isNaN(parseNumber(s))).toBe(!OLD.test(s));
       }),
-      { numRuns: 2000 },
+      deep(2000),
     );
   });
 
@@ -249,7 +252,69 @@ describe('RangeSlider, for any moves', () => {
         expect(lo).toBeLessThanOrEqual(hi);
         unmount();
       }),
-      { numRuns: 40 },
+      deep(40),
+    );
+  });
+});
+
+/** A number with -0 read as 0. */
+const z = (x: number) => (x === 0 ? 0 : x);
+
+describe('live tweening, for any move', () => {
+  const n = fc.double({ min: -1e9, max: 1e9, noNaN: true, noDefaultInfinity: true });
+  it('starts where it was, ends exactly on the new value, never overshoots and never prints -0', () => {
+    fc.assert(
+      fc.property(n, n, fc.double({ min: 0, max: 1, noNaN: true }), (from, to, p) => {
+        expect(tweenAt(from, to, 0)).toBe(z(from));
+        expect(tweenAt(from, to, 1)).toBe(z(to));
+        const v = tweenAt(from, to, p);
+        expect(Object.is(v, -0)).toBe(false);
+        expect(v).toBeGreaterThanOrEqual(Math.min(from, to) - 1e-6 * Math.abs(to - from) - 1e-9);
+        expect(v).toBeLessThanOrEqual(Math.max(from, to) + 1e-6 * Math.abs(to - from) + 1e-9);
+      }),
+    );
+  });
+
+  it('a move between 0 and -0 shows plain 0 all the way', () => {
+    for (const [from, to] of [
+      [0, -0],
+      [-0, 0],
+      [-0, -0],
+    ] as const)
+      for (const p of [0, 0.5, 1]) expect(Object.is(tweenAt(from, to, p), 0)).toBe(true);
+  });
+
+  it('easing only moves forward', () => {
+    fc.assert(
+      fc.property(fc.double({ min: -1, max: 2, noNaN: true }), fc.double({ min: -1, max: 2, noNaN: true }), (x, y) => {
+        const [a, b] = x <= y ? [x, y] : [y, x];
+        expect(easeOut(a)).toBeLessThanOrEqual(easeOut(b));
+      }),
+    );
+  });
+
+  it('two values are the same move exactly when they print the same', () => {
+    fc.assert(
+      fc.property(n, n, fc.integer({ min: 0, max: 4 }), (a, b, dp) => {
+        expect(samePrinted(a, b, dp)).toBe(a.toFixed(dp) === b.toFixed(dp));
+      }),
+    );
+  });
+});
+
+describe('compactRs, for any amount', () => {
+  const UNITS = { lakh: 'L', crore: 'Cr', arba: 'Arba' };
+  it('keeps the exact amount, is exact below the threshold, and its short form reads back within half a step', () => {
+    fc.assert(
+      fc.property(fc.integer({ min: -1e13, max: 1e13 }), (v) => {
+        const r = compactRs(v, UNITS);
+        expect(r.full.replace(/[^\d]/g, '')).toBe(String(Math.abs(Math.round(v))));
+        expect(r.compact).toBe(Math.abs(v) >= 1e7);
+        if (!r.compact) return;
+        const [, num, unit] = /Rs ([\d,.]+) (\w+)$/.exec(r.short)!;
+        const div = unit === 'Arba' ? 1e9 : 1e7;
+        expect(Math.abs(Number(num!.replace(/,/g, '')) * div - Math.abs(v))).toBeLessThanOrEqual(0.005 * div + 1e-6);
+      }),
     );
   });
 });

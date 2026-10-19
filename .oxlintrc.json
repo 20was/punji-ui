@@ -37,6 +37,18 @@
       }
     },
     {
+      "files": ["src/table/Table.tsx"],
+      "rules": { "jsx-a11y/no-noninteractive-tabindex": "off" }
+    },
+    {
+      "files": ["src/rows/Rows.tsx"],
+      "rules": { "jsx-a11y/no-redundant-roles": "off" }
+    },
+    {
+      "files": ["src/live/live.ts"],
+      "rules": { "unicorn/no-useless-spread": "off" }
+    },
+    {
       "files": ["src/info-tip/InfoTip.tsx"],
       "rules": { "react/exhaustive-effect-dependencies": "off" }
     }

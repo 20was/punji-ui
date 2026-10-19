@@ -74,13 +74,15 @@ export const MODULES = {
   'Tabs.tsx': { status: 'ship', budget: '750 B' },
   'format.ts': {
     status: 'adapt',
-    reason: 'Types only: this package type-checks with noUncheckedIndexedAccess, so the list lookups say what an empty slot means (never reached: the list is not empty there).',
+    reason: 'Types (noUncheckedIndexedAccess: the list lookups say what an empty slot means, never reached) and the number pattern in parseNumber, rewritten without backtracking (same numbers accepted).',
     budget: '1 kB',
     edits: [
       { find: 'return values[(i + 1 + n) % n];', replace: 'return values[(i + 1 + n) % n] ?? null;' },
       { find: 'return values[(i - 1 + n) % n];', replace: 'return values[(i - 1 + n) % n] ?? null;' },
       { find: "if (key === 'Home') return values[0];", replace: "if (key === 'Home') return values[0] ?? null;" },
       { find: "if (key === 'End') return values[n - 1];", replace: "if (key === 'End') return values[n - 1] ?? null;" },
+      // The same numbers, written without the ambiguous `\d*\.?\d+` (CodeQL js/polynomial-redos).
+      { find: "if (!/^-?\\d*\\.?\\d+$|^-?\\d+\\.?$/.test(s)) return Number.NaN;", replace: "if (!/^-?(?:\\d+\\.?\\d*|\\.\\d+)$/.test(s)) return Number.NaN;" },
     ],
   },
 

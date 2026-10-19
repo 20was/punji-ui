@@ -172,3 +172,16 @@ describe('figures, for any number', () => {
     );
   });
 });
+
+describe('parseNumber, against the pattern it replaced', () => {
+  // The source's pattern, kept here to prove the rewrite accepts exactly the same strings.
+  const OLD = /^-?\d*\.?\d+$|^-?\d+\.?$/;
+  it('accepts and rejects the same strings', () => {
+    fc.assert(
+      fc.property(fc.stringMatching(/^[-0-9.]{0,8}$/), (s) => {
+        expect(Number.isNaN(parseNumber(s))).toBe(!OLD.test(s));
+      }),
+      { numRuns: 2000 },
+    );
+  });
+});

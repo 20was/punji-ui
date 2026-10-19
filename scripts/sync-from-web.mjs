@@ -311,7 +311,7 @@ function docsPages() {
 /* --------------------------------------------------------------- write -- */
 
 const decl = (map, names) => names.map((n) => `    --pu-${n}: ${map.get(n)};`).join('\n');
-const cell = (v) => `\`${v.replace(/\|/g, '\\|')}\``;
+const cell = (v) => `\`${v.replace(/\\/g, '\\\\').replace(/\|/g, '\\|')}\``;
 const walk = (d) => readdirSync(d).flatMap((n) => (statSync(join(d, n)).isDirectory() ? walk(join(d, n)) : [join(d, n)]));
 
 const written = new Set();
@@ -319,8 +319,13 @@ function write(rel, text) {
   written.add(rel);
   const p = join(ROOT, rel);
   mkdirSync(dirname(p), { recursive: true });
-  if (existsSync(p) && readFileSync(p, 'utf8') === text) return;
-  writeFileSync(p, text);
+  let before = null;
+  try {
+    before = readFileSync(p, 'utf8');
+  } catch {
+    /* a new file */
+  }
+  if (before !== text) writeFileSync(p, text);
 }
 
 function main() {

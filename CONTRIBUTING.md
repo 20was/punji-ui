@@ -34,12 +34,34 @@ then remove the pin. Tests never depend on `Math.random` or the clock: fake
 timers and fast-check's seeded inputs only. CI runs the same steps once; please do not
 push to "see if CI passes".
 
+## Where the code lives
+
+The kit is developed inside Punji's app, the one source of truth, and mirrored
+here automatically. Issues, ideas and discussion are welcome in this
+repository; code changes are made upstream by the maintainers. Nobody edits
+the generated code here by hand: everything under `src/` except
+`src/internal/`, the stylesheets, `docs/tokens.md`, `.size-limit.json` and the
+`exports` map in `package.json`. The "Generated files come from the sync" CI
+check fails a pull request that changes them, unless it comes from the sync
+branch or a maintainer adds the `manual-change` label (for a change to the sync
+itself). Later, once the kit is stable, this repository may become the source.
+
 ## How the kit is kept in sync with Punji
 
-The components here are a mirror. The Punji web app is the source of truth:
-a change to a component is made there first, then mirrored here. Please open
-issues here; a pull request that edits a generated file directly is redone in
-Punji and synced.
+The [Sync workflow](./.github/workflows/sync.yml) runs every 6 hours (and on
+demand: Actions, Sync, Run workflow). It checks out Punji's main branch, runs
+the sync, and stops if nothing changed. Otherwise it runs
+`npm run verify:deep`, opens or updates the `sync/punji-web` pull request
+("chore(sync): mirror the kit from Punji @<commit>") with a patch changeset,
+and turns on auto-merge, so it merges itself once CI passes. If the sync meets
+something it cannot classify, the job fails and opens no pull request: that is
+the signal for a maintainer to update `scripts/sync/manifest.mjs`.
+
+It needs one secret, `PUNJI_SYNC_TOKEN`: a fine-grained token that reads
+Punji's repository and writes contents and pull requests here (a pull request
+opened with the workflow's own token would not run CI).
+
+Maintainers can run the same sync by hand:
 
 To mirror the current kit:
 
@@ -62,6 +84,9 @@ Then open a pull request with the diff and a changeset. The script:
   `.size-limit.json` (budgets from the manifest) and the README's component
   table;
 - removes files it generated before and no longer produces.
+
+An adapter edit that names its `upstream` change is skipped, with a note,
+once Punji has the same fix: the next sync drops it from the manifest.
 
 It **fails and writes nothing** when it meets something it does not know: a
 new kit module, a class or keyframes no module owns, an adapter edit whose

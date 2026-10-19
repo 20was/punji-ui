@@ -6,9 +6,12 @@
 # the manifest does not know fails this job and opens no PR: update
 # scripts/sync/manifest.mjs.
 #
-# Owner setup: the PUNJI_SYNC_TOKEN secret (a fine-grained token that reads
-# 20was/punji-web and writes contents and pull requests here). A PR opened
-# with the workflow's own token would not run CI, so the token opens it.
+# Owner setup: two fine-grained tokens, each limited to one repository, because
+# a fine-grained token grants the same permissions on every repository it covers:
+# - PUNJI_WEB_READ_TOKEN: only 20was/punji-web, Contents read-only (the source).
+# - PUNJI_UI_PR_TOKEN: only 20was/punji-ui, Contents and Pull requests read and
+#   write. A PR opened with the workflow's own token would not run CI, so this
+#   token opens it.
 name: Sync
 
 on:
@@ -34,14 +37,15 @@ jobs:
       - uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
         with:
           egress-policy: audit
-      - name: The sync token is set
+      - name: The sync tokens are set
         env:
-          TOKEN: ${{ secrets.PUNJI_SYNC_TOKEN }}
+          READ_TOKEN: ${{ secrets.PUNJI_WEB_READ_TOKEN }}
+          PR_TOKEN: ${{ secrets.PUNJI_UI_PR_TOKEN }}
         run: |
-          if [ -z "${TOKEN}" ]; then
-            echo "::error::PUNJI_SYNC_TOKEN is not set (CONTRIBUTING.md, How the kit is kept in sync with Punji)"
-            exit 1
-          fi
+          missing=0
+          if [ -z "${READ_TOKEN}" ]; then echo "::error::PUNJI_WEB_READ_TOKEN is not set (CONTRIBUTING.md, How the kit is kept in sync with Punji)"; missing=1; fi
+          if [ -z "${PR_TOKEN}" ]; then echo "::error::PUNJI_UI_PR_TOKEN is not set (CONTRIBUTING.md, How the kit is kept in sync with Punji)"; missing=1; fi
+          exit "${missing}"
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
@@ -52,7 +56,7 @@ jobs:
           ref: main
           path: .punji-web
           fetch-depth: 1
-          token: ${{ secrets.PUNJI_SYNC_TOKEN }}
+          token: ${{ secrets.PUNJI_WEB_READ_TOKEN }}
           persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
@@ -80,7 +84,7 @@ jobs:
       - name: Open or update the sync pull request, merge when green
         if: steps.sync.outputs.changed == 'true'
         env:
-          GH_TOKEN: ${{ secrets.PUNJI_SYNC_TOKEN }}
+          GH_TOKEN: ${{ secrets.PUNJI_UI_PR_TOKEN }}
           SHA: ${{ steps.sync.outputs.sha }}
         run: |
           short="${SHA:0:12}"
@@ -103,7 +107,7 @@ jobs:
       - name: Close a sync pull request the source no longer needs
         if: steps.sync.outputs.changed == 'false'
         env:
-          GH_TOKEN: ${{ secrets.PUNJI_SYNC_TOKEN }}
+          GH_TOKEN: ${{ secrets.PUNJI_UI_PR_TOKEN }}
         run: |
           if [ "$(gh pr view sync/punji-web --json state --jq .state 2>/dev/null || true)" = "OPEN" ]; then
             gh pr close sync/punji-web --delete-branch --comment "Punji's kit matches main again; nothing to mirror."

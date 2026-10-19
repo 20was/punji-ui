@@ -57,9 +57,13 @@ and turns on auto-merge, so it merges itself once CI passes. If the sync meets
 something it cannot classify, the job fails and opens no pull request: that is
 the signal for a maintainer to update `scripts/sync/manifest.mjs`.
 
-It needs one secret, `PUNJI_SYNC_TOKEN`: a fine-grained token that reads
-Punji's repository and writes contents and pull requests here (a pull request
-opened with the workflow's own token would not run CI).
+It needs two secrets, each a fine-grained token limited to one repository (a
+fine-grained token grants the same permissions on every repository it covers):
+
+- `PUNJI_WEB_READ_TOKEN`: reads Punji's repository (Contents: read-only).
+- `PUNJI_UI_PR_TOKEN`: this repository only, Contents and Pull requests: read
+  and write (a pull request opened with the workflow's own token would not run
+  CI).
 
 Maintainers can run the same sync by hand:
 

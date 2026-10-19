@@ -28,10 +28,80 @@
     "gzip": true
   },
   {
+    "name": "command-palette (import from '@punji/ui/command-palette')",
+    "path": "dist/command-palette/CommandPalette.js",
+    "import": "*",
+    "limit": "2.45 kB",
+    "gzip": true
+  },
+  {
+    "name": "company-search (import from '@punji/ui/company-search')",
+    "path": "dist/company-search/CompanySearch.js",
+    "import": "*",
+    "limit": "1.7 kB",
+    "gzip": true
+  },
+  {
     "name": "controls (import from '@punji/ui/controls')",
     "path": "dist/controls/Controls.js",
     "import": "*",
     "limit": "1.2 kB",
+    "gzip": true
+  },
+  {
+    "name": "drawer (import from '@punji/ui/drawer')",
+    "path": "dist/drawer/Drawer.js",
+    "import": "*",
+    "limit": "900 B",
+    "gzip": true
+  },
+  {
+    "name": "fields (import from '@punji/ui/fields')",
+    "path": "dist/fields/Fields.js",
+    "import": "*",
+    "limit": "2.05 kB",
+    "gzip": true
+  },
+  {
+    "name": "floating-tooltip (import from '@punji/ui/floating-tooltip')",
+    "path": "dist/floating-tooltip/FloatingTooltip.js",
+    "import": "*",
+    "limit": "980 B",
+    "gzip": true
+  },
+  {
+    "name": "info-tip (import from '@punji/ui/info-tip')",
+    "path": "dist/info-tip/InfoTip.js",
+    "import": "*",
+    "limit": "1.6 kB",
+    "gzip": true
+  },
+  {
+    "name": "inline-confirm (import from '@punji/ui/inline-confirm')",
+    "path": "dist/inline-confirm/InlineConfirm.js",
+    "import": "*",
+    "limit": "1.05 kB",
+    "gzip": true
+  },
+  {
+    "name": "list-filter (import from '@punji/ui/list-filter')",
+    "path": "dist/list-filter/ListFilter.js",
+    "import": "*",
+    "limit": "1.1 kB",
+    "gzip": true
+  },
+  {
+    "name": "overlay (import from '@punji/ui/overlay')",
+    "path": "dist/overlay/Overlay.js",
+    "import": "*",
+    "limit": "1.6 kB",
+    "gzip": true
+  },
+  {
+    "name": "range-slider (import from '@punji/ui/range-slider')",
+    "path": "dist/range-slider/RangeSlider.js",
+    "import": "*",
+    "limit": "550 B",
     "gzip": true
   },
   {
@@ -46,6 +116,13 @@
     "path": "dist/show-more/ShowMore.js",
     "import": "*",
     "limit": "460 B",
+    "gzip": true
+  },
+  {
+    "name": "states (import from '@punji/ui/states')",
+    "path": "dist/states/States.js",
+    "import": "*",
+    "limit": "970 B",
     "gzip": true
   },
   {
@@ -70,6 +147,13 @@
     "gzip": true
   },
   {
+    "name": "command-keys (import from '@punji/ui/command-keys')",
+    "path": "dist/command-keys/commandKeys.js",
+    "import": "*",
+    "limit": "240 B",
+    "gzip": true
+  },
+  {
     "name": "format (import from '@punji/ui/format')",
     "path": "dist/format/format.js",
     "import": "*",
@@ -80,13 +164,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "3.4 kB",
+    "limit": "7.1 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "4.5 kB",
+    "limit": "7.6 kB",
     "rolldown": false,
     "gzip": true
   },

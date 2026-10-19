@@ -28,10 +28,10 @@ The figures below come from checks that run on every pull request; the last colu
 
 | | What it means | Checked by |
 | --- | --- | --- |
-| **Small** | Each module is 0.4 to 1.1 kB (minified and gzipped, React excluded; `Button` 576 B, `SegmentedControl` with `Chip` 1.07 kB), all of them together 3.06 kB; every module has a budget that fails the build when exceeded. | [size-limit](./.size-limit.json) |
-| **No runtime dependencies** | `dependencies` is empty. React 19 is the only peer. No CSS-in-JS runtime: styles are plain CSS (4.03 kB gzipped for every token and component, 1.02 kB for the tokens alone). | [package.json](./package.json), tarball check |
+| **Small** | Each module is 0.2 to 2.3 kB (minified and gzipped, React excluded; `Button` 576 B, `Select` 675 B, `CommandPalette` 2.23 kB), all of them together 6.44 kB; every module has a budget that fails the build when exceeded. | [size-limit](./.size-limit.json) |
+| **No runtime dependencies** | `dependencies` is empty. React 19 is the only peer. No CSS-in-JS runtime: styles are plain CSS (6.93 kB gzipped for every token and component, 1.02 kB for the tokens alone). | [package.json](./package.json), tarball check |
 | **Tree-shakeable** | ES modules, one file per module, `"sideEffects"` lists only CSS. Import from the root or from a subpath such as `@punji/ui/button`. | publint, [are-the-types-wrong](https://arethetypeswrong.github.io) |
-| **Accessible** | Real `<button>`, `<a>`, `<select>`, checkbox and radio elements, WAI-ARIA patterns (toggle group, tabs with a roving tab stop, switch), arrow keys, Home and End, one visible focus ring, 44 px touch targets. axe-core runs in the tests and fails on any serious issue. | [Vitest + axe-core](./test) (roles, names, keyboard) |
+| **Accessible** | Real `<button>`, `<a>`, `<select>`, checkbox, radio and range elements, WAI-ARIA patterns (toggle group, tabs with a roving tab stop, switch, combobox, modal dialog with a focus trap, tooltip), arrow keys, Home and End, one visible focus ring, 44 px touch targets. axe-core runs in the tests and fails on any serious issue. | [Vitest + axe-core](./test) (roles, names, keyboard) |
 | **Themeable** | Every colour, size and radius is a `--pu-*` CSS variable inside a cascade layer, so your own CSS wins without `!important`. Light and dark follow the system, or force one with `data-theme`. | [token check](./scripts/check-css.mjs) |
 | **Verifiable releases** | Published from GitHub Actions with npm Trusted Publishing (no long-lived token) and a provenance attestation, plus an SBOM on every GitHub release. | [release workflow](./.github/workflows/release.yml) |
 
@@ -139,12 +139,24 @@ subpath Punji's own code imports, and its documentation is on design.punji.app.
 | `Card` | `@punji/ui/card` | [Card](https://design.punji.app/components/card) |
 | `Checkbox` | `@punji/ui/checkbox` | [Checkbox](https://design.punji.app/components/checkbox) |
 | `ChoiceGroup` | `@punji/ui/choice-group` | [Choice group](https://design.punji.app/components/choice-group) |
+| `CommandPalette` | `@punji/ui/command-palette` | [Command palette](https://design.punji.app/components/command-palette) |
+| `CompanySearch` | `@punji/ui/company-search` | [Company search](https://design.punji.app/components/company-search) |
 | `Chip`, `ChipRow`, `SegmentedControl`, `SegmentedSwitch` | `@punji/ui/controls` | [Segmented control](https://design.punji.app/components/segmented-control) · [Chip](https://design.punji.app/components/chip) |
+| `Drawer` | `@punji/ui/drawer` | [Drawer](https://design.punji.app/components/drawer) |
+| `Field`, `NumberField`, `TextAreaField`, `DateField`, `SelectField`, `SymbolField` | `@punji/ui/fields` | [Field](https://design.punji.app/components/field) |
+| `FloatingTooltip`, `IconHint` | `@punji/ui/floating-tooltip` | [Tooltip and InfoTip](https://design.punji.app/components/tooltip) |
+| `InfoTip`, `Tooltip` | `@punji/ui/info-tip` | [Tooltip and InfoTip](https://design.punji.app/components/tooltip) |
+| `InlineConfirm` | `@punji/ui/inline-confirm` | [Inline confirm](https://design.punji.app/components/inline-confirm) |
+| `ListFilter` | `@punji/ui/list-filter` | [List filter](https://design.punji.app/components/list-filter) |
+| `Sheet`, `ToastProvider`, `Dock` | `@punji/ui/overlay` | [Toast](https://design.punji.app/components/toast) · [Sheet](https://design.punji.app/components/sheet) |
+| `RangeSlider` | `@punji/ui/range-slider` | [Range slider](https://design.punji.app/components/range-slider) |
 | `ChevronDown`, `Select` | `@punji/ui/select` | [Select](https://design.punji.app/components/select) |
 | `ShowMore` | `@punji/ui/show-more` | [Show more](https://design.punji.app/components/show-more) |
+| `EmptyState`, `ToneIcon`, `Note`, `Skeleton`, `SkeletonText` | `@punji/ui/states` | [Empty state and Note](https://design.punji.app/components/empty-state) · [Skeleton](https://design.punji.app/components/skeleton) |
 | `StatusPill` | `@punji/ui/status-pill` | [Status pill](https://design.punji.app/components/status-pill) |
 | `Switch` | `@punji/ui/switch` | [Switch](https://design.punji.app/components/switch) |
 | `Tabs` | `@punji/ui/tabs` | [Tabs](https://design.punji.app/components/tabs) |
+| `moveIndex`, `moveChip` | `@punji/ui/command-keys` | [Formatting and live helpers](https://design.punji.app/utilities/formatting) |
 | `isNum`, `formatFigure`, `toneOf`, `parseNumber`, `searchSymbols`, `segmentTarget` | `@punji/ui/format` | [Formatting and live helpers](https://design.punji.app/utilities/formatting) |
 
 <!-- components:end -->

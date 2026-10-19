@@ -1,8 +1,3 @@
-<!--
-  TODO(owner): add the wordmark here. The files go in .github/assets/
-  (punji-wordmark-light.svg for light, punji-wordmark-dark.svg for dark). They
-  stay out of the npm package ("files" lists dist only). Then uncomment:
-
 <p align="center">
   <a href="https://design.punji.app">
     <picture>
@@ -11,7 +6,6 @@
     </picture>
   </a>
 </p>
--->
 
 <h1 align="center">Punji UI</h1>
 

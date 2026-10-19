@@ -5,6 +5,9 @@
   </picture>
 </a>
 
+> [!WARNING]
+> Work in progress — not ready for public use yet. APIs and styles will change without notice, and nothing is published to npm. Follow along or open an issue; please don't depend on it in production.
+
 <p align="center">
   <a href="https://github.com/20was/punji-ui/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/20was/punji-ui/actions/workflows/ci.yml/badge.svg?branch=main"></a>
   <a href="https://scorecard.dev/viewer/?uri=github.com/20was/punji-ui"><img alt="OpenSSF Scorecard" src="https://api.scorecard.dev/projects/github.com/20was/punji-ui/badge"></a>
@@ -19,23 +22,16 @@
   <a href="./SECURITY.md">Security</a>
 </p>
 
-> [!IMPORTANT]
-> **Pre-release (0.x), not on npm yet.** This repository holds the package
-> pipeline and two components that prove it. The full kit moves here in the
-> extraction release; until then the components live in the Punji web app and
-> are documented at [design.punji.app](https://design.punji.app). APIs can
-> change before 1.0.
-
 ## Why Punji UI
 
 The figures below come from checks that run on every pull request; the last column names the check.
 
 | | What it means | Checked by |
 | --- | --- | --- |
-| **Small** | `Button` adds 419 B and `SegmentedControl` 679 B to an app (minified and gzipped, React excluded); every component has a budget that fails the build when exceeded. | [size-limit](./.size-limit.json) |
-| **No runtime dependencies** | `dependencies` is empty. React 19 is the only peer. No CSS-in-JS runtime: styles are plain CSS (1.7 kB gzipped for everything). | [package.json](./package.json), tarball check |
-| **Tree-shakeable** | ES modules, one file per component, `"sideEffects"` lists only CSS. Import from the root or from `@punji/ui/button`. | publint, [are-the-types-wrong](https://arethetypeswrong.github.io) |
-| **Accessible** | Real `<button>` and `<a>` elements, WAI-ARIA patterns (toggle group, tabs with a roving tab stop), arrow keys, Home and End, one visible focus ring, 44 px touch targets. axe-core runs in the tests and fails on any serious issue. | [Vitest + axe-core](./test) (roles, names, keyboard) |
+| **Small** | Each module is 0.4 to 1.1 kB (minified and gzipped, React excluded; `Button` 576 B, `SegmentedControl` with `Chip` 1.07 kB), all of them together 3.06 kB; every module has a budget that fails the build when exceeded. | [size-limit](./.size-limit.json) |
+| **No runtime dependencies** | `dependencies` is empty. React 19 is the only peer. No CSS-in-JS runtime: styles are plain CSS (4.03 kB gzipped for every token and component, 1.02 kB for the tokens alone). | [package.json](./package.json), tarball check |
+| **Tree-shakeable** | ES modules, one file per module, `"sideEffects"` lists only CSS. Import from the root or from a subpath such as `@punji/ui/button`. | publint, [are-the-types-wrong](https://arethetypeswrong.github.io) |
+| **Accessible** | Real `<button>`, `<a>`, `<select>`, checkbox and radio elements, WAI-ARIA patterns (toggle group, tabs with a roving tab stop, switch), arrow keys, Home and End, one visible focus ring, 44 px touch targets. axe-core runs in the tests and fails on any serious issue. | [Vitest + axe-core](./test) (roles, names, keyboard) |
 | **Themeable** | Every colour, size and radius is a `--pu-*` CSS variable inside a cascade layer, so your own CSS wins without `!important`. Light and dark follow the system, or force one with `data-theme`. | [token check](./scripts/check-css.mjs) |
 | **Verifiable releases** | Published from GitHub Actions with npm Trusted Publishing (no long-lived token) and a provenance attestation, plus an SBOM on every GitHub release. | [release workflow](./.github/workflows/release.yml) |
 
@@ -86,15 +82,31 @@ export function Toolbar() {
 }
 ```
 
-For the smallest CSS, import the tokens and only the components you draw:
+For the smallest CSS, import the tokens, the shared base and only the
+components you draw:
 
 ```ts
 import '@punji/ui/tokens.css';
+import '@punji/ui/css/base.css';
 import '@punji/ui/css/button.css';
 ```
 
-`SegmentedControl` carries `'use client'`, so it works in React Server Component
-apps such as Next.js without a wrapper.
+Modules that use hooks or their own event handlers carry `'use client'`, so they
+work in React Server Component apps such as Next.js without a wrapper.
+
+### Links and routers
+
+The package has no router dependency. A component that takes `href` renders a
+plain `<a>`; for in-app paths, pass your router's link once wrapped:
+
+```tsx
+import { Link } from 'react-router-dom';
+import { Button, type LinkComponent } from '@punji/ui';
+
+const RouterLink: LinkComponent = ({ href, ...rest }) => <Link to={href} {...rest} />;
+
+<Button href="/settings" linkComponent={RouterLink}>Settings</Button>;
+```
 
 ## Theming
 
@@ -111,18 +123,36 @@ Override any token on `:root` or on a subtree:
 
 Light and dark follow `prefers-color-scheme`. To force one, set
 `data-theme="light"` or `data-theme="dark"` on `<html>` or on any element.
+Every token, with its light and dark value: [docs/tokens.md](./docs/tokens.md).
 
 ## Components
 
-The two components in this package today, and their documentation:
+The modules in this package today. Each one is also its own subpath, the same
+subpath Punji's own code imports, and its documentation is on design.punji.app.
 
-| Component | Docs |
-| --- | --- |
-| Button | [design.punji.app/components/button](https://design.punji.app/components/button) |
-| SegmentedControl | [design.punji.app/components/segmented-control](https://design.punji.app/components/segmented-control) |
+<!-- components:start -->
+<!-- Generated by scripts/sync-from-web.mjs. -->
 
-The rest of the kit (fields, select, tabs, checkbox, switch, dialogs, drawer,
-toast, tooltip, table, skeleton and more) is listed in the [roadmap](./ROADMAP.md).
+| Exports | Subpath | Docs |
+| --- | --- | --- |
+| `Button` | `@punji/ui/button` | [Button](https://design.punji.app/components/button) |
+| `Card` | `@punji/ui/card` | [Card](https://design.punji.app/components/card) |
+| `Checkbox` | `@punji/ui/checkbox` | [Checkbox](https://design.punji.app/components/checkbox) |
+| `ChoiceGroup` | `@punji/ui/choice-group` | [Choice group](https://design.punji.app/components/choice-group) |
+| `Chip`, `ChipRow`, `SegmentedControl`, `SegmentedSwitch` | `@punji/ui/controls` | [Segmented control](https://design.punji.app/components/segmented-control) · [Chip](https://design.punji.app/components/chip) |
+| `ChevronDown`, `Select` | `@punji/ui/select` | [Select](https://design.punji.app/components/select) |
+| `ShowMore` | `@punji/ui/show-more` | [Show more](https://design.punji.app/components/show-more) |
+| `StatusPill` | `@punji/ui/status-pill` | [Status pill](https://design.punji.app/components/status-pill) |
+| `Switch` | `@punji/ui/switch` | [Switch](https://design.punji.app/components/switch) |
+| `Tabs` | `@punji/ui/tabs` | [Tabs](https://design.punji.app/components/tabs) |
+| `isNum`, `formatFigure`, `toneOf`, `parseNumber`, `searchSymbols`, `segmentTarget` | `@punji/ui/format` | [Formatting and live helpers](https://design.punji.app/utilities/formatting) |
+
+<!-- components:end -->
+
+The kit is mirrored from the Punji web app, which stays its source of truth
+([how the sync works](./CONTRIBUTING.md#how-the-kit-is-kept-in-sync-with-punji)).
+The rest of the kit, and the pieces that stay in Punji (its logo, its own
+navigation), are listed in the [roadmap](./ROADMAP.md).
 
 ## Browser support
 

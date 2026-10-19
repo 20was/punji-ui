@@ -179,6 +179,20 @@ export const MODULES = {
       { find: '        <Link className="kit-circle kit-back" to={backTo} aria-label={backLabel} data-testid="back-button">\n          <ChevronLeft />\n        </Link>', replace: '        <L className="kit-circle kit-back" href={backTo} aria-label={backLabel} data-testid="back-button">\n          <ChevronLeft />\n        </L>' },
     ],
   },
+  // Data display added with Punji's portfolio page. Each draws from a stylesheet
+  // the sync does not split per module yet (the data and drawer sheets).
+  'ActionNotice.tsx': { status: 'pending', reason: 'Styles come from the data stylesheet, which the sync does not split per module yet.' },
+  'Breakdown.tsx': { status: 'pending', reason: 'Styles come from the data stylesheet, which the sync does not split per module yet.' },
+  'FlowWaterfall.tsx': { status: 'pending', reason: 'Styles come from the data stylesheet, which the sync does not split per module yet.' },
+  'Meter.tsx': { status: 'pending', reason: 'Styles come from the data stylesheet, which the sync does not split per module yet.' },
+  'MetricTile.tsx': { status: 'pending', reason: 'Styles come from the data stylesheet, which the sync does not split per module yet.' },
+  'OptionTile.tsx': { status: 'pending', reason: 'Styles come from the data stylesheet, which the sync does not split per module yet.' },
+  'PickedItem.tsx': { status: 'pending', reason: 'Styles come from the data stylesheet, which the sync does not split per module yet.' },
+  'PromptCard.tsx': { status: 'pending', reason: 'Styles come from the data stylesheet, which the sync does not split per module yet.' },
+  'Sparkline.tsx': { status: 'pending', reason: 'Styles come from the data stylesheet, which the sync does not split per module yet.' },
+  'StepList.tsx': { status: 'pending', reason: 'Styles come from the data stylesheet, which the sync does not split per module yet.' },
+  'SummaryFigure.tsx': { status: 'pending', reason: 'Styles come from the data stylesheet, which the sync does not split per module yet.' },
+  'DrawerScreen.tsx': { status: 'pending', reason: 'Styles come from the drawer stylesheet, which the sync does not split per module yet.' },
   'MonthGrid.tsx': { status: 'pending', reason: 'Reads a Punji data contract and a Punji helper; needs general props before it can ship.' },
 
   // Stays in Punji.

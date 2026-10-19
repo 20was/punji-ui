@@ -23,18 +23,20 @@ This file mirrors the status on [design.punji.app](https://design.punji.app).
 - **Overlays and feedback**: Sheet, Toast and Dock, Drawer, CommandPalette,
   InlineConfirm, Tooltip, InfoTip, FloatingTooltip and IconHint; EmptyState,
   Note, Skeleton.
-- **Display**: Card, StatusPill.
+- **Data display**: Card, StatusPill, Rows and lists (GroupedCell, RowList,
+  ValueRow with `linkComponent`, DataRows, DataRow, Tile), DataTable, StatGrid
+  and StatTile, Figure and Delta, Live and LiveFigure.
+- **Layout**: PageLayout, PageHeader (back link through `linkComponent`),
+  ListSectionHeader.
 - **Helpers**: `formatFigure`, `toneOf`, `parseNumber` (Devanagari digits
-  too), `searchSymbols`, `segmentTarget`.
+  too), `searchSymbols`, `segmentTarget`, `compactRs`, `useTweenedNumber` and
+  the tween maths.
 
 ## Next
 
-Each step is its own pull request, green on its own:
-
-1. **Data display**: Rows and lists, Data table, Stat tile, Figure and Delta,
-   Live figure, Page layout and header (router links through
-   `linkComponent`), compact amounts.
-2. **Month grid**, once it takes general props instead of Punji's data shape.
+- **Month grid**, once it takes general props instead of Punji's data shape.
+- Screenshots of every component in light and dark on design.punji.app, then
+  in this README.
 
 ## Later
 

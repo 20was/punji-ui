@@ -67,6 +67,10 @@
       "types": "./dist/fields/Fields.d.ts",
       "default": "./dist/fields/Fields.js"
     },
+    "./figures": {
+      "types": "./dist/figures/Figures.d.ts",
+      "default": "./dist/figures/Figures.js"
+    },
     "./floating-tooltip": {
       "types": "./dist/floating-tooltip/FloatingTooltip.d.ts",
       "default": "./dist/floating-tooltip/FloatingTooltip.js"
@@ -79,9 +83,17 @@
       "types": "./dist/inline-confirm/InlineConfirm.d.ts",
       "default": "./dist/inline-confirm/InlineConfirm.js"
     },
+    "./layout": {
+      "types": "./dist/layout/Layout.d.ts",
+      "default": "./dist/layout/Layout.js"
+    },
     "./list-filter": {
       "types": "./dist/list-filter/ListFilter.d.ts",
       "default": "./dist/list-filter/ListFilter.js"
+    },
+    "./live-figure": {
+      "types": "./dist/live-figure/LiveFigure.d.ts",
+      "default": "./dist/live-figure/LiveFigure.js"
     },
     "./overlay": {
       "types": "./dist/overlay/Overlay.d.ts",
@@ -90,6 +102,10 @@
     "./range-slider": {
       "types": "./dist/range-slider/RangeSlider.d.ts",
       "default": "./dist/range-slider/RangeSlider.js"
+    },
+    "./rows": {
+      "types": "./dist/rows/Rows.d.ts",
+      "default": "./dist/rows/Rows.js"
     },
     "./select": {
       "types": "./dist/select/Select.d.ts",
@@ -103,6 +119,10 @@
       "types": "./dist/states/States.d.ts",
       "default": "./dist/states/States.js"
     },
+    "./stats": {
+      "types": "./dist/stats/Stats.d.ts",
+      "default": "./dist/stats/Stats.js"
+    },
     "./status-pill": {
       "types": "./dist/status-pill/StatusPill.d.ts",
       "default": "./dist/status-pill/StatusPill.js"
@@ -110,6 +130,10 @@
     "./switch": {
       "types": "./dist/switch/Switch.d.ts",
       "default": "./dist/switch/Switch.js"
+    },
+    "./table": {
+      "types": "./dist/table/Table.d.ts",
+      "default": "./dist/table/Table.js"
     },
     "./tabs": {
       "types": "./dist/tabs/Tabs.d.ts",
@@ -119,9 +143,17 @@
       "types": "./dist/command-keys/commandKeys.d.ts",
       "default": "./dist/command-keys/commandKeys.js"
     },
+    "./compact": {
+      "types": "./dist/compact/compact.d.ts",
+      "default": "./dist/compact/compact.js"
+    },
     "./format": {
       "types": "./dist/format/format.d.ts",
       "default": "./dist/format/format.js"
+    },
+    "./live": {
+      "types": "./dist/live/live.d.ts",
+      "default": "./dist/live/live.js"
     },
     "./styles.css": "./dist/styles.css",
     "./tokens.css": "./dist/tokens.css",

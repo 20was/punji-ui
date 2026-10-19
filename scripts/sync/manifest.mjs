@@ -132,15 +132,49 @@ export const MODULES = {
     budget: '980 B',
     edits: [{ find: '    const observer = new ResizeObserver(([entry]) => {\n      const', replace: '    const observer = new ResizeObserver(([entry]) => {\n      if (!entry) return;\n      const' }],
   },
-  // Planned: data display.
-  'Rows.tsx': { status: 'pending', reason: 'Data display pull request (needs the link adapter on ValueRow).' },
-  'Stats.tsx': { status: 'pending', reason: 'Data display pull request.' },
-  'Figures.tsx': { status: 'pending', reason: 'Data display pull request.' },
-  'LiveFigure.tsx': { status: 'pending', reason: 'Data display pull request.' },
-  'live.ts': { status: 'pending', reason: 'Data display pull request.' },
-  'compact.ts': { status: 'pending', reason: 'Data display pull request.' },
-  'Table.tsx': { status: 'pending', reason: 'Data display pull request.' },
-  'Layout.tsx': { status: 'pending', reason: 'Data display pull request (needs the link adapter on PageHeader).' },
+  // Data display.
+  'Rows.tsx': {
+    status: 'adapt',
+    reason: 'No router dependency: a ValueRow with `href` renders <a>, or the `linkComponent` you pass for an in-app path.',
+    budget: '1 kB',
+    edits: [
+      { find: "import { Link } from 'react-router-dom';\n", replace: LINK_IMPORT },
+      { find: '  href?: string;\n  onClick?: () => void;\n', replace: '  href?: string;\n  /** The link element for an in-app `href` (wrap your router\'s link). Default: a plain <a>. */\n  linkComponent?: LinkComponent;\n  onClick?: () => void;\n' },
+      { find: 'figure, note, href, onClick, chevron,', replace: 'figure, note, href, linkComponent, onClick, chevron,' },
+      {
+        find: '    const external = /^https?:/.test(href);\n    return external ? (\n      <a className="kit-value-row" href={href} data-testid={testId} aria-label={ariaLabel}>{body}</a>\n    ) : (\n      <Link className="kit-value-row" to={href} data-testid={testId} aria-label={ariaLabel}>{body}</Link>\n    );\n',
+        replace: "    const L = linkComponent && !/^https?:/.test(href) ? linkComponent : 'a';\n    return (\n      <L className=\"kit-value-row\" href={href} data-testid={testId} aria-label={ariaLabel}>{body}</L>\n    );\n",
+      },
+    ],
+  },
+  'Stats.tsx': { status: 'ship', budget: '400 B' },
+  'Figures.tsx': {
+    status: 'adapt',
+    reason: 'Comment only: names where the grouping helpers come from in this package.',
+    budget: '880 B',
+    edits: [{ find: 'en-IN grouping from lib/format.', replace: 'en-IN grouping (lakh and crore).' }],
+  },
+  'LiveFigure.tsx': { status: 'ship', budget: '1.35 kB' },
+  'live.ts': { status: 'ship', budget: '900 B' },
+  'compact.ts': {
+    status: 'adapt',
+    reason: 'Comment only: the bundle it names is Punji\'s.',
+    budget: '540 B',
+    edits: [{ find: " * barrel: only the portfolio page uses it, and the shell's first load\n * (me.html) should not carry it.", replace: ' * barrel, so an app that does not draw it does not load it.' }],
+  },
+  'Table.tsx': { status: 'ship', budget: '690 B' },
+  'Layout.tsx': {
+    status: 'adapt',
+    reason: 'No router dependency: the back circle renders <a>, or the `linkComponent` you pass.',
+    budget: '730 B',
+    edits: [
+      { find: "import { Link } from 'react-router-dom';\n", replace: LINK_IMPORT },
+      { find: ' * header every me.punji.app page uses. Maps the app\'s PageLayout and\n * PageHeader (docs/web/UI.md): a back', replace: ' * header every page uses, as the Punji app\'s PageLayout and PageHeader:\n * a back' },
+      { find: '  backTo?: string;\n', replace: '  backTo?: string;\n  /** The link element for `backTo` (wrap your router\'s link). Default: a plain <a>. */\n  linkComponent?: LinkComponent;\n' },
+      { find: "{ title, backTo, backLabel = 'Back', meta, actions, testId }: HeaderProps) {\n", replace: "{ title, backTo, linkComponent, backLabel = 'Back', meta, actions, testId }: HeaderProps) {\n  const L = linkComponent ?? 'a';\n" },
+      { find: '        <Link className="kit-circle kit-back" to={backTo} aria-label={backLabel} data-testid="back-button">\n          <ChevronLeft />\n        </Link>', replace: '        <L className="kit-circle kit-back" href={backTo} aria-label={backLabel} data-testid="back-button">\n          <ChevronLeft />\n        </L>' },
+    ],
+  },
   'MonthGrid.tsx': { status: 'pending', reason: 'Reads a Punji data contract and a Punji helper; needs general props before it can ship.' },
 
   // Stays in Punji.
@@ -254,5 +288,5 @@ export const DENYLIST = [
 export const BARREL_EXTRA = ["export type { LinkComponent, LinkProps } from './internal/link.tsx';"];
 
 /** The total budget for everything at once (the root import). */
-export const TOTAL_BUDGET = '7.1 kB';
-export const CSS_BUDGET = { styles: '7.6 kB', tokens: '1.15 kB' };
+export const TOTAL_BUDGET = '9.4 kB';
+export const CSS_BUDGET = { styles: '9.1 kB', tokens: '1.15 kB' };

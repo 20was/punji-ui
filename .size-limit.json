@@ -63,6 +63,13 @@
     "gzip": true
   },
   {
+    "name": "figures (import from '@punji/ui/figures')",
+    "path": "dist/figures/Figures.js",
+    "import": "*",
+    "limit": "880 B",
+    "gzip": true
+  },
+  {
     "name": "floating-tooltip (import from '@punji/ui/floating-tooltip')",
     "path": "dist/floating-tooltip/FloatingTooltip.js",
     "import": "*",
@@ -84,10 +91,24 @@
     "gzip": true
   },
   {
+    "name": "layout (import from '@punji/ui/layout')",
+    "path": "dist/layout/Layout.js",
+    "import": "*",
+    "limit": "730 B",
+    "gzip": true
+  },
+  {
     "name": "list-filter (import from '@punji/ui/list-filter')",
     "path": "dist/list-filter/ListFilter.js",
     "import": "*",
     "limit": "1.1 kB",
+    "gzip": true
+  },
+  {
+    "name": "live-figure (import from '@punji/ui/live-figure')",
+    "path": "dist/live-figure/LiveFigure.js",
+    "import": "*",
+    "limit": "1.35 kB",
     "gzip": true
   },
   {
@@ -102,6 +123,13 @@
     "path": "dist/range-slider/RangeSlider.js",
     "import": "*",
     "limit": "550 B",
+    "gzip": true
+  },
+  {
+    "name": "rows (import from '@punji/ui/rows')",
+    "path": "dist/rows/Rows.js",
+    "import": "*",
+    "limit": "1 kB",
     "gzip": true
   },
   {
@@ -126,6 +154,13 @@
     "gzip": true
   },
   {
+    "name": "stats (import from '@punji/ui/stats')",
+    "path": "dist/stats/Stats.js",
+    "import": "*",
+    "limit": "400 B",
+    "gzip": true
+  },
+  {
     "name": "status-pill (import from '@punji/ui/status-pill')",
     "path": "dist/status-pill/StatusPill.js",
     "import": "*",
@@ -137,6 +172,13 @@
     "path": "dist/switch/Switch.js",
     "import": "*",
     "limit": "400 B",
+    "gzip": true
+  },
+  {
+    "name": "table (import from '@punji/ui/table')",
+    "path": "dist/table/Table.js",
+    "import": "*",
+    "limit": "690 B",
     "gzip": true
   },
   {
@@ -154,6 +196,13 @@
     "gzip": true
   },
   {
+    "name": "compact (import from '@punji/ui/compact')",
+    "path": "dist/compact/compact.js",
+    "import": "*",
+    "limit": "540 B",
+    "gzip": true
+  },
+  {
     "name": "format (import from '@punji/ui/format')",
     "path": "dist/format/format.js",
     "import": "*",
@@ -161,16 +210,23 @@
     "gzip": true
   },
   {
+    "name": "live (import from '@punji/ui/live')",
+    "path": "dist/live/live.js",
+    "import": "*",
+    "limit": "900 B",
+    "gzip": true
+  },
+  {
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "7.1 kB",
+    "limit": "9.4 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "7.6 kB",
+    "limit": "9.1 kB",
     "rolldown": false,
     "gzip": true
   },

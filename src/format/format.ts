@@ -40,6 +40,7 @@ const DEV = '०१२३४५६७८९';
 /** A typed number: grouping commas, spaces and Devanagari digits accepted. NaN when empty or invalid. */
 export function parseNumber(v: string): number {
   const s = v.replace(/[,\s]/g, '').replace(/[०-९]/g, (c) => String(DEV.indexOf(c)));
+  // One linear pattern (no nested or adjacent repeats), and a length cap first: a typed number never needs more.
   if (s.length > 64 || !/^-?(?:\d+(?:\.\d*)?|\.\d+)$/.test(s)) return Number.NaN;
   return Number.parseFloat(s);
 }

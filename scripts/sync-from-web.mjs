@@ -63,6 +63,11 @@ function applyEdits(file, text) {
   for (const e of MODULES[file].edits ?? []) {
     const n = text.split(e.find).length - 1;
     const want = e.count ?? 1;
+    if (n === 0 && e.upstream && text.includes(e.replace)) {
+      // The source now has this fix itself: the edit is no longer needed.
+      console.log(`  note: ${file}: already fixed upstream (${e.upstream}); remove this adapter edit from the manifest`);
+      continue;
+    }
     if (n !== want) {
       fail(`${file}: adapter edit expected ${want} match(es), found ${n}:\n    ${JSON.stringify(e.find.slice(0, 120))}`);
       continue;
@@ -459,7 +464,7 @@ function main() {
   // Record the source commit, for the pull request.
   let commit = 'unknown';
   try {
-    commit = execFileSync('git', ['-C', WEB, 'rev-parse', '--short=12', 'HEAD'], { encoding: 'utf8' }).trim();
+    commit = execFileSync('git', ['-C', WEB, 'rev-parse', '--short=12', 'HEAD'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
   } catch {
     /* not a git checkout */
   }

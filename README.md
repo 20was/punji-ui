@@ -189,6 +189,15 @@ the test suite. Colour contrast is measured on the documentation site's
 foundations page. If something does not work with your assistive technology,
 please [open an issue](https://github.com/20was/punji-ui/issues/new/choose).
 
+## Where the code lives
+
+The kit is developed inside Punji's app, the one source of truth, and mirrored
+here automatically: the [Sync workflow](./.github/workflows/sync.yml) runs every
+6 hours and opens a pull request that merges itself once CI passes. Issues and
+discussion are welcome here. Code changes are made upstream by the maintainers;
+nobody edits `src/` in this repository by hand, and a CI check fails a pull
+request that changes generated files unless it comes from the sync.
+
 ## Contributing
 
 Read [CONTRIBUTING.md](./CONTRIBUTING.md): how to run the checks, the bar a new

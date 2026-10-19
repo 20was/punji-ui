@@ -5,6 +5,8 @@ name: CI
 
 on:
   pull_request:
+    # labeled and unlabeled: the generated-files guard follows the manual-change label.
+    types: [opened, synchronize, reopened, labeled, unlabeled]
   push:
     branches: [main]
   merge_group:
@@ -87,6 +89,31 @@ jobs:
       - name: Package (publint, are-the-types-wrong, tarball contents)
         run: npm run check:package
 
+  generated:
+    name: Generated files come from the sync
+    # Skipped for the Sync workflow's own branch (from this repository) and for
+    # a maintainer's pull request labelled manual-change.
+    if: >-
+      github.event_name == 'pull_request' &&
+      !(github.event.pull_request.head.ref == 'sync/punji-web' && github.event.pull_request.head.repo.full_name == github.repository) &&
+      !contains(github.event.pull_request.labels.*.name, 'manual-change')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: No hand edits to generated files
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: node scripts/check-generated.mjs "origin/${BASE_REF}"
+
   workflows:
     name: Workflow lint (actionlint, zizmor)
     needs: changes
@@ -116,7 +143,7 @@ jobs:
 
   ci-ok:
     name: CI OK
-    needs: [changes, verify, workflows]
+    needs: [changes, verify, generated, workflows]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 2

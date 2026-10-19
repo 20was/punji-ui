@@ -10,7 +10,12 @@
 //   pending   general enough for the package, planned for a later pull request
 //   web-only  stays in Punji, with the reason
 
-/** @typedef {{ find: string, replace: string, count?: number }} Edit */
+/**
+ * An adapter edit. `upstream` names the Punji change that makes the same fix
+ * there: once the source already contains `replace`, the sync skips the edit
+ * (and says so) instead of failing, and the next sync PR drops it.
+ * @typedef {{ find: string, replace: string, count?: number, upstream?: string }} Edit
+ */
 /** @typedef {{ status: 'ship' | 'adapt' | 'pending' | 'web-only', reason?: string, edits?: Edit[], budget?: string }} Module */
 
 const LINK_IMPORT = "import type { LinkComponent } from '../internal/link.tsx';\n";
@@ -74,15 +79,13 @@ export const MODULES = {
   'Tabs.tsx': { status: 'ship', budget: '750 B' },
   'format.ts': {
     status: 'adapt',
-    reason: 'Types (noUncheckedIndexedAccess: the list lookups say what an empty slot means, never reached) and the parseNumber pattern, linear and capped at 64 characters (the same fix is landing in Punji).',
+    reason: 'Types only: this package type-checks with noUncheckedIndexedAccess, so the list lookups say what an empty slot means (never reached: the list is not empty there).',
     budget: '1 kB',
     edits: [
       { find: 'return values[(i + 1 + n) % n];', replace: 'return values[(i + 1 + n) % n] ?? null;' },
       { find: 'return values[(i - 1 + n) % n];', replace: 'return values[(i - 1 + n) % n] ?? null;' },
       { find: "if (key === 'Home') return values[0];", replace: "if (key === 'Home') return values[0] ?? null;" },
       { find: "if (key === 'End') return values[n - 1];", replace: "if (key === 'End') return values[n - 1] ?? null;" },
-      // The same numbers, linear and length-capped (CodeQL js/polynomial-redos); the same fix is landing in Punji, then this edit goes.
-      { find: "if (!/^-?\\d*\\.?\\d+$|^-?\\d+\\.?$/.test(s)) return Number.NaN;", replace: "if (s.length > 64 || !/^-?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$/.test(s)) return Number.NaN;" },
     ],
   },
 
@@ -157,12 +160,13 @@ export const MODULES = {
   'LiveFigure.tsx': { status: 'ship', budget: '1.35 kB' },
   'live.ts': {
     status: 'adapt',
-    reason: 'tweenAt never returns -0 (a figure would print it as "-0.00"); the same fix is proposed in Punji.',
+    reason: 'tweenAt never returns -0 (a figure would print it as "-0.00"); dropped once punji-web#244 lands.',
     budget: '900 B',
     edits: [
       {
         find: '  if (p >= 1) return to;\n  return from + (to - from) * easeOut(p);\n',
         replace: '  // Never -0: a figure would print it as "-0.00".\n  const v = p >= 1 ? to : from + (to - from) * easeOut(p);\n  return v === 0 ? 0 : v;\n',
+        upstream: 'punji-web#244',
       },
     ],
   },

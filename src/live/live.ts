@@ -24,8 +24,9 @@ export const easeOut = (p: number): number => 1 - Math.pow(1 - Math.min(1, Math.
 
 /** The value shown at progress p (0 to 1) of a move from `from` to `to`; exactly `to` at the end. */
 export function tweenAt(from: number, to: number, p: number): number {
-  if (p >= 1) return to;
-  return from + (to - from) * easeOut(p);
+  // Never -0: a figure would print it as "-0.00".
+  const v = p >= 1 ? to : from + (to - from) * easeOut(p);
+  return v === 0 ? 0 : v;
 }
 
 /** Two values that print the same at dp decimals are no move (no tween, no tint). */

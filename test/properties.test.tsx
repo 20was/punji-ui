@@ -9,7 +9,8 @@ import * as fc from 'fast-check';
 import { useState } from 'react';
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { formatFigure, parseNumber, SegmentedControl, segmentTarget, Tabs, toneOf } from '../src/index.ts';
+import { moveChip, moveIndex } from '../src/command-keys/commandKeys.ts';
+import { formatFigure, parseNumber, RangeSlider, SegmentedControl, segmentTarget, Tabs, toneOf } from '../src/index.ts';
 
 afterEach(cleanup);
 
@@ -201,5 +202,54 @@ describe('parseNumber, against the pattern it replaced', () => {
       expect(Number.isNaN(parseNumber(s))).toBe(true);
       expect(performance.now() - t0).toBeLessThan(20);
     }
+  });
+});
+
+describe('command palette keys, for any list', () => {
+  it('moveIndex wraps: n steps either way come back, and it always lands inside the list', () => {
+    fc.assert(
+      fc.property(fc.integer({ min: 1, max: 50 }), fc.nat(), fc.constantFrom(1 as const, -1 as const), (n, start, dir) => {
+        const from = start % n;
+        let at = from;
+        for (let i = 0; i < n; i++) {
+          at = moveIndex(n, at, dir);
+          expect(at).toBeGreaterThanOrEqual(0);
+          expect(at).toBeLessThan(n);
+        }
+        expect(at).toBe(from);
+      }),
+    );
+    expect(moveIndex(0, 3, 1)).toBe(0);
+  });
+
+  it('moveChip stops at the ends and moves at most one step', () => {
+    fc.assert(
+      fc.property(fc.integer({ min: 0, max: 12 }), fc.integer({ min: -2, max: 14 }), fc.constantFrom(1 as const, -1 as const), (count, cur, dir) => {
+        const next = moveChip(count, cur, dir);
+        const ok = count <= 1 ? next === 0 : next >= 0 && next <= count - 1;
+        expect(ok).toBe(true);
+      }),
+    );
+  });
+});
+
+function RangeHarness() {
+  const [r, setR] = useState<[number, number]>([5, 15]);
+  return <RangeSlider min={0} max={20} step={1} lo={r[0]} hi={r[1]} onChange={(lo, hi) => setR([lo, hi])} labelLo="Min" labelHi="Max" valueText={String} testId="r" />;
+}
+
+describe('RangeSlider, for any moves', () => {
+  it('the low thumb never passes the high one', () => {
+    fc.assert(
+      fc.property(fc.array(fc.record({ lo: fc.boolean(), v: fc.integer({ min: 0, max: 20 }) }), { maxLength: 10 }), (moves) => {
+        const { unmount } = render(<RangeHarness />);
+        for (const m of moves) fireEvent.change(screen.getByTestId(m.lo ? 'r-min' : 'r-max'), { target: { value: String(m.v) } });
+        const lo = Number((screen.getByTestId('r-min') as HTMLInputElement).value);
+        const hi = Number((screen.getByTestId('r-max') as HTMLInputElement).value);
+        expect(lo).toBeLessThanOrEqual(hi);
+        unmount();
+      }),
+      { numRuns: 40 },
+    );
   });
 });

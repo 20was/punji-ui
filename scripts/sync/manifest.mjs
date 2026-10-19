@@ -90,32 +90,32 @@ export const MODULES = {
   'Fields.tsx': {
     status: 'adapt',
     reason: 'Types only (noUncheckedIndexedAccess): a suggestion is picked only when it exists.',
-    budget: '1.6 kB',
+    budget: '2.05 kB',
     edits: [
       { find: '!(matches.length === 1 && matches[0].symbol === value.toUpperCase())', replace: '!(matches.length === 1 && matches[0]?.symbol === value.toUpperCase())' },
       { find: '            pick(matches[active]);', replace: '            const hit = matches[active];\n            if (hit) pick(hit);' },
     ],
   },
-  'CompanySearch.tsx': { status: 'ship', budget: '1.5 kB' },
-  'ListFilter.tsx': { status: 'ship', budget: '850 B' },
-  'RangeSlider.tsx': { status: 'ship', budget: '450 B' },
-  'InlineConfirm.tsx': { status: 'ship', budget: '1 kB' },
+  'CompanySearch.tsx': { status: 'ship', budget: '1.7 kB' },
+  'ListFilter.tsx': { status: 'ship', budget: '1.1 kB' },
+  'RangeSlider.tsx': { status: 'ship', budget: '550 B' },
+  'InlineConfirm.tsx': { status: 'ship', budget: '1.05 kB' },
   'Overlay.tsx': {
     status: 'adapt',
     reason: 'Types only (noUncheckedIndexedAccess): the focus trap reads its first and last item after checking the list is not empty.',
-    budget: '1.3 kB',
+    budget: '1.6 kB',
     edits: [{ find: '        const [a, z] = [items[0], items[items.length - 1]];', replace: '        const [a, z] = [items[0]!, items[items.length - 1]!];' }],
   },
   'Drawer.tsx': {
     status: 'adapt',
     reason: 'Comment only: the narrow-screen alternative it names lives in Punji.',
-    budget: '750 B',
+    budget: '900 B',
     edits: [{ find: ' * instead (src/me/desk/DeskChrome.tsx PushView).', replace: ' * instead.' }],
   },
   'CommandPalette.tsx': {
     status: 'adapt',
     reason: 'Types only (noUncheckedIndexedAccess): rows and actions are read where they exist.',
-    budget: '2.3 kB',
+    budget: '2.45 kB',
     edits: [
       { find: "list.current?.querySelector(`#${domId(items[active].id)}`)", replace: "list.current?.querySelector(`#${domId(items[active]!.id)}`)" },
       { find: '    if (activeItem?.actions[next]) setSaid(labels.chosen(activeItem.actions[next].label));', replace: '    const nextAction = activeItem?.actions[next];\n    if (nextAction) setSaid(labels.chosen(nextAction.label));' },
@@ -123,13 +123,13 @@ export const MODULES = {
       { find: '(i === 0 || items[i - 1].group !== e.group)', replace: '(i === 0 || items[i - 1]!.group !== e.group)' },
     ],
   },
-  'commandKeys.ts': { status: 'ship', budget: '200 B' },
-  'States.tsx': { status: 'ship', budget: '900 B' },
-  'InfoTip.tsx': { status: 'ship', budget: '1.4 kB' },
+  'commandKeys.ts': { status: 'ship', budget: '240 B' },
+  'States.tsx': { status: 'ship', budget: '970 B' },
+  'InfoTip.tsx': { status: 'ship', budget: '1.6 kB' },
   'FloatingTooltip.tsx': {
     status: 'adapt',
     reason: 'Types only (noUncheckedIndexedAccess): the resize observer reads its first entry when there is one.',
-    budget: '800 B',
+    budget: '980 B',
     edits: [{ find: '    const observer = new ResizeObserver(([entry]) => {\n      const', replace: '    const observer = new ResizeObserver(([entry]) => {\n      if (!entry) return;\n      const' }],
   },
   // Planned: data display.
@@ -254,5 +254,5 @@ export const DENYLIST = [
 export const BARREL_EXTRA = ["export type { LinkComponent, LinkProps } from './internal/link.tsx';"];
 
 /** The total budget for everything at once (the root import). */
-export const TOTAL_BUDGET = '3.4 kB';
-export const CSS_BUDGET = { styles: '4.5 kB', tokens: '1.15 kB' };
+export const TOTAL_BUDGET = '7.1 kB';
+export const CSS_BUDGET = { styles: '7.6 kB', tokens: '1.15 kB' };

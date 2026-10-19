@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="400" viewBox="0 0 1280 400" role="img" aria-label="Punji UI: calm, accessible React components">
+  <defs>
+    <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#ffffff" fill-opacity="0.05"/></pattern>
+    <clipPath id="frame"><rect width="1280" height="400" rx="28"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame)" font-family="Geist, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+    <rect width="1280" height="400" fill="#0d0e10"/>
+    <rect width="1280" height="400" fill="url(#dots)"/>
+    <g transform="translate(72,70) scale(0.62)"><path fill="#C8F23D" fill-rule="evenodd" d="M21.0 0.0H42.0V21.0A21 21 0 0 1 21.0 42.0A21 21 0 0 1 11.0 39.47V58.5H0.0V21.0A21 21 0 0 1 21.0 0.0ZM21.0 11.0H31.0V21.0A10 10 0 0 1 21.0 31.0A10 10 0 0 1 11.0 21.0A10 10 0 0 1 21.0 11.0Z"/><path fill="#C8F23D" fill-rule="evenodd" d="M47.5 0H58.5V21A10 10 0 0 0 78.5 21V0H89.5V42H78.5V39.47A21 21 0 0 1 47.5 21Z"/><path fill="#C8F23D" fill-rule="evenodd" transform="rotate(180 117.5 21)" d="M96.5 0H107.5V21A10 10 0 0 0 127.5 21V0H138.5V42H127.5V39.47A21 21 0 0 1 96.5 21Z"/><path fill="#C8F23D" fill-rule="evenodd" d="M146.5 0H157.5V43.5A15 15 0 0 1 142.5 58.5H139.5V47.5H142.5A4 4 0 0 0 146.5 43.5Z"/><circle cx="152.00" cy="-10.50" r="6.38" fill="#C8F23D"/><path fill="#C8F23D" fill-rule="evenodd" d="M165.5 0H176.5V42H165.5Z"/><circle cx="171.00" cy="-14.50" r="6.38" fill="#C8F23D"/></g>
+    <rect x="194" y="66" width="46" height="28" rx="8" fill="#c8f23d"/>
+    <text x="217" y="86" text-anchor="middle" font-size="16" font-weight="700" fill="#0d0e10">UI</text>
+    <text x="72" y="172" font-size="46" font-weight="650" letter-spacing="-1.2" fill="#f3f4f1">Calm, accessible</text>
+    <text x="72" y="224" font-size="46" font-weight="650" letter-spacing="-1.2" fill="#f3f4f1">React components.</text>
+    <text x="72" y="264" font-size="19" fill="#a3a8ae">Themed with CSS variables · light and dark · first-class Devanagari</text>
+    <rect x="72" y="290" width="156" height="32" rx="16" fill="#1f2226" stroke="#2a2e33"/><text x="150" y="311" text-anchor="middle" font-size="14" font-weight="500" fill="#a3a8ae">WAI-ARIA patterns</text><rect x="237.7" y="290" width="220" height="32" rx="16" fill="#1f2226" stroke="#2a2e33"/><text x="348" y="311" text-anchor="middle" font-size="14" font-weight="500" fill="#a3a8ae">Zero runtime dependencies</text><rect x="468.2" y="290" width="42" height="32" rx="16" fill="#1f2226" stroke="#2a2e33"/><text x="489" y="311" text-anchor="middle" font-size="14" font-weight="500" fill="#a3a8ae">MIT</text>
+    <!-- the component card -->
+    <rect x="784" y="56" width="424" height="290" rx="22" fill="#17191c" stroke="#2a2e33"/>
+    <text x="812" y="98" font-size="17" font-weight="600" fill="#f3f4f1">Visitors</text>
+    <rect x="1010" y="76" width="172" height="34" rx="10" fill="#1f2226"/>
+    <rect x="1066" y="79" width="58" height="28" rx="8" fill="#c8f23d"/>
+    <text x="1038" y="98" text-anchor="middle" font-size="13" font-weight="500" fill="#a3a8ae">Day</text>
+    <text x="1095" y="98" text-anchor="middle" font-size="13" font-weight="600" fill="#0d0e10">Week</text>
+    <text x="1153" y="98" text-anchor="middle" font-size="13" font-weight="500" fill="#a3a8ae">Month</text>
+    <text x="812" y="156" font-size="40" font-weight="600" letter-spacing="-1" fill="#f3f4f1">12,480</text>
+    <text x="960" y="156" font-size="15" font-weight="600" fill="#c8f23d">▲ 8.4%</text>
+    <path d="M812,228 L812.0,228.0 L829.8,220.7 L847.6,224.4 L865.5,211.1 L883.3,214.7 L901.1,203.8 L918.9,207.4 L936.7,197.7 L954.5,201.4 L972.4,188.1 L990.2,191.7 L1008.0,182.0 L1008,228 Z" fill="rgba(200,242,61,0.14)"/>
+    <polyline points="812.0,228.0 829.8,220.7 847.6,224.4 865.5,211.1 883.3,214.7 901.1,203.8 918.9,207.4 936.7,197.7 954.5,201.4 972.4,188.1 990.2,191.7 1008.0,182.0" fill="none" stroke="#c8f23d" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="1008" cy="182.0" r="4.5" fill="#c8f23d"/>
+    <!-- a field with Devanagari -->
+    <text x="1036" y="178" font-size="12" fill="#8a8f96">नाम · Name</text>
+    <rect x="1036" y="186" width="146" height="40" rx="10" fill="#0d0e10" stroke="#2a2e33"/>
+    <text x="1050" y="212" font-size="15" fill="#f3f4f1">सीता शर्मा</text>
+    <!-- switch -->
+    <text x="812" y="272" font-size="14" fill="#a3a8ae">Email me a weekly summary</text>
+    <rect x="1134" y="256" width="48" height="26" rx="13" fill="#c8f23d"/>
+    <circle cx="1169" cy="269" r="10" fill="#0d0e10"/>
+    <!-- buttons -->
+    <rect x="1040" y="296" width="142" height="36" rx="10" fill="#c8f23d"/>
+    <text x="1111" y="319" text-anchor="middle" font-size="14" font-weight="600" fill="#0d0e10">Save changes</text>
+    <rect x="942" y="296" width="88" height="36" rx="10" fill="none" stroke="#2a2e33"/>
+    <text x="986" y="319" text-anchor="middle" font-size="14" font-weight="500" fill="#f3f4f1">Cancel</text>
+    <!-- toast -->
+    <rect x="726" y="300" width="198" height="46" rx="14" fill="#f3f4ef"/>
+    <circle cx="750" cy="323" r="9" fill="#c8f23d"/>
+    <path d="M745.5 323 l3 3 l5.5 -6" fill="none" stroke="#0d0e10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="768" y="328" font-size="14" font-weight="600" fill="#121314">Saved</text>
+    <text x="868" y="328" font-size="14" font-weight="600" fill="#121314" text-decoration="underline">Undo</text>
+    
+  </g>
+</svg>

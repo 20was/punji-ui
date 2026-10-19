@@ -1,17 +1,9 @@
-<p align="center">
-  <a href="https://design.punji.app">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset=".github/assets/punji-wordmark-dark.svg">
-      <img alt="Punji" src=".github/assets/punji-wordmark-light.svg" height="56">
-    </picture>
-  </a>
-</p>
-
-<h1 align="center">Punji UI</h1>
-
-<p align="center">
-  Accessible React components that stay small, follow the WAI-ARIA patterns and theme with plain CSS variables.
-</p>
+<a href="https://design.punji.app">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/assets/punji-ui-banner-dark.svg">
+    <img alt="Punji UI: calm, accessible React components. Themed with CSS variables, light and dark, first-class Devanagari." src=".github/assets/punji-ui-banner-light.svg" width="100%">
+  </picture>
+</a>
 
 <p align="center">
   <a href="https://github.com/20was/punji-ui/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/20was/punji-ui/actions/workflows/ci.yml/badge.svg?branch=main"></a>

@@ -322,10 +322,11 @@ function write(rel, text) {
   let before = null;
   try {
     before = readFileSync(p, 'utf8');
-  } catch {
-    /* a new file */
+  } catch (e) {
+    if (e.code !== 'ENOENT') throw e;
   }
-  if (before !== text) writeFileSync(p, text);
+  if (before === text) return;
+  writeFileSync(p, text);
 }
 
 function main() {

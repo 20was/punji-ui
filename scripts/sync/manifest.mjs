@@ -74,15 +74,15 @@ export const MODULES = {
   'Tabs.tsx': { status: 'ship', budget: '750 B' },
   'format.ts': {
     status: 'adapt',
-    reason: 'Types (noUncheckedIndexedAccess: the list lookups say what an empty slot means, never reached) and the number pattern in parseNumber, rewritten without backtracking (same numbers accepted).',
+    reason: 'Types (noUncheckedIndexedAccess: the list lookups say what an empty slot means, never reached) and the parseNumber pattern, linear and capped at 64 characters (the same fix is landing in Punji).',
     budget: '1 kB',
     edits: [
       { find: 'return values[(i + 1 + n) % n];', replace: 'return values[(i + 1 + n) % n] ?? null;' },
       { find: 'return values[(i - 1 + n) % n];', replace: 'return values[(i - 1 + n) % n] ?? null;' },
       { find: "if (key === 'Home') return values[0];", replace: "if (key === 'Home') return values[0] ?? null;" },
       { find: "if (key === 'End') return values[n - 1];", replace: "if (key === 'End') return values[n - 1] ?? null;" },
-      // The same numbers, written without the ambiguous `\d*\.?\d+` (CodeQL js/polynomial-redos).
-      { find: "if (!/^-?\\d*\\.?\\d+$|^-?\\d+\\.?$/.test(s)) return Number.NaN;", replace: "if (!/^-?(?:\\d+\\.?\\d*|\\.\\d+)$/.test(s)) return Number.NaN;" },
+      // The same numbers, linear and length-capped (CodeQL js/polynomial-redos); the same fix is landing in Punji, then this edit goes.
+      { find: "if (!/^-?\\d*\\.?\\d+$|^-?\\d+\\.?$/.test(s)) return Number.NaN;", replace: "if (s.length > 64 || !/^-?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$/.test(s)) return Number.NaN;" },
     ],
   },
 

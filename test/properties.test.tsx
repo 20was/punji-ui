@@ -184,4 +184,22 @@ describe('parseNumber, against the pattern it replaced', () => {
       { numRuns: 2000 },
     );
   });
+
+  it('reads back any finite number written as a plain decimal', () => {
+    fc.assert(
+      fc.property(fc.double({ min: -1e15, max: 1e15, noNaN: true, noDefaultInfinity: true }), (n) => {
+        const s = String(n);
+        fc.pre(!/e/i.test(s));
+        expect(parseNumber(s)).toBe(n === 0 ? 0 : n);
+      }),
+    );
+  });
+
+  it('answers at once for a very long input, valid-looking or not', () => {
+    for (const s of ['9'.repeat(10_000), `${'9'.repeat(10_000)}!`]) {
+      const t0 = performance.now();
+      expect(Number.isNaN(parseNumber(s))).toBe(true);
+      expect(performance.now() - t0).toBeLessThan(20);
+    }
+  });
 });

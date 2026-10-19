@@ -151,6 +151,7 @@ export const MODULES = {
     ],
   },
   'Stats.tsx': { status: 'ship', budget: '400 B' },
+  'LockedNote.tsx': { status: 'ship', budget: '450 B' },
   'Figures.tsx': {
     status: 'adapt',
     reason: 'Comment only: names where the grouping helpers come from in this package.',
@@ -158,18 +159,7 @@ export const MODULES = {
     edits: [{ find: 'en-IN grouping from lib/format.', replace: 'en-IN grouping (lakh and crore).' }],
   },
   'LiveFigure.tsx': { status: 'ship', budget: '1.35 kB' },
-  'live.ts': {
-    status: 'adapt',
-    reason: 'tweenAt never returns -0 (a figure would print it as "-0.00"); dropped once punji-web#244 lands.',
-    budget: '900 B',
-    edits: [
-      {
-        find: '  if (p >= 1) return to;\n  return from + (to - from) * easeOut(p);\n',
-        replace: '  // Never -0: a figure would print it as "-0.00".\n  const v = p >= 1 ? to : from + (to - from) * easeOut(p);\n  return v === 0 ? 0 : v;\n',
-        upstream: 'punji-web#244',
-      },
-    ],
-  },
+  'live.ts': { status: 'ship', budget: '900 B' },
   'compact.ts': {
     status: 'adapt',
     reason: 'Comment only: the bundle it names is Punji\'s.',

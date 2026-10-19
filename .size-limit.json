@@ -1,36 +1,99 @@
 [
   {
-    "name": "Button (import { Button } from '@punji/ui')",
-    "path": "dist/index.js",
-    "import": "{ Button }",
-    "limit": "1 kB",
+    "name": "button (import from '@punji/ui/button')",
+    "path": "dist/button/Button.js",
+    "import": "*",
+    "limit": "640 B",
     "gzip": true
   },
   {
-    "name": "SegmentedControl (import { SegmentedControl } from '@punji/ui')",
-    "path": "dist/index.js",
-    "import": "{ SegmentedControl }",
+    "name": "card (import from '@punji/ui/card')",
+    "path": "dist/card/Card.js",
+    "import": "*",
+    "limit": "420 B",
+    "gzip": true
+  },
+  {
+    "name": "checkbox (import from '@punji/ui/checkbox')",
+    "path": "dist/checkbox/Checkbox.js",
+    "import": "*",
+    "limit": "400 B",
+    "gzip": true
+  },
+  {
+    "name": "choice-group (import from '@punji/ui/choice-group')",
+    "path": "dist/choice-group/ChoiceGroup.js",
+    "import": "*",
+    "limit": "430 B",
+    "gzip": true
+  },
+  {
+    "name": "controls (import from '@punji/ui/controls')",
+    "path": "dist/controls/Controls.js",
+    "import": "*",
     "limit": "1.2 kB",
+    "gzip": true
+  },
+  {
+    "name": "select (import from '@punji/ui/select')",
+    "path": "dist/select/Select.js",
+    "import": "*",
+    "limit": "750 B",
+    "gzip": true
+  },
+  {
+    "name": "show-more (import from '@punji/ui/show-more')",
+    "path": "dist/show-more/ShowMore.js",
+    "import": "*",
+    "limit": "460 B",
+    "gzip": true
+  },
+  {
+    "name": "status-pill (import from '@punji/ui/status-pill')",
+    "path": "dist/status-pill/StatusPill.js",
+    "import": "*",
+    "limit": "470 B",
+    "gzip": true
+  },
+  {
+    "name": "switch (import from '@punji/ui/switch')",
+    "path": "dist/switch/Switch.js",
+    "import": "*",
+    "limit": "400 B",
+    "gzip": true
+  },
+  {
+    "name": "tabs (import from '@punji/ui/tabs')",
+    "path": "dist/tabs/Tabs.js",
+    "import": "*",
+    "limit": "750 B",
+    "gzip": true
+  },
+  {
+    "name": "format (import from '@punji/ui/format')",
+    "path": "dist/format/format.js",
+    "import": "*",
+    "limit": "1 kB",
     "gzip": true
   },
   {
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "2 kB",
+    "limit": "3.4 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "3 kB",
+    "limit": "4.5 kB",
     "rolldown": false,
     "gzip": true
   },
   {
     "name": "tokens.css",
     "path": "dist/tokens.css",
-    "limit": "1.5 kB",
+    "limit": "1.15 kB",
     "rolldown": false,
     "gzip": true
   }

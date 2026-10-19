@@ -35,9 +35,45 @@
       "types": "./dist/button/Button.d.ts",
       "default": "./dist/button/Button.js"
     },
-    "./segmented-control": {
-      "types": "./dist/segmented-control/SegmentedControl.d.ts",
-      "default": "./dist/segmented-control/SegmentedControl.js"
+    "./card": {
+      "types": "./dist/card/Card.d.ts",
+      "default": "./dist/card/Card.js"
+    },
+    "./checkbox": {
+      "types": "./dist/checkbox/Checkbox.d.ts",
+      "default": "./dist/checkbox/Checkbox.js"
+    },
+    "./choice-group": {
+      "types": "./dist/choice-group/ChoiceGroup.d.ts",
+      "default": "./dist/choice-group/ChoiceGroup.js"
+    },
+    "./controls": {
+      "types": "./dist/controls/Controls.d.ts",
+      "default": "./dist/controls/Controls.js"
+    },
+    "./select": {
+      "types": "./dist/select/Select.d.ts",
+      "default": "./dist/select/Select.js"
+    },
+    "./show-more": {
+      "types": "./dist/show-more/ShowMore.d.ts",
+      "default": "./dist/show-more/ShowMore.js"
+    },
+    "./status-pill": {
+      "types": "./dist/status-pill/StatusPill.d.ts",
+      "default": "./dist/status-pill/StatusPill.js"
+    },
+    "./switch": {
+      "types": "./dist/switch/Switch.d.ts",
+      "default": "./dist/switch/Switch.js"
+    },
+    "./tabs": {
+      "types": "./dist/tabs/Tabs.d.ts",
+      "default": "./dist/tabs/Tabs.js"
+    },
+    "./format": {
+      "types": "./dist/format/format.d.ts",
+      "default": "./dist/format/format.js"
     },
     "./styles.css": "./dist/styles.css",
     "./tokens.css": "./dist/tokens.css",
@@ -57,7 +93,8 @@
   },
   "scripts": {
     "build": "node scripts/clean.mjs && tsc -p tsconfig.build.json && node scripts/build-css.mjs",
-    "lint": "oxlint --max-warnings 0 --deny-warnings src test scripts && node scripts/check-css.mjs",
+    "lint": "oxlint --max-warnings 0 --deny-warnings src test scripts && node scripts/check-css.mjs && node scripts/check-source.mjs",
+    "sync": "node scripts/sync-from-web.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "size": "size-limit",

@@ -16,7 +16,8 @@
     "typescript/consistent-type-imports": "error",
     "import/no-cycle": "error",
     "import/no-default-export": "off",
-    "unicorn/prefer-node-protocol": "error"
+    "unicorn/prefer-node-protocol": "error",
+    "jsx-a11y/prefer-tag-over-role": "off"
   },
   "ignorePatterns": ["dist/**", "node_modules/**"]
 }

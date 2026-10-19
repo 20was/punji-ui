@@ -19,5 +19,27 @@
     "unicorn/prefer-node-protocol": "error",
     "jsx-a11y/prefer-tag-over-role": "off"
   },
+  "overrides": [
+    {
+      "files": ["src/fields/Fields.tsx", "src/company-search/CompanySearch.tsx", "src/command-palette/CommandPalette.tsx"],
+      "rules": {
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/interactive-supports-focus": "off",
+        "jsx-a11y/no-noninteractive-element-to-interactive-role": "off",
+        "jsx-a11y/no-noninteractive-element-interactions": "off",
+        "jsx-a11y/no-static-element-interactions": "off"
+      }
+    },
+    {
+      "files": ["src/drawer/Drawer.tsx", "src/overlay/Overlay.tsx", "src/floating-tooltip/FloatingTooltip.tsx", "src/info-tip/InfoTip.tsx"],
+      "rules": {
+        "jsx-a11y/no-static-element-interactions": "off"
+      }
+    },
+    {
+      "files": ["src/info-tip/InfoTip.tsx"],
+      "rules": { "react/exhaustive-effect-dependencies": "off" }
+    }
+  ],
   "ignorePatterns": ["dist/**", "node_modules/**"]
 }

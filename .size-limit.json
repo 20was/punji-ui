@@ -28,10 +28,80 @@
     "gzip": true
   },
   {
+    "name": "command-palette (import from '@punji/ui/command-palette')",
+    "path": "dist/command-palette/CommandPalette.js",
+    "import": "*",
+    "limit": "2.3 kB",
+    "gzip": true
+  },
+  {
+    "name": "company-search (import from '@punji/ui/company-search')",
+    "path": "dist/company-search/CompanySearch.js",
+    "import": "*",
+    "limit": "1.5 kB",
+    "gzip": true
+  },
+  {
     "name": "controls (import from '@punji/ui/controls')",
     "path": "dist/controls/Controls.js",
     "import": "*",
     "limit": "1.2 kB",
+    "gzip": true
+  },
+  {
+    "name": "drawer (import from '@punji/ui/drawer')",
+    "path": "dist/drawer/Drawer.js",
+    "import": "*",
+    "limit": "750 B",
+    "gzip": true
+  },
+  {
+    "name": "fields (import from '@punji/ui/fields')",
+    "path": "dist/fields/Fields.js",
+    "import": "*",
+    "limit": "1.6 kB",
+    "gzip": true
+  },
+  {
+    "name": "floating-tooltip (import from '@punji/ui/floating-tooltip')",
+    "path": "dist/floating-tooltip/FloatingTooltip.js",
+    "import": "*",
+    "limit": "800 B",
+    "gzip": true
+  },
+  {
+    "name": "info-tip (import from '@punji/ui/info-tip')",
+    "path": "dist/info-tip/InfoTip.js",
+    "import": "*",
+    "limit": "1.4 kB",
+    "gzip": true
+  },
+  {
+    "name": "inline-confirm (import from '@punji/ui/inline-confirm')",
+    "path": "dist/inline-confirm/InlineConfirm.js",
+    "import": "*",
+    "limit": "1 kB",
+    "gzip": true
+  },
+  {
+    "name": "list-filter (import from '@punji/ui/list-filter')",
+    "path": "dist/list-filter/ListFilter.js",
+    "import": "*",
+    "limit": "850 B",
+    "gzip": true
+  },
+  {
+    "name": "overlay (import from '@punji/ui/overlay')",
+    "path": "dist/overlay/Overlay.js",
+    "import": "*",
+    "limit": "1.3 kB",
+    "gzip": true
+  },
+  {
+    "name": "range-slider (import from '@punji/ui/range-slider')",
+    "path": "dist/range-slider/RangeSlider.js",
+    "import": "*",
+    "limit": "450 B",
     "gzip": true
   },
   {
@@ -46,6 +116,13 @@
     "path": "dist/show-more/ShowMore.js",
     "import": "*",
     "limit": "460 B",
+    "gzip": true
+  },
+  {
+    "name": "states (import from '@punji/ui/states')",
+    "path": "dist/states/States.js",
+    "import": "*",
+    "limit": "900 B",
     "gzip": true
   },
   {
@@ -67,6 +144,13 @@
     "path": "dist/tabs/Tabs.js",
     "import": "*",
     "limit": "750 B",
+    "gzip": true
+  },
+  {
+    "name": "command-keys (import from '@punji/ui/command-keys')",
+    "path": "dist/command-keys/commandKeys.js",
+    "import": "*",
+    "limit": "200 B",
     "gzip": true
   },
   {

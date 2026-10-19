@@ -86,18 +86,52 @@ export const MODULES = {
     ],
   },
 
-  // Planned: inputs and overlays.
-  'Fields.tsx': { status: 'pending', reason: 'Inputs pull request.' },
-  'CompanySearch.tsx': { status: 'pending', reason: 'Inputs pull request (a general symbol and name finder).' },
-  'ListFilter.tsx': { status: 'pending', reason: 'Inputs pull request.' },
-  'RangeSlider.tsx': { status: 'pending', reason: 'Inputs pull request.' },
-  'InlineConfirm.tsx': { status: 'pending', reason: 'Overlays pull request.' },
-  'Overlay.tsx': { status: 'pending', reason: 'Overlays pull request.' },
-  'Drawer.tsx': { status: 'pending', reason: 'Overlays pull request.' },
-  'CommandPalette.tsx': { status: 'pending', reason: 'Overlays pull request.' },
-  'commandKeys.ts': { status: 'pending', reason: 'Overlays pull request (with CommandPalette).' },
-  'InfoTip.tsx': { status: 'pending', reason: 'Overlays pull request.' },
-  'FloatingTooltip.tsx': { status: 'pending', reason: 'Overlays pull request.' },
+  // Inputs and overlays.
+  'Fields.tsx': {
+    status: 'adapt',
+    reason: 'Types only (noUncheckedIndexedAccess): a suggestion is picked only when it exists.',
+    budget: '1.6 kB',
+    edits: [
+      { find: '!(matches.length === 1 && matches[0].symbol === value.toUpperCase())', replace: '!(matches.length === 1 && matches[0]?.symbol === value.toUpperCase())' },
+      { find: '            pick(matches[active]);', replace: '            const hit = matches[active];\n            if (hit) pick(hit);' },
+    ],
+  },
+  'CompanySearch.tsx': { status: 'ship', budget: '1.5 kB' },
+  'ListFilter.tsx': { status: 'ship', budget: '850 B' },
+  'RangeSlider.tsx': { status: 'ship', budget: '450 B' },
+  'InlineConfirm.tsx': { status: 'ship', budget: '1 kB' },
+  'Overlay.tsx': {
+    status: 'adapt',
+    reason: 'Types only (noUncheckedIndexedAccess): the focus trap reads its first and last item after checking the list is not empty.',
+    budget: '1.3 kB',
+    edits: [{ find: '        const [a, z] = [items[0], items[items.length - 1]];', replace: '        const [a, z] = [items[0]!, items[items.length - 1]!];' }],
+  },
+  'Drawer.tsx': {
+    status: 'adapt',
+    reason: 'Comment only: the narrow-screen alternative it names lives in Punji.',
+    budget: '750 B',
+    edits: [{ find: ' * instead (src/me/desk/DeskChrome.tsx PushView).', replace: ' * instead.' }],
+  },
+  'CommandPalette.tsx': {
+    status: 'adapt',
+    reason: 'Types only (noUncheckedIndexedAccess): rows and actions are read where they exist.',
+    budget: '2.3 kB',
+    edits: [
+      { find: "list.current?.querySelector(`#${domId(items[active].id)}`)", replace: "list.current?.querySelector(`#${domId(items[active]!.id)}`)" },
+      { find: '    if (activeItem?.actions[next]) setSaid(labels.chosen(activeItem.actions[next].label));', replace: '    const nextAction = activeItem?.actions[next];\n    if (nextAction) setSaid(labels.chosen(nextAction.label));' },
+      { find: '      if (activeItem?.actions[activeChip]) onRun(activeItem, activeItem.actions[activeChip]);', replace: '      const action = activeItem?.actions[activeChip];\n      if (activeItem && action) onRun(activeItem, action);' },
+      { find: '(i === 0 || items[i - 1].group !== e.group)', replace: '(i === 0 || items[i - 1]!.group !== e.group)' },
+    ],
+  },
+  'commandKeys.ts': { status: 'ship', budget: '200 B' },
+  'States.tsx': { status: 'ship', budget: '900 B' },
+  'InfoTip.tsx': { status: 'ship', budget: '1.4 kB' },
+  'FloatingTooltip.tsx': {
+    status: 'adapt',
+    reason: 'Types only (noUncheckedIndexedAccess): the resize observer reads its first entry when there is one.',
+    budget: '800 B',
+    edits: [{ find: '    const observer = new ResizeObserver(([entry]) => {\n      const', replace: '    const observer = new ResizeObserver(([entry]) => {\n      if (!entry) return;\n      const' }],
+  },
   // Planned: data display.
   'Rows.tsx': { status: 'pending', reason: 'Data display pull request (needs the link adapter on ValueRow).' },
   'Stats.tsx': { status: 'pending', reason: 'Data display pull request.' },
@@ -106,7 +140,6 @@ export const MODULES = {
   'live.ts': { status: 'pending', reason: 'Data display pull request.' },
   'compact.ts': { status: 'pending', reason: 'Data display pull request.' },
   'Table.tsx': { status: 'pending', reason: 'Data display pull request.' },
-  'States.tsx': { status: 'pending', reason: 'Data display pull request.' },
   'Layout.tsx': { status: 'pending', reason: 'Data display pull request (needs the link adapter on PageHeader).' },
   'MonthGrid.tsx': { status: 'pending', reason: 'Reads a Punji data contract and a Punji helper; needs general props before it can ship.' },
 
@@ -188,6 +221,15 @@ export const KEYFRAME_OWNERS = {
   'kit-tip-in': 'floating-tooltip',
   'kit-cmd-fade': 'command-palette',
   'kit-cmd-in': 'command-palette',
+};
+
+/**
+ * Rules left out of the package, keyed by "<at-rule prelude> <selector>" (or
+ * the selector alone), with the reason.
+ */
+export const CSS_DROP = {
+  '@media (max-width: 767px) .kit-dock': "Lifts the dock over Punji's own phone tab bar; the package has no tab bar.",
+  '@media (max-width: 767px) .kit-toasts': "Lifts the toasts over Punji's own phone tab bar; the package has no tab bar.",
 };
 
 /** A selector shared by two modules is written to both. */

@@ -112,6 +112,13 @@
     "gzip": true
   },
   {
+    "name": "locked-note (import from '@punji/ui/locked-note')",
+    "path": "dist/locked-note/LockedNote.js",
+    "import": "*",
+    "limit": "450 B",
+    "gzip": true
+  },
+  {
     "name": "overlay (import from '@punji/ui/overlay')",
     "path": "dist/overlay/Overlay.js",
     "import": "*",

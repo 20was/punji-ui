@@ -11,6 +11,9 @@
  * inside used the key first (a form steps back before the drawer closes);
  * focus returns to the button that opened it. Narrow screens push a full page
  * instead.
+ *
+ * A screen inside it is a DrawerScreen (@punji/ui/drawer-screen), with its
+ * header and its footer docked at the drawer's foot.
  */
 import { useEffect, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';

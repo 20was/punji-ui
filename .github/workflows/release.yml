@@ -1,0 +1,80 @@
+# Release: on every push to main, Changesets either opens/updates the
+# "Version packages" pull request, or (when that PR has just been merged)
+# publishes to npm. Publishing uses npm Trusted Publishing (OIDC): there is no
+# NPM_TOKEN secret anywhere, and npm attaches a provenance attestation that
+# links the tarball to this workflow run and commit.
+#
+# Owner setup before the first publish: see the plan, "What the owner must do".
+# The npm Trusted Publisher must name this repository, the workflow file
+# "release.yml" and the environment "npm".
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Version PR or publish
+    if: github.repository == '20was/punji-ui'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: npm
+    permissions:
+      contents: write # version commit, git tag, GitHub release
+      pull-requests: write # open and update the "Version packages" PR
+      id-token: write # npm Trusted Publishing (OIDC) and provenance
+    steps:
+      - uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org
+          # No dependency cache on the publish path (cache poisoning).
+          package-manager-cache: false
+      - name: npm supports Trusted Publishing (needs 11.5.1 or later)
+        run: |
+          npm --version
+          node -e "const [a,b,c]=process.argv[1].split('.').map(Number); if (a<11||(a===11&&(b<5||(b===5&&c<1)))) { console.error('npm too old for OIDC'); process.exit(1) }" "$(npm --version)"
+      - name: Install (no lifecycle scripts)
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm audit signatures
+      # The version PR is opened with the workflow token, which does not
+      # trigger CI on that PR, so every gate runs again here before publishing.
+      - name: Every gate, again, before anything is published
+        run: npm run verify
+      - name: Version PR or publish
+        id: changesets
+        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        with:
+          version-script: npm run version-packages
+          publish-script: npm run release
+          commit-message: 'chore(release): version packages'
+          pr-title: 'chore(release): version packages'
+          create-github-releases: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_PROVENANCE: 'true'
+      # A CycloneDX SBOM of what the published package depends on (peer React
+      # only today), attached to the GitHub release Changesets just created.
+      - name: Attach SBOM to the GitHub release
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISHED: ${{ steps.changesets.outputs.published-packages }}
+        run: |
+          VERSION="$(jq -r '.[] | select(.name == "@punji/ui") | .version' <<< "${PUBLISHED}")"
+          npm sbom --sbom-format cyclonedx --omit dev --omit peer > "punji-ui-${VERSION}.cdx.json"
+          gh release upload "@punji/ui@${VERSION}" "punji-ui-${VERSION}.cdx.json" --repo "${GITHUB_REPOSITORY}"

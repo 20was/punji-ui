@@ -1,0 +1,30 @@
+name: Feature or component request
+description: A new component, prop or token.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem it solves
+      description: What are you building, and what is missing today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: The API you would like, or an example from a product you admire (describe it; no screenshots of other kits needed).
+    validations:
+      required: true
+  - type: input
+    id: pattern
+    attributes:
+      label: WAI-ARIA pattern
+      description: The APG pattern it follows, if you know it (https://www.w3.org/WAI/ARIA/apg/patterns/).
+  - type: checkboxes
+    id: bar
+    attributes:
+      label: The bar for new components
+      options:
+        - label: I have read "The bar for a new component" in CONTRIBUTING.md
+          required: true

@@ -1,0 +1,42 @@
+# Weekly, grouped updates: one PR for dev tooling minors and patches, one for
+# GitHub Actions (kept pinned to commit SHAs; Dependabot updates the SHA and
+# the version comment together). Security updates arrive as soon as they exist.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '04:00'
+      timezone: Asia/Kathmandu
+    open-pull-requests-limit: 5
+    versioning-strategy: increase
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      dev-tooling:
+        dependency-type: development
+        update-types: [minor, patch]
+      react:
+        patterns: [react, react-dom, '@types/react', '@types/react-dom']
+    labels: [dependencies]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '04:00'
+      timezone: Asia/Kathmandu
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: ci
+    groups:
+      actions:
+        patterns: ['*']
+    labels: [dependencies, ci]

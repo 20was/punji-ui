@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@4/schema.json",
+  "changelog": ["@changesets/changelog-github", { "repo": "20was/punji-ui" }],
+  "commit": false,
+  "access": "public",
+  "baseBranch": "main",
+  "fixed": [],
+  "linked": [],
+  "ignore": [],
+  "updateInternalDependencies": "patch"
+}

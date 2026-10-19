@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Button (import { Button } from '@punji/ui')",
+    "path": "dist/index.js",
+    "import": "{ Button }",
+    "limit": "1 kB",
+    "gzip": true
+  },
+  {
+    "name": "SegmentedControl (import { SegmentedControl } from '@punji/ui')",
+    "path": "dist/index.js",
+    "import": "{ SegmentedControl }",
+    "limit": "1.2 kB",
+    "gzip": true
+  },
+  {
+    "name": "Everything (import * from '@punji/ui')",
+    "path": "dist/index.js",
+    "import": "*",
+    "limit": "2 kB",
+    "gzip": true
+  },
+  {
+    "name": "styles.css (all tokens and components)",
+    "path": "dist/styles.css",
+    "limit": "3 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "tokens.css",
+    "path": "dist/tokens.css",
+    "limit": "1.5 kB",
+    "rolldown": false,
+    "gzip": true
+  }
+]

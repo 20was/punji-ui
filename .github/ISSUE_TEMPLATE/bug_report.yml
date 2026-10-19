@@ -1,0 +1,45 @@
+name: Bug report
+description: Something does not work as documented.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. For a security problem, do not use this form: see SECURITY.md.
+  - type: input
+    id: component
+    attributes:
+      label: Component
+      placeholder: Button, SegmentedControl, …
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what you expected
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps or a minimal reproduction
+      description: A StackBlitz or CodeSandbox link, or the smallest code that shows it.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: "@punji/ui version"
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Browser, OS and assistive technology (if any)
+      placeholder: Safari 18 on iOS 18 with VoiceOver
+  - type: checkboxes
+    id: a11y
+    attributes:
+      label: Accessibility
+      options:
+        - label: This is an accessibility problem (keyboard, screen reader, contrast, motion)

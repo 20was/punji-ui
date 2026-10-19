@@ -1,0 +1,7 @@
+# Every file: the maintainer reviews.
+* @20was
+
+# Release and supply-chain surface: always the maintainer.
+/.github/ @20was
+/package.json @20was
+/package-lock.json @20was

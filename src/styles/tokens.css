@@ -1,0 +1,81 @@
+/*
+ * Punji UI design tokens. PLACEHOLDER values copied from the in-repo kit for the
+ * pipeline proof; the generated token file arrives in the extraction PR.
+ *
+ * Theming: override any --pu-* variable on :root or on a subtree. Light and
+ * dark follow the system; force one with data-theme="light" | "dark" on any
+ * ancestor. Everything sits in cascade layers, so an app's own unlayered CSS
+ * always wins without !important.
+ */
+@layer punji.tokens {
+  :root,
+  [data-theme='light'] {
+    color-scheme: light;
+    --pu-control-sm: 32px;
+    --pu-control-md: 36px;
+    --pu-control-lg: 44px;
+    --pu-tap-min: 44px;
+    --pu-radius-control: 10px;
+    --pu-radius-full: 9999px;
+    --pu-font-body: 'Geist', 'Mukta', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --pu-text-sm: 0.875rem;
+    --pu-motion-fast: 140ms;
+    --pu-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+    --pu-color-bg: #f2f2ef;
+    --pu-color-surface: #fff;
+    --pu-color-surface-tint: #ebebe6;
+    --pu-color-card-border: transparent;
+    --pu-color-text: #111214;
+    --pu-color-text-muted: #5e5e63;
+    --pu-color-text-tertiary: #66666b;
+    --pu-color-accent: #0f6b4b;
+    --pu-color-accent-fill: #0f6b4b;
+    --pu-color-accent-fill-hover: #0b5a3f;
+    --pu-color-on-accent-fill: #fff;
+    --pu-color-loss: #bc382e;
+    --pu-color-on-loss: #fff;
+    --pu-seg-thumb: #fff;
+    --pu-seg-thumb-shadow: 0 1px 2px rgb(17 18 20 / 10%);
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark;
+    --pu-color-bg: #0a0c10;
+    --pu-color-surface: rgb(255 255 255 / 5.5%);
+    --pu-color-surface-tint: rgb(255 255 255 / 7%);
+    --pu-color-card-border: rgb(255 255 255 / 7%);
+    --pu-color-text: #f5f6f7;
+    --pu-color-text-muted: rgb(235 240 245 / 68%);
+    --pu-color-text-tertiary: rgb(235 240 245 / 58%);
+    --pu-color-accent: #4cd7a0;
+    --pu-color-accent-fill: #4cd7a0;
+    --pu-color-accent-fill-hover: #6fe0b4;
+    --pu-color-on-accent-fill: #08130e;
+    --pu-color-loss: #ff7266;
+    --pu-color-on-loss: #1c0806;
+    --pu-seg-thumb: rgb(255 255 255 / 16%);
+    --pu-seg-thumb-shadow: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      color-scheme: dark;
+      --pu-color-bg: #0a0c10;
+      --pu-color-surface: rgb(255 255 255 / 5.5%);
+      --pu-color-surface-tint: rgb(255 255 255 / 7%);
+      --pu-color-card-border: rgb(255 255 255 / 7%);
+      --pu-color-text: #f5f6f7;
+      --pu-color-text-muted: rgb(235 240 245 / 68%);
+      --pu-color-text-tertiary: rgb(235 240 245 / 58%);
+      --pu-color-accent: #4cd7a0;
+      --pu-color-accent-fill: #4cd7a0;
+      --pu-color-accent-fill-hover: #6fe0b4;
+      --pu-color-on-accent-fill: #08130e;
+      --pu-color-loss: #ff7266;
+      --pu-color-on-loss: #1c0806;
+      --pu-seg-thumb: rgb(255 255 255 / 16%);
+      --pu-seg-thumb-shadow: none;
+    }
+  }
+}

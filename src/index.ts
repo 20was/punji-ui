@@ -12,6 +12,7 @@ export { Tabs, type TabsProps } from './tabs/Tabs.tsx';
 export { Switch } from './switch/Switch.tsx';
 export { ShowMore } from './show-more/ShowMore.tsx';
 export { InlineConfirm } from './inline-confirm/InlineConfirm.tsx';
+export { LockedNote } from './locked-note/LockedNote.tsx';
 export { Checkbox } from './checkbox/Checkbox.tsx';
 export { Card, type CardProps } from './card/Card.tsx';
 export { Select, ChevronDown, type SelectOption, type SelectProps, type ControlSize } from './select/Select.tsx';

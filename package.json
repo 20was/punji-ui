@@ -95,6 +95,10 @@
       "types": "./dist/live-figure/LiveFigure.d.ts",
       "default": "./dist/live-figure/LiveFigure.js"
     },
+    "./locked-note": {
+      "types": "./dist/locked-note/LockedNote.d.ts",
+      "default": "./dist/locked-note/LockedNote.js"
+    },
     "./overlay": {
       "types": "./dist/overlay/Overlay.d.ts",
       "default": "./dist/overlay/Overlay.js"

@@ -65,7 +65,10 @@ jobs:
           pr-title: 'chore(release): version packages'
           create-github-releases: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # The version PR is opened with the single-repo PR token (punji-ui only,
+          # contents + pull requests): a PR pushed with the workflow's own token
+          # never starts CI, so the required "CI OK" check would never run on it.
+          GITHUB_TOKEN: ${{ secrets.PUNJI_UI_PR_TOKEN }}
           NPM_CONFIG_PROVENANCE: 'true'
       # A CycloneDX SBOM of what the published package depends on (peer React
       # only today), attached to the GitHub release Changesets just created.

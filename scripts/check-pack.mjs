@@ -3,9 +3,9 @@
 // dotfiles, and an upper bound on the unpacked size.
 import { execFileSync } from 'node:child_process';
 
-// The whole kit (31 modules: JS, types with their docs, styles.css and the
-// per-module sheets) is 233 kB unpacked; the budget is that plus headroom.
-const MAX_UNPACKED = 260 * 1024;
+// The whole kit (38 modules: JS, types with their docs, styles.css and the
+// per-module sheets) is 300 kB unpacked; the budget is that plus headroom.
+const MAX_UNPACKED = 320 * 1024;
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
 const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md']);
 const allowed = (p) => always.has(p) || /^dist\/.+\.(js|d\.ts|css)$/.test(p);

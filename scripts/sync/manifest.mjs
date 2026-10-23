@@ -325,6 +325,8 @@ export const MODULES = {
   'comboStep.ts': { status: 'ship', reason: 'Pure state transitions required by CompanySearch; accepts caller-provided identifiers and has no product imports.', budget: '950 B' },
   'levelsMath.ts': { status: 'pending', reason: 'Pure chart arithmetic; release with PriceLevelChart after numeric property tests and a size budget.' },
 
+  'StatusNotice.tsx': { status: 'pending', reason: 'Uses a Punji-specific dismissal storage key; needs configurable storage, SSR-safe dismissal, a required dismiss label and extraction of the status stylesheet.' },
+
   // Stays in Punji.
   'AppTabBar.tsx': { status: 'web-only', reason: "Punji's own phone navigation: its hosts, routes and sections." },
   'tabRoutes.ts': { status: 'web-only', reason: "Punji's tab addresses, cookies and session keys." },

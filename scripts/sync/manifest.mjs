@@ -24,18 +24,18 @@ const LINK_IMPORT = "import type { LinkComponent } from '../internal/link.tsx';\
 export const MODULES = {
   'Button.tsx': {
     status: 'adapt',
-    reason: 'No router dependency: `href` renders <a>, or the `linkComponent` you pass (a router link) for in-app paths.',
+    reason: 'Preserve package link semantics: plain <a> or linkComponent for in-app paths; no router or forced new tab.',
     budget: '640 B',
     edits: [
       { find: "import { Link } from 'react-router-dom';\n", replace: LINK_IMPORT },
       {
-        find: '  /** Renders a link styled as a button. Absolute URLs become <a>. */\n  href?: string;\n',
+        find: "  /** Renders a link styled as a button. An absolute URL is another site: an <a> that opens a new tab (rel noopener), with a \u2197 after the label (kit.css); the caller adds the new-tab words for a screen reader (a kit-sr span). */\n  href?: string;\n",
         replace:
           '  /** Renders a link styled as a button: a plain <a>, or `linkComponent` for an in-app path. Absolute URLs are always a plain <a>. */\n  href?: string;\n  /** The link element for an in-app `href` (wrap your router\'s link; it receives `href`). Default: a plain <a>. */\n  linkComponent?: LinkComponent;\n',
       },
       { find: 'iconOnly, label, href, testId,', replace: 'iconOnly, label, href, linkComponent, testId,' },
       {
-        find: '    return /^https?:/.test(href) ? (\n      <a className={cls} href={href} aria-label={name} data-testid={testId}>{body}</a>\n    ) : (\n      <Link className={cls} to={href} aria-label={name} data-testid={testId}>{body}</Link>\n    );\n',
+        find: "    return /^https?:/.test(href) ? (\n      <a className={cls} href={href} target=\"_blank\" rel=\"noopener noreferrer\" aria-label={name} data-testid={testId}>\n        {body}\n      </a>\n    ) : (\n      <Link className={cls} to={href} aria-label={name} data-testid={testId}>{body}</Link>\n    );\n",
         replace:
           "    const L = linkComponent && !/^https?:/.test(href) ? linkComponent : 'a';\n    return (\n      <L className={cls} href={href} aria-label={name} data-testid={testId}>{body}</L>\n    );\n",
       },
@@ -93,13 +93,22 @@ export const MODULES = {
   'Fields.tsx': {
     status: 'adapt',
     reason: 'Types only (noUncheckedIndexedAccess): a suggestion is picked only when it exists.',
-    budget: '2.05 kB',
+    budget: '2.2 kB',
     edits: [
       { find: '!(matches.length === 1 && matches[0].symbol === value.toUpperCase())', replace: '!(matches.length === 1 && matches[0]?.symbol === value.toUpperCase())' },
       { find: '            pick(matches[active]);', replace: '            const hit = matches[active];\n            if (hit) pick(hit);' },
     ],
   },
-  'CompanySearch.tsx': { status: 'ship', budget: '1.7 kB' },
+  'CompanySearch.tsx': {
+    status: 'adapt',
+    reason: 'Rename the inner live flag so the extracted keyboard state ref is not shadowed (upstream request documented).',
+    budget: '3.05 kB',
+    edits: [
+      { find: '    const live = inSheet || !sheet;', replace: '    const inputLive = inSheet || !sheet;', upstream: 'CompanySearch: avoid shadowing the keyboard state ref' },
+      { find: 'shown && live}', replace: 'shown && inputLive}', upstream: 'CompanySearch: avoid shadowing the keyboard state ref' },
+      { find: 'active >= 0 && live ?', replace: 'active >= 0 && inputLive ?', upstream: 'CompanySearch: avoid shadowing the keyboard state ref' },
+    ],
+  },
   'ListFilter.tsx': { status: 'ship', budget: '1.1 kB' },
   'RangeSlider.tsx': { status: 'ship', budget: '550 B' },
   'InlineConfirm.tsx': { status: 'ship', budget: '1.05 kB' },
@@ -162,9 +171,13 @@ export const MODULES = {
   'live.ts': { status: 'ship', budget: '900 B' },
   'compact.ts': {
     status: 'adapt',
-    reason: 'Comment only: the bundle it names is Punji\'s.',
+    reason: 'Keep standalone formatting with the existing Rs prefix; do not import product reader-language state.',
     budget: '540 B',
-    edits: [{ find: " * barrel: only the portfolio page uses it, and the shell's first load\n * (me.html) should not carry it.", replace: ' * barrel, so an app that does not draw it does not load it.' }],
+    edits: [
+      { find: " * barrel: only the portfolio page uses it, and the shell's first load\n * (me.html) should not carry it.", replace: ' * barrel, so an app that does not draw it does not load it.' },
+      { find: "import { rsMark } from '../../lib/readerLang';\n", replace: '' },
+      { find: '  const mark = rsMark();', replace: "  const mark = 'Rs';" },
+    ],
   },
   'Table.tsx': {
     status: 'adapt',
@@ -309,7 +322,7 @@ export const MODULES = {
   'ProductShot.tsx': { status: 'pending', reason: 'General screenshot and caption props; needs landing stylesheet extraction and accessible theme-image review.' },
   'ProfileRail.tsx': { status: 'pending', reason: 'General row quantities; depends on pending PriceLevelChart types, levelsMath and levels stylesheet extraction.' },
   'RowMenu.tsx': { status: 'pending', reason: 'General action slots; depends on pending MenuList and needs responsive menu/dialog keyboard and focus tests.' },
-  'comboStep.ts': { status: 'pending', reason: 'Pure search state helper; needs symbol-neutral API review and coordinated release with its CompanySearch consumer.' },
+  'comboStep.ts': { status: 'ship', reason: 'Pure state transitions required by CompanySearch; accepts caller-provided identifiers and has no product imports.', budget: '950 B' },
   'levelsMath.ts': { status: 'pending', reason: 'Pure chart arithmetic; release with PriceLevelChart after numeric property tests and a size budget.' },
 
   // Stays in Punji.
@@ -332,7 +345,8 @@ export const EXTERNAL = {
     names: {
       fixed: '6bb1364a4f1048ea93b3dfc74c1939ce8bd86528715ddb791d34b36806967fcc',
       int: '8fc627b9fab2d8d53da3becb695909c7aef72a31c2dafe94bb598a00f4842844',
-      rs: 'eef76c03231b05895277e8b8d9491f61de7dd1b22546b747a3ffb7adddae3bdf',
+      // Reviewed: upstream now reads its product language; internal/number keeps the package's stable Rs prefix.
+      rs: '1f22a78f8b4b4dc08038bdb411a6242e4c62e5714c78b1f92007388e8861f227',
     },
   },
 };
@@ -375,7 +389,7 @@ export const CSS_OWNERS = {
   'live-figure': [/^kit-live(-up|-dn)?$/],
   table: [/^kit-table(box)?$/],
   states: [/^kit-(empty|note|note-mark|tone-ico|skel|skel-text)$/],
-  fields: [/^kit-(field|options)$/],
+  fields: [/^kit-(field|field-suffix|options)$/],
   overlay: [/^kit-(dock|sheet|sheet-back|toasts?)$/],
   'company-search': [/^kit-cs(-.+)?$/],
   'list-filter': [/^kit-lf(-.+)?$/],
@@ -387,6 +401,8 @@ export const CSS_OWNERS = {
   'status-tag': [/^kit-tag$/],
   'drawer-screen': [/^kit-drawer-(acts|body|foot|head|note|screen|x)$/],
   popover: [/^kit-pop(-at)?$/],
+  'card-link': [/^kit-(cardlink|ext)$/],
+  'alert-panel': [/^kit-apanel-sheet$/],
   // Pending modules: their rules are owned (so a new class is a decision) but not written until they ship.
   'danger-confirm': [/^kit-dconfirm(-[bt])?$/],
   'inbox-list': [/^kit-(inbox|inbox-.+|ing|ing-h|inrow|inrow-.+)$/],
@@ -440,5 +456,5 @@ export const DENYLIST = [
 export const BARREL_EXTRA = ["export type { LinkComponent, LinkProps } from './internal/link.tsx';"];
 
 /** The total budget for everything at once (the root import). */
-export const TOTAL_BUDGET = '10.2 kB';
-export const CSS_BUDGET = { styles: '11.2 kB', tokens: '1.15 kB' };
+export const TOTAL_BUDGET = '11.5 kB';
+export const CSS_BUDGET = { styles: '11.8 kB', tokens: '1.15 kB' };

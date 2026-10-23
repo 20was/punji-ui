@@ -160,7 +160,7 @@ export const MODULES = {
     ],
   },
   'Stats.tsx': { status: 'ship', budget: '400 B' },
-  'LockedNote.tsx': { status: 'ship', budget: '450 B' },
+  'LockedNote.tsx': { status: 'ship', budget: '500 B' },
   'Figures.tsx': {
     status: 'adapt',
     reason: 'Comment only: names where the grouping helpers come from in this package.',

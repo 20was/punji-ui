@@ -1,6 +1,8 @@
+import * as fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
 
-import { formatFigure, parseNumber, searchSymbols, segmentTarget, toneOf } from '../src/index.ts';
+import { formatFigure, parseNumber, searchSymbols, segmentTarget, shortCompanyName, toneOf } from '../src/index.ts';
+import { NUM_RUNS } from './fc.ts';
 
 describe('formatFigure', () => {
   it('formats each kind with lakh and crore grouping', () => {
@@ -73,5 +75,41 @@ describe('segmentTarget', () => {
     expect(segmentTarget(v, '20', 'End')).toBe('90');
     expect(segmentTarget(v, '20', 'Enter')).toBeNull();
     expect(segmentTarget([], '20', 'ArrowRight')).toBeNull();
+  });
+});
+
+
+describe('shortCompanyName', () => {
+  const suffixes = ['company limited', 'co ltd', 'co ltd.', 'co, ltd', 'co, ltd.', 'co. ltd', 'co. ltd.', 'co., ltd', 'co., ltd.', 'limited', 'ltd', 'ltd.'];
+
+  it('removes only a terminal legal suffix with a preceding whitespace character', () => {
+    expect(shortCompanyName('Alpha Company Limited')).toBe('Alpha');
+    expect(shortCompanyName('  Alpha   LIMITED')).toBe('Alpha');
+    expect(shortCompanyName('Alpha\tLtd.')).toBe('Alpha');
+    expect(shortCompanyName('Limited')).toBe('Limited');
+    expect(shortCompanyName('AlphaLimited')).toBe('AlphaLimited');
+    expect(shortCompanyName('Alpha Limited Studio')).toBe('Alpha Limited Studio');
+    expect(shortCompanyName(' Alpha Ltd. ')).toBe('Alpha Ltd.');
+    expect(shortCompanyName('')).toBe('');
+  });
+
+  it('preserves suffix trimming across arbitrary prefixes, casing and whitespace runs', () => {
+    fc.assert(fc.property(
+      fc.string({ maxLength: 80 }),
+      fc.constantFrom(...suffixes),
+      fc.array(fc.constantFrom(' ', '\t', '\n', '\r', '\u00a0', '\u2003', '\ufeff'), { minLength: 1, maxLength: 100 }),
+      fc.boolean(),
+      (prefix, suffix, whitespace, upper) => {
+        const name = `${prefix}!${whitespace.join('')}${upper ? suffix.toUpperCase() : suffix}`;
+        expect(shortCompanyName(name)).toBe(`${prefix}!`.trim());
+      },
+    ), { numRuns: NUM_RUNS });
+  });
+
+  it('handles long matching and nonmatching whitespace inputs', () => {
+    const spaces = ' '.repeat(1_000_000);
+    expect(shortCompanyName(`${spaces}Studio`)).toBe('Studio');
+    expect(shortCompanyName(`Alpha${spaces}Ltd.`)).toBe('Alpha');
+    expect(shortCompanyName(spaces)).toBe('');
   });
 });

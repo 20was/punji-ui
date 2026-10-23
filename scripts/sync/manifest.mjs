@@ -79,9 +79,14 @@ export const MODULES = {
   'Tabs.tsx': { status: 'ship', budget: '820 B' },
   'format.ts': {
     status: 'adapt',
-    reason: 'Types only: this package type-checks with noUncheckedIndexedAccess, so the list lookups say what an empty slot means (never reached: the list is not empty there).',
+    reason: 'Bound suffix whitespace matching to avoid polynomial backtracking; retain strict indexed-access guards for list lookups.',
     budget: '1 kB',
     edits: [
+      {
+        find: "  return name.replace(/\\s+(company limited|co\\.?,? ltd\\.?|limited|ltd\\.?)$/i, '').trim();",
+        replace: "  return name.replace(/\\s(company limited|co\\.?,? ltd\\.?|limited|ltd\\.?)$/i, '').trim();",
+        upstream: 'shortCompanyName: bound suffix whitespace matching to avoid polynomial backtracking',
+      },
       { find: 'return values[(i + 1 + n) % n];', replace: 'return values[(i + 1 + n) % n] ?? null;' },
       { find: 'return values[(i - 1 + n) % n];', replace: 'return values[(i - 1 + n) % n] ?? null;' },
       { find: "if (key === 'Home') return values[0];", replace: "if (key === 'Home') return values[0] ?? null;" },

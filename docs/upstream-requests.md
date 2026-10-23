@@ -11,3 +11,7 @@ The package intentionally keeps the stable `Rs` prefix and `en-IN` grouping in i
 ## StatusNotice: general and SSR-safe dismissal
 
 Expose a configurable dismissal storage key instead of the product key. Read session storage after hydration so the server and initial client markup agree, and require a nonempty dismiss button label when dismissal is enabled. Keep this module pending until these changes and extraction of its status stylesheet are ready.
+
+## shortCompanyName: linear suffix matching (CodeQL)
+
+In the suffix-removal regex, replace the leading `\s+` with a single `\s`. The variable-length whitespace prefix can backtrack quadratically on long whitespace runs when no suffix matches. One whitespace character is sufficient because the existing final `.trim()` removes all remaining surrounding whitespace, preserving the result. The manifest carries this adapter until the source is fixed. Regression tests cover case variants, punctuation, Unicode whitespace, suffix boundaries, and long matching and nonmatching inputs.

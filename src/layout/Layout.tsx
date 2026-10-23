@@ -30,19 +30,33 @@ interface HeaderProps {
   backLabel?: string;
   meta?: ReactNode;
   actions?: ReactNode;
+  /** A small label over the title: the page's group ("Research"). */
+  eyebrow?: ReactNode;
+  /** A tool page's header: a smaller title, so the tool is in the first screen. */
+  compact?: boolean;
+  /** Beside the title: what the page's figures are as of (a StatusPill: "After the 19 Oct close"). */
+  stamp?: ReactNode;
   testId?: string;
 }
 
-export function PageHeader({ title, backTo, linkComponent, backLabel = 'Back', meta, actions, testId }: HeaderProps) {
+export function PageHeader({ title, backTo, linkComponent, backLabel = 'Back', meta, actions, eyebrow, compact, stamp, testId }: HeaderProps) {
   const L = linkComponent ?? 'a';
   return (
-    <header className={`kit-header${backTo ? '' : ' no-back'}`} data-testid={testId}>
+    <header className={`kit-header${backTo ? '' : ' no-back'}${compact ? ' compact' : ''}${eyebrow ? ' has-eyebrow' : ''}`} data-testid={testId}>
+      {eyebrow && <p className="kit-header-k">{eyebrow}</p>}
       {backTo && (
         <L className="kit-circle kit-back" href={backTo} aria-label={backLabel} data-testid="back-button">
           <ChevronLeft />
         </L>
       )}
-      <h1>{title}</h1>
+      {stamp ? (
+        <div className="kit-header-title">
+          <h1>{title}</h1>
+          {stamp}
+        </div>
+      ) : (
+        <h1>{title}</h1>
+      )}
       {actions && <div className="kit-header-actions">{actions}</div>}
       {meta && <div className="kit-header-meta">{meta}</div>}
     </header>
@@ -50,10 +64,11 @@ export function PageHeader({ title, backTo, linkComponent, backLabel = 'Back', m
 }
 
 /** Section title + one action, as the app's ListSectionHeader. */
-export function ListSectionHeader({ title, detail, action, id }: { title: ReactNode; detail?: ReactNode; action?: ReactNode; id?: string }) {
+export function ListSectionHeader({ title, detail, action, id, caption, size, level = 2 }: { title: ReactNode; detail?: ReactNode; action?: ReactNode; id?: string; /** A small capitalised caption over a group of rows inside a card. */ caption?: boolean; /** sm: a quiet sub-heading inside a card ("Family you track"). */ size?: 'sm'; level?: 2 | 3 }) {
+  const H = level === 3 ? 'h3' : 'h2';
   return (
-    <div className="kit-section-h">
-      <h2 id={id}>{title}</h2>
+    <div className={`kit-section-h${caption ? ' caption' : ''}${size === 'sm' ? ' sm' : ''}`}>
+      <H id={id}>{title}</H>
       {action ?? (detail && <span className="detail">{detail}</span>)}
     </div>
   );

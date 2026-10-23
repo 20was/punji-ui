@@ -22,6 +22,7 @@ export function Delta({
   dp = 2,
   arrow = true,
   words = EN_WORDS,
+  size,
   testId,
 }: {
   value: number | null | undefined;
@@ -29,6 +30,8 @@ export function Delta({
   dp?: number;
   arrow?: boolean;
   words?: DeltaWords;
+  /** sm: the 12px line under a price in a table row. */
+  size?: 'sm';
   testId?: string;
 }) {
   if (!isNum(value)) return <span className="kit-fig kit-flat" data-testid={testId}>-</span>;
@@ -37,7 +40,7 @@ export function Delta({
   const body = kind === 'rs' ? rs(abs) : kind === 'pct' ? `${fixed(abs, dp)}%` : fixed(abs, dp);
   const sign = tone === 'up' ? '+' : tone === 'down' ? '−' : '';
   return (
-    <span className={`kit-fig ${tone === 'up' ? 'kit-up' : tone === 'down' ? 'kit-dn' : 'kit-flat'}`} data-testid={testId}>
+    <span className={`kit-fig ${tone === 'up' ? 'kit-up' : tone === 'down' ? 'kit-dn' : 'kit-flat'}${size === 'sm' ? ' sm' : ''}`} data-testid={testId}>
       {arrow && tone !== 'flat' && <span aria-hidden="true">{tone === 'up' ? '▲ ' : '▼ '}</span>}
       {sign}
       {body}

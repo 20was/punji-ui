@@ -2,6 +2,7 @@
    Styles for figures. Needs tokens.css and base.css (styles.css has everything). */
 @layer punji.components {
   .kit-fig { font-variant-numeric: tabular-nums; white-space: nowrap }
+  .kit-fig.sm { font-size: 12px; line-height: 16px }
   .kit-up { color: var(--pu-color-gain) }
   .kit-dn { color: var(--pu-color-loss) }
   .kit-flat { color: var(--pu-color-text-muted) }

@@ -8,9 +8,22 @@
 import type { CSSProperties, ReactNode } from 'react';
 
 
-export function EmptyState({ title, body, action, testId, role }: { title: ReactNode; body?: ReactNode; action?: ReactNode; testId?: string; role?: 'alert' | 'status' }) {
+export function EmptyState({ title, body, action, icon, bare, center, testId, role }: {
+  title: ReactNode;
+  body?: ReactNode;
+  action?: ReactNode;
+  /** A StatusDisc over the title (what kind of state this is). */
+  icon?: ReactNode;
+  /** Inside a card that already frames it: no box of its own (a card never holds a card). */
+  bare?: boolean;
+  /** With an icon: centred under it (a page's first run), not left-aligned. */
+  center?: boolean;
+  testId?: string;
+  role?: 'alert' | 'status';
+}) {
   return (
-    <div className="kit-empty" data-testid={testId} role={role}>
+    <div className={`kit-empty${icon ? ' has-icon' : ''}${bare ? ' bare' : ''}${center ? ' center' : ''}`} data-testid={testId} role={role}>
+      {icon}
       <h2>{title}</h2>
       {body && <p>{body}</p>}
       {action}
@@ -44,8 +57,8 @@ export function ToneIcon({ tone }: { tone: 'warn' | 'error' | 'success' }) {
   );
 }
 
-export function Note({ children, tone, testId }: { children: ReactNode; tone?: 'warn' | 'error'; testId?: string }) {
-  if (!tone) return <p className="kit-note" data-testid={testId}>{children}</p>;
+export function Note({ children, tone, quiet, plain, testId }: { children: ReactNode; tone?: 'warn' | 'error'; /** A small line on the surface itself (a source, a caveat under a figure), no tint. */ quiet?: boolean; /** A quiet line with no box (a footnote under a list or a card). */ plain?: boolean; testId?: string }) {
+  if (!tone) return <p className={`kit-note${quiet ? ' quiet' : ''}${plain ? ' plain' : ''}`} data-testid={testId}>{children}</p>;
   return (
     <p className={`kit-note ${tone}`} data-testid={testId}>
       <ToneIcon tone={tone} />
@@ -60,10 +73,10 @@ export function Note({ children, tone, testId }: { children: ReactNode; tone?: '
  * chart's box). `circle` for an avatar or a tile. Give the whole loading
  * region one `label` (role="status"), not every block.
  */
-export function Skeleton({ width = '100%', height = 16, radius, circle, style, label }: { width?: number | string; height?: number | string; radius?: number; circle?: boolean; style?: CSSProperties; label?: string }) {
+export function Skeleton({ width = '100%', height = 16, radius, circle, still, style, label }: { width?: number | string; height?: number | string; radius?: number; circle?: boolean; /** A placeholder that is not loading (behind a lock): no shimmer, quieter. */ still?: boolean; style?: CSSProperties; label?: string }) {
   return (
     <span
-      className={`kit-skel${circle ? ' circle' : ''}`}
+      className={`kit-skel${circle ? ' circle' : ''}${still ? ' still' : ''}`}
       role={label ? 'status' : undefined}
       aria-label={label}
       aria-hidden={label ? undefined : true}

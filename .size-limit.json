@@ -1,5 +1,12 @@
 [
   {
+    "name": "avatar (import from '@punji/ui/avatar')",
+    "path": "dist/avatar/Avatar.js",
+    "import": "*",
+    "limit": "800 B",
+    "gzip": true
+  },
+  {
     "name": "button (import from '@punji/ui/button')",
     "path": "dist/button/Button.js",
     "import": "*",
@@ -10,7 +17,7 @@
     "name": "card (import from '@punji/ui/card')",
     "path": "dist/card/Card.js",
     "import": "*",
-    "limit": "420 B",
+    "limit": "560 B",
     "gzip": true
   },
   {
@@ -38,7 +45,7 @@
     "name": "company-search (import from '@punji/ui/company-search')",
     "path": "dist/company-search/CompanySearch.js",
     "import": "*",
-    "limit": "1.7 kB",
+    "limit": "3.05 kB",
     "gzip": true
   },
   {
@@ -56,10 +63,17 @@
     "gzip": true
   },
   {
+    "name": "drawer-screen (import from '@punji/ui/drawer-screen')",
+    "path": "dist/drawer-screen/DrawerScreen.js",
+    "import": "*",
+    "limit": "1 kB",
+    "gzip": true
+  },
+  {
     "name": "fields (import from '@punji/ui/fields')",
     "path": "dist/fields/Fields.js",
     "import": "*",
-    "limit": "2.05 kB",
+    "limit": "2.2 kB",
     "gzip": true
   },
   {
@@ -67,6 +81,13 @@
     "path": "dist/figures/Figures.js",
     "import": "*",
     "limit": "880 B",
+    "gzip": true
+  },
+  {
+    "name": "filter-chip (import from '@punji/ui/filter-chip')",
+    "path": "dist/filter-chip/FilterChip.js",
+    "import": "*",
+    "limit": "1 kB",
     "gzip": true
   },
   {
@@ -94,7 +115,7 @@
     "name": "layout (import from '@punji/ui/layout')",
     "path": "dist/layout/Layout.js",
     "import": "*",
-    "limit": "730 B",
+    "limit": "820 B",
     "gzip": true
   },
   {
@@ -115,7 +136,7 @@
     "name": "locked-note (import from '@punji/ui/locked-note')",
     "path": "dist/locked-note/LockedNote.js",
     "import": "*",
-    "limit": "450 B",
+    "limit": "500 B",
     "gzip": true
   },
   {
@@ -123,6 +144,13 @@
     "path": "dist/overlay/Overlay.js",
     "import": "*",
     "limit": "1.6 kB",
+    "gzip": true
+  },
+  {
+    "name": "popover (import from '@punji/ui/popover')",
+    "path": "dist/popover/Popover.js",
+    "import": "*",
+    "limit": "1.7 kB",
     "gzip": true
   },
   {
@@ -143,7 +171,7 @@
     "name": "select (import from '@punji/ui/select')",
     "path": "dist/select/Select.js",
     "import": "*",
-    "limit": "750 B",
+    "limit": "850 B",
     "gzip": true
   },
   {
@@ -171,7 +199,14 @@
     "name": "status-pill (import from '@punji/ui/status-pill')",
     "path": "dist/status-pill/StatusPill.js",
     "import": "*",
-    "limit": "470 B",
+    "limit": "530 B",
+    "gzip": true
+  },
+  {
+    "name": "status-tag (import from '@punji/ui/status-tag')",
+    "path": "dist/status-tag/StatusTag.js",
+    "import": "*",
+    "limit": "650 B",
     "gzip": true
   },
   {
@@ -185,14 +220,28 @@
     "name": "table (import from '@punji/ui/table')",
     "path": "dist/table/Table.js",
     "import": "*",
-    "limit": "690 B",
+    "limit": "820 B",
     "gzip": true
   },
   {
     "name": "tabs (import from '@punji/ui/tabs')",
     "path": "dist/tabs/Tabs.js",
     "import": "*",
-    "limit": "750 B",
+    "limit": "820 B",
+    "gzip": true
+  },
+  {
+    "name": "chart-scale (import from '@punji/ui/chart-scale')",
+    "path": "dist/chart-scale/chartScale.js",
+    "import": "*",
+    "limit": "900 B",
+    "gzip": true
+  },
+  {
+    "name": "combo-step (import from '@punji/ui/combo-step')",
+    "path": "dist/combo-step/comboStep.js",
+    "import": "*",
+    "limit": "950 B",
     "gzip": true
   },
   {
@@ -227,13 +276,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "9.4 kB",
+    "limit": "11.5 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "9.1 kB",
+    "limit": "11.8 kB",
     "rolldown": false,
     "gzip": true
   },

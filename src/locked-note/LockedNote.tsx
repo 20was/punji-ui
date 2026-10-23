@@ -9,12 +9,26 @@
 import type { ReactNode } from 'react';
 
 
-export function LockedNote({ children, testId }: { children: ReactNode; testId?: string }) {
+export function LockedNote({ children, title, testId }: { children: ReactNode; /** A bold first line ("Not included on this account"); the children are then the line under it. */ title?: ReactNode; testId?: string }) {
+  const lock = (
+    <svg className="kit-tone-ico locked" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M6 11h12v10H6zM8 11V7a4 4 0 118 0v4" />
+    </svg>
+  );
+  if (title) {
+    return (
+      <div className="kit-note locked titled" data-testid={testId}>
+        <span className="kit-note-mark">{lock}</span>
+        <span>
+          <b>{title}</b>
+          <span>{children}</span>
+        </span>
+      </div>
+    );
+  }
   return (
     <p className="kit-note locked" data-testid={testId}>
-      <svg className="kit-tone-ico locked" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M6 11h12v10H6zM8 11V7a4 4 0 118 0v4" />
-      </svg>
+      {lock}
       <span>{children}</span>
     </p>
   );

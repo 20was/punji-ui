@@ -29,6 +29,11 @@ export interface DeltaWords {
 
 
 /** Tone of a change after rounding to what is printed. */
+/** A company's name without its legal tail ("Chilime Hydropower Company Limited" → "Chilime Hydropower"), as stock rows print it. */
+export function shortCompanyName(name: string): string {
+  return name.replace(/\s+(company limited|co\.?,? ltd\.?|limited|ltd\.?)$/i, '').trim();
+}
+
 export function toneOf(value: number | null | undefined, dp = 2): 'up' | 'down' | 'flat' {
   if (!isNum(value)) return 'flat';
   const r = Number(value.toFixed(dp));

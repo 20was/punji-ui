@@ -38,7 +38,7 @@ function Bubble({ anchor, id, testId, children, compact, hidden }: { anchor: DOM
  * explains (`label`); the text is its description while shown. Clicks stay inside, so a hint in a
  * clickable row never opens the row.
  */
-export function InfoTip({ label, children, testId }: { label: string; children: ReactNode; testId?: string }) {
+export function InfoTip({ label, children, testId, trigger }: { label: string; children: ReactNode; testId?: string; /** A short text trigger instead of the default info icon. */ trigger?: ReactNode }) {
   const id = useId();
   const ref = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState<null | 'peek' | 'pinned'>(null);
@@ -67,7 +67,7 @@ export function InfoTip({ label, children, testId }: { label: string; children: 
       <button
         type="button"
         ref={ref}
-        className="kit-info"
+        className={`kit-info${trigger ? ' text-trigger' : ''}`}
         aria-label={label}
         aria-expanded={open !== null}
         aria-describedby={open ? id : undefined}
@@ -86,11 +86,11 @@ export function InfoTip({ label, children, testId }: { label: string; children: 
         }}
         data-testid={testId}
       >
-        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+        {trigger ?? <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
           <circle cx="8" cy="8" r="6.6" fill="none" stroke="currentColor" strokeWidth="1.4" />
           <path d="M8 7.2v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
           <circle cx="8" cy="4.9" r="0.95" fill="currentColor" />
-        </svg>
+        </svg>}
       </button>
       {open && anchor && (
         <Bubble id={id} anchor={anchor} testId={testId ? `${testId}-tip` : undefined}>

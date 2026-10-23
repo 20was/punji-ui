@@ -171,3 +171,25 @@ export function SymbolField({ label, hint, error, testId, value, onChange, optio
     </Shell>
   );
 }
+
+/** An editable price with an optional source annotation, isolated from ordinary number fields. */
+export function PriceField({ label, source, hint, error, testId, value, onChange, id: idProp, size, hideLabel, ...rest }: InputProps & { /** A compact source annotation inside the editable price. */ source?: ReactNode }) {
+  const auto = useId();
+  const id = idProp ?? auto;
+  return (
+    <Shell id={id} label={label} hint={hint} error={error} size={size} hideLabel={hideLabel}>
+      <input
+        {...rest}
+        inputMode="decimal"
+        autoComplete="off"
+        id={id}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined}
+        data-testid={testId}
+      />
+      {source && <span className="kit-field-suffix">{source}</span>}
+    </Shell>
+  );
+}

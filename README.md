@@ -135,6 +135,7 @@ subpath Punji's own code imports, and its documentation is on design.punji.app.
 
 | Exports | Subpath | Docs |
 | --- | --- | --- |
+| `Avatar` | `@punji/ui/avatar` | [Avatar](https://design.punji.app/components/avatar) |
 | `Button` | `@punji/ui/button` | [Button](https://design.punji.app/components/button) |
 | `Card` | `@punji/ui/card` | [Card](https://design.punji.app/components/card) |
 | `Checkbox` | `@punji/ui/checkbox` | [Checkbox](https://design.punji.app/components/checkbox) |
@@ -143,8 +144,10 @@ subpath Punji's own code imports, and its documentation is on design.punji.app.
 | `CompanySearch` | `@punji/ui/company-search` | [Company search](https://design.punji.app/components/company-search) |
 | `Chip`, `ChipRow`, `SegmentedControl`, `SegmentedSwitch` | `@punji/ui/controls` | [Segmented control](https://design.punji.app/components/segmented-control) · [Chip](https://design.punji.app/components/chip) |
 | `Drawer` | `@punji/ui/drawer` | [Drawer](https://design.punji.app/components/drawer) |
-| `Field`, `NumberField`, `TextAreaField`, `DateField`, `SelectField`, `SymbolField` | `@punji/ui/fields` | [Field](https://design.punji.app/components/field) |
+| `DrawerScreen`, `DrawerHeader`, `DrawerBody`, `DrawerFooter` | `@punji/ui/drawer-screen` | [Drawer screen](https://design.punji.app/components/drawer-screen) |
+| `Field`, `NumberField`, `TextAreaField`, `DateField`, `SelectField`, `SymbolField`, `PriceField` | `@punji/ui/fields` | [Field](https://design.punji.app/components/field) |
 | `Figure`, `Delta` | `@punji/ui/figures` | [Figure and Delta](https://design.punji.app/components/figure) |
+| `FilterChip` | `@punji/ui/filter-chip` | [Filter chip](https://design.punji.app/components/filter-chip) |
 | `FloatingTooltip`, `IconHint` | `@punji/ui/floating-tooltip` | [Tooltip and InfoTip](https://design.punji.app/components/tooltip) |
 | `InfoTip`, `Tooltip` | `@punji/ui/info-tip` | [Tooltip and InfoTip](https://design.punji.app/components/tooltip) |
 | `InlineConfirm` | `@punji/ui/inline-confirm` | [Inline confirm](https://design.punji.app/components/inline-confirm) |
@@ -153,19 +156,23 @@ subpath Punji's own code imports, and its documentation is on design.punji.app.
 | `Live`, `LiveFigure` | `@punji/ui/live-figure` | [Live figure](https://design.punji.app/components/live-figure) |
 | `LockedNote` | `@punji/ui/locked-note` | [Empty state and Note](https://design.punji.app/components/empty-state) |
 | `Sheet`, `ToastProvider`, `Dock` | `@punji/ui/overlay` | [Toast](https://design.punji.app/components/toast) · [Sheet](https://design.punji.app/components/sheet) |
+| `PopoverAnchor`, `Popover` | `@punji/ui/popover` | [Popover](https://design.punji.app/components/popover) |
 | `RangeSlider` | `@punji/ui/range-slider` | [Range slider](https://design.punji.app/components/range-slider) |
 | `GroupedCell`, `RowList`, `ValueRow`, `DataRows`, `DataRow`, `Tile` | `@punji/ui/rows` | [Rows and lists](https://design.punji.app/components/rows) |
 | `ChevronDown`, `Select` | `@punji/ui/select` | [Select](https://design.punji.app/components/select) |
 | `ShowMore` | `@punji/ui/show-more` | [Show more](https://design.punji.app/components/show-more) |
 | `EmptyState`, `ToneIcon`, `Note`, `Skeleton`, `SkeletonText` | `@punji/ui/states` | [Empty state and Note](https://design.punji.app/components/empty-state) · [Skeleton](https://design.punji.app/components/skeleton) |
 | `StatGrid`, `StatTile` | `@punji/ui/stats` | [Stat tile](https://design.punji.app/components/stat-tile) |
-| `StatusPill` | `@punji/ui/status-pill` | [Status pill](https://design.punji.app/components/status-pill) |
+| `StatusPill`, `CountBadge` | `@punji/ui/status-pill` | [Status pill](https://design.punji.app/components/status-pill) |
+| `StatusTag` | `@punji/ui/status-tag` | [Status tag](https://design.punji.app/components/status-tag) |
 | `Switch` | `@punji/ui/switch` | [Switch](https://design.punji.app/components/switch) |
 | `DataTable`, `DataListRow`, `Cell` | `@punji/ui/table` | [Data table](https://design.punji.app/components/data-table) |
-| `Tabs` | `@punji/ui/tabs` | [Tabs](https://design.punji.app/components/tabs) |
+| `Tabs`, `PanelTabs` | `@punji/ui/tabs` | [Tabs](https://design.punji.app/components/tabs) · [Panel tabs](https://design.punji.app/components/panel-tabs) |
+| `bracketScale`, `valueScale` | `@punji/ui/chart-scale` | [Trend chart](https://design.punji.app/components/trend-chart) |
+| `comboClosed`, `comboStep` | `@punji/ui/combo-step` | [Company search](https://design.punji.app/components/company-search) |
 | `moveIndex`, `moveChip` | `@punji/ui/command-keys` | [Formatting and live helpers](https://design.punji.app/utilities/formatting) |
 | `compactRs` | `@punji/ui/compact` | [Formatting and live helpers](https://design.punji.app/utilities/formatting) |
-| `isNum`, `formatFigure`, `toneOf`, `parseNumber`, `searchSymbols`, `segmentTarget` | `@punji/ui/format` | [Formatting and live helpers](https://design.punji.app/utilities/formatting) |
+| `isNum`, `formatFigure`, `shortCompanyName`, `toneOf`, `parseNumber`, `searchSymbols`, `segmentTarget` | `@punji/ui/format` | [Formatting and live helpers](https://design.punji.app/utilities/formatting) |
 | `TWEEN_MS`, `TINT_MS` | `@punji/ui/live` | [Formatting and live helpers](https://design.punji.app/utilities/formatting) |
 
 <!-- components:end -->

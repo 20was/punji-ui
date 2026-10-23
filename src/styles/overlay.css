@@ -17,4 +17,5 @@
   .kit-toast .msg { flex: 1; min-width: 0 }
   .kit-toast .msg b { display: block }
   .kit-toast button { appearance: none; border: 0; background: none; color: inherit; font: 700 var(--pu-text-sm) / 1 var(--pu-font-body); cursor: pointer; min-height: 32px; text-decoration: underline }
+  .kit-sheet > .kit-menu { min-width: 0; padding: 0 }
 }

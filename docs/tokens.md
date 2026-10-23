@@ -33,6 +33,8 @@ the dark column means the light value applies in both.
 | `--pu-color-on-accent-fill` | `#0d0e10` | - |
 | `--pu-color-on-loss` | `#ffffff` | `#1c0806` |
 | `--pu-color-scrim` | `rgba(17, 18, 20, 0.45)` | `rgba(0, 0, 0, 0.6)` |
+| `--pu-color-series-3` | `#d08a10` | `#f5b84b` |
+| `--pu-color-series-nepse` | `#3552c8` | `#8ea8ff` |
 | `--pu-color-shimmer-base` | `#dcdfd5` | `rgba(255, 255, 255, 0.07)` |
 | `--pu-color-shimmer-highlight` | `#eceee7` | `rgba(255, 255, 255, 0.12)` |
 | `--pu-color-surface` | `#f7f8f3` | `#17191c` |
@@ -62,12 +64,15 @@ the dark column means the light value applies in both.
 | `--pu-radius-control` | `12px` | - |
 | `--pu-radius-full` | `9999px` | - |
 | `--pu-radius-lg` | `16px` | - |
+| `--pu-radius-md` | `16px` | - |
+| `--pu-radius-sm` | `0.5rem` | - |
 | `--pu-radius-xl` | `8px` | - |
 | `--pu-seg-thumb` | `#ffffff` | `#2e3237` |
 | `--pu-seg-thumb-shadow` | `0 1px 2px rgba(18, 19, 20, 0.1)` | `none` |
 | `--pu-shadow-lg` | `0 24px 60px -16px rgba(17, 18, 20, 0.22), 0 0 0 1px rgba(17, 18, 20, 0.04)` | `0 24px 60px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.1)` |
 | `--pu-shadow-sm` | `none` | - |
 | `--pu-space-1` | `0.25rem` | - |
+| `--pu-space-16` | `4rem` | - |
 | `--pu-space-2` | `0.5rem` | - |
 | `--pu-space-3` | `0.75rem` | - |
 | `--pu-space-4` | `1rem` | - |

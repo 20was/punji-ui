@@ -7,3 +7,7 @@ Rename the inner `live` boolean inside `combo` to `inputLive`, including the two
 ## Standalone number formatting
 
 The package intentionally keeps the stable `Rs` prefix and `en-IN` grouping in its reviewed internal helpers. The web `rs` helper now reads product reader-language state; its hash was reviewed rather than importing that global state. Compact formatting strips the reader-language import through the manifest. A future generic locale/currency API should take explicit parameters, without importing product language state.
+
+## StatusNotice: general and SSR-safe dismissal
+
+Expose a configurable dismissal storage key instead of the product key. Read session storage after hydration so the server and initial client markup agree, and require a nonempty dismiss button label when dismissal is enabled. Keep this module pending until these changes and extraction of its status stylesheet are ready.

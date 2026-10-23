@@ -192,7 +192,6 @@ export const MODULES = {
   'Meter.tsx': { status: 'pending', reason: "Styles come from the data stylesheet, which uses @container queries the sync does not split per module yet." },
   'MetricTile.tsx': { status: 'pending', reason: "Styles come from the data stylesheet, which uses @container queries the sync does not split per module yet." },
   'OptionTile.tsx': { status: 'pending', reason: "Styles come from the data stylesheet, which uses @container queries the sync does not split per module yet." },
-  'PickedItem.tsx': { status: 'pending', reason: "Styles come from the data stylesheet, which uses @container queries the sync does not split per module yet." },
   'PromptCard.tsx': { status: 'pending', reason: "Styles come from the data stylesheet, which uses @container queries the sync does not split per module yet." },
   'Sparkline.tsx': { status: 'pending', reason: "Styles come from the data stylesheet, which uses @container queries the sync does not split per module yet." },
   'StepList.tsx': { status: 'pending', reason: "Styles come from the data stylesheet, which uses @container queries the sync does not split per module yet." },
@@ -294,6 +293,24 @@ export const MODULES = {
   'SiteFooter.tsx': { status: 'web-only', reason: "punji.app's site footer: its columns, contact and socials." },
   'PhoneMenu.tsx': { status: 'web-only', reason: "punji.app's phone menu." },
   'StoreButtons.tsx': { status: 'web-only', reason: "Punji's App Store and Google Play buttons (brand artwork)." },
+
+  // Reconciled with the current web kit; pending entries do not add package exports.
+  'AlertPanel.tsx': { status: 'pending', reason: 'General form-panel slots; needs a phone-dialog focus-trap review and ownership of its alert stylesheet classes.' },
+  'BreadthBar.tsx': { status: 'pending', reason: 'Caller-supplied counts and words are general; needs landing stylesheet extraction and numeric input tests.' },
+  'CardLink.tsx': { status: 'pending', reason: 'Needs a linkComponent adapter, neutral new-tab wording and ownership of its shared kit stylesheet classes.' },
+  'CtaBand.tsx': { status: 'pending', reason: 'General heading and action slots; needs landing stylesheet extraction.' },
+  'FaqSection.tsx': { status: 'pending', reason: 'General question and answer props; needs landing stylesheet extraction and disclosure keyboard tests.' },
+  'FeatureCard.tsx': { status: 'pending', reason: 'General content and image slots; needs landing stylesheet extraction before release under its existing kit name.' },
+  'LandingSection.tsx': { status: 'pending', reason: 'General layout exports share a module with product navigation glyphs; separate or adapt those glyphs and extract landing styles first.' },
+  'MarketMarkDetail.tsx': { status: 'web-only', reason: 'Wraps the product-specific MarketMark session chip and links to the market report.' },
+  'MarketReport.tsx': { status: 'pending', reason: 'Caller-supplied report figures can be general; needs report stylesheet extraction and review of market-specific exports.' },
+  'MarketStrip.tsx': { status: 'pending', reason: 'Caller-supplied labels and figures can be general; needs landing stylesheet extraction and neutral usage documentation.' },
+  'PriceLevelChart.tsx': { status: 'pending', reason: 'General row and column grid; needs levels stylesheet extraction, helper release and complete grid keyboard tests.' },
+  'ProductShot.tsx': { status: 'pending', reason: 'General screenshot and caption props; needs landing stylesheet extraction and accessible theme-image review.' },
+  'ProfileRail.tsx': { status: 'pending', reason: 'General row quantities; depends on pending PriceLevelChart types, levelsMath and levels stylesheet extraction.' },
+  'RowMenu.tsx': { status: 'pending', reason: 'General action slots; depends on pending MenuList and needs responsive menu/dialog keyboard and focus tests.' },
+  'comboStep.ts': { status: 'pending', reason: 'Pure search state helper; needs symbol-neutral API review and coordinated release with its CompanySearch consumer.' },
+  'levelsMath.ts': { status: 'pending', reason: 'Pure chart arithmetic; release with PriceLevelChart after numeric property tests and a size budget.' },
 
   // Stays in Punji.
   'AppTabBar.tsx': { status: 'web-only', reason: "Punji's own phone navigation: its hosts, routes and sections." },

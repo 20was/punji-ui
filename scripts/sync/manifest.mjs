@@ -16,12 +16,13 @@
  * (and says so) instead of failing, and the next sync PR drops it.
  * @typedef {{ find: string, replace: string, count?: number, upstream?: string }} Edit
  */
-/** @typedef {{ status: 'ship' | 'adapt' | 'pending' | 'web-only', reason?: string, edits?: Edit[], budget?: string }} Module */
+/** @typedef {{ status: 'ship' | 'adapt' | 'pending' | 'web-only', reason?: string, edits?: Edit[], budget?: string, awaitingUpstream?: boolean }} Module */
 
 const LINK_IMPORT = "import type { LinkComponent } from '../internal/link.tsx';\n";
 
 /** @type {Record<string, Module>} keyed by the web kit's file name */
 export const MODULES = {
+  'BarList.tsx': { status: 'ship', reason: 'General ranked quantities with caller-supplied labels and values; register before the upstream component lands.', budget: '1.2 kB', awaitingUpstream: true },
   'Button.tsx': {
     status: 'adapt',
     reason: 'Preserve package link semantics: plain <a> or linkComponent for in-app paths; no router or forced new tab.',
@@ -332,6 +333,11 @@ export const MODULES = {
 
   'StatusNotice.tsx': { status: 'pending', reason: 'Uses a Punji-specific dismissal storage key; needs configurable storage, SSR-safe dismissal, a required dismiss label and extraction of the status stylesheet.' },
 
+  'BrokerBadge.tsx': { status: 'web-only', reason: 'NEPSE broker-number artwork and size conventions.' },
+  'BrokerLookup.tsx': { status: 'web-only', reason: 'NEPSE broker register search, TMS links and product router navigation.' },
+  'TmsAddress.tsx': { status: 'web-only', reason: 'NEPSE TMS host parsing and broker-specific open/copy actions.' },
+  'LockedPreview.tsx': { status: 'pending', reason: 'General preview slots; needs broker stylesheet extraction and hidden-content focus review.' },
+
   // Stays in Punji.
   'AppTabBar.tsx': { status: 'web-only', reason: "Punji's own phone navigation: its hosts, routes and sections." },
   'tabRoutes.ts': { status: 'web-only', reason: "Punji's tab addresses, cookies and session keys." },
@@ -360,6 +366,7 @@ export const EXTERNAL = {
 
 /** Source stylesheets: the kit's own section of the page kit sheet, then whole files. */
 export const CSS_SOURCES = [
+  { file: 'src/styles/kit-bar-list.css', module: 'BarList.tsx' },
   { file: 'src/styles/kit.css', from: 'The React web kit (src/components/kit)' },
   { file: 'src/styles/choices.css' },
   { file: 'src/styles/command.css' },
@@ -378,6 +385,7 @@ export const TOKEN_SOURCES = { base: 'src/styles/tokens.generated.css', semantic
 /** Which module's stylesheet a class belongs to. `base` is shared by every component. */
 export const CSS_OWNERS = {
   base: [/^kit-sr$/, /^kit-spin$/],
+  'bar-list': [/^kit-barlist(?:-row|-label|-value|-track|-fill|-empty|-loading)?$/],
   button: [/^kit-btn(-ico)?$/],
   card: [/^kit-card(-[htf]|-ic|-meta)?$/],
   checkbox: [/^kit-check(-t|-end)?$/],

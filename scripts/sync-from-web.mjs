@@ -50,7 +50,14 @@ const sha = (s) => createHash('sha256').update(s).digest('hex');
 
 const kitFiles = readdirSync(join(WEB, KIT)).filter((f) => /\.tsx?$/.test(f) && f !== 'index.ts');
 for (const f of kitFiles) if (!MODULES[f]) fail(`new kit module ${f}: classify it in scripts/sync/manifest.mjs (ship, adapt, pending or web-only)`);
-for (const f of Object.keys(MODULES)) if (!kitFiles.includes(f)) fail(`${f} is in the manifest but no longer in the kit: remove it from the manifest`);
+for (const [f, m] of Object.entries(MODULES)) {
+  if (kitFiles.includes(f)) continue;
+  // A new module can be registered before its source PR merges. Once it has
+  // shipped here, a later removal must still fail rather than silently delete it.
+  const generated = join(ROOT, 'src', kebab(moduleOf(f)), f);
+  if (m.awaitingUpstream && !existsSync(generated)) console.log(`  note: ${f}: registered; awaiting its first upstream source`);
+  else fail(`${f} is in the manifest but no longer in the kit: remove it from the manifest`);
+}
 for (const [f, m] of Object.entries(MODULES)) if (m.status !== 'ship' && !m.reason) fail(`${f}: status ${m.status} needs a reason`);
 
 const shipped = kitFiles.filter((f) => MODULES[f] && (MODULES[f].status === 'ship' || MODULES[f].status === 'adapt')).toSorted();
@@ -350,6 +357,7 @@ function main() {
   // CSS.
   const owned = new Map();
   for (const s of CSS_SOURCES) {
+    if (s.module && !shipped.includes(s.module)) continue;
     let css = read(s.file);
     if (s.from) {
       const at = css.indexOf(s.from);

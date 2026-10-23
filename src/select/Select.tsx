@@ -9,7 +9,9 @@
  * heights shared with SegmentedControl so a row of both lines up exactly:
  * sm 32px, md 36px, lg 44px. `bare` drops the box for a field a page already
  * draws (the kit Field card, the sell sheet's ledger box); that box then
- * carries the focus ring.
+ * carries the focus ring. Options that share a `group` sit under it in a
+ * real <optgroup> (the phone's picker and screen readers say the group's
+ * name); consecutive options form one group, so list them in order.
  */
 import { useId, type ReactNode, type SelectHTMLAttributes } from 'react';
 
@@ -20,6 +22,20 @@ export interface SelectOption<T extends string = string> {
   value: T;
   label: string;
   disabled?: boolean;
+  /** The group's name ("Sectors"): consecutive options with the same group share one <optgroup>. */
+  group?: string;
+}
+
+/** Options in order, runs of the same `group` gathered under it. */
+function groupOptions<T extends string>(options: readonly SelectOption<T>[]): { group: string | null; options: SelectOption<T>[] }[] {
+  const out: { group: string | null; options: SelectOption<T>[] }[] = [];
+  for (const o of options) {
+    const g = o.group ?? null;
+    const last = out[out.length - 1];
+    if (last && last.group === g) last.options.push(o);
+    else out.push({ group: g, options: [o] });
+  }
+  return out;
 }
 
 export interface SelectProps<T extends string> extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'value' | 'onChange' | 'size' | 'className'> {
@@ -77,11 +93,18 @@ export function Select<T extends string>({
         aria-busy={loading || undefined}
         data-testid={testId}
       >
-        {options.map((o) => (
-          <option key={o.value} value={o.value} disabled={o.disabled}>
-            {o.label}
-          </option>
-        ))}
+        {groupOptions(options).map((run, i) => {
+          const items = run.options.map((o) => (
+            <option key={o.value} value={o.value} disabled={o.disabled}>
+              {o.label}
+            </option>
+          ));
+          return run.group === null ? items : (
+            <optgroup key={`${run.group}-${i}`} label={run.group}>
+              {items}
+            </optgroup>
+          );
+        })}
       </select>
       {loading ? <span className="kit-spin kit-sel-ico" aria-hidden="true" /> : <ChevronDown />}
     </span>

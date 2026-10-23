@@ -22,6 +22,8 @@ export interface Option<T extends string> {
   count?: ReactNode;
   /** A keyboard shortcut the page binds for this option (aria-keyshortcuts). */
   keys?: string;
+  /** An icon over the label (PanelTabs only; decorative, the label names the option). */
+  icon?: ReactNode;
 }
 
 export interface ChipProps {
@@ -87,6 +89,8 @@ export interface SegmentedProps<T extends string> {
   size?: ControlSize;
   /** Segments share the full width. */
   fill?: boolean;
+  /** The track spans its row and the segments wrap onto a second line when they do not fit (a set of five rules), instead of scrolling. */
+  wrap?: boolean;
   /** Nothing to choose yet (no data): every segment off. */
   disabled?: boolean;
   /**
@@ -104,7 +108,7 @@ export interface SegmentedProps<T extends string> {
  * segment, for small option sets (windows, periods, horizons, scopes).
  * Arrow keys, Home and End move the choice.
  */
-export function SegmentedControl<T extends string>({ options, value, onChange, prefix, label, panelId, size = 'md', fill, disabled, tone = 'neutral', testId, className }: SegmentedProps<T>) {
+export function SegmentedControl<T extends string>({ options, value, onChange, prefix, label, panelId, size = 'md', fill, wrap, disabled, tone = 'neutral', testId, className }: SegmentedProps<T>) {
   const key = (k: string) => {
     const next = segmentTarget(options.map((o) => o.value), value, k);
     if (next === null || next === value) return;
@@ -112,7 +116,7 @@ export function SegmentedControl<T extends string>({ options, value, onChange, p
     requestAnimationFrame(() => document.getElementById(`${prefix}-${next}`)?.focus());
   };
   return (
-    <div className={`kit-seg ${size}${tone === 'accent' ? ' accent' : ''}${fill ? ' fill' : ''}${className ? ` ${className}` : ''}`} role={panelId ? 'tablist' : 'group'} aria-label={label} data-testid={testId}>
+    <div className={`kit-seg ${size}${tone === 'accent' ? ' accent' : ''}${fill ? ' fill' : ''}${wrap ? ' wrap' : ''}${className ? ` ${className}` : ''}`} role={panelId ? 'tablist' : 'group'} aria-label={label} data-testid={testId}>
       {options.map((o) => {
         const on = o.value === value;
         return (
@@ -151,4 +155,3 @@ export function SegmentedControl<T extends string>({ options, value, onChange, p
 export function SegmentedSwitch<T extends string>(props: Omit<SegmentedProps<T>, 'size'>) {
   return <SegmentedControl size="lg" {...props} />;
 }
-

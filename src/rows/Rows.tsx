@@ -43,11 +43,23 @@ interface ValueRowProps {
   linkComponent?: LinkComponent;
   onClick?: () => void;
   chevron?: boolean;
+  /** A second action at the row's end, beside (never inside) the row's own button (a ghost icon Button: delete). */
+  action?: ReactNode;
   testId?: string;
   ariaLabel?: string;
 }
 
-export function ValueRow({ lead, symbol, title, name, pill, line, figure, note, href, linkComponent, onClick, chevron, testId, ariaLabel }: ValueRowProps) {
+export function ValueRow({ action, ...props }: ValueRowProps) {
+  if (!action) return <ValueRowBody {...props} />;
+  return (
+    <div className="kit-value-act">
+      <ValueRowBody {...props} />
+      <span className="kit-value-act-b">{action}</span>
+    </div>
+  );
+}
+
+function ValueRowBody({ lead, symbol, title, name, pill, line, figure, note, href, linkComponent, onClick, chevron, testId, ariaLabel }: Omit<ValueRowProps, 'action'>) {
   const body = (
     <>
       <span className="lead">{lead}</span>
@@ -84,8 +96,8 @@ export function ValueRow({ lead, symbol, title, name, pill, line, figure, note, 
 }
 
 /** Facts, label left and value right, in one card. */
-export function DataRows({ children, label }: { children: ReactNode; label?: string }) {
-  return <dl className="kit-rows" aria-label={label}>{children}</dl>;
+export function DataRows({ children, label, flush }: { children: ReactNode; label?: string; /** Rows run to the container's edges (inside a panel), a hairline over each, smaller type. */ flush?: boolean }) {
+  return <dl className={`kit-rows${flush ? ' flush' : ''}`} aria-label={label}>{children}</dl>;
 }
 
 export function DataRow({ label, value, total, testId }: { label: ReactNode; value: ReactNode; total?: boolean; testId?: string }) {

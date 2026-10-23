@@ -7,6 +7,18 @@
  * DataListRow). Sticky head, sortable columns (aria-sort), figures right
  * aligned and tabular, the symbol column never shrinks, `wide` columns hide
  * under 760 px. Rows are plain <tr>; the page decides what a cell holds.
+ *
+ * Locked columns (design.punji.app/components/data-table, "Locked cells"):
+ * a column whose figures are not included on this account keeps its head,
+ * a LockedHead (a lock, not sortable), and each of its cells is a LockedCell
+ * (the LockedCell component, pending in this package).
+ *
+ * `bare` drops the box (a table inside a Card); `stickToPage` keeps the head
+ * in view as the page scrolls on a wide screen (the page sets
+ * `--kit-table-top` under its own sticky bars) and lets the table scroll in
+ * its own box under 1256px; `stack` turns each row into a block under 640px:
+ * the row's head and the first figure on one line, then up to four figures in
+ * fixed columns, each its column's label over its value (Cell `label`).
  */
 import type { ReactNode } from 'react';
 
@@ -17,6 +29,10 @@ export interface Column<K extends string> {
   num?: boolean;
   wide?: boolean;
   sortable?: boolean;
+  /** Folds away between 760px and this width too (a table with more columns than a tablet column holds). */
+  hideUnder?: 1024 | 1256;
+  /** On the head cell. */
+  testId?: string;
 }
 
 export type SortDir = 'asc' | 'desc';
@@ -27,6 +43,11 @@ export function DataTable<K extends string>({
   sort,
   onSort,
   children,
+  dense,
+  bare,
+  stickToPage,
+  stack,
+  sortTestIdPrefix = 'sort',
   testId,
 }: {
   caption: string;
@@ -34,23 +55,36 @@ export function DataTable<K extends string>({
   sort?: { key: K; dir: SortDir };
   onSort?: (key: K) => void;
   children: ReactNode;
+  /** A narrow panel's table: no box, tighter cells, row labels that wrap; figures still never wrap. */
+  dense?: boolean;
+  /** No box of its own: the table sits in a Card. */
+  bare?: boolean;
+  /** The head stays in view as the page scrolls (1256px and wider); under that the table scrolls in its own box. */
+  stickToPage?: boolean;
+  /** Under 640px each row is a block: its head and first figure on a line, then four fixed columns, label over value. */
+  stack?: boolean;
+  /** Sort buttons are `${prefix}-${key}`. */
+  sortTestIdPrefix?: string;
   testId?: string;
 }) {
+  const box = ['kit-tablebox', dense && 'dense', bare && 'bare', stickToPage && 'page-sticky', stack && 'stack'].filter(Boolean).join(' ');
   return (
-    <div className="kit-tablebox" role="region" aria-label={caption} tabIndex={0}>
+    <div className={box} role="region" aria-label={caption} tabIndex={0}>
       <table className="kit-table" data-testid={testId}>
         <caption className="kit-sr">{caption}</caption>
         <thead>
           <tr>
             {columns.map((c) => {
               const active = sort?.key === c.key;
-              const cls = [c.num && 'num', c.wide && 'wide'].filter(Boolean).join(' ') || undefined;
+              const cls = [c.num && 'num', c.wide && 'wide', c.hideUnder && `hide-${c.hideUnder}`].filter(Boolean).join(' ') || undefined;
               return (
-                <th key={c.key} scope="col" className={cls} aria-sort={active ? (sort!.dir === 'asc' ? 'ascending' : 'descending') : undefined}>
+                <th key={c.key} scope="col" className={cls} aria-sort={active ? (sort!.dir === 'asc' ? 'ascending' : 'descending') : undefined} data-testid={c.testId}>
                   {c.sortable && onSort ? (
-                    <button type="button" onClick={() => onSort(c.key)} data-testid={`sort-${c.key}`}>
+                    <button type="button" onClick={() => onSort(c.key)} data-testid={`${sortTestIdPrefix}-${c.key}`}>
                       {c.label}
-                      {active ? (sort!.dir === 'asc' ? ' ↑' : ' ↓') : ''}
+                      <span className="kit-sort-i" aria-hidden="true">
+                        {active ? (sort!.dir === 'asc' ? '↑' : '↓') : ''}
+                      </span>
                     </button>
                   ) : (
                     c.label
@@ -70,7 +104,26 @@ export function DataListRow({ children, testId }: { children: ReactNode; testId?
   return <tr data-testid={testId}>{children}</tr>;
 }
 
-export function Cell({ children, num, wide, sym, header }: { children: ReactNode; num?: boolean; wide?: boolean; sym?: boolean; header?: boolean }) {
-  const cls = [num && 'num', wide && 'wide', sym && 'sym'].filter(Boolean).join(' ') || undefined;
-  return header ? <th scope="row" className={cls}>{children}</th> : <td className={cls}>{children}</td>;
+export function Cell({ children, num, wide, hideUnder, sym, header, label, testId }: {
+  children: ReactNode;
+  num?: boolean;
+  wide?: boolean;
+  /** As its Column's. */
+  hideUnder?: 1024 | 1256;
+  sym?: boolean;
+  header?: boolean;
+  /** The column's name, printed before the figure in a stacked row (DataTable `stack`). */
+  label?: string;
+  testId?: string;
+}) {
+  const cls = [num && 'num', wide && 'wide', hideUnder && `hide-${hideUnder}`, sym && 'sym'].filter(Boolean).join(' ') || undefined;
+  return header ? (
+    <th scope="row" className={cls} data-testid={testId}>
+      {children}
+    </th>
+  ) : (
+    <td className={cls} data-label={label} data-testid={testId}>
+      {children}
+    </td>
+  );
 }

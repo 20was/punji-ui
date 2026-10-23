@@ -6,8 +6,9 @@ export { PageLayout, PageHeader, ListSectionHeader, ChevronLeft, ChevronRight } 
 export { GroupedCell, RowList, ValueRow, DataRows, DataRow, Tile } from './rows/Rows.tsx';
 export { StatGrid, StatTile } from './stats/Stats.tsx';
 export { Chip, ChipRow, SegmentedControl, SegmentedSwitch, type ChipProps, type Option, type SegmentedProps } from './controls/Controls.tsx';
+export { FilterChip, type FilterChipProps } from './filter-chip/FilterChip.tsx';
 export { Button, buttonClass, type ButtonVariant } from './button/Button.tsx';
-export { StatusPill } from './status-pill/StatusPill.tsx';
+export { StatusPill, CountBadge } from './status-pill/StatusPill.tsx';
 export { Tabs, type TabsProps } from './tabs/Tabs.tsx';
 export { Switch } from './switch/Switch.tsx';
 export { ShowMore } from './show-more/ShowMore.tsx';
@@ -19,10 +20,10 @@ export { Select, ChevronDown, type SelectOption, type SelectProps, type ControlS
 export { Figure, Delta } from './figures/Figures.tsx';
 export { Live, LiveFigure } from './live-figure/LiveFigure.tsx';
 export { useTweenedNumber, tweenAt, type LiveTint } from './live/live.ts';
-export { formatFigure, toneOf, parseNumber, searchSymbols, segmentTarget, type FigureKind, type DeltaWords, type SymbolOption } from './format/format.ts';
+export { formatFigure, shortCompanyName, toneOf, parseNumber, searchSymbols, segmentTarget, type FigureKind, type DeltaWords, type SymbolOption } from './format/format.ts';
 export { EmptyState, Note, Skeleton, SkeletonText, ToneIcon } from './states/States.tsx';
 export { DataTable, DataListRow, Cell, type Column, type SortDir } from './table/Table.tsx';
-export { Field, NumberField, DateField, SelectField, SymbolField, TextAreaField } from './fields/Fields.tsx';
+export { Field, PriceField, NumberField, DateField, SelectField, SymbolField, TextAreaField } from './fields/Fields.tsx';
 export { CompanySearch } from './company-search/CompanySearch.tsx';
 export { RangeSlider } from './range-slider/RangeSlider.tsx';
 export { Sheet, ToastProvider, useToast, Dock, type ToastKind } from './overlay/Overlay.tsx';

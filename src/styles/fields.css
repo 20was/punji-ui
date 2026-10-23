@@ -17,9 +17,12 @@
   .kit-field .err { font: 600 12px / 16px var(--pu-font-body); color: var(--pu-color-loss) }
   .kit-field[data-invalid='true'] > label { color: var(--pu-color-loss) }
   .kit-field[data-invalid='true'] input, .kit-field[data-invalid='true'] textarea, .kit-field[data-invalid='true'] .kit-sel > select { border-color: var(--pu-color-loss) }
+  .kit-field[data-invalid='true'] :is(input, textarea, .kit-sel > select):is(:focus, :focus-visible) { outline-color: var(--pu-color-loss) }
   .kit-options { position: absolute; left: 0; right: 0; top: 100%; z-index: 20; margin: 4px 0 0; padding: 4px; list-style: none; max-height: 18rem; overflow-y: auto; background: var(--pu-color-surface-solid); border-radius: var(--pu-radius-lg); box-shadow: var(--pu-shadow-lg) }
   .kit-options li { display: flex; gap: 10px; align-items: baseline; padding: 10px 12px; border-radius: var(--pu-radius-card); cursor: pointer; min-height: 44px }
   .kit-options li[aria-selected='true'] { background: var(--pu-color-surface-tint) }
   .kit-options b { flex-shrink: 0 }
   .kit-options span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--pu-color-text-muted); font-size: var(--pu-text-sm) }
+  .kit-field:has(> .kit-field-suffix) > input { grid-area: 2 / 1; padding-right: var(--pu-space-16) }
+  .kit-field-suffix { grid-area: 2 / 1; justify-self: end; align-self: center; margin-inline-end: var(--pu-space-3); z-index: 1; display: flex; align-items: center }
 }

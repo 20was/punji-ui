@@ -21,10 +21,11 @@ export interface CompactUnits {
  */
 export function compactRs(value: number | null | undefined, units: CompactUnits, from = 1e7): { short: string; full: string; compact: boolean } {
   if (!isNum(value)) return { short: '-', full: '-', compact: false };
-  const full = `Rs ${int(value)}`;
+  const mark = 'Rs';
+  const full = `${mark} ${int(value)}`;
   const a = Math.abs(value);
   if (a < from) return { short: full, full, compact: false };
   const sign = value < 0 ? '−' : '';
   const [div, unit] = a >= 1e9 ? [1e9, units.arba] : a >= 1e7 ? [1e7, units.crore] : [1e5, units.lakh];
-  return { short: `${sign}Rs ${fixed(a / div, 2)} ${unit}`, full: full.replace('Rs -', '−Rs '), compact: true };
+  return { short: `${sign}${mark} ${fixed(a / div, 2)} ${unit}`, full: full.replace(`${mark} -`, `−${mark} `), compact: true };
 }

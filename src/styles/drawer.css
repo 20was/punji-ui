@@ -6,4 +6,7 @@
   @keyframes kit-drawer-in { from { transform: translateX(24px); opacity: 0; } to { transform: none; opacity: 1; } }
   @keyframes kit-fade-in { from { opacity: 0; } to { opacity: 1; } }
   @media (prefers-reduced-motion: reduce) { .kit-drawer-back, .kit-drawer { animation: none } }
+  .kit-drawer:has(> .kit-drawer-screen) { display: flex; flex-direction: column }
+  .kit-drawer > * { flex: none }
+  .kit-drawer > .kit-drawer-screen { flex: 1 0 auto }
 }

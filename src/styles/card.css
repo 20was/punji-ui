@@ -3,10 +3,25 @@
 @layer punji.components {
   .kit-card { display: grid; align-content: start; gap: 12px; min-width: 0; padding: 16px; background: var(--pu-color-surface); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-card) }
   .kit-card.flush { gap: 0; padding: 0; overflow: hidden }
-  .kit-card-h { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 32px }
+  .kit-card-h { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 32px; min-width: 0 }
   .kit-card.flush > .kit-card-h { padding: 14px 16px 10px }
   .kit-card.flush > :is(.kit-tablebox, .kit-group) { border: 0; border-radius: 0; background: transparent }
-  .kit-card-t { min-width: 0 }
+  .kit-card-t { min-width: 0; flex: 1 }
+  .kit-card-ic { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--pu-radius-lg); background: var(--pu-color-surface-tint); color: var(--pu-color-series-nepse) }
+  .kit-card.flush > [role='tabpanel'] > .kit-tablebox { border: 0; border-radius: 0; background: transparent }
   .kit-card-t :is(h2, h3) { margin: 0; font: 600 15px / 20px var(--pu-font-display); color: var(--pu-color-text) }
+  .kit-card-meta { margin-left: 6px; font-weight: 400; color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums }
   .kit-card-t p { margin: 2px 0 0; font: 400 13px / 18px var(--pu-font-body); color: var(--pu-color-text-muted) }
+  .kit-card-t p.clip { white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+  .kit-card.stretch { align-self: stretch; height: 100%; box-sizing: border-box; grid-template-rows: auto 1fr auto }
+  .kit-card.stretch:not(:has(> .kit-card-h)) { grid-template-rows: 1fr auto }
+  .kit-card-f { display: flex; gap: 8px; margin: 0 -16px -16px; padding: 14px 16px; border-top: 1px solid var(--pu-color-card-border) }
+  .kit-card-f > * { flex: 1 1 0; min-width: 0 }
+  .kit-card.flush > .kit-card-f { margin: 0; padding: 14px 18px }
+  .kit-card-h.has-icon { justify-content: flex-start }
+  .kit-card-h.has-icon > .kit-card-t { flex: 1 1 auto }
+  .kit-card-h.has-icon .kit-card-t :is(h2, h3) { font-size: 16px }
+  .kit-card-h.rule { margin: -16px -16px 0; padding: 16px 18px; border-bottom: 1px solid var(--pu-color-card-border) }
+  .kit-card.flush > .kit-card-h.rule { margin: 0; padding: 16px 18px }
+  :is(.kit-card, .kit-contrast, .kit-group, .kit-prompt, .kit-steps) .kit-note:not(.quiet, .plain) { padding: 12px 0 0; border-radius: 0; background: none; border-top: 1px solid var(--pu-color-card-border) }
 }

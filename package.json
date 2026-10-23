@@ -31,6 +31,10 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
+    "./avatar": {
+      "types": "./dist/avatar/Avatar.d.ts",
+      "default": "./dist/avatar/Avatar.js"
+    },
     "./button": {
       "types": "./dist/button/Button.d.ts",
       "default": "./dist/button/Button.js"
@@ -63,6 +67,10 @@
       "types": "./dist/drawer/Drawer.d.ts",
       "default": "./dist/drawer/Drawer.js"
     },
+    "./drawer-screen": {
+      "types": "./dist/drawer-screen/DrawerScreen.d.ts",
+      "default": "./dist/drawer-screen/DrawerScreen.js"
+    },
     "./fields": {
       "types": "./dist/fields/Fields.d.ts",
       "default": "./dist/fields/Fields.js"
@@ -70,6 +78,10 @@
     "./figures": {
       "types": "./dist/figures/Figures.d.ts",
       "default": "./dist/figures/Figures.js"
+    },
+    "./filter-chip": {
+      "types": "./dist/filter-chip/FilterChip.d.ts",
+      "default": "./dist/filter-chip/FilterChip.js"
     },
     "./floating-tooltip": {
       "types": "./dist/floating-tooltip/FloatingTooltip.d.ts",
@@ -103,6 +115,10 @@
       "types": "./dist/overlay/Overlay.d.ts",
       "default": "./dist/overlay/Overlay.js"
     },
+    "./popover": {
+      "types": "./dist/popover/Popover.d.ts",
+      "default": "./dist/popover/Popover.js"
+    },
     "./range-slider": {
       "types": "./dist/range-slider/RangeSlider.d.ts",
       "default": "./dist/range-slider/RangeSlider.js"
@@ -131,6 +147,10 @@
       "types": "./dist/status-pill/StatusPill.d.ts",
       "default": "./dist/status-pill/StatusPill.js"
     },
+    "./status-tag": {
+      "types": "./dist/status-tag/StatusTag.d.ts",
+      "default": "./dist/status-tag/StatusTag.js"
+    },
     "./switch": {
       "types": "./dist/switch/Switch.d.ts",
       "default": "./dist/switch/Switch.js"
@@ -142,6 +162,14 @@
     "./tabs": {
       "types": "./dist/tabs/Tabs.d.ts",
       "default": "./dist/tabs/Tabs.js"
+    },
+    "./chart-scale": {
+      "types": "./dist/chart-scale/chartScale.d.ts",
+      "default": "./dist/chart-scale/chartScale.js"
+    },
+    "./combo-step": {
+      "types": "./dist/combo-step/comboStep.d.ts",
+      "default": "./dist/combo-step/comboStep.js"
     },
     "./command-keys": {
       "types": "./dist/command-keys/commandKeys.d.ts",

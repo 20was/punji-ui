@@ -133,7 +133,8 @@ function transformTs(file) {
   const client = NEEDS_CLIENT.some((r) => r.test(text));
   if (client && !text.startsWith("'use client'")) text = `'use client';\n\n${text}`;
   const header = `// ${MARK} from Punji's web kit. Do not edit here:\n// change it in Punji, then sync (CONTRIBUTING.md, "How the kit is kept in sync").\n`;
-  return client ? text.replace("'use client';\n\n", `'use client';\n\n${header}`) : `${header}${text}`;
+  const output = client ? text.replace("'use client';\n\n", `'use client';\n\n${header}`) : `${header}${text}`;
+  return `${output.trimEnd()}\n`;
 }
 
 /* ---------------------------------------------------------------- CSS -- */

@@ -22,7 +22,7 @@ const LINK_IMPORT = "import type { LinkComponent } from '../internal/link.tsx';\
 
 /** @type {Record<string, Module>} keyed by the web kit's file name */
 export const MODULES = {
-  'BarList.tsx': { status: 'ship', reason: 'General ranked quantities with caller-supplied labels and values; register before the upstream component lands.', budget: '1.2 kB', awaitingUpstream: true },
+  'BarList.tsx': { status: 'pending', reason: "General ranked quantities, ready to ship except one line: it sets role=\"list\" on its <ol> (kept for Safari, which drops the role with list-style: none), which this package's a11y lint refuses. Same decision as InboxList, needed in Punji first.", budget: '1.2 kB' },
   'Button.tsx': {
     status: 'adapt',
     reason: 'Preserve package link semantics: plain <a> or linkComponent for in-app paths; no router or forced new tab.',
@@ -43,7 +43,7 @@ export const MODULES = {
       { find: 'the rare link the kit\'s Button cannot render\n * itself (a StockLink, a router link with its own props).', replace: 'the rare link the Button cannot render\n * itself (a link component with its own props).' },
     ],
   },
-  'Card.tsx': { status: 'ship', budget: '560 B' },
+  'Card.tsx': { status: 'ship', reason: 'Budget 560 B → 600 B on 2026-10-25 for the eyebrow and size="lg" props (Punji #315).', budget: '600 B' },
   'Checkbox.tsx': { status: 'ship', budget: '400 B' },
   'ChoiceGroup.tsx': { status: 'ship', budget: '430 B' },
   'Controls.tsx': { status: 'ship', budget: '1.2 kB' },

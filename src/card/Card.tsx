@@ -10,6 +10,7 @@ import type { ReactNode } from 'react';
 
 
 export interface CardProps {
+  /** The section's content. */
   children: ReactNode;
   /** The section's heading (an h2 unless `headingLevel` says otherwise). */
   title?: ReactNode;
@@ -31,9 +32,11 @@ export interface CardProps {
   eyebrow?: ReactNode;
   /** 'lg': a 24px title, for a panel that names the one thing it shows. */
   size?: 'lg';
+  /** The title's heading level: 2 (default) or 3, to fit the page outline. */
   headingLevel?: 2 | 3;
   /** Names the section for screen readers when there is no title. */
   label?: string;
+  /** Sets `data-testid` on the section. */
   testId?: string;
   /** Docked at the card's foot under a hairline (one or two buttons): stays at the bottom however short the content. */
   footer?: ReactNode;

@@ -63,10 +63,24 @@ export function FinancialTable<T>({ caption, columns, rows, rowKey, state = 'rea
   </DataTable>;
 }
 
-export interface PricePoint { label: string; value: number | null }
+export interface PricePoint {
+  /** The observation's name (a date), in order, oldest first; printed in the data table. */
+  label: string;
+  /** The value at that label. Null or not finite is a gap: the line breaks and the table shows `missingLabel`. */
+  value: number | null;
+}
 /** Straight segments, gaps stay gaps, fixed aspect ratio, and an accessible data table. */
 export function PriceChart({ points, label, formatValue, dataLabel = 'View chart data', missingLabel = 'Unavailable' }: {
-  points: readonly PricePoint[]; label: string; formatValue: (value: number) => string; dataLabel?: string; missingLabel?: string;
+  /** The observations in order. With no finite value at all the chart is replaced by an empty state titled `missingLabel`. */
+  points: readonly PricePoint[];
+  /** Names the chart (its caption and the image's accessible name). */
+  label: string;
+  /** Formats a value for the high and low labels and the data table. */
+  formatValue: (value: number) => string;
+  /** The words on the disclosure that opens the data table. Default 'View chart data'. */
+  dataLabel?: string;
+  /** Shown for a missing value in the data table, and as the title of the empty state when nothing is published. Default 'Unavailable'. */
+  missingLabel?: string;
 }) {
   const valid = points.flatMap(p => p.value !== null && Number.isFinite(p.value) ? [p.value] : []);
   if (!valid.length) return <EmptyState title={missingLabel} body={label} />;

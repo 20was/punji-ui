@@ -28,12 +28,15 @@ const COLUMNS: Record<MoverKind, readonly StockColumn[]> = {
 
 export interface MarketMoversProps<T extends Quote = Quote>
   extends Pick<StockTableProps<T>, 'money' | 'convention' | 'changeLabels' | 'renderSymbol' | 'live' | 'state' | 'onRetry' | 'retryLabel' | 'errorLabel' | 'loadingLabel' | 'density'> {
+  /** Every quote to rank, not a pre-ranked list: `rankMovers` picks each tab's rows from it. */
   quotes: readonly T[];
   /** Names the tab list and the table ("Market movers"). */
   label: string;
   /** Selected tab (controlled). */
   tab?: MoverKind;
+  /** The tab shown first when `tab` is not controlled. Default gainers. */
   defaultTab?: MoverKind;
+  /** Called with the tab the reader chose. */
   onTabChange?: (tab: MoverKind) => void;
   /** How many rows per tab. Default 5. */
   limit?: number;
@@ -41,9 +44,11 @@ export interface MarketMoversProps<T extends Quote = Quote>
   activeBy?: 'turnover' | 'volume';
   /** Tab names and empty messages in the reader's language. */
   tabLabels?: Partial<MoverLabels>;
+  /** The message each tab shows when it has no rows, keyed by tab. Overrides the English defaults. */
   emptyLabels?: Partial<MoverLabels>;
   /** Shown under the table, for example the as-of time. */
   footer?: ReactNode;
+  /** Sets `data-testid` on the section; the table gets `<id>-table`. */
   testId?: string;
 }
 

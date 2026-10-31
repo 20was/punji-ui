@@ -31,9 +31,11 @@ const TYPING = 'input, textarea, select, [contenteditable=""], [contenteditable=
 const phone = () => !!window.matchMedia?.('(max-width: 767px)').matches;
 
 export interface CompanySearchProps<T extends SymbolOption> {
+  /** The companies to search, each a symbol and a name. Ranked in memory: exact symbol, symbol prefix, name word prefix, then symbol contains. */
   options: readonly T[];
   /** The visible label over the field ("Find any company"); also its accessible name. */
   label: string;
+  /** The input's placeholder text. */
   placeholder: string;
   /** A suggestion was chosen (the finder opens it; the picker takes it as its new value). */
   onOpen: (symbol: string) => void;
@@ -43,9 +45,11 @@ export interface CompanySearchProps<T extends SymbolOption> {
   tags?: (o: T) => ReactNode;
   /** "No company matches “{q}”." */
   none: (q: string) => ReactNode;
+  /** Sets `data-testid` on the input (in the phone sheet: `<id>-sheet`, `<id>-sheet-input`, `<id>-sheet-close`). */
   testId: string;
   /** The suggestions' test ids: `${optionTestId}-${SYMBOL}`. */
   optionTestId: string;
+  /** Sets `data-testid` on the list of suggestions. */
   listTestId?: string;
   /** Hide the label visually (it stays the field's name). */
   hideLabel?: boolean;

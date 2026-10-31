@@ -31,6 +31,7 @@ export interface PriceLimitIndicatorProps {
   ltp: bigint | null | undefined;
   /** The exchange's published limits, minor units. Used when both are given. */
   lowerLimit?: bigint | null;
+  /** The exchange's published upper limit, minor units (see `lowerLimit`). */
   upperLimit?: bigint | null;
   /** The previous close; marks the middle of the bar and, with `bandRate`, derives the limits. */
   previousClose?: bigint | null;
@@ -38,10 +39,13 @@ export interface PriceLimitIndicatorProps {
   bandRate?: string;
   /** Names the stock ("NABIL") in the accessible name. */
   symbol?: string;
+  /** Currency and locale of the figures. Default NPR, en-IN, no currency mark. */
   money?: MoneyFormatConfig;
+  /** The words for the figures, the at-limit pill and the states, in the reader's language. Partial overrides of the English defaults. */
   labels?: Partial<PriceLimitLabels>;
   /** Show the limit figures under the bar (default true). */
   showFigures?: boolean;
+  /** Sets `data-testid` on the indicator. */
   testId?: string;
 }
 

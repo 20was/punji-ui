@@ -40,6 +40,7 @@ export interface CardLinkProps {
   newTabLabel?: string;
   /** A fuller name when the words alone are vague ("Stock page: NABIL"); the new-tab words are added to an outgoing one. */
   ariaLabel?: string;
+  /** Sets `data-testid` on the link. */
   testId?: string;
   /** Layout only (margin, grid placement), never a restyle. */
   className?: string;

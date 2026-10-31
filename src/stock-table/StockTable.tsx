@@ -44,6 +44,7 @@ export interface StockTableProps<T extends Quote = Quote> {
   labels?: Partial<Record<StockColumn, string>>;
   /** The sort being shown. Heads are sort buttons only when `onSortChange` is given. */
   sort?: QuoteSort;
+  /** Called with the sort a click on a column head asks for: a new column starts ascending for the symbol and descending for figures, and a repeat click on the sorted column flips its direction (the rule `nextQuoteSort` implements). The table does not reorder rows: sort `quotes` yourself and pass `sort` back. */
   onSortChange?: (sort: QuoteSort) => void;
   /** Currency and locale of prices and turnover. Default NPR, en-IN, no currency mark. */
   money?: MoneyFormatConfig;
@@ -53,6 +54,7 @@ export interface StockTableProps<T extends Quote = Quote> {
   changeLabels?: PriceChangeLabels;
   /** Selected symbols (controlled). Give `onSelectedSymbolsChange` to show checkboxes. */
   selectedSymbols?: readonly string[];
+  /** Called with the new list of selected symbols when a row checkbox changes. Keep it in state and pass it back as `selectedSymbols`. */
   onSelectedSymbolsChange?: (symbols: readonly string[]) => void;
   /** Accessible name of a row checkbox. Default `Select NABIL`. */
   selectLabel?: (symbol: string) => string;
@@ -72,11 +74,17 @@ export interface StockTableProps<T extends Quote = Quote> {
   renderSymbol?: (quote: T) => ReactNode;
   /** ready (default), loading (headers stay, rows replaced by a status line) or error. */
   state?: 'ready' | 'loading' | 'error';
+  /** Shown in place of rows when `quotes` is empty and `state` is `ready`. Default 'No quotes to show.' */
   emptyLabel?: ReactNode;
+  /** The status line shown while `state` is `loading`. Default 'Loading quotes…'. */
   loadingLabel?: string;
+  /** What failed, shown with the retry button when `state` is `error`. Default 'Quotes could not be loaded.' */
   errorLabel?: ReactNode;
+  /** The retry button's words when `state` is `error`. Default 'Try again'. */
   retryLabel?: string;
+  /** Called when the retry button is pressed. The button is drawn even without it (and then does nothing), so give it whenever `state` can be `error`. */
   onRetry?: () => void;
+  /** Sets `data-testid` on the root; inner parts get derived ids (`<id>-head-<column>`, `<id>-row-<symbol>`). */
   testId?: string;
 }
 

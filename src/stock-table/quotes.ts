@@ -9,7 +9,9 @@ import { percentageChange } from '../calculations/ratios.ts';
 export interface Quote {
   /** Unique, stable key (the ticker). */
   symbol: string;
+  /** The company's name, printed under the symbol in the default symbol cell. */
   name?: string;
+  /** The company's sector, for your own grouping and filtering. The display components here do not print it. */
   sector?: string;
   /** Last traded price, minor units. */
   ltp: bigint | null;
@@ -23,6 +25,7 @@ export interface Quote {
   history?: readonly (number | null)[];
   /** Daily circuit limits, minor units, when the exchange publishes them. */
   lowerLimit?: bigint | null;
+  /** The upper daily circuit limit, minor units, when the exchange publishes it (see `lowerLimit`). Pass it to `PriceLimitIndicator`; the tables do not print it. */
   upperLimit?: bigint | null;
 }
 

@@ -16,6 +16,7 @@ import type { ReactNode } from 'react';
 import { Skeleton } from '../states/States.tsx';
 
 export interface KeyStat {
+  /** The cell's label, above its value. */
   label: ReactNode;
   /** The figure as printed; null when it is not known. */
   value: ReactNode | null;
@@ -23,11 +24,14 @@ export interface KeyStat {
   sub?: ReactNode;
   /** A tone for a signed figure (a net position). */
   tone?: 'up' | 'down';
+  /** Sets `data-testid` on the cell. */
   testId?: string;
 }
 
 export function KeyStats({ items, cols = 2, layout = 'grid', empty, label, loading, testId }: {
+  /** The cells, in reading order. */
   items: readonly KeyStat[];
+  /** Columns of the grid layout: 2 (default) or 3. */
   cols?: 2 | 3;
   /** 'strip': one band of cells split by hairlines, as many to a row as fit (cols is ignored). */
   layout?: 'grid' | 'strip';
@@ -37,6 +41,7 @@ export function KeyStats({ items, cols = 2, layout = 'grid', empty, label, loadi
   label?: string;
   /** Skeleton values while the figures read (the labels stay). */
   loading?: boolean;
+  /** Sets `data-testid` on the list. */
   testId?: string;
 }) {
   return (

@@ -16,15 +16,18 @@ import { formatPrice } from '../nepal/market-format.ts';
 export interface MarketIndex {
   /** Stable key. */
   id: string;
+  /** The index's name ("NEPSE", "Sensitive"). */
   name: string;
   /** Points. Null when not published. */
   value: number | null;
+  /** The previous close in points; the change is derived from it and `value`. Null when not published. */
   previousValue: number | null;
   /** Closes for the trend line, oldest first. */
   history?: readonly (number | null)[];
 }
 
 export interface MarketIndicesProps {
+  /** The indices to show, in order. An empty list shows `emptyLabel`. */
   indices: readonly MarketIndex[];
   /** Names the group for screen readers ("Market indices"). */
   label: string;
@@ -32,19 +35,27 @@ export interface MarketIndicesProps {
   variant?: 'cards' | 'strip';
   /** Market status above the indices: a known state, or a `getMarketSession` result. */
   state?: MarketState;
+  /** A `getMarketSession` result: its state is shown above the indices. `state` takes precedence when both are given. */
   session?: MarketSession;
+  /** The words for each market state, in the reader's language. */
   statusLabels?: Partial<MarketStatusLabels>;
   /** Shown beside the status, for example "As of 15:00, 14 Oct". */
   asOf?: ReactNode;
+  /** Which colour means up. Default green-up. */
   convention?: 'green-up' | 'red-up';
+  /** Spoken direction words for the change. */
   changeLabels?: PriceChangeLabels;
   /** Decimals of the value; the change always uses two. Default 2. */
   fractionDigits?: number;
   /** Show the trend line (default true when an index has history). */
   showTrend?: boolean;
+  /** Show placeholders with a status label instead of the indices. */
   loading?: boolean;
+  /** The status label spoken while `loading`. Default 'Loading indices'. */
   loadingLabel?: string;
+  /** Shown when `indices` is empty. Default 'No index data.' */
   emptyLabel?: ReactNode;
+  /** Sets `data-testid` on the section. */
   testId?: string;
 }
 

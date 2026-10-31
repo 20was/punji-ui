@@ -9,10 +9,17 @@
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 
 
-type ScreenProps = ComponentPropsWithoutRef<'form'> & { as?: 'div' | 'form'; /** 'page': the same screen pushed full screen on a phone (its footer on the page ground). */ ground?: 'panel' | 'page'; testId?: string };
+export type DrawerScreenProps = ComponentPropsWithoutRef<'form'> & {
+  /** div (default), or the form itself so Enter submits and the footer's Save is a submit button. */
+  as?: 'div' | 'form';
+  /** 'page': the same screen pushed full screen on a phone (its footer on the page ground). */
+  ground?: 'panel' | 'page';
+  /** Becomes data-testid on the screen. */
+  testId?: string;
+};
 
 /** One screen of the drawer, filling its height: header, the content, the docked footer. */
-export function DrawerScreen({ as = 'div', ground = 'panel', className, testId, children, ...rest }: ScreenProps) {
+export function DrawerScreen({ as = 'div', ground = 'panel', className, testId, children, ...rest }: DrawerScreenProps) {
   const cls = `kit-drawer-screen${ground === 'page' ? ' on-page' : ''}${className ? ` ${className}` : ''}`;
   if (as === 'form')
     return (
@@ -37,7 +44,22 @@ const Icon = ({ d }: { d: string }) => (
 );
 
 /** The screen's title, a back chevron when it was opened from another screen, and the close (x). */
-export function DrawerHeader({ title, onBack, onClose, backLabel, closeLabel, testId = 'desk-form' }: { title: ReactNode; onBack?: () => void; onClose: () => void; backLabel: string; closeLabel: string; testId?: string }) {
+export interface DrawerHeaderProps {
+  /** The screen's title; it is the heading (h2). */
+  title: ReactNode;
+  /** Shows a back chevron that calls this, when the screen was opened from another one. */
+  onBack?: () => void;
+  /** Called by the close (x) button. */
+  onClose: () => void;
+  /** The back button's accessible name ("Back to holdings"). */
+  backLabel: string;
+  /** The close button's accessible name ("Close"). */
+  closeLabel: string;
+  /** Prefix for the buttons' test ids: `${testId}-back` and `${testId}-close`. */
+  testId?: string;
+}
+
+export function DrawerHeader({ title, onBack, onClose, backLabel, closeLabel, testId = 'desk-form' }: DrawerHeaderProps) {
   return (
     <div className={`kit-drawer-head${onBack ? '' : ' noback'}`}>
       {onBack && (
@@ -54,7 +76,18 @@ export function DrawerHeader({ title, onBack, onClose, backLabel, closeLabel, te
 }
 
 /** The screen's own content, between the header and the footer. */
-export function DrawerBody({ children, title, description, action }: { children: ReactNode; /** Optional content heading, without an inset card or extra padding. */ title?: ReactNode; /** Full descriptive text under the heading. */ description?: ReactNode; /** One link or action beside the content heading. */ action?: ReactNode }) {
+export interface DrawerBodyProps {
+  /** The fields and text of the screen. */
+  children: ReactNode;
+  /** Optional content heading, without an inset card or extra padding. */
+  title?: ReactNode;
+  /** Full descriptive text under the heading. */
+  description?: ReactNode;
+  /** One link or action beside the content heading. */
+  action?: ReactNode;
+}
+
+export function DrawerBody({ children, title, description, action }: DrawerBodyProps) {
   return (
     <div className="kit-drawer-body">
       {title && (
@@ -72,7 +105,14 @@ export function DrawerBody({ children, title, description, action }: { children:
 }
 
 /** Save and Cancel, docked at the screen's foot; `note` is one quiet line under them (the keys). */
-export function DrawerFooter({ children, note }: { children: ReactNode; note?: ReactNode }) {
+export interface DrawerFooterProps {
+  /** The Save and Cancel buttons. */
+  children: ReactNode;
+  /** One quiet line under the buttons (the keys). */
+  note?: ReactNode;
+}
+
+export function DrawerFooter({ children, note }: DrawerFooterProps) {
   return (
     <div className="kit-drawer-foot">
       <div className="kit-drawer-acts">{children}</div>

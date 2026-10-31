@@ -15,7 +15,9 @@
  *   empty        no dates, no series or no real value at all prints `labels.empty`.
  *   single       one date draws one dot per series, centred.
  *   gaps         a missing value breaks that series' line and area; it is "none"
- *                in the table, never zero. A benchmark that starts later starts later.
+ *                in the table, never zero. A benchmark that starts later starts later,
+ *                level with the portfolio's percent change on its first date
+ *                (rebaseOnto), not at 0%, so the two stay comparable.
  *   zero base    a first value of zero cannot be a base: that series is not drawn
  *                when normalised and is listed in the table as "none".
  *   flat         a constant series draws on a widened round scale.
@@ -33,7 +35,7 @@
  */
 import { useId, useMemo, useState, type CSSProperties, type PointerEvent, type ReactNode } from 'react';
 
-import { downsampleIndices, niceTicks, rebase } from '../chart-math/chartMath.ts';
+import { downsampleIndices, niceTicks, rebase, rebaseOnto } from '../chart-math/chartMath.ts';
 import { ChartTooltip, clamp, isNum, shortDate, thinned, useChartCursor, useMeasuredWidth } from '../internal/chartFrame.tsx';
 
 export interface PerformanceSeries {
@@ -122,10 +124,12 @@ function Plot({ dates, series, label, normalize = true, area = true, convention 
   const svgH = top + plotH + AXIS_H;
 
   const shown = useMemo(
-    () => series.map((s) => {
-      const raw = Array.from({ length: n }, (_, i) => (isNum(s.values[i]) ? (s.values[i] as number) : null));
-      return { s, raw, y: normalize ? rebase(raw) : raw };
-    }),
+    () => {
+      const raws = series.map((s) => Array.from({ length: n }, (_, i) => (isNum(s.values[i]) ? (s.values[i] as number) : null)));
+      const lead = normalize ? rebase(raws[0]!) : raws[0]!;
+      // A benchmark that starts later continues from the portfolio's level on its first date (see rebaseOnto).
+      return series.map((s, k) => ({ s, raw: raws[k]!, y: normalize ? (k === 0 ? lead : rebaseOnto(raws[k]!, lead)) : raws[k]! }));
+    },
     [series, n, normalize],
   );
   const visible = shown.filter((x) => !hidden.has(x.s.key));

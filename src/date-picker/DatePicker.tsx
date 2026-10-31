@@ -1,13 +1,21 @@
 'use client';
 
-import { useEffect, useId, useRef, useState } from 'react';
-import { Popover } from '../popover/Popover.tsx';
+import { lazy, Suspense, useEffect, useId, useRef, useState } from 'react';
 import { useMediaQuery } from '../use-media-query/useMediaQuery.ts';
 import { Field } from '../fields/Fields.tsx';
 import { Button } from '../button/Button.tsx';
-import { Calendar, type CalendarBaseProps } from '../calendar/Calendar.tsx';
+import type { CalendarBaseProps } from '../calendar/Calendar.tsx';
+import type DatePickerPanel from './DatePickerPanel.tsx';
 import { calendarLimits, displayParts, isoDate, parseDateInput, rangeAvailable, requireISO, type DateRange } from '../calendar/calendarMath.ts';
 import { calendarLabels } from '../calendar/labels.ts';
+
+// The popover, the calendar grid and the range footer exist only while the picker is open, so they are their own
+// chunk. The typed fields and the trigger load with the picker; the panel loads on the first hover or focus (or the
+// first open). Once loaded it renders synchronously, so a second open never waits.
+type PanelComponent = typeof DatePickerPanel;
+let loadedPanel: PanelComponent | undefined;
+const loadPanel = () => import('./DatePickerPanel.tsx').then((m) => (loadedPanel = m.default));
+const LazyPanel = lazy(() => loadPanel().then((component) => ({ default: component })));
 
 export interface DatePickerBaseProps extends Omit<CalendarBaseProps, 'bare' | 'autoFocus'> {
   /** Id of the input; generated when omitted. */
@@ -41,6 +49,8 @@ function Picker(props:PickerProps) {
   const root=useRef<HTMLDivElement>(null), anchor=useRef<HTMLButtonElement>(null);
   const positionAnchor=useRef<HTMLElement|null>(null);
   const [open,setOpen]=useState(false);
+  // Once opened the panel stays mounted (closed), as the popover did.
+  const [everOpened,setEverOpened]=useState(false);
   const [host,setHost]=useState<HTMLElement>();
   const touch=useMediaQuery('(max-width: 640px), (pointer: coarse)');
   const [draft,setDraft]=useState<string | DateRange | null>(props.value);
@@ -89,22 +99,21 @@ function Picker(props:PickerProps) {
   useEffect(()=>{
     for(const input of root.current?.querySelectorAll<HTMLInputElement>('.pu-date-fields input')??[]) input.setCustomValidity(input.id===id?(startInvalid?nativeError:''):nativeError);
   },[id,nativeError,startInvalid]);
-  const begin=()=>{if(disabled||readOnly)return;positionAnchor.current=root.current?.querySelector<HTMLElement>('.kit-field-control')??null;setHost(root.current?.closest('dialog')??document.body);setDraft(props.value);setOpen(true);};
+  const begin=()=>{if(disabled||readOnly)return;positionAnchor.current=root.current?.querySelector<HTMLElement>('.kit-field-control')??null;setHost(root.current?.closest('dialog')??document.body);setDraft(props.value);setEverOpened(true);setOpen(true);};
   const finish=()=>{setOpen(false);anchor.current?.focus({preventScroll:true});};
   const choose=(value:string|null)=>{if(props.range||disabled||readOnly)return;props.onChange(value);setTyped(null);finish();};
   const approve=()=>{if(!props.range||disabled||readOnly)return;const range=draft as DateRange|null;if(range?!range.end:required)return;props.onChange(range);setTyped(null);finish();};
   const base:CalendarBaseProps={label:props.label,calendar,onCalendarChange:props.onCalendarChange,locale:props.locale,language,digits,labels:props.labels,weekStartsOn:props.weekStartsOn,min:props.min,max:props.max,isDateUnavailable:props.isDateUnavailable,today:props.today,defaultMonth:props.defaultMonth,required,disabled,readOnly,bare:true,autoFocus:true};
-  const calendarUI=props.range?<Calendar {...base} mode="range" value={draft as DateRange|null} onChange={setDraft}/>:<Calendar {...base} value={typeof draft==='string'?draft:null} onChange={choose}/>;
-  return <div className="pu-date-picker" ref={root} data-testid={props.testId}>
+  return <div className="pu-date-picker" ref={root} data-testid={props.testId} onPointerEnter={()=>{void loadPanel();}} onFocus={()=>{void loadPanel();}}>
     <div className="pu-date-controls"><div className={`pu-date-fields${props.range?' range':''}`}>
       <Field trailingAction={<Button ref={anchor} iconOnly label={`${props.range?words.chooseRange:words.chooseDate}: ${props.label}${valueStart?`, ${display(valueStart)}`:''}`} variant="ghost" size="lg" aria-haspopup="dialog" aria-expanded={open} aria-controls={open?panelId:undefined} disabled={disabled||readOnly} onClick={begin} testId={props.testId?`${props.testId}-trigger`:undefined}><CalendarIcon/></Button>} id={id} label={props.range?`${props.label} · ${words.startDate}`:props.label} value={startText} onChange={text=>changeText('start',text)} onBlur={event=>{if(props.range&&event.relatedTarget instanceof Node&&root.current?.contains(event.relatedTarget))return;commit();}} onKeyDown={event=>{if(event.key==='Enter'){event.preventDefault();commit();}else if(event.key==='ArrowDown'&&event.altKey){event.preventDefault();begin();}}} disabled={disabled} readOnly={readOnly} required={required} placeholder={words.formatHint} hint={props.hint??`${words.formatHint} · ${calendar==='gregory'?words.gregorian:words.bikramSambat}`} error={startInvalid?error||undefined:undefined} maxLength={10} autoComplete="off" inputMode="text" testId={props.testId?`${props.testId}-input`:undefined}/>
       {props.range&&<Field id={`${id}-end`} label={words.endDate} value={endText} onChange={text=>changeText('end',text)} onBlur={commit} onKeyDown={event=>{if(event.key==='Enter'){event.preventDefault();commit();}}} disabled={disabled} readOnly={readOnly} required={required} placeholder={words.formatHint} error={!startInvalid?error||undefined:undefined} hint={`${words.formatHint} · ${calendar==='gregory'?words.gregorian:words.bikramSambat}`} maxLength={10} autoComplete="off" inputMode="text" testId={props.testId?`${props.testId}-end-input`:undefined}/>}
     </div></div>
     {props.name&&(props.range?<><input type="hidden" name={`${props.name}.start`} value={valueStart} disabled={disabled}/><input type="hidden" name={`${props.name}.end`} value={valueEnd} disabled={disabled}/></>:<input type="hidden" name={props.name} value={valueStart} disabled={disabled}/>)}
-    <Popover open={open} onClose={()=>setOpen(false)} anchor={anchor} positionAnchor={positionAnchor} label={props.label} id={panelId} align="start" portal={host??true} width={touch?336:308} initialFocus='[data-calendar-focus="true"]'>
-      {calendarUI}
-      {props.range&&<footer className="pu-date-actions"><Button variant="ghost" size="sm" onClick={finish}>{words.cancel}</Button><Button size="sm" disabled={disabled||readOnly||(draft?!((draft as DateRange).end):required)} onClick={approve}>{words.apply}</Button></footer>}
-    </Popover>
+    {(open||everOpened)&&(()=>{
+      const Panel=loadedPanel??LazyPanel;
+      return <Suspense fallback={null}><Panel open={open} onClose={()=>setOpen(false)} anchor={anchor} positionAnchor={positionAnchor} label={props.label} id={panelId} host={host} touch={touch} calendar={base} range={!!props.range} draft={draft} setDraft={setDraft} choose={choose} finish={finish} approve={approve} words={words} disabled={disabled} readOnly={readOnly} required={required}/></Suspense>;
+    })()}
   </div>;
 }
 export function DatePicker(props:DatePickerProps) {return <Picker {...props}/>;}

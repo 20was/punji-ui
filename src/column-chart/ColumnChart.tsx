@@ -31,7 +31,9 @@
  * every figure by row. Series are told apart by the legend and the table, not
  * by colour alone.
  */
-import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
+
+import { clamp, isNum, useMeasuredWidth } from '../internal/chartFrame.tsx';
 
 export type ColumnTone = 'chart' | 'series2' | 'series3' | 'series4' | 'neutral' | 'gain' | 'loss';
 
@@ -101,8 +103,6 @@ const SHORT_LABEL_PX = 48;
 /** Printed width of one character of a total (12px, tabular), plus a gap between neighbours. */
 const TOTAL_CHAR_PX = 7;
 
-const isNum = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
-const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 const pct = (v: number, of: number) => (of > 0 && Number.isFinite(v) ? clamp((v / of) * 100, 0, 100) : 0);
 
 /** A round scale top at or above `v`: 1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6 or 8 times a power of ten, so the tallest column fills most of the plot. */
@@ -120,6 +120,8 @@ export function labelledColumns(n: number, perCol: number, need: number): Set<nu
   for (let i = n - 1; i >= 0; i -= step) out.add(i);
   return out;
 }
+
+const value = (c: ColumnDatum, i: number): number | undefined => (isNum(c.values[i]) ? c.values[i] : undefined);
 
 export function ColumnLegend({ series, testId }: { series: readonly ColumnSeries[]; testId?: string }) {
   return (
@@ -146,24 +148,14 @@ export function ColumnChart(props: ColumnChartProps) {
 }
 
 function ColumnPlot({ series, columns, label, format = String, formatAxis, height = 200, minSlots = 6, legend = false, axis = true, labels, testId }: ColumnChartProps) {
-  const area = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(0);
-  useLayoutEffect(() => {
-    const el = area.current;
-    if (!el) return;
-    setWidth(el.clientWidth);
-    if (typeof ResizeObserver === 'undefined') return;
-    const ro = new ResizeObserver(() => setWidth(el.clientWidth));
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+  // 0 until the first measurement: the columns then lay out at their natural size, with every label shown.
+  const { ref: area, width } = useMeasuredWidth(0);
 
   const none = labels?.none ?? 'none';
   const n = columns.length;
   const plotH = clamp(isNum(height) ? height : 200, 96, 480);
   const slots = Math.max(n, Math.max(1, Math.floor(minSlots) || 1));
   const lead = Math.floor((slots - n) / 2);
-  const value = (c: ColumnDatum, i: number): number | undefined => (isNum(c.values[i]) ? c.values[i] : undefined);
   const sums = columns.map((c) => {
     let up = 0;
     let down = 0;

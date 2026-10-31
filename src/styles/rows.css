@@ -17,6 +17,9 @@
   .kit-value-row .title .name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 400; color: var(--pu-color-text-muted) }
   .kit-value-row .line { font-size: var(--pu-text-sm); color: var(--pu-color-text-muted); line-height: 1.4; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
   .kit-value-row .side { display: grid; justify-items: end; gap: 2px; text-align: right }
+  .kit-value-row .side:has(> .kit-chev) { grid-template-columns: minmax(0, 1fr) auto; column-gap: 8px; align-items: center }
+  .kit-value-row .side:has(> .kit-chev) > .fig, .kit-value-row .side:has(> .kit-chev) > .note { grid-column: 1 }
+  .kit-value-row .side > .kit-chev { grid-column: 2; grid-row: 1 / span 2; flex: none }
   .kit-value-row .fig { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap }
   .kit-value-row .note { font-size: var(--pu-text-sm); font-variant-numeric: tabular-nums; white-space: nowrap }
   .kit-value-act { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center }

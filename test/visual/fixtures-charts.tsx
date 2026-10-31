@@ -36,6 +36,10 @@ function PerformanceFixture() {
       <Card title="Against NEPSE and Sensitive"><PerformanceChart testId="vr-perf" label="Portfolio against indices" dates={performanceDates} series={performanceSeries} periods={<span>1M · 3M · All</span>} /></Card>
       <Card title="Raw value"><PerformanceChart label="Portfolio value" dates={performanceDates} series={portfolioOnly} normalize={false} height={200} formatValue={(v) => `Rs ${new Intl.NumberFormat('en-IN').format(v)}`} /></Card>
       <Card title="Red-up"><PerformanceChart label="Portfolio, red-up" dates={performanceDates} series={portfolioOnly} convention="red-up" height={200} /></Card>
+      <Card title="Benchmark that starts later"><PerformanceChart label="Portfolio against an index listed mid-period" dates={performanceDates.slice(0, 30)} height={200} series={[
+        { key: 'p', label: 'Portfolio', values: performanceSeries[0]!.values.slice(0, 30) },
+        { key: 'n', label: 'New index', values: performanceSeries[1]!.values.slice(0, 30).map((v, i) => (i < 14 ? null : v)) },
+      ]} /></Card>
       <Card title="One date"><PerformanceChart label="One date" dates={['2025-11-14']} series={[{ key: 'a', label: 'Portfolio', values: [1_000_000] }]} height={160} /></Card>
       <Card title="Flat"><PerformanceChart label="Flat" dates={performanceDates.slice(0, 10)} series={[{ key: 'a', label: 'Cash', values: performanceDates.slice(0, 10).map(() => 500_000) }]} height={160} /></Card>
       <Card title="Empty"><PerformanceChart label="Nothing yet" dates={[]} series={[]} /></Card>

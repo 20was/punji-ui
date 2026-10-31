@@ -83,7 +83,7 @@ try {
   if (!project) throw new Error('site/tsconfig.api.json did not open');
   const { program, checker } = project;
   const flags = NodeBuilderFlags.NoTruncation;
-  const typeText = (type) => checker.typeToString(type, undefined, flags);
+  const typeText = (type, extra = 0) => checker.typeToString(type, undefined, flags | extra);
   const rows = (type) => {
     // A union (e.g. text button | icon-only button) documents the union of its members' props.
     const members = type.isUnionType() ? type.getTypes() : [type];
@@ -163,9 +163,11 @@ try {
         entry.props = props.rows;
         entry.inherited = props.inherited;
       } else {
-        entry.definition = typeText(declared);
+        // InTypeAlias stops the printer from naming the alias itself (`type X = X`): show what it resolves to.
+        entry.definition = typeText(declared, NodeBuilderFlags.InTypeAlias);
       }
     }
+    if (entry.definition === name) errors.push(`${label}: definition is the self-referential alias "type ${name} = ${name}"; the generator must show the resolved type`);
     for (const e of errors) problems.push(`api: ${e}`);
     apiData[name] = entry;
   }

@@ -122,6 +122,18 @@ export const LEADS: Readonly<Record<string, string>> = {
   'status-pill': 'Short labels for a state or tag, such as Open, Bonus or New, plus a count badge.',
   'locked-note': 'A plain note that a view is not included in this account, instead of a blurred fake.',
 
+  // Forms and feedback additions
+  chip: 'A pill you press to filter or toggle, and a single-choice row of them, for sectors, quick amounts and section jumps.',
+  'filter-chip': 'One filter that is set, in words, that you press to edit and remove with its x.',
+  'show-more': 'The last line of a long list in its card: Show all 24, then Show fewer.',
+  'inline-confirm': 'Ask before a destructive action, in the place of the row that asked, with the danger button naming what goes.',
+  avatar: 'A person\'s initials in a circle for account lines and lists. Never a photo.',
+  'status-tag': 'The state of a setting at the end of its row, in a word or two, read and never pressed.',
+  'stat-grid': 'A grid of labelled figures with notes: two across on a phone, four on a wide screen.',
+  sheet: 'A short modal decision with Tab trapped and Esc to close, and a Dock that keeps the main action in reach.',
+  'drawer-screen': 'The inside of a Drawer: header, body and a footer that keeps Save and Cancel in reach.',
+  'chart-scale': 'Round-tick Y scales that make a value line fill its plot, and name a second series that is far away.',
+
   // Utilities
   hooks: 'Small React hooks for clipboard, storage, media queries, pagination and more, all safe to render on the server.',
 };

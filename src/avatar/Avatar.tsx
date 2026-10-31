@@ -33,15 +33,19 @@ export function Avatar({
   testId,
   className,
 }: {
+  /** The person's name; the first and last word give the initials. */
   name?: string | null;
+  /** Used for the first letter when there is no name. */
   email?: string | null;
   /** sm 32, md 40 (a row), lg 56 (the account line). */
   size?: AvatarSize;
   /** neutral on a card; accent for the one account button in a bar. */
   tone?: 'neutral' | 'accent';
+  /** Draws a skeleton circle of the same size while the name loads. */
   loading?: boolean;
   /** Names the avatar when no name is written beside it. */
   label?: string;
+  /** Becomes data-testid on the circle. */
   testId?: string;
   /** Layout only (margin, flex), never a restyle. */
   className?: string;

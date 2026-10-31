@@ -8,7 +8,24 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 
 import { ToneIcon } from '../states/States.tsx';
 
-export function Sheet({ open, title, body, children, onClose, testId, closeLabel = 'Close' }: { open: boolean; title: ReactNode; body?: ReactNode; children: ReactNode; onClose: () => void; testId?: string; closeLabel?: string }) {
+export interface SheetProps {
+  /** Shown or not. Nothing renders while false. */
+  open: boolean;
+  /** The decision as a heading ("Sell 40 NTC?"). Names the dialog. */
+  title: ReactNode;
+  /** One line under the title saying what happens. */
+  body?: ReactNode;
+  /** The buttons or the one or two fields. */
+  children: ReactNode;
+  /** Called by Esc, the scrim and the close button. */
+  onClose: () => void;
+  /** Becomes data-testid on the dialog. */
+  testId?: string;
+  /** The close button's accessible name (default "Close"). Pass it in the reader's language. */
+  closeLabel?: string;
+}
+
+export function Sheet({ open, title, body, children, onClose, testId, closeLabel = 'Close' }: SheetProps) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!open) return;
@@ -121,6 +138,11 @@ export function useToast(): ToastApi {
 }
 
 /** A page's main action docked at the bottom (the app's BottomDock). */
-export function Dock({ children }: { children: ReactNode }) {
+export interface DockProps {
+  /** The page's main action (a Button) and at most one quiet companion. */
+  children: ReactNode;
+}
+
+export function Dock({ children }: DockProps) {
   return <div className="kit-dock">{children}</div>;
 }

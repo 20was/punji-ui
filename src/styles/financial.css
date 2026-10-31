@@ -15,6 +15,10 @@
   .pu-chart figcaption { margin-bottom: var(--pu-space-2); }
   .pu-chart svg { display: block; width: 100%; height: auto; max-height: 260px; color: var(--pu-color-accent); fill: currentColor; }
   .pu-chart svg path { vector-effect: non-scaling-stroke; }
+  .pu-chart-plot { position: relative; border-radius: var(--pu-radius-control); }
+  .pu-chart-plot:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px; }
+  .pu-chart-cursor { stroke: var(--pu-color-text-muted); stroke-width: 1; stroke-dasharray: 2 2; vector-effect: non-scaling-stroke; }
+  .pu-chart-read { position: absolute; top: 0; left: 0; max-width: 100%; padding: 2px 8px; border: 1px solid var(--pu-color-border-default); border-radius: var(--pu-radius-sm); background: var(--pu-color-surface); color: var(--pu-color-text); font-size: var(--pu-text-sm); font-variant-numeric: tabular-nums; pointer-events: none; }
   .pu-chart-range { gap: var(--pu-space-3); margin-bottom: var(--pu-space-1); }
   @media (max-width: 520px) { .pu-chart svg { height: 180px; max-height: none; } }
   .pu-chart-range { display: flex; justify-content: space-between; color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums; }

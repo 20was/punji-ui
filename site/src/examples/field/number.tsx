@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { NumberField, PriceField } from '@punji/ui/fields';
 import { parseMinorUnits } from '@punji/ui/nepal/money';
 
-// NumberField only asks a phone for the number keypad (inputMode); its value stays text, so parsing is yours.
+// NumberField keeps the text as typed and, through onValueChange, reports it parsed: "१,२०,०००" arrives as "120000".
 // For money, parse to exact minor units instead of Number(): parseMinorUnits throws rather than rounding silently.
 function toPaisa(text: string): bigint | null {
   try {
@@ -14,11 +14,19 @@ function toPaisa(text: string): bigint | null {
 
 export default function Example() {
   const [units, setUnits] = useState('120');
+  const [parsed, setParsed] = useState('120');
   const [price, setPrice] = useState('487.50');
   const paisa = toPaisa(price);
   return (
     <div className="ex-stack ex-narrow">
-      <NumberField integer label="Units" value={units} onChange={setUnits} hint="Whole shares only" />
+      <NumberField
+        integer
+        label="Units"
+        value={units}
+        onChange={setUnits}
+        onValueChange={(r) => setParsed(r.state === 'valid' ? r.value : '')}
+        hint={parsed ? `${parsed} shares` : 'Whole shares only'}
+      />
       <PriceField
         label="Limit price"
         value={price}

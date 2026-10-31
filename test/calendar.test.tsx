@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { userEvent } from '@testing-library/user-event';
 import { act, cleanup, fireEvent, render, screen, within, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach, beforeAll } from 'vitest';
 import { Calendar } from '../src/calendar/Calendar.tsx';
 import { DatePicker, DateRangePicker } from '../src/date-picker/DatePicker.tsx';
 import { monthLength, shiftMonth, parseDateInput, calendarLimits, dayNumber, fromDayNumber } from '../src/calendar/calendarMath.ts';
@@ -10,6 +10,14 @@ import { hydrateRoot } from 'react-dom/client';
 import { seriousViolations } from './axe.ts';
 const TODAY='2026-10-29';
 afterEach(cleanup);
+// The picker's popover panel is its own chunk, loaded on first hover, focus or open; after that it renders synchronously.
+// Load it once so the tests below can open a picker and read the dialog straight away.
+beforeAll(async()=>{
+  render(<DatePicker label="Warm up" value={null} onChange={()=>{}} today={TODAY}/>);
+  fireEvent.click(screen.getByRole('button',{name:/Choose date/}));
+  await screen.findByRole('dialog');
+  cleanup();
+});
 const cell=(container:HTMLElement,date:string)=>container.querySelector<HTMLButtonElement>(`button[data-date="${date}"]`)!;
 function RangeExample() {const [value,setValue]=useState<{start:string;end:string|null}|null>(null);return <Calendar label="Range" mode="range" value={value} onChange={setValue} today={TODAY} defaultMonth={TODAY} min="2026-01-01" max="2027-12-31" isDateUnavailable={date=>date==='2026-10-15'}/>;}
 describe('calendar math',()=>{

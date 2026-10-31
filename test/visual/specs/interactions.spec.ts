@@ -293,6 +293,8 @@ test.describe('money input', () => {
     await expect(input).toHaveValue('12,34,567.');
     await input.pressSequentially('5');
     await expect(input).toHaveValue('12,34,567.5');
+    // The amount is right-aligned, so the grouping stays in step with the digits as they are typed.
+    await expect(input).toHaveCSS('text-align', 'end');
   });
 
   test('CurrencyInput refuses a leading minus and letters', async ({ page }) => {

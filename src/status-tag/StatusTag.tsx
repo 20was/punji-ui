@@ -23,7 +23,20 @@ const PATHS: Record<StatusTagIcon, ReactNode> = {
   check: <path d="M3.5 8.5l3 3 6-7" />,
 };
 
-export function StatusTag({ children, tone = 'neutral', icon, testId, className }: { children: ReactNode; tone?: 'neutral' | 'accent'; icon?: StatusTagIcon; testId?: string; /** Layout only, never a restyle. */ className?: string }) {
+export interface StatusTagProps {
+  /** The state in a word or two ("View only", "On"). */
+  children: ReactNode;
+  /** neutral (default), or accent for a setting that is on. */
+  tone?: 'neutral' | 'accent';
+  /** A small glyph before the word. Decorative: the word carries the state. */
+  icon?: StatusTagIcon;
+  /** Becomes data-testid on the tag. */
+  testId?: string;
+  /** Layout only, never a restyle. */
+  className?: string;
+}
+
+export function StatusTag({ children, tone = 'neutral', icon, testId, className }: StatusTagProps) {
   return (
     <span className={`kit-tag${tone === 'accent' ? ' accent' : ''}${className ? ` ${className}` : ''}`} data-testid={testId}>
       {icon && (

@@ -74,7 +74,8 @@ move one price level; the readout says side, price, quantity and cumulative size
 ## Chart math (`chart-math`)
 
 Pure, no React or browser (enforced by `check-boundaries`): `niceTicks`, `bandScale`, `timeScale`, `validateOhlc`,
-`isValidOhlc`, `reduceCandles`, `downsampleIndices`, `sma`, `ema`, `rebase`, `cumulativeDepth`. Property-tested with
+`isValidOhlc`, `reduceCandles`, `aggregateByPeriod` (calendar weeks, months, quarters, years), `downsampleIndices`, `sma`, `ema`,
+`rebase`, `rebaseOnto` (a late-starting series continues from a reference level), `cumulativeDepth`. Property-tested with
 fast-check (`test/chart-math.test.ts`): ticks cover the domain, are ascending, evenly spaced and nice; downsampling keeps the
 endpoints and the global minimum and maximum; candle aggregation keeps open, close, extremes and total volume; an SMA is the
 mean of its window and blank until it fills; an EMA stays inside the data range; cumulative depth is monotone, best first and

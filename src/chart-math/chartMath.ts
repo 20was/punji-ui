@@ -9,7 +9,9 @@
  *   reduceCandles      aggregate candles into at most `max` buckets (open first, close last, high/low extremes, volume summed)
  *   downsampleIndices  keep at most about `max` points of a line, always the endpoints and the global min and max
  *   sma, ema           moving averages; `null` where the span is not full or the input is missing
+ *   aggregateByPeriod  candles grouped into calendar weeks, months, quarters or years (open first, close last, extremes, volume summed)
  *   rebase             a series as percent change from its first finite value
+ *   rebaseOnto         the same for a series that starts later, continuing from where a reference stood on its first date
  *   cumulativeDepth    order book levels as running quantity from the best price outward
  *
  * Missing, null and non-finite numbers are "no value" everywhere. They are
@@ -202,6 +204,76 @@ export function reduceCandles(candles: readonly Ohlc[], max: number): { candle: 
   return out;
 }
 
+export type CalendarPeriod = 'week' | 'month' | 'quarter' | 'year';
+
+export interface DatedOhlc extends Ohlc {
+  /** The session's date as "YYYY-MM-DD" (a calendar date; no time zone is involved). */
+  date: string;
+}
+
+export interface PeriodBucket {
+  /** The period: the week's first day ("2025-11-16"), "2025-11", "2025-Q4" or "2025". */
+  key: string;
+  /** The period's candle: first open, last close, highest high, lowest low, summed volume; `date` is the last session in it. */
+  candle: DatedOhlc;
+  /** Index of the first and last source candle in the period. */
+  from: number;
+  to: number;
+}
+
+const DAY = 86_400_000;
+const isoDate = (t: number) => new Date(t).toISOString().slice(0, 10);
+
+/** The period key a date falls in, or null when it is not a real "YYYY-MM-DD" date. */
+function periodKey(date: string, period: CalendarPeriod, weekStartsOn: number): string | null {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
+  if (!m) return null;
+  const [y, mo, d] = [Number(m[1]), Number(m[2]), Number(m[3])];
+  const t = Date.UTC(y, mo - 1, d);
+  if (isoDate(t) !== date) return null;
+  if (period === 'year') return String(y);
+  if (period === 'quarter') return `${y}-Q${Math.floor((mo - 1) / 3) + 1}`;
+  if (period === 'month') return `${y}-${m[2]}`;
+  const back = (new Date(t).getUTCDay() - weekStartsOn + 7) % 7;
+  return isoDate(t - back * DAY);
+}
+
+/**
+ * Group candles into calendar periods: each period's candle has the first
+ * open, the last close, the highest high, the lowest low and the summed
+ * volume. Candles must be in date order; a period is a run of neighbours in
+ * the same week, month, quarter or year, so a gap in time simply makes a
+ * shorter period. A candle whose date is not a real "YYYY-MM-DD" is left out.
+ * Weeks start on Sunday (NEPSE trades Sunday to Thursday); pass
+ * `weekStartsOn` (0 Sunday to 6 Saturday) for another convention. Only pass
+ * valid candles (see validateOhlc).
+ */
+export function aggregateByPeriod(candles: readonly DatedOhlc[], period: CalendarPeriod, options: { weekStartsOn?: number } = {}): PeriodBucket[] {
+  const start = isNum(options.weekStartsOn) ? ((Math.floor(options.weekStartsOn) % 7) + 7) % 7 : 0;
+  const out: PeriodBucket[] = [];
+  let open: { key: string; from: number; to: number; first: DatedOhlc; last: DatedOhlc; high: number; low: number; volume: number | null } | null = null;
+  const close = () => {
+    if (!open) return;
+    out.push({ key: open.key, from: open.from, to: open.to, candle: { date: open.last.date, open: open.first.open, high: open.high, low: open.low, close: open.last.close, volume: open.volume } });
+    open = null;
+  };
+  candles.forEach((c, i) => {
+    const key = periodKey(c.date, period, start);
+    if (key === null) return;
+    if (open && open.key !== key) close();
+    if (!open) open = { key, from: i, to: i, first: c, last: c, high: c.high, low: c.low, volume: isNum(c.volume) ? c.volume : null };
+    else {
+      open.to = i;
+      open.last = c;
+      if (c.high > open.high) open.high = c.high;
+      if (c.low < open.low) open.low = c.low;
+      if (isNum(c.volume)) open.volume = (open.volume ?? 0) + c.volume;
+    }
+  });
+  close();
+  return out;
+}
+
 /**
  * Indices of the points to keep when a line has more than `max` of them:
  * the first, the last, and the minimum and maximum of each bucket between
@@ -293,6 +365,23 @@ export function ema(values: readonly (number | null | undefined)[], span: number
 export function rebase(values: readonly (number | null | undefined)[]): (number | null)[] {
   const base = values.find(isNum);
   return values.map((v) => (isNum(v) && isNum(base) && base !== 0 ? ((v - base) / Math.abs(base)) * 100 : null));
+}
+
+/**
+ * Like `rebase`, for a series that starts later than the one it is compared
+ * with. On its first real date the series continues from where `reference`
+ * (already in percent, for example `rebase(portfolio)`) stood that day, so a
+ * benchmark that begins in March starts level with the portfolio instead of
+ * pretending the portfolio was at 0% then. Growth compounds:
+ * (1 + reference) x (1 + own) - 1. Without a real reference value on that day
+ * it is plain `rebase`.
+ */
+export function rebaseOnto(values: readonly (number | null | undefined)[], reference: readonly (number | null | undefined)[]): (number | null)[] {
+  const own = rebase(values);
+  const at = values.findIndex(isNum);
+  const anchor = at >= 0 ? reference[at] : undefined;
+  if (!isNum(anchor) || anchor === 0) return own;
+  return own.map((v) => (v === null ? null : ((1 + anchor / 100) * (1 + v / 100) - 1) * 100));
 }
 
 export interface DepthPoint {

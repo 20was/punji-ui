@@ -2,14 +2,16 @@
 
 /**
  * Form fields (design.punji.app/components/field): a label over a boxed
- * input, a hint or an error under it. NumberField accepts grouping commas
- * and Devanagari digits; DateField is the native date input; SymbolField is a
+ * input, a hint or an error under it. NumberField shows what was typed and
+ * reports a parsed result (grouping commas and Devanagari digits accepted);
+ * DateField is the native date input; SymbolField is a
  * combobox over a list the page hands it (no request per keystroke).
  */
 import { useId, useMemo, useState, type InputHTMLAttributes, type ReactNode, type Ref, type TextareaHTMLAttributes } from 'react';
 
 import { Select } from '../select/Select.tsx';
 import { searchSymbols, type SymbolOption } from '../format/format.ts';
+import { parseLocalizedDecimal, type DecimalParseResult } from '../nepal/decimal.ts';
 
 interface BaseProps {
   /** The visible label, a real <label> tied to the control. Keep it short and specific ("Units", not "Enter units"). */
@@ -75,13 +77,28 @@ export function Field({ label, hint, error, testId, value, onChange, id: idProp,
 }
 
 interface NumberExtras {
-  /** Whole numbers only: asks a phone for the numeric keypad (inputMode "numeric") instead of the decimal one. */
+  /** Whole numbers only: asks a phone for the numeric keypad (inputMode "numeric") and refuses a fraction when parsing. */
   integer?: boolean;
+  /** Most digits after the point that parsing accepts (0 to 9). Default 2, or 0 with `integer`. */
+  maxFractionDigits?: number;
+  /** Which grouping commas parsing accepts: "south-asian" (12,34,567, the default), "western" (1,234,567) or "none". */
+  grouping?: 'south-asian' | 'western' | 'none';
+  /** Called with the parsed result on every change, next to onChange: `valid` carries a plain ASCII decimal string with no commas ("1234567.5"); `partial`, `empty` and `invalid` (with a reason) say why there is no number yet. Never rounds. */
+  onValueChange?: (result: DecimalParseResult) => void;
 }
 
-/** A Field that asks a phone for a number keypad. The value stays text: it does not group, parse or validate (see parseMinorUnits and CurrencyInput). */
-export function NumberField({ integer, ...props }: InputProps & NumberExtras) {
-  return <Field {...props} inputMode={integer ? 'numeric' : 'decimal'} autoComplete="off" />;
+/** A Field for a number. The text stays exactly as typed (grouping commas and Devanagari digits included); `onValueChange` reports it parsed through parseLocalizedDecimal as an exact decimal string, never a float. It does not validate ranges or set `error` for you. */
+export function NumberField({ integer, maxFractionDigits, grouping, onValueChange, onChange, ...props }: InputProps & NumberExtras) {
+  const max = maxFractionDigits ?? (integer ? 0 : 2);
+  return <Field
+    {...props}
+    onChange={(v) => {
+      onChange(v);
+      onValueChange?.(parseLocalizedDecimal(v, { maxFractionDigits: max, grouping }));
+    }}
+    inputMode={integer ? 'numeric' : 'decimal'}
+    autoComplete="off"
+  />;
 }
 
 /** Several lines of text (a message, a note): the same box, at least two control heights tall, grows with `rows`. */

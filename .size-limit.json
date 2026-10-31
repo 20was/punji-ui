@@ -73,7 +73,7 @@
     "name": "fields (import from '@punji/ui/fields')",
     "path": "dist/fields/Fields.js",
     "import": "*",
-    "limit": "2.65 kB",
+    "limit": "3.15 kB",
     "gzip": true
   },
   {
@@ -283,13 +283,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "85.5 kB",
+    "limit": "86.9 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "26 kB",
+    "limit": "26.1 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -311,7 +311,7 @@
     "name": "Financial compositions",
     "path": "dist/financial/financial.js",
     "import": "*",
-    "limit": "4 kB",
+    "limit": "4.8 kB",
     "gzip": true
   },
   {
@@ -402,7 +402,7 @@
     "name": "Date pickers including Calendar",
     "path": "dist/date-picker/DatePicker.js",
     "import": "*",
-    "limit": "11.5 kB",
+    "limit": "13.1 kB",
     "gzip": true
   },
   {
@@ -654,7 +654,7 @@
     "name": "chart-math (import from '@punji/ui/chart-math')",
     "path": "dist/chart-math/chartMath.js",
     "import": "*",
-    "limit": "1.8 kB",
+    "limit": "2.31 kB",
     "gzip": true
   },
   {
@@ -899,7 +899,17 @@
     "name": "transaction-history (import from '@punji/ui/transaction-history')",
     "path": "dist/transaction-history/TransactionHistory.js",
     "import": "*",
-    "limit": "21.2 kB",
+    "limit": "17.3 kB",
+    "gzip": true,
+    "entry": [
+      "index"
+    ]
+  },
+  {
+    "name": "transaction-history with the date picker panel (all chunks)",
+    "path": "dist/transaction-history/TransactionHistory.js",
+    "import": "*",
+    "limit": "22.7 kB",
     "gzip": true
   }
 ]

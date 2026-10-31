@@ -161,3 +161,32 @@ export const ratingCounts = [
 
 /** A moment on a Sunday morning in Kathmandu (UTC 05:00 = 10:45 NPT), inside NEPSE's example pre-open. */
 export const sampleNow = new Date('2025-11-16T05:00:00Z');
+
+// Thirty closes for NABIL (NPR), oldest first.
+export const nabilCloses: readonly number[] = [
+  471.2, 473.5, 472.1, 475.9, 478.4, 477.0, 480.3, 479.1, 481.6, 484.2,
+  482.8, 485.5, 487.9, 486.1, 484.7, 483.2, 485.0, 488.6, 490.4, 489.2,
+  491.8, 493.5, 492.1, 490.7, 488.3, 486.9, 485.4, 486.8, 488.2, 487.5,
+];
+
+// Dividends received by fiscal year (NPR): cash, bonus shares and rights value.
+export const dividendSeries = [
+  { key: 'cash', label: 'Cash dividend', tone: 'chart' },
+  { key: 'bonus', label: 'Bonus shares', tone: 'series2' },
+  { key: 'rights', label: 'Rights value', tone: 'series3' },
+] as const;
+export const dividendColumns = [
+  { key: '79', label: '2079/80', short: '79/80', values: [84_000, 21_000, 6_500] },
+  { key: '80', label: '2080/81', short: '80/81', values: [120_000, 31_000, 0] },
+  { key: '81', label: '2081/82', short: '81/82', values: [134_500, 0, 12_000] },
+  { key: '82', label: '2082/83', short: '82/83', values: [98_750, 44_200, 9_800] },
+] as const;
+
+export const bookBids = [
+  { price: 546.9, quantity: 1840 }, { price: 546.5, quantity: 920 }, { price: 546, quantity: 2650 },
+  { price: 545.5, quantity: 410 }, { price: 545, quantity: 1130 },
+] as const;
+export const bookAsks = [
+  { price: 547, quantity: 1210 }, { price: 547.5, quantity: 3340 }, { price: 548, quantity: 760 },
+  { price: 548.6, quantity: 1580 }, { price: 549, quantity: 290 },
+] as const;

@@ -7,12 +7,14 @@ A self-contained Playwright gate that runs in this repository's CI without `punj
 | Spec | What it does |
 | --- | --- |
 | `test/visual/specs/visual.spec.ts` | One screenshot per fixture, theme (light, dark) and viewport. |
-| `test/visual/specs/interactions.spec.ts` | Combobox and select keyboard, drawer and sheet focus trap and Escape, popover, command palette, toasts, tabs arrow keys, table sort, search, pagination and selection, date picker, checkbox and switch, hover and focus-visible screenshots. Runs on the 1440 project. |
+| `test/visual/specs/interactions.spec.ts` | Combobox and select keyboard, drawer and sheet focus trap and Escape, popover, command palette, toasts, tabs arrow keys, table sort, search, pagination and selection, date picker, checkbox and switch, hover and focus-visible screenshots, `CurrencyInput` typing, grouping and precision refusal, the `CheckList` tab list (arrows, Home, End, wrap), and `Pagination` clicks, keyboard and the `0 of 0` state. Runs on the 1440 project. |
 | `test/visual/specs/a11y.spec.ts` | axe-core (injected from the `axe-core` devDependency) on every fixture in both themes at 390 and 1440. Fails on `serious` and `critical`. Colour contrast is included, unlike the jsdom tests. |
 
-Fixtures live in `test/visual/` (`fixtures.tsx`, `data.ts`, `manifest.ts`), separate from `src/`. Data is synthetic NEPSE-style (NABIL, NTC, HDL, NPR prices), never live. Each fixture is one URL: `/?fixture=<id>&theme=light|dark`; the root page lists them. Theme uses the library's own mechanism, `data-theme` on `<html>`.
+Fixtures live in `test/visual/` (`fixtures.tsx`, `fixtures-kit.tsx` for the money components and the kit modules migrated from punji-web, `data.ts`, `manifest.ts`), separate from `src/`. Data is synthetic NEPSE-style (NABIL, NTC, HDL, NPR prices), never live. Each fixture is one URL: `/?fixture=<id>&theme=light|dark`; the root page lists them. Theme uses the library's own mechanism, `data-theme` on `<html>`.
 
-Viewports: 390, 768 and 1440 for every fixture; 375, 1024 and 1920 additionally for fixtures marked `layout: true` in `manifest.ts` (tables, financial layouts, the shell). Overlays and the shell are captured as a full viewport, everything else as the fixture element.
+There are 55 fixtures and 448 committed baselines (204 of them for the 25 fixtures that cover the kit modules). A full run is 1,494 tests: 687 compare or interact, 807 are skipped by design (layout-only viewports, and the axe and interaction specs on projects they do not use).
+
+Viewports: 390, 768 and 1440 for every fixture; 375, 1024 and 1920 additionally for fixtures marked `layout: true` in `manifest.ts` (tables, financial layouts, the shell, order book depth, meters, check lists, key stats, step lists, link tables, column charts, metric tiles). Overlays and the shell are captured as a full viewport, everything else as the fixture element.
 
 Determinism: animations disabled, carets hidden, reduced motion, fixed locale and time zone, fonts awaited, two animation frames before each capture, fixed "today" in date components, toast timers frozen in the toast fixture. Tolerance is `maxDiffPixelRatio: 0.001`.
 
@@ -48,7 +50,7 @@ When a CI run fails, download the `visual-regression-diffs` artifact (uploaded o
 
 ## Adding a fixture
 
-1. Add the component states to `test/visual/fixtures.tsx` and register it in `registry`.
+1. Add the component states to `test/visual/fixtures.tsx` (or `fixtures-kit.tsx`, which is spread into `registry`) and register it.
 2. Add `{ id, title }` to `test/visual/manifest.ts` (`layout: true` for width-sensitive pieces, `page: true` for overlays).
 3. `npm run test:visual:update`, review the new PNGs, commit. The visual and axe specs pick it up automatically.
 

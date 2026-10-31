@@ -280,3 +280,101 @@ test.describe('hover and focus-visible', () => {
     });
   }
 });
+
+test.describe('money input', () => {
+  test('CurrencyInput groups in lakh and crore as you type and refuses a third paisa digit', async ({ page }) => {
+    await openFixture(page, 'currency-input', 'light');
+    const input = page.getByTestId('vr-ci');
+    await input.click();
+    await input.pressSequentially('1234567.891');
+    await expect(input).toHaveValue('12,34,567.89');
+    await input.press('Backspace');
+    await input.press('Backspace');
+    await expect(input).toHaveValue('12,34,567.');
+    await input.pressSequentially('5');
+    await expect(input).toHaveValue('12,34,567.5');
+  });
+
+  test('CurrencyInput refuses a leading minus and letters', async ({ page }) => {
+    await openFixture(page, 'currency-input', 'dark');
+    const input = page.getByTestId('vr-ci');
+    await input.click();
+    await input.pressSequentially('-4a2');
+    await expect(input).toHaveValue('42');
+  });
+
+  test('CurrencyInput for a currency with no fraction digits refuses the decimal point', async ({ page }) => {
+    await openFixture(page, 'currency-input', 'light');
+    const input = page.getByTestId('vr-ci-jpy');
+    await expect(input).toHaveValue('1,250,000');
+    await input.click();
+    await input.press('End');
+    await input.pressSequentially('.5');
+    await expect(input).toHaveValue('12,500,005');
+  });
+});
+
+test.describe('check list tab list', () => {
+  test('Arrow keys, Home and End move focus between tabs and wrap', async ({ page }) => {
+    await openFixture(page, 'check-list-tabs', 'light');
+    const tabs = page.getByRole('tab');
+    await expect(tabs).toHaveCount(3);
+    await tabs.nth(0).focus();
+    await page.keyboard.press('ArrowDown');
+    await expect(tabs.nth(1)).toBeFocused();
+    await page.keyboard.press('End');
+    await expect(tabs.nth(2)).toBeFocused();
+    await page.keyboard.press('ArrowDown');
+    await expect(tabs.nth(0)).toBeFocused();
+    await page.keyboard.press('ArrowUp');
+    await expect(tabs.nth(2)).toBeFocused();
+    await page.keyboard.press('Home');
+    await expect(tabs.nth(0)).toBeFocused();
+  });
+
+  test('Activating a tab selects it and shows its panel', async ({ page }) => {
+    await openFixture(page, 'check-list-tabs', 'dark');
+    await page.getByRole('tab', { name: /Diversification/ }).click();
+    await expect(page.getByRole('tab', { name: /Diversification/ })).toHaveAttribute('aria-selected', 'true');
+    await expect(page.getByTestId('vr-check-panel')).toHaveText('Detail: b');
+  });
+});
+
+test.describe('pagination', () => {
+  test('page buttons, next and previous move through the range and disable at the ends', async ({ page }) => {
+    await openFixture(page, 'pagination', 'light');
+    const range = page.getByTestId('vr-pager-range');
+    await expect(range).toHaveText('1–5 of 12');
+    await expect(page.getByTestId('vr-pager-prev')).toBeDisabled();
+    await page.getByTestId('vr-pager-page-2').click();
+    await expect(range).toHaveText('6–10 of 12');
+    await expect(page.getByTestId('vr-pager-page-2')).toHaveAttribute('aria-current', 'page');
+    await page.getByTestId('vr-pager-next').click();
+    await expect(range).toHaveText('11–12 of 12');
+    await expect(page.getByTestId('vr-pager-next')).toBeDisabled();
+    await page.getByTestId('vr-pager-prev').click();
+    await expect(range).toHaveText('6–10 of 12');
+  });
+
+  test('works from the keyboard', async ({ page }) => {
+    await openFixture(page, 'pagination', 'dark');
+    const range = page.getByTestId('vr-pager-range');
+    await page.getByTestId('vr-pager-page-1').focus();
+    await page.keyboard.press('Tab');
+    await expect(page.getByTestId('vr-pager-page-2')).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(range).toHaveText('6–10 of 12');
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('Tab');
+    await expect(page.getByTestId('vr-pager-next')).toBeFocused();
+    await page.keyboard.press('Space');
+    await expect(range).toHaveText('11–12 of 12');
+  });
+
+  test('an empty list reads 0 of 0 and offers no page button', async ({ page }) => {
+    await openFixture(page, 'pagination', 'light');
+    const empty = page.getByRole('navigation', { name: 'Pages' }).nth(3);
+    await expect(empty).toContainText('0 of 0');
+    await expect(empty.getByRole('button', { name: /Page/ })).toHaveCount(0);
+  });
+});

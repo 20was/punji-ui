@@ -8,9 +8,9 @@ Severity: **P0** blocks any release or causes data loss; **P1** blocks productio
 
 | Status | Findings |
 | --- | --- |
-| Fixed | Ownership of `src/`, public API drift, calculations layer, Nepal-locked money, visual regression, divergence in shared modules, Button new-tab |
+| Fixed | Ownership of `src/`, public API drift, calculations layer, Nepal-locked money, visual regression (55 fixtures, 25 added since the gate was built), divergence in shared modules, Button new-tab, the eight open visual defects listed below (plus three more found while extending the gate) |
 | Partial | Packaging (publishable, never published), web-only modules (17 of 96 migrated; see COMPONENT-INVENTORY.md), tables/charts/accounting/market compositions, browser a11y coverage, size budgets |
-| Open | Docs portal still lives in punji-web (P1), duplicates inside punji-web, six visual defects, manual screen-reader testing, first publish |
+| Open | Docs portal still lives in punji-web (P1), duplicates inside punji-web, manual screen-reader testing, first publish |
 
 Nothing is published to npm (`version` is `0.0.0`). The package is not production ready.
 
@@ -49,18 +49,25 @@ Nothing is published to npm (`version` is `0.0.0`). The package is not productio
 | Size budget creep | Aggregate budget grew from 11.5 kB to 21 kB (docs/ARCHITECTURE.md) and is now set in `.size-limit.json` (48.3 kB measured on 2026-10-31); tarball allowance grew from 320 KiB to the value in `scripts/check-pack.mjs` (732 kB measured) | P2 | Open | Budgets were raised with each module batch rather than held. Per-subpath budgets (89 entries) still guard consumers who import subpaths. No ceiling policy yet. Current measured sizes not re-run for this page |
 | Contrast coverage | jsdom axe disables colour contrast | P2 | Fixed | Contrast now checked by axe in the Playwright a11y spec (390 and 1440, both themes) |
 
-### Open visual defects
+### Visual defects
 
-Reported by the visual-regression review of the new gate. They are **not recorded elsewhere in the repository** ([docs/VISUAL-TESTING.md](docs/VISUAL-TESTING.md) lists only gate limits) and were not re-verified for this page. Already fixed by `visual-regression-css-fixes`: `ValueRow` without `lead` squeezing its figure, and `Card tone="inverse"` surface.
+Found by the visual-regression review, then fixed when the gate was extended to every component added since it was built (`test/visual/fixtures-kit.tsx`). Each was reproduced by a screenshot before the change and checked after it. Already fixed earlier by `visual-regression-css-fixes`: `ValueRow` without `lead` squeezing its figure, and `Card tone="inverse"` surface.
 
-| Component | Defect | Sev | Status |
-| --- | --- | --- | --- |
-| `Card` | Meta text wraps badly in narrow cards | P2 | Open |
-| `ChoiceGroup` | Compact selected state is invisible against the page background in dark theme | P2 | Open |
-| `DateRangePicker` | Truncates in narrow containers | P2 | Open |
-| `PriceChart` | Plot height too small at 390 px | P2 | Open |
-| `OrderBook` | At 390 px a column is clipped with no scroll affordance | P2 | Open |
-| Overlays | Inherit the page font instead of the token font | P3 | Open |
+| Component | Defect | Sev | Status | Fix |
+| --- | --- | --- | --- | --- |
+| `Card` | Meta text wraps jammed against the title in a narrow card | P2 | Fixed | The header title becomes a wrapping flex line when it has meta, so meta moves to its own line as a unit (`card.css`) |
+| `Card` header | `ColumnLegend` (three series) overlaps the title at 390 px | P2 | Fixed | Header wraps; the action drops under the title when it does not fit (`card.css`) |
+| `ChoiceGroup` | Compact selected pill invisible on the page in dark theme | P2 | Fixed | Dark selected pill uses `--pu-color-surface-tint` with a `--pu-color-border-strong` ring (`choice-group.css`) |
+| `DateRangePicker` | Fields side by side truncate the placeholder in a narrow container | P2 | Fixed | Stacks under a 340 px container width, by container query (`calendar.css`) |
+| `PriceChart` | Plot about 40 px tall at 390 px; labels crowd the title | P2 | Fixed | SVG stretches (`preserveAspectRatio="none"`, non-scaling stroke) to 180 px under 520 px wide; title and labels spaced (`financial.css`, `financial.tsx`) |
+| `OrderBook` | At 390 px the last column is clipped with no scroll affordance | P2 | Fixed | Smaller cell padding and wrapping heads under 480 px so four columns fit down to 320 px; a scroll shadow shows when it still overflows (`financial.css`, wrapper `div` in `financial.tsx`) |
+| Overlays | Inherit the page font instead of the token font | P3 | Fixed | `--pu-font-body` on sheet, drawer, toast, command palette, company-search sheet, popover and tooltip roots (`overlay.css`) |
+| `Pagination` | `0 of 0` still shows one page button | P3 | Fixed | No page buttons when `total` is 0 (`Pagination.tsx`, unit test) |
+| `Card size="lg"` | `meta` inherits the 24 px title size | P3 | Fixed | 15 px meta in a large card (`card.css`) |
+| `ShareBar` | Two-column legend truncates names in a card under 300 px | P2 | Fixed | One column under a 300 px container (`meter.css`) |
+| `KeyStats` | Three columns overlap values in a card under 320 px | P2 | Fixed | Columns fall to two below 96 px per column (`key-stats.css`) |
+
+Open, minor (observed in the new baselines, not changed): `RetryNote` puts its button at the left under the message when the message wraps, but at the right when it does not; `CheckRow` with an `action` and no figure stacks the action under the text on phones, offset by the button padding; `LinkTable` rows in a flush `Card` are inset 8 px from the card title. The compact `ChoiceGroup` change is below the screenshot tolerance in the existing `controls` baseline, so that baseline is unchanged; `choice-compact-page` covers it.
 
 ## Still not done
 

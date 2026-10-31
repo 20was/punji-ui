@@ -59,12 +59,13 @@
   .kit-range-legend :is(span, b) > :is(span, b) { display: block }
   .kit-range-legend b { font-weight: 500; color: var(--pu-color-text) }
 
-  .kit-share { display: grid; gap: 12px; min-width: 0 }
+  .kit-share { display: grid; gap: 12px; min-width: 0; container-type: inline-size }
   .kit-share-bar { display: flex; gap: 2px; height: 12px; border-radius: 6px; overflow: hidden }
   .kit-share-bar > i { display: block; min-width: 3px }
   .kit-share-bar.empty { background: color-mix(in srgb, var(--pu-color-text) 10%, transparent) }
   .kit-share-legend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; margin: 0; padding: 0; list-style: none }
   .kit-share-legend.one { grid-template-columns: minmax(0, 1fr) }
+  @container (max-width: 299px) { .kit-share-legend:not(.list, .rows, .grid) { grid-template-columns: minmax(0, 1fr) } }
   .kit-share-legend.list .kit-share-item { min-height: 28px; font-size: 14px }
   .kit-share-legend.list .kit-share-item b { font-weight: 600 }
   .kit-share-foot { margin: 0; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }

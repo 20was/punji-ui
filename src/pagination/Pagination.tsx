@@ -78,7 +78,7 @@ export function Pagination({
         <Button variant="ghost" size="sm" iconOnly label={previousLabel} disabled={!p.hasPrevious} onClick={() => onPageChange(p.page - 1)} testId={id('prev')}>
           <Chevron dir="left" />
         </Button>
-        {p.pageCount <= maxNumbers &&
+        {p.total > 0 && p.pageCount <= maxNumbers &&
           Array.from({ length: p.pageCount }, (_, i) => (
             <Button key={i} variant={i + 1 === p.page ? 'secondary' : 'ghost'} size="sm" aria-label={pageLabel(i + 1)} aria-current={i + 1 === p.page ? 'page' : undefined} onClick={() => onPageChange(i + 1)} className="kit-pager-n" testId={id(`page-${i + 1}`)}>
               {formatFigure(i + 1, 'int')}

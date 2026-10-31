@@ -85,7 +85,7 @@ export function PriceChart({ points, label, formatValue, dataLabel = 'View chart
   }).join(' ');
   return <figure className="pu-chart"><figcaption>{label}</figcaption>
     <div className="pu-chart-range"><span>{formatValue(max)}</span><span>{formatValue(min)}</span></div>
-    <svg viewBox="0 0 480 130" role="img" aria-label={label}><path d={path} fill="none" stroke="currentColor" strokeWidth="2" />{points.map((p, i) => p.value !== null && Number.isFinite(p.value) ? <circle key={i} cx={x(i)} cy={y(p.value)} r="2" /> : null)}</svg>
+    <svg viewBox="0 0 480 130" preserveAspectRatio="none" role="img" aria-label={label}><path d={path} fill="none" stroke="currentColor" strokeWidth="2" />{points.map((p, i) => p.value !== null && Number.isFinite(p.value) ? <circle key={i} cx={x(i)} cy={y(p.value)} r="2" /> : null)}</svg>
     <details><summary>{dataLabel}</summary><table><caption>{label}</caption><tbody>{points.map((point, i) => <tr key={i}><th scope="row">{point.label}</th><td>{point.value !== null && Number.isFinite(point.value) ? formatValue(point.value) : missingLabel}</td></tr>)}</tbody></table></details>
   </figure>;
 }
@@ -99,10 +99,10 @@ export function OrderBook({ bids, asks, caption, labels, formatPrice, formatQuan
 }) {
   const rows = Array.from({ length: Math.max(bids.length, asks.length) }, (_, index) => ({ index, bid: bids[index], ask: asks[index] }));
   const value = (n: number | undefined, format: (n: number) => string) => n !== undefined && Number.isFinite(n) && n >= 0 ? format(n) : missingLabel;
-  return <FinancialTable caption={caption} rows={rows} rowKey={row => String(row.index)} emptyTitle={missingLabel} columns={[
+  return <div className="pu-orderbook"><FinancialTable caption={caption} rows={rows} rowKey={row => String(row.index)} emptyTitle={missingLabel} columns={[
     { key: 'bidQuantity', label: labels.bidQuantity, num: true, render: row => value(row.bid?.quantity, formatQuantity) },
     { key: 'bid', label: labels.bid, num: true, render: row => value(row.bid?.price, formatPrice) },
     { key: 'ask', label: labels.ask, num: true, render: row => value(row.ask?.price, formatPrice) },
     { key: 'askQuantity', label: labels.askQuantity, num: true, render: row => value(row.ask?.quantity, formatQuantity) },
-  ]} />;
+  ]} /></div>;
 }

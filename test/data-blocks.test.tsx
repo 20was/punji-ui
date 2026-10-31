@@ -386,6 +386,8 @@ describe('Pagination and the shared pagination model', () => {
     const { container, rerender } = render(<Pagination page={1} total={0} pageSize={5} onPageChange={() => undefined} label="x" testId="e" />);
     expect(screen.getByTestId('e-range').textContent).toBe('0 of 0');
     expect(container.querySelectorAll('button[disabled]')).toHaveLength(2);
+    expect(container.querySelectorAll('button')).toHaveLength(2);
+    expect(screen.queryByRole('button', { name: 'Page 1' })).toBeNull();
     rerender(<Pagination page={99} total={12} pageSize={5} onPageChange={() => undefined} label="x" testId="e" />);
     expect(screen.getByTestId('e-range').textContent).toBe('11–12 of 12');
     rerender(<Pagination page={Number.NaN} total={Number.NaN} pageSize={0} onPageChange={() => undefined} label="x" testId="e" />);

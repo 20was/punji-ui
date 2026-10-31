@@ -12,11 +12,22 @@
   .pu-skip { position: fixed; top: -100px; left: var(--pu-space-4); z-index: 100; padding: var(--pu-space-3); background: var(--pu-color-surface); color: var(--pu-color-text); }
   .pu-skip:focus { top: var(--pu-space-4); }
   .pu-chart { margin: 0; padding: calc(var(--pu-space-1) * 5); border-radius: var(--pu-radius-card); background: var(--pu-color-surface); }
+  .pu-chart figcaption { margin-bottom: var(--pu-space-2); }
   .pu-chart svg { display: block; width: 100%; height: auto; max-height: 260px; color: var(--pu-color-accent); fill: currentColor; }
+  .pu-chart svg path { vector-effect: non-scaling-stroke; }
+  .pu-chart-range { gap: var(--pu-space-3); margin-bottom: var(--pu-space-1); }
+  @media (max-width: 520px) { .pu-chart svg { height: 180px; max-height: none; } }
   .pu-chart-range { display: flex; justify-content: space-between; color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums; }
   .pu-chart summary { cursor: pointer; min-height: var(--pu-control-lg); display: list-item; align-content: center; }
   .pu-chart table { width: 100%; text-align: left; }
   .pu-chart td { text-align: right; font-variant-numeric: tabular-nums; }
+  .pu-orderbook .kit-tablebox { background: linear-gradient(to right, var(--pu-color-surface) 30%, transparent) left center / 28px 100% no-repeat local, linear-gradient(to left, var(--pu-color-surface) 30%, transparent) right center / 28px 100% no-repeat local, linear-gradient(to right, var(--pu-color-border-strong), transparent) left center / 12px 100% no-repeat scroll, linear-gradient(to left, var(--pu-color-border-strong), transparent) right center / 12px 100% no-repeat scroll, var(--pu-color-surface); }
+  .pu-orderbook .kit-table thead th { background: transparent; }
+  @media (max-width: 480px) {
+    .pu-orderbook .kit-table { font-size: var(--pu-text-xs); }
+    .pu-orderbook .kit-table :is(th, td) { padding: 10px 8px; }
+    .pu-orderbook .kit-table thead th { white-space: normal; }
+  }
   @media (max-width: 760px) {
     .pu-shell-body { grid-template-columns: minmax(0, 1fr); }
     .pu-shell-nav { flex-direction: row; flex-wrap: wrap; }

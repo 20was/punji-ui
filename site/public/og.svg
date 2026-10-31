@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#e4e7de"/>
+  <rect x="0" y="618" width="1200" height="12" fill="#054431"/>
+  <g transform="translate(80 120) scale(1.5)"><path fill="#054431" fill-rule="evenodd" d="M21.0 0.0H42.0V21.0A21 21 0 0 1 21.0 42.0A21 21 0 0 1 11.0 39.47V58.5H0.0V21.0A21 21 0 0 1 21.0 0.0ZM21.0 11.0H31.0V21.0A10 10 0 0 1 21.0 31.0A10 10 0 0 1 11.0 21.0A10 10 0 0 1 21.0 11.0Z"/><path fill="#054431" fill-rule="evenodd" d="M47.5 0H58.5V21A10 10 0 0 0 78.5 21V0H89.5V42H78.5V39.47A21 21 0 0 1 47.5 21Z"/><path fill="#054431" fill-rule="evenodd" transform="rotate(180 117.5 21)" d="M96.5 0H107.5V21A10 10 0 0 0 127.5 21V0H138.5V42H127.5V39.47A21 21 0 0 1 96.5 21Z"/><path fill="#054431" fill-rule="evenodd" d="M146.5 0H157.5V43.5A15 15 0 0 1 142.5 58.5H139.5V47.5H142.5A4 4 0 0 0 146.5 43.5Z"/><circle cx="152.00" cy="-10.50" r="6.38" fill="#054431"/><path fill="#054431" fill-rule="evenodd" d="M165.5 0H176.5V42H165.5Z"/><circle cx="171.00" cy="-14.50" r="6.38" fill="#054431"/></g>
+  <g font-family="Geist, Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="#121314">
+    <text x="80" y="360" font-size="68" font-weight="600">Finance-first React</text>
+    <text x="80" y="438" font-size="68" font-weight="600">components</text>
+    <text x="80" y="510" font-size="30" fill="#3d443f">Money, markets and accounting. Accessible, themed, Devanagari-ready.</text>
+    <text x="80" y="566" font-size="26" font-weight="600" fill="#054431">design.punji.app</text>
+  </g>
+</svg>

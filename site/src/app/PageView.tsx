@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { SegmentedControl } from '@punji/ui/controls';
 import { GROUPS, pageBySlug, type PageDef } from '../registry.ts';
+import { pagePath } from '../seo.ts';
+import { Link } from './router.tsx';
 import { apiEntry, type ApiEntry } from './api.ts';
 import { Code } from './Code.tsx';
 import { loadExample } from './examples.ts';
@@ -198,7 +200,7 @@ export function PageView({ page }: { page: PageDef }) {
             const other = pageBySlug(slug);
             return other ? (
               <li key={slug}>
-                <a href={`#/${slug}`}>{other.title}</a>
+                <Link to={pagePath(other)}>{other.title}</Link>
               </li>
             ) : null;
           })}

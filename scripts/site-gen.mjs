@@ -30,6 +30,7 @@ for (const page of PAGES) {
       problems.push(`registry: ${page.slug} example ${ex.id} has no file site/src/examples/${page.slug}/${ex.id}.tsx`);
     }
   }
+  if (typeof page.description !== 'string' || page.description.length < 40 || page.description.length > 160) problems.push(`registry: ${page.slug} needs a description of 40 to 160 characters (meta description), has ${page.description?.length ?? 0}`);
   if (page.kind !== 'foundation' && !(page.api?.length > 0)) problems.push(`registry: ${page.slug} registers no API entries`);
   for (const rel of page.related ?? []) if (!PAGES.some((p) => p.slug === rel)) problems.push(`registry: ${page.slug} relates to unknown page ${rel}`);
 }

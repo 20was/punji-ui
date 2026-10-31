@@ -6,7 +6,7 @@
 </a>
 
 > [!WARNING]
-> Work in progress — not ready for public use yet. APIs and styles will change without notice, and nothing is published to npm. Follow along or open an issue; please don't depend on it in production.
+> Work in progress, and nothing is published to npm yet. APIs and styles will change without notice. Follow along or open an issue, but please don't depend on it in production.
 
 <p align="center">
   <a href="https://github.com/20was/punji-ui/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/20was/punji-ui/actions/workflows/ci.yml/badge.svg?branch=main"></a>
@@ -22,96 +22,100 @@
   <a href="./SECURITY.md">Security</a>
 </p>
 
-## Financial-library development
+# Punji UI
 
-This repository now owns the reusable components and tokens. The consumer app
-is a read-only completeness reference; reverse sync is retired. This is still
-pre-release software, with substantial work remaining before production use.
+**A finance-first React design system: exact money, stock-market tables, ledgers and a Nepal-first locale layer, usable in any currency.**
 
-- [Audit and prioritised backlog](docs/audit/README.md)
-- [Architecture and release boundaries](docs/ARCHITECTURE.md)
-- [Engineering research and upstream credits](docs/RESEARCH.md)
-- [Financial components and Nepal APIs](docs/FINANCIAL.md)
-- [Accounting display components and ledger helpers](docs/ACCOUNTING.md)
-- [Reusable hooks and upstream credits](docs/HOOKS.md)
-- [CSV export and its security boundary](docs/EXPORT.md)
+Built for the screens where a wrong digit costs someone money:
 
-Run `npm run portal` for the full portal with new utility documentation (requires
-the sibling consumer checkout; see [portal setup](portal/README.md)).
-
-Run `npm ci --ignore-scripts`, `npm run build`, then `npm run examples` for the
-local portfolio, invoice and watchlist showcase. Examples import the actual
-public package. The deployed design site still belongs to the consumer repo.
-
-ES modules, declarations, root/subpath exports and explicit CSS distribution
-remain. React 19 is a peer; one pinned MIT calendar dependency provides BS
-conversion. CI checks lint, types, behavioral/accessibility tests, builds,
-bundle budgets, package exports and tarball contents. These checks do not yet
-constitute a complete production-readiness assessment.
-
-Type is set for Latin and Devanagari together (Geist and Mukta, both under the
-SIL Open Font License), so English and Nepali interfaces share one scale.
-
-## Screenshots
-
-<!-- TODO: light and dark captures of the docs site's component pages. Not added
-     yet: the docs site was not rendering when this README was written, and the
-     README never shows an image that is not a real capture. -->
-
-Consumer-kit examples: [design.punji.app](https://design.punji.app). Package-based examples live in `examples/`; full gallery coverage is still pending.
+- stock market and trading apps (quote boards, movers, watchlists, heatmaps, order book depth)
+- portfolio and wealth trackers (positions, cost basis, P&L, allocation)
+- accounting and bookkeeping tools (ledgers, journals, trial balance, statements, invoices)
+- banking and fintech dashboards (money display and input, statements, status, export)
 
 ## Quick start
 
-> Coming soon: the package is not on npm yet. These steps work from the first release.
+> The package is not on npm yet. These steps work from the first release.
 
 ```sh
-npm install @punji/ui
+npm install @punji/ui   # after the first release; React 19 is a peer dependency
 ```
 
-Import the CSS once at your app's root, then use the components:
+Import the CSS once at your app's root, then use the components. Prices are `bigint` minor units (paisa, cents), so `51230n` is Rs 512.30:
 
 ```tsx
 import '@punji/ui/styles.css';
-import { Button, SegmentedControl } from '@punji/ui';
-import { useState } from 'react';
+import { MoneyDisplay, PriceChange, StockTable, type Quote } from '@punji/ui';
 
-export function Toolbar() {
-  const [period, setPeriod] = useState<'day' | 'week' | 'month'>('week');
+const quotes: Quote[] = [
+  { symbol: 'NABIL', ltp: 51230n, previousClose: 50500n, volume: 12400, turnover: 63_525_200n },
+  { symbol: 'NTC', ltp: 84000n, previousClose: 85000n, volume: 3100, turnover: 26_040_000n },
+];
+
+export function Board() {
   return (
     <>
-      <SegmentedControl
-        label="Period"
-        prefix="period"
-        value={period}
-        onChange={setPeriod}
-        options={[
-          { value: 'day', label: 'Day' },
-          { value: 'week', label: 'Week' },
-          { value: 'month', label: 'Month' },
-        ]}
-      />
-      <Button onClick={() => console.log(period)}>Apply</Button>
+      <p>
+        Portfolio value <MoneyDisplay value={123456789n} currency="NPR" locale="en-IN" />{' '}
+        <PriceChange current={51230n} previous={50500n} currency="NPR" />
+      </p>
+      <StockTable caption="NEPSE quotes · NPR" quotes={quotes} />
     </>
   );
 }
 ```
 
-For the smallest CSS, import the tokens, the shared base and only the
-components you draw:
+That renders `NPR 12,34,567.89`, a signed change with an arrow and a spoken label (not colour alone), and a sortable, accessible quote table. The data above is invented. For another currency, change `currency` and `locale` (for example `"USD"` and `"en-US"`).
 
-```ts
-import '@punji/ui/tokens.css';
-import '@punji/ui/css/base.css';
-import '@punji/ui/css/button.css';
+## What's inside
+
+Every module has its own subpath (`@punji/ui/<name>`) and stylesheet (`@punji/ui/css/<name>.css`); everything is also exported from the root. The full subpath list is the `exports` map in [package.json](package.json); the original component inventory is [at the end of this file](#all-modules).
+
+| Domain | Key exports | Subpaths | Guide |
+| --- | --- | --- | --- |
+| Money and Nepal | `formatMoney`, `parseMoney`, `MoneyDisplay`, `PriceChange`, `CurrencyInput`, `formatNPR`, `gregorianToBS`, `nepalFiscalYear`, `parseMinorUnits`, `AppShell`, `FinancialTable`, `PriceChart`, `OrderBook` | `/money`, `/money-display`, `/price-change`, `/currency-input`, `/nepal`, `/nepal/format`, `/nepal/calendar`, `/nepal/money`, `/financial`, `/order-book` | [FINANCIAL.md](docs/FINANCIAL.md) |
+| Calculations | `computePosition` (FIFO or weighted average), `valuePosition`, `breakEvenPrice`, `taxOnGain`, `allocation`, `percentageChange`, `cagr`, `divideRounded` | `/calculations` | [FINANCIAL.md](docs/FINANCIAL.md#financial-calculations) |
+| Market | `StockTable`, `MarketMovers`, `MarketIndices`, `MarketStatus`, `getMarketSession`, `PriceLimitIndicator`, `Watchlist`, `MarketHeatmap`, `sortQuotes` | `/stock-table`, `/market-movers`, `/market-indices`, `/market-status`, `/price-limit`, `/watchlist`, `/market-heatmap`, `/nepal/market-format` | [MARKET.md](docs/MARKET.md) |
+| Accounting | `LedgerTable`, `JournalEntryView`, `TrialBalance`, `StatementTable`, `DebitCredit`, `PaymentStatus`, `FinancialPeriodSelector`, `isBalanced`, `trialBalance`, `runningBalance`, `ledgerToCsv` | `/ledger`, `/ledger-table`, `/debit-credit`, `/journal-entry`, `/trial-balance`, `/statement-table`, `/payment-status`, `/period-selector` | [ACCOUNTING.md](docs/ACCOUNTING.md) |
+| Hooks | `useDebounce`, `useThrottle`, `useControllableState`, `usePrevious`, `useToggle`, `useClipboard`, `useLocalStorage`, `useSessionStorage`, `useClickOutside`, `usePagination`, `useTableSelection`, `useColumnVisibility`, `useMediaQuery`, `useHydrated`, `useStableOrder` | `/hooks`, or one per hook such as `/use-debounce` | [HOOKS.md](docs/HOOKS.md) |
+| Export | `toCsv` (formula-injection neutralised, optional Excel BOM), `downloadText` | `/export`, `/download` | [EXPORT.md](docs/EXPORT.md) |
+| General UI | `Button`, `Card`, `DataTable`, `Tabs`, `Select`, `Drawer`, `Sheet`, `CommandPalette`, `Calendar`, `DatePicker`, `DateRangePicker`, `Sparkline`, `ColumnChart`, `SplitBar`, fields, states and layout | see [all modules](#all-modules) | [TABLES.md](docs/TABLES.md), [CALENDAR.md](docs/CALENDAR.md), [SELECT.md](docs/SELECT.md), [COMPONENTS.md](docs/COMPONENTS.md) |
+
+Nothing here fetches data. You pass quotes, rows and amounts in as props; for live feeds, pass new props from your own socket or query. Accounting components are display and arithmetic helpers, not an accounting system: your server must validate every amount again ([ACCOUNTING.md](docs/ACCOUNTING.md)).
+
+## Why Punji UI
+
+- **Exact money.** Amounts are `bigint` minor units, never floats. Rounding is always an explicit mode you pass (`half-even`, `half-up`, and others), and the calculation layer is property-tested (cost is conserved, allocation shares sum to exactly 100).
+- **Nepal-first, currency-generic.** NPR with lakh/crore grouping, Devanagari digits and Nepali labels, the Bikram Sambat calendar and fiscal years, and NEPSE-style market sessions and price limits. All of it is a preset: USD, EUR, JPY, KWD and any other ISO currency work through configuration, with the exponent taken from `Intl`.
+- **Accessible.** Native semantics and WAI-ARIA patterns, keyboard-only use, visible focus, reduced motion, and a change is never shown by colour alone. axe-core runs on every visual fixture in light and dark ([details](#accessibility)).
+- **One runtime dependency.** Besides the React peer, the only production dependency is one pinned, MIT-licensed Bikram Sambat converter, imported by `nepal/calendar` alone. CI fails on any other. See [DEPENDENCY-AUDIT.md](DEPENDENCY-AUDIT.md).
+- **Small and tree-shakeable.** ES modules with per-component subpaths and `sideEffects` limited to CSS. Measured gzip sizes: `Button` 0.7 kB, money formatter 3.4 kB, `MoneyDisplay` 3.8 kB, `PriceChange` 4.3 kB, `StockTable` 9.9 kB, `ledger` helpers 2.4 kB, `calculations` 1.9 kB, all CSS 22.6 kB. Importing everything from the root is 62 kB; budgets are enforced by `npm run size`.
+- **SSR and RSC friendly.** Components that use state or events carry `'use client'`; the pure modules (`money`, `calculations`, `export`, `ledger`, `nepal/*`) have no React or browser globals, enforced in lint. The release check server-renders the packed tarball.
+- **Tested visually.** Screenshots of every fixture in light and dark at phone and desktop widths are compared in the same Playwright Docker image CI uses ([VISUAL-TESTING.md](docs/VISUAL-TESTING.md)).
+
+## Works with
+
+React 19 or later, as ESM with bundled declarations. The release check installs the packed tarball into a fresh project, type-checks it with strict TypeScript, renders it on the server and builds it with Vite. Because client modules keep their `'use client'` directive, they are meant to work in Next.js App Router without a wrapper, though a Next.js app is not yet part of that check. Browsers: Chrome and Edge 111+, Firefox 113+, Safari and iOS Safari 16.4+ (CSS cascade layers and `color-mix()`).
+
+## Theming in 5 lines
+
+Everything is a CSS variable in a cascade layer (`punji.tokens`, `punji.components`), so your unlayered CSS always wins. Light and dark follow `prefers-color-scheme`; force one with `data-theme="light"` or `"dark"` on `<html>` or any element.
+
+```css
+:root {
+  --pu-color-accent: #4f46e5;
+  --pu-color-accent-fill: #4f46e5;
+  --pu-radius-control: 6px;
+}
 ```
 
-Modules that use hooks or their own event handlers carry `'use client'`, so they
-work in React Server Component apps such as Next.js without a wrapper.
+Every token with its light and dark value: [docs/tokens.md](./docs/tokens.md). For the smallest CSS, import `@punji/ui/tokens.css`, `@punji/ui/css/base.css` and only the `@punji/ui/css/<name>.css` files you use.
+
+Type is set for Latin and Devanagari together (Geist and Mukta, SIL Open Font License, not bundled), so English and Nepali interfaces share one scale.
 
 ### Links and routers
 
-The package has no router dependency. A component that takes `href` renders a
-plain `<a>`; for in-app paths, pass your router's link once wrapped:
+The package has no router dependency. A component that takes `href` renders a plain `<a>`; pass your router's link once wrapped:
 
 ```tsx
 import { Link } from 'react-router-dom';
@@ -122,27 +126,32 @@ const RouterLink: LinkComponent = ({ href, ...rest }) => <Link to={href} {...res
 <Button href="/settings" linkComponent={RouterLink}>Settings</Button>;
 ```
 
-## Theming
+## Accessibility
 
-Override any token on `:root` or on a subtree:
+Every component follows its [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/) pattern, works with the keyboard alone, draws one visible focus ring, respects `prefers-reduced-motion`, and passes axe-core with no serious or critical issue in the test suite. Colour contrast is checked by axe-core in a real browser for every visual fixture in light and dark themes. If something does not work with your assistive technology, please [open an issue](https://github.com/20was/punji-ui/issues/new/choose).
 
-```css
-:root {
-  --pu-color-accent: #4f46e5;
-  --pu-color-accent-fill: #4f46e5;
-  --pu-color-accent-fill-hover: #4338ca;
-  --pu-radius-control: 6px;
-}
+## Run it locally
+
+```sh
+npm ci --ignore-scripts
+npm run build
+npm run examples     # portfolio, invoice and watchlist demos, importing the built package
+npm run site:dev     # the documentation site
 ```
 
-Light and dark follow `prefers-color-scheme`. To force one, set
-`data-theme="light"` or `data-theme="dark"` on `<html>` or on any element.
-Every token, with its light and dark value: [docs/tokens.md](./docs/tokens.md).
+Architecture and release boundaries: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Remaining gaps: [audit](docs/audit/README.md) and [ROADMAP.md](./ROADMAP.md). Research and upstream credits: [docs/RESEARCH.md](docs/RESEARCH.md).
 
-## Components
+## Contributing
 
-The modules in this package today. Each one is also its own subpath, the same
-subpath Punji's own code imports, and its documentation is on design.punji.app.
+Read [CONTRIBUTING.md](./CONTRIBUTING.md): how to run the checks, the bar a new component has to meet, and how releases work. Everyone taking part follows the [Code of Conduct](./CODE_OF_CONDUCT.md). Report vulnerabilities privately, as described in [SECURITY.md](./SECURITY.md).
+
+## Licence
+
+The code is [MIT](./LICENSE). The fonts it is designed for (Geist, Mukta) are under the SIL Open Font License and are not bundled. The Punji name and logo are trademarks and are not covered by the MIT licence: see [TRADEMARKS.md](./TRADEMARKS.md).
+
+## All modules
+
+Each module is its own subpath, and its documentation is on [design.punji.app](https://design.punji.app).
 
 <!-- components:start -->
 <!-- Public component inventory; maintained in this repository. -->
@@ -191,58 +200,6 @@ subpath Punji's own code imports, and its documentation is on design.punji.app.
 
 <!-- components:end -->
 
-Financial additions: `AppShell`, `FinancialSummary`, `FinancialTable`, `PriceChart`,
-`OrderBook` (`@punji/ui/financial`), `OrderBookDepth` (the bars-and-totals depth view, `@punji/ui/order-book`) and Nepal utilities (`@punji/ui/nepal`).
-See [the financial API guide](docs/FINANCIAL.md) and [remaining gaps](docs/audit/README.md).
+Newer modules (market, accounting, money, hooks, charts and the other status and list components) are listed under [What's inside](#whats-inside) and in the `exports` map of `package.json`; the table above is the original general-purpose inventory.
 
-## Browser support
-
-The last two years of evergreen browsers: Chrome and Edge 111+, Firefox 113+,
-Safari and iOS Safari 16.4+ (the versions with CSS cascade layers and
-`color-mix()`). React 19 or later.
-
-## Accessibility
-
-Every component follows its [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)
-pattern, works with the keyboard alone, draws one visible focus ring, respects
-`prefers-reduced-motion`, and passes axe-core with no serious or critical issue in
-the test suite. Colour contrast is checked by axe-core in a real browser for
-every visual fixture in light and dark themes ([visual testing](docs/VISUAL-TESTING.md)). If something does not work with your assistive technology,
-please [open an issue](https://github.com/20was/punji-ui/issues/new/choose).
-
-## Where the code lives
-
-Reusable code is maintained directly in this repository. The consumer app is
-a reference until a separately planned migration. See [architecture](docs/ARCHITECTURE.md).
-
-## Contributing
-
-Read [CONTRIBUTING.md](./CONTRIBUTING.md): how to run the checks, the bar a new
-component has to meet, and how releases work. Everyone taking part follows the
-[Code of Conduct](./CODE_OF_CONDUCT.md).
-
-## Security
-
-Please report vulnerabilities privately, as described in [SECURITY.md](./SECURITY.md).
-
-## Licence
-
-The code is [MIT](./LICENSE). The fonts it is designed for (Geist, Mukta) are
-under the SIL Open Font License and are not bundled. The Punji name and logo are
-trademarks and are not covered by the MIT licence: see [TRADEMARKS.md](./TRADEMARKS.md).
-
-### Calendar and date pickers
-
-`Calendar`, `DatePicker` and `DateRangePicker` support Gregorian and Bikram Sambat
-display, English/Nepali labels, Devanagari digits and canonical Gregorian date-only
-values. See [usage, keyboard controls, supported ranges and limitations](docs/CALENDAR.md).
-Run `npm run portal` for the full local portal, then open
-[Date pickers](http://design.localhost:5184/components/date-picker) or
-[Calendar](http://design.localhost:5184/components/calendar).
-
-### Select menus
-
-The existing Select now themes its options menu on supporting desktop browsers,
-while preserving native form handling and touch/unsupported-browser fallback.
-See [Select usage and compatibility](docs/SELECT.md) and the
-[local Select examples](http://design.localhost:5184/components/select).
+Financial additions: `AppShell`, `FinancialSummary`, `FinancialTable`, `PriceChart`, `OrderBook` (`@punji/ui/financial`) and `OrderBookDepth` (`@punji/ui/order-book`).

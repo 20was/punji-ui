@@ -110,5 +110,5 @@ Sources: [docs/RESEARCH.md](docs/RESEARCH.md), [docs/research/](docs/research/),
 | Topic | docs/ARCHITECTURE.md | Reality |
 | --- | --- | --- |
 | Aggregate budget | 21 kB gzip, 4 kB financial, 4.5 kB Nepal | `.size-limit.json` (`npm run size` prints the measured "Everything" size; 84.33 kB against an 87.3 kB limit on 2026-11-01) |
-| Tarball ceiling | 400 KiB | `MAX_UNPACKED` in `scripts/check-pack.mjs` (1310 KiB; `npm run check:package` prints the measured size) |
+| Tarball ceiling | 400 KiB | `MAX_UNPACKED` in `scripts/check-pack.mjs` (1350 KiB; `npm run check:package` prints the measured size) |
 | Status line | "implemented foundation, 2026-10-28"; the 4 kB financial and 4.5 kB Nepal budgets still match `.size-limit.json` | Hooks, export, calculations, money, 10 migrated modules and the visual gate were added since |

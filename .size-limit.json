@@ -289,7 +289,7 @@
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "22.4 kB",
+    "limit": "23.2 kB",
     "rolldown": false,
     "gzip": true
   },

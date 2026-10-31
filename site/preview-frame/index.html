@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="robots" content="noindex" />
+    <title>Example preview — Punji UI</title>
+    <script>
+      // The phone-width preview frame (src/app/PhoneFrame.tsx): the page passes its preview theme in the URL so the
+      // first paint already has it; later changes are set on this document by the page.
+      try {
+        var t = new URLSearchParams(location.search).get('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    </script>
+  </head>
+  <body class="doc-frame">
+    <div id="root"></div>
+    <script type="module" src="/src/frame.tsx"></script>
+  </body>
+</html>

@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { createElement, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { Drawer } from '@punji/ui/drawer';
-import { headFor, pagePath, REPO, type Route } from '../seo.ts';
+import { headFor, pagePath, REPO } from '../paths.ts';
 import { applyHead } from './head.ts';
+import { homeView, loadRoute, pageData, pageView, routeReady } from './load.ts';
+import type { ClientRoute } from './nav.ts';
 import { BASE, Link, useRoute } from './router.tsx';
-import { PageView } from './PageView.tsx';
-import { Home } from './Home.tsx';
 import { NotFound } from './NotFound.tsx';
 import { Sidebar } from './Sidebar.tsx';
 import { Search } from './Search.tsx';
@@ -70,12 +70,36 @@ function Footer() {
   );
 }
 
+/** The route's head: a page's description comes with its page data, which is loaded before the route shows. */
+function headOf(route: ClientRoute) {
+  if (route.kind !== 'page') return headFor(route, SITE_ORIGIN, BASE);
+  const data = pageData(route.page.slug);
+  return headFor(data ? { kind: 'page', page: data.page } : { kind: 'notfound' }, SITE_ORIGIN, BASE);
+}
+
 /** `path` is the pathname the HTML was rendered for; it keeps the server render and hydration identical. */
 export function App({ path }: { path: string }) {
-  const route: Route = useRoute(path);
+  const location = useRoute(path);
+  // The route on screen. Links load a route before changing the URL, so it is normally ready at once; Back and Forward
+  // to a page not yet loaded keep the current page until its chunks arrive (or reload it if they cannot be fetched).
+  const [, loaded] = useReducer((n: number) => n + 1, 0);
+  const [shown, setShown] = useState(location);
+  const ready = routeReady(location);
+  if (ready && shown !== location) setShown(location);
+  useEffect(() => {
+    if (ready) return;
+    let live = true;
+    loadRoute(location).then(
+      () => live && loaded(),
+      () => window.location.reload(),
+    );
+    return () => {
+      live = false;
+    };
+  }, [location, ready]);
+  const route = ready ? location : shown;
   const current = route.kind === 'page' ? pagePath(route.page) : route.kind === 'home' ? '/' : '';
   const [menu, setMenu] = useState(false);
-  const page = route.kind === 'page' ? route.page : undefined;
   const first = useRef(true);
 
   // Route change: set the head, scroll to the top and move focus to the new page's heading.
@@ -84,12 +108,17 @@ export function App({ path }: { path: string }) {
       first.current = false;
       return;
     }
-    applyHead(headFor(route, SITE_ORIGIN, BASE));
+    applyHead(headOf(route));
     window.scrollTo(0, 0);
     document.getElementById('page-title')?.focus({ preventScroll: true });
   }, [route]);
 
-  const view = useMemo(() => (route.kind === 'notfound' ? <NotFound /> : page ? <PageView key={page.slug} page={page} /> : <Home />), [route, page]);
+  const view = useMemo(() => {
+    if (route.kind === 'notfound') return <NotFound />;
+    // The views are module-level components from their own chunks (load.ts), looked up once they are loaded.
+    if (route.kind === 'home') return createElement(homeView());
+    return createElement(pageView(), { key: route.page.slug, data: pageData(route.page.slug)! });
+  }, [route]);
 
   return (
     <div className={`doc-app${route.kind === 'home' ? ' is-home' : ''}`}>

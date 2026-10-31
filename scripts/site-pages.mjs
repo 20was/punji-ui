@@ -17,8 +17,9 @@ const out = resolve(root, 'site/src/generated');
 
 // Only rewrite what changed, so the dev server reloads what an edit touched and nothing else.
 const writeText = (file, text) => {
-  if (existsSync(file) && readFileSync(file, 'utf8') === text) return;
-  writeFileSync(file, text);
+  let current;
+  try { current = readFileSync(file, 'utf8'); } catch { current = undefined; }
+  if (current !== text) writeFileSync(file, text);
 };
 const write = (file, data) => writeText(file, `${JSON.stringify(data)}\n`);
 

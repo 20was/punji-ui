@@ -58,7 +58,7 @@ export interface PercentageInputProps extends Omit<InputHTMLAttributes<HTMLInput
   ref?: Ref<HTMLInputElement>;
 }
 
-const SHAPE = /^-?\d*\.?\d*$/;
+const SHAPE = /^-?(?:\d+(?:\.\d*)?|\.\d*)?$/;
 const DEVANAGARI = '०१२३४५६७८९';
 const ARABIC_INDIC = '٠١٢٣٤٥٦٧٨٩';
 
@@ -114,7 +114,7 @@ export function PercentageInput({
       onChange={(raw) => {
         const canonical = toCanonical(raw);
         const point = canonical.indexOf('.');
-        if (!SHAPE.test(canonical) || canonical.length > 14 || (!allowNegative && canonical.startsWith('-')) || (point >= 0 && canonical.length - point - 1 > maxFractionDigits)) return;
+        if (canonical.length > 14 || !SHAPE.test(canonical) || (!allowNegative && canonical.startsWith('-')) || (point >= 0 && canonical.length - point - 1 > maxFractionDigits)) return;
         onValueChange(describe(canonical, maxFractionDigits, min, max));
       }}
       onBlur={(event: FocusEvent<HTMLInputElement>) => {

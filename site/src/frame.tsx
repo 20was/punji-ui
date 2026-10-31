@@ -13,7 +13,9 @@ if (params.get('showcase')) document.body.classList.add('is-showcase');
 
 // Only this frame's entry carries the map of example files; the docs pages load examples with their route module.
 const examples = import.meta.glob<{ default: ComponentType }>('./examples/*/*.tsx');
-const Component = (await examples[`./examples/${slug}/${id}.tsx`]?.())?.default;
+const key = `./examples/${slug}/${id}.tsx`;
+const load = /^[a-z0-9-]+$/.test(slug) && /^[a-z0-9-]+$/.test(id) && Object.hasOwn(examples, key) ? examples[key] : undefined;
+const Component = (await load?.())?.default;
 const root = document.getElementById('root')!;
 if (Component) {
   createRoot(root).render(

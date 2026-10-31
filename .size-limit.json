@@ -227,7 +227,7 @@
     "name": "table (import from '@punji/ui/table')",
     "path": "dist/table/Table.js",
     "import": "*",
-    "limit": "2.4 kB",
+    "limit": "2.46 kB",
     "gzip": true
   },
   {
@@ -283,13 +283,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "78.5 kB",
+    "limit": "85.5 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "25.4 kB",
+    "limit": "26 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -703,7 +703,7 @@
     "name": "stock-table (import from '@punji/ui/stock-table')",
     "path": "dist/stock-table/StockTable.js",
     "import": "*",
-    "limit": "10.2 kB",
+    "limit": "10.3 kB",
     "gzip": true
   },
   {
@@ -858,6 +858,48 @@
     "path": "dist/beneficiary-selector/BeneficiarySelector.js",
     "import": "*",
     "limit": "2.35 kB",
+    "gzip": true
+  },
+  {
+    "name": "portfolio (import from '@punji/ui/portfolio')",
+    "path": "dist/portfolio/portfolio.js",
+    "import": "*",
+    "limit": "6.6 kB",
+    "gzip": true
+  },
+  {
+    "name": "holdings-table (import from '@punji/ui/holdings-table')",
+    "path": "dist/holdings-table/HoldingsTable.js",
+    "import": "*",
+    "limit": "10.5 kB",
+    "gzip": true
+  },
+  {
+    "name": "portfolio-allocation (import from '@punji/ui/portfolio-allocation')",
+    "path": "dist/portfolio-allocation/PortfolioAllocation.js",
+    "import": "*",
+    "limit": "6.5 kB",
+    "gzip": true
+  },
+  {
+    "name": "portfolio-overview (import from '@punji/ui/portfolio-overview')",
+    "path": "dist/portfolio-overview/PortfolioOverview.js",
+    "import": "*",
+    "limit": "6.85 kB",
+    "gzip": true
+  },
+  {
+    "name": "dividend-history (import from '@punji/ui/dividend-history')",
+    "path": "dist/dividend-history/DividendHistory.js",
+    "import": "*",
+    "limit": "11.4 kB",
+    "gzip": true
+  },
+  {
+    "name": "transaction-history (import from '@punji/ui/transaction-history')",
+    "path": "dist/transaction-history/TransactionHistory.js",
+    "import": "*",
+    "limit": "21.2 kB",
     "gzip": true
   }
 ]

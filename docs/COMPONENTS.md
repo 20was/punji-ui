@@ -306,6 +306,8 @@ want none of them. Use `FinancialSummary` for a metrics list, `MetricTile` for c
 
 `StockTable`, `MarketMovers`, `MarketIndices`, `MarketStatus`, `PriceLimitIndicator`, `Watchlist` and `MarketHeatmap`, with their pure helpers (`sortQuotes`, `rankMovers`, `getMarketSession`, `circuitLimits`, `squarify`): see [MARKET.md](MARKET.md).
 
+Portfolio: `HoldingsTable`, `PortfolioAllocation`, `PortfolioOverview`, `DividendHistory`, `TransactionHistory` and the pure `@punji/ui/portfolio` helpers (`holdingsSummary`, `allocateHoldings`, `transactionLedger`, `dividendsByFiscalYear`): see [PORTFOLIO.md](PORTFOLIO.md).
+
 Accounting: `DebitCredit`, `LedgerTable`, `JournalEntryView`, `TrialBalance`, `StatementTable`, `PaymentStatus`, `FinancialPeriodSelector` and the pure `@punji/ui/ledger` helpers (`isBalanced`, `trialBalance`, `runningBalance`, `rollUp`, `ledgerToCsv`): see [ACCOUNTING.md](ACCOUNTING.md).
 
 Banking and payments: `AccountNumber`, `BankAccountCard`, `TransactionList`, `TransactionStatus`, `PaymentReceipt`, `PaymentTimeline`, `BeneficiarySelector` and the pure `@punji/ui/banking` helpers (`maskAccountNumber`, `isValidIban`, `formatTransactionReference`, `transactionsToCsv`): display only, masked by default; see [BANKING.md](BANKING.md).

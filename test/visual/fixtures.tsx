@@ -12,6 +12,7 @@ import { holdings, symbols, today, weeklyValue, type Holding } from '../../fixtu
 import { bankingRegistry } from './fixtures-banking.tsx';
 import { chartsRegistry } from './fixtures-charts.tsx';
 import { domainRegistry } from './fixtures-domain.tsx';
+import { portfolioRegistry } from './fixtures-portfolio.tsx';
 import { kitRegistry } from './fixtures-kit.tsx';
 
 const money = (v: number | null) => formatNPR(v);
@@ -319,6 +320,7 @@ export const registry: Record<string, () => ReactNode> = {
   ...domainRegistry,
   ...bankingRegistry,
   ...chartsRegistry,
+  ...portfolioRegistry,
 };
 // Fixtures that draw their own full-width stage (shell, overlays).
 export const ownStage = new Set(['shell', 'drawer', 'sheet', 'popover', 'command-palette', 'toast']);

@@ -315,6 +315,30 @@
       "types": "./dist/market-heatmap/MarketHeatmap.d.ts",
       "default": "./dist/market-heatmap/MarketHeatmap.js"
     },
+    "./portfolio": {
+      "types": "./dist/portfolio/portfolio.d.ts",
+      "default": "./dist/portfolio/portfolio.js"
+    },
+    "./holdings-table": {
+      "types": "./dist/holdings-table/HoldingsTable.d.ts",
+      "default": "./dist/holdings-table/HoldingsTable.js"
+    },
+    "./portfolio-allocation": {
+      "types": "./dist/portfolio-allocation/PortfolioAllocation.d.ts",
+      "default": "./dist/portfolio-allocation/PortfolioAllocation.js"
+    },
+    "./portfolio-overview": {
+      "types": "./dist/portfolio-overview/PortfolioOverview.d.ts",
+      "default": "./dist/portfolio-overview/PortfolioOverview.js"
+    },
+    "./dividend-history": {
+      "types": "./dist/dividend-history/DividendHistory.d.ts",
+      "default": "./dist/dividend-history/DividendHistory.js"
+    },
+    "./transaction-history": {
+      "types": "./dist/transaction-history/TransactionHistory.d.ts",
+      "default": "./dist/transaction-history/TransactionHistory.js"
+    },
     "./ledger": {
       "types": "./dist/ledger/ledger.d.ts",
       "default": "./dist/ledger/ledger.js"

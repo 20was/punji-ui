@@ -52,7 +52,7 @@ visual baselines and size budgets.
 ### After the first release
 
 - punji-web adopts the published package per [docs/INTEGRATION.md](docs/INTEGRATION.md); no punji-web changes until then.
-- Docs hosting and domain (owner decision; the site is built to be host-agnostic).
+- Cut the docs over to design.punji.app (the only docs domain), replacing the punji-web portal with existing URLs preserved; app-specific pages are the cutover gap to resolve first.
 
 ## Calendar notes
 

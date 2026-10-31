@@ -94,6 +94,14 @@ const bullets = (items) => items.map((i) => `- ${i}`);
 const full = [`# ${SITE_NAME}`, '', intro, ''];
 for (const p of PAGES) {
   full.push(`## ${p.title}`, '', `URL: ${absolute(pagePath(p))}`, `Section: ${GROUPS.find((g) => g.id === p.group)?.title} (${sectionOf(p)})`, '', p.summary, '');
+  if (p.guide) {
+    for (const section of p.guide) {
+      full.push(`### ${section.title}`, '', ...section.paragraphs.flatMap((t) => [t, '']), ...(section.points ? [...bullets(section.points), ''] : []));
+      for (const code of section.code ?? []) full.push(`${code.label}:`, '', '```', (code.file ? readFileSync(resolve('site/src/guides', p.slug, `${code.file}.tsx`), 'utf8') : code.text).replace(/\n+$/, ''), '```', '');
+    }
+    full.push('');
+    continue;
+  }
   full.push('### When to use', '', ...bullets(p.use), '', '### When not to use', '', ...bullets(p.avoid), '');
   const names = [...new Set(p.api.map((a) => a.name))];
   if (names.length) {

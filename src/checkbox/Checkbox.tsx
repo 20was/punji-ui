@@ -10,7 +10,26 @@
 import type { ReactNode } from 'react';
 
 
-export function Checkbox({ checked, onChange, children, lead, end, disabled, testId, rowTestId }: { checked: boolean; onChange: (next: boolean) => void; children: ReactNode; lead?: ReactNode; end?: ReactNode; disabled?: boolean; testId?: string; rowTestId?: string }) {
+export interface CheckboxProps {
+  /** Whether the box is ticked. The checkbox is controlled. */
+  checked: boolean;
+  /** Called with the new state (true or false), not the event. */
+  onChange: (next: boolean) => void;
+  /** The words next to the box; the whole row, label included, is the tap target. */
+  children: ReactNode;
+  /** Drawn before the words: a series swatch. Decorative; mark it aria-hidden. */
+  lead?: ReactNode;
+  /** Drawn after the words: a count or a short note. */
+  end?: ReactNode;
+  /** Shown dimmed and not choosable. */
+  disabled?: boolean;
+  /** Becomes data-testid on the <input>. */
+  testId?: string;
+  /** Becomes data-testid on the row's <label>. */
+  rowTestId?: string;
+}
+
+export function Checkbox({ checked, onChange, children, lead, end, disabled, testId, rowTestId }: CheckboxProps) {
   return (
     <label className={`kit-check${disabled ? ' off' : ''}`} data-testid={rowTestId}>
       <input type="checkbox" checked={checked} disabled={disabled} onChange={(e) => onChange(e.target.checked)} data-testid={testId} />

@@ -19,7 +19,20 @@ import { createPortal } from 'react-dom';
 
 const FOCUSABLE = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export function Drawer({ open, label, onClose, children, testId }: { open: boolean; label: string; onClose: () => void; children: ReactNode; testId?: string }) {
+export interface DrawerProps {
+  /** Whether the drawer is shown. You own this state. Nothing renders while it is false or during server rendering. */
+  open: boolean;
+  /** The dialog's accessible name ("Add transaction"). */
+  label: string;
+  /** Asked to close: Esc (unless the form inside used the key first) and a click on the scrim. */
+  onClose: () => void;
+  /** The drawer's content: usually a DrawerScreen, or a heading, a form and its buttons. */
+  children: ReactNode;
+  /** Becomes data-testid on the panel; the scrim is `${testId}-scrim`. */
+  testId?: string;
+}
+
+export function Drawer({ open, label, onClose, children, testId }: DrawerProps) {
   const ref = useRef<HTMLDivElement>(null);
   const close = useRef(onClose);
   useEffect(() => {

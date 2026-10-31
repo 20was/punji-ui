@@ -6,12 +6,19 @@ import { EmptyState, Skeleton } from '../states/States.tsx';
 import { StatGrid, StatTile } from '../stats/Stats.tsx';
 
 export interface AppShellProps {
+  /** The product name or logo, linking home. Drawn in the header. */
   brand: ReactNode;
+  /** Your navigation (links, a list). It wraps on phones; the shell does not hide it. */
   navigation: ReactNode;
+  /** The navigation landmark's accessible name ("Main", "Documentation"). */
   navigationLabel: string;
+  /** The page. Rendered inside <main>, which the skip link targets. */
   children: ReactNode;
+  /** Header controls on the right (a theme switch, an account button). */
   actions?: ReactNode;
+  /** A footer line, rendered as the contentinfo landmark. Omitted when empty. */
   footer?: ReactNode;
+  /** The skip link's words, in the reader's language. Default "Skip to content". */
   skipLabel?: string;
 }
 /** Router-independent landmarks. Navigation wraps on phones; no inaccessible hidden menu. */
@@ -25,9 +32,25 @@ export function AppShell({ brand, navigation, navigationLabel, children, actions
   </div>;
 }
 
-export interface FinancialMetric { id: string; label: ReactNode; value: ReactNode; note?: ReactNode }
+export interface FinancialMetric {
+  /** Unique, stable key of the metric. */
+  id: string;
+  /** What the figure is ("Invested"). */
+  label: ReactNode;
+  /** The finished, formatted figure (a MoneyDisplay, or text with its currency). */
+  value: ReactNode;
+  /** A quiet line under the value: the as-of date, the basis, a count. */
+  note?: ReactNode;
+}
 /** Caller supplies calculated and formatted amounts, including currency and as-of labels. */
-export function FinancialSummary({ metrics, label }: { metrics: readonly FinancialMetric[]; label: string }) {
+export interface FinancialSummaryProps {
+  /** The figures, in order. The grid has one column per metric, at most four. */
+  metrics: readonly FinancialMetric[];
+  /** The grid's accessible name ("Portfolio totals"). */
+  label: string;
+}
+
+export function FinancialSummary({ metrics, label }: FinancialSummaryProps) {
   return <StatGrid label={label} cols={Math.min(4, Math.max(1, metrics.length))}>{metrics.map(metric => <StatTile key={metric.id} {...metric} />)}</StatGrid>;
 }
 

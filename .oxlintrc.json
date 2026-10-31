@@ -91,6 +91,14 @@
       "rules": {
         "jsx-a11y/no-noninteractive-element-to-interactive-role": "off"
       }
+    },
+    {
+      "files": [
+        "site/src/guides/**"
+      ],
+      "rules": {
+        "import/no-unassigned-import": "off"
+      }
     }
   ],
   "ignorePatterns": [

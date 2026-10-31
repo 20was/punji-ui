@@ -106,3 +106,5 @@ h1:focus { outline: none; }
   .doc-table th, .doc-table td { border: 0 !important; padding: 0.125rem 0; white-space: normal; }
   .doc-table td:nth-child(2)::before { content: 'Type: '; color: var(--pu-color-text-muted); }
 }
+.doc-section > p:not([class]) { margin: 0; }
+.doc-preview .pu-shell { min-height: 0; }

@@ -74,8 +74,11 @@ export function ChipRow<T extends string>({ options, value, onChange, prefix, la
 }
 
 export interface SegmentedProps<T extends string> {
+  /** The segments in order: the value you receive, the label, and optionally a count, an icon and a keyboard shortcut. */
   options: Option<T>[];
+  /** The chosen segment's value. The control is controlled. */
   value: T;
+  /** Called with the chosen segment's value (not the event). */
   onChange: (v: T) => void;
   /** testIDs and ids are `${prefix}-${value}`. */
   prefix: string;
@@ -97,7 +100,9 @@ export interface SegmentedProps<T extends string> {
    * At most one accent control per page.
    */
   tone?: 'neutral' | 'accent';
+  /** Becomes data-testid on the group. */
   testId?: string;
+  /** Layout only (grow in a row); never restyle the control per page. */
   className?: string;
 }
 

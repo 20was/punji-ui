@@ -31,7 +31,12 @@ for (const page of PAGES) {
     }
   }
   if (typeof page.description !== 'string' || page.description.length < 40 || page.description.length > 160) problems.push(`registry: ${page.slug} needs a description of 40 to 160 characters (meta description), has ${page.description?.length ?? 0}`);
-  if (page.kind !== 'foundation' && !(page.api?.length > 0)) problems.push(`registry: ${page.slug} registers no API entries`);
+  for (const section of page.guide ?? []) for (const code of section.code ?? []) {
+    if (!code.file === !code.text) problems.push(`registry: ${page.slug} guide ${section.id} code "${code.label}" needs exactly one of file or text`);
+    if (code.file && !existsSync(resolve(root, 'site/src/guides', page.slug, `${code.file}.tsx`))) problems.push(`registry: ${page.slug} guide file ${code.file} is missing in site/src/guides/${page.slug}/`);
+  }
+  if (page.kind === 'guide' && !(page.guide?.length > 0)) problems.push(`registry: guide ${page.slug} has no sections`);
+  if (page.kind !== 'foundation' && page.kind !== 'guide' && !(page.api?.length > 0)) problems.push(`registry: ${page.slug} registers no API entries`);
   for (const rel of page.related ?? []) if (!PAGES.some((p) => p.slug === rel)) problems.push(`registry: ${page.slug} relates to unknown page ${rel}`);
 }
 // Example files that no page registers would silently rot.
@@ -42,6 +47,16 @@ for (const slug of readdirSync(exampleRoot)) {
   for (const file of readdirSync(resolve(exampleRoot, slug))) {
     if (!file.endsWith('.tsx')) continue;
     if (!(page.examples ?? []).some((e) => `${e.id}.tsx` === file)) problems.push(`examples: ${slug}/${file} is not registered on its page`);
+  }
+}
+
+// Guide code files (typechecked, shown as text, never executed) must each be used by their guide.
+const guideRoot = resolve(root, 'site/src/guides');
+for (const slug of existsSync(guideRoot) ? readdirSync(guideRoot) : []) {
+  const page = PAGES.find((p) => p.slug === slug);
+  if (!page?.guide) { problems.push(`guides: directory ${slug} belongs to no guide page`); continue; }
+  for (const file of readdirSync(resolve(guideRoot, slug))) {
+    if (!(page.guide ?? []).some((section) => (section.code ?? []).some((c) => `${c.file}.tsx` === file))) problems.push(`guides: ${slug}/${file} is not used by its guide`);
   }
 }
 

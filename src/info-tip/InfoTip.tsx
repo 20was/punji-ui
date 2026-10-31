@@ -36,7 +36,18 @@ function Bubble({ anchor, id, testId, children, compact, hidden }: { anchor: DOM
  * explains (`label`); the text is its description while shown. Clicks stay inside, so a hint in a
  * clickable row never opens the row.
  */
-export function InfoTip({ label, children, testId, trigger }: { label: string; children: ReactNode; testId?: string; /** A short text trigger instead of the default info icon. */ trigger?: ReactNode }) {
+export interface InfoTipProps {
+  /** What the button explains ("About weighted average cost"): its accessible name. */
+  label: string;
+  /** The explanation: one or two sentences. It is the button's description while shown. */
+  children: ReactNode;
+  /** Becomes data-testid on the button; the bubble is `${testId}-tip`. */
+  testId?: string;
+  /** A short text trigger instead of the default info icon. */
+  trigger?: ReactNode;
+}
+
+export function InfoTip({ label, children, testId, trigger }: InfoTipProps) {
   const id = useId();
   const ref = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState<null | 'peek' | 'pinned'>(null);
@@ -107,7 +118,18 @@ export function InfoTip({ label, children, testId, trigger }: { label: string; c
  * it adds a description instead. Never the only place a fact lives: a
  * phone has no hover. A label that needs explaining gets an InfoTip.
  */
-export function Tooltip({ content, children, describe, testId }: { content: string; children: ReactElement<{ 'aria-describedby'?: string }>; describe?: boolean; testId?: string }) {
+export interface TooltipProps {
+  /** The short text shown in the bubble: the control's name. */
+  content: string;
+  /** The one control the tooltip is for (a single element that can take aria-describedby). */
+  children: ReactElement<{ 'aria-describedby'?: string }>;
+  /** Also expose the text to screen readers as the control's description while shown, for a control that already has a visible name. */
+  describe?: boolean;
+  /** Becomes data-testid on the bubble. */
+  testId?: string;
+}
+
+export function Tooltip({ content, children, describe, testId }: TooltipProps) {
   const id = useId();
   const ref = useRef<HTMLSpanElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);

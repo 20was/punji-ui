@@ -7,7 +7,16 @@
 import type { ReactNode } from 'react';
 
 
-export function LockedNote({ children, title, testId }: { children: ReactNode; /** A bold first line ("Not included on this account"); the children are then the line under it. */ title?: ReactNode; testId?: string }) {
+export interface LockedNoteProps {
+  /** What is not included and, if you can say it, how to get it. With a `title` it is the line under it. */
+  children: ReactNode;
+  /** A bold first line ("Not included on this account"); the children are then the line under it. */
+  title?: ReactNode;
+  /** Becomes data-testid on the note. */
+  testId?: string;
+}
+
+export function LockedNote({ children, title, testId }: LockedNoteProps) {
   const lock = (
     <svg className="kit-tone-ico locked" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M6 11h12v10H6zM8 11V7a4 4 0 118 0v4" />

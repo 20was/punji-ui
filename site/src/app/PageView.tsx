@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { Fragment, useState, type ReactNode } from 'react';
 import { SegmentedControl } from '@punji/ui/controls';
-import { GROUPS, pageBySlug, type PageDef } from '../registry.ts';
+import { GROUPS, pageBySlug, type GuideSection, type PageDef } from '../registry.ts';
 import { pagePath } from '../seo.ts';
 import { Link } from './router.tsx';
 import { apiEntry, type ApiEntry } from './api.ts';
 import { Code } from './Code.tsx';
-import { loadExample } from './examples.ts';
+import { exampleSource, loadExample } from './examples.ts';
 
 const names = (entry: ApiEntry, name: string) => (entry.kind === 'type' ? `type ${name}` : name);
 const wrap = (list: string[], from: string) => {
@@ -135,7 +135,89 @@ function List({ id, title, items }: { id: string; title: string; items: readonly
   );
 }
 
+const INLINE = /`([^`]+)`|\[([^\]]+)\]\(([^)]+)\)/g;
+
+/** Inline `code` and [text](href) in guide prose. Paths starting with / are in-site links; the rest open in a new tab. */
+function Rich({ text }: { text: string }) {
+  const out: ReactNode[] = [];
+  let last = 0;
+  for (const match of text.matchAll(INLINE)) {
+    out.push(text.slice(last, match.index));
+    const [, code, label, href] = match;
+    if (code) out.push(<code key={match.index}>{code}</code>);
+    else if (href!.startsWith('/')) out.push(<Link key={match.index} to={href!}>{label}</Link>);
+    else
+      out.push(
+        <a key={match.index} href={href} target="_blank" rel="noopener noreferrer">
+          {label}
+          <span className="kit-sr"> (opens in a new tab)</span>
+        </a>,
+      );
+    last = match.index + match[0].length;
+  }
+  out.push(text.slice(last));
+  return <>{out.map((node, i) => <Fragment key={i}>{node}</Fragment>)}</>;
+}
+
+function GuideBlock({ slug, section }: { slug: string; section: GuideSection }) {
+  return (
+    <section aria-labelledby={section.id} className="doc-section">
+      <h2 id={section.id}>{section.title}</h2>
+      {section.paragraphs.map((text) => (
+        <p key={text}>
+          <Rich text={text} />
+        </p>
+      ))}
+      {section.points && (
+        <ul>
+          {section.points.map((text) => (
+            <li key={text}>
+              <Rich text={text} />
+            </li>
+          ))}
+        </ul>
+      )}
+      {section.code?.map((block) => (
+        <Code key={block.label} label={block.label} code={block.file ? (exampleSource(slug, block.file) ?? '') : (block.text ?? '')} />
+      ))}
+    </section>
+  );
+}
+
+function RelatedList({ page }: { page: PageDef }) {
+  return (
+    <section aria-labelledby="related" className="doc-section">
+      <h2 id="related">Related</h2>
+      <ul className="doc-related">
+        {page.related.map((slug) => {
+          const other = pageBySlug(slug);
+          return other ? (
+            <li key={slug}>
+              <Link to={pagePath(other)}>{other.title}</Link>
+            </li>
+          ) : null;
+        })}
+      </ul>
+    </section>
+  );
+}
+
 export function PageView({ page }: { page: PageDef }) {
+  if (page.guide) {
+    return (
+      <article className="doc-page" data-testid={`page-${page.slug}`}>
+        <header>
+          <p className="doc-eyebrow">{GROUPS.find((g) => g.id === page.group)?.title}</p>
+          <h1 tabIndex={-1} id="page-title">{page.title}</h1>
+          <p className="doc-lead">{page.summary}</p>
+        </header>
+        {page.guide.map((section) => (
+          <GuideBlock key={section.id} slug={page.slug} section={section} />
+        ))}
+        <RelatedList page={page} />
+      </article>
+    );
+  }
   const group = GROUPS.find((g) => g.id === page.group);
   const imports = page.api.length > 0 ? importLines(page) : undefined;
   const entries = [...new Set(page.api.map((a) => a.name))].map(apiEntry);

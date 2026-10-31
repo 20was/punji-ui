@@ -12,9 +12,13 @@ import { Select } from '../select/Select.tsx';
 import { searchSymbols, type SymbolOption } from '../format/format.ts';
 
 interface BaseProps {
+  /** The visible label, a real <label> tied to the control. Keep it short and specific ("Units", not "Enter units"). */
   label: ReactNode;
+  /** A quiet line under the control (format, unit, limit). Linked with aria-describedby; replaced by `error` when there is one. */
   hint?: ReactNode;
+  /** What is wrong and how to fix it. Sets aria-invalid, is announced when it appears (role="alert") and replaces `hint`. */
   error?: ReactNode;
+  /** Becomes data-testid on the control. */
   testId?: string;
   /** The box: lg 44 (forms, the default) or md 36 (a toolbar). */
   size?: 'md' | 'lg';
@@ -22,10 +26,14 @@ interface BaseProps {
   hideLabel?: boolean;
 }
 
-type InputProps = BaseProps & Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'value' | 'size'> & {
+interface ValueProps {
+  /** The current text. The field is controlled: it always shows exactly this. */
   value: string;
+  /** Called with the new text on every change (the string, not the event). */
   onChange: (v: string) => void;
-};
+}
+
+type InputProps = BaseProps & Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'value' | 'size'> & ValueProps;
 
 function Shell({ id, label, hint, error, size = 'lg', hideLabel, children }: BaseProps & { id: string; children: ReactNode }) {
   return (
@@ -41,7 +49,13 @@ function Shell({ id, label, hint, error, size = 'lg', hideLabel, children }: Bas
   );
 }
 
-export function Field({ label, hint, error, testId, value, onChange, id: idProp, size, hideLabel, trailingAction, ...rest }: InputProps & { /** Optional labelled action beside the input (for example, open a calendar). */ trailingAction?: ReactNode }) {
+interface FieldExtras {
+  /** Optional labelled action beside the input (for example, open a calendar). */
+  trailingAction?: ReactNode;
+}
+
+/** A text input in the kit box: a label over the input, a hint or an error under it. Any other <input> attribute is passed through. */
+export function Field({ label, hint, error, testId, value, onChange, id: idProp, size, hideLabel, trailingAction, ...rest }: InputProps & FieldExtras) {
   const auto = useId();
   const id = idProp ?? auto;
   const input = <input
@@ -60,12 +74,18 @@ export function Field({ label, hint, error, testId, value, onChange, id: idProp,
   );
 }
 
-export function NumberField({ integer, ...props }: InputProps & { integer?: boolean }) {
+interface NumberExtras {
+  /** Whole numbers only: asks a phone for the numeric keypad (inputMode "numeric") instead of the decimal one. */
+  integer?: boolean;
+}
+
+/** A Field that asks a phone for a number keypad. The value stays text: it does not group, parse or validate (see parseMinorUnits and CurrencyInput). */
+export function NumberField({ integer, ...props }: InputProps & NumberExtras) {
   return <Field {...props} inputMode={integer ? 'numeric' : 'decimal'} autoComplete="off" />;
 }
 
 /** Several lines of text (a message, a note): the same box, at least two control heights tall, grows with `rows`. */
-export function TextAreaField({ label, hint, error, testId, value, onChange, id: idProp, size, hideLabel, rows = 4, ...rest }: BaseProps & Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onChange' | 'value' | 'size'> & { value: string; onChange: (v: string) => void }) {
+export function TextAreaField({ label, hint, error, testId, value, onChange, id: idProp, size, hideLabel, rows = 4, ...rest }: BaseProps & Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onChange' | 'value' | 'size'> & ValueProps) {
   const auto = useId();
   const id = idProp ?? auto;
   return (
@@ -84,11 +104,18 @@ export function TextAreaField({ label, hint, error, testId, value, onChange, id:
   );
 }
 
+/** A Field with type="date": the browser's own date input, whose value is always YYYY-MM-DD. */
 export function DateField(props: InputProps) {
   return <Field {...props} type="date" />;
 }
 
-export function SelectField({ label, hint, error, testId, value, onChange, options, size, hideLabel }: BaseProps & { value: string; onChange: (v: string) => void; options: { value: string; label: string }[] }) {
+interface SelectFieldExtras {
+  /** The choices, in order. Each has the value you receive and the words the person sees. */
+  options: { value: string; label: string }[];
+}
+
+/** A Select in the Field box: the same label, hint and error wiring, full width. */
+export function SelectField({ label, hint, error, testId, value, onChange, options, size, hideLabel }: BaseProps & ValueProps & SelectFieldExtras) {
   const id = useId();
   return (
     <Shell id={id} label={label} hint={hint} error={error} size={size} hideLabel={hideLabel}>
@@ -97,7 +124,15 @@ export function SelectField({ label, hint, error, testId, value, onChange, optio
   );
 }
 
-export function SymbolField({ label, hint, error, testId, value, onChange, options, placeholder, size, hideLabel }: BaseProps & { value: string; onChange: (v: string) => void; options: readonly SymbolOption[]; placeholder?: string }) {
+interface SymbolFieldExtras {
+  /** Every symbol and company name the person can pick. Matching runs in memory over this list on each keystroke (no request). */
+  options: readonly SymbolOption[];
+  /** Text shown in the empty input. */
+  placeholder?: string;
+}
+
+/** A combobox for a ticker symbol: the typed text is uppercased and matched by symbol and company name against `options`. */
+export function SymbolField({ label, hint, error, testId, value, onChange, options, placeholder, size, hideLabel }: BaseProps & ValueProps & SymbolFieldExtras) {
   const id = useId();
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
@@ -177,7 +212,14 @@ export function SymbolField({ label, hint, error, testId, value, onChange, optio
 }
 
 /** An editable price with an optional source annotation, isolated from ordinary number fields. */
-export function PriceField({ label, source, hint, error, testId, value, onChange, id: idProp, size, hideLabel, ...rest }: InputProps & { /** A compact source annotation inside the editable price. */ source?: ReactNode; /** React 19: a ref is a prop. */ ref?: Ref<HTMLInputElement> }) {
+interface PriceFieldExtras {
+  /** A compact source annotation inside the editable price (a currency code, "last close"). */
+  source?: ReactNode;
+  /** A ref to the input element (React 19: a ref is a prop). */
+  ref?: Ref<HTMLInputElement>;
+}
+
+export function PriceField({ label, source, hint, error, testId, value, onChange, id: idProp, size, hideLabel, ...rest }: InputProps & PriceFieldExtras) {
   const auto = useId();
   const id = idProp ?? auto;
   return (

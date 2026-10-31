@@ -5,7 +5,11 @@
 // Adding a page = one entry here + one example file per variant in
 // site/src/examples/<slug>/<id>.tsx. See site/README.md.
 
+import { GUIDES } from './registry-guides.ts';
+import { GENERIC_PAGES } from './registry-generic.ts';
+
 export type GroupId =
+  | 'get-started'
   | 'foundations'
   | 'financial-primitives'
   | 'stock-market'
@@ -27,16 +31,17 @@ export interface Group {
 
 /** The sidebar order. Domains, not component types. */
 export const GROUPS: readonly Group[] = [
+  { id: 'get-started', title: 'Get started', planned: [] },
   { id: 'foundations', title: 'Foundations', planned: [] },
-  { id: 'financial-primitives', title: 'Financial primitives', planned: ['Figure', 'Delta'] },
-  { id: 'stock-market', title: 'Stock market', planned: ['LiveFigure'] },
+  { id: 'financial-primitives', title: 'Financial primitives', planned: [] },
+  { id: 'stock-market', title: 'Stock market', planned: [] },
   { id: 'portfolio', title: 'Portfolio & investment', planned: [] },
-  { id: 'accounting', title: 'Accounting & bookkeeping', planned: ['DataRows', 'ValueRow', 'FinancialSummary'] },
-  { id: 'banking', title: 'Banking & payments', planned: ['StatusPill', 'LockedNote'] },
+  { id: 'accounting', title: 'Accounting & bookkeeping', planned: [] },
+  { id: 'banking', title: 'Banking & payments', planned: [] },
   { id: 'data', title: 'Data & analytics', planned: [] },
-  { id: 'forms', title: 'Forms & inputs', planned: ['Field', 'NumberField', 'Select', 'Checkbox', 'Switch', 'RangeSlider', 'SymbolField', 'TextAreaField', 'Calendar'] },
-  { id: 'layout', title: 'Layout & navigation', planned: ['AppShell', 'PageHeader', 'Drawer', 'Tabs', 'Popover', 'CommandPalette'] },
-  { id: 'feedback', title: 'Feedback & states', planned: ['ToastProvider'] },
+  { id: 'forms', title: 'Forms & inputs', planned: ['Calendar'] },
+  { id: 'layout', title: 'Layout & navigation', planned: [] },
+  { id: 'feedback', title: 'Feedback & states', planned: [] },
   { id: 'developer', title: 'Developer utilities', planned: [] },
 ];
 
@@ -60,7 +65,7 @@ export interface PageDef {
   slug: string;
   title: string;
   group: GroupId;
-  kind: 'foundation' | 'component' | 'utility' | 'hooks';
+  kind: 'foundation' | 'component' | 'utility' | 'hooks' | 'guide';
   /** The overview: what it is and the one rule that matters. */
   summary: string;
   /** The meta description and social card text: one or two sentences, at most 160 characters (the build checks). */
@@ -77,11 +82,33 @@ export interface PageDef {
   /** Extra "Security boundary" or "Limits" section: title and points. */
   notes?: { title: string; points: readonly string[] };
   related: readonly string[];
+  /** A guide page (kind 'guide') is prose and code instead of the component template. */
+  guide?: readonly GuideSection[];
+}
+
+export interface GuideCode {
+  /** The label above the code block. */
+  label: string;
+  /** A real, typechecked file: site/src/guides/<slug>/<file>.tsx. Its text is shown; it is never executed. */
+  file?: string;
+  /** Literal text for shell commands and config files that are not TSX (CSS, next.config, package.json). */
+  text?: string;
+}
+
+export interface GuideSection {
+  id: string;
+  title: string;
+  /** Paragraphs. Inline `code` and [text](/path/ or https://...) links are rendered. */
+  paragraphs: readonly string[];
+  /** A bulleted list under the paragraphs, same inline markup. */
+  points?: readonly string[];
+  code?: readonly GuideCode[];
 }
 
 const ui = (module: string, ...names: string[]): ApiRef[] => names.map((name) => ({ name, module }));
 
 export const PAGES: readonly PageDef[] = [
+  ...GUIDES,
   {
     slug: 'colour-tokens',
     title: 'Colour tokens',
@@ -1341,6 +1368,7 @@ export const PAGES: readonly PageDef[] = [
     },
     related: ['account-number', 'transaction-list', 'csv-export'],
   },
+  ...GENERIC_PAGES,
 ];
 
 export const pageBySlug = (slug: string): PageDef | undefined => PAGES.find((p) => p.slug === slug);

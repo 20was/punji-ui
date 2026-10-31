@@ -169,14 +169,14 @@ export function TransactionHistory({
   ) : undefined;
 
   return (
-    <div className="pu-tx" data-testid={testId}>
-      <div className="pu-tx-filters">
+    <div className="pu-txh" data-testid={testId}>
+      <div className="pu-txh-filters">
         <div className="kit-chips wrap" role="group" aria-label={labels?.typeFilter ?? 'Transaction types'}>
           {TRANSACTION_TYPES.map((type) => (
             <Chip key={type} size="sm" selected={types.includes(type)} onClick={() => toggle(type)} testId={testId ? `${testId}-type-${type}` : undefined}>{word(type)}</Chip>
           ))}
         </div>
-        <div className="pu-tx-controls">
+        <div className="pu-txh-controls">
           <Select
             size="md"
             label={labels?.symbolFilter ?? 'Symbol'}
@@ -213,7 +213,7 @@ export function TransactionHistory({
               <b>{formatDate(row.date)}</b>
               {row.note && <span className="sub">{row.note}</span>}
             </Cell>
-            <Cell label={text.type}><span className="pu-tx-type" data-type={row.type}>{word(row.type)}</span></Cell>
+            <Cell label={text.type}><span className="pu-txh-type" data-type={row.type}>{word(row.type)}</span></Cell>
             <Cell label={text.symbol}><b>{row.symbol}</b></Cell>
             <Cell num label={text.quantity}>{blank(row.quantity, () => formatQuantity(Number(row.quantity)))}</Cell>
             <Cell num label={text.price}>{row.type === 'dividend' ? null : row.type === 'bonus' ? <Missing label="Free" /> : <MoneyDisplay value={row.price ?? null} preset={money} />}</Cell>

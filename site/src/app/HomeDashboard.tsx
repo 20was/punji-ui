@@ -23,7 +23,10 @@ const previous = quotes.reduce((sum, q, i) => sum + (q.previousClose ?? 0n) * Bi
 const largest = quotes.map((q, i) => ({ q, worth: (q.ltp ?? 0n) * BigInt(UNITS[i] ?? 0) })).toSorted((a, b) => (b.worth > a.worth ? 1 : -1))[0]!;
 
 const sectors: ShareItem[] = sectorShares.map((s, i) => ({ key: s.key, label: s.label, pct: s.pct, tone: SHARE_TONES[i] ?? 'rest' }));
-const movers = sortQuotes(quotes, { key: 'changePercent', dir: 'desc' }).slice(0, 7);
+// Gainers only: a flat or falling stock is not a top gainer.
+const movers = sortQuotes(quotes, { key: 'changePercent', dir: 'desc' })
+  .filter((q) => q.ltp !== null && q.previousClose !== null && q.ltp > q.previousClose)
+  .slice(0, 6);
 const nabil = quotes.find((q) => q.symbol === 'NABIL')!;
 
 export function HomeDashboard() {
@@ -70,7 +73,7 @@ export function HomeDashboard() {
         </div>
         <div className="home-dash-movers">
           <Card title="Top gainers" description="NEPSE, by percent change" headingLevel={3} flush stretch>
-            <StockTable caption="Top gainers today" quotes={movers} columns={['symbol', 'ltp', 'change', 'volume', 'trend']} bare stack={false} density="compact" />
+            <StockTable caption="Top gainers today" quotes={movers} columns={['symbol', 'ltp', 'change', 'trend']} bare />
           </Card>
         </div>
         <div className="home-dash-tx">

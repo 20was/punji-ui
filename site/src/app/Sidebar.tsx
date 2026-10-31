@@ -5,7 +5,6 @@ import { pagePath } from '../seo.ts';
 import { Link } from './router.tsx';
 import { ChevronIcon } from './icons.tsx';
 
-const ROADMAP = 'https://github.com/20was/punji-ui/blob/main/ROADMAP.md';
 const KEY = 'punji-docs-nav-collapsed';
 const isList = (value: unknown): value is GroupId[] => Array.isArray(value) && value.every((v) => typeof v === 'string');
 const options = { defaultValue: [] as GroupId[], validate: isList };
@@ -13,7 +12,8 @@ const options = { defaultValue: [] as GroupId[], validate: isList };
 /**
  * The page tree: one collapsible group per domain, in registry order. Collapsed groups persist (localStorage);
  * the server render has every group open, so every link is in the HTML. The group holding the current page is
- * always open on arrival, so the active link is visible.
+ * always open on arrival, so the active link is visible. Planned exports stay in ROADMAP.md (linked from the footer),
+ * not in the navigation.
  */
 export function Sidebar({ current, onNavigate, idPrefix = 'nav' }: { current: string; onNavigate?: () => void; idPrefix?: string }) {
   const { value: collapsed, set } = useLocalStorage<GroupId[]>(KEY, options);
@@ -65,13 +65,6 @@ export function Sidebar({ current, onNavigate, idPrefix = 'nav' }: { current: st
                   </li>
                 ))}
                 {pages.length === 0 && <li className="doc-nav-empty">No pages yet</li>}
-                {group.planned.length > 0 && (
-                  <li className="doc-nav-planned">
-                    <a href={ROADMAP} target="_blank" rel="noopener noreferrer" title={`Not documented yet: ${group.planned.join(', ')}`}>
-                      {group.planned.length} planned<span className="kit-sr"> in {group.title} (opens ROADMAP.md in a new tab)</span>
-                    </a>
-                  </li>
-                )}
               </ul>
             </li>
           );

@@ -26,7 +26,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     ],
     api: [...ui('fields', 'Field', 'NumberField', 'PriceField', 'DateField', 'SelectField', 'SymbolField', 'TextAreaField')],
     examples: [
-      { id: 'basic', title: 'Text, hint and error', note: 'The error replaces the hint, is announced when it appears, and sets aria-invalid.' },
+      { id: 'basic', title: 'Text, hint and error', note: 'The error replaces the hint and is announced when it appears.' },
       { id: 'number', title: 'Number and price', note: 'inputMode asks a phone for the right keypad; the value is still text.' },
       { id: 'symbol', title: 'Symbol', note: 'A combobox over the list you pass; arrows choose, Enter picks, Esc closes.' },
       { id: 'long', title: 'Select, date, long text', note: 'The same box for a dropdown, the native date input and several lines of text.' },
@@ -65,7 +65,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     avoid: ['Two to five short options that should all be visible: use SegmentedControl or ChoiceGroup.', 'Searching a long list by typing: use SymbolField or CompanySearch.', 'Restyling the box through className: it is for layout only.'],
     api: [...ui('select', 'Select', 'SelectOption')],
     examples: [
-      { id: 'basic', title: 'Basic', note: 'Typed through the generic: onChange receives the union, not a string.' },
+      { id: 'basic', title: 'Chart period', note: 'A native select in a card header; onChange receives the typed value, not a string.' },
       { id: 'labels', title: 'Labels and sizes', note: 'hidden (default), above and inline labels; sm 32, md 36, lg 44; block fills the width.' },
       { id: 'groups', title: 'Groups and states', note: 'Optgroups, a disabled option, loading, disabled and the native picker.' },
     ],
@@ -119,7 +119,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     avoid: ['Tabs that change the URL: those are links in the page\'s navigation.', 'A small option set in a toolbar: use SegmentedControl.', 'Tabs with no panel: aria-controls must point at a real element.'],
     api: [...ui('tabs', 'Tabs', 'PanelTabs', 'TabsProps')],
     examples: [
-      { id: 'line', title: 'Line tabs', note: 'The panel is yours: role="tabpanel", aria-labelledby the chosen tab.' },
+      { id: 'line', title: 'Line tabs', note: 'An account page: the tabs switch the panel, which you render with role="tabpanel".' },
       { id: 'panel', title: 'Panel tabs', note: 'An icon over one short word; the labels share the panel\'s width.' },
     ],
     keyboard: [
@@ -486,7 +486,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     avoid: ['More than one PageHeader or PageLayout per page.', 'More than three actions in the header.', 'A back link on a root page: omit backTo.'],
     api: [...ui('layout', 'PageLayout', 'PageHeader', 'ListSectionHeader', 'ChevronLeft', 'ChevronRight')],
     examples: [
-      { id: 'sections', title: 'Section headers', note: 'A title with an action, a quiet detail, and the small and caption forms inside a card.' },
+      { id: 'sections', title: 'Section headers', note: 'Section titles with an action or a quiet detail, and the small form inside a card.' },
       { id: 'header', title: 'Page header', note: 'Back circle, eyebrow, stamp, meta and actions; and the compact form for a tool page.' },
       { id: 'layout', title: 'Page layout', note: 'The page ground with a nav slot. Shown inert so this page keeps one main landmark.' },
     ],

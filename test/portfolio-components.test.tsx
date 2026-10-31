@@ -302,6 +302,13 @@ describe('DividendHistory', () => {
 const dataRows = () => screen.getAllByRole('row').filter((row) => within(row).queryByRole('rowheader') && !row.closest('tfoot'));
 
 describe('TransactionHistory', () => {
+  it('has its own root class, not the banking TransactionList row class (both ship in styles.css)', () => {
+    const { container } = render(<TransactionHistory transactions={portfolioTransactions} caption="Transactions" testId="t" />);
+    const root = screen.getByTestId('t');
+    expect(root.className).toBe('pu-txh');
+    expect(container.querySelector('.pu-tx')).toBeNull();
+    // .pu-tx is the banking row (a flex row in banking.css); sharing it laid the history out sideways.
+  });
   it('lists the newest first, one keyed row per transaction, with a page of 10 and a pager', async () => {
     const user = userEvent.setup();
     render(<TransactionHistory transactions={portfolioTransactions} caption="Transactions" testId="t" />);

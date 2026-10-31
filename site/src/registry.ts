@@ -128,7 +128,7 @@ export const PAGES: readonly PageDef[] = [
     use: ['Read tokens in your own CSS with var(--pu-color-text) so your screens follow the theme.', 'Override a token on a wrapper to re-theme one subtree.'],
     avoid: ['Copying hex values into your CSS: they will not follow dark mode.', 'Using colour alone to show gain or loss: the sign and words must carry it.'],
     api: [],
-    examples: [{ id: 'swatches', title: 'Swatches', note: 'Read from the shipped tokens.css at build time, both themes side by side.' }, { id: 'override', title: 'Override a subtree', note: 'data-theme on a wrapper forces one theme for everything inside it.' }],
+    examples: [{ id: 'swatches', title: 'Swatches', note: 'Read from the shipped tokens.css at build time. Each swatch: light value on the left, dark on the right.' }, { id: 'override', title: 'Override a subtree', note: 'data-theme on a wrapper forces one theme for everything inside it.' }],
     keyboard: ['Tokens are not interactive.'],
     accessibility: ['Text tokens are checked for contrast against their surfaces in both themes by the package visual gate.', 'Gain and loss tokens are always paired with a sign or word in components.'],
     responsive: ['Tokens do not change with width; type and spacing tokens that do are on their own pages.'],
@@ -241,7 +241,7 @@ export const PAGES: readonly PageDef[] = [
       ...ui('calculations', 'percentageChange', 'priceChange', 'returnOnCost', 'cagr', 'dividendYield', 'weightedAverage'),
     ],
     examples: [
-      { id: 'position', title: 'Position and P&L', note: 'FIFO cost basis with a bonus-share lot and a partial sale.' },
+      { id: 'position', title: 'Position and P&L', note: 'A position card from three trades: FIFO cost, a bonus lot and a partial sale.' },
       { id: 'allocation', title: 'Allocation', note: 'Largest remainder: shares always sum to exactly 100.' },
       { id: 'ratios', title: 'Ratios' },
     ],
@@ -270,7 +270,7 @@ export const PAGES: readonly PageDef[] = [
       ...ui('nepal/market-format', 'formatChange', 'formatBasisPoints', 'formatQuantity', 'formatPrice'),
     ],
     examples: [
-      { id: 'generic', title: 'Generic money', note: 'USD, JPY (0 decimals), KWD (3), EUR.' },
+      { id: 'generic', title: 'Any currency', note: 'Amounts in prose, four currencies with their own decimals, a compact total and an amount parsed from typed text.' },
       { id: 'nepal', title: 'Nepal', note: 'Lakh and crore, Devanagari, compact.' },
       { id: 'market', title: 'Market values' },
     ],
@@ -332,7 +332,7 @@ export const PAGES: readonly PageDef[] = [
       ...ui('portfolio', 'holdingsSummary', 'Holding', 'HoldingsTotals', 'PortfolioPosition', 'HoldingsQuote', 'sortHoldings', 'nextHoldingSort', 'holdingsToCsv', 'positionsFromTransactions'),
     ],
     examples: [
-      { id: 'board', title: 'Sortable board', note: 'Controlled sort, column choice from useColumnVisibility, a totals row and CSV export. Sector and average cost start hidden.' },
+      { id: 'board', title: 'Sortable board', note: 'Sort any column, export CSV; totals at the foot. Sector and average cost start hidden.' },
       { id: 'gaps', title: 'Missing quotes', note: 'BFC has no LTP and IPOX no previous close: dashes, no weight, and a note naming what the totals leave out.' },
       { id: 'states', title: 'States', note: 'Loading keeps the headers; error offers a retry; empty prints your words.' },
     ],
@@ -587,7 +587,7 @@ export const PAGES: readonly PageDef[] = [
     use: ['Drawing your own chart with the same rules.', 'Validating candles before they reach a chart.'],
     avoid: ['Rendering: these return numbers only.'],
     api: [...ui('chart-math', 'niceTicks', 'bandScale', 'timeScale', 'validateOhlc', 'reduceCandles', 'downsampleIndices', 'sma', 'ema', 'rebase', 'cumulativeDepth')],
-    examples: [{ id: 'math', title: 'Calls and results' }],
+    examples: [{ id: 'math', title: 'A chart of your own', note: 'Ticks, averages, percent change and data checks from chart-math; the drawing is plain SVG.' }],
     keyboard: ['Not a UI module.'],
     accessibility: ['Nothing to render.'],
     responsive: ['Not applicable.'],
@@ -706,7 +706,7 @@ export const PAGES: readonly PageDef[] = [
     avoid: ['A short top-N list: use MarketMovers. The stocks a person follows: use Watchlist. Arbitrary records: use FinancialTable.', 'Search and pagination: they are not built in. Filter first, sort the matches, then slice.', 'Passing floating-point prices: the types require bigint minor units.'],
     api: [...ui('stock-table', 'StockTable', 'Quote', 'sortQuotes', 'nextQuoteSort', 'quoteChange', 'quoteChangePercent')],
     examples: [
-      { id: 'board', title: 'Sortable board', note: 'Controlled sort and the column set from useColumnVisibility (the trend column starts hidden); the head sticks inside a 360px box.' },
+      { id: 'board', title: 'Sortable board', note: 'Click a column to sort. The head stays put while the board scrolls.' },
       { id: 'select', title: 'Selection', note: 'Controlled selected symbols with named checkboxes; compact density and stack off.' },
       { id: 'states', title: 'States', note: 'Loading keeps the headers; error offers a retry; empty prints your words.' },
       { id: 'gaps', title: 'Missing values', note: 'Not traded and no previous close: dashes, no change, and they sort last.' },
@@ -842,7 +842,7 @@ export const PAGES: readonly PageDef[] = [
     avoid: ['Precise comparison of small tiles: the table disclosure holds exact figures.', 'Items without a positive size: they are not drawn, only listed.'],
     api: [...ui('market-heatmap', 'MarketHeatmap', 'HeatmapItem', 'heatmapItemsFromQuotes', 'squarify', 'heatStep')],
     examples: [
-      { id: 'map', title: 'From quotes', note: 'Tiles are buttons when onSelect is given.' },
+      { id: 'map', title: 'From quotes', note: 'Tile size is turnover; pick a tile to open its stock.' },
       { id: 'gaps', title: 'Gaps and helpers', note: 'Unsized items are skipped and listed; a missing change is a neutral tile. squarify and heatStep are pure.' },
     ],
     keyboard: ['With onSelect each tile is a button in tab order: Enter or Space selects.', 'The "View data as a table" disclosure is a native details element; its table region is focusable and scrolls.'],
@@ -1360,7 +1360,7 @@ export const PAGES: readonly PageDef[] = [
     ],
     examples: [
       { id: 'balances', title: 'Balances and checks', note: 'Closing cash, a trial balance of three journals, and a draft journal that is not balanced.' },
-      { id: 'csv', title: 'ledgerToCsv', note: 'Hostile account and description text comes out neutralised; amounts are exact decimals.' },
+      { id: 'csv', title: 'CSV export', note: 'ledgerToCsv: hostile account and description text comes out neutralised; amounts are exact decimals.' },
     ],
     keyboard: ['Not interactive.'],
     accessibility: ['A download trigger for the CSV must be a real button whose name says what it exports and the format.'],
@@ -1387,7 +1387,7 @@ export const PAGES: readonly PageDef[] = [
     avoid: ['Treating the mask as security: the full value is still in your JavaScript memory. Fetch it only when needed and authorise on the server.', 'Enabling copy where the reader does not expect the number to leave the app: the clipboard is shared with other apps and clipboard managers, and cannot be cleared from here.'],
     api: [...ui('account-number', 'AccountNumber')],
     examples: [
-      { id: 'masked', title: 'Masked', note: 'Visible digits, never revealable, a short number that is never fully shown, and a missing number.' },
+      { id: 'masked', title: 'Linked accounts', note: 'Masked by default with a reveal that hides again; a card number that never reveals; a wallet not linked yet.' },
       { id: 'copy', title: 'Copy and audit', note: 'copyable, autoHideMs and onRevealedChange (which receives true or false, never the number).' },
     ],
     keyboard: ['Tab to the eye button; Enter or Space toggles it. The copy button is the next Tab stop.', 'Pressing Escape does not hide it; the toggle and the auto-hide timer do.'],
@@ -1437,10 +1437,10 @@ export const PAGES: readonly PageDef[] = [
     avoid: ['Computing balances from a page of rows: pass the balance the bank states for each entry.', 'Sorting here: pass the order you want; consecutive entries with the same date share a heading.'],
     api: [...ui('transaction-list', 'TransactionList', 'TransactionRow'), ...ui('transaction-status', 'TransactionStatus'), ...ui('banking', 'transactionsToCsv', 'directionOf', 'BankTransaction')],
     examples: [
-      { id: 'statement', title: 'Statement with running balance', note: 'Debits are negative minor units. The pending, failed and reversed entries show a status; a hostile counterparty stays plain text.' },
+      { id: 'statement', title: 'Statement with running balance', note: 'Money out and in by sign, arrow and Dr or Cr; pending and failed entries carry a status.' },
       { id: 'paged-bs', title: 'Bikram Sambat and paging', note: 'Nepali headings (BS only works for 1975 to 2099) and a paged list.' },
       { id: 'states', title: 'States and statuses', note: 'Loading, empty and error (with retry), and the four status pills.' },
-      { id: 'csv', title: 'transactionsToCsv', note: 'Exact decimals, ISO dates, direction in words; =HYPERLINK and @ text is neutralised.' },
+      { id: 'csv', title: 'CSV export', note: 'transactionsToCsv: exact decimals, ISO dates, direction in words; formula text such as =HYPERLINK is neutralised.' },
     ],
     keyboard: ['Rows are not interactive. The pager buttons are Tab stops (Enter or Space).'],
     accessibility: ['Each date is an h3 and names the list under it; the whole list is a named group. Direction is words (a screen reader hears "debit" or "credit"), an arrow and Dr or Cr, never colour alone; failed and reversed amounts are also struck through.', 'The amount reads with its currency name where the symbol is shared (MoneyDisplay). Status pills have icon and words.', 'The pager announces its range politely.'],

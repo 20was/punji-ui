@@ -141,7 +141,7 @@ function RowsFixture() {
   return <>
     <ListSectionHeader title="Holdings" detail="12 positions" action={<Button size="sm" variant="ghost">Edit</Button>} />
     <Card flush><RowList label="Holdings">{holdings.slice(0, 4).map((h) => <ValueRow key={h.symbol} symbol={h.symbol} name={h.name} line={`${h.qty} units`} figure={money(h.ltp * h.qty)} note={formatPercent(h.change)} chevron onClick={noop} pill={h.change < 0 ? <StatusPill tone="loss" size="sm">Down</StatusPill> : undefined} />)}</RowList></Card>
-    <Card title="Valuation"><DataRows label="Valuation" flush><DataRow label="Cost" value={money(1_050_000)} /><DataRow label="Market value" value={money(1_248_350)} /><DataRow label="Gain" value={money(198_350)} total /></DataRows></Card>
+    <Card title="Valuation"><ListSectionHeader level={3} caption title="At the last close" /><DataRows label="Valuation" flush><DataRow label="Cost" value={money(1_050_000)} /><DataRow label="Market value" value={money(1_248_350)} /><DataRow label="Gain" value={money(198_350)} total /></DataRows></Card>
     <StatGrid cols={3} label="Key stats"><StatTile label="Day change" value="+1.25%" note="NEPSE" /><StatTile label="Turnover" value={`NPR ${formatNepalNumber(4_82_50_000, { fractionDigits: 0 })}`} /><StatTile label="Advancers" value="142" note="of 264" /></StatGrid>
     <Card title="Disclosures"><p style={{ margin: 0 }}>Brokerage commission applies. {more ? 'SEBON fee 0.015% and DP charge NPR 25 per transaction.' : ''}</p><ShowMore expanded={more} onToggle={() => setMore(!more)} more="Show more" less="Show less" testId="vr-showmore" /></Card>
   </>;

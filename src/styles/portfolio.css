@@ -23,7 +23,7 @@
     .pu-holdings .kit-tablebox.stack .kit-table :is(tbody, tfoot) tr > td:has(> .pu-wide) { grid-column: span 2 }
     .pu-holdings .kit-tablebox.stack .kit-table tbody th .sub { max-width: none }
     /* If even two tracks are too narrow, the percent wraps under the amount instead of spilling out of the row. */
-    :is(.pu-holdings, .pu-tx) .kit-tablebox.stack .pu-wide .pu-change { white-space: normal }
+    :is(.pu-holdings, .pu-txh) .kit-tablebox.stack .pu-wide .pu-change { white-space: normal }
   }
 
   .pu-alloc { display: grid; gap: 16px; min-width: 0 }
@@ -41,20 +41,20 @@
   .pu-dividends { display: grid; gap: 16px; min-width: 0 }
   .pu-dividends .kit-table tbody th { font-weight: 600 }
 
-  .pu-tx { display: grid; gap: 12px; min-width: 0 }
-  .pu-tx-filters { display: grid; gap: 12px }
-  .pu-tx-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 12px }
-  .pu-tx .kit-table tbody th { font-weight: 400 }
-  .pu-tx .kit-table tbody th b { display: block }
-  .pu-tx .kit-table tbody th .sub { max-width: 14rem }
-  .pu-tx-type { display: inline-block; padding: 2px 8px; border: 1px solid var(--pu-color-border-control); border-radius: 999px; font-size: 12px; line-height: 16px; font-weight: 600; background: var(--pu-color-surface) }
+  .pu-txh { display: grid; gap: 12px; min-width: 0 }
+  .pu-txh-filters { display: grid; gap: 12px }
+  .pu-txh-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 12px }
+  .pu-txh .kit-table tbody th { font-weight: 400 }
+  .pu-txh .kit-table tbody th b { display: block }
+  .pu-txh .kit-table tbody th .sub { max-width: 14rem }
+  .pu-txh-type { display: inline-block; padding: 2px 8px; border: 1px solid var(--pu-color-border-control); border-radius: 999px; font-size: 12px; line-height: 16px; font-weight: 600; background: var(--pu-color-surface) }
   @media (max-width: 639px) {
     /* An empty cell has nothing to label in a stacked row. */
-    :is(.pu-holdings, .pu-dividends, .pu-tx) .kit-tablebox.stack .kit-table :is(tbody, tfoot) tr > td:empty { display: none }
-    .pu-tx .kit-tablebox.stack .kit-table :is(tbody, tfoot) tr { grid-auto-flow: row dense }
-    .pu-tx .kit-tablebox.stack .kit-table :is(tbody, tfoot) tr > td:has(> .pu-wide) { grid-column: span 2 }
-    .pu-tx .kit-tablebox.stack .kit-table :is(tbody, tfoot) tr > th { grid-column: 1 / 3 }
-    .pu-tx .kit-tablebox.stack .kit-table :is(tbody, tfoot) tr > th + td { grid-column: 3 / 5 }
-    .pu-tx .kit-tablebox.stack .kit-table tbody th .sub { max-width: none }
+    :is(.pu-holdings, .pu-dividends, .pu-txh) .kit-tablebox.stack .kit-table :is(tbody, tfoot) tr > td:empty { display: none }
+    .pu-txh .kit-tablebox.stack .kit-table :is(tbody, tfoot) tr { grid-auto-flow: row dense }
+    .pu-txh .kit-tablebox.stack .kit-table :is(tbody, tfoot) tr > td:has(> .pu-wide) { grid-column: span 2 }
+    .pu-txh .kit-tablebox.stack .kit-table :is(tbody, tfoot) tr > th { grid-column: 1 / 3 }
+    .pu-txh .kit-tablebox.stack .kit-table :is(tbody, tfoot) tr > th + td { grid-column: 3 / 5 }
+    .pu-txh .kit-tablebox.stack .kit-table tbody th .sub { max-width: none }
   }
 }

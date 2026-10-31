@@ -1,11 +1,12 @@
 import { Link } from './router.tsx';
 
-const POPULAR = [
-  ['/components/money-display/', 'MoneyDisplay', 'Exact amounts in any currency'],
-  ['/components/stock-table/', 'StockTable', 'A sortable quote board'],
-  ['/components/data-table/', 'DataTable', 'Typed tables for financial rows'],
-  ['/get-started/using/', 'Introduction', 'Install it and show your first amount'],
-  ['/get-started/theming/', 'Theming', 'Light, dark and your own accent'],
+// Starting points by intent. No usage data exists, so they are not labelled "popular".
+const START = [
+  ['/get-started/using/', 'Get started', 'Introduction', 'Install it and show your first amount'],
+  ['/components/money-display/', 'Financial primitives', 'MoneyDisplay', 'Exact amounts in any currency'],
+  ['/components/stock-table/', 'Stock market', 'StockTable', 'A sortable quote board'],
+  ['/components/data-table/', 'Data', 'DataTable', 'Typed tables for financial rows'],
+  ['/get-started/theming/', 'Get started', 'Theming', 'Light, dark and your own accent'],
 ] as const;
 
 export function NotFound() {
@@ -17,7 +18,7 @@ export function NotFound() {
           <h1 tabIndex={-1} id="page-title">
             Page not found
           </h1>
-          <p className="doc-lead">There is no page at this address. It may have moved, or the link may be mistyped. Search with ⌘K, or start from one of these.</p>
+          <p className="doc-lead">There is no page at this address. It may have moved, or the link may be mistyped. Search the docs, or start from one of these.</p>
         </header>
         <section aria-labelledby="nf-go" className="doc-section">
           <h2 id="nf-go" className="doc-subtle-h">
@@ -31,10 +32,10 @@ export function NotFound() {
                 <span className="doc-related-lead">Every domain, with live previews</span>
               </Link>
             </li>
-            {POPULAR.map(([to, title, lead]) => (
+            {START.map(([to, group, title, lead]) => (
               <li key={to}>
                 <Link to={to}>
-                  <span className="doc-related-eyebrow">Popular</span>
+                  <span className="doc-related-eyebrow">{group}</span>
                   <strong>{title}</strong>
                   <span className="doc-related-lead">{lead}</span>
                 </Link>

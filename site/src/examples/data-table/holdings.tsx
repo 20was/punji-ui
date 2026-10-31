@@ -12,8 +12,8 @@ type Key = 'symbol' | 'qty' | 'ltp' | 'change';
 const columns: FinancialColumn<Holding>[] = [
   { key: 'symbol', label: 'Symbol', sortable: true, rowHeader: true, render: (h) => h.symbol },
   { key: 'qty', label: 'Units', num: true, sortable: true, render: (h) => h.qty.toLocaleString('en-IN') },
-  { key: 'ltp', label: 'Last price', num: true, sortable: true, render: (h) => <MoneyDisplay value={paisa(h.ltp)} preset={preset} /> },
-  { key: 'change', label: 'Change', num: true, sortable: true, render: (h) => <PriceChange size="sm" preset={preset} current={paisa(h.ltp)} previous={paisa(h.ltp / (1 + h.change / 100))} /> },
+  { key: 'ltp', label: 'Last price', num: true, sortable: true, render: (h) => <MoneyDisplay value={paisa(h.ltp)} preset={preset} display="none" /> },
+  { key: 'change', label: 'Change', num: true, sortable: true, render: (h) => <PriceChange size="sm" preset={preset} showAbsolute={false} current={paisa(h.ltp)} previous={paisa(h.ltp / (1 + h.change / 100))} /> },
 ];
 
 export default function Example() {
@@ -23,8 +23,9 @@ export default function Example() {
     return holdings.slice(0, 6).toSorted((a, b) => (a[sort.key] < b[sort.key] ? -sign : a[sort.key] > b[sort.key] ? sign : 0));
   }, [sort]);
   return (
+    <div className="ex-medium">
     <FinancialTable
-      caption="Holdings"
+      caption="Holdings, prices in NPR"
       columns={columns}
       rows={rows}
       rowKey={(h) => h.symbol}
@@ -32,5 +33,6 @@ export default function Example() {
       onSort={(key) => setSort((s) => ({ key: key as Key, dir: s.key === key && s.dir === 'asc' ? 'desc' : 'asc' }))}
       emptyTitle="No holdings yet"
     />
+    </div>
   );
 }

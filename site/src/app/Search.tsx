@@ -29,7 +29,8 @@ function score(page: PageDef, words: string[]): number {
   if (title.startsWith(q)) return 0;
   if (title.split(/\W+/).some((part) => part.startsWith(words[0]!))) return 1;
   if (names.some((n) => n.startsWith(words[0]!))) return 2;
-  return 3;
+  // Text-only matches: reference pages before guides, so "money" lists components before the Next.js guide.
+  return page.kind === 'guide' ? 4 : 3;
 }
 
 /** The pages for a query, grouped in sidebar order when empty, by relevance otherwise. */
@@ -40,7 +41,9 @@ export function searchPages(query: string): CommandItem[] {
     .toSorted((a, b) => a.rank - b.rank || a.index - b.index)
     .slice(0, words.length ? 24 : PAGES.length);
   return hits.map(({ page }) => {
-    const matchedApi = words.length ? page.api.find((a) => a.name.toLowerCase().startsWith(words[0]!) && a.name !== page.title) : undefined;
+    // Say which export matched only when the title did not: "MoneyDisplay" keeps its lead for the query "money".
+    const titleHit = page.title.toLowerCase().includes(words[0] ?? '\u0000');
+    const matchedApi = words.length && !titleHit ? page.api.find((a) => a.name.toLowerCase().startsWith(words[0]!) && a.name !== page.title) : undefined;
     return {
       id: page.slug,
       group: words.length ? 'results' : page.group,
@@ -96,7 +99,8 @@ export function Search() {
           onQuery={setQuery}
           items={items}
           testIdPrefix="docsearch"
-          empty={<span>Nothing matches “{query.trim()}”. Try a component name such as MoneyDisplay, or a word like ledger.</span>}
+          // The palette shows `empty` whenever it is given, so pass it only when nothing matched.
+          empty={items.length > 0 ? undefined : <span>Nothing matches “{query.trim()}”. Try a component name such as MoneyDisplay, or a word like ledger.</span>}
           onRun={(item) => {
             const page = PAGES.find((p) => p.slug === item.id);
             close();

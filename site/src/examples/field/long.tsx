@@ -6,7 +6,7 @@ export default function Example() {
   const [date, setDate] = useState('2082-07-14');
   const [note, setNote] = useState('');
   return (
-    <div className="ex-stack">
+    <div className="ex-stack ex-narrow">
       <SelectField
         label="Transaction type"
         value={type}

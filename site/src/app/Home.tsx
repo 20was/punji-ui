@@ -45,6 +45,46 @@ function Snippet({ code }: { code: string }) {
   );
 }
 
+// The hero's right half: the lines the introduction promises, and what they render (live, from the package).
+const HERO_CODE = `import { MoneyDisplay } from '@punji/ui/money-display';
+import { PriceChange } from '@punji/ui/price-change';
+import { nepalMoneyConfig } from '@punji/ui/money';
+
+const npr = nepalMoneyConfig();
+
+<MoneyDisplay value={123456789n} preset={npr} />
+<PriceChange current={48750n} previous={48148n}
+  preset={npr} />`;
+
+function HeroDemo() {
+  return (
+    <div className="home-hero-demo">
+      <figure className="home-demo">
+        <div className="home-demo-bar" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+          <span>Balance.tsx</span>
+        </div>
+        <Snippet code={HERO_CODE} />
+        <figcaption className="home-demo-out">
+          <p className="home-demo-label">Renders</p>
+          <div className="home-demo-card">
+            <small>Portfolio value</small>
+            <span className="home-demo-figure">
+              <MoneyDisplay value={123456789n} preset={npr} />
+            </span>
+            <div className="home-demo-row">
+              <PriceChange current={48750n} previous={48148n} preset={npr} />
+              <small>NABIL today, exact to the paisa</small>
+            </div>
+          </div>
+        </figcaption>
+      </figure>
+    </div>
+  );
+}
+
 const DOMAINS: { id: GroupId; flagship: string; blurb: string; featured?: boolean; preview: () => ReactNode }[] = [
   {
     id: 'financial-primitives',
@@ -72,7 +112,7 @@ const DOMAINS: { id: GroupId; flagship: string; blurb: string; featured?: boolea
               <b>{symbol}</b>
               <Sparkline values={q.history} width={64} height={20} label={`${symbol} trend`} />
               <MoneyDisplay value={q.ltp} preset={npr} />
-              <PriceChange size="sm" current={q.ltp} previous={q.previousClose} preset={npr} />
+              <PriceChange size="sm" current={q.ltp} previous={q.previousClose} preset={npr} showAbsolute={false} />
             </li>
           );
         })}
@@ -260,6 +300,8 @@ export function Home() {
   return (
     <div className="home" data-testid="page-home">
       <section className="home-hero" aria-labelledby="page-title">
+        <div className="home-hero-grid">
+          <div className="home-hero-copy">
         <p className="home-kicker">
           <span className="home-kicker-dot" aria-hidden="true" />
           Pre-release · React components for finance
@@ -288,6 +330,9 @@ export function Home() {
           <CopyButton text={INSTALL} label="the install command" />
         </div>
         <p className="home-install-note">The package goes on npm with the first release. Until then, follow along on GitHub.</p>
+          </div>
+          <HeroDemo />
+        </div>
       </section>
 
       <section className="home-section" aria-labelledby="built">
@@ -375,7 +420,7 @@ export function Home() {
         </ul>
       </section>
 
-      <section className="home-cta" aria-labelledby="cta">
+      <section className="home-cta" aria-labelledby="cta" data-theme="dark">
         <h2 id="cta">Start with one component</h2>
         <p>Show your first exact amount in three lines, then add what you need.</p>
         <div className="home-actions">

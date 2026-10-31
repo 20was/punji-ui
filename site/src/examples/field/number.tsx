@@ -17,7 +17,7 @@ export default function Example() {
   const [price, setPrice] = useState('487.50');
   const paisa = toPaisa(price);
   return (
-    <div className="ex-stack">
+    <div className="ex-stack ex-narrow">
       <NumberField integer label="Units" value={units} onChange={setUnits} hint="Whole shares only" />
       <PriceField
         label="Limit price"

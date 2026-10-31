@@ -1,38 +1,50 @@
-import { computePosition, valuePosition, breakEvenPrice, taxOnGain, type Trade } from '@punji/ui/calculations';
+import { breakEvenPrice, computePosition, taxOnGain, valuePosition, type Trade } from '@punji/ui/calculations';
+import { Card } from '@punji/ui/card';
+import { KeyStats } from '@punji/ui/key-stats';
 import { MoneyDisplay } from '@punji/ui/money-display';
 import { nepalMoneyConfig } from '@punji/ui/money';
+import { PriceChange } from '@punji/ui/price-change';
 
-const preset = nepalMoneyConfig();
+const npr = nepalMoneyConfig();
+const ltp = 61_000n; // Rs 610.00, in paisa
 
 // Prices and fees are bigint paisa; quantity is a whole number of shares.
 const trades: Trade[] = [
-  { side: 'buy', quantity: 100n, price: 50_000n, fees: 1_000n }, // 100 @ 500.00
+  { side: 'buy', quantity: 100n, price: 50_000n, fees: 1_000n }, // 100 @ Rs 500.00
   { side: 'buy', quantity: 10n, price: 0n }, // bonus shares
-  { side: 'sell', quantity: 50n, price: 70_000n, fees: 900n },
+  { side: 'sell', quantity: 50n, price: 70_000n, fees: 900n }, // 50 @ Rs 700.00
 ];
 
 export default function Example() {
   const position = computePosition(trades, { method: 'fifo', rounding: 'half-even' });
-  const value = valuePosition(position, 61_000n);
+  const value = valuePosition(position, ltp);
   const breakEven = breakEvenPrice(position.costBasis, position.quantity, { sellRate: '0.004' });
   // Illustrative rate only. Take real rates from a verified, current source.
   const tax = taxOnGain(position.realisedPnL, { rate: '0.05', rounding: 'half-up' });
-  const rows: [string, bigint | null][] = [
-    ['Cost basis', position.costBasis],
-    ['Realised P&L', position.realisedPnL],
-    ['Total fees', position.totalFees],
-    ['Average cost', position.averageCost],
-    ['Market value at 610.00', value.marketValue],
-    ['Unrealised P&L', value.unrealisedPnL],
-    ['Break-even price (0.4% sell cost)', breakEven],
-    ['Tax at an illustrative 5%', tax],
-  ];
+  const money = (minor: bigint | null) => <MoneyDisplay value={minor} preset={npr} />;
   return (
-    <dl className="ex-grid">
-      <div><dt>Shares held</dt><dd>{position.quantity.toString()}</dd></div>
-      {rows.map(([label, amount]) => (
-        <div key={label}><dt>{label}</dt><dd><MoneyDisplay value={amount} preset={preset} /></dd></div>
-      ))}
-    </dl>
+    <div className="ex-narrow">
+      <Card title="NABIL position" description={`${position.quantity} shares at Rs 610.00`} headingLevel={3}>
+        <div className="ex-stack">
+          <div>
+            <p className="ex-label">Market value</p>
+            <p className="ex-big">{money(value.marketValue)}</p>
+            <PriceChange current={value.marketValue} previous={position.costBasis} preset={npr} />
+          </div>
+          <KeyStats
+            label="Position details"
+            empty="Not known"
+            items={[
+              { label: 'Average cost', value: money(position.averageCost), sub: 'FIFO, bonus lot at zero' },
+              { label: 'Cost basis', value: money(position.costBasis) },
+              { label: 'Realised P&L', value: money(position.realisedPnL), tone: position.realisedPnL < 0n ? 'down' : 'up' },
+              { label: 'Fees paid', value: money(position.totalFees) },
+              { label: 'Break-even', value: money(breakEven), sub: 'After a 0.4% selling cost' },
+              { label: 'Tax on the gain', value: money(tax), sub: 'At an illustrative 5%' },
+            ]}
+          />
+        </div>
+      </Card>
+    </div>
   );
 }

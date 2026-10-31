@@ -1,20 +1,26 @@
 import { useState } from 'react';
 import { MarketHeatmap, heatmapItemsFromQuotes } from '@punji/ui/market-heatmap';
+import { MoneyDisplay } from '@punji/ui/money-display';
+import { nepalMoneyConfig } from '@punji/ui/money';
+import { PriceChange } from '@punji/ui/price-change';
 import { quotes } from '../../sample.ts';
 
+const npr = nepalMoneyConfig();
 const items = heatmapItemsFromQuotes(quotes, 'turnover');
 
+// Tiles are buttons when onSelect is given; here the pick fills the quote line under the map.
 export default function Example() {
-  const [picked, setPicked] = useState<string | null>(null);
+  const [picked, setPicked] = useState(quotes[0]!.symbol);
+  const quote = quotes.find((q) => q.symbol === picked) ?? quotes[0]!;
   return (
     <div className="ex-stack">
-      <MarketHeatmap
-        items={items}
-        label="NEPSE turnover heatmap"
-        sizeLabel="Turnover"
-        onSelect={setPicked}
-      />
-      <p>{picked ? `Selected: ${picked}` : 'Select a tile to open a stock.'}</p>
+      <MarketHeatmap items={items} label="NEPSE turnover heatmap" sizeLabel="Turnover" onSelect={setPicked} />
+      <p className="ex-quote" aria-live="polite">
+        <b>{quote.symbol}</b>
+        <span>{quote.name}</span>
+        <MoneyDisplay value={quote.ltp} preset={npr} />
+        <PriceChange size="sm" current={quote.ltp} previous={quote.previousClose} preset={npr} />
+      </p>
     </div>
   );
 }

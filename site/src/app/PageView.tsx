@@ -231,6 +231,7 @@ function tabsFor(page: PageDef): { id: TabId; label: string }[] {
 }
 
 const exampleFile = (slug: string, id: string) => `examples/${slug}/${id}.tsx`;
+const PEEK_LINES = 24;
 
 /** The demo frame: a title bar with the example's name, theme and width toggles, the live stage, then its code. */
 function Demo({ page, def, onPick }: { page: PageDef; def: ExampleDef; onPick: (id: string) => void }) {
@@ -239,9 +240,13 @@ function Demo({ page, def, onPick }: { page: PageDef; def: ExampleDef; onPick: (
   const [theme, setTheme] = useState<'light' | 'dark' | null>(null);
   const [phone, setPhone] = useState(false);
   const [codeOpen, setCodeOpen] = useState(true);
+  // Long examples open as a peek (about fourteen lines under a fade) with a button for the rest.
+  const [full, setFull] = useState(false);
   if (!loaded) return null;
   const { Component, source } = loaded;
   const shown = theme ?? resolved;
+  const lines = source.replace(/\n+$/, '').split('\n').length;
+  const long = lines > PEEK_LINES;
   return (
     <>
       {page.examples.length > 1 && (
@@ -255,8 +260,10 @@ function Demo({ page, def, onPick }: { page: PageDef; def: ExampleDef; onPick: (
       )}
       <div className="doc-demo" id={`ex-${def.id}`}>
         <div className="doc-demo-bar">
+          {/* With variant chips above, the active chip already names the example: on wide screens the bar shows only its note
+              (phones hide the note and keep the name). */}
           <div className="doc-demo-name">
-            <strong>{def.title}</strong>
+            <strong className={page.examples.length > 1 && def.note ? 'is-dup' : undefined}>{def.title}</strong>
             {def.note && <span>{def.note}</span>}
           </div>
           <div className="doc-demo-tools">
@@ -293,8 +300,13 @@ function Demo({ page, def, onPick }: { page: PageDef; def: ExampleDef; onPick: (
             <span className="doc-demo-file">{exampleFile(page.slug, def.id)}</span>
             <CopyButton text={source.replace(/\n+$/, '')} label={`${def.title} example code`} />
           </div>
-          <div id={`code-${def.id}`} hidden={!codeOpen}>
+          <div id={`code-${def.id}`} hidden={!codeOpen} className={`doc-demo-src${long && !full ? ' is-peek' : ''}`}>
             <Code key={def.id} flush label={`${def.title} example code`} title={exampleFile(page.slug, def.id)} code={source} />
+            {long && (
+              <button type="button" className="doc-demo-more" aria-expanded={full} aria-controls={`code-${def.id}`} onClick={() => setFull((f) => !f)}>
+                {full ? 'Show less' : `Show all ${lines} lines`}
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -309,6 +321,8 @@ function Demo({ page, def, onPick }: { page: PageDef; def: ExampleDef; onPick: (
 
 function PropsTable({ entry }: { entry: ApiEntry }) {
   const rows = entry.props ?? [];
+  // Most defaults live in the description ("Default 'en'"); the column shows only when a row has a declared default.
+  const defaults = rows.some((row) => row.default);
   return (
     // oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrollable region must be keyboard focusable
     <div className="doc-table-wrap" role="region" aria-label={`${entry.name} props`} tabIndex={0}>
@@ -318,7 +332,7 @@ function PropsTable({ entry }: { entry: ApiEntry }) {
           <tr>
             <th scope="col">Prop</th>
             <th scope="col">Type</th>
-            <th scope="col">Default</th>
+            {defaults && <th scope="col">Default</th>}
             <th scope="col">Description</th>
           </tr>
         </thead>
@@ -332,7 +346,7 @@ function PropsTable({ entry }: { entry: ApiEntry }) {
               <td>
                 <code className="doc-type">{row.type}</code>
               </td>
-              <td>{row.default ? <code className="doc-default">{row.default}</code> : <span className="doc-none" aria-label="No default">–</span>}</td>
+              {defaults && <td className="doc-default-cell">{row.default ? <code className="doc-default">{row.default}</code> : <span className="doc-none" aria-label="No default">–</span>}</td>}
               <td>{row.description ? <Rich text={row.description} /> : <span className="doc-muted">No description in the source yet.</span>}</td>
             </tr>
           ))}
@@ -446,7 +460,8 @@ function ComponentPage({ page }: { page: PageDef }) {
   }), [page, imports, entries]);
 
   return (
-    <div className="doc-page has-rail" data-testid={`page-${page.slug}`}>
+    // The Examples tab has no rail (its chips already list the variants), so wide tables get the full column.
+    <div className={`doc-page${tab === 'examples' ? ' is-wide' : ' has-rail'}`} data-testid={`page-${page.slug}`}>
       <article className="doc-article">
         <PageHeader page={page}>
           <Badges page={page} />
@@ -568,7 +583,7 @@ function ComponentPage({ page }: { page: PageDef }) {
 
         <PrevNext page={page} />
       </article>
-      <Rail key={tab} items={rail[tab]} />
+      {tab !== 'examples' && <Rail key={tab} items={rail[tab]} />}
     </div>
   );
 }

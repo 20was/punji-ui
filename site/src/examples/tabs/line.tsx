@@ -1,46 +1,67 @@
 import { useState } from 'react';
-import { Tabs } from '@punji/ui/tabs';
+import { Card } from '@punji/ui/card';
+import { KeyStats } from '@punji/ui/key-stats';
 import { MoneyDisplay } from '@punji/ui/money-display';
+import { nepalMoneyConfig } from '@punji/ui/money';
+import { Tabs } from '@punji/ui/tabs';
+import { TransactionList } from '@punji/ui/transaction-list';
+import { accounts, transactions } from '../../sample.ts';
 
-type Tab = 'summary' | 'transactions' | 'documents';
+type Tab = 'summary' | 'activity' | 'statements';
+const npr = nepalMoneyConfig();
+const statements = ['Kartik 2082', 'Ashwin 2082', 'Bhadra 2082'];
 
+// The tabs switch the view; the panel is yours to render, with role="tabpanel" and aria-labelledby the chosen tab.
+// fill spreads the tabs across a narrow card.
 export default function Example() {
   const [tab, setTab] = useState<Tab>('summary');
   return (
-    <div className="ex-stack">
-      <Tabs<Tab>
-        label="Account sections"
-        prefix="tabs-line"
-        panelId="tabs-line-panel"
-        value={tab}
-        onChange={setTab}
-        options={[
-          { value: 'summary', label: 'Summary' },
-          { value: 'transactions', label: 'Transactions' },
-          { value: 'documents', label: 'Documents' },
-        ]}
-      />
-      <div id="tabs-line-panel" role="tabpanel" aria-labelledby={`tabs-line-${tab}`} tabIndex={0}>
-        {tab === 'summary' && (
-          <p>
-            Balance <MoneyDisplay value={123456789n} currency="NPR" locale="en-IN" />
-          </p>
-        )}
-        {tab === 'transactions' && <p>24 transactions this fiscal year.</p>}
-        {tab === 'documents' && <p>No documents yet.</p>}
-      </div>
-      <Tabs<Tab>
-        label="Account sections, full width"
-        prefix="tabs-fill"
-        panelId="tabs-line-panel"
-        fill
-        value={tab}
-        onChange={setTab}
-        options={[
-          { value: 'summary', label: 'Summary' },
-          { value: 'transactions', label: 'Activity' },
-        ]}
-      />
+    <div className="ex-narrow">
+      <Card title={accounts.savings.institution} description={accounts.savings.accountType} headingLevel={3}>
+        <div className="ex-stack">
+          <Tabs<Tab>
+            label="Account sections"
+            prefix="tabs-line"
+            panelId="tabs-line-panel"
+            fill
+            value={tab}
+            onChange={setTab}
+            options={[
+              { value: 'summary', label: 'Summary' },
+              { value: 'activity', label: 'Activity' },
+              { value: 'statements', label: 'Statements' },
+            ]}
+          />
+          <div id="tabs-line-panel" role="tabpanel" aria-labelledby={`tabs-line-${tab}`} tabIndex={0}>
+            {tab === 'summary' && (
+              <KeyStats
+                label="Account summary"
+                empty="Not available"
+                items={[
+                  { label: 'Balance', value: <MoneyDisplay value={accounts.savings.balance} preset={npr} /> },
+                  { label: 'Interest rate', value: '6.25%', sub: 'Paid quarterly' },
+                  { label: 'Holder', value: accounts.savings.holder },
+                  { label: 'Status', value: 'Active' },
+                ]}
+              />
+            )}
+            {tab === 'activity' && <TransactionList transactions={transactions.slice(0, 3)} />}
+            {tab === 'statements' && (
+              <ul className="ex-rows">
+                {statements.map((month) => (
+                  <li key={month}>
+                    <span>
+                      <b>{month}</b>
+                      <small>Monthly statement</small>
+                    </span>
+                    <small>PDF</small>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      </Card>
     </div>
   );
 }

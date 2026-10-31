@@ -28,9 +28,13 @@ interface ListFilterProps {
   placeholder?: string;
   id?: string;
   onBlur?: () => void;
+  /** The input's form name, for a field inside a plain GET form that works without script. */
+  name?: string;
+  /** Select what is there when the field takes focus, so typing replaces an example. */
+  selectOnFocus?: boolean;
 }
 
-export function ListFilter({ value, onChange, label, clear, testId, slash = false, size = 'md', labelPlacement = 'hidden', placeholder, id, onBlur }: ListFilterProps) {
+export function ListFilter({ value, onChange, label, clear, testId, slash = false, size = 'md', labelPlacement = 'hidden', placeholder, id, onBlur, name, selectOnFocus }: ListFilterProps) {
   const input = useRef<HTMLInputElement>(null);
   const auto = useId();
   const inputId = id ?? `${auto}-lf`;
@@ -62,6 +66,8 @@ export function ListFilter({ value, onChange, label, clear, testId, slash = fals
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}
+        name={name}
+        onFocus={selectOnFocus ? (e) => e.currentTarget.select() : undefined}
         onKeyDown={(e) => {
           if (e.key === 'Escape' && value) {
             e.preventDefault();

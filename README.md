@@ -191,7 +191,7 @@ subpath Punji's own code imports, and its documentation is on design.punji.app.
 <!-- components:end -->
 
 Financial additions: `AppShell`, `FinancialSummary`, `FinancialTable`, `PriceChart`,
-`OrderBook` (`@punji/ui/financial`) and Nepal utilities (`@punji/ui/nepal`).
+`OrderBook` (`@punji/ui/financial`), `OrderBookDepth` (the bars-and-totals depth view, `@punji/ui/order-book`) and Nepal utilities (`@punji/ui/nepal`).
 See [the financial API guide](docs/FINANCIAL.md) and [remaining gaps](docs/audit/README.md).
 
 ## Browser support

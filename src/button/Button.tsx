@@ -22,7 +22,7 @@ interface ButtonBase extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'clas
   loading?: boolean;
   /** An icon before the label (decorative: aria-hidden). */
   icon?: ReactNode;
-  /** Renders a link styled as a button: a plain <a>, or `linkComponent` for an in-app path. Absolute URLs are always a plain <a>. */
+  /** Renders a link styled as a button: a plain <a>, or `linkComponent` for an in-app path. An absolute URL is another site: always a plain <a> that opens a new tab (rel noopener noreferrer), with a ↗ drawn after the label; add the new-tab words for a screen reader yourself (a kit-sr span). */
   href?: string;
   /** The link element for an in-app `href` (wrap your router's link; it receives `href`). Default: a plain <a>. */
   linkComponent?: LinkComponent;
@@ -65,9 +65,10 @@ export function Button({ variant = 'primary', size = 'md', block, loading, icon,
   );
   const name = iconOnly ? label : undefined;
   if (href) {
-    const L = linkComponent && !/^https?:/.test(href) ? linkComponent : 'a';
+    const external = /^https?:/.test(href);
+    const L = linkComponent && !external ? linkComponent : 'a';
     return (
-      <L className={cls} href={href} aria-label={name} data-testid={testId}>{body}</L>
+      <L className={cls} href={href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : null)} aria-label={name} data-testid={testId}>{body}</L>
     );
   }
   return (

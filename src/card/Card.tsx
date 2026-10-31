@@ -27,6 +27,10 @@ export interface CardProps {
   rule?: boolean;
   /** No inner padding: the content (a table, a row list) runs to the edges. */
   flush?: boolean;
+  /** A small uppercase line over the title ("Selected sector"). */
+  eyebrow?: ReactNode;
+  /** 'lg': a 24px title, for a panel that names the one thing it shows. */
+  size?: 'lg';
   headingLevel?: 2 | 3;
   /** Names the section for screen readers when there is no title. */
   label?: string;
@@ -41,14 +45,15 @@ export interface CardProps {
   className?: string;
 }
 
-export function Card({ children, title, description, clipDescription, meta, action, icon, rule, flush, footer, stretch, tone, headingLevel = 2, label, testId, className }: CardProps) {
+export function Card({ children, title, description, clipDescription, meta, action, icon, rule, flush, footer, stretch, tone, eyebrow, size, headingLevel = 2, label, testId, className }: CardProps) {
   const H = headingLevel === 3 ? 'h3' : 'h2';
   return (
-    <section className={`kit-card${flush ? ' flush' : ''}${stretch ? ' stretch' : ''}${footer ? ' has-foot' : ''}${tone === 'inverse' ? ' kit-inv' : ''}${className ? ` ${className}` : ''}`} aria-label={title ? undefined : label} data-testid={testId}>
+    <section className={`kit-card${flush ? ' flush' : ''}${stretch ? ' stretch' : ''}${footer ? ' has-foot' : ''}${tone === 'inverse' ? ' kit-inv' : ''}${size === 'lg' ? ' kit-card-lg' : ''}${className ? ` ${className}` : ''}`} aria-label={title ? undefined : label} data-testid={testId}>
       {(title || action) && (
         <header className={`kit-card-h${rule ? ' rule' : ''}${icon ? ' has-icon' : ''}`}>
           {icon}
           <div className="kit-card-t">
+            {eyebrow && <p className="kit-card-eyebrow">{eyebrow}</p>}
             {title && (
               <H>
                 {title}

@@ -35,6 +35,7 @@ the dark column means the light value applies in both.
 | `--pu-color-scrim` | `rgba(17, 18, 20, 0.45)` | `rgba(0, 0, 0, 0.6)` |
 | `--pu-color-series-3` | `#d08a10` | `#f5b84b` |
 | `--pu-color-series-nepse` | `#3552c8` | `#8ea8ff` |
+| `--pu-color-series-nepse-soft` | `rgba(53, 82, 200, 0.1)` | `rgba(142, 168, 255, 0.14)` |
 | `--pu-color-shimmer-base` | `#dcdfd5` | `rgba(255, 255, 255, 0.07)` |
 | `--pu-color-shimmer-highlight` | `#eceee7` | `rgba(255, 255, 255, 0.12)` |
 | `--pu-color-surface` | `#f7f8f3` | `#17191c` |

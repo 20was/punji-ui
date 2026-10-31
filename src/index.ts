@@ -32,6 +32,7 @@ export * from './inline-confirm/InlineConfirm.tsx';
 export * from './layout/Layout.tsx';
 export * from './live-figure/LiveFigure.tsx';
 export * from './locked-note/LockedNote.tsx';
+export * from './order-book/OrderBookDepth.tsx';
 export * from './overlay/Overlay.tsx';
 export * from './range-slider/RangeSlider.tsx';
 export * from './rows/Rows.tsx';

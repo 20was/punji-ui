@@ -98,11 +98,22 @@ export function DataRows({ children, label, flush }: { children: ReactNode; labe
   return <dl className={`kit-rows${flush ? ' flush' : ''}`} aria-label={label}>{children}</dl>;
 }
 
-export function DataRow({ label, value, total, testId }: { label: ReactNode; value: ReactNode; total?: boolean; testId?: string }) {
+export function DataRow({ label, value, total, bar, note, testId }: {
+  label: ReactNode;
+  value: ReactNode;
+  total?: boolean;
+  /** A bar under the label and value, across the row (a MeterBar, a RangeBar): what the value means on a scale. */
+  bar?: ReactNode;
+  /** One quiet line under the bar ("547.00 sits 71% of the way up"). */
+  note?: ReactNode;
+  testId?: string;
+}) {
   return (
-    <div className={`kit-data-row${total ? ' total' : ''}`} data-testid={testId}>
+    <div className={`kit-data-row${total ? ' total' : ''}${bar || note ? ' has-bar' : ''}`} data-testid={testId}>
       <dt>{label}</dt>
       <dd>{value}</dd>
+      {bar && <dd className="kit-data-bar">{bar}</dd>}
+      {note && <dd className="kit-data-note">{note}</dd>}
     </div>
   );
 }

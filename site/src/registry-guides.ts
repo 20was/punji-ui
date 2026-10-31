@@ -6,7 +6,7 @@ import type { PageDef } from './registry.ts';
 const REPO = 'https://github.com/20was/punji-ui/blob/main';
 
 /** A guide page: the component-template fields are empty, the content is in `guide`. */
-const guide = (page: Pick<PageDef, 'slug' | 'title' | 'description' | 'summary' | 'related'> & { guide: NonNullable<PageDef['guide']> }): PageDef => ({
+const guide = (page: Pick<PageDef, 'slug' | 'title' | 'description' | 'summary' | 'related'> & Partial<Pick<PageDef, 'navTitle' | 'lead'>> & { guide: NonNullable<PageDef['guide']> }): PageDef => ({
   group: 'get-started',
   kind: 'guide',
   use: [],
@@ -22,6 +22,7 @@ const guide = (page: Pick<PageDef, 'slug' | 'title' | 'description' | 'summary' 
 export const GUIDES: readonly PageDef[] = [
   guide({
     slug: 'using',
+    navTitle: 'Introduction',
     title: 'Introduction and installation',
     description: 'What @punji/ui is, its status (not published yet), how to install it after the first release, load the styles once and import by subpath.',
     summary:
@@ -76,6 +77,7 @@ export const GUIDES: readonly PageDef[] = [
   }),
   guide({
     slug: 'nextjs',
+    navTitle: 'Next.js',
     title: 'Next.js App Router',
     description: 'Use @punji/ui in the Next.js App Router: import the CSS in the root layout, know which components are client components, and pass bigint safely.',
     summary:
@@ -175,6 +177,7 @@ export const GUIDES: readonly PageDef[] = [
   }),
   guide({
     slug: 'theming',
+    navTitle: 'Theming',
     title: 'Theming and custom tokens',
     description: 'Every colour, size and radius is a --pu-* CSS variable in cascade layers. Switch light and dark, override tokens, and scope an accent to one section.',
     summary:
@@ -244,6 +247,7 @@ export const GUIDES: readonly PageDef[] = [
   }),
   guide({
     slug: 'ssr',
+    navTitle: 'SSR',
     title: 'Server rendering and hydration',
     description: 'Render Punji UI on the server and hydrate without warnings: hook-free components, useHydrated, useMediaQuery with a server value, and a pre-paint theme script.',
     summary:
@@ -298,6 +302,7 @@ export const GUIDES: readonly PageDef[] = [
   }),
   guide({
     slug: 'tailwind',
+    navTitle: 'Tailwind',
     title: 'Tailwind interop',
     description: 'Use Tailwind CSS v4 beside @punji/ui: declare the cascade layer order once so utilities win over Punji components and Tailwind preflight does not.',
     summary:
@@ -347,6 +352,7 @@ export const GUIDES: readonly PageDef[] = [
   }),
   guide({
     slug: 'live-data',
+    navTitle: 'Live data',
     title: 'Live data adapters',
     description: 'Feed live prices into Punji UI through an adapter and a hook, never from a fetch inside a component. Validate messages, keep bigint, tween with LiveFigure.',
     summary:
@@ -510,6 +516,7 @@ export const GUIDES: readonly PageDef[] = [
   }),
   guide({
     slug: 'agents',
+    navTitle: 'Contributing',
     title: 'Contributing, for people and agents',
     description: 'Which Punji UI component to reach for, the checks to run before calling work done, and the bar a new component has to meet. For humans and coding agents.',
     summary:

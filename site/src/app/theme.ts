@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLocalStorage } from '@punji/ui/hooks';
+import { useLocalStorage, useMediaQuery } from '@punji/ui/hooks';
 
 export type ThemeChoice = 'system' | 'light' | 'dark';
 
@@ -17,4 +17,11 @@ export function useTheme(): [ThemeChoice, (next: ThemeChoice) => void] {
     else root.setAttribute('data-theme', value);
   }, [value]);
   return [value, set];
+}
+
+/** The theme actually showing: the choice, or the system setting when the choice is 'system'. Light during the server render. */
+export function useResolvedTheme(): 'light' | 'dark' {
+  const { value } = useLocalStorage<ThemeChoice>(KEY, options);
+  const systemDark = useMediaQuery('(prefers-color-scheme: dark)', false);
+  return value === 'system' ? (systemDark ? 'dark' : 'light') : value;
 }

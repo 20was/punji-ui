@@ -1,9 +1,11 @@
 // Browser verification of the built documentation site (npm run site:build first).
 // Every page at 390 and 1440 px, light and dark: screenshot (test-results/site/, ignored),
-// in-browser axe, no horizontal overflow, no console errors; and EVERY example variant of
-// every page (switched through the variant buttons), not only the first. Then behaviour: the copy
-// button puts the exact example source on the clipboard, the theme switch forces and
-// persists a theme, search filters the sidebar, the mobile drawer opens and navigates.
+// in-browser axe, no horizontal overflow, no console errors; EVERY example variant of every page
+// (switched through the variant chips), not only the first; and every page tab (Code, API, Usage)
+// opened and audited, since only one tab shows at a time. Then behaviour: the copy button puts the
+// exact example source on the clipboard, the theme switch forces and persists a theme, the Command-K
+// search finds and opens pages, sidebar groups collapse and persist, the mobile drawer opens and
+// navigates, tabs deep-link, path routing, the hash redirect, the 404 page and the no-JS render.
 import { chromium } from 'playwright';
 import { preview } from 'vite';
 import { readFileSync, mkdirSync } from 'node:fs';
@@ -20,9 +22,10 @@ const base = `${process.env.CHECK_URL ?? 'http://127.0.0.1:4174'}${basePath}`;
 const axeSource = readFileSync('node_modules/axe-core/axe.min.js', 'utf8');
 const browser = await chromium.launch({ headless: true, ...(process.env.CHROME_CHANNEL ? { channel: process.env.CHROME_CHANNEL } : {}) });
 const failures = [];
-const checked = { variants: 0 };
+const checked = { variants: 0, tabs: 0 };
 const fail = (message) => { failures.push(message); console.error(`FAIL ${message}`); };
 const routes = [{ slug: '', title: 'Overview', path: '/' }, ...PAGES.map((p) => ({ ...p, path: pagePath(p) }))];
+const HOME_H1 = 'React components for money, markets and ledgers.';
 const flagCounts = { edge: 0, clip: 0, dup: 0, icon: 0, edgeAllowed: 0 };
 
 // Layout defects a plain axe/overflow pass misses, probed inside every example preview (the stage).
@@ -135,6 +138,8 @@ try {
         await page.screenshot({ path: `${out}/${label}.png`, fullPage: true });
         await page.addScriptTag({ content: axeSource });
         const audit = async (name, scope) => {
+          // From the top: an element scrolled under the sticky header or tab bar would read as low contrast to axe.
+          await page.evaluate(() => window.scrollTo(0, 0));
           const violations = await page.evaluate(async (selector) => (await globalThis.axe.run(selector ? document.querySelector(selector) : document)).violations.map((v) => `${v.id} (${v.impact}): ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`), scope);
           for (const v of violations) fail(`${name}: axe ${v}`);
           const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
@@ -160,6 +165,15 @@ try {
           await audit(`${label} [${variant.id}]`, '[data-testid=preview]');
         }
         checked.variants += variants.length ? 1 : 0;
+        // The other tabs: each is shown (the tab link switches the view) and audited as a whole page.
+        for (const tab of ['code', 'api', 'usage']) {
+          const link = page.getByTestId(`tab-${tab}`);
+          if (!(await link.count())) continue;
+          await link.click();
+          await page.locator(`#${tab}[data-tab]`).waitFor({ state: 'visible' });
+          checked.tabs += 1;
+          await audit(`${label} {${tab}}`, null);
+        }
         await page.close();
       }
       await context.close();
@@ -174,38 +188,73 @@ try {
 
   // Copy: the clipboard holds the exact file that renders the preview.
   await page.getByTestId('preview').waitFor();
-  const code = page.locator('.doc-code').filter({ has: page.getByLabel('Currencies example code', { exact: true }) });
-  await code.getByTestId('copy-code').click();
+  await page.locator('.doc-demo-codebar').getByTestId('copy-code').click();
   await page.getByText('Copied', { exact: true }).first().waitFor();
   const clipboard = await page.evaluate(() => navigator.clipboard.readText());
   const onDisk = readFileSync('site/src/examples/money-display/currencies.tsx', 'utf8').replace(/\n+$/, '');
   if (clipboard !== onDisk) fail('copy: clipboard text differs from site/src/examples/money-display/currencies.tsx');
 
   // Variant switch changes preview and code together.
-  await page.getByRole('group', { name: 'MoneyDisplay variants' }).getByRole('button', { name: 'Nepal' }).click();
+  await page.getByRole('group', { name: 'MoneyDisplay variants' }).getByRole('button', { name: 'Nepal', exact: true }).click();
   await page.getByLabel('Nepal example code', { exact: true }).waitFor();
   if (!(await page.getByTestId('preview').textContent())?.includes('12,34,567.89')) fail('variant: Nepal preview did not render lakh grouping');
 
+  // Per-example preview theme: forces a theme on the stage only.
+  await page.getByRole('group', { name: 'Preview theme', exact: true }).getByRole('button', { name: 'Dark preview' }).click();
+  if ((await page.locator('.doc-stage').getAttribute('data-theme')) !== 'dark') fail('preview theme: Dark preview did not set data-theme on the stage');
+  if ((await page.locator('html').getAttribute('data-theme')) === 'dark') fail('preview theme: the page theme changed too');
+
+  // Tabs: the API tab shows the props table and records #api; a deep link opens its tab on load.
+  await page.getByTestId('tab-api').click();
+  await page.getByRole('region', { name: 'MoneyDisplay props' }).waitFor({ state: 'visible' });
+  if (new URL(page.url()).hash !== '#api') fail(`tabs: API tab left the hash at "${new URL(page.url()).hash}"`);
+  if (await page.getByTestId('preview').isVisible()) fail('tabs: the Examples panel is still visible on the API tab');
+  await page.goto(`${base}/components/money-display/#keyboard`);
+  await page.getByRole('heading', { level: 3, name: 'Keyboard' }).waitFor({ state: 'visible' });
+  if ((await page.getByTestId('tab-usage').getAttribute('aria-current')) !== 'true') fail('tabs: #keyboard did not open the Usage tab');
+  await page.goto(`${base}/components/money-display/`);
+  await page.locator('#page-title').waitFor();
+
   // Theme switch: forces, and persists across reload.
-  await page.getByRole('group', { name: 'Theme' }).getByRole('button', { name: 'Dark' }).click();
+  await page.getByRole('group', { name: 'Theme', exact: true }).getByRole('button', { name: 'Dark' }).click();
   if ((await page.locator('html').getAttribute('data-theme')) !== 'dark') fail('theme: Dark did not set data-theme');
   await page.reload();
   await page.locator('#page-title').waitFor();
   if ((await page.locator('html').getAttribute('data-theme')) !== 'dark') fail('theme: dark did not persist across reload');
-  await page.getByRole('group', { name: 'Theme' }).getByRole('button', { name: 'Light' }).click();
+  await page.getByRole('group', { name: 'Theme', exact: true }).getByRole('button', { name: 'Light' }).click();
   if ((await page.locator('html').getAttribute('data-theme')) !== 'light') fail('theme: Light did not set data-theme');
 
-  // Search filters the sidebar; groups with nothing disappear.
-  await page.getByRole('searchbox', { name: 'Search the documentation' }).fill('order book');
-  const nav = page.getByRole('list', { name: 'Pages by domain' });
-  if ((await nav.getByRole('link').count()) !== 2) fail('search: "order book" should leave Overview and Order book');
-  await page.getByRole('searchbox', { name: 'Search the documentation' }).fill('zzzz');
-  await nav.getByText('Nothing matches').waitFor();
-  await page.getByRole('searchbox', { name: 'Search the documentation' }).fill('');
+  // Search: Command-K opens the package's CommandPalette; it ranks pages, opens one with Enter and says when nothing matches.
+  await page.keyboard.press('ControlOrMeta+k');
+  const dialog = page.getByRole('dialog', { name: 'Search the documentation' });
+  await dialog.waitFor();
+  await dialog.getByRole('combobox').fill('order book');
+  if (!(await dialog.getByRole('option').first().textContent())?.includes('Order book')) fail(`search: "order book" first result is "${await dialog.getByRole('option').first().textContent()}"`);
+  await dialog.getByRole('combobox').fill('OrderBookDepth');
+  if (!(await dialog.getByRole('option').first().textContent())?.includes('Order book')) fail('search: an export name did not find its page');
+  await dialog.getByRole('combobox').fill('zzzz');
+  await dialog.getByText('Nothing matches').waitFor();
+  await dialog.getByRole('combobox').fill('ledger table');
+  await page.keyboard.press('Enter');
+  await page.getByRole('heading', { level: 1, name: 'LedgerTable' }).waitFor();
+  if (await dialog.count()) fail('search: the dialog stayed open after opening a page');
+  await page.getByTestId('search').click();
+  await dialog.waitFor();
+  await page.keyboard.press('Escape');
+  if (await dialog.count()) fail('search: Esc did not close the dialog');
 
-  // Sidebar lists exactly the registry's groups, in order, with planned counts.
-  const titles = await page.locator('.doc-nav-title').allTextContents();
+  // Sidebar lists exactly the registry's groups, in order, with planned counts; a collapsed group stays collapsed.
+  const titles = await page.locator('.doc-aside .doc-nav-title').allTextContents();
   if (JSON.stringify(titles) !== JSON.stringify(GROUPS.map((g) => g.title))) fail(`sidebar: group order ${titles.join(' | ')}`);
+  const forms = page.locator('.doc-aside .doc-nav-title', { hasText: 'Forms' });
+  await forms.click();
+  if ((await forms.getAttribute('aria-expanded')) !== 'false') fail('sidebar: Forms did not collapse');
+  await page.reload();
+  await page.locator('#page-title').waitFor();
+  await page.waitForTimeout(100);
+  if ((await forms.getAttribute('aria-expanded')) !== 'false') fail('sidebar: the collapsed Forms group did not persist across reload');
+  await forms.click();
+  if (!(await page.locator('.doc-aside').getByRole('link', { name: 'Button', exact: true }).isVisible())) fail('sidebar: Forms did not expand again');
   await desktop.close();
 
   // Behaviour: mobile drawer.
@@ -230,7 +279,10 @@ try {
   await n.goto(`${base}/`);
   await n.locator('#page-title').waitFor();
   await n.evaluate(() => { window.noReload = true; });
-  await n.getByRole('list', { name: 'Pages by domain' }).getByRole('link', { name: 'Order book', exact: true }).click();
+  // Home to a page through a domain card, then the sidebar (hidden on the home page) to another.
+  await n.getByRole('link', { name: 'Financial primitives', exact: true }).click();
+  await n.getByRole('heading', { level: 1, name: 'MoneyDisplay' }).waitFor();
+  await n.locator('.doc-aside').getByRole('list', { name: 'Pages by domain' }).getByRole('link', { name: 'Order book', exact: true }).click();
   await n.getByRole('heading', { level: 1, name: 'Order book' }).waitFor();
   if (new URL(n.url()).pathname !== `${basePath}/components/order-book/`) fail(`routing: link click went to ${n.url()}`);
   if (!(await n.evaluate(() => window.noReload))) fail('routing: a link click reloaded the page');
@@ -238,8 +290,12 @@ try {
   if (!(await n.locator('link[rel=canonical]').getAttribute('href'))?.endsWith('/components/order-book/')) fail('routing: canonical not updated after navigation');
   if (!(await n.locator('meta[name=description]').getAttribute('content'))?.startsWith('OrderBookDepth')) fail('routing: meta description not updated after navigation');
   await n.goBack();
-  await n.getByRole('heading', { level: 1, name: 'Punji UI documentation' }).waitFor();
-  if ((await n.title()) !== 'Punji UI: finance-first React components') fail(`routing: title after back is "${await n.title()}"`);
+  await n.getByRole('heading', { level: 1, name: 'MoneyDisplay' }).waitFor();
+  if ((await n.title()) !== 'MoneyDisplay — Punji UI') fail(`routing: title after back is "${await n.title()}"`);
+  await n.goBack();
+  await n.getByRole('heading', { level: 1, name: HOME_H1 }).waitFor();
+  if ((await n.title()) !== 'Punji UI: finance-first React components') fail(`routing: title after back to home is "${await n.title()}"`);
+  await n.goForward();
   await n.goForward();
   await n.getByRole('heading', { level: 1, name: 'Order book' }).waitFor();
 
@@ -249,7 +305,7 @@ try {
   if (new URL(n.url()).pathname !== `${basePath}/components/money-display/` || new URL(n.url()).hash) fail(`routing: #/money-display ended at ${n.url()}`);
   if ((await n.title()) !== 'MoneyDisplay — Punji UI') fail(`routing: title after hash redirect is "${await n.title()}"`);
   await n.goto(`${base}/#/`);
-  await n.getByRole('heading', { level: 1, name: 'Punji UI documentation' }).waitFor();
+  await n.getByRole('heading', { level: 1, name: HOME_H1 }).waitFor();
   if (new URL(n.url()).pathname !== `${basePath}/`) fail(`routing: #/ ended at ${n.url()}`);
   for (const e of navErrors) fail(`routing: console ${e}`);
   await navCtx.close();
@@ -274,7 +330,11 @@ try {
     ['props table', bare.getByRole('region', { name: 'MoneyDisplay props' })],
     ['code', bare.getByLabel('Currencies example code', { exact: true })],
     ['nav link', bare.getByRole('list', { name: 'Pages by domain' }).getByRole('link', { name: 'Button', exact: true })],
+    ['full source in the Code panel', bare.getByLabel('Nepal full source', { exact: true })],
+    ['usage text', bare.getByRole('heading', { level: 3, name: 'Accessibility' })],
   ]) if (!(await locator.count())) fail(`no-JS: ${what} missing from the prerendered page`);
+  // Without JavaScript every tab panel shows (index.html's noscript style), so nothing is hidden behind a tab.
+  for (const id of ['examples', 'code', 'api', 'usage']) if (!(await bare.locator(`#${id}[data-tab]`).isVisible())) fail(`no-JS: the ${id} panel is not visible`);
   await bare.screenshot({ path: `${out}/no-js-money-display.png`, fullPage: true });
   await plain.close();
 } finally {
@@ -288,4 +348,4 @@ if (failures.length) {
   process.exit(1);
 }
 console.log(`layout flags: edge ${flagCounts.edge} (+${flagCounts.edgeAllowed} allowlisted), clip ${flagCounts.clip}, dup ${flagCounts.dup}, icon ${flagCounts.icon}`);
-console.log(`site check: ${routes.length} routes x 2 widths x 2 themes and ${checked.variants} example variants (axe, overflow, console) and the copy, variant, theme, search, drawer, path routing, hash redirect, 404 and no-JS behaviours passed`);
+console.log(`site check: ${routes.length} routes x 2 widths x 2 themes, ${checked.variants} example variants and ${checked.tabs} page tabs (axe, overflow, console, layout) and the copy, variant, preview theme, tabs, theme, search, sidebar, drawer, path routing, hash redirect, 404 and no-JS behaviours passed`);

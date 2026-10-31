@@ -7,6 +7,7 @@
 
 import { GUIDES } from './registry-guides.ts';
 import { GENERIC_PAGES } from './registry-generic.ts';
+import { LEADS, NAV_TITLES } from './registry-leads.ts';
 
 export type GroupId =
   | 'get-started'
@@ -35,14 +36,14 @@ export const GROUPS: readonly Group[] = [
   { id: 'foundations', title: 'Foundations', planned: [] },
   { id: 'financial-primitives', title: 'Financial primitives', planned: [] },
   { id: 'stock-market', title: 'Stock market', planned: [] },
-  { id: 'portfolio', title: 'Portfolio & investment', planned: [] },
-  { id: 'accounting', title: 'Accounting & bookkeeping', planned: [] },
-  { id: 'banking', title: 'Banking & payments', planned: [] },
-  { id: 'data', title: 'Data & analytics', planned: [] },
-  { id: 'forms', title: 'Forms & inputs', planned: ['Calendar'] },
-  { id: 'layout', title: 'Layout & navigation', planned: [] },
-  { id: 'feedback', title: 'Feedback & states', planned: [] },
-  { id: 'developer', title: 'Developer utilities', planned: [] },
+  { id: 'portfolio', title: 'Portfolio', planned: [] },
+  { id: 'accounting', title: 'Accounting', planned: [] },
+  { id: 'banking', title: 'Banking', planned: [] },
+  { id: 'data', title: 'Data', planned: [] },
+  { id: 'forms', title: 'Forms', planned: ['Calendar'] },
+  { id: 'layout', title: 'Layout', planned: [] },
+  { id: 'feedback', title: 'Feedback', planned: [] },
+  { id: 'developer', title: 'Utilities', planned: [] },
 ];
 
 export interface ApiRef {
@@ -64,6 +65,13 @@ export interface ExampleDef {
 export interface PageDef {
   slug: string;
   title: string;
+  /** Optional short sidebar label when `title` is long ("SSR" for "Server rendering and hydration"). Falls back to `title`. */
+  navTitle?: string;
+  /**
+   * Optional one-line lead under the page title, at most 140 characters, written for someone evaluating the library.
+   * Falls back to LEADS in registry-leads.ts, then to the first sentence of `description` (see leadOf).
+   */
+  lead?: string;
   group: GroupId;
   kind: 'foundation' | 'component' | 'utility' | 'hooks' | 'guide';
   /** The overview: what it is and the one rule that matters. */
@@ -1524,5 +1532,11 @@ export const PAGES: readonly PageDef[] = [
   },
   ...GENERIC_PAGES,
 ];
+
+/** The page's one-line lead: its own `lead`, else LEADS[slug], else the first sentence of `description`. */
+export const leadOf = (page: PageDef): string => page.lead ?? LEADS[page.slug] ?? (page.description.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? page.description);
+
+/** The sidebar label. */
+export const navTitleOf = (page: PageDef): string => page.navTitle ?? NAV_TITLES[page.slug] ?? page.title;
 
 export const pageBySlug = (slug: string): PageDef | undefined => PAGES.find((p) => p.slug === slug);

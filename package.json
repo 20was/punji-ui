@@ -111,6 +111,14 @@
       "types": "./dist/inline-confirm/InlineConfirm.d.ts",
       "default": "./dist/inline-confirm/InlineConfirm.js"
     },
+    "./stack": {
+      "types": "./dist/stack/Stack.d.ts",
+      "default": "./dist/stack/Stack.js"
+    },
+    "./code-block": {
+      "types": "./dist/code-block/CodeBlock.d.ts",
+      "default": "./dist/code-block/CodeBlock.js"
+    },
     "./layout": {
       "types": "./dist/layout/Layout.d.ts",
       "default": "./dist/layout/Layout.js"

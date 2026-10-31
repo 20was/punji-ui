@@ -1,10 +1,11 @@
 import { PriceLimitIndicator } from '@punji/ui/price-limit';
 import { circuit } from '../../sample.ts';
+import { Stack } from '@punji/ui/stack';
 
 // The exchange's published limits are the authority: pass them when you have them.
 export default function Example() {
   return (
-    <div className="ex-stack">
+    <Stack>
       <PriceLimitIndicator
         symbol="NABIL"
         ltp={50_120n}
@@ -20,6 +21,6 @@ export default function Example() {
         upperLimit={92_620n}
         showFigures={false}
       />
-    </div>
+    </Stack>
   );
 }

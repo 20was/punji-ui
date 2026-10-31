@@ -1,0 +1,28 @@
+/* Punji UI styles.
+   Styles for stack (Stack and Cluster). Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .pu-stack, .pu-cluster { display: flex; gap: var(--pu-space-3); min-width: 0 }
+  .pu-stack { flex-direction: column }
+  .pu-cluster { flex-wrap: wrap; align-items: center }
+  .pu-stack > p { margin: 0 }
+  :is(ul, ol, fieldset).pu-stack, :is(ul, ol).pu-cluster { margin: 0; padding: 0; list-style: none }
+  fieldset.pu-stack { border: 0 }
+
+  .pu-stack[data-gap="1"], .pu-cluster[data-gap="1"] { gap: var(--pu-space-1) }
+  .pu-stack[data-gap="2"], .pu-cluster[data-gap="2"] { gap: var(--pu-space-2) }
+  .pu-stack[data-gap="3"], .pu-cluster[data-gap="3"] { gap: var(--pu-space-3) }
+  .pu-stack[data-gap="4"], .pu-cluster[data-gap="4"] { gap: var(--pu-space-4) }
+  .pu-stack[data-gap="16"], .pu-cluster[data-gap="16"] { gap: var(--pu-space-16) }
+
+  .pu-stack[data-align="start"] { align-items: flex-start }
+  .pu-stack[data-align="center"] { align-items: center }
+  .pu-stack[data-align="end"] { align-items: flex-end }
+
+  .pu-cluster[data-justify="center"] { justify-content: center }
+  .pu-cluster[data-justify="end"] { justify-content: flex-end }
+  .pu-cluster[data-justify="between"] { justify-content: space-between }
+  .pu-cluster[data-align="start"] { align-items: flex-start }
+  .pu-cluster[data-align="end"] { align-items: flex-end }
+  .pu-cluster[data-align="baseline"] { align-items: baseline }
+  .pu-cluster[data-align="stretch"] { align-items: stretch }
+}

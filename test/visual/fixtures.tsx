@@ -10,6 +10,7 @@ import {
 } from '@punji/ui';
 import { holdings, symbols, today, weeklyValue, type Holding } from '../../fixtures/market-data.ts';
 import { bankingRegistry } from './fixtures-banking.tsx';
+import { layoutRegistry } from './fixtures-layout.tsx';
 import { chartsRegistry } from './fixtures-charts.tsx';
 import { domainRegistry } from './fixtures-domain.tsx';
 import { fitRegistry } from './fixtures-fit.tsx';
@@ -320,6 +321,7 @@ export const registry: Record<string, () => ReactNode> = {
   ...kitRegistry,
   ...domainRegistry,
   ...bankingRegistry,
+  ...layoutRegistry,
   ...chartsRegistry,
   ...portfolioRegistry,
   ...fitRegistry,

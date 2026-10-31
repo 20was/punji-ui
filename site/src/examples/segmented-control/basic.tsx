@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { SegmentedControl } from '@punji/ui/controls';
+import { Cluster, Stack } from '@punji/ui/stack';
 
 type Window = '1d' | '1w' | '1m' | '1y';
 const options: { value: Window; label: string }[] = [
@@ -13,14 +14,14 @@ const options: { value: Window; label: string }[] = [
 export default function Example() {
   const [window, setWindow] = useState<Window>('1m');
   return (
-    <div className="ex-stack">
+    <Stack>
       <SegmentedControl<Window> label="Chart window" prefix="seg-basic" value={window} onChange={setWindow} options={options} />
       <SegmentedControl<Window> label="Chart window, full width" prefix="seg-fill" fill value={window} onChange={setWindow} options={options} />
-      <div className="ex-row">
+      <Cluster>
         {(['sm', 'md', 'lg'] as const).map((size) => (
           <SegmentedControl<Window> key={size} label={`Window, ${size}`} prefix={`seg-${size}`} size={size} value={window} onChange={setWindow} options={options} />
         ))}
-      </div>
-    </div>
+      </Cluster>
+    </Stack>
   );
 }

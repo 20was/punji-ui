@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { StockTable } from '@punji/ui/stock-table';
 import { Button } from '@punji/ui/button';
 import { quotes as base } from '../../sample.ts';
+import { Cluster, Stack } from '@punji/ui/stack';
 
 // Stand-in for your socket or query: each click hands the table new props.
 export default function Example() {
@@ -12,13 +13,13 @@ export default function Example() {
     ltp: q.ltp === null || step === 0 ? q.ltp : q.ltp + BigInt(((step * (i + 2)) % 7) - 3) * 50n,
   }));
   return (
-    <div className="ex-stack">
-      <div className="ex-row">
+    <Stack>
+      <Cluster>
         <Button size="sm" variant="secondary" onClick={() => setStep((s) => s + 1)}>
           Receive a tick
         </Button>
-      </div>
+      </Cluster>
       <StockTable caption="Live prices" quotes={quotes} columns={['symbol', 'ltp', 'change']} live />
-    </div>
+    </Stack>
   );
 }

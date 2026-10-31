@@ -3,6 +3,8 @@ import { Button } from '@punji/ui/button';
 import { toCsv, CSV_MIME } from '@punji/ui/export';
 import { downloadText } from '@punji/ui/download';
 import { holdings } from '../../sample.ts';
+import { Stack } from '@punji/ui/stack';
+import { CodeBlock } from '@punji/ui/code-block';
 
 export default function Example() {
   const csv = useMemo(
@@ -20,13 +22,13 @@ export default function Example() {
     [],
   );
   return (
-    <div className="ex-stack">
+    <Stack>
       <div>
         <Button variant="secondary" onClick={() => downloadText('holdings.csv', csv, CSV_MIME)}>
           Download holdings.csv
         </Button>
       </div>
-      <pre className="ex-pre" aria-label="CSV text">{csv.replace(/^\uFEFF/, '')}</pre>
-    </div>
+      <CodeBlock aria-label="CSV text">{csv.replace(/^\uFEFF/, '')}</CodeBlock>
+    </Stack>
   );
 }

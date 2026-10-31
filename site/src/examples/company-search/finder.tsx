@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { CompanySearch } from '@punji/ui/company-search';
 import { holdings, symbols } from '../../sample.ts';
+import { Stack } from '@punji/ui/stack';
 
 const sectorOf = new Map(holdings.map((h) => [h.symbol, h.qty > 100 ? 'Large position' : 'Small position']));
 
 export default function Example() {
   const [opened, setOpened] = useState<string | null>(null);
   return (
-    <div className="ex-stack" style={{ minHeight: 360, alignContent: 'start' }}>
+    <Stack style={{ minHeight: 360 }}>
       <CompanySearch
         options={symbols}
         label="Find any company"
@@ -21,6 +22,6 @@ export default function Example() {
         initialQuery="n"
       />
       <p>{opened ? `Opened ${opened}.` : 'Choose a suggestion to open it.'}</p>
-    </div>
+    </Stack>
   );
 }

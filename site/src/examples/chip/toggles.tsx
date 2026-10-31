@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Chip } from '@punji/ui/controls';
 import { Field } from '@punji/ui/fields';
+import { Cluster, Stack } from '@punji/ui/stack';
 
 // A Chip with `selected` is a toggle (aria-pressed). Without it, a chip is a suggestion: it acts once and holds no state.
 export default function Example() {
@@ -8,8 +9,8 @@ export default function Example() {
   const [dividend, setDividend] = useState(false);
   const [units, setUnits] = useState('');
   return (
-    <div className="ex-stack">
-      <div className="ex-row" role="group" aria-label="Show">
+    <Stack>
+      <Cluster role="group" aria-label="Show">
         <Chip selected={held} onClick={() => setHeld(!held)} count={12}>
           Held
         </Chip>
@@ -19,9 +20,9 @@ export default function Example() {
         <Chip size="sm" disabled onClick={() => {}}>
           Watchlist (empty)
         </Chip>
-      </div>
+      </Cluster>
       <Field label="Units to sell" value={units} onChange={setUnits} inputMode="numeric" hint="Of 120 NABIL shares" />
-      <div className="ex-row" role="group" aria-label="Quick amounts">
+      <Cluster role="group" aria-label="Quick amounts">
         <Chip label="A quarter, 30 units" onClick={() => setUnits('30')}>
           ¼
         </Chip>
@@ -29,7 +30,7 @@ export default function Example() {
           ½
         </Chip>
         <Chip onClick={() => setUnits('120')}>All 120</Chip>
-      </div>
-    </div>
+      </Cluster>
+    </Stack>
   );
 }

@@ -1,10 +1,11 @@
 import { Button } from '@punji/ui/button';
 import { Tooltip } from '@punji/ui/info-tip';
+import { Cluster } from '@punji/ui/stack';
 
 // A tooltip names a control that has only an icon. It never holds the only copy of a fact: a phone has no hover.
 export default function Example() {
   return (
-    <div className="ex-row">
+    <Cluster>
       <Tooltip content="Download CSV">
         <Button variant="secondary" iconOnly label="Download CSV">
           ↓
@@ -14,6 +15,6 @@ export default function Example() {
       <Tooltip content="Includes fees and taxes" describe>
         <Button variant="secondary">Net proceeds</Button>
       </Tooltip>
-    </div>
+    </Cluster>
   );
 }

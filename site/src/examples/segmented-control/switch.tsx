@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { SegmentedSwitch } from '@punji/ui/controls';
+import { Stack } from '@punji/ui/stack';
 
 type View = 'overview' | 'holdings' | 'history';
 
@@ -8,7 +9,7 @@ type View = 'overview' | 'holdings' | 'history';
 export default function Example() {
   const [view, setView] = useState<View>('overview');
   return (
-    <div className="ex-stack">
+    <Stack>
       <SegmentedSwitch<View>
         label="Portfolio views"
         prefix="seg-view"
@@ -24,6 +25,6 @@ export default function Example() {
       <div id="seg-view-panel" role="tabpanel" aria-labelledby={`seg-view-${view}`} tabIndex={0}>
         Showing the {view} view.
       </div>
-    </div>
+    </Stack>
   );
 }

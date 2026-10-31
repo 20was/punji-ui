@@ -1,4 +1,6 @@
 import { toCsv } from '@punji/ui/export';
+import { Stack } from '@punji/ui/stack';
+import { CodeBlock } from '@punji/ui/code-block';
 
 const rows = [
   { memo: '=HYPERLINK("https://example.invalid","click")', amount: 12.5 },
@@ -13,15 +15,15 @@ const columns = [
 
 export default function Example() {
   return (
-    <div className="ex-stack">
+    <Stack>
       <div>
         <p className="doc-muted">Default: text cells that start with a formula character get a leading apostrophe. The number -5 stays numeric.</p>
-        <pre className="ex-pre" aria-label="Neutralised CSV">{toCsv(rows, columns, { crlf: false })}</pre>
+        <CodeBlock aria-label="Neutralised CSV">{toCsv(rows, columns, { crlf: false })}</CodeBlock>
       </div>
       <div>
         <p className="doc-muted">neutralizeFormulas: false, for trusted machine-generated data only. Never do this with user-typed text.</p>
-        <pre className="ex-pre" aria-label="Raw CSV">{toCsv(rows, columns, { crlf: false, neutralizeFormulas: false })}</pre>
+        <CodeBlock aria-label="Raw CSV">{toCsv(rows, columns, { crlf: false, neutralizeFormulas: false })}</CodeBlock>
       </div>
-    </div>
+    </Stack>
   );
 }

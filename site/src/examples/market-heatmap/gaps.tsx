@@ -1,4 +1,5 @@
 import { MarketHeatmap, squarify, heatStep, type HeatmapItem } from '@punji/ui/market-heatmap';
+import { Stack } from '@punji/ui/stack';
 
 // Unsized items are not drawn (listed under the map and in the table); a missing change is a neutral tile.
 const items: HeatmapItem[] = [
@@ -15,11 +16,11 @@ const layout = squarify(items, { width: 100, height: 100 });
 
 export default function Example() {
   return (
-    <div className="ex-stack">
+    <Stack>
       <MarketHeatmap items={items} label="Heatmap with gaps" sizeLabel="Turnover" aspect={1} scaleMax={4} convention="red-up" />
       <p>
         {layout.rects.length} drawn, skipped: {layout.skipped.join(', ')}. Step for +4.2%: {heatStep(4.2, 4)}.
       </p>
-    </div>
+    </Stack>
   );
 }

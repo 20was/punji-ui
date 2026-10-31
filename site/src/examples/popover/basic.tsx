@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { Button } from '@punji/ui/button';
 import { Popover, PopoverAnchor } from '@punji/ui/popover';
+import { Stack } from '@punji/ui/stack';
 
 // The control and the panel share one PopoverAnchor, which the panel is placed against.
 // Esc closes it and returns focus to the button; a click outside closes it; so does Tab past the end.
@@ -14,7 +15,7 @@ export default function Example() {
           Sort by
         </Button>
         <Popover open={open} anchor={anchor} onClose={() => setOpen(false)} label="Sort by" id="pop-sort" align="start">
-          <div className="ex-stack" style={{ padding: 'var(--pu-space-3)' }}>
+          <Stack style={{ padding: 'var(--pu-space-3)' }}>
             <Button variant="ghost" onClick={() => setOpen(false)}>
               Symbol
             </Button>
@@ -24,7 +25,7 @@ export default function Example() {
             <Button variant="ghost" onClick={() => setOpen(false)}>
               Turnover
             </Button>
-          </div>
+          </Stack>
         </Popover>
       </PopoverAnchor>
     </div>

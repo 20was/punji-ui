@@ -1,9 +1,10 @@
 import { FactList } from '@punji/ui/fact-list';
+import { Stack } from '@punji/ui/stack';
 
 // `quiet` marks a value that is a note, not a figure. `stack` puts every value under its label (a phone).
 export default function Example() {
   return (
-    <div className="ex-stack">
+    <Stack>
       <FactList
         title="Across every month"
         facts={[
@@ -21,6 +22,6 @@ export default function Example() {
           { label: 'Listed', value: '2051 BS' },
         ]}
       />
-    </div>
+    </Stack>
   );
 }

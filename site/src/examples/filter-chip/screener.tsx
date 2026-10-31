@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FilterChip } from '@punji/ui/filter-chip';
 import { Button } from '@punji/ui/button';
+import { Cluster, Stack } from '@punji/ui/stack';
 
 // FilterChip shows one filter that is set, in words. The chip opens its editor (onOpen); the x removes it.
 // A chip with a caret and no x (Sector) opens a list. Here the editor is a line of text; yours is a Popover or a Sheet.
@@ -10,8 +11,8 @@ export default function Example() {
   const [editing, setEditing] = useState<string | null>(null);
   const toggle = (name: string) => setEditing((e) => (e === name ? null : name));
   return (
-    <div className="ex-stack">
-      <div className="ex-row" role="group" aria-label="Screener filters">
+    <Stack>
+      <Cluster role="group" aria-label="Screener filters">
         <FilterChip label="Sector" value="Banking" caret openPrefix="Choose" expanded={editing === 'sector'} onOpen={() => toggle('sector')} testId="f-sector" />
         {pb && (
           <FilterChip
@@ -27,7 +28,7 @@ export default function Example() {
         )}
         {dividend && <FilterChip label="Pays dividend" removeLabel="Remove Pays dividend" onRemove={() => setDividend(false)} testId="f-div" />}
         <FilterChip label="EPS" value="above 40" error openPrefix="Edit" removeLabel="Remove EPS" onOpen={() => toggle('eps')} onRemove={() => {}} expanded={editing === 'eps'} testId="f-eps" />
-      </div>
+      </Cluster>
       <p className="ex-label" role="status">
         {editing === 'eps' ? 'EPS is a ratio, not a percent: enter 40, not 40%.' : editing ? `Editing ${editing}.` : 'Press a chip to edit it, or its x to remove it.'}
       </p>
@@ -43,6 +44,6 @@ export default function Example() {
           Restore filters
         </Button>
       )}
-    </div>
+    </Stack>
   );
 }

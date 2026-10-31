@@ -3,10 +3,11 @@ import { StatusDisc } from '@punji/ui/check-row';
 import { StateGlyph } from '@punji/ui/inline-state';
 import { Button } from '@punji/ui/button';
 import { Card } from '@punji/ui/card';
+import { Stack } from '@punji/ui/stack';
 
 export default function Example() {
   return (
-    <div className="ex-stack">
+    <Stack>
       <EmptyState title="No holdings yet" body="Add your first holding to see your portfolio." action={<Button size="sm">Add a holding</Button>} />
       <EmptyState
         center
@@ -27,6 +28,6 @@ export default function Example() {
       <Note tone="error">The last sync failed; figures may be stale.</Note>
       <Note quiet>Source: exchange end-of-day file.</Note>
       <Note plain>Figures are synthetic.</Note>
-    </div>
+    </Stack>
   );
 }

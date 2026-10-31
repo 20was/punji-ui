@@ -22,8 +22,12 @@ interface ButtonBase extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'clas
   loading?: boolean;
   /** An icon before the label (decorative: aria-hidden). */
   icon?: ReactNode;
-  /** Renders a link styled as a button: a plain <a>, or `linkComponent` for an in-app path. An absolute URL is another site: always a plain <a> that opens a new tab (rel noopener noreferrer), with a ↗ drawn after the label; add the new-tab words for a screen reader yourself (a kit-sr span). */
+  /** Renders a link styled as a button: a plain <a>, or `linkComponent` for an in-app path. An absolute http(s) URL is another site: a plain <a> that opens a new tab (rel noopener noreferrer), with a ↗ drawn after the label and `newTabLabel` read to screen readers. */
   href?: string;
+  /** Overrides the new-tab decision for `href`: true opens any address in a new tab, false keeps an absolute URL in the same tab. Default: true only for absolute http(s) URLs. */
+  external?: boolean;
+  /** Screen-reader words for a link that opens a new tab. Default "(opens in a new tab)". */
+  newTabLabel?: string;
   /** The link element for an in-app `href` (wrap your router's link; it receives `href`). Default: a plain <a>. */
   linkComponent?: LinkComponent;
   testId?: string;
@@ -54,7 +58,7 @@ export function buttonClass({ variant = 'primary', size = 'md', block, iconOnly 
 }
 
 /** The one button (design.punji.app/components/button). */
-export function Button({ variant = 'primary', size = 'md', block, loading, icon, iconOnly, label, href, linkComponent, testId, children, disabled, type = 'button', className, ...rest }: ButtonProps) {
+export function Button({ variant = 'primary', size = 'md', block, loading, icon, iconOnly, label, href, external, newTabLabel = '(opens in a new tab)', linkComponent, testId, children, disabled, type = 'button', className, ...rest }: ButtonProps) {
   const cls = `${buttonClass({ variant, size, block, iconOnly })}${className ? ` ${className}` : ''}`;
   const glyph = iconOnly ? (icon ?? children) : icon;
   const body = (
@@ -65,10 +69,14 @@ export function Button({ variant = 'primary', size = 'md', block, loading, icon,
   );
   const name = iconOnly ? label : undefined;
   if (href) {
-    const external = /^https?:/.test(href);
-    const L = linkComponent && !external ? linkComponent : 'a';
+    const absolute = /^https?:/.test(href);
+    const newTab = external ?? absolute;
+    const L = linkComponent && !absolute && !newTab ? linkComponent : 'a';
     return (
-      <L className={cls} href={href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : null)} aria-label={name} data-testid={testId}>{body}</L>
+      <L className={cls} href={href} {...(newTab ? { target: '_blank', rel: 'noopener noreferrer' } : null)} aria-label={name && newTab ? `${name} ${newTabLabel}` : name} data-testid={testId}>
+        {body}
+        {newTab && !name ? <>{' '}<span className="kit-sr">{newTabLabel}</span></> : null}
+      </L>
     );
   }
   return (

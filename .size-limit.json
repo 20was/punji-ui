@@ -10,7 +10,7 @@
     "name": "button (import from '@punji/ui/button')",
     "path": "dist/button/Button.js",
     "import": "*",
-    "limit": "640 B",
+    "limit": "700 B",
     "gzip": true
   },
   {
@@ -563,7 +563,7 @@
     "name": "retry-note (import from '@punji/ui/retry-note')",
     "path": "dist/retry-note/RetryNote.js",
     "import": "*",
-    "limit": "1.05 kB",
+    "limit": "1.1 kB",
     "gzip": true
   },
   {

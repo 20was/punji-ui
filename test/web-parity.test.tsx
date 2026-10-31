@@ -110,7 +110,7 @@ describe('Button external links', () => {
         Away
       </Button>,
     );
-    const a = screen.getByRole('link', { name: 'Away' });
+    const a = screen.getByRole('link', { name: 'Away (opens in a new tab)' });
     expect(a.getAttribute('target')).toBe('_blank');
     expect(a.getAttribute('rel')).toBe('noopener noreferrer');
     expect(a.getAttribute('data-router')).toBeNull();
@@ -121,6 +121,18 @@ describe('Button external links', () => {
     const a = screen.getByRole('link', { name: 'Docs' });
     expect(a.getAttribute('target')).toBeNull();
     expect(a.getAttribute('rel')).toBeNull();
+  });
+
+  it('lets external override the new-tab decision either way', () => {
+    render(<>
+      <Button href="https://nepalstock.com" external={false}>Same tab</Button>
+      <Button href="/report.pdf" external newTabLabel="(नयाँ ट्याबमा)">Report</Button>
+      <Button href="https://example.com" iconOnly label="Share" icon="↗" />
+    </>);
+    const same = screen.getByRole('link', { name: 'Same tab' });
+    expect(same.getAttribute('target')).toBeNull();
+    expect(screen.getByRole('link', { name: 'Report (नयाँ ट्याबमा)' }).getAttribute('target')).toBe('_blank');
+    expect(screen.getByRole('link', { name: 'Share (opens in a new tab)' }).getAttribute('rel')).toBe('noopener noreferrer');
   });
 });
 

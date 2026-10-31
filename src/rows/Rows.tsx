@@ -164,10 +164,11 @@ export function DataRow({ label, value, total, bar, note, testId }: {
 
 /** The round tile in front of a row: initials of the symbol (NEPSE has no logos). */
 export interface TileProps {
-  /** The symbol whose first four characters are drawn (NEPSE has no logos). */
+  /** The symbol whose first five characters are drawn (NEPSE has no logos); a five-letter symbol sets in a smaller size so it fits the circle. */
   text: string;
 }
 
 export function Tile({ text }: TileProps) {
-  return <span className="kit-tile" aria-hidden="true">{text.slice(0, 4)}</span>;
+  const letters = text.slice(0, 5);
+  return <span className="kit-tile" data-long={letters.length > 4 ? '' : undefined} aria-hidden="true">{letters}</span>;
 }

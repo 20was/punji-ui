@@ -81,6 +81,7 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'dividend-history', title: 'DividendHistory with yields', layout: true },
   { id: 'transaction-history', title: 'TransactionHistory', layout: true },
   { id: 'transaction-history-filtered', title: 'TransactionHistory filtered', layout: true },
+  { id: 'container-fit', title: 'Container fit: allocation, header, stats, metrics, tiles, ledgers in a 320px column', layout: true },
   { id: 'journal-entry', title: 'JournalEntryView balanced and out of balance', layout: true },
   { id: 'ledger-table', title: 'LedgerTable', layout: true },
   { id: 'trial-balance', title: 'TrialBalance', layout: true },

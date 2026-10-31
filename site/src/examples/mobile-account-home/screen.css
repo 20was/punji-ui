@@ -25,5 +25,4 @@
 
 @container sc-mob (min-width: 360px) {
   .sc-mob-actions { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .sc-mob-actions .kit-btn { flex-direction: column; height: auto; min-height: 64px; padding: var(--pu-space-2) 4px; gap: 4px; font-size: var(--pu-text-xs); white-space: normal; text-align: center; }
 }

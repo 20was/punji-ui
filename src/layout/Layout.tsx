@@ -27,8 +27,10 @@ export function PageLayout({ children, nav }: PageLayoutProps) {
 }
 
 interface HeaderProps {
-  /** The page's title: the one h1. */
+  /** The page's title: the one h1 (or another heading level, see `headingLevel`). */
   title: ReactNode;
+  /** The title's heading level, 1 to 6. Default 1 (a page's one h1); pass 2 or 3 when the header sits inside a page that already has its own h1, a card or a tab panel. */
+  headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
   /** Where back goes; omit on a root page (no back circle). */
   backTo?: string;
   /** The link element for `backTo` (wrap your router's link). Default: a plain <a>. */
@@ -49,7 +51,8 @@ interface HeaderProps {
   testId?: string;
 }
 
-export function PageHeader({ title, backTo, linkComponent, backLabel = 'Back', meta, actions, eyebrow, compact, stamp, testId }: HeaderProps) {
+export function PageHeader({ title, backTo, linkComponent, backLabel = 'Back', meta, actions, eyebrow, compact, stamp, headingLevel = 1, testId }: HeaderProps) {
+  const H = `h${headingLevel}` as const;
   const L = linkComponent ?? 'a';
   return (
     <header className={`kit-header${backTo ? '' : ' no-back'}${compact ? ' compact' : ''}${eyebrow ? ' has-eyebrow' : ''}`} data-testid={testId}>
@@ -61,11 +64,11 @@ export function PageHeader({ title, backTo, linkComponent, backLabel = 'Back', m
       )}
       {stamp ? (
         <div className="kit-header-title">
-          <h1>{title}</h1>
+          <H>{title}</H>
           {stamp}
         </div>
       ) : (
-        <h1>{title}</h1>
+        <H>{title}</H>
       )}
       {actions && <div className="kit-header-actions">{actions}</div>}
       {meta && <div className="kit-header-meta">{meta}</div>}

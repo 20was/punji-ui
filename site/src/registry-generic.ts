@@ -492,11 +492,11 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     ],
     keyboard: ['The back circle is a link: Tab, then Enter. Header actions are your buttons or links.'],
     accessibility: [
-      'PageLayout renders <main id="main" tabindex="-1">, the target for a skip link; PageHeader renders the h1. Use one of each per page.',
+      'PageLayout renders <main id="main" tabindex="-1">, the target for a skip link; PageHeader renders the h1 (or the level you give with headingLevel when it is embedded). Use one h1 per page.',
       'The back link is named by backLabel (default "Back"); the chevron is decorative.',
       'ListSectionHeader renders an h2 (h3 with level 3): keep the outline in order.',
     ],
-    responsive: ['The header wraps its actions under the title on narrow screens. compact keeps a tool in the first screen.'],
+    responsive: ['The header wraps its actions under the title on narrow screens. compact keeps a tool in the first screen. headingLevel (1 to 6, default 1) makes the title an h2 or h3 when the header is embedded in a page, card or panel that already has its own h1.'],
     related: ['app-shell', 'card', 'tabs', 'status-pill'],
   },
   {
@@ -541,7 +541,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       'GroupedCell is a section named by label when you give one.',
       'ariaLabel gives a row a fuller name when its visible text is in several pieces; it must contain the visible words. The tile is decorative.',
     ],
-    responsive: ['Symbols never shrink or truncate; the name beside a symbol is the part that gives way with an ellipsis. Figures stay on one line.'],
+    responsive: ['Symbols never shrink or truncate (a Tile draws up to five letters, set a little smaller at five); the name beside a symbol is the part that gives way with an ellipsis. Figures stay on one line.'],
     related: ['link-table', 'card', 'key-stats', 'stock-table'],
   },
   {
@@ -561,7 +561,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     ],
     keyboard: ['Not interactive.'],
     accessibility: ['A description list (dl) named by label, with a dt per label and a dd per value and note, so a screen reader pairs them.', 'Put the currency and the as-of date in the value or the note: the component does not add them.'],
-    responsive: ['Two columns on a phone, up to the number of metrics (at most four) on a wide screen.'],
+    responsive: ['Two columns until its own space is 520px wide, then up to the number of metrics (at most four): it follows its container, not the screen.'],
     related: ['metric-tile', 'key-stats', 'headline-figure', 'money-display'],
   },
   {
@@ -711,7 +711,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       'A description list (dl) named by label; each tile is a dt (the label) and a dd (figure and note).',
       'Put the currency and the as-of date in the value or the note: the component does not add them.',
     ],
-    responsive: ['Two columns on a phone; cols columns (default 4) on a wide screen.'],
+    responsive: ['Two columns until the grid\'s own space is 520px wide, then cols columns (default 4): it follows its container, not the screen, so a grid in a narrow card or sidebar stays at two.'],
     related: ['metric-tile', 'key-stats', 'headline-figure', 'financial-summary'],
   },
   {

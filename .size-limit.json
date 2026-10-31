@@ -10,7 +10,7 @@
     "name": "button (import from '@punji/ui/button')",
     "path": "dist/button/Button.js",
     "import": "*",
-    "limit": "700 B",
+    "limit": "730 B",
     "gzip": true
   },
   {
@@ -171,7 +171,7 @@
     "name": "rows (import from '@punji/ui/rows')",
     "path": "dist/rows/Rows.js",
     "import": "*",
-    "limit": "1.03 kB",
+    "limit": "1.06 kB",
     "gzip": true
   },
   {
@@ -283,13 +283,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "86.9 kB",
+    "limit": "87.3 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "26.1 kB",
+    "limit": "26.8 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -696,7 +696,7 @@
     "name": "metric-tile (import from '@punji/ui/metric-tile')",
     "path": "dist/metric-tile/MetricTile.js",
     "import": "*",
-    "limit": "450 B",
+    "limit": "460 B",
     "gzip": true
   },
   {
@@ -766,21 +766,21 @@
     "name": "ledger-table (import from '@punji/ui/ledger-table')",
     "path": "dist/ledger-table/LedgerTable.js",
     "import": "*",
-    "limit": "8.8 kB",
+    "limit": "8.9 kB",
     "gzip": true
   },
   {
     "name": "journal-entry (import from '@punji/ui/journal-entry')",
     "path": "dist/journal-entry/JournalEntryView.js",
     "import": "*",
-    "limit": "8.15 kB",
+    "limit": "8.3 kB",
     "gzip": true
   },
   {
     "name": "trial-balance (import from '@punji/ui/trial-balance')",
     "path": "dist/trial-balance/TrialBalance.js",
     "import": "*",
-    "limit": "8.5 kB",
+    "limit": "8.7 kB",
     "gzip": true
   },
   {

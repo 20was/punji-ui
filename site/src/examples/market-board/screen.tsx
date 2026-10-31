@@ -3,6 +3,7 @@ import { SplitBar } from '@punji/ui/bars';
 import { Button } from '@punji/ui/button';
 import { Card } from '@punji/ui/card';
 import { KeyStats } from '@punji/ui/key-stats';
+import { PageHeader } from '@punji/ui/layout';
 import { MarketHeatmap, heatmapItemsFromQuotes } from '@punji/ui/market-heatmap';
 import { MarketIndices } from '@punji/ui/market-indices';
 import { MarketMovers, type MoverKind } from '@punji/ui/market-movers';
@@ -57,15 +58,16 @@ export default function Example() {
 
   return (
     <div className="sc-mkt">
-      <div className="sc-mkt-head">
-        <div className="sc-mkt-title">
-          <h3>Market</h3>
-          <MarketStatus session={session} market="NEPSE" />
-        </div>
-        <Button variant="secondary" size="sm" onClick={() => setStep((s) => s + 1)}>
-          Receive a tick
-        </Button>
-      </div>
+      <PageHeader
+        headingLevel={3}
+        title="Market"
+        stamp={<MarketStatus session={session} market="NEPSE" />}
+        actions={
+          <Button variant="secondary" size="sm" onClick={() => setStep((s) => s + 1)}>
+            Receive a tick
+          </Button>
+        }
+      />
 
       <MarketIndices indices={marketIndices} label="NEPSE indices" variant="cards" asOf="Index values at the 14 Nov close" />
 

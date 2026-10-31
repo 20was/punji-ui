@@ -26,9 +26,9 @@
     :is(.pu-holdings, .pu-txh) .kit-tablebox.stack .pu-wide .pu-change { white-space: normal }
   }
 
-  .pu-alloc { display: grid; gap: 16px; min-width: 0 }
+  .pu-alloc { container: pu-alloc / inline-size; display: grid; gap: 16px; min-width: 0 }
   .pu-alloc-donut { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: center }
-  @media (min-width: 640px) { .pu-alloc-donut { grid-template-columns: 180px minmax(0, 1fr); gap: 32px } }
+  @container pu-alloc (min-width: 480px) { .pu-alloc-donut { grid-template-columns: 180px minmax(0, 1fr); gap: 32px } }
   .pu-alloc-empty { margin: 0; padding: 24px 0; text-align: center; color: var(--pu-color-text-muted); font-size: var(--pu-text-sm) }
   .pu-alloc.loading { justify-items: center }
 

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '@punji/ui/button';
 import { Card } from '@punji/ui/card';
 import { JournalEntryView } from '@punji/ui/journal-entry';
+import { PageHeader } from '@punji/ui/layout';
 import { accountBalance, isBalanced, journalsToEntries, rollUp } from '@punji/ui/ledger';
 import { LedgerTable } from '@punji/ui/ledger-table';
 import { MetricRow, MetricTile } from '@punji/ui/metric-tile';
@@ -35,13 +36,7 @@ export default function Example() {
   const [view, setView] = useState<View>('trial');
   return (
     <div className="sc-acc">
-      <div className="sc-acc-head">
-        <div className="sc-acc-title">
-          <h3>Books</h3>
-          <p>Himalayan Stationers Pvt. Ltd. · NPR</p>
-        </div>
-        <Button size="sm">New journal entry</Button>
-      </div>
+      <PageHeader headingLevel={3} title="Books" meta="Himalayan Stationers Pvt. Ltd. · NPR" actions={<Button size="sm">New journal entry</Button>} />
       <div className="sc-acc-period">
         <FinancialPeriodSelector
           periods={PERIODS}

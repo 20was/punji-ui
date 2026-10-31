@@ -38,4 +38,5 @@
   dl > .kit-data-row.has-bar > dd.kit-data-bar, dl > .kit-data-row.has-bar > dd.kit-data-note { flex-basis: 100%; text-align: left; white-space: normal }
   dl > .kit-data-row.has-bar > dd.kit-data-note { margin-top: -2px; font-size: 12px; font-weight: 500; line-height: 16px; color: var(--pu-color-text-muted) }
   .kit-tile { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 20px; flex: none; background: var(--pu-color-surface-tint); color: var(--pu-color-text); font: 700 var(--pu-text-xs) / 1 var(--pu-font-body); letter-spacing: 0.02em }
+  .kit-tile[data-long] { font-size: 10px; letter-spacing: 0 }
 }

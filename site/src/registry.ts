@@ -317,7 +317,7 @@ export const PAGES: readonly PageDef[] = [
     ],
     keyboard: ['Not interactive.'],
     accessibility: ['Labels and values are real text; the meter is decorative so the figure is always printed.', 'MetricRow takes a label that names the group for screen readers.'],
-    responsive: ['Tiles use container queries: four across where there is room, two by two otherwise.'],
+    responsive: ['Tiles use container queries: four across where there is room, two by two otherwise. A long exact figure shrinks as its row narrows (under 420px and again under 340px) and wraps as a last resort, so it never runs out of its cell on a phone.'],
     related: ['money-display', 'price-change', 'column-chart'],
   },
   {
@@ -372,7 +372,7 @@ export const PAGES: readonly PageDef[] = [
     ],
     keyboard: ['Not interactive.'],
     accessibility: ['The chart is an image named with every slice and percent; the legend and an exact-values table repeat it as text.', 'By default the table is visually hidden and the legend is hidden from assistive technology, so nothing is read twice.', 'Share is never carried by colour alone.'],
-    responsive: ['The donut sits above its legend under 640px and beside it from there.', 'The bar and its legend fill the container.'],
+    responsive: ['The layout follows the width of the space the chart is given, not the screen: the donut sits above its legend under 480px and beside it from there; the bar\'s legend is one column under 440px, two from there and three from 680px, so sector names stay readable in a narrow card.', 'The bar fills the container.'],
     notes: {
       title: 'Data rules',
       points: [
@@ -557,7 +557,7 @@ export const PAGES: readonly PageDef[] = [
     responsive: ['The plot is as wide as its container; a line with more points than 2px each is reduced to its extremes per bucket.'],
     notes: {
       title: 'Data rules',
-      points: ['dates and every series.values are the same length; slice them together for a period.', 'A gap breaks that series\' line. A series whose first value is zero cannot be normalised and is not drawn.', 'A benchmark that starts later begins level with the portfolio\'s percent change on its first date (rebaseOnto), not at 0%.', 'The first series is the portfolio; convention sets the colour of the gain area.'],
+      points: ['dates and every series.values are the same length; slice them together for a period.', 'A gap breaks that series\' line: missing data is never bridged, drawn as zero or interpolated, and the table reads "none" there. Only the series with the missing value breaks; the others stay one line, and a benchmark rebased from a later start (rebaseOnto) adds no gaps of its own. A series whose first value is zero cannot be normalised and is not drawn.', 'A benchmark that starts later begins level with the portfolio\'s percent change on its first date (rebaseOnto), not at 0%.', 'The first series is the portfolio; convention sets the colour of the gain area.'],
     },
     related: ['candlestick-chart', 'price-chart', 'column-chart'],
   },
@@ -665,10 +665,11 @@ export const PAGES: readonly PageDef[] = [
       { id: 'variants', title: 'Variants' },
       { id: 'sizes', title: 'Sizes' },
       { id: 'states', title: 'Loading and icon-only' },
+      { id: 'stacked', title: 'Stacked', note: 'stacked puts the icon over a short centred label: a quick-action tile for a phone grid. Put the buttons in a grid and use block to fill each cell.' },
     ],
     keyboard: ['Tab to focus; Enter or Space activates.', 'A loading button is disabled: not clickable and skipped by Tab, with aria-busy set.'],
     accessibility: ['A real <button> (or <a> with href); focus-visible outline on every variant.', 'loading sets aria-busy. Icon-only buttons require `label`.', 'An absolute http(s) href opens a new tab, adds rel noopener noreferrer and speaks newTabLabel.'],
-    responsive: ['sm is for toolbars; lg (44px) for a form\'s or phone bar\'s main action. block fills the container.'],
+    responsive: ['sm is for toolbars; lg (44px) for a form\'s or phone bar\'s main action. block fills the container. stacked sets the icon over a label that wraps onto two lines, at least 64px tall.'],
     related: ['spacing', 'currency-input'],
   },
   {
@@ -1241,7 +1242,7 @@ export const PAGES: readonly PageDef[] = [
     ],
     keyboard: ['The table region is focusable and scrolls with the arrow keys.'],
     accessibility: ['A real <table> with a caption and scoped headers; the balance reads its side in words.', 'Invalid amounts (negative, two-sided, not bigint) show an alert instead of a balance.'],
-    responsive: ['Under 640px each entry becomes a card (date, description, then Debit, Credit and Balance with their names); the reference moves under the description.'],
+    responsive: ['Under 640px of screen, or when the ledger\'s own space is under 340px (a sidebar, a narrow card), each entry becomes a card (date, description, then Debit, Credit and Balance with their names); the reference moves under the description.'],
     related: ['debit-credit', 'trial-balance', 'journal-entry', 'ledger-helpers'],
   },
   {
@@ -1260,7 +1261,7 @@ export const PAGES: readonly PageDef[] = [
     ],
     keyboard: ['Not interactive.'],
     accessibility: ['The status is a role="status" line with its own icon shape and words.', 'The title is a heading at headingLevel (default 3) so it fits the page outline.', 'A journal with an invalid line shows an alert; one with no lines shows an empty message.'],
-    responsive: ['A compact table that fits 320px; account names wrap.'],
+    responsive: ['A compact table: under 340px of its own space (not the screen) the cells tighten and account names wrap, so it fits 320px without sideways scrolling.'],
     related: ['ledger-table', 'trial-balance', 'ledger-helpers'],
   },
   {
@@ -1280,7 +1281,7 @@ export const PAGES: readonly PageDef[] = [
     ],
     keyboard: ['Not interactive; the region scrolls with the arrow keys when maxHeight is set.'],
     accessibility: ['The columns are real table headers, so a screen reader announces "32,200.00 credit" with the account.', 'The balance status is words plus an icon, never colour alone.'],
-    responsive: ['Rows stack under 640px with named values.'],
+    responsive: ['A compact table: under 340px of its own space (not the screen) the cells tighten and account names wrap, so it fits 320px without sideways scrolling.'],
     notes: {
       title: 'Security boundary',
       points: ['This is a display of the books you pass. The server that stores them must validate and total every amount again (balanced journals, no negatives, period locks, permissions).'],

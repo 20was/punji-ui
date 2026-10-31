@@ -90,7 +90,8 @@ describe('Rows', () => {
     expect(screen.getByRole('link', { name: /HDL/ }).getAttribute('data-router')).toBeNull();
     await userEvent.click(screen.getByRole('button', { name: 'Add a holding' }));
     expect(onClick).toHaveBeenCalledOnce();
-    expect(screen.getByText('NABI').getAttribute('aria-hidden')).toBe('true');
+    expect(document.querySelector('.kit-tile')!.textContent).toBe('NABIL');
+    expect(document.querySelector('.kit-tile')!.getAttribute('aria-hidden')).toBe('true');
   });
 
   it('DataRows are a description list of label and value', () => {
@@ -264,6 +265,15 @@ describe('DataTable', () => {
   });
 });
 
+describe('Tile', () => {
+  it('draws up to five letters and marks a long symbol so it sets smaller', () => {
+    const html = renderToStaticMarkup(<><Tile text="NABIL" /><Tile text="NTC" /><Tile text="ABCDEFG" /></>);
+    expect(html).toContain('>NABIL</span>');
+    expect(html).toContain('>ABCDE</span>');
+    expect(html.match(/data-long/g)).toHaveLength(2);
+  });
+});
+
 describe('PageLayout and PageHeader', () => {
   it('a main landmark, a title, a back link (plain or your link component), actions and a meta line', () => {
     render(
@@ -278,6 +288,9 @@ describe('PageLayout and PageHeader', () => {
     expect(back.getAttribute('href')).toBe('/');
     expect(back.getAttribute('data-router')).toBe('yes');
     expect(renderToStaticMarkup(<PageHeader title="Root" />)).toContain('class="kit-header no-back"');
+    expect(renderToStaticMarkup(<PageHeader title="Root" />)).toContain('<h1>Root</h1>');
+    expect(renderToStaticMarkup(<PageHeader title="Embedded" headingLevel={3} stamp={<b>s</b>} />)).toContain('<h3>Embedded</h3>');
+    expect(renderToStaticMarkup(<PageHeader title="Embedded" headingLevel={2} />)).not.toContain('<h1');
   });
 
   it('has no serious axe violations', async () => {

@@ -157,6 +157,18 @@ describe('PerformanceChart', () => {
     expect(container.querySelectorAll('.kit-ct-line')[1]!.querySelectorAll('path')).toHaveLength(2);
   });
 
+  it('breaks a line only where its own data is missing: a complete series is one path, and a late start does not add gaps', () => {
+    const dates = ['2025-09-09', '2025-09-10', '2025-09-11', '2025-09-14', '2025-09-15', '2025-09-16'];
+    const series = [
+      { key: 'p', label: 'Portfolio', values: [100, 101, 103, 102, 104, 105] },
+      { key: 'n', label: 'NEPSE', values: [null, 2000, 2010, 2020, 2015, 2030] },
+    ];
+    const { container } = render(<PerformanceChart dates={dates} series={series} label="x" />);
+    const lines = container.querySelectorAll('.kit-ct-line');
+    expect(lines[0]!.querySelectorAll('path')).toHaveLength(1);
+    expect(lines[1]!.querySelectorAll('path')).toHaveLength(1);
+  });
+
   it('plots raw values when not normalised, with the area against the start', () => {
     const { container } = render(<PerformanceChart {...props} normalize={false} formatValue={(v) => `Rs ${v}`} />);
     expect(container.querySelector('tbody tr td')!.textContent).toBe(`Rs ${performanceSeries[0]!.values[0]}`);

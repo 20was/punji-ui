@@ -1,8 +1,9 @@
 /* Punji UI styles.
    Styles for stats. Needs tokens.css and base.css (styles.css has everything). */
 @layer punji.components {
+  .kit-stats-box { container: pu-stats / inline-size; min-width: 0 }
   .kit-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; margin: 0 }
-  @media (min-width: 760px) { .kit-stats { grid-template-columns: repeat(var(--kit-cols, 4), minmax(0, 1fr)) } }
+  @container pu-stats (min-width: 520px) { .kit-stats { grid-template-columns: repeat(var(--kit-cols, 4), minmax(0, 1fr)) } }
   .kit-stat { display: grid; align-content: start; gap: 4px; min-height: 72px; padding: 12px 0; border-top: 1px solid var(--pu-color-card-border); min-width: 0 }
   .kit-stat dt { font-size: var(--pu-text-xs); font-weight: 600; letter-spacing: 0.02em; color: var(--pu-color-text-muted) }
   .kit-stat dd { margin: 0 }

@@ -1,8 +1,5 @@
 /* Accounting dashboard pattern: layout only. */
 .sc-acc { container: sc-acc / inline-size; display: grid; gap: var(--pu-space-4); }
-.sc-acc-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--pu-space-3); }
-.sc-acc-title h3 { margin: 0; font: 700 1.75rem/1.1 var(--pu-font-display); letter-spacing: -0.02em; }
-.sc-acc-title p { margin: 4px 0 0; font-size: var(--pu-text-sm); color: var(--pu-color-text-muted); }
 .sc-acc-grid { display: grid; gap: var(--pu-space-4); align-items: start; }
 .sc-acc-grid > * { min-width: 0; }
 .sc-acc-stack, .sc-acc-side { display: grid; gap: var(--pu-space-4); }

@@ -22,7 +22,8 @@
   .kit-metrics.dense.n3 > .kit-metric:nth-child(3n + 1)::before { display: none }
   .kit-metrics.dense .kit-metric::before { top: 12px; bottom: 10px }
   .kit-metric-k { display: flex; flex-wrap: wrap; align-items: center; row-gap: 2px; min-width: 0; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }
-  .kit-metric-v { margin: 6px 0 12px; font-size: 20px; line-height: 24px; font-weight: 500; letter-spacing: -0.01em; white-space: nowrap; font-variant-numeric: tabular-nums }
+  .kit-metric-v { margin: 6px 0 12px; font-size: 20px; line-height: 24px; font-weight: 500; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; min-width: 0; overflow-wrap: anywhere }
+  .kit-metric-v :is(.pu-money, .pu-change, .kit-fig) { white-space: normal }
   .kit-metric.lead .kit-metric-k { color: var(--pu-color-text); font-weight: 500 }
   .kit-metric.lead .kit-metric-v { font-size: 22px; line-height: 26px; font-weight: 600 }
   .kit-metric-nometer { display: block; height: 6px }
@@ -36,5 +37,8 @@
   .kit-metric:not(.kit-metrics > .kit-metric)::before { display: none }
   .kit-metric.lead:not(.kit-metrics > .kit-metric) .kit-metric-v { margin: 8px 0 14px; font-size: 32px; line-height: 36px; letter-spacing: -0.02em }
   .kit-metric:not(.kit-metrics > .kit-metric) .kit-metric-n { min-height: 0; margin-top: 10px; font-size: 12px; line-height: 16px }
+  /* A long exact figure shrinks with the row's width first, then wraps as a last resort; it never runs out of its cell. */
+  @container (max-width: 419px) { .kit-metrics .kit-metric-v { font-size: 15px; line-height: 20px } .kit-metrics .kit-metric.lead .kit-metric-v { font-size: 16px; line-height: 22px } }
+  @container (max-width: 339px) { .kit-metrics .kit-metric-v, .kit-metrics .kit-metric.lead .kit-metric-v { font-size: 13px; line-height: 18px; letter-spacing: 0 } }
   @media (max-width: 699px) { .kit-metric-v { font-size: 17px } .kit-metric.lead .kit-metric-v { font-size: 19px; line-height: 24px } }
 }

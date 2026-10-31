@@ -6,6 +6,7 @@
   .kit-btn.sm { --h: var(--pu-control-sm); padding: 0 12px; font-size: 13px }
   .kit-btn.lg { --h: var(--pu-control-lg); padding: 0 18px; gap: 8px; font-size: 15px }
   .kit-btn.icon { width: var(--h); padding: 0 }
+  .kit-btn.stacked { flex-direction: column; height: auto; min-height: 64px; padding: var(--pu-space-2) 4px; gap: 4px; font-size: var(--pu-text-xs); line-height: 1.2; text-align: center; white-space: normal }
   .kit-btn > svg { flex: none; width: 16px; height: 16px }
   .kit-btn-ico { display: inline-flex; flex: none }
   .kit-btn-ico svg { width: 16px; height: 16px }

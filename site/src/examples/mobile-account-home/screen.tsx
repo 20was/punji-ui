@@ -53,7 +53,7 @@ export default function Example() {
         <ul className="sc-mob-actions" aria-label="Quick actions">
           {ACTIONS.map((a) => (
             <li key={a.label}>
-              <Button variant="secondary" block icon={<StateGlyph name={a.icon} size={18} />}>
+              <Button variant="secondary" block stacked icon={<StateGlyph name={a.icon} size={18} />}>
                 {a.label}
               </Button>
             </li>

@@ -3,6 +3,7 @@ import { Button } from '@punji/ui/button';
 import { Card } from '@punji/ui/card';
 import { SegmentedControl } from '@punji/ui/controls';
 import { HoldingsTable, type HoldingColumn } from '@punji/ui/holdings-table';
+import { PageHeader } from '@punji/ui/layout';
 import { PerformanceChart } from '@punji/ui/performance-chart';
 import { holdingsSummary, positionsFromTransactions, sortHoldings, type HoldingSort } from '@punji/ui/portfolio';
 import { PortfolioAllocation } from '@punji/ui/portfolio-allocation';
@@ -24,20 +25,23 @@ export default function Example() {
   const from = performanceDates.length - RANGES[range];
   return (
     <div className="sc-pf">
-      <div className="sc-pf-head">
-        <div className="sc-pf-title">
-          <h3>Portfolio</h3>
+      <PageHeader
+        headingLevel={3}
+        title="Portfolio"
+        stamp={
           <StatusPill tone="info" size="sm">
             14 Nov close
           </StatusPill>
-        </div>
-        <div className="sc-pf-actions">
-          <Button variant="secondary" size="sm">
-            Import trades
-          </Button>
-          <Button size="sm">Add transaction</Button>
-        </div>
-      </div>
+        }
+        actions={
+          <>
+            <Button variant="secondary" size="sm">
+              Import trades
+            </Button>
+            <Button size="sm">Add transaction</Button>
+          </>
+        }
+      />
 
       <Card headingLevel={3} label="Portfolio overview">
         <PortfolioOverview totals={totals} asOf="14 Nov 2025 close" />

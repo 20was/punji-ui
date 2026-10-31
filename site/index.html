@@ -15,6 +15,15 @@
         if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
       } catch (e) {}
     </script>
+    <noscript>
+      <!-- Without JavaScript the page tabs cannot switch, so every panel shows, each under its own heading. -->
+      <style>
+        .doc-panel[hidden] { display: block !important; }
+        .doc-panel-h { position: static !important; width: auto !important; height: auto !important; clip-path: none !important; margin: 8px 0 16px; font-size: 24px; }
+        .doc-tabs { position: static !important; }
+        .doc-theme, .doc-search, .doc-menu-btn, .doc-copy, .doc-badge-copy, .doc-demo-tools { display: none !important; }
+      </style>
+    </noscript>
   </head>
   <body>
     <div id="root"><!--app--></div>

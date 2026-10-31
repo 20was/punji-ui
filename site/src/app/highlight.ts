@@ -15,7 +15,7 @@ const KEYWORDS = new Set([
 
 // Order matters: comments and strings first so their contents are never re-tokenized.
 const PATTERN =
-  /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|('(?:[^'\\\n]|\\.)*'|"(?:[^"\\\n]|\\.)*"|`(?:[^`\\]|\\[\s\S])*`)|(<\/?[A-Za-z][\w.]*)|(\b\d[\d_]*(?:\.\d+)?n?\b)|([A-Za-z_$][\w$]*)(?=\s*[(<])|([A-Za-z_$][\w$]*)/g;
+  /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|('(?:[^'\\\n]|\\.)*'|"(?:[^"\\\n]|\\.)*"|`(?:[^`\\]|\\[\s\S])*`)|(<\/?[A-Za-z][\w.]*)|(\b\d[\d_]*(?:\.\d+)?n?\b)|([A-Za-z_$][\w$]*)(?=\(|<(?![/\s]))|([A-Za-z_$][\w$]*)/g;
 
 export function tokenize(source: string): Token[] {
   const tokens: Token[] = [];

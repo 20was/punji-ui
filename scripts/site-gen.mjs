@@ -8,6 +8,7 @@
 // every group is a known domain, every component/function page lists API.
 import { API, SignatureKind, SymbolFlags, NodeBuilderFlags } from 'typescript/unstable/sync';
 import { existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -16,7 +17,7 @@ const out = resolve(root, 'site/src/generated/api.json');
 const problems = [];
 
 const pkg = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8'));
-const { PAGES, GROUPS } = await import(resolve(root, 'site/src/registry.ts'));
+const { PAGES, GROUPS, leadOf } = await import(resolve(root, 'site/src/registry.ts'));
 
 // --- registry validation -------------------------------------------------
 const slugs = new Set();
@@ -30,6 +31,8 @@ for (const page of PAGES) {
       problems.push(`registry: ${page.slug} example ${ex.id} has no file site/src/examples/${page.slug}/${ex.id}.tsx`);
     }
   }
+  const lead = leadOf(page);
+  if (lead.length > 140) problems.push(`registry: ${page.slug} lead is ${lead.length} characters; keep it to 140 (registry-leads.ts or the page's lead)`);
   if (typeof page.description !== 'string' || page.description.length < 40 || page.description.length > 160) problems.push(`registry: ${page.slug} needs a description of 40 to 160 characters (meta description), has ${page.description?.length ?? 0}`);
   for (const section of page.guide ?? []) for (const code of section.code ?? []) {
     if (!code.file === !code.text) problems.push(`registry: ${page.slug} guide ${section.id} code "${code.label}" needs exactly one of file or text`);
@@ -174,6 +177,30 @@ try {
 for (const { name, module } of targets.values()) {
   if (!apiData[name]) problems.push(`api: ${module || '@punji/ui'}#${name} produced no entry`);
 }
+
+// --- bundle sizes ----------------------------------------------------------
+// The size badges and the homepage numbers come from the repository's own size-limit budget (.size-limit.json),
+// measured now against the built dist/, so they are the same gzip figures CI enforces. About two seconds.
+const sizes = { modules: {}, everything: null, styles: null, button: null };
+try {
+  let raw;
+  try {
+    raw = execFileSync(resolve(root, 'node_modules/.bin/size-limit'), ['--json'], { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+  } catch (error) {
+    raw = error.stdout; // size-limit exits non-zero when a budget is exceeded but still prints the JSON
+  }
+  for (const entry of JSON.parse(raw)) {
+    const sub = /import from '?@punji\/ui\/([^')\s]+)/.exec(entry.name)?.[1];
+    if (sub && !(sub in sizes.modules)) sizes.modules[sub] = entry.size;
+    if (entry.name.startsWith('Everything')) sizes.everything = entry.size;
+    if (entry.name.startsWith('styles.css')) sizes.styles = entry.size;
+    if (entry.name.startsWith('Button from root')) sizes.button = entry.size;
+  }
+} catch (error) {
+  console.warn(`site-gen: size-limit did not run (${error.message.split('\n')[0]}); size badges are omitted`);
+}
+mkdirSync(dirname(out), { recursive: true });
+writeFileSync(resolve(dirname(out), 'sizes.json'), `${JSON.stringify(sizes, null, 1)}\n`);
 
 // Written even on failure so the editor has data while you fix the registry; the exit code still fails the build.
 mkdirSync(dirname(out), { recursive: true });

@@ -283,13 +283,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "64 kB",
+    "limit": "70.3 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "23.2 kB",
+    "limit": "24.7 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -774,6 +774,62 @@
     "path": "dist/period-selector/FinancialPeriodSelector.js",
     "import": "*",
     "limit": "4.7 kB",
+    "gzip": true
+  },
+  {
+    "name": "banking (import from '@punji/ui/banking')",
+    "path": "dist/banking/banking.js",
+    "import": "*",
+    "limit": "2.4 kB",
+    "gzip": true
+  },
+  {
+    "name": "account-number (import from '@punji/ui/account-number')",
+    "path": "dist/account-number/AccountNumber.js",
+    "import": "*",
+    "limit": "2.2 kB",
+    "gzip": true
+  },
+  {
+    "name": "bank-account-card (import from '@punji/ui/bank-account-card')",
+    "path": "dist/bank-account-card/BankAccountCard.js",
+    "import": "*",
+    "limit": "7.6 kB",
+    "gzip": true
+  },
+  {
+    "name": "transaction-list (import from '@punji/ui/transaction-list')",
+    "path": "dist/transaction-list/TransactionList.js",
+    "import": "*",
+    "limit": "9.5 kB",
+    "gzip": true
+  },
+  {
+    "name": "transaction-status (import from '@punji/ui/transaction-status')",
+    "path": "dist/transaction-status/TransactionStatus.js",
+    "import": "*",
+    "limit": "850 B",
+    "gzip": true
+  },
+  {
+    "name": "payment-receipt (import from '@punji/ui/payment-receipt')",
+    "path": "dist/payment-receipt/PaymentReceipt.js",
+    "import": "*",
+    "limit": "7 kB",
+    "gzip": true
+  },
+  {
+    "name": "payment-timeline (import from '@punji/ui/payment-timeline')",
+    "path": "dist/payment-timeline/PaymentTimeline.js",
+    "import": "*",
+    "limit": "1.15 kB",
+    "gzip": true
+  },
+  {
+    "name": "beneficiary-selector (import from '@punji/ui/beneficiary-selector')",
+    "path": "dist/beneficiary-selector/BeneficiarySelector.js",
+    "import": "*",
+    "limit": "2.35 kB",
     "gzip": true
   }
 ]

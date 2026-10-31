@@ -20,7 +20,9 @@ import { execFileSync } from 'node:child_process';
 // The accounting components (ledger helpers, DebitCredit, LedgerTable, JournalEntryView, TrialBalance, StatementTable,
 // PaymentStatus, FinancialPeriodSelector: JS, declarations, CSS) add ~75 kB, bringing it to ~883 KiB (904,546 B).
 // Prop doc comments enlarge declarations; merged total measured 913,958 B on 2026-10-31.
-const MAX_UNPACKED = 960 * 1024;
+// The banking components (pure helpers, AccountNumber, BankAccountCard, TransactionList, TransactionStatus, PaymentReceipt,
+// PaymentTimeline, BeneficiarySelector: JS, declarations with prop docs, CSS) add ~90 kB; measured 1,031,009 B (1007 KiB).
+const MAX_UNPACKED = 1030 * 1024;
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
 const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md']);
 const allowed = (p) => always.has(p) || /^dist\/.+\.(js|d\.ts|css)$/.test(p);

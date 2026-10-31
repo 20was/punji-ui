@@ -439,3 +439,35 @@ test.describe('market and accounting components', () => {
     await expect(page.getByTestId('vr-period-value')).toHaveText('fy-2080');
   });
 });
+
+test.describe('banking and payments', () => {
+  test('AccountNumber: the full number is only in the DOM while revealed', async ({ page }) => {
+    await openFixture(page, 'account-number', 'light');
+    const root = page.getByTestId('vr-an');
+    await expect(root).toContainText('•••• •••• •••• 2345');
+    expect(await page.locator('[data-fixture]').innerHTML()).not.toContain('0123');
+    const toggle = page.getByTestId('vr-an-reveal');
+    await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+    await expect(root.locator('.pu-acct-num')).toHaveText('0123 4567 8901 2345');
+    await toggle.click();
+    expect(await root.innerHTML()).not.toContain('0123');
+  });
+
+  test('BeneficiarySelector: type, Enter chooses; ArrowDown reopens; Escape closes', async ({ page }) => {
+    await openFixture(page, 'beneficiary-selector', 'dark');
+    const input = page.getByRole('combobox', { name: 'Pay to' });
+    await input.focus();
+    await expect(input).toHaveAttribute('aria-expanded', 'true');
+    await input.fill('khalti');
+    await expect(page.getByRole('option')).toHaveCount(1);
+    await input.press('Enter');
+    await expect(input).toHaveValue('Sunita Rai');
+    await expect(input).toHaveAttribute('aria-expanded', 'false');
+    await input.press('ArrowDown');
+    await expect(input).toHaveAttribute('aria-expanded', 'true');
+    await input.press('Escape');
+    await expect(input).toHaveAttribute('aria-expanded', 'false');
+    expect(await page.locator('[data-fixture]').innerHTML()).not.toContain('9867654320');
+  });
+});

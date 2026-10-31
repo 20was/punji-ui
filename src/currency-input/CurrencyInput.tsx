@@ -6,6 +6,8 @@
  * Arabic-Indic digits are accepted, and more fraction digits than the currency
  * has (JPY 0, USD 2, KWD 3) are refused, never rounded. The value is an exact
  * ASCII decimal string plus bigint minor units; it never passes through Number.
+ * The text is right-aligned, like an amount in a column, so the grouping stays
+ * in step with the digits as they are typed; the currency code sits at the end.
  */
 import { useCallback, useRef, type FocusEvent, type InputHTMLAttributes, type ReactNode, type Ref } from 'react';
 
@@ -67,7 +69,7 @@ function currencyName(code: string, locale: string): string {
 
 export function CurrencyInput({
   label, value, onValueChange, allowNegative = false, showCurrency = true, preset, currency, locale, numberingSystem,
-  onBlur, ref, testId, ...rest
+  onBlur, ref, testId, className, ...rest
 }: CurrencyInputProps) {
   const inner = useRef<HTMLInputElement | null>(null);
   const setRef = useCallback((node: HTMLInputElement | null) => {
@@ -103,6 +105,7 @@ export function CurrencyInput({
   return (
     <PriceField
       {...rest}
+      className={className ? `pu-currency-input ${className}` : 'pu-currency-input'}
       ref={setRef}
       testId={testId}
       label={<>{label}{' '}<span className="kit-sr">{`(${currencyName(formatter.currency, formatter.locale)})`}</span></>}

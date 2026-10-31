@@ -1,0 +1,60 @@
+/* Punji UI styles.
+   Styles for the portfolio compositions (HoldingsTable, PortfolioAllocation, PortfolioOverview, DividendHistory, TransactionHistory).
+   Needs tokens.css, base.css, table.css, money.css, meter.css, metric-tile.css, summary-figure.css and column-chart.css (styles.css has everything). */
+@layer punji.components {
+  .pu-holdings { min-width: 0 }
+  .pu-holdings .kit-tablebox { max-height: var(--holdings-max-h, none) }
+  .pu-holdings .kit-table tbody th { font-weight: 400; text-align: left }
+  .pu-holdings .kit-table tbody th b { display: block; letter-spacing: 0.01em }
+  .pu-holdings .kit-table tbody th .sub { max-width: 16rem }
+  .pu-holdings[data-density='compact'] .kit-table { font-size: 13px }
+  .pu-holdings[data-density='compact'] .kit-table :is(th, td) { padding: 5px 10px }
+  .pu-holdings[data-density='compact'] .kit-table tbody th .sub { display: none }
+  .pu-holdings-tools { display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-bottom: 8px }
+  .pu-holdings-note { margin: 8px 0 0; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }
+  .pu-holdings-tools .pu-holdings-note { margin: 0 }
+  @media (max-width: 639px) {
+    .pu-holdings .kit-tablebox.stack { overflow-x: hidden; overflow-y: auto }
+    .pu-holdings .kit-tablebox.stack .kit-table :is(tbody, tfoot) tr { grid-template-columns: minmax(0, 1.3fr) repeat(3, minmax(0, 1fr)); grid-auto-flow: row dense }
+    /* The market value is the headline figure: it gets two tracks so a lakh-crore amount never spills out of the card. */
+    .pu-holdings .kit-tablebox.stack .kit-table :is(tbody, tfoot) tr > th { grid-column: 1 / 3 }
+    .pu-holdings .kit-tablebox.stack .kit-table :is(tbody, tfoot) tr > th + td { grid-column: 3 / 5 }
+    /* An amount with its percent ("+12,345.00 (+8.12%)") is the widest figure: two tracks. */
+    .pu-holdings .kit-tablebox.stack .kit-table :is(tbody, tfoot) tr > td:has(> .pu-wide) { grid-column: span 2 }
+    .pu-holdings .kit-tablebox.stack .kit-table tbody th .sub { max-width: none }
+    /* If even two tracks are too narrow, the percent wraps under the amount instead of spilling out of the row. */
+    :is(.pu-holdings, .pu-txh) .kit-tablebox.stack .pu-wide .pu-change { white-space: normal }
+  }
+
+  .pu-alloc { container: pu-alloc / inline-size; display: grid; gap: 16px; min-width: 0 }
+  .pu-alloc-donut { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: center }
+  @container pu-alloc (min-width: 480px) { .pu-alloc-donut { grid-template-columns: 180px minmax(0, 1fr); gap: 32px } }
+  .pu-alloc-empty { margin: 0; padding: 24px 0; text-align: center; color: var(--pu-color-text-muted); font-size: var(--pu-text-sm) }
+  .pu-alloc.loading { justify-items: center }
+
+  .pu-overview { display: grid; gap: 4px; min-width: 0 }
+  .pu-overview .kit-sumfig-n { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 12px }
+  .pu-overview-day { display: inline-flex; align-items: center; gap: 6px }
+  .pu-overview-today { color: var(--pu-color-text-muted) }
+  .pu-overview .kit-metric-v .pu-change { font-weight: 500 }
+
+  .pu-dividends { display: grid; gap: 16px; min-width: 0 }
+  .pu-dividends .kit-table tbody th { font-weight: 600 }
+
+  .pu-txh { display: grid; gap: 12px; min-width: 0 }
+  .pu-txh-filters { display: grid; gap: 12px }
+  .pu-txh-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 12px }
+  .pu-txh .kit-table tbody th { font-weight: 400 }
+  .pu-txh .kit-table tbody th b { display: block }
+  .pu-txh .kit-table tbody th .sub { max-width: 14rem }
+  .pu-txh-type { display: inline-block; padding: 2px 8px; border: 1px solid var(--pu-color-border-control); border-radius: 999px; font-size: 12px; line-height: 16px; font-weight: 600; background: var(--pu-color-surface) }
+  @media (max-width: 639px) {
+    /* An empty cell has nothing to label in a stacked row. */
+    :is(.pu-holdings, .pu-dividends, .pu-txh) .kit-tablebox.stack .kit-table :is(tbody, tfoot) tr > td:empty { display: none }
+    .pu-txh .kit-tablebox.stack .kit-table :is(tbody, tfoot) tr { grid-auto-flow: row dense }
+    .pu-txh .kit-tablebox.stack .kit-table :is(tbody, tfoot) tr > td:has(> .pu-wide) { grid-column: span 2 }
+    .pu-txh .kit-tablebox.stack .kit-table :is(tbody, tfoot) tr > th { grid-column: 1 / 3 }
+    .pu-txh .kit-tablebox.stack .kit-table :is(tbody, tfoot) tr > th + td { grid-column: 3 / 5 }
+    .pu-txh .kit-tablebox.stack .kit-table tbody th .sub { max-width: none }
+  }
+}

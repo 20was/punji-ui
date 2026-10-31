@@ -82,11 +82,12 @@
   .kit-share-legend.rows .kit-share-item { grid-template-columns: 12px minmax(0, 1fr) auto auto; min-height: 40px; padding: 10px 0; font-size: 14px }
   .kit-share-legend.rows > li + li { border-top: 1px solid var(--pu-color-card-border) }
   .kit-share-legend.grid { grid-template-columns: minmax(0, 1fr); column-gap: 32px }
-  @media (min-width: 768px) {
+  /* The grid legend's columns follow the width of its own container (a narrow card, a sidebar), not the screen. */
+  @container (min-width: 440px) {
     .kit-share-legend.grid { grid-template-columns: repeat(2, minmax(0, 1fr)) }
     .kit-share-legend.grid > li:nth-child(2) { border-top: 0 }
   }
-  @media (min-width: 1256px) {
+  @container (min-width: 680px) {
     .kit-share-legend.grid { grid-template-columns: repeat(3, minmax(0, 1fr)) }
     .kit-share-legend.grid > li:nth-child(3) { border-top: 0 }
   }

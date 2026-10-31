@@ -4,8 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
-    <link rel="icon" href="data:," />
-    <title>Punji UI documentation</title>
+    <meta name="theme-color" content="#e4e7de" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0d0e10" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="%BASE_URL%favicon.svg" type="image/svg+xml" />
+    <!--seo-head-->
     <script>
       // Apply the saved theme before first paint (no flash). Mirrors src/app/theme.ts.
       try {
@@ -13,9 +15,18 @@
         if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
       } catch (e) {}
     </script>
+    <noscript>
+      <!-- Without JavaScript the page tabs cannot switch, so every panel shows, each under its own heading. -->
+      <style>
+        .doc-panel[hidden] { display: block !important; }
+        .doc-panel-h { position: static !important; width: auto !important; height: auto !important; clip-path: none !important; margin: 8px 0 16px; font-size: 24px; }
+        .doc-tabs { position: static !important; }
+        .doc-theme, .doc-search, .doc-menu-btn, .doc-copy, .doc-badge-copy, .doc-demo-tools { display: none !important; }
+      </style>
+    </noscript>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><!--app--></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -1,0 +1,18 @@
+/* Watchlist and alerts pattern: layout only. */
+.sc-wl { container: sc-wl / inline-size; display: grid; gap: var(--pu-space-4); }
+.sc-wl-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--pu-space-3); }
+.sc-wl-title { display: flex; flex-wrap: wrap; align-items: center; gap: var(--pu-space-2) var(--pu-space-3); }
+.sc-wl-title h3 { margin: 0; font: 700 1.75rem/1.1 var(--pu-font-display); letter-spacing: -0.02em; }
+.sc-wl-add { flex: 1 1 260px; max-width: 360px; min-width: 0; }
+.sc-wl-grid { display: grid; gap: var(--pu-space-4); align-items: start; }
+.sc-wl-grid > * { min-width: 0; }
+.sc-wl-side { display: grid; gap: var(--pu-space-4); }
+.sc-wl-stack { display: grid; gap: var(--pu-space-4); }
+.sc-wl-quote { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--pu-space-2) var(--pu-space-3); }
+.sc-wl-price { font: 700 1.75rem/1.1 var(--pu-font-display); letter-spacing: -0.02em; }
+.sc-wl-list [aria-pressed='true'] { background: var(--pu-color-surface-tint); color: var(--pu-color-text); }
+.sc-wl-empty { margin: 0; color: var(--pu-color-text-muted); }
+
+@container sc-wl (min-width: 820px) {
+  .sc-wl-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+}

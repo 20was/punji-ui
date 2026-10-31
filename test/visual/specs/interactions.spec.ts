@@ -293,6 +293,8 @@ test.describe('money input', () => {
     await expect(input).toHaveValue('12,34,567.');
     await input.pressSequentially('5');
     await expect(input).toHaveValue('12,34,567.5');
+    // The amount is right-aligned, so the grouping stays in step with the digits as they are typed.
+    await expect(input).toHaveCSS('text-align', 'end');
   });
 
   test('CurrencyInput refuses a leading minus and letters', async ({ page }) => {
@@ -437,5 +439,91 @@ test.describe('market and accounting components', () => {
     await expect(page.getByTestId('vr-period-value')).toHaveText('fy-2081');
     await period.selectOption('fy-2080');
     await expect(page.getByTestId('vr-period-value')).toHaveText('fy-2080');
+  });
+});
+
+test.describe('banking and payments', () => {
+  test('AccountNumber: the full number is only in the DOM while revealed', async ({ page }) => {
+    await openFixture(page, 'account-number', 'light');
+    const root = page.getByTestId('vr-an');
+    await expect(root).toContainText('•••• •••• •••• 2345');
+    expect(await page.locator('[data-fixture]').innerHTML()).not.toContain('0123');
+    const toggle = page.getByTestId('vr-an-reveal');
+    await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+    await expect(root.locator('.pu-acct-num')).toHaveText('0123 4567 8901 2345');
+    await toggle.click();
+    expect(await root.innerHTML()).not.toContain('0123');
+  });
+
+  test('BeneficiarySelector: type, Enter chooses; ArrowDown reopens; Escape closes', async ({ page }) => {
+    await openFixture(page, 'beneficiary-selector', 'dark');
+    const input = page.getByRole('combobox', { name: 'Pay to' });
+    await input.focus();
+    await expect(input).toHaveAttribute('aria-expanded', 'true');
+    await input.fill('khalti');
+    await expect(page.getByRole('option')).toHaveCount(1);
+    await input.press('Enter');
+    await expect(input).toHaveValue('Sunita Rai');
+    await expect(input).toHaveAttribute('aria-expanded', 'false');
+    await input.press('ArrowDown');
+    await expect(input).toHaveAttribute('aria-expanded', 'true');
+    await input.press('Escape');
+    await expect(input).toHaveAttribute('aria-expanded', 'false');
+    expect(await page.locator('[data-fixture]').innerHTML()).not.toContain('9867654320');
+  });
+});
+
+const live = (page: Page) => page.locator('[data-testid="vr-candles"] [role="status"]');
+
+test.describe('financial charts', () => {
+
+  test('CandlestickChart: arrows, Home and End move between candles and the readout follows', async ({ page }) => {
+    await openFixture(page, 'candlestick-chart', 'light');
+    const plot = page.getByTestId('vr-candles').getByRole('group', { name: 'NABIL daily' });
+    await plot.focus();
+    await expect(live(page)).toContainText('Close');
+    await page.keyboard.press('Home');
+    const first = await live(page).textContent();
+    await page.keyboard.press('ArrowRight');
+    await expect(live(page)).not.toHaveText(first ?? '');
+    await expect(page.getByTestId('vr-candles-tip')).toBeVisible();
+    await page.keyboard.press('End');
+    await expect(live(page)).toContainText('Close');
+    await page.keyboard.press('Escape');
+    await expect(page.getByTestId('vr-candles-tip')).toHaveCount(0);
+  });
+
+  test('CandlestickChart: the pointer shows a crosshair and readout', async ({ page }) => {
+    await openFixture(page, 'candlestick-chart', 'dark');
+    const plot = page.getByTestId('vr-candles').getByRole('group', { name: 'NABIL daily' });
+    await plot.hover({ position: { x: 300, y: 120 } });
+    await expect(page.getByTestId('vr-candles-tip')).toBeVisible();
+  });
+
+  test('PerformanceChart: legend toggles hide a series and the last one stays', async ({ page }) => {
+    await openFixture(page, 'performance-chart', 'light');
+    const chart = page.getByTestId('vr-perf');
+    const nepse = chart.getByRole('button', { name: /NEPSE/ });
+    await nepse.focus();
+    await page.keyboard.press('Enter');
+    await expect(nepse).toHaveAttribute('aria-pressed', 'false');
+    await page.keyboard.press('Space');
+    await expect(nepse).toHaveAttribute('aria-pressed', 'true');
+    const plot = chart.getByRole('group', { name: 'Portfolio against indices' });
+    await plot.focus();
+    await page.keyboard.press('Home');
+    await expect(chart.locator('[role="status"]')).toContainText('Portfolio 0.00%');
+  });
+
+  test('DepthChart: arrows move one price level and announce the running total', async ({ page }) => {
+    await openFixture(page, 'depth-chart', 'light');
+    const chart = page.getByTestId('vr-depth');
+    await chart.getByRole('group', { name: 'NABIL depth' }).focus();
+    await page.keyboard.press('Home');
+    await expect(chart.locator('[role="status"]')).toContainText('Bid NPR');
+    await expect(chart.locator('[role="status"]')).toContainText('cumulative 22,550');
+    await page.keyboard.press('ArrowRight');
+    await expect(chart.locator('[role="status"]')).toContainText('cumulative 17,350');
   });
 });

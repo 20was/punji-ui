@@ -10,8 +10,36 @@ import { formatFigure, isNum, toneOf, type DeltaWords, type FigureKind } from '.
 
 const EN_WORDS: DeltaWords = { up: 'up', down: 'down', flat: 'unchanged' };
 
-export function Figure({ value, kind = 'num', dp = 2, testId }: { value: number | null | undefined; kind?: FigureKind; dp?: number; testId?: string }) {
+export interface FigureProps {
+  /** The number to print. null, undefined and NaN print a dash, never zero. */
+  value: number | null | undefined;
+  /** How to print it: rs (rupees with en-IN grouping), int (whole), pct (percent) or num (plain, default). */
+  kind?: FigureKind;
+  /** Decimals to print (default 2). */
+  dp?: number;
+  /** Becomes data-testid on the figure. */
+  testId?: string;
+}
+
+export function Figure({ value, kind = 'num', dp = 2, testId }: FigureProps) {
   return <span className="kit-fig" data-testid={testId}>{formatFigure(value, kind, dp)}</span>;
+}
+
+export interface DeltaProps {
+  /** The change to print, signed. null, undefined and NaN print a dash. A value that rounds to zero at `dp` is neutral. */
+  value: number | null | undefined;
+  /** pct (default): 1.25%. rs: rupees. num: a plain number. */
+  kind?: 'pct' | 'rs' | 'num';
+  /** Decimals to print (default 2). */
+  dp?: number;
+  /** Show the up or down arrow (default true). Sign, colour and the spoken word remain. */
+  arrow?: boolean;
+  /** The spoken words for up, down and unchanged, in the reader's language. Default English. */
+  words?: DeltaWords;
+  /** sm: the 12px line under a price in a table row. */
+  size?: 'sm';
+  /** Becomes data-testid on the figure. */
+  testId?: string;
 }
 
 export function Delta({
@@ -22,16 +50,7 @@ export function Delta({
   words = EN_WORDS,
   size,
   testId,
-}: {
-  value: number | null | undefined;
-  kind?: 'pct' | 'rs' | 'num';
-  dp?: number;
-  arrow?: boolean;
-  words?: DeltaWords;
-  /** sm: the 12px line under a price in a table row. */
-  size?: 'sm';
-  testId?: string;
-}) {
+}: DeltaProps) {
   if (!isNum(value)) return <span className="kit-fig kit-flat" data-testid={testId}>-</span>;
   const tone = toneOf(value, dp);
   const abs = Math.abs(value);

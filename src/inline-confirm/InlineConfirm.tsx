@@ -12,6 +12,39 @@ import { useEffect, useRef, type ReactNode } from 'react';
 
 import { Button } from '../button/Button.tsx';
 
+export interface InlineConfirmProps {
+  /** The question, as a short heading ("Remove NABIL?"). It names the group for screen readers. */
+  title?: ReactNode;
+  /** One line under the title saying what goes ("Its 120 shares and notes leave your watchlist."). */
+  body?: ReactNode;
+  /** The danger button's words: name what goes ("Remove NABIL"), never just "OK". */
+  confirm: ReactNode;
+  /** The way back's words ("Keep it"). */
+  cancel: ReactNode;
+  /** Called when the danger button is pressed. */
+  onConfirm: () => void;
+  /** Called by the way-back button and by Esc, before anything around it reacts. */
+  onCancel: () => void;
+  /** The confirm is working (loading, not pressable twice). */
+  busy?: boolean;
+  /** Button size: sm (default) or md. */
+  size?: 'sm' | 'md';
+  /** The element: a div, or an li when it replaces a list item. */
+  as?: 'div' | 'li';
+  /** group (default), or alertdialog when it interrupts. */
+  role?: 'group' | 'alertdialog';
+  /** The root id; the title's id is derived from it. */
+  id?: string;
+  /** Becomes data-testid on the root. */
+  testId?: string;
+  /** Becomes data-testid on the confirm button. */
+  confirmTestId?: string;
+  /** Becomes data-testid on the cancel button. */
+  cancelTestId?: string;
+  /** Layout only (margin in its container), never a restyle. */
+  className?: string;
+}
+
 export function InlineConfirm({
   title,
   body,
@@ -28,24 +61,7 @@ export function InlineConfirm({
   confirmTestId,
   cancelTestId,
   className,
-}: {
-  title?: ReactNode;
-  body?: ReactNode;
-  confirm: ReactNode;
-  cancel: ReactNode;
-  onConfirm: () => void;
-  onCancel: () => void;
-  busy?: boolean;
-  size?: 'sm' | 'md';
-  as?: 'div' | 'li';
-  role?: 'group' | 'alertdialog';
-  id?: string;
-  testId?: string;
-  confirmTestId?: string;
-  cancelTestId?: string;
-  /** Layout only (margin in its container), never a restyle. */
-  className?: string;
-}) {
+}: InlineConfirmProps) {
   const own = useRef<HTMLButtonElement>(null);
   const titleId = id ? `${id}-t` : undefined;
   useEffect(() => {

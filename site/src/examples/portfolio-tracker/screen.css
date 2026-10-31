@@ -1,0 +1,8 @@
+/* Portfolio tracker pattern: layout only. */
+.sc-pf { container: sc-pf / inline-size; display: grid; gap: var(--pu-space-4); }
+.sc-pf-grid { display: grid; gap: var(--pu-space-4); }
+.sc-pf-grid > * { min-width: 0; }
+
+@container sc-pf (min-width: 880px) {
+  .sc-pf-grid { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); }
+}

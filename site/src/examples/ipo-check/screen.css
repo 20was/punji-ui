@@ -1,0 +1,20 @@
+/* IPO result check pattern: layout only. */
+.sc-ipo { container: sc-ipo / inline-size; display: grid; gap: var(--pu-space-4); }
+.sc-ipo-grid { display: grid; gap: var(--pu-space-4); align-items: start; }
+.sc-ipo-grid > * { min-width: 0; }
+.sc-ipo-form { display: grid; gap: var(--pu-space-3); justify-items: start; }
+.sc-ipo-form > :not(button) { width: 100%; }
+.sc-ipo-result:not(:empty) { margin-top: var(--pu-space-4); }
+.sc-ipo-open { display: grid; margin: 0; padding: 0; list-style: none; }
+.sc-ipo-open li { display: flex; align-items: center; justify-content: space-between; gap: var(--pu-space-3); padding: var(--pu-space-3) 0; border-top: 1px solid var(--pu-color-border); }
+.sc-ipo-open li:first-child { border-top: 0; padding-top: 0; }
+.sc-ipo-open li > span:first-child, .sc-ipo-co { display: grid; gap: 2px; min-width: 0; }
+.sc-ipo-open b, .sc-ipo-co b { font-weight: 600; }
+.sc-ipo-open small, .sc-ipo-co small { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); font-weight: 400; }
+.sc-ipo-open li > :last-child { flex: none; }
+.sc-ipo-units { display: grid; justify-items: end; gap: 4px; }
+.sc-ipo-apply { margin-top: var(--pu-space-3); }
+
+@container sc-ipo (min-width: 820px) {
+  .sc-ipo-grid { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
+}

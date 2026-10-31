@@ -19,6 +19,21 @@ import type { ReactNode } from 'react';
 import { formatFigure, type FigureKind } from '../format/format.ts';
 import { useTweenedNumber } from '../live/live.ts';
 
+export interface LiveProps {
+  /** The current value, from props or state. A change moves the figure to it. */
+  value: number | null | undefined;
+  /** What the figure stands for; a new id snaps (picking another row is not a price move). */
+  id?: unknown;
+  /** Decimals the figure prints (a smaller change is no move). */
+  dp?: number;
+  /** Extra classes on the wrapper, for layout. */
+  className?: string;
+  /** Becomes data-testid on the wrapper. Put it here, never inside `children`. */
+  testId?: string;
+  /** Draws the figure for the value n it is given (the in-between values while it moves, then exactly `value`). */
+  children: (n: number | null | undefined) => ReactNode;
+}
+
 export function Live({
   value,
   id,
@@ -26,16 +41,7 @@ export function Live({
   className,
   testId,
   children,
-}: {
-  value: number | null | undefined;
-  /** What the figure stands for; a new id snaps (picking another row is not a price move). */
-  id?: unknown;
-  /** Decimals the figure prints (a smaller change is no move). */
-  dp?: number;
-  className?: string;
-  testId?: string;
-  children: (n: number | null | undefined) => ReactNode;
-}) {
+}: LiveProps) {
   const { shown, tint, moving } = useTweenedNumber(value, { id, dp });
   const cls = `kit-live${tint === 'up' ? ' kit-live-up' : tint === 'down' ? ' kit-live-dn' : ''}${className ? ` ${className}` : ''}`;
   return (
@@ -48,7 +54,22 @@ export function Live({
 }
 
 /** A plain figure (formatFigure) that moves: LTP, value, weight. */
-export function LiveFigure({ value, kind = 'num', dp = 2, id, className, testId }: { value: number | null | undefined; kind?: FigureKind; dp?: number; id?: unknown; className?: string; testId?: string }) {
+export interface LiveFigureProps {
+  /** The current value, from props or state. A change counts to it and tints once. */
+  value: number | null | undefined;
+  /** How to print it: rs, int, pct or num (default), as in Figure. */
+  kind?: FigureKind;
+  /** Decimals to print (default 2). */
+  dp?: number;
+  /** What the figure stands for (a symbol); a new id snaps instead of moving. */
+  id?: unknown;
+  /** Extra classes on the wrapper, for layout. */
+  className?: string;
+  /** Becomes data-testid on the wrapper. */
+  testId?: string;
+}
+
+export function LiveFigure({ value, kind = 'num', dp = 2, id, className, testId }: LiveFigureProps) {
   return (
     <Live value={value} id={id} dp={kind === 'int' ? 0 : dp} className={className ? `kit-fig ${className}` : 'kit-fig'} testId={testId}>
       {(n) => formatFigure(n, kind, dp)}

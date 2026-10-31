@@ -8,14 +8,21 @@
  * value in words (`valueText`, with units) to screen readers.
  */
 export interface RangeSliderProps {
+  /** The lowest value on the track. */
   min: number;
+  /** The highest value on the track. */
   max: number;
+  /** The size of one keyboard or drag step. */
   step: number;
+  /** The lower thumb's value, between `min` and `hi`. */
   lo: number;
+  /** The upper thumb's value, between `lo` and `max`. */
   hi: number;
+  /** Called with both values when either thumb moves; a thumb never passes the other. */
   onChange: (lo: number, hi: number) => void;
-  /** Accessible names of the two thumbs ("Cash yield minimum"). */
+  /** Accessible name of the lower thumb ("Cash yield minimum"). */
   labelLo: string;
+  /** Accessible name of the upper thumb ("Cash yield maximum"). */
   labelHi: string;
   /** A thumb's value in words, with its unit ("4%", "Any"). */
   valueText: (v: number, which: 'lo' | 'hi') => string;

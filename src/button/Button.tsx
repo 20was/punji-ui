@@ -23,6 +23,8 @@ interface ButtonBase extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'clas
   loading?: boolean;
   /** An icon before the label (decorative: aria-hidden). */
   icon?: ReactNode;
+  /** A tile: the icon over a short, centred label (a quick-action grid on a phone). Wants an `icon`; the label wraps onto two lines. Ignored with `iconOnly`. */
+  stacked?: boolean;
   /** Renders a link styled as a button: a plain <a>, or `linkComponent` for an in-app path. An absolute http(s) URL is another site: a plain <a> that opens a new tab (rel noopener noreferrer), with a ↗ drawn after the label and `newTabLabel` read to screen readers. */
   href?: string;
   /** Overrides the new-tab decision for `href`: true opens any address in a new tab, false keeps an absolute URL in the same tab. Default: true only for absolute http(s) URLs. */
@@ -55,13 +57,13 @@ type ButtonProps = ButtonBase &
  * The button's classes, for the rare link the Button cannot render
  * itself (a link component with its own props). Never extend them.
  */
-export function buttonClass({ variant = 'primary', size = 'md', block, iconOnly }: { variant?: ButtonVariant; size?: ControlSize; block?: boolean; iconOnly?: boolean } = {}): string {
-  return `kit-btn ${variant}${size === 'md' ? '' : ` ${size}`}${iconOnly ? ' icon' : ''}${block ? ' block' : ''}`;
+export function buttonClass({ variant = 'primary', size = 'md', block, iconOnly, stacked }: { variant?: ButtonVariant; size?: ControlSize; block?: boolean; iconOnly?: boolean; stacked?: boolean } = {}): string {
+  return `kit-btn ${variant}${size === 'md' ? '' : ` ${size}`}${iconOnly ? ' icon' : ''}${block ? ' block' : ''}${stacked && !iconOnly ? ' stacked' : ''}`;
 }
 
 /** The one button (design.punji.app/components/button). */
-export function Button({ variant = 'primary', size = 'md', block, loading, icon, iconOnly, label, href, external, newTabLabel = '(opens in a new tab)', linkComponent, testId, children, disabled, type = 'button', className, ...rest }: ButtonProps) {
-  const cls = `${buttonClass({ variant, size, block, iconOnly })}${className ? ` ${className}` : ''}`;
+export function Button({ variant = 'primary', size = 'md', block, loading, icon, stacked, iconOnly, label, href, external, newTabLabel = '(opens in a new tab)', linkComponent, testId, children, disabled, type = 'button', className, ...rest }: ButtonProps) {
+  const cls = `${buttonClass({ variant, size, block, iconOnly, stacked })}${className ? ` ${className}` : ''}`;
   const glyph = iconOnly ? (icon ?? children) : icon;
   const body = (
     <>

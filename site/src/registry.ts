@@ -5,7 +5,13 @@
 // Adding a page = one entry here + one example file per variant in
 // site/src/examples/<slug>/<id>.tsx. See site/README.md.
 
+import { GUIDES } from './registry-guides.ts';
+import { GENERIC_PAGES } from './registry-generic.ts';
+import { SHOWCASE_PAGES } from './registry-showcase.ts';
+import { LEADS, NAV_TITLES } from './registry-leads.ts';
+
 export type GroupId =
+  | 'get-started'
   | 'foundations'
   | 'financial-primitives'
   | 'stock-market'
@@ -16,7 +22,8 @@ export type GroupId =
   | 'forms'
   | 'layout'
   | 'feedback'
-  | 'developer';
+  | 'developer'
+  | 'showcase';
 
 export interface Group {
   id: GroupId;
@@ -27,17 +34,19 @@ export interface Group {
 
 /** The sidebar order. Domains, not component types. */
 export const GROUPS: readonly Group[] = [
+  { id: 'get-started', title: 'Get started', planned: [] },
   { id: 'foundations', title: 'Foundations', planned: [] },
-  { id: 'financial-primitives', title: 'Financial primitives', planned: ['Figure', 'Delta'] },
-  { id: 'stock-market', title: 'Stock market', planned: ['LiveFigure'] },
-  { id: 'portfolio', title: 'Portfolio & investment', planned: [] },
-  { id: 'accounting', title: 'Accounting & bookkeeping', planned: ['DataRows', 'ValueRow', 'FinancialSummary'] },
-  { id: 'banking', title: 'Banking & payments', planned: ['StatusPill', 'LockedNote'] },
-  { id: 'data', title: 'Data & analytics', planned: [] },
-  { id: 'forms', title: 'Forms & inputs', planned: ['Field', 'NumberField', 'Select', 'Checkbox', 'Switch', 'RangeSlider', 'SymbolField', 'TextAreaField', 'Calendar'] },
-  { id: 'layout', title: 'Layout & navigation', planned: ['AppShell', 'PageHeader', 'Drawer', 'Tabs', 'Popover', 'CommandPalette'] },
-  { id: 'feedback', title: 'Feedback & states', planned: ['ToastProvider'] },
-  { id: 'developer', title: 'Developer utilities', planned: [] },
+  { id: 'financial-primitives', title: 'Financial primitives', planned: [] },
+  { id: 'stock-market', title: 'Stock market', planned: [] },
+  { id: 'portfolio', title: 'Portfolio', planned: [] },
+  { id: 'accounting', title: 'Accounting', planned: [] },
+  { id: 'banking', title: 'Banking', planned: [] },
+  { id: 'data', title: 'Data', planned: [] },
+  { id: 'forms', title: 'Forms', planned: ['Calendar'] },
+  { id: 'layout', title: 'Layout', planned: [] },
+  { id: 'feedback', title: 'Feedback', planned: [] },
+  { id: 'developer', title: 'Utilities', planned: [] },
+  { id: 'showcase', title: 'Showcase', planned: [] },
 ];
 
 export interface ApiRef {
@@ -59,10 +68,19 @@ export interface ExampleDef {
 export interface PageDef {
   slug: string;
   title: string;
+  /** Optional short sidebar label when `title` is long ("SSR" for "Server rendering and hydration"). Falls back to `title`. */
+  navTitle?: string;
+  /**
+   * Optional one-line lead under the page title, at most 140 characters, written for someone evaluating the library.
+   * Falls back to LEADS in registry-leads.ts, then to the first sentence of `description` (see leadOf).
+   */
+  lead?: string;
   group: GroupId;
-  kind: 'foundation' | 'component' | 'utility' | 'hooks';
+  kind: 'foundation' | 'component' | 'utility' | 'hooks' | 'guide' | 'showcase';
   /** The overview: what it is and the one rule that matters. */
   summary: string;
+  /** The meta description and social card text: one or two sentences, at most 160 characters (the build checks). */
+  description: string;
   use: readonly string[];
   avoid: readonly string[];
   /** Exports documented on the page. Import statements and props tables are generated from these. */
@@ -75,14 +93,37 @@ export interface PageDef {
   /** Extra "Security boundary" or "Limits" section: title and points. */
   notes?: { title: string; points: readonly string[] };
   related: readonly string[];
+  /** A guide page (kind 'guide') is prose and code instead of the component template. */
+  guide?: readonly GuideSection[];
+}
+
+export interface GuideCode {
+  /** The label above the code block. */
+  label: string;
+  /** A real, typechecked file: site/src/guides/<slug>/<file>.tsx. Its text is shown; it is never executed. */
+  file?: string;
+  /** Literal text for shell commands and config files that are not TSX (CSS, next.config, package.json). */
+  text?: string;
+}
+
+export interface GuideSection {
+  id: string;
+  title: string;
+  /** Paragraphs. Inline `code` and [text](/path/ or https://...) links are rendered. */
+  paragraphs: readonly string[];
+  /** A bulleted list under the paragraphs, same inline markup. */
+  points?: readonly string[];
+  code?: readonly GuideCode[];
 }
 
 const ui = (module: string, ...names: string[]): ApiRef[] => names.map((name) => ({ name, module }));
 
 export const PAGES: readonly PageDef[] = [
+  ...GUIDES,
   {
     slug: 'colour-tokens',
     title: 'Colour tokens',
+    description: "Every colour is a --pu-color-* CSS variable in tokens.css. Light and dark follow the system, and data-theme forces one for any subtree.",
     group: 'foundations',
     kind: 'foundation',
     summary:
@@ -90,7 +131,7 @@ export const PAGES: readonly PageDef[] = [
     use: ['Read tokens in your own CSS with var(--pu-color-text) so your screens follow the theme.', 'Override a token on a wrapper to re-theme one subtree.'],
     avoid: ['Copying hex values into your CSS: they will not follow dark mode.', 'Using colour alone to show gain or loss: the sign and words must carry it.'],
     api: [],
-    examples: [{ id: 'swatches', title: 'Swatches', note: 'Read from the shipped tokens.css at build time, both themes side by side.' }, { id: 'override', title: 'Override a subtree', note: 'data-theme on a wrapper forces one theme for everything inside it.' }],
+    examples: [{ id: 'swatches', title: 'Swatches', note: 'Read from the shipped tokens.css at build time. Each swatch: light value on the left, dark on the right.' }, { id: 'override', title: 'Override a subtree', note: 'data-theme on a wrapper forces one theme for everything inside it.' }],
     keyboard: ['Tokens are not interactive.'],
     accessibility: ['Text tokens are checked for contrast against their surfaces in both themes by the package visual gate.', 'Gain and loss tokens are always paired with a sign or word in components.'],
     responsive: ['Tokens do not change with width; type and spacing tokens that do are on their own pages.'],
@@ -99,6 +140,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'typography',
     title: 'Typography',
+    description: "Two font stacks, a fluid text scale and tabular figures so money columns align. Mukta is included, so Devanagari renders without a layout shift.",
     group: 'foundations',
     kind: 'foundation',
     summary: 'Two font stacks (body and display) and a fluid text scale. Figures use tabular digits so columns of money align. The stacks include Mukta, so Devanagari renders without a layout shift.',
@@ -114,6 +156,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'spacing',
     title: 'Spacing and shape',
+    description: "A short space scale, a 32/36/44 control height scale and radii. Every control reads the one height scale, so toolbars line up.",
     group: 'foundations',
     kind: 'foundation',
     summary: 'A short space scale, a control height scale (32, 36, 44) and radii. Every control reads the one height scale, so a Button, a Select and a SegmentedControl line up in a toolbar.',
@@ -129,6 +172,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'money-display',
     title: 'MoneyDisplay',
+    description: "Show one exact amount in any currency from bigint minor units, with tabular digits, locale-correct signs and a spoken currency name. React, accessible.",
     group: 'financial-primitives',
     kind: 'component',
     summary:
@@ -149,6 +193,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'price-change',
     title: 'PriceChange',
+    description: "Show the move between two prices as an amount and a percent. Direction is carried by sign, arrow shape and a spoken word, never by colour alone.",
     group: 'financial-primitives',
     kind: 'component',
     summary: 'The move between two prices as an absolute amount and a percent. Direction is carried by the sign, an arrow shape and a spoken word, never by colour alone. Colour follows a convention: green up (default) or red up.',
@@ -168,6 +213,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'currency-input',
     title: 'CurrencyInput',
+    description: "A money field that groups digits as you type, accepts Devanagari digits and refuses extra decimals instead of rounding. Exact decimal string and bigint value.",
     group: 'financial-primitives',
     kind: 'component',
     summary: 'A money field. Text is grouped in the currency locale as you type, Devanagari and Arabic-Indic digits are accepted, and more fraction digits than the currency allows (JPY 0, USD 2, KWD 3) are refused, never rounded. The value is an exact decimal string plus bigint minor units; it never passes through Number.',
@@ -187,6 +233,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'financial-calculations',
     title: 'Financial calculations',
+    description: "Pure TypeScript for positions and ratios with no React or dependencies. Bigint ledger maths with a chosen rounding mode, plus display-only ratios.",
     group: 'financial-primitives',
     kind: 'utility',
     summary: 'Pure TypeScript for positions and ratios: no React, no browser, no dependency. Ledger functions use bigint minor units and a rounding mode you choose; ratio functions are display-only numbers in percent units. Currency-agnostic.',
@@ -197,7 +244,7 @@ export const PAGES: readonly PageDef[] = [
       ...ui('calculations', 'percentageChange', 'priceChange', 'returnOnCost', 'cagr', 'dividendYield', 'weightedAverage'),
     ],
     examples: [
-      { id: 'position', title: 'Position and P&L', note: 'FIFO cost basis with a bonus-share lot and a partial sale.' },
+      { id: 'position', title: 'Position and P&L', note: 'A position card from three trades: FIFO cost, a bonus lot and a partial sale.' },
       { id: 'allocation', title: 'Allocation', note: 'Largest remainder: shares always sum to exactly 100.' },
       { id: 'ratios', title: 'Ratios' },
     ],
@@ -213,6 +260,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'formatters',
     title: 'Formatters',
+    description: "Generic money formatting for any currency beside Nepal helpers for lakh/crore, Devanagari digits and BS dates. Exact inputs, never silent rounding.",
     group: 'financial-primitives',
     kind: 'utility',
     summary: 'Generic money formatting (any currency, from Intl) beside the Nepal helpers (lakh/crore, Devanagari, BS dates). All accept exact inputs and never round silently.',
@@ -225,7 +273,7 @@ export const PAGES: readonly PageDef[] = [
       ...ui('nepal/market-format', 'formatChange', 'formatBasisPoints', 'formatQuantity', 'formatPrice'),
     ],
     examples: [
-      { id: 'generic', title: 'Generic money', note: 'USD, JPY (0 decimals), KWD (3), EUR.' },
+      { id: 'generic', title: 'Any currency', note: 'Amounts in prose, four currencies with their own decimals, a compact total and an amount parsed from typed text.' },
       { id: 'nepal', title: 'Nepal', note: 'Lakh and crore, Devanagari, compact.' },
       { id: 'market', title: 'Market values' },
     ],
@@ -237,6 +285,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'order-book',
     title: 'Order book',
+    description: "OrderBookDepth draws best bids and asks with depth bars and a buy/sell split; OrderBook is the plain table. Display only, no order placement.",
     group: 'stock-market',
     kind: 'component',
     summary: 'OrderBookDepth draws the best bids and asks side by side with depth bars and a buy/sell split. OrderBook is the plain table. Both are display only: no order placement, no inferred market data.',
@@ -255,6 +304,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'metric-tile',
     title: 'MetricTile and SummaryFigure',
+    description: "MetricTile is one headline figure with a label, optional meter and note. SummaryFigure is the one figure a reader acts on. Figures never truncate.",
     group: 'portfolio',
     kind: 'component',
     summary: 'MetricTile is one headline figure with its label, an optional meter and a note, laid out in a MetricRow. SummaryFigure is the one figure a reader acts on, between hairlines inside a card. The figure never truncates.',
@@ -267,12 +317,167 @@ export const PAGES: readonly PageDef[] = [
     ],
     keyboard: ['Not interactive.'],
     accessibility: ['Labels and values are real text; the meter is decorative so the figure is always printed.', 'MetricRow takes a label that names the group for screen readers.'],
-    responsive: ['Tiles use container queries: four across where there is room, two by two otherwise.'],
+    responsive: ['Tiles use container queries: four across where there is room, two by two otherwise. A long exact figure shrinks as its row narrows (under 420px and again under 340px) and wraps as a last resort, so it never runs out of its cell on a phone.'],
     related: ['money-display', 'price-change', 'column-chart'],
+  },
+  {
+    slug: 'holdings-table',
+    title: 'HoldingsTable',
+    description: "A portfolio's holdings with value, P&L, day change and weight, plus a totals row. Exact bigint maths, missing quotes shown as dashes and never as zero.",
+    group: 'portfolio',
+    kind: 'component',
+    summary:
+      'A portfolio\'s holdings as a typed table over DataTable: symbol over name, market value, quantity, average cost, LTP, unrealised P&L with its percent, the day\'s change, weight and an optional sector, with a totals row. holdingsSummary(positions, quotes) does the exact bigint arithmetic through the calculations module; the table only prints it. A holding with no quote shows a dash, never zero, and the totals name the symbols they leave out.',
+    use: ['A brokerage-style holdings page where people sort, hide columns and export.', 'Trades in, figures out: build positions with positionsFromTransactions (or give your own trades) and pass today\'s quotes.', 'A CSV of exactly what is shown, with exact decimal money (holdingsToCsv).'],
+    avoid: ['A market board of quotes: use StockTable.', 'A list of past trades: use TransactionHistory.', 'Computing P&L in the component or in floating point: holdingsSummary is the one place the money is worked out.', 'Short positions: the calculations module does not model them, and a sale larger than the units held throws.'],
+    api: [
+      ...ui('holdings-table', 'HoldingsTable'),
+      ...ui('portfolio', 'holdingsSummary', 'Holding', 'HoldingsTotals', 'PortfolioPosition', 'HoldingsQuote', 'sortHoldings', 'nextHoldingSort', 'holdingsToCsv', 'positionsFromTransactions'),
+    ],
+    examples: [
+      { id: 'board', title: 'Sortable board', note: 'Sort any column, export CSV; totals at the foot. Sector and average cost start hidden.' },
+      { id: 'gaps', title: 'Missing quotes', note: 'BFC has no LTP and IPOX no previous close: dashes, no weight, and a note naming what the totals leave out.' },
+      { id: 'states', title: 'States', note: 'Loading keeps the headers; error offers a retry; empty prints your words.' },
+    ],
+    keyboard: ['Column heads are buttons only when onSortChange is given: Tab to one, Enter or Space to sort.', 'The export button is a native button.'],
+    accessibility: ['A real <table> with a caption, scoped headers, aria-sort on the sorted column and the totals in a <tfoot>.', 'Gains and losses carry a sign, an arrow and a spoken word, never colour alone.', 'A missing figure is announced as "No value".', 'Loading and error states are announced.'],
+    responsive: ['Under 640px each row stacks into a block: symbol and market value on top, the other figures labelled below, with amounts and percents given two columns.', 'maxHeight makes a scrolling box with a sticky head.', 'density="compact" for dense pages.'],
+    notes: {
+      title: 'Data rules',
+      points: [
+        'Money is bigint minor units end to end. Percentages (unrealised, day change, weight) are display figures from the calculations module.',
+        'The day change is the position\'s quantity times the price move since the previous close. For units bought today it is an approximation of what the position moved.',
+        'Totals cover the holdings that have an LTP: totals.unpriced and totals.noPreviousClose name the rest, and totals.complete says whether anything was left out. With open holdings but no price at all the totals are null, not zero.',
+        'Fully sold symbols are omitted from the rows (includeClosed keeps them), but their realised P&L stays in the totals.',
+        'sortHoldings is stable, puts nulls last in both directions and never mutates.',
+      ],
+    },
+    related: ['stock-table', 'portfolio-overview', 'portfolio-allocation', 'transaction-history', 'financial-calculations', 'csv-export'],
+  },
+  {
+    slug: 'portfolio-allocation',
+    title: 'PortfolioAllocation',
+    description: "Where the money sits, by holding or sector, as a donut or bar with a legend. Small slices gather into Other and the shares always add up to exactly 100.",
+    group: 'portfolio',
+    kind: 'component',
+    summary:
+      'Allocation by holding or by sector as a donut or one stacked bar with a legend, composed from ShareDonut, ShareBar and ShareLegend. allocateHoldings groups and orders the slices, gathers everything past maxSlices into "Other" and rounds the shares by largest remainder, so they never read 99.9% or 100.1%. An exact table (name, share, value) follows the chart as its accessible alternative.',
+    use: ['A card beside the holdings table: by holding for concentration, by sector for diversification.', 'tableView="visible" where readers want the exact values.', 'maxSlices to keep the chart readable (default 6, Other included).'],
+    avoid: ['Drawing many slices: a donut past about eight is unreadable; raise maxSlices only for the bar.', 'Colour as the only key: every slice has a legend row with its name and percent.', 'Net-short books: allocation values must not be negative.'],
+    api: [...ui('portfolio-allocation', 'PortfolioAllocation'), ...ui('portfolio', 'allocateHoldings', 'PortfolioSlice', 'PortfolioAllocationResult')],
+    examples: [
+      { id: 'donut', title: 'Donut by holding', note: 'The five largest and Other. BFC has no price and is named under the chart, not drawn as zero.' },
+      { id: 'sector', title: 'Bar by sector', note: 'A stacked bar with the exact table shown.' },
+      { id: 'states', title: 'Loading and empty' },
+    ],
+    keyboard: ['Not interactive.'],
+    accessibility: ['The chart is an image named with every slice and percent; the legend and an exact-values table repeat it as text.', 'By default the table is visually hidden and the legend is hidden from assistive technology, so nothing is read twice.', 'Share is never carried by colour alone.'],
+    responsive: ['The layout follows the width of the space the chart is given, not the screen: the donut sits above its legend under 480px and beside it from there; the bar\'s legend is one column under 440px, two from there and three from 680px, so sector names stay readable in a narrow card.', 'The bar fills the container.'],
+    notes: {
+      title: 'Data rules',
+      points: [
+        'Values are exact bigint minor units; allocation() does the largest-remainder rounding, so the displayed shares add up to exactly 100 at the decimals you choose.',
+        'Holdings with no market value are left out and listed in the note (and in allocateHoldings().unpriced); holdings worth zero draw no slice.',
+        'Sorting is by value, then by label, so the same input always gives the same chart.',
+      ],
+    },
+    related: ['holdings-table', 'share-bars', 'portfolio-overview', 'financial-calculations'],
+  },
+  {
+    slug: 'portfolio-overview',
+    title: 'PortfolioOverview',
+    description: "A portfolio's headline: value, day change, invested amount, unrealised and realised P&L and return on cost, with loading and error states.",
+    group: 'portfolio',
+    kind: 'component',
+    summary:
+      'The portfolio headline as one composition of SummaryFigure and a MetricRow: the value with the day\'s change beside it, then invested, unrealised P&L, realised P&L and return on cost. It prints the totals from holdingsSummary and does no arithmetic of its own. When a symbol has no quote, a note under the figures names it instead of counting it as zero.',
+    use: ['The top of a portfolio page, above the holdings table.', 'asOf for the time of the quotes.', 'state="loading" while the quotes load: the labels stay and the figures become placeholders.'],
+    avoid: ['A plain list of metrics with no meters: use FinancialSummary.', 'Totals you computed yourself in floating point: pass holdingsSummary(...).totals.', 'Hiding totals.complete: the note is what keeps a partial total honest.'],
+    api: [...ui('portfolio-overview', 'PortfolioOverview'), ...ui('portfolio', 'HoldingsTotals')],
+    examples: [
+      { id: 'overview', title: 'Overview', note: 'Two symbols are not fully priced, so the note says what the figures leave out.' },
+      { id: 'states', title: 'Loading and error' },
+    ],
+    keyboard: ['Not interactive; the error state has one retry button.'],
+    accessibility: ['The figures are a named group; every change carries a sign, an arrow and a spoken word.', 'A missing figure is "No value", never zero.', 'Loading is announced once and the group is aria-busy.'],
+    responsive: ['The four tiles sit across where there is room and two by two on a phone (container queries).', 'Figures never truncate.'],
+    notes: {
+      title: 'Data rules',
+      points: [
+        'Return on cost is the unrealised P&L over the cost of the priced holdings (returnOnCost), not an annualised or money-weighted return.',
+        'Invested is the cost of the open holdings, fees included; realised P&L is from sales, after fees.',
+        'With open holdings and no price at all, the value and P&L are dashes.',
+      ],
+    },
+    related: ['metric-tile', 'holdings-table', 'headline-figure', 'financial-calculations'],
+  },
+  {
+    slug: 'dividend-history',
+    title: 'DividendHistory',
+    description: "Dividends, bonus shares and rights by Nepal fiscal year (BS labels) as a stacked column chart and an exact table, with cash yield where a value is given.",
+    group: 'portfolio',
+    kind: 'component',
+    summary:
+      'What a portfolio received per Nepal fiscal year, labelled in Bikram Sambat (2081/82): a stacked ColumnChart of cash, bonus shares and rights, and an exact table with an all-years total. Give a market value and/or a cost and the table adds the cash yield on each. dividendsByFiscalYear does the grouping: each Gregorian date converts to BS and the year starts on 1 Shrawan.',
+    use: ['The dividend tab of a portfolio.', 'dividendEntriesFromTransactions to build the entries from the same history that feeds the holdings.', 'fiscalLabel for Devanagari digits.'],
+    avoid: ['Reading the yield as a historical one: it divides each year\'s cash by the single value you pass, so it is a yield on today\'s value or cost.', 'Treating bonus shares and rights as cash: they are your own valuation (units times par value, or the amount subscribed) and stay out of the yield.', 'Per-year figures from a different calendar: dates are Gregorian ISO and the fiscal year comes from Bikram Sambat.'],
+    api: [...ui('dividend-history', 'DividendHistory'), ...ui('portfolio', 'dividendsByFiscalYear', 'dividendEntriesFromTransactions', 'DividendEntry', 'DividendYear')],
+    examples: [
+      { id: 'history', title: 'With yield', note: 'Chart, table, all-years total and cash yield on value and on cost.' },
+      { id: 'plain', title: 'Fiscal year boundary', note: '16 July 2025 is 32 Ashadh 2082 (FY 2081/82); 17 July is 1 Shrawan (FY 2082/83). No chart, no yield.' },
+      { id: 'states', title: 'States' },
+    ],
+    keyboard: ['Not interactive.'],
+    accessibility: ['The chart is hidden from assistive technology: it shows rounded numbers. The table carries every exact figure with row headers.', 'Series are told apart by the legend and the table, not by colour alone.'],
+    responsive: ['Under 640px each year becomes a block with the total on the first line and labelled figures under it.', 'The chart shortens its labels and thins them before they overlap.'],
+    notes: {
+      title: 'Data rules',
+      points: [
+        'Only years with at least one record appear; a year without records is not shown as zero.',
+        'Cash yield is cash only, over marketValue or costBasis; null (a dash) when the base is missing or not positive.',
+        'Dates outside the Bikram Sambat converter range throw, and so does an invalid date, a duplicate id or a negative amount.',
+      ],
+    },
+    related: ['column-chart', 'holdings-table', 'transaction-history', 'formatters'],
+  },
+  {
+    slug: 'transaction-history',
+    title: 'TransactionHistory',
+    description: "Buys, sells, bonus, rights and dividends as a filterable, paged list. Each sale shows its realised P&L from computePosition; filters never change it.",
+    group: 'portfolio',
+    kind: 'component',
+    summary:
+      'A portfolio\'s history of buys, sells, bonus issues, rights and dividends with filters (type chips, one symbol, a date range) and paging. transactionLedger replays each symbol\'s trades through computePosition, so every sale shows the realised P&L it caused; the ledger is computed over the whole history and filtered afterwards, so a filter never changes a result. A totals row sums the cash flow and realised P&L of everything the filters match.',
+    use: ['An activity or statement page.', 'Controlled filters (filters and onFiltersChange) to keep them in the URL.', 'formatDate for Bikram Sambat dates.'],
+    avoid: ['Seeing positions: use HoldingsTable. Seeing dividends by year: use DividendHistory.', 'Passing a history with a sale larger than the units held: it throws, rather than show wrong numbers.', 'Parsing dates yourself: they are strict ISO strings.'],
+    api: [
+      ...ui('transaction-history', 'TransactionHistory'),
+      ...ui('portfolio', 'transactionLedger', 'filterTransactions', 'PortfolioTransaction', 'PortfolioLedgerRow', 'TransactionFilters'),
+    ],
+    examples: [
+      { id: 'history', title: 'History', note: 'Newest first, ten to a page, with a pager.' },
+      { id: 'filtered', title: 'Controlled filters', note: 'NABIL sales and dividends. The filters live in your state.' },
+      { id: 'bs-dates', title: 'BS dates', note: 'formatDate prints Bikram Sambat; the words are overridable.' },
+      { id: 'states', title: 'States' },
+    ],
+    keyboard: ['Type chips are toggle buttons (Space or Enter); the symbol is a native select; the date range is the DateRangePicker with its own keyboard model.', 'The pager buttons are native buttons.'],
+    accessibility: ['A real <table> with a caption and the date as the row header; the pager is a named nav.', 'Types are words in a pill, not colour; signed amounts carry a sign, an arrow and a spoken word.', 'The range of rows and the page are announced politely.'],
+    responsive: ['Under 640px each row stacks: date and type on top, then the labelled figures. Fees fold away under 760px.', 'The filters wrap.'],
+    notes: {
+      title: 'Data rules',
+      points: [
+        'The ledger sorts by date (equal dates keep their input order) and rejects duplicate ids, invalid dates, non-positive quantities, negative fees and a missing dividend amount.',
+        'Amount is the signed cash flow: a buy or rights issue is minus (value + fees), a sale is plus (value - fees), a dividend is plus its cash, a bonus issue is free.',
+        'Realised P&L is net proceeds minus the cost removed by the chosen method (average cost by default, or fifo).',
+        'Rows are keyed by transaction id, so they keep their identity as filters and pages change.',
+      ],
+    },
+    related: ['holdings-table', 'dividend-history', 'data-table', 'date-picker', 'financial-calculations'],
   },
   {
     slug: 'data-table',
     title: 'DataTable and FinancialTable',
+    description: "FinancialTable takes typed rows and render callbacks with sticky heads, controlled sorting, and loading, error and empty states. DataTable is the base.",
     group: 'data',
     kind: 'component',
     summary: 'FinancialTable takes typed rows and render callbacks with a stable row key, semantic row headers, controlled sorting, and loading, error and empty states. DataTable is the lower-level table it is built on. The table never mutates or sorts your data.',
@@ -292,6 +497,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'column-chart',
     title: 'ColumnChart',
+    description: "Stacked columns per period with totals printed over each column and a labelled scale that includes zero. Never smoothed or 3D; gaps are never zero.",
     group: 'data',
     kind: 'component',
     summary: 'One column per period with its parts stacked from the baseline, the total printed over each column and a round labelled scale that includes zero. Never smoothed, never 3D. Missing values are drawn as nothing and written "none" in the data table, never zero.',
@@ -309,8 +515,95 @@ export const PAGES: readonly PageDef[] = [
     related: ['metric-tile', 'data-table', 'money-display'],
   },
   {
+    slug: 'candlestick-chart',
+    title: 'CandlestickChart',
+    group: 'stock-market',
+    kind: 'component',
+    description: 'OHLC candlestick or bar chart with volume pane, moving averages, keyboard crosshair, gap-aware axes and a data table; aggregates large series, never drops them.',
+    summary: 'Open, high, low and close per session as candles or OHLC bars, with an optional volume pane and moving averages. A candle whose prices contradict each other is not drawn: it is counted under the chart and kept in the data table with the reason. More candles than the width has room for are aggregated, never dropped.',
+    use: ['A symbol page: daily candles with volume.', 'Intraday or weekly candles you have already aggregated.', 'Moving averages (simple or exponential) over closes as optional overlays.'],
+    avoid: ['A single line of closes: use PriceChart.', 'Order book size: use DepthChart.', 'Showing a number only the chart carries: the readout, the live region and the table print every value.'],
+    api: [...ui('candlestick-chart', 'CandlestickChart', 'Candle', 'MovingAverage')],
+    examples: [
+      { id: 'daily', title: 'Daily with averages', note: 'Sixty sessions, Sunday to Thursday, with volume, SMA 10 and EMA 20.' },
+      { id: 'variants', title: 'Bars and hollow', note: 'OHLC bars; hollow up candles with the red-up convention.' },
+      { id: 'edge', title: 'Bad data', note: 'A contradictory candle is skipped and reported; a missing volume reads none; axis="time" keeps the holiday gap.' },
+    ],
+    keyboard: ['Tab focuses the plot. Left and Right move one candle, Home and End jump to the first and last, Escape clears.', 'The pointer shows a crosshair and a readout of the candle under it.'],
+    accessibility: ['The plot is a named group with a hint; the focused candle (date, direction, open, high, low, close, volume) is announced through a polite live region.', 'Direction is spelled out in words; hollowUp adds a shape cue so it survives without colour.', 'A visually hidden table lists every candle (the latest tableLimit) with a Problem column when any candle was skipped.'],
+    responsive: ['The plot is as wide as its container. Past one candle per 3px the candles are aggregated into buckets (first open, last close, extreme high and low, summed volume); the table keeps every candle.'],
+    notes: {
+      title: 'Data rules',
+      points: ['Dates are "YYYY-MM-DD", oldest first. The default axis is by session so non-trading days leave no hole; axis="time" spaces by date.', 'low must not exceed open or close and high must not be below them; every price must be a finite number.', 'convention is the same as PriceChange: green-up (default) or red-up.', 'Default prices read NPR with two decimals from the platform currency formatter; pass formatPrice for anything else.'],
+    },
+    related: ['price-chart', 'depth-chart', 'performance-chart', 'chart-math'],
+  },
+  {
+    slug: 'performance-chart',
+    title: 'PerformanceChart',
+    group: 'portfolio',
+    kind: 'component',
+    description: 'Portfolio value or return over time against benchmarks like NEPSE, rebased to 0%, with gain/loss fill, toggleable legend, keyboard readout and data table.',
+    summary: 'A portfolio against one or more benchmarks over time. By default every series is percent change from its own first value, so a rupee portfolio and an index in points share one scale. The portfolio gets a gain and loss area against its start; a legend of toggle buttons hides and shows series.',
+    use: ['Portfolio against NEPSE or a sector index.', 'Raw value over time with normalize={false}.', 'Your own period selector (1M, 3M, 1Y, All) in the periods slot.'],
+    avoid: ['More than about five series: colour and dash stop telling them apart.', 'Candles: use CandlestickChart.'],
+    api: [...ui('performance-chart', 'PerformanceChart', 'PerformanceSeries')],
+    examples: [
+      { id: 'benchmark', title: 'Against benchmarks', note: 'Normalised to 0%; NEPSE has two missing days; the period selector is a SegmentedControl that slices the data.' },
+      { id: 'raw', title: 'Raw value', note: 'normalize={false} with a rupee formatter.' },
+    ],
+    keyboard: ['Tab focuses the plot. Left and Right move one date, Home and End jump to the ends, Escape clears.', 'Each legend entry is a toggle button (Enter or Space); the last visible series cannot be hidden.'],
+    accessibility: ['The focused date and every visible series value are announced through a polite live region.', 'Series differ by colour and dash, and the legend prints each latest value.', 'A visually hidden table lists every date and series; a gap reads "none", never zero.'],
+    responsive: ['The plot is as wide as its container; a line with more points than 2px each is reduced to its extremes per bucket.'],
+    notes: {
+      title: 'Data rules',
+      points: ['dates and every series.values are the same length; slice them together for a period.', 'A gap breaks that series\' line: missing data is never bridged, drawn as zero or interpolated, and the table reads "none" there. Only the series with the missing value breaks; the others stay one line, and a benchmark rebased from a later start (rebaseOnto) adds no gaps of its own. A series whose first value is zero cannot be normalised and is not drawn.', 'A benchmark that starts later begins level with the portfolio\'s percent change on its first date (rebaseOnto), not at 0%.', 'The first series is the portfolio; convention sets the colour of the gain area.'],
+    },
+    related: ['candlestick-chart', 'price-chart', 'column-chart'],
+  },
+  {
+    slug: 'depth-chart',
+    title: 'DepthChart',
+    group: 'stock-market',
+    kind: 'component',
+    description: 'Cumulative bid and ask depth from order book levels with mid price and spread, crossed and one-sided book handling, keyboard readout and a data table.',
+    summary: 'The order book as cumulative bid and ask step areas around the mid price. Takes the same levels as OrderBookDepth, in any order; invalid levels are dropped and equal prices merged. A crossed book is flagged and claims no mid price.',
+    use: ['Next to the order book on a symbol page.', 'Spotting a wall of size at one price.'],
+    avoid: ['Exact quantities per level: use OrderBookDepth.', 'Anything but display: it places no orders.'],
+    api: [...ui('depth-chart', 'DepthChart')],
+    examples: [
+      { id: 'book', title: 'Ten levels a side' },
+      { id: 'edge', title: 'One side and crossed', note: 'Only bids published; best bid above best ask.' },
+    ],
+    keyboard: ['Tab focuses the plot. Left and Right move one price level, Home and End jump to the lowest and highest price.'],
+    accessibility: ['The focused level is announced: side, price, quantity and cumulative size.', 'Sides are named in the readout and table, not only coloured.', 'A visually hidden table lists every level with its running total.'],
+    responsive: ['The plot is as wide as its container.'],
+    related: ['order-book', 'candlestick-chart'],
+  },
+  {
+    slug: 'chart-math',
+    title: 'Chart math',
+    group: 'data',
+    kind: 'utility',
+    description: 'Pure chart maths: nice ticks, band and time scales, OHLC validation, weekly or monthly candles, downsampling, SMA, EMA, rebasing and order book depth.',
+    summary: 'The pure helpers behind the financial charts, usable on their own: round ticks, category and time scales, OHLC validation, candle aggregation, extreme-preserving downsampling, moving averages, rebasing and cumulative depth. No React and no browser.',
+    use: ['Drawing your own chart with the same rules.', 'Validating candles before they reach a chart.'],
+    avoid: ['Rendering: these return numbers only.'],
+    api: [...ui('chart-math', 'niceTicks', 'bandScale', 'timeScale', 'validateOhlc', 'reduceCandles', 'downsampleIndices', 'sma', 'ema', 'rebase', 'rebaseOnto', 'aggregateByPeriod', 'cumulativeDepth')],
+    examples: [{ id: 'math', title: 'A chart of your own', note: 'Ticks, averages, percent change and data checks from chart-math; the drawing is plain SVG.' }],
+    keyboard: ['Not a UI module.'],
+    accessibility: ['Nothing to render.'],
+    responsive: ['Not applicable.'],
+    notes: {
+      title: 'Guarantees',
+      points: ['aggregateByPeriod groups dated candles into calendar weeks (Sunday start by default), months, quarters or years; rebaseOnto continues a late-starting series from a reference level.', 'niceTicks covers the domain (lo at or below min, hi at or above max) with steps of 1, 2, 2.5 or 5 times a power of ten.', 'downsampleIndices always keeps the first, last, global minimum and maximum, and never picks a gap as an extreme.', 'sma needs a full window of real values; a gap blanks only the windows that contain it.'],
+    },
+    related: ['candlestick-chart', 'performance-chart', 'depth-chart'],
+  },
+  {
     slug: 'csv-export',
     title: 'CSV export',
+    description: "toCsv writes RFC 4180 CSV from typed rows, and downloadText saves it. Cells starting with =, +, -, @ are neutralised so spreadsheets do not run them.",
     group: 'data',
     kind: 'utility',
     summary: 'toCsv writes RFC 4180 CSV from typed rows and column definitions; downloadText hands the file to the browser. Cells that start with =, +, -, @, tab or carriage return are neutralised by default so a spreadsheet will not run exported data as a formula.',
@@ -340,6 +633,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'date-picker',
     title: 'DatePicker',
+    description: "A date field with a calendar popover for Gregorian (AD) and Bikram Sambat (BS), Nepali or English labels, strict input, bounds and keyboard navigation.",
     group: 'forms',
     kind: 'component',
     summary: 'A date field with a calendar popover. Gregorian (AD) and Bikram Sambat (BS) with a switch between them, Nepali or English labels and digits, strict typed input, min and max bounds, unavailable days and keyboard navigation. Values are date-only ISO strings (YYYY-MM-DD), never instants.',
@@ -360,6 +654,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'button',
     title: 'Button',
+    description: "Primary, secondary, ghost and danger buttons in three sizes, icon-only with a required accessible name, a loading state, and link rendering with href.",
     group: 'forms',
     kind: 'component',
     summary: 'Primary, secondary, ghost and danger, in three sizes (32, 36, 44), icon-only with a required accessible name, and a loading state. With href it renders a link styled as a button.',
@@ -370,15 +665,17 @@ export const PAGES: readonly PageDef[] = [
       { id: 'variants', title: 'Variants' },
       { id: 'sizes', title: 'Sizes' },
       { id: 'states', title: 'Loading and icon-only' },
+      { id: 'stacked', title: 'Stacked', note: 'stacked puts the icon over a short centred label: a quick-action tile for a phone grid. Put the buttons in a grid and use block to fill each cell.' },
     ],
     keyboard: ['Tab to focus; Enter or Space activates.', 'A loading button is disabled: not clickable and skipped by Tab, with aria-busy set.'],
     accessibility: ['A real <button> (or <a> with href); focus-visible outline on every variant.', 'loading sets aria-busy. Icon-only buttons require `label`.', 'An absolute http(s) href opens a new tab, adds rel noopener noreferrer and speaks newTabLabel.'],
-    responsive: ['sm is for toolbars; lg (44px) for a form\'s or phone bar\'s main action. block fills the container.'],
+    responsive: ['sm is for toolbars; lg (44px) for a form\'s or phone bar\'s main action. block fills the container. stacked sets the icon over a label that wraps onto two lines, at least 64px tall.'],
     related: ['spacing', 'currency-input'],
   },
   {
     slug: 'hooks',
     title: 'Hooks overview',
+    description: "Component-free, SSR-safe React hooks from @punji/ui/hooks, with stable callback identities and listeners and timers that clean up.",
     group: 'developer',
     kind: 'hooks',
     summary: 'Component-free React hooks from one subpath, @punji/ui/hooks (each also has its own). SSR-safe: nothing touches the browser while rendering. Callback identities are stable and timers and listeners clean up.',
@@ -404,6 +701,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'stock-table',
     title: 'StockTable',
+    description: "A full quote board with symbol, LTP, change, volume, turnover and a trend line. The caller owns the data and sort; prices are exact bigint minor units.",
     group: 'stock-market',
     kind: 'component',
     summary:
@@ -412,7 +710,7 @@ export const PAGES: readonly PageDef[] = [
     avoid: ['A short top-N list: use MarketMovers. The stocks a person follows: use Watchlist. Arbitrary records: use FinancialTable.', 'Search and pagination: they are not built in. Filter first, sort the matches, then slice.', 'Passing floating-point prices: the types require bigint minor units.'],
     api: [...ui('stock-table', 'StockTable', 'Quote', 'sortQuotes', 'nextQuoteSort', 'quoteChange', 'quoteChangePercent')],
     examples: [
-      { id: 'board', title: 'Sortable board', note: 'Controlled sort and the column set from useColumnVisibility (the trend column starts hidden); the head sticks inside a 360px box.' },
+      { id: 'board', title: 'Sortable board', note: 'Click a column to sort. The head stays put while the board scrolls.' },
       { id: 'select', title: 'Selection', note: 'Controlled selected symbols with named checkboxes; compact density and stack off.' },
       { id: 'states', title: 'States', note: 'Loading keeps the headers; error offers a retry; empty prints your words.' },
       { id: 'gaps', title: 'Missing values', note: 'Not traded and no previous close: dashes, no change, and they sort last.' },
@@ -430,6 +728,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'market-movers',
     title: 'MarketMovers',
+    description: "Gainers, losers and most active as accessible tabs over one compact StockTable. rankMovers does the ranking, and an unchanged quote is never a mover.",
     group: 'stock-market',
     kind: 'component',
     summary: 'Gainers, losers and most active as ARIA tabs over one compact StockTable. You pass every quote; rankMovers does the ranking. A quote with no change is never a gainer or a loser, and each tab has its own empty message.',
@@ -449,6 +748,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'market-indices',
     title: 'MarketIndices',
+    description: "Index cards or a one-row strip showing value in points, change since the previous close and an optional trend line, with market status above.",
     group: 'stock-market',
     kind: 'component',
     summary: 'Index cards (a responsive grid) or a one-row strip, each with its value in points, the change since the previous close and an optional trend line, with an optional market status above. The caller supplies every number. An unpublished value is a dash.',
@@ -468,6 +768,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'market-status',
     title: 'MarketStatus and getMarketSession',
+    description: "Show whether a market is open, pre-open, closed, halted or on holiday, as a word and a distinct icon, from a known state or getMarketSession.",
     group: 'stock-market',
     kind: 'component',
     summary:
@@ -497,6 +798,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'price-limit',
     title: 'PriceLimitIndicator',
+    description: "Show where the last traded price sits between the day's lower and upper circuit limits, with an at-limit flag. Exchange limits are the authority.",
     group: 'stock-market',
     kind: 'component',
     summary: "Where the last traded price sits between the day's lower and upper circuit limits, with an at-limit flag. The exchange's published limits are the authority; circuitLimits derives a band from the previous close only when none are supplied. Missing or inverted limits show a message instead of a bar.",
@@ -516,6 +818,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'watchlist',
     title: 'Watchlist',
+    description: "The stocks a person follows, in their own order, keyed by symbol so live prices change in place. Move and remove are real buttons you opt into.",
     group: 'stock-market',
     kind: 'component',
     summary: 'The stocks a person follows, in their own order. Rows are keyed by symbol and rendered in the order you pass, so live prices change in place and nothing jumps. Move and remove are real buttons that appear only when you give the callbacks; the callbacks only request, you apply them.',
@@ -535,6 +838,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'market-heatmap',
     title: 'MarketHeatmap',
+    description: "A squarified treemap where area is size and fill is change on a seven-step diverging scale. Deterministic layout; tiles print an arrow and signed change.",
     group: 'stock-market',
     kind: 'component',
     summary: 'A squarified treemap: area is a size (turnover, market cap), fill is the change on a seven-step diverging scale, with a legend. Layout is deterministic and positioned in percent, so it is responsive without measuring. Colour is never the only signal: tiles print an arrow and a signed change.',
@@ -542,7 +846,7 @@ export const PAGES: readonly PageDef[] = [
     avoid: ['Precise comparison of small tiles: the table disclosure holds exact figures.', 'Items without a positive size: they are not drawn, only listed.'],
     api: [...ui('market-heatmap', 'MarketHeatmap', 'HeatmapItem', 'heatmapItemsFromQuotes', 'squarify', 'heatStep')],
     examples: [
-      { id: 'map', title: 'From quotes', note: 'Tiles are buttons when onSelect is given.' },
+      { id: 'map', title: 'From quotes', note: 'Tile size is turnover; pick a tile to open its stock.' },
       { id: 'gaps', title: 'Gaps and helpers', note: 'Unsized items are skipped and listed; a missing change is a neutral tile. squarify and heatStep are pure.' },
     ],
     keyboard: ['With onSelect each tile is a button in tab order: Enter or Space selects.', 'The "View data as a table" disclosure is a native details element; its table region is focusable and scrolls.'],
@@ -553,6 +857,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'price-chart',
     title: 'PriceChart',
+    description: "A compact accessible line chart for a short labelled series. Missing values break the line instead of drawing zero, with a data table for every point.",
     group: 'stock-market',
     kind: 'component',
     summary: 'A compact line chart for a short labelled series. Straight segments, gaps stay gaps (a missing value breaks the line, never drawn as zero), fixed SVG proportions, and an exact-value data table for every point. Not for high-volume intraday series.',
@@ -566,11 +871,12 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['The data table sits in a native details disclosure: Tab to its summary, Enter or Space opens it. The drawing itself is not interactive.'],
     accessibility: ['The drawing is an image named by label; the exact value at every label is in the data table behind the dataLabel disclosure, with missingLabel where there is none.', 'One line, no colour-only encoding. With no finite value at all the chart is replaced by an empty state.'],
     responsive: ['The SVG keeps its aspect ratio and scales to the container width.'],
-    related: ['sparkline', 'column-chart', 'order-book'],
+    related: ['sparkline', 'column-chart', 'order-book', 'candlestick-chart'],
   },
   {
     slug: 'sparkline',
     title: 'Sparkline',
+    description: "A small trend line with no axes for use beside a printed figure. Missing values are dropped, never zero, and long series keep each bucket's extremes.",
     group: 'stock-market',
     kind: 'component',
     summary: "A small trend line with no axes, for use beside a printed figure. Missing and non-finite values are dropped, not drawn as zero; fewer than two real values draw a dashed rule; long series are reduced to each bucket's extremes so a spike survives. Decorative unless you give it a label.",
@@ -589,6 +895,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'company-search',
     title: 'CompanySearch',
+    description: "One field for symbol or name with ranked in-memory suggestions, as a finder or a picker, with a full-height sheet on phones. Nothing is fetched while typing.",
     group: 'stock-market',
     kind: 'component',
     summary: 'One field (symbol or name) with ranked suggestions under it, searched in memory over the options you pass, so nothing is fetched while typing. A finder opens the chosen company; a picker (give it a value) shows the pick and turns into the search when focused. On a phone the picker opens a full-height sheet.',
@@ -608,6 +915,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'breakdown',
     title: 'Breakdown',
+    description: "How a total is made: one row per part and the total ruled off, as a description list. It does no arithmetic and knows no fee or tax rule.",
     group: 'portfolio',
     kind: 'component',
     summary: 'How a total is made: one row per part (label, optional note, amount) and the total ruled off, as a description list. It does no arithmetic and knows no fee or tax rule: you compute and format every amount (a string, or a MoneyDisplay for an exact one) and say which row is the total.',
@@ -626,6 +934,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'share-bars',
     title: 'ShareBar, ShareDonut and DistributionBar',
+    description: "Shares of one whole as a stacked bar (ShareBar), a ring (ShareDonut) or counts on a five-step scale (DistributionBar), each with a worded legend.",
     group: 'portfolio',
     kind: 'component',
     summary: 'Shares of one whole as a stacked bar with a legend (ShareBar), as a ring with a count in the middle (ShareDonut, with ShareLegend alone), or counts on a five-step scale (DistributionBar). Each needs a label that says the shares in words, and every share has a legend row with its name and value, so tone is never the only carrier of meaning.',
@@ -646,6 +955,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'meter-range',
     title: 'MeterBar and RangeBar',
+    description: "MeterBar lays parts on one track with a benchmark marker; RangeBar shows where a value sits among others. Decorative unless labelled; print figures beside them.",
     group: 'portfolio',
     kind: 'component',
     summary: 'MeterBar lays parts end to end on one track, with an optional marker for a benchmark on the same scale. RangeBar shows where a value sits among other values: a fill or a span, and marks whose labels sit under the mark. Both are decorative unless you give them a label: print the figures they draw beside them.',
@@ -664,6 +974,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'headline-figure',
     title: 'HeadlineFigure and FigureChip',
+    description: "A page's lead figure: a quiet label, the figure large, and changes as FigureChips. The figure never truncates and chip tint never carries direction.",
     group: 'portfolio',
     kind: 'component',
     summary: "A page's or a view's lead figure: a quiet label, the figure large (\"Rs\" smaller and muted), and the changes as FigureChips. The figure never truncates and a long label wraps. A chip's tint never carries direction: write the sign and words in its text.",
@@ -682,6 +993,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'key-stats',
     title: 'KeyStats and FactList',
+    description: "KeyStats lays a panel's facts as label-over-value cells; FactList is one column of label-and-value lines. Unknown values say so in words, never zero.",
     group: 'portfolio',
     kind: 'component',
     summary: 'KeyStats is a panel\'s facts as label-over-value cells in two or three columns, or a strip of cells split by hairlines. FactList is one column of label-and-value lines under a small title. A value that is not known says so in words (empty, quiet), never a dash or a zero. Both are description lists.',
@@ -701,6 +1013,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'split-bars',
     title: 'SplitBar, DivergingBar and NetBar',
+    description: "SplitBar, DivergingBar and NetBar print beside their figures: parts of a whole, rises and falls from a centre line, and a signed net with its parts.",
     group: 'portfolio',
     kind: 'component',
     summary: 'Bars that print beside their figures. SplitBar splits one whole into parts with labels under it; DivergingBar grows right for a rise and left for a fall from a drawn centre line on a shared max; NetBar adds its own signed figure and a readout of the parts it nets. The bars are decorative unless given a label.',
@@ -720,6 +1033,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'inline-state',
     title: 'InlineState',
+    description: "A state shown inside a card where its data would be: locked, failed, empty, offline, stale or slow, with an icon tile, one line and its actions.",
     group: 'feedback',
     kind: 'component',
     summary: 'A state inside a card, where its data would be: an icon tile, a title, one line and its actions. Locked, failed, empty, offline, stale or slow. row is a one-line banner with its action at the end; stack puts the actions under the words. A failure is an alert. The icon is decorative and the tone only tints it.',
@@ -739,6 +1053,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'retry-note',
     title: 'RetryNote',
+    description: "A part of a page failed to load: say so in its own place with a Try again button while the rest stays. An alert that screen readers announce.",
     group: 'feedback',
     kind: 'component',
     summary: 'One part of a page did not load; it says so in its own place with a Try again while the rest of the page stays as it is. An alert, so screen readers hear it, and the retry is a real Button. The package carries no copy: retryLabel is required.',
@@ -757,6 +1072,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'empty-skeleton',
     title: 'EmptyState, Note and Skeleton',
+    description: "EmptyState covers empty and error states, Note qualifies nearby data, and Skeleton holds the space of loading content so nothing jumps.",
     group: 'feedback',
     kind: 'component',
     summary: 'EmptyState (also the error state) is a title, a line and one action. Note qualifies the data beside it. Skeleton holds the space of what is loading, in its shape, so nothing jumps; give the whole region one label. A card never holds a card, so inside a Card use bare.',
@@ -775,6 +1091,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'check-list',
     title: 'CheckList, CheckRow and StatusDisc',
+    description: "A list of checks with an icon disc, title, one line, figure, status in words and chevron. Rows can be buttons, links, plain, or a vertical tab list.",
     group: 'feedback',
     kind: 'component',
     summary: 'A list of checks, one row each: an icon disc, a title and one line, an optional small visual, a figure, a status in words and a chevron. A row can be a button (pressed while its detail shows), a link, or plain. With role="tablist" it is a vertical tab list beside its panel.',
@@ -793,6 +1110,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'step-list',
     title: 'StepList',
+    description: "What to do first as numbered steps, each a title and one line, with the current step marked aria-current. Tiles, rows or a dismissible first-visit banner.",
     group: 'feedback',
     kind: 'component',
     summary: 'What to do first, as numbered steps, each a title and one line, in an ordered list. The current step\'s number is filled and marked aria-current="step". Three layouts: tiles in a card, rows with round numbers, and a banner over a tool on a first visit with a dismiss button.',
@@ -811,6 +1129,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'card',
     title: 'Card',
+    description: "One surface for one section of a page: an optional header with title, line, count and one action, then content. Rows use hairlines, never nested cards.",
     group: 'layout',
     kind: 'component',
     summary: 'One surface for one section of a page: an optional header (title, a line, a count, one action) and its content. Rows inside are separated by hairlines, never by another card. tone="inverse" is the one card on a page that stands out; never two on one screen.',
@@ -830,6 +1149,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'card-link',
     title: 'CardLink',
+    description: "The one text link in a card's header: in-app paths stay in the tab with a chevron, external addresses open a new tab with the new-tab words spoken.",
     group: 'layout',
     kind: 'component',
     summary: "The one text link of a card's header (\"Open portfolio\", \"Markets\"), in the link colour. An in-app path stays in the same tab with a chevron (through your router's linkComponent or a plain <a>); an absolute http(s) address opens a new tab with rel=\"noopener noreferrer\", an arrow, and the new-tab words spoken after the label.",
@@ -848,6 +1168,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'link-table',
     title: 'LinkTable and StockLabel',
+    description: "A short list where every row opens something, with quiet column heads and right-aligned figures that never truncate. Compact layout under 560px.",
     group: 'layout',
     kind: 'component',
     summary: 'A short list where every row opens something (a holding, a watched stock, a sector), with quiet column heads. Each row is one link, or a plain row when it opens nothing. Figures sit right-aligned and never truncate; only a name gives way, with an ellipsis (StockLabel). Under 560px of its own width the heads go and each row shows its compact layout.',
@@ -866,6 +1187,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'pagination',
     title: 'Pagination',
+    description: "Page through a list: '6-10 of 12', numbered pages and named previous/next icon buttons. Takes the usePagination hook's state directly.",
     group: 'layout',
     kind: 'component',
     summary: 'A list shown a page at a time: "6–10 of 12", page numbers up to maxNumbers pages (default 4), and previous and next as named icon buttons. One model: the arithmetic is paginate from use-pagination (one-based, clamped), and Pagination takes the hook\'s state directly. An empty list reads "0 of 0".',
@@ -884,6 +1206,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'debit-credit',
     title: 'DebitCredit',
+    description: "Show one ledger amount with its side from a signed bigint net: '12,500.00 Dr', parentheses for credits, or under its own column. Worded for screen readers.",
     group: 'accounting',
     kind: 'component',
     summary: 'One ledger amount with its side. The value is a signed net in minor units (debit positive, credit negative); three presentations print it as "12,500.00 Dr", as a signed amount with credits in accounting parentheses, or only under its own Debit or Credit column. The side is always words as well as letters, so a screen reader hears "debit" or "credit".',
@@ -906,6 +1229,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'ledger-table',
     title: 'LedgerTable',
+    description: "The general ledger of one account: date, reference, description, debit, credit and a running balance naming its side, with opening and closing rows.",
     group: 'accounting',
     kind: 'component',
     summary: 'The general ledger of one account: date, reference, description, debit, credit and a running balance that names its side, with an opening row, period totals and a closing row. A composition over DataTable, so the sticky head, caption and loading and empty rows are the table\'s own. It displays the postings it is given, oldest first; it does not sort, post or reconcile.',
@@ -918,12 +1242,13 @@ export const PAGES: readonly PageDef[] = [
     ],
     keyboard: ['The table region is focusable and scrolls with the arrow keys.'],
     accessibility: ['A real <table> with a caption and scoped headers; the balance reads its side in words.', 'Invalid amounts (negative, two-sided, not bigint) show an alert instead of a balance.'],
-    responsive: ['Under 640px each entry becomes a card (date, description, then Debit, Credit and Balance with their names); the reference moves under the description.'],
+    responsive: ['Under 640px of screen, or when the ledger\'s own space is under 340px (a sidebar, a narrow card), each entry becomes a card (date, description, then Debit, Credit and Balance with their names); the reference moves under the description.'],
     related: ['debit-credit', 'trial-balance', 'journal-entry', 'ledger-helpers'],
   },
   {
     slug: 'journal-entry',
     title: 'JournalEntryView',
+    description: "One journal with its lines, totals row and status. An unbalanced entry says 'Out of balance by' with a warning icon, never by colour alone.",
     group: 'accounting',
     kind: 'component',
     summary: 'One journal with its lines, a totals row and a status. When debits and credits differ it says "Out of balance by 5.00 (debits exceed credits)" with a warning icon in a status line, never by colour alone; a balanced entry has a check. It displays the entry; it does not correct or reject it.',
@@ -936,12 +1261,13 @@ export const PAGES: readonly PageDef[] = [
     ],
     keyboard: ['Not interactive.'],
     accessibility: ['The status is a role="status" line with its own icon shape and words.', 'The title is a heading at headingLevel (default 3) so it fits the page outline.', 'A journal with an invalid line shows an alert; one with no lines shows an empty message.'],
-    responsive: ['A compact table that fits 320px; account names wrap.'],
+    responsive: ['A compact table: under 340px of its own space (not the screen) the cells tighten and account names wrap, so it fits 320px without sideways scrolling.'],
     related: ['ledger-table', 'trial-balance', 'ledger-helpers'],
   },
   {
     slug: 'trial-balance',
     title: 'TrialBalance',
+    description: "Accounts by debit and credit with a totals row and a Balanced or Out of balance status line. Sums are exact bigint arithmetic over ledger entries or journals.",
     group: 'accounting',
     kind: 'component',
     summary: 'Accounts by debit and credit, a totals row and a "Balanced" or "Out of balance by X" status line with a different icon for each. Give it ledger entries or journals; the sums are exact bigint arithmetic. A balanced trial balance does not prove the books are right: two opposite errors cancel.',
@@ -955,7 +1281,7 @@ export const PAGES: readonly PageDef[] = [
     ],
     keyboard: ['Not interactive; the region scrolls with the arrow keys when maxHeight is set.'],
     accessibility: ['The columns are real table headers, so a screen reader announces "32,200.00 credit" with the account.', 'The balance status is words plus an icon, never colour alone.'],
-    responsive: ['Rows stack under 640px with named values.'],
+    responsive: ['A compact table: under 340px of its own space (not the screen) the cells tighten and account names wrap, so it fits 320px without sideways scrolling.'],
     notes: {
       title: 'Security boundary',
       points: ['This is a display of the books you pass. The server that stores them must validate and total every amount again (balanced journals, no negatives, period locks, permissions).'],
@@ -965,6 +1291,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'statement-table',
     title: 'StatementTable',
+    description: "An income statement, balance sheet or cash-flow style report from a typed tree of lines, one column per period, with optional change columns.",
     group: 'accounting',
     kind: 'component',
     summary: 'An income statement, balance sheet or cash-flow style report from a typed tree of lines and sections, one column per period, with optional Change and Change % columns. It never adds a subtotal for you: it prints the values it is given. Call rollUp() yourself when you want the sums.',
@@ -988,6 +1315,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'payment-status',
     title: 'PaymentStatus',
+    description: "Show where an invoice or bill stands: paid, partly paid, unpaid, overdue or void, as a pill with its own icon and words. It labels, never decides.",
     group: 'accounting',
     kind: 'component',
     summary: 'Where an invoice or bill stands: paid, partly paid, unpaid, overdue or void, as a pill with an icon and words. Each status has its own icon shape, so colour is never the only signal. It labels a status you already know; it does not compare dates or amounts to decide "overdue".',
@@ -1006,6 +1334,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'period-selector',
     title: 'FinancialPeriodSelector',
+    description: "Pick a reporting period from a list you supply, with a choice of period kind that keeps the time span. Nepal builders make fiscal years, quarters and months.",
     group: 'accounting',
     kind: 'component',
     summary: 'Pick a reporting period from a list you supply: a Select for the period and, when the list has two or more kinds, a choice group to switch kind (switching keeps the same time span when periods carry start and end). The selected period\'s detail, for example its BS and AD range, is shown under it. The Nepal builders make fiscal years, quarters and months; any other calendar passes its own list.',
@@ -1024,6 +1353,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'ledger-helpers',
     title: 'Ledger helpers',
+    description: "Pure bigint maths for bookkeeping screens: journal totals and balance checks, running balances, trial balance, statement roll-ups and an exact ledgerToCsv.",
     group: 'accounting',
     kind: 'utility',
     summary: 'Pure bigint arithmetic for bookkeeping screens (@punji/ui/ledger): journal totals and balance checks, running balances, a trial balance over entries or journals, statement roll-ups, and ledgerToCsv, an exact RFC 4180 export of a ledger. No React, no browser globals, no tax or jurisdiction rules. Invalid input throws (TypeError for a non-bigint, RangeError for a negative or two-sided amount).',
@@ -1034,7 +1364,7 @@ export const PAGES: readonly PageDef[] = [
     ],
     examples: [
       { id: 'balances', title: 'Balances and checks', note: 'Closing cash, a trial balance of three journals, and a draft journal that is not balanced.' },
-      { id: 'csv', title: 'ledgerToCsv', note: 'Hostile account and description text comes out neutralised; amounts are exact decimals.' },
+      { id: 'csv', title: 'CSV export', note: 'ledgerToCsv: hostile account and description text comes out neutralised; amounts are exact decimals.' },
     ],
     keyboard: ['Not interactive.'],
     accessibility: ['A download trigger for the CSV must be a real button whose name says what it exports and the format.'],
@@ -1050,6 +1380,168 @@ export const PAGES: readonly PageDef[] = [
     },
     related: ['csv-export', 'ledger-table', 'trial-balance', 'statement-table'],
   },
+  {
+    slug: 'account-number',
+    title: 'AccountNumber',
+    group: 'banking',
+    kind: 'component',
+    description: 'Masked account or wallet number with an explicit reveal button that auto-hides, opt-in copy, and no full number in the page while masked.',
+    summary: 'An account number that is masked until the reader asks. Only the last digits show; revealing is an explicit button (aria-pressed) that hides again on a timer and when the tab is hidden; copying is opt-in and copies the full number only when the copy button is pressed. While masked, the full number is not in the page: not in text, a title, an aria-label or a data attribute. Masking is display-only; it is not access control.',
+    use: ['An account or wallet ID inside a card, a receipt or a settings row.', 'onRevealedChange to write an audit event when someone looks at a full number.'],
+    avoid: ['Treating the mask as security: the full value is still in your JavaScript memory. Fetch it only when needed and authorise on the server.', 'Enabling copy where the reader does not expect the number to leave the app: the clipboard is shared with other apps and clipboard managers, and cannot be cleared from here.'],
+    api: [...ui('account-number', 'AccountNumber')],
+    examples: [
+      { id: 'masked', title: 'Linked accounts', note: 'Masked by default with a reveal that hides again; a card number that never reveals; a wallet not linked yet.' },
+      { id: 'copy', title: 'Copy and audit', note: 'copyable, autoHideMs and onRevealedChange (which receives true or false, never the number).' },
+    ],
+    keyboard: ['Tab to the eye button; Enter or Space toggles it. The copy button is the next Tab stop.', 'Pressing Escape does not hide it; the toggle and the auto-hide timer do.'],
+    accessibility: ['The visible mask is aria-hidden; a screen reader hears "Account number: ending in 2 3 4 5" (digits spelled out), and the full number the same way once revealed.', 'The toggle keeps one name ("Show full account number") and shows its state with aria-pressed. Copy and its result are announced through a polite status region.', 'Icons are decorative; the buttons have names. Touch targets grow to 44px on coarse pointers.'],
+    responsive: ['Inline; a long number wraps rather than overflows.'],
+    notes: {
+      title: 'Security boundary',
+      points: [
+        'The component never writes the unmasked number to the DOM while masked (tested against container.innerHTML). Once revealed it is plain text on the page, in the accessibility tree and visible to screen sharing.',
+        'The clipboard trade-off: a copied number sits on the system clipboard until something replaces it, readable by other apps and by clipboard history tools. The package does not try to clear it.',
+        'Client-side masking and checks never replace server-side authorisation. Return the full number from your API only to a session allowed to see it.',
+      ],
+    },
+    related: ['bank-account-card', 'payment-receipt', 'banking-helpers'],
+  },
+  {
+    slug: 'bank-account-card',
+    title: 'BankAccountCard',
+    group: 'banking',
+    kind: 'component',
+    description: 'Bank or wallet account card: institution, holder, masked number, balance with optional hide toggle, account status, actions, loading and error states.',
+    summary: 'One bank or wallet account as a card: institution name, holder, masked number, type, balance (MoneyDisplay) and status (active, frozen or closed, each with its own icon and words), with an actions slot and loading and error states. A display only: it fetches and moves nothing. The balance can sit behind a hide toggle, and while hidden the amount is not in the page at all. Currency is any ISO 4217 code; the default is NPR in lakh and crore grouping.',
+    use: ['An accounts overview and an account detail header.', 'actions for plain Buttons or links such as Statement and Send.'],
+    avoid: ['Deciding the status here: pass what your server says.', 'Showing a balance you computed on the client: use the bank\'s figure.'],
+    api: [...ui('bank-account-card', 'BankAccountCard')],
+    examples: [
+      { id: 'accounts', title: 'Banks, a wallet and another currency', note: 'Institution names are strings you pass; the library has no bank list. The wallet balance starts hidden.' },
+      { id: 'states', title: 'Loading, error, missing balance', note: 'A missing balance is a dash with a spoken "No value", never zero.' },
+    ],
+    keyboard: ['The hide-balance and number buttons are Tab stops; Enter or Space toggles them.', 'Your actions are your own controls and keep their order.'],
+    accessibility: ['An article (not a landmark, so many cards per page are fine) named by its institution heading (h3 by default; headingLevel changes it).', 'Holder, number and balance are a description list. Status is words plus a distinct icon shape.', 'Hidden balance reads "Balance hidden"; the toggle is a button with aria-pressed.', 'Loading is aria-busy with a named status; an error is an alert with an optional retry.'],
+    responsive: ['Up to 26rem wide; it fills a narrow column. Place several in a grid.'],
+    notes: {
+      title: 'Security boundary',
+      points: ['The full account number is never in the markup while masked (see AccountNumber). Hiding the balance removes the amount from the DOM; it is a privacy convenience for shoulder surfing, not protection from the page\'s own scripts.', 'Display only: validate everything on the server.'],
+    },
+    related: ['account-number', 'transaction-list', 'money-display'],
+  },
+  {
+    slug: 'transaction-list',
+    title: 'TransactionList',
+    group: 'banking',
+    kind: 'component',
+    description: 'Bank transactions grouped by AD or BS date with debit and credit shown by sign, arrow and words, status pills, running balance and pagination.',
+    summary: 'An account\'s entries grouped by date (Gregorian or Bikram Sambat headings). Each row has the counterparty, reference and category, the signed amount with its direction in words (Dr debit, Cr credit) and an arrow, a status pill when the entry is not completed, and an optional running balance. Stable keys per entry id, empty, loading and error states, and Pagination when pageSize is set. transactionsToCsv exports through toCsv with formula neutralisation on. TransactionStatus is the status pill on its own.',
+    use: ['An account statement, recent activity, or a wallet history.', 'TransactionRow inside your own virtualiser for very long lists.'],
+    avoid: ['Computing balances from a page of rows: pass the balance the bank states for each entry.', 'Sorting here: pass the order you want; consecutive entries with the same date share a heading.'],
+    api: [...ui('transaction-list', 'TransactionList', 'TransactionRow'), ...ui('transaction-status', 'TransactionStatus'), ...ui('banking', 'transactionsToCsv', 'directionOf', 'BankTransaction')],
+    examples: [
+      { id: 'statement', title: 'Statement with running balance', note: 'Money out and in by sign, arrow and Dr or Cr; pending and failed entries carry a status.' },
+      { id: 'paged-bs', title: 'Bikram Sambat and paging', note: 'Nepali headings (BS only works for 1975 to 2099) and a paged list.' },
+      { id: 'states', title: 'States and statuses', note: 'Loading, empty and error (with retry), and the four status pills.' },
+      { id: 'csv', title: 'CSV export', note: 'transactionsToCsv: exact decimals, ISO dates, direction in words; formula text such as =HYPERLINK is neutralised.' },
+    ],
+    keyboard: ['Rows are not interactive. The pager buttons are Tab stops (Enter or Space).'],
+    accessibility: ['Each date is an h3 and names the list under it; the whole list is a named group. Direction is words (a screen reader hears "debit" or "credit"), an arrow and Dr or Cr, never colour alone; failed and reversed amounts are also struck through.', 'The amount reads with its currency name where the symbol is shared (MoneyDisplay). Status pills have icon and words.', 'The pager announces its range politely.'],
+    responsive: ['On a phone the amount drops under the counterparty. Dates are never read in the browser\'s time zone.'],
+    notes: {
+      title: 'Limits',
+      points: ['Counterparty, reference and category are untrusted text: React escapes them, references lose control and bidirectional characters, and the CSV neutralises leading = + - @. Client-side neutralisation does not replace server-side validation of anything stored or exported.', 'A CSV contains what you pass: leave out entries the reader may not export.'],
+    },
+    related: ['bank-account-card', 'payment-timeline', 'ledger-table', 'pagination'],
+  },
+  {
+    slug: 'payment-receipt',
+    title: 'PaymentReceipt',
+    group: 'banking',
+    kind: 'component',
+    description: 'Printable payment receipt: amount, fees and exact total, masked from and to accounts, copyable reference, time in a chosen zone and a QR slot.',
+    summary: 'A printable receipt for one payment: status, amount, from and to (account numbers masked to the last digits), reference with a copy button, the time in a zone you name, optional fees and total, a note, and a slot for a QR code you render. Print styles drop the buttons and keep the receipt on one page. The package ships no QR encoder.',
+    use: ['A confirmation screen or a receipt page the reader can print or save as PDF.'],
+    avoid: ['Using it as the source of truth: amount, fees, total and status all come from your server.', 'Putting the full account number in the QR or the note.'],
+    api: [...ui('payment-receipt', 'PaymentReceipt')],
+    examples: [
+      { id: 'receipt', title: 'Receipt with a QR slot', note: 'Printable; the QR here is a stand-in drawing, not a real code.' },
+      { id: 'failed', title: 'Failed, UTC, and USD', note: 'The same instant printed in two zones with the zone named; another currency.' },
+    ],
+    keyboard: ['Copy reference and Print are buttons; Enter or Space activates them. Printing happens only on that press.'],
+    accessibility: ['An article named by its heading; facts are description lists; the time is a <time> element with the exact ISO instant.', 'Status has icon and words. Copy results are announced politely.', 'The QR slot is a figure with a label; give your image or SVG its own alternative text.'],
+    responsive: ['Up to 28rem wide; labels and values wrap onto two lines on a narrow screen.'],
+    notes: {
+      title: 'Security boundary',
+      points: ['Only the last four characters of each account number are rendered; the full number is never in the markup. The total is the value you pass, or amount plus fees in exact bigint arithmetic: compare it with the server\'s.', 'A time with no offset (such as "2025-11-10T10:42:05") is refused and shown as a dash, because the instant would be a guess in the host\'s zone.'],
+    },
+    related: ['payment-timeline', 'transaction-list', 'account-number'],
+  },
+  {
+    slug: 'payment-timeline',
+    title: 'PaymentTimeline',
+    group: 'banking',
+    kind: 'component',
+    description: 'Ordered payment steps from initiated to completed, failed or reversed, each with an icon, words and timestamp; the current step is marked for screen readers.',
+    summary: 'The steps a payment went through, in order (initiated, processing, then completed, failed or reversed), each with an icon and words for its state, a timestamp in a zone you name, and an optional detail line. An ordered list; the current step is marked aria-current="step". It records what your server says happened.',
+    use: ['Under a receipt or on a payment detail page.', 'Showing why a payment failed or was reversed.'],
+    avoid: ['Advancing steps on the client: the server owns the state.'],
+    api: [...ui('payment-timeline', 'PaymentTimeline', 'PaymentStep')],
+    examples: [{ id: 'states', title: 'Completed, in progress, failed, reversed', note: 'Upcoming steps have no time. The last one is printed in UTC.' }],
+    keyboard: ['Not interactive.'],
+    accessibility: ['An <ol> named by label. Each state is words (Done, In progress, Not started, Failed, Reversed) plus a different icon shape; colour is extra.', 'Times are <time> elements with the ISO instant.'],
+    responsive: ['A single column that wraps its text.'],
+    related: ['payment-receipt', 'transaction-list'],
+  },
+  {
+    slug: 'beneficiary-selector',
+    title: 'BeneficiarySelector',
+    group: 'banking',
+    kind: 'component',
+    description: 'Searchable beneficiary picker grouped by favourites and recent, with masked account numbers and full keyboard support. Display only: it submits nothing.',
+    summary: 'Pick a saved payee from a searchable list: favourites first, then recent, then everyone else. A combobox with a listbox; type to filter by name, nickname or institution, arrow keys to move, Enter to choose, Escape to close. Account numbers are always masked. It only chooses; it submits nothing.',
+    use: ['The "pay to" field of a transfer or bill payment flow that you build.'],
+    avoid: ['Thousands of payees: it filters in memory. Search on the server and pass the page.', 'Treating a chosen id as validated: confirm the payee and limits on the server.'],
+    api: [...ui('beneficiary-selector', 'BeneficiarySelector', 'Beneficiary')],
+    examples: [{ id: 'selector', title: 'Searchable payees', note: 'Try "nabil" or "rent"; the groups hold their order.' }],
+    keyboard: ['Focus opens the list; typing filters; Down and Up move (wrapping), Home and End jump; Enter chooses; Escape closes and keeps your choice; Tab moves on.', 'Focus stays in the input; the highlighted option is aria-activedescendant.'],
+    accessibility: ['role="combobox" with aria-expanded, aria-controls, aria-autocomplete="list". Groups are role="group" named by their heading.', 'A masked number is aria-hidden; the option reads "account ending in 4 5 0 1". Favourites are announced as such.', 'An error is an alert and sets aria-invalid.'],
+    responsive: ['Fills a column up to 26rem; the list scrolls past 18rem.'],
+    notes: {
+      title: 'Security boundary',
+      points: ['The full account numbers are in your props, not in the markup. Searching does not match numbers.', 'No form is submitted here. Client-side selection never replaces server-side checks of the payee, the amount and the limits.'],
+    },
+    related: ['account-number', 'bank-account-card'],
+  },
+  {
+    slug: 'banking-helpers',
+    title: 'Banking helpers',
+    group: 'banking',
+    kind: 'utility',
+    description: 'Pure banking helpers: account masking, grouping, IBAN mod-97 validation, transaction references, time-zone timestamps and formula-safe transaction CSV.',
+    summary: 'Pure functions for banking screens (@punji/ui/banking): maskAccountNumber, accountNumberTail, formatAccountNumber and spokenAccountNumber; a generic IBAN check (isValidIban, formatIban); formatTransactionReference; formatTimestamp for an instant in a named zone; and transactionsToCsv. No React, no browser globals, and no knowledge of any bank, country or scheme.',
+    use: ['The same masking on the server (for emails and logs) as on the screen.', 'isValidIban to catch a typing slip before a request.'],
+    avoid: ['Using masking as encryption or access control.', 'Treating isValidIban as proof an account exists: it checks the shape and the mod-97 digits only.'],
+    api: [...ui('banking', 'maskAccountNumber', 'accountNumberTail', 'formatAccountNumber', 'spokenAccountNumber', 'normalizeAccountNumber', 'isValidIban', 'formatIban', 'normalizeIban', 'formatTransactionReference', 'formatTimestamp', 'transactionsToCsv', 'directionOf')],
+    examples: [{ id: 'mask', title: 'Mask, group, validate', note: 'Short numbers are never fully shown; a hostile reference loses its bidirectional control.' }],
+    keyboard: ['Not interactive.'],
+    accessibility: ['spokenAccountNumber spells digits in blocks so a screen reader does not read one huge number.'],
+    responsive: ['Not applicable: pure functions.'],
+    notes: {
+      title: 'Security boundary',
+      points: ['Masking never reveals more than visible characters and never more than half the number. It keeps the length (one mark per hidden character); if the length is sensitive, show a fixed placeholder.', 'Everything here is generic: no bank list, no account-length rules, no country rules. Rules for a specific bank or scheme are yours, and the server must check them again. Client-side validation never replaces server-side validation.', 'formatTimestamp refuses an ISO string with no offset (it would be read in the host\'s zone) and falls back to UTC, naming it, for an unknown zone.'],
+    },
+    related: ['account-number', 'transaction-list', 'csv-export'],
+  },
+  ...GENERIC_PAGES,
+  ...SHOWCASE_PAGES,
 ];
+
+/** The page's one-line lead: its own `lead`, else LEADS[slug], else the first sentence of `description`. */
+export const leadOf = (page: PageDef): string => page.lead ?? LEADS[page.slug] ?? (page.description.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? page.description);
+
+/** The sidebar label. */
+export const navTitleOf = (page: PageDef): string => page.navTitle ?? NAV_TITLES[page.slug] ?? page.title;
 
 export const pageBySlug = (slug: string): PageDef | undefined => PAGES.find((p) => p.slug === slug);

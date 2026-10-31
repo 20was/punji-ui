@@ -1,0 +1,45 @@
+/* App band pattern: layout only. The band sets data-theme="dark", so every token inside reads its dark value. */
+.sc-band {
+  container: sc-band / inline-size;
+  padding: calc(var(--pu-space-4) * 1.5);
+  border: 1px solid var(--pu-color-card-border);
+  border-radius: var(--pu-radius-3xl);
+  background:
+    radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--pu-color-accent) 18%, transparent), transparent 60%),
+    var(--pu-color-bg);
+  color: var(--pu-color-text);
+}
+.sc-band-in { display: grid; gap: var(--pu-space-16) calc(var(--pu-space-4) * 2); }
+.sc-band-copy { display: grid; gap: var(--pu-space-4); align-content: center; justify-items: start; min-width: 0; }
+.sc-band-copy h3 { margin: 0; font: 700 clamp(1.75rem, 1.2rem + 2vw, 2.5rem)/1.1 var(--pu-font-display); letter-spacing: -0.03em; text-wrap: balance; }
+.sc-band-lead { margin: 0; max-width: 46ch; font-size: var(--pu-text-base); line-height: 1.55; color: var(--pu-color-text-muted); }
+.sc-band-copy > :nth-child(4) { width: 100%; }
+.sc-band-actions { display: flex; flex-wrap: wrap; gap: var(--pu-space-3); }
+
+.sc-band-phones { position: relative; display: flex; justify-content: center; min-width: 0; }
+.sc-band-phone { position: relative; z-index: 1; display: grid; gap: var(--pu-space-2); width: min(100%, 270px); margin: 0; flex: 0 1 270px; min-width: 0; }
+.sc-band-phone figcaption { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); text-align: center; }
+.sc-band-phone.is-back { display: none; }
+.sc-band-screen {
+  display: grid;
+  gap: var(--pu-space-2);
+  align-content: start;
+  min-height: 460px;
+  padding: calc(var(--pu-space-4) * 1.75) var(--pu-space-3) var(--pu-space-4);
+  border: 7px solid var(--pu-color-surface-solid);
+  border-radius: 38px;
+  background: var(--pu-color-surface);
+  box-shadow: var(--pu-shadow-lg);
+}
+.sc-band-eyebrow { margin: 0; font-size: var(--pu-text-xs); font-weight: 600; color: var(--pu-color-text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.sc-band-figure { margin: 0; font: 700 1.625rem/1.1 var(--pu-font-display); letter-spacing: -0.02em; }
+.sc-band-row { display: flex; align-items: center; justify-content: space-between; gap: var(--pu-space-2); }
+
+@container sc-band (min-width: 620px) {
+  .sc-band-phone.is-back { display: grid; transform: translateY(var(--pu-space-16)); margin-left: var(--pu-space-3); z-index: 0; }
+}
+@container sc-band (min-width: 900px) {
+  .sc-band { padding: calc(var(--pu-space-4) * 2.5); }
+  .sc-band-in { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); }
+  .sc-band-phones { padding-bottom: var(--pu-space-16); }
+}

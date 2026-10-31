@@ -1,0 +1,21 @@
+/* Stock detail pattern: layout only. */
+.sc-sd { container: sc-sd / inline-size; display: grid; gap: var(--pu-space-4); }
+.sc-sd-head { display: grid; gap: var(--pu-space-3); align-items: center; }
+.sc-sd-id { display: flex; align-items: center; gap: var(--pu-space-3); min-width: 0; }
+.sc-sd-id h3 { margin: 0; font: 700 1.75rem/1.1 var(--pu-font-display); letter-spacing: -0.02em; }
+.sc-sd-id p { margin: 2px 0 0; font-size: var(--pu-text-sm); color: var(--pu-color-text-muted); }
+.sc-sd-quote { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--pu-space-2) var(--pu-space-3); }
+.sc-sd-price { font: 700 2rem/1.1 var(--pu-font-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.sc-sd-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--pu-space-2); }
+.sc-sd-grid, .sc-sd-main, .sc-sd-side { display: grid; gap: var(--pu-space-4); align-content: start; }
+.sc-sd-grid > * { min-width: 0; }
+
+@container sc-sd (min-width: 720px) {
+  .sc-sd-head { grid-template-columns: minmax(0, 1fr) auto; }
+  .sc-sd-actions { grid-column: 1 / -1; }
+}
+@container sc-sd (min-width: 980px) {
+  .sc-sd-head { grid-template-columns: minmax(0, 1fr) auto auto; }
+  .sc-sd-actions { grid-column: auto; justify-content: flex-end; }
+  .sc-sd-grid { grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr); }
+}

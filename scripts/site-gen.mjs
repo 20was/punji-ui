@@ -8,6 +8,7 @@
 // every group is a known domain, every component/function page lists API.
 import { API, SignatureKind, SymbolFlags, NodeBuilderFlags } from 'typescript/unstable/sync';
 import { existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -16,7 +17,7 @@ const out = resolve(root, 'site/src/generated/api.json');
 const problems = [];
 
 const pkg = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8'));
-const { PAGES, GROUPS } = await import(resolve(root, 'site/src/registry.ts'));
+const { PAGES, GROUPS, leadOf } = await import(resolve(root, 'site/src/registry.ts'));
 
 // --- registry validation -------------------------------------------------
 const slugs = new Set();
@@ -30,7 +31,15 @@ for (const page of PAGES) {
       problems.push(`registry: ${page.slug} example ${ex.id} has no file site/src/examples/${page.slug}/${ex.id}.tsx`);
     }
   }
-  if (page.kind !== 'foundation' && !(page.api?.length > 0)) problems.push(`registry: ${page.slug} registers no API entries`);
+  const lead = leadOf(page);
+  if (lead.length > 140) problems.push(`registry: ${page.slug} lead is ${lead.length} characters; keep it to 140 (registry-leads.ts or the page's lead)`);
+  if (typeof page.description !== 'string' || page.description.length < 40 || page.description.length > 160) problems.push(`registry: ${page.slug} needs a description of 40 to 160 characters (meta description), has ${page.description?.length ?? 0}`);
+  for (const section of page.guide ?? []) for (const code of section.code ?? []) {
+    if (!code.file === !code.text) problems.push(`registry: ${page.slug} guide ${section.id} code "${code.label}" needs exactly one of file or text`);
+    if (code.file && !existsSync(resolve(root, 'site/src/guides', page.slug, `${code.file}.tsx`))) problems.push(`registry: ${page.slug} guide file ${code.file} is missing in site/src/guides/${page.slug}/`);
+  }
+  if (page.kind === 'guide' && !(page.guide?.length > 0)) problems.push(`registry: guide ${page.slug} has no sections`);
+  if (page.kind !== 'foundation' && page.kind !== 'guide' && page.kind !== 'showcase' && !(page.api?.length > 0)) problems.push(`registry: ${page.slug} registers no API entries`);
   for (const rel of page.related ?? []) if (!PAGES.some((p) => p.slug === rel)) problems.push(`registry: ${page.slug} relates to unknown page ${rel}`);
 }
 // Example files that no page registers would silently rot.
@@ -41,6 +50,16 @@ for (const slug of readdirSync(exampleRoot)) {
   for (const file of readdirSync(resolve(exampleRoot, slug))) {
     if (!file.endsWith('.tsx')) continue;
     if (!(page.examples ?? []).some((e) => `${e.id}.tsx` === file)) problems.push(`examples: ${slug}/${file} is not registered on its page`);
+  }
+}
+
+// Guide code files (typechecked, shown as text, never executed) must each be used by their guide.
+const guideRoot = resolve(root, 'site/src/guides');
+for (const slug of existsSync(guideRoot) ? readdirSync(guideRoot) : []) {
+  const page = PAGES.find((p) => p.slug === slug);
+  if (!page?.guide) { problems.push(`guides: directory ${slug} belongs to no guide page`); continue; }
+  for (const file of readdirSync(resolve(guideRoot, slug))) {
+    if (!(page.guide ?? []).some((section) => (section.code ?? []).some((c) => `${c.file}.tsx` === file))) problems.push(`guides: ${slug}/${file} is not used by its guide`);
   }
 }
 
@@ -64,7 +83,7 @@ try {
   if (!project) throw new Error('site/tsconfig.api.json did not open');
   const { program, checker } = project;
   const flags = NodeBuilderFlags.NoTruncation;
-  const typeText = (type) => checker.typeToString(type, undefined, flags);
+  const typeText = (type, extra = 0) => checker.typeToString(type, undefined, flags | extra);
   const rows = (type) => {
     // A union (e.g. text button | icon-only button) documents the union of its members' props.
     const members = type.isUnionType() ? type.getTypes() : [type];
@@ -144,9 +163,11 @@ try {
         entry.props = props.rows;
         entry.inherited = props.inherited;
       } else {
-        entry.definition = typeText(declared);
+        // InTypeAlias stops the printer from naming the alias itself (`type X = X`): show what it resolves to.
+        entry.definition = typeText(declared, NodeBuilderFlags.InTypeAlias);
       }
     }
+    if (entry.definition === name) errors.push(`${label}: definition is the self-referential alias "type ${name} = ${name}"; the generator must show the resolved type`);
     for (const e of errors) problems.push(`api: ${e}`);
     apiData[name] = entry;
   }
@@ -158,6 +179,30 @@ try {
 for (const { name, module } of targets.values()) {
   if (!apiData[name]) problems.push(`api: ${module || '@punji/ui'}#${name} produced no entry`);
 }
+
+// --- bundle sizes ----------------------------------------------------------
+// The size badges and the homepage numbers come from the repository's own size-limit budget (.size-limit.json),
+// measured now against the built dist/, so they are the same gzip figures CI enforces. About two seconds.
+const sizes = { modules: {}, everything: null, styles: null, button: null };
+try {
+  let raw;
+  try {
+    raw = execFileSync(resolve(root, 'node_modules/.bin/size-limit'), ['--json'], { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+  } catch (error) {
+    raw = error.stdout; // size-limit exits non-zero when a budget is exceeded but still prints the JSON
+  }
+  for (const entry of JSON.parse(raw)) {
+    const sub = /import from '?@punji\/ui\/([^')\s]+)/.exec(entry.name)?.[1];
+    if (sub && !(sub in sizes.modules)) sizes.modules[sub] = entry.size;
+    if (entry.name.startsWith('Everything')) sizes.everything = entry.size;
+    if (entry.name.startsWith('styles.css')) sizes.styles = entry.size;
+    if (entry.name.startsWith('Button from root')) sizes.button = entry.size;
+  }
+} catch (error) {
+  console.warn(`site-gen: size-limit did not run (${error.message.split('\n')[0]}); size badges are omitted`);
+}
+mkdirSync(dirname(out), { recursive: true });
+writeFileSync(resolve(dirname(out), 'sizes.json'), `${JSON.stringify(sizes, null, 1)}\n`);
 
 // Written even on failure so the editor has data while you fix the registry; the exit code still fails the build.
 mkdirSync(dirname(out), { recursive: true });

@@ -8,7 +8,28 @@
  * Save is a Checkbox.
  */
 
-export function Switch({ checked, onChange, label, labelledBy, describedBy, disabled, busy, id, testId }: { checked: boolean; onChange: (next: boolean) => void; label?: string; labelledBy?: string; describedBy?: string; disabled?: boolean; busy?: boolean; id?: string; testId?: string }) {
+export interface SwitchProps {
+  /** Whether the setting is on. The switch is controlled. */
+  checked: boolean;
+  /** Called with the new state (true or false) when the person presses it. */
+  onChange: (next: boolean) => void;
+  /** The accessible name, when the setting has no visible title. Prefer `labelledBy`. */
+  label?: string;
+  /** The id of the element that holds the setting's visible title; becomes aria-labelledby. */
+  labelledBy?: string;
+  /** The id of an element that describes the setting (the line under its title); becomes aria-describedby. */
+  describedBy?: string;
+  /** Not available: dimmed and not focusable by press. */
+  disabled?: boolean;
+  /** The change is saving: sets aria-busy. Also pass `disabled` so it cannot be pressed twice. */
+  busy?: boolean;
+  /** The id of the button element. */
+  id?: string;
+  /** Becomes data-testid on the button. */
+  testId?: string;
+}
+
+export function Switch({ checked, onChange, label, labelledBy, describedBy, disabled, busy, id, testId }: SwitchProps) {
   return (
     <button
       id={id}

@@ -1,0 +1,582 @@
+// The "Get started" guides: prose plus real code. Pure data (no JSX), kept apart from registry.ts so the
+// guides and the component pages can be edited and merged independently. Code blocks are either a typechecked
+// file in site/src/guides/<slug>/<file>.tsx or literal text for shell and config files.
+import type { PageDef } from './registry.ts';
+
+const REPO = 'https://github.com/20was/punji-ui/blob/main';
+
+/** A guide page: the component-template fields are empty, the content is in `guide`. */
+const guide = (page: Pick<PageDef, 'slug' | 'title' | 'description' | 'summary' | 'related'> & Partial<Pick<PageDef, 'navTitle' | 'lead'>> & { guide: NonNullable<PageDef['guide']> }): PageDef => ({
+  group: 'get-started',
+  kind: 'guide',
+  use: [],
+  avoid: [],
+  api: [],
+  examples: [],
+  keyboard: [],
+  accessibility: [],
+  responsive: [],
+  ...page,
+});
+
+export const GUIDES: readonly PageDef[] = [
+  guide({
+    slug: 'using',
+    navTitle: 'Introduction',
+    title: 'Introduction and installation',
+    description: 'What @punji/ui is, its status (not published yet), how to install it after the first release, load the styles once and import by subpath.',
+    summary:
+      'Punji UI is a finance-first React component library: exact money, stock-market tables, ledgers and a Nepal-first locale layer that works for any currency. Nothing is published to npm yet, so the install command below is for after the first release.',
+    related: ['nextjs', 'vite', 'theming', 'money-display'],
+    guide: [
+      {
+        id: 'status',
+        title: 'Status',
+        paragraphs: [
+          '@punji/ui is not on npm yet: `package.json` says `0.0.0` and no tag or release exists. The first release will be `0.1.0`, published by the owner through the gated release workflow described in [RELEASE.md](' + REPO + '/RELEASE.md). Until then, APIs and styles can change without notice, so do not depend on it in production.',
+          'Everything on this site imports the built package through its export map, exactly as a consumer would, so the examples show the API that will ship.',
+        ],
+      },
+      {
+        id: 'install',
+        title: 'Install',
+        paragraphs: [
+          'After the first release, install the package. React 19 and React DOM 19 are peer dependencies. The package is ESM only and ships its own TypeScript declarations; the one runtime dependency (the Bikram Sambat date converter) is loaded only by the calendar module.',
+        ],
+        code: [{ label: 'Install (after the first release)', text: 'npm install @punji/ui react@19 react-dom@19' }],
+      },
+      {
+        id: 'first-screen',
+        title: 'Your first screen',
+        paragraphs: [
+          'Import the stylesheet once at the root of your app, then use the components. Prices are `bigint` minor units (paisa, cents), so `51230n` is Rs 512.30. The data below is invented.',
+        ],
+        code: [{ label: 'A first screen', file: 'first-screen' }],
+      },
+      {
+        id: 'imports',
+        title: 'Imports and styles',
+        paragraphs: [
+          'Every module has its own subpath (`@punji/ui/button`) and its own stylesheet (`@punji/ui/css/button.css`); everything is also exported from the root `@punji/ui`. `@punji/ui/styles.css` loads tokens, base rules and every component stylesheet in one import. For the smallest page, import `tokens.css`, `css/base.css` and only the module stylesheets you use.',
+          'The package declares `sideEffects: ["**/*.css"]`, so unused JavaScript is tree-shaken and CSS imports are kept.',
+        ],
+        code: [{ label: 'Import only what you use', file: 'subpaths' }],
+      },
+      {
+        id: 'next',
+        title: 'Where to go next',
+        paragraphs: ['Set it up in your framework, then make it yours.'],
+        points: [
+          '[Next.js App Router](/get-started/nextjs/) and [Vite](/get-started/vite/) setup.',
+          '[Theming and custom tokens](/get-started/theming/), [server rendering and hydration](/get-started/ssr/) and [Tailwind interop](/get-started/tailwind/).',
+          '[Live data adapters](/get-started/live-data/) and [Security](/get-started/security/).',
+          'The [Roadmap](/get-started/roadmap/) and how to [contribute](/get-started/agents/).',
+        ],
+      },
+    ],
+  }),
+  guide({
+    slug: 'nextjs',
+    navTitle: 'Next.js',
+    title: 'Next.js App Router',
+    description: 'Use @punji/ui in the Next.js App Router: import the CSS in the root layout, know which components are client components, and pass bigint safely.',
+    summary:
+      'In the App Router, import the stylesheet once in the root layout, render the hook-free components straight from server components, and put interactive ones behind a small "use client" file of your own. No next.config change is needed.',
+    related: ['using', 'ssr', 'theming', 'tailwind'],
+    guide: [
+      {
+        id: 'layout',
+        title: 'Import the CSS in the root layout',
+        paragraphs: [
+          'Import `@punji/ui/styles.css` once in `app/layout.tsx`. The layout is a server component; Next collects the import into the page stylesheet, so there is no flash of unstyled content.',
+        ],
+        code: [{ label: 'app/layout.tsx', file: 'layout' }],
+      },
+      {
+        id: 'client',
+        title: 'Server and client components',
+        paragraphs: [
+          'The package is compiled, not bundled, so the `\'use client\'` directive stays at the top of each file that needs it. Components that use state, effects, refs or handlers (for example `Select`, `Tabs`, `Popover`, `Drawer`, `DataTable`, `Watchlist`, the form fields, `CommandPalette` and the toast provider) are client components. You can import and render them from a server component; Next sends the JavaScript for those only.',
+          'Components with no hooks render on the server with no client JavaScript: `MoneyDisplay`, `PriceChange`, `Card`, `Figure`, `Delta`, `StatusPill`, `MarketStatus`, `Meter` and the other presentational ones. The rule for contributors is that a file has `\'use client\'` exactly when it uses hooks, portals or inline handlers, and `scripts/check-source.mjs` enforces it.',
+          'A handler is a function, and a function cannot cross from a server component to a client component as a prop. Pass data to a client component of your own, and let that component hold the handlers, as below.',
+        ],
+        code: [
+          { label: 'app/page.tsx (server component)', file: 'page' },
+          { label: 'app/watch-panel.tsx (client component)', file: 'watch-panel' },
+        ],
+      },
+      {
+        id: 'bigint',
+        title: 'bigint and the server boundary',
+        paragraphs: [
+          'Money is `bigint` minor units. React can send a `bigint` from a server component to a client component as a prop, but `JSON.stringify` cannot serialise one: route handlers, `fetch` responses, `localStorage` and `searchParams` need a string. Send minor units as decimal strings and call `BigInt()` on the client, as the page above does.',
+        ],
+      },
+      {
+        id: 'notes',
+        title: 'Notes',
+        paragraphs: ['Versions and checks.'],
+        points: [
+          'The peer range is `react@^19`. Use a Next.js release that ships React 19 for the App Router.',
+          'Import by subpath (`@punji/ui/stock-table`) to keep client bundles small.',
+          'An automated Next.js App Router consumer build is not in the release checks yet; [RELEASE.md](' + REPO + '/RELEASE.md) lists it as manual. The packed package is checked by a clean Vite consumer and a server render in Node.',
+          'Dark mode and theme switching are covered in [Theming](/get-started/theming/); avoiding a flash of the wrong theme is in [Server rendering](/get-started/ssr/).',
+        ],
+      },
+    ],
+  }),
+  guide({
+    slug: 'vite',
+    title: 'Vite',
+    description: 'Use @punji/ui in a Vite React and TypeScript app: create the project, import the stylesheet once in main.tsx and dedupe React when linking locally.',
+    summary:
+      'Vite needs no plugin for Punji UI. Import the stylesheet in your entry file and import components by subpath. The only setting worth knowing is resolve.dedupe, for the day you link the package locally.',
+    related: ['using', 'theming', 'tailwind', 'ssr'],
+    guide: [
+      {
+        id: 'create',
+        title: 'Create the project',
+        paragraphs: ['Start from the React and TypeScript template, then install the package (after the first release).'],
+        code: [
+          {
+            label: 'Create and install',
+            text: 'npm create vite@latest my-app -- --template react-ts\ncd my-app\nnpm install\nnpm install @punji/ui   # after the first release',
+          },
+        ],
+      },
+      {
+        id: 'entry',
+        title: 'Import the CSS in your entry file',
+        paragraphs: ['Import `@punji/ui/styles.css` once in `src/main.tsx`, before your own CSS, then use components anywhere below it.'],
+        code: [{ label: 'src/main.tsx', file: 'main' }],
+      },
+      {
+        id: 'config',
+        title: 'Configuration',
+        paragraphs: [
+          'The default `vite.config.ts` works. If you link the package from a local checkout (`npm link`, a `file:` dependency or a packed tarball), two copies of React can end up in the page and hooks then fail. Tell Vite to use one.',
+        ],
+        code: [
+          {
+            label: 'vite.config.ts (only for a linked package)',
+            text: "import { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';\n\nexport default defineConfig({\n  plugins: [react()],\n  resolve: { dedupe: ['react', 'react-dom'] },\n});",
+          },
+        ],
+      },
+      {
+        id: 'notes',
+        title: 'Notes',
+        paragraphs: ['What to expect.'],
+        points: [
+          'The package ships ES modules and `.d.ts` files; TypeScript with `moduleResolution` set to `bundler` (the Vite template) or `nodenext` resolves every subpath.',
+          'The clean-consumer check (`npm run check:consumer`) installs the packed tarball into a fresh app, runs strict `tsc`, a server render and a Vite production build before every release.',
+          'Server rendering with Vite: see [Server rendering and hydration](/get-started/ssr/).',
+        ],
+      },
+    ],
+  }),
+  guide({
+    slug: 'theming',
+    navTitle: 'Theming',
+    title: 'Theming and custom tokens',
+    description: 'Every colour, size and radius is a --pu-* CSS variable in cascade layers. Switch light and dark, override tokens, and scope an accent to one section.',
+    summary:
+      'Components read --pu-* CSS variables, never literals, and all of them are in cascade layers. Light and dark follow the system; data-theme forces one for any subtree; any token can be overridden globally or for one section with an ordinary unlayered rule.',
+    related: ['colour-tokens', 'typography', 'spacing', 'tailwind'],
+    guide: [
+      {
+        id: 'tokens',
+        title: 'Tokens',
+        paragraphs: [
+          'The tokens live in `@punji/ui/tokens.css`, inside the `punji.tokens` layer: colours (`--pu-color-*`), control heights, radii, spacing, type, motion and shadows. A token that refers to another keeps the reference, so overriding `--pu-color-accent` also moves what is built on it. The full table is [docs/tokens.md](' + REPO + '/docs/tokens.md); the [Colour tokens](/foundations/colour-tokens/) page shows them live.',
+        ],
+      },
+      {
+        id: 'layers',
+        title: 'Layers: why your CSS wins',
+        paragraphs: [
+          'The stylesheet declares `@layer punji.tokens, punji.components;`. Tokens are in the first layer and every component rule is in the second. CSS outside any layer always beats layered CSS, whatever the specificity, so a plain rule of yours overrides a Punji rule with no `!important` and no selector arms race.',
+          'Layers you declare yourself are ordered by where they are first declared. Declare them before you import the Punji stylesheet if you need a particular order (see [Tailwind interop](/get-started/tailwind/)).',
+        ],
+      },
+      {
+        id: 'dark',
+        title: 'Light, dark and the system setting',
+        paragraphs: [
+          'With no attribute, the theme follows `prefers-color-scheme`. `data-theme="light"` or `data-theme="dark"` on any element forces that theme for the element and everything inside it, so a page can be dark while one panel is light. For a user setting, set the attribute on `<html>` and remove it for "system".',
+        ],
+        code: [{ label: 'A light, dark and system switch', file: 'theme-switch' }],
+      },
+      {
+        id: 'override',
+        title: 'Override tokens',
+        paragraphs: [
+          'To change a token everywhere, set it on `:root` in your own CSS. Because your rule is unlayered it wins; set it for both themes if the value is colour, since light and dark have their own values.',
+        ],
+        code: [
+          {
+            label: 'app.css: a house radius and a calmer link colour',
+            text: ':root {\n  --pu-radius-control: 8px;\n}\n\n:root,\n[data-theme=\'light\'] {\n  --pu-color-link: #1f4f8f;\n}\n\n@media (prefers-color-scheme: dark) {\n  :root:not([data-theme=\'light\']) {\n    --pu-color-link: #9cc2ff;\n  }\n}\n\n[data-theme=\'dark\'] {\n  --pu-color-link: #9cc2ff;\n}',
+          },
+        ],
+      },
+      {
+        id: 'accent',
+        title: 'Override the accent for one section',
+        paragraphs: [
+          'The library ships one theme. A host application that has its own brand or per-area accent (for example a public site in green and an account area in lime) does not need a second theme: it scopes the accent tokens to the area. That is the documented extension point and the project\'s architecture decision.',
+          'Put a data attribute on the section, override `--pu-color-accent` with its related tokens, and give both themes a value. Check the contrast of the values you choose: link and accent text need 4.5 to 1 against the surface, and the text on the accent fill needs the same.',
+        ],
+        code: [
+          { label: 'app.css: scope the accent to data-section="research"', text: "[data-section='research'] {\n  --pu-color-accent: #0b5cad;\n  --pu-color-link: #0b5cad;\n  --pu-color-accent-fill: #8bbcff;\n  --pu-color-accent-fill-hover: #a3cbff;\n}\n\n@media (prefers-color-scheme: dark) {\n  :root:not([data-theme='light']) [data-section='research'] {\n    --pu-color-accent: #8bbcff;\n    --pu-color-link: #8bbcff;\n  }\n}\n\n[data-theme='dark'] [data-section='research'] {\n  --pu-color-accent: #8bbcff;\n  --pu-color-link: #8bbcff;\n}" },
+          { label: 'The section', file: 'research-section' },
+        ],
+      },
+      {
+        id: 'rules',
+        title: 'Rules',
+        paragraphs: ['What keeps a theme safe.'],
+        points: [
+          'Override tokens, not component classes. Class names are internal and can change; tokens are the contract.',
+          'Do not copy hex values into your own CSS: read `var(--pu-color-text)` so your screens follow the theme.',
+          'Gain and loss colours are never the only signal in components; keep that when you build your own.',
+          'Text tokens are checked for contrast against their surfaces in both themes by the package\'s visual gate. Your overrides are not.',
+        ],
+      },
+    ],
+  }),
+  guide({
+    slug: 'ssr',
+    navTitle: 'SSR',
+    title: 'Server rendering and hydration',
+    description: 'Render Punji UI on the server and hydrate without warnings: hook-free components, useHydrated, useMediaQuery with a server value, and a pre-paint theme script.',
+    summary:
+      'Every component renders in a Node server render with no DOM. The work is keeping the first client pass identical to the server HTML: use useHydrated and the server value of useMediaQuery for anything that depends on the browser, and set the theme before first paint.',
+    related: ['nextjs', 'vite', 'theming', 'live-data'],
+    guide: [
+      {
+        id: 'server',
+        title: 'Rendering on the server',
+        paragraphs: [
+          'The release check renders the packed package with `react-dom/server` in plain Node, so no component needs `window` to produce HTML. Pure modules (money, calculations, formatting, Nepal dates, export) have no React and no browser globals at all.',
+        ],
+        code: [{ label: 'renderToString in Node', file: 'render-to-string' }],
+      },
+      {
+        id: 'hydration',
+        title: 'Hydration without warnings',
+        paragraphs: [
+          'Hydration fails softly when the first client render differs from the server HTML. Three things differ by nature: the current time, the viewport and browser storage. Render a stable placeholder first, then the real value.',
+        ],
+        points: [
+          '`useHydrated()` is false on the server and during the hydration pass, true afterwards. Use it to swap a placeholder for a value that only the browser knows.',
+          '`useMediaQuery(query, serverMatch)` returns `serverMatch` on the server and during hydration, then follows the real query. Pass the same `serverMatch` on both sides, and prefer CSS media queries for purely visual layout.',
+          '`useLocalStorage` and `useSessionStorage` start from the default value, so a stored preference appears after hydration, not during it.',
+        ],
+        code: [{ label: 'A hydration-safe clock', file: 'hydration-safe' }],
+      },
+      {
+        id: 'theme',
+        title: 'No flash of the wrong theme',
+        paragraphs: [
+          'A saved theme choice lives in the browser, so the server HTML cannot contain it. Set `data-theme` from a tiny inline script in `<head>`, which runs before first paint. This site does exactly that. Under a strict Content Security Policy, give the script a nonce or hash.',
+        ],
+        code: [
+          {
+            label: 'In <head>, before the body',
+            text: "<script>\n  try {\n    var t = JSON.parse(localStorage.getItem('app-theme'));\n    if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);\n  } catch (e) {}\n</script>",
+          },
+        ],
+      },
+      {
+        id: 'notes',
+        title: 'Notes',
+        paragraphs: ['Smaller points.'],
+        points: [
+          'Some components set `style` attributes for computed sizes (bars, positions, heatmap cells). A strict `style-src` without `unsafe-inline` blocks style attributes that arrive in server HTML. The package has not been tested against a strict CSP, so check yours.',
+          'Money formats through `Intl`. Server and browser must use the same locale and time zone, or digits and dates differ: pass `locale` explicitly, and use an explicit IANA zone for instants (the market components use `Asia/Kathmandu`).',
+          'Framework specifics are in [Next.js App Router](/get-started/nextjs/) and [Vite](/get-started/vite/). Live data is the other thing that differs per client: see [Live data adapters](/get-started/live-data/).',
+        ],
+      },
+    ],
+  }),
+  guide({
+    slug: 'tailwind',
+    navTitle: 'Tailwind',
+    title: 'Tailwind interop',
+    description: 'Use Tailwind CSS v4 beside @punji/ui: declare the cascade layer order once so utilities win over Punji components and Tailwind preflight does not.',
+    summary:
+      'Both libraries use CSS cascade layers, so they combine cleanly if you declare the layer order once: Tailwind\'s base first, then Punji, then Tailwind\'s components and utilities. Utilities then win for layout, and Punji\'s components are not undone by the reset.',
+    related: ['theming', 'vite', 'nextjs', 'card'],
+    guide: [
+      {
+        id: 'order',
+        title: 'Declare the layer order',
+        paragraphs: [
+          'The order of layers is fixed by where each name is first declared, and a later layer beats an earlier one. Tailwind v4 has `theme`, `base`, `components` and `utilities`. Punji has `punji.tokens` and `punji.components`. You want the reset in `base` to come before Punji (so it cannot flatten Punji\'s button and field styles) and utilities to come after (so `w-full` beats a component rule).',
+          'A bare `@layer` statement may precede `@import`, so put the order first in your main CSS file.',
+        ],
+        code: [
+          {
+            label: 'app.css (Tailwind CSS v4)',
+            text: "@layer theme, base, punji.tokens, punji.components, components, utilities;\n\n@import 'tailwindcss';\n@import '@punji/ui/styles.css';",
+          },
+        ],
+      },
+      {
+        id: 'use',
+        title: 'Use Tailwind for layout, Punji for components',
+        paragraphs: [
+          'Place and space Punji components with utilities through their `className` prop (Card, Button and the other components accept it for layout). Do not use utilities to restyle a component\'s colours or borders: change a token instead, as in [Theming](/get-started/theming/), so every instance and both themes stay consistent.',
+        ],
+        code: [{ label: 'Utilities for layout, components for content', file: 'dashboard' }],
+      },
+      {
+        id: 'tokens',
+        title: 'Share tokens with Tailwind',
+        paragraphs: [
+          'Tailwind v4 keeps its design tokens as CSS variables too, so you can point a Tailwind colour at a Punji token and have it follow light and dark: a `@theme` entry such as `--color-text: var(--pu-color-text)` makes `text-text` read the Punji variable. Use `@theme inline` if the variable is defined later in the cascade than the theme block. This repository does not build a Tailwind sample, so test the exact syntax against your Tailwind version.',
+        ],
+      },
+      {
+        id: 'notes',
+        title: 'Notes',
+        paragraphs: ['Checks.'],
+        points: [
+          'The layer order above is plain CSS cascade behaviour, not a Tailwind feature, so it also applies to any other layered framework.',
+          'If a utility does not win, check the order of the `@layer` statement: the first declaration of a layer name decides.',
+          'Tailwind v3 does not use cascade layers for its output. Put Punji\'s stylesheet before the `@tailwind` directives and the v3 utilities, which are unlayered, will win.',
+        ],
+      },
+    ],
+  }),
+  guide({
+    slug: 'live-data',
+    navTitle: 'Live data',
+    title: 'Live data adapters',
+    description: 'Feed live prices into Punji UI through an adapter and a hook, never from a fetch inside a component. Validate messages, keep bigint, tween with LiveFigure.',
+    summary:
+      'Components in this library take data and never fetch it. Put the transport (WebSocket, server-sent events, polling) behind a small adapter interface, expose it to React with useSyncExternalStore, and pass the result as props. LiveFigure animates the change.',
+    related: ['live-figure', 'stock-table', 'hooks', 'ssr'],
+    guide: [
+      {
+        id: 'rule',
+        title: 'The rule: components never fetch',
+        paragraphs: [
+          'No component in `@punji/ui` calls `fetch`, opens a socket or owns a timer for data. A table prints the quotes it is given; a figure prints the number it is given. That keeps components testable with plain props, renderable on the server, and independent of any vendor or API shape. Where the data comes from is your application\'s decision, and it belongs behind an adapter.',
+        ],
+      },
+      {
+        id: 'adapter',
+        title: 'The adapter and the hook',
+        paragraphs: [
+          'The adapter is an interface: `subscribe(symbol, onTick)` returns an unsubscribe function. A WebSocket implementation lives behind it, with reconnection and authentication, and a test passes a fake. `useLastTick` turns it into React state with `useSyncExternalStore`, which is concurrent-safe and gives the server render and hydration the same `null`.',
+          'Treat every message as untrusted input: parse it, check each field, and drop what does not match. Minor units travel as strings because JSON has no bigint; keep arithmetic that matters in `bigint`.',
+        ],
+        code: [{ label: 'The adapter, the validator and the hook', file: 'quote-feed' }],
+      },
+      {
+        id: 'component',
+        title: 'The component',
+        paragraphs: [
+          'The component takes a symbol and renders through `LiveFigure` ([page](/components/live-figure/)): it counts to each new value over a short ease-out and tints once in the direction of the change. Under reduced motion neither runs and the new value simply replaces the old. The `id` makes a different symbol snap instead of tweening.',
+          '`@punji/ui/live` also exports the tween on its own (`useTweenedNumber`, `tweenAt`, `easeOut`) if you want to animate your own figure.',
+        ],
+        code: [{ label: 'A live price', file: 'live-price' }],
+      },
+      {
+        id: 'notes',
+        title: 'Notes',
+        paragraphs: ['What to decide in your application.'],
+        points: [
+          'Throttle bursts before they reach React (the hooks include `useThrottle`); a feed that ticks many times a second does not need that many renders.',
+          'Show staleness: pass an as-of time and a [MarketStatus](/components/market-status/) so a frozen feed is visible, never an old price presented as current.',
+          'Tables can flash their last-traded price on change with the `live` prop of `StockTable`; give them a new array of quotes when a tick arrives.',
+        ],
+      },
+    ],
+  }),
+  guide({
+    slug: 'security',
+    title: 'Security',
+    description: 'What the package does to stay safe (no HTML from strings, one dependency, signed releases) and what stays yours: formula injection, masking, server validation.',
+    summary:
+      'Components render text as text, the package has one reviewed runtime dependency and releases carry provenance. Client-side checks are conveniences: validate and authorise on the server, neutralise exports, and mask sensitive values before they reach a component.',
+    related: ['csv-export', 'ledger-helpers', 'currency-input', 'using'],
+    guide: [
+      {
+        id: 'package',
+        title: 'What the package does',
+        paragraphs: ['From [SECURITY.md](' + REPO + '/SECURITY.md).'],
+        points: [
+          'No HTML from data: no `dangerouslySetInnerHTML`, no `eval`, no inline event-handler strings. Components render text as text. `scripts/check-source.mjs` fails the build if one appears.',
+          'One reviewed runtime dependency. React is a peer; the only bundled dependency is `@remotemerge/nepali-date-converter` (MIT, pinned exactly, no transitive dependencies), loaded only by the Bikram Sambat calendar.',
+          'Releases you can verify: npm Trusted Publishing (OIDC, no stored token) with a provenance attestation and a CycloneDX SBOM per GitHub release. Check with `npm audit signatures`. Nothing is published yet.',
+          'Hardened CI: pinned actions, least-privilege permissions, installs with `npm ci --ignore-scripts`, a registry-only lockfile, CodeQL, zizmor and dependency review.',
+        ],
+      },
+      {
+        id: 'formula',
+        title: 'Formula injection in exports',
+        paragraphs: [
+          'A spreadsheet treats a cell that starts with `=`, `+`, `-`, `@`, a tab or a carriage return as a formula, so exported user text such as `=HYPERLINK(...)` can run in the reader\'s Excel. `toCsv` therefore prefixes every text cell and header that starts with one of those characters with an apostrophe by default, following OWASP\'s guidance. A cell of JavaScript type `number` is exempt, because a finite number cannot contain a formula. `neutralizeFormulas: false` is for trusted, machine-generated data only. Details: [docs/EXPORT.md](' + REPO + '/docs/EXPORT.md) and the [CSV export](/utilities/csv-export/) page.',
+          'Neutralising in the browser reduces risk. It does not replace the server: neutralise on the server for any CSV the server generates or emails.',
+        ],
+        code: [{ label: 'Export with a masked column', file: 'safe-export' }],
+      },
+      {
+        id: 'masking',
+        title: 'Masking and what you pass in',
+        paragraphs: [
+          'A component prints exactly what it is given, and an export contains whatever you pass. Mask or omit sensitive values (account and card numbers, tax identifiers) before they reach a component or `toCsv`, and decide per role which columns a user may see or export. Hiding a column in the interface does not remove it from the data in the page.',
+        ],
+      },
+      {
+        id: 'server',
+        title: 'Client-side validation is not server validation',
+        paragraphs: [
+          '`CurrencyInput` limits what can be typed and parses to exact minor units, and the ledger helpers check that a journal balances. Both run in a browser that anyone can edit or bypass. Validate and authorise every amount, journal, total, period lock and permission again on the server, and show its error. A balanced trial balance on screen does not prove the books are right.',
+        ],
+        code: [{ label: 'A form that trusts the server, not itself', file: 'validate-on-server' }],
+      },
+      {
+        id: 'csp',
+        title: 'Content Security Policy',
+        paragraphs: [
+          'The package injects no scripts and loads no remote fonts or images itself. Some components write `style` attributes for computed sizes; if you use a strict `style-src`, test your pages. The package has not been checked against a strict CSP, so this is a check for you to run, not a guarantee.',
+        ],
+      },
+      {
+        id: 'report',
+        title: 'Reporting a vulnerability',
+        paragraphs: [
+          'Do not open a public issue. Report privately through GitHub (Security, then Report a vulnerability, on the [repository](https://github.com/20was/punji-ui/security/advisories/new)) or email contact@punji.app with "SECURITY" in the subject. You get an acknowledgement within 3 working days and a first assessment within 10. Until 1.0 only the latest `0.x` receives fixes.',
+        ],
+      },
+    ],
+  }),
+  guide({
+    slug: 'roadmap',
+    title: 'Roadmap',
+    description: 'What ships today, what is in progress and what comes in waves 2 to 4: guides, compositions, portfolio components, scale, accessibility and example apps.',
+    summary:
+      'The package is built in waves. The foundations (money, calculations, market, accounting, tests, a docs site) are merged; the current waves are discoverability and gaps, then compositions and guides. This page summarises ROADMAP.md in the repository, which is the source of truth.',
+    related: ['using', 'security', 'agents'],
+    guide: [
+      {
+        id: 'done',
+        title: 'Shipped on main',
+        paragraphs: ['Merged, not yet published to npm.'],
+        points: [
+          'Financial utilities: exact calculations, generic money formatting and parsing, ledger maths, CSV export with formula neutralisation, hooks.',
+          'Components: money primitives, stock market (tables, movers, indices, status, price limits, watchlist, heatmap, order books), accounting (ledger, journal, trial balance, statements, payment status, period selector), forms, layout and feedback modules.',
+          'Quality: Playwright visual regression in Docker, interaction and axe specs, unit and property tests, size budgets, package checks, a clean-consumer install check.',
+          'Docs: this site, with props generated from the built declarations.',
+        ],
+      },
+      {
+        id: 'wave1',
+        title: 'Wave 1: discoverability and the biggest gaps (in progress)',
+        paragraphs: ['What is being built now.'],
+        points: [
+          'SEO-ready docs site: clean URLs, prerendered HTML, unique titles and descriptions, sitemap and llms.txt.',
+          'README and package metadata with a quick start that type-checks.',
+          'Financial charts: candlestick (with volume and moving averages), performance versus benchmarks, depth chart.',
+          'Banking and payments: masked account numbers, account cards, transaction list, receipt, timeline, beneficiary selector.',
+        ],
+      },
+      {
+        id: 'wave2',
+        title: 'Wave 2: compositions, showcase and guides (in progress)',
+        paragraphs: ['Guides and the remaining generic component pages are written on this site; the rest is planned.'],
+        points: [
+          'Done on this site: the guides under Get started and a page for every generic form, layout and feedback component.',
+          'Showcase section: real-world patterns (an app band, a portfolio screen, a live market board, an invoice, a statement) built only from package exports, labelled as patterns to copy, not API. It replaces the portal\'s app-specific component pages at cutover.',
+          'Portfolio: holdings table, allocation donut with legend, dividend and transaction history, portfolio overview.',
+          'Forms: NumberInput, PercentageInput, OTP input, date-range presets, statement upload.',
+        ],
+      },
+      {
+        id: 'later',
+        title: 'Waves 3 and 4, and after the release',
+        paragraphs: ['Later work.'],
+        points: [
+          'Wave 3, scale and trust: a virtualised data table for 10k+ rows with column pinning, resizing and multi-sort; a high-contrast theme, density setting and RTL verification; performance numbers for live tables; a manual VoiceOver and NVDA pass; an automated Next.js consumer build.',
+          'Wave 4, adoption: full example apps (trading dashboard, portfolio tracker, invoicing), StackBlitz starters, good first issues, a component contribution template.',
+          'After the first release: punji-web adopts the published package, and these docs replace the old portal at design.punji.app with its URLs preserved.',
+        ],
+      },
+      {
+        id: 'out',
+        title: 'Out of scope',
+        paragraphs: ['Brand artwork, application routes, authentication, permissions, backend clients, tax rules and trading execution. Those belong in your application.'],
+        points: ['Read the full text and the calendar notes in [ROADMAP.md](' + REPO + '/ROADMAP.md).'],
+      },
+    ],
+  }),
+  guide({
+    slug: 'agents',
+    navTitle: 'Contributing',
+    title: 'Contributing, for people and agents',
+    description: 'Which Punji UI component to reach for, the checks to run before calling work done, and the bar a new component has to meet. For humans and coding agents.',
+    summary:
+      'People and coding agents build with the same components and the same checks. Reach for the component that already does the job, run the gates before you say done, and meet the bar below before adding a new component.',
+    related: ['using', 'roadmap', 'security', 'button'],
+    guide: [
+      {
+        id: 'pick',
+        title: 'Which component',
+        paragraphs: ['Each line names what you need, the component to use, and what not to build instead.'],
+        points: [
+          'The view\'s main action: `Button` primary, one per view. Not a second primary or a styled link.',
+          'Any other action: `Button` secondary, or ghost in a row. Not a page-made button class.',
+          'Delete, remove, leave: an inline confirm or a sheet, then a danger `Button`. Not a danger button that acts at once.',
+          'Text, a number, a date or a symbol: `Field`, `NumberField`, `DateField`, `SymbolField`. Not a raw input with page CSS. Money: `CurrencyInput`.',
+          'Several lines of text: `TextAreaField`. One of many (five or more): `Select`. Two to five short options: `SegmentedControl`. A section\'s views: `Tabs`.',
+          'A setting that applies at once: `Switch`. Choices that wait for Save: `Checkbox`.',
+          'A label nobody presses: `StatusPill`. A section of a page: `Card`, never inside a card.',
+          'A form beside the page: `Drawer`. Say what just happened: `useToast`. Explain a term: `InfoTip`.',
+          'Loading: a skeleton in the content\'s shape. Nothing yet, or a failure: an empty state with one action.',
+          'Money, prices and changes: `MoneyDisplay`, `PriceChange`, `Figure` and `Delta`; never `toFixed` on a price, and never colour alone for gain or loss.',
+        ],
+      },
+      {
+        id: 'done',
+        title: 'Before you say "done"',
+        paragraphs: ['Clone, `npm ci --ignore-scripts`, then run the gates.'],
+        points: [
+          '`npm run verify` runs lint, typecheck, tests, build, size budgets, package checks, example builds, the docs-site typecheck and build, and the SEO check. `npm run verify:deep` repeats the property tests with 2000 inputs each.',
+          'For a visual change, run the Docker visual gate (`npm run test:visual:docker`) and commit the baselines it writes.',
+          'Look at what you changed: screenshot the page and its states at 390 and 1440 wide in light and dark, and open the screenshots. Check one focus ring, readable hover, matching heights in a row, no truncated figure, no card in a card, no sideways scroll at 390.',
+          'Add a changeset for anything that changes what ships (`npm run changeset`), and say why if it is a minor bump.',
+        ],
+      },
+      {
+        id: 'bar',
+        title: 'The bar for a new component',
+        paragraphs: ['A component joins the kit only when all of this is true. The pull request template repeats it as a checklist.'],
+        points: [
+          'It is general purpose: useful in any product. Product-specific pieces stay in the product.',
+          'It follows a WAI-ARIA pattern (or wraps a native element) and implements its keyboard model in full.',
+          'Its dependencies are justified: licence, maintenance, security, types and bundle cost reviewed.',
+          'It has a size budget in `.size-limit.json`, uses tokens only, works in light and dark, draws one focus ring and keeps 44 px touch targets.',
+          'It is tested (pointer and keyboard, roles and names, axe) and has a visual fixture with Docker baselines.',
+          'It has a page on this site: examples, props with doc comments, when to use it, keyboard and accessibility notes.',
+          'It is exported from the root and from its own subpath, with its own CSS file.',
+        ],
+        code: [{ label: 'Set up', text: 'git clone https://github.com/20was/punji-ui.git\ncd punji-ui\nnpm ci --ignore-scripts\nnpm run verify' }],
+      },
+      {
+        id: 'links',
+        title: 'Where it is written down',
+        paragraphs: ['Read these before a larger change.'],
+        points: [
+          '[CONTRIBUTING.md](' + REPO + '/CONTRIBUTING.md): setup, checks, changesets and the bar above.',
+          '[ARCHITECTURE.md](' + REPO + '/ARCHITECTURE.md) and [QUALITY.md](' + REPO + '/QUALITY.md): structure, decisions and the definition of done.',
+          '[RELEASE.md](' + REPO + '/RELEASE.md): the gated release flow. Never publish from a laptop.',
+          '[SECURITY.md](' + REPO + '/SECURITY.md) and the [Security](/get-started/security/) guide.',
+        ],
+      },
+    ],
+  }),
+];

@@ -2,19 +2,25 @@
 
 /**
  * Form fields (design.punji.app/components/field): a label over a boxed
- * input, a hint or an error under it. NumberField accepts grouping commas
- * and Devanagari digits; DateField is the native date input; SymbolField is a
+ * input, a hint or an error under it. NumberField shows what was typed and
+ * reports a parsed result (grouping commas and Devanagari digits accepted);
+ * DateField is the native date input; SymbolField is a
  * combobox over a list the page hands it (no request per keystroke).
  */
 import { useId, useMemo, useState, type InputHTMLAttributes, type ReactNode, type Ref, type TextareaHTMLAttributes } from 'react';
 
 import { Select } from '../select/Select.tsx';
 import { searchSymbols, type SymbolOption } from '../format/format.ts';
+import { parseLocalizedDecimal, type DecimalParseResult } from '../nepal/decimal.ts';
 
 interface BaseProps {
+  /** The visible label, a real <label> tied to the control. Keep it short and specific ("Units", not "Enter units"). */
   label: ReactNode;
+  /** A quiet line under the control (format, unit, limit). Linked with aria-describedby; replaced by `error` when there is one. */
   hint?: ReactNode;
+  /** What is wrong and how to fix it. Sets aria-invalid, is announced when it appears (role="alert") and replaces `hint`. */
   error?: ReactNode;
+  /** Becomes data-testid on the control. */
   testId?: string;
   /** The box: lg 44 (forms, the default) or md 36 (a toolbar). */
   size?: 'md' | 'lg';
@@ -22,10 +28,14 @@ interface BaseProps {
   hideLabel?: boolean;
 }
 
-type InputProps = BaseProps & Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'value' | 'size'> & {
+interface ValueProps {
+  /** The current text. The field is controlled: it always shows exactly this. */
   value: string;
+  /** Called with the new text on every change (the string, not the event). */
   onChange: (v: string) => void;
-};
+}
+
+type InputProps = BaseProps & Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'value' | 'size'> & ValueProps;
 
 function Shell({ id, label, hint, error, size = 'lg', hideLabel, children }: BaseProps & { id: string; children: ReactNode }) {
   return (
@@ -41,7 +51,13 @@ function Shell({ id, label, hint, error, size = 'lg', hideLabel, children }: Bas
   );
 }
 
-export function Field({ label, hint, error, testId, value, onChange, id: idProp, size, hideLabel, trailingAction, ...rest }: InputProps & { /** Optional labelled action beside the input (for example, open a calendar). */ trailingAction?: ReactNode }) {
+interface FieldExtras {
+  /** Optional labelled action beside the input (for example, open a calendar). */
+  trailingAction?: ReactNode;
+}
+
+/** A text input in the kit box: a label over the input, a hint or an error under it. Any other <input> attribute is passed through. */
+export function Field({ label, hint, error, testId, value, onChange, id: idProp, size, hideLabel, trailingAction, ...rest }: InputProps & FieldExtras) {
   const auto = useId();
   const id = idProp ?? auto;
   const input = <input
@@ -60,12 +76,33 @@ export function Field({ label, hint, error, testId, value, onChange, id: idProp,
   );
 }
 
-export function NumberField({ integer, ...props }: InputProps & { integer?: boolean }) {
-  return <Field {...props} inputMode={integer ? 'numeric' : 'decimal'} autoComplete="off" />;
+interface NumberExtras {
+  /** Whole numbers only: asks a phone for the numeric keypad (inputMode "numeric") and refuses a fraction when parsing. */
+  integer?: boolean;
+  /** Most digits after the point that parsing accepts (0 to 9). Default 2, or 0 with `integer`. */
+  maxFractionDigits?: number;
+  /** Which grouping commas parsing accepts: "south-asian" (12,34,567, the default), "western" (1,234,567) or "none". */
+  grouping?: 'south-asian' | 'western' | 'none';
+  /** Called with the parsed result on every change, next to onChange: `valid` carries a plain ASCII decimal string with no commas ("1234567.5"); `partial`, `empty` and `invalid` (with a reason) say why there is no number yet. Never rounds. */
+  onValueChange?: (result: DecimalParseResult) => void;
+}
+
+/** A Field for a number. The text stays exactly as typed (grouping commas and Devanagari digits included); `onValueChange` reports it parsed through parseLocalizedDecimal as an exact decimal string, never a float. It does not validate ranges or set `error` for you. */
+export function NumberField({ integer, maxFractionDigits, grouping, onValueChange, onChange, ...props }: InputProps & NumberExtras) {
+  const max = maxFractionDigits ?? (integer ? 0 : 2);
+  return <Field
+    {...props}
+    onChange={(v) => {
+      onChange(v);
+      onValueChange?.(parseLocalizedDecimal(v, { maxFractionDigits: max, grouping }));
+    }}
+    inputMode={integer ? 'numeric' : 'decimal'}
+    autoComplete="off"
+  />;
 }
 
 /** Several lines of text (a message, a note): the same box, at least two control heights tall, grows with `rows`. */
-export function TextAreaField({ label, hint, error, testId, value, onChange, id: idProp, size, hideLabel, rows = 4, ...rest }: BaseProps & Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onChange' | 'value' | 'size'> & { value: string; onChange: (v: string) => void }) {
+export function TextAreaField({ label, hint, error, testId, value, onChange, id: idProp, size, hideLabel, rows = 4, ...rest }: BaseProps & Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onChange' | 'value' | 'size'> & ValueProps) {
   const auto = useId();
   const id = idProp ?? auto;
   return (
@@ -84,11 +121,18 @@ export function TextAreaField({ label, hint, error, testId, value, onChange, id:
   );
 }
 
+/** A Field with type="date": the browser's own date input, whose value is always YYYY-MM-DD. */
 export function DateField(props: InputProps) {
   return <Field {...props} type="date" />;
 }
 
-export function SelectField({ label, hint, error, testId, value, onChange, options, size, hideLabel }: BaseProps & { value: string; onChange: (v: string) => void; options: { value: string; label: string }[] }) {
+interface SelectFieldExtras {
+  /** The choices, in order. Each has the value you receive and the words the person sees. */
+  options: { value: string; label: string }[];
+}
+
+/** A Select in the Field box: the same label, hint and error wiring, full width. */
+export function SelectField({ label, hint, error, testId, value, onChange, options, size, hideLabel }: BaseProps & ValueProps & SelectFieldExtras) {
   const id = useId();
   return (
     <Shell id={id} label={label} hint={hint} error={error} size={size} hideLabel={hideLabel}>
@@ -97,7 +141,15 @@ export function SelectField({ label, hint, error, testId, value, onChange, optio
   );
 }
 
-export function SymbolField({ label, hint, error, testId, value, onChange, options, placeholder, size, hideLabel }: BaseProps & { value: string; onChange: (v: string) => void; options: readonly SymbolOption[]; placeholder?: string }) {
+interface SymbolFieldExtras {
+  /** Every symbol and company name the person can pick. Matching runs in memory over this list on each keystroke (no request). */
+  options: readonly SymbolOption[];
+  /** Text shown in the empty input. */
+  placeholder?: string;
+}
+
+/** A combobox for a ticker symbol: the typed text is uppercased and matched by symbol and company name against `options`. */
+export function SymbolField({ label, hint, error, testId, value, onChange, options, placeholder, size, hideLabel }: BaseProps & ValueProps & SymbolFieldExtras) {
   const id = useId();
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
@@ -177,7 +229,14 @@ export function SymbolField({ label, hint, error, testId, value, onChange, optio
 }
 
 /** An editable price with an optional source annotation, isolated from ordinary number fields. */
-export function PriceField({ label, source, hint, error, testId, value, onChange, id: idProp, size, hideLabel, ...rest }: InputProps & { /** A compact source annotation inside the editable price. */ source?: ReactNode; /** React 19: a ref is a prop. */ ref?: Ref<HTMLInputElement> }) {
+interface PriceFieldExtras {
+  /** A compact source annotation inside the editable price (a currency code, "last close"). */
+  source?: ReactNode;
+  /** A ref to the input element (React 19: a ref is a prop). */
+  ref?: Ref<HTMLInputElement>;
+}
+
+export function PriceField({ label, source, hint, error, testId, value, onChange, id: idProp, size, hideLabel, ...rest }: InputProps & PriceFieldExtras) {
   const auto = useId();
   const id = idProp ?? auto;
   return (

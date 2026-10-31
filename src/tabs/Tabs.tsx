@@ -4,8 +4,11 @@ import { segmentTarget } from '../format/format.ts';
 import type { Option } from '../controls/Controls.tsx';
 
 export interface TabsProps<T extends string> {
+  /** The tabs in order: the value you receive, the label, and optionally a count and (for the panel variant) an icon. */
   options: Option<T>[];
+  /** The chosen tab's value. The tabs are controlled. */
   value: T;
+  /** Called with the chosen tab's value (not the event). */
   onChange: (v: T) => void;
   /** ids and testIDs are `${prefix}-${value}`. */
   prefix: string;
@@ -20,6 +23,7 @@ export interface TabsProps<T extends string> {
    * panel: a side panel's views, an icon over a short label on a track, the chosen one filled (PanelTabs).
    */
   variant?: 'line' | 'panel';
+  /** Becomes data-testid on the tab list. */
   testId?: string;
 }
 

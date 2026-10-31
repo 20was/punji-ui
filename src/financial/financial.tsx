@@ -1,17 +1,25 @@
 'use client';
 
-import { useId, type ReactNode } from 'react';
+import { useId, type PointerEvent, type ReactNode } from 'react';
+import { clamp, isNum, useChartCursor } from '../internal/chartFrame.tsx';
 import { DataTable, DataListRow, Cell, type Column, type DataTablePagination, type DataTableSearch, type DataTableSelection, type SortDir } from '../table/Table.tsx';
 import { EmptyState, Skeleton } from '../states/States.tsx';
 import { StatGrid, StatTile } from '../stats/Stats.tsx';
 
 export interface AppShellProps {
+  /** The product name or logo, linking home. Drawn in the header. */
   brand: ReactNode;
+  /** Your navigation (links, a list). It wraps on phones; the shell does not hide it. */
   navigation: ReactNode;
+  /** The navigation landmark's accessible name ("Main", "Documentation"). */
   navigationLabel: string;
+  /** The page. Rendered inside <main>, which the skip link targets. */
   children: ReactNode;
+  /** Header controls on the right (a theme switch, an account button). */
   actions?: ReactNode;
+  /** A footer line, rendered as the contentinfo landmark. Omitted when empty. */
   footer?: ReactNode;
+  /** The skip link's words, in the reader's language. Default "Skip to content". */
   skipLabel?: string;
 }
 /** Router-independent landmarks. Navigation wraps on phones; no inaccessible hidden menu. */
@@ -25,9 +33,25 @@ export function AppShell({ brand, navigation, navigationLabel, children, actions
   </div>;
 }
 
-export interface FinancialMetric { id: string; label: ReactNode; value: ReactNode; note?: ReactNode }
+export interface FinancialMetric {
+  /** Unique, stable key of the metric. */
+  id: string;
+  /** What the figure is ("Invested"). */
+  label: ReactNode;
+  /** The finished, formatted figure (a MoneyDisplay, or text with its currency). */
+  value: ReactNode;
+  /** A quiet line under the value: the as-of date, the basis, a count. */
+  note?: ReactNode;
+}
 /** Caller supplies calculated and formatted amounts, including currency and as-of labels. */
-export function FinancialSummary({ metrics, label }: { metrics: readonly FinancialMetric[]; label: string }) {
+export interface FinancialSummaryProps {
+  /** The figures, in order. The grid has one column per metric, at most four. */
+  metrics: readonly FinancialMetric[];
+  /** The grid's accessible name ("Portfolio totals"). */
+  label: string;
+}
+
+export function FinancialSummary({ metrics, label }: FinancialSummaryProps) {
   return <StatGrid label={label} cols={Math.min(4, Math.max(1, metrics.length))}>{metrics.map(metric => <StatTile key={metric.id} {...metric} />)}</StatGrid>;
 }
 
@@ -100,7 +124,9 @@ export function PriceChart({ points, label, formatValue, dataLabel = 'View chart
   /** Shown for a missing value in the data table, and as the title of the empty state when nothing is published. Default 'Unavailable'. */
   missingLabel?: string;
 }) {
-  const valid = points.flatMap(p => p.value !== null && Number.isFinite(p.value) ? [p.value] : []);
+  const cursor = useChartCursor(points.length);
+  const hintId = `${useId()}-h`;
+  const valid = points.flatMap(p => isNum(p.value) ? [p.value] : []);
   if (!valid.length) return <EmptyState title={missingLabel} body={label} />;
   const min = valid.reduce((a, b) => Math.min(a, b));
   const max = valid.reduce((a, b) => Math.max(a, b));
@@ -110,15 +136,33 @@ export function PriceChart({ points, label, formatValue, dataLabel = 'View chart
   const y = (v: number) => span === 0 ? 65 : 110 - ((v / magnitude - min / magnitude) / span) * 90;
   const x = (i: number) => points.length === 1 ? 240 : 10 + i / (points.length - 1) * 460;
   const path = points.map((p, i) => {
-    if (p.value === null || !Number.isFinite(p.value)) return ''; 
+    if (!isNum(p.value)) return '';
     const previous = points[i - 1]?.value;
-    const command = previous != null && Number.isFinite(previous) ? 'L' : 'M';
+    const command = isNum(previous) ? 'L' : 'M';
     return `${command}${x(i)},${y(p.value)}`;
   }).join(' ');
+  const at = cursor.index;
+  const active = at === null ? undefined : points[at];
+  const reading = active ? `${active.label}: ${isNum(active.value) ? formatValue(active.value) : missingLabel}` : '';
+  // The pointer's place across the plot, as the nearest observation (the drawing is 480 wide, stretched to fit).
+  const onPointer = (e: PointerEvent<HTMLDivElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    if (r.width <= 0) return;
+    const viewX = ((e.clientX - r.left) / r.width) * 480;
+    cursor.pointerTo(points.length === 1 ? 0 : clamp(Math.round(((viewX - 10) / 460) * (points.length - 1)), 0, points.length - 1));
+  };
   return <figure className="pu-chart"><figcaption>{label}</figcaption>
     <div className="pu-chart-range"><span>{formatValue(max)}</span><span>{formatValue(min)}</span></div>
-    <svg viewBox="0 0 480 130" preserveAspectRatio="none" role="img" aria-label={label}><path d={path} fill="none" stroke="currentColor" strokeWidth="2" />{points.map((p, i) => p.value !== null && Number.isFinite(p.value) ? <circle key={i} cx={x(i)} cy={y(p.value)} r="2" /> : null)}</svg>
-    <details><summary>{dataLabel}</summary><table><caption>{label}</caption><tbody>{points.map((point, i) => <tr key={i}><th scope="row">{point.label}</th><td>{point.value !== null && Number.isFinite(point.value) ? formatValue(point.value) : missingLabel}</td></tr>)}</tbody></table></details>
+    {/* The plot is one focus stop: the arrow keys and the pointer read the observations one at a time. */}
+    {/* oxlint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/no-noninteractive-tabindex */}
+    <div className="pu-chart-plot" tabIndex={0} role="group" aria-label={label} aria-roledescription="line chart" aria-describedby={hintId}
+      onKeyDown={cursor.onKeyDown} onFocus={cursor.onFocus} onBlur={cursor.clear} onPointerMove={onPointer} onPointerDown={onPointer} onPointerLeave={() => cursor.pointerTo(null)}>
+      <svg viewBox="0 0 480 130" preserveAspectRatio="none" role="img" aria-label={label}><path d={path} fill="none" stroke="currentColor" strokeWidth="2" />{points.map((p, i) => isNum(p.value) ? <circle key={i} cx={x(i)} cy={y(p.value)} r="2" /> : null)}{at !== null && <line className="pu-chart-cursor" x1={x(at)} x2={x(at)} y1="10" y2="120" />}</svg>
+      {reading && <span className="pu-chart-read" aria-hidden="true">{reading}</span>}
+    </div>
+    <p className="kit-sr" id={hintId}>Use the left and right arrow keys to move between observations, Home and End to jump to the first and last.</p>
+    <div className="kit-sr" role="status" aria-live="polite" aria-atomic="true">{reading}</div>
+    <details><summary>{dataLabel}</summary><table><caption>{label}</caption><tbody>{points.map((point, i) => <tr key={i}><th scope="row">{point.label}</th><td>{isNum(point.value) ? formatValue(point.value) : missingLabel}</td></tr>)}</tbody></table></details>
   </figure>;
 }
 

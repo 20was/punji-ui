@@ -1,7 +1,7 @@
 {
   "name": "@punji/ui",
   "version": "0.0.0",
-  "description": "Accessible, tree-shakeable React components themed with CSS variables, with light and dark modes and Devanagari-ready type.",
+  "description": "Finance-first React design system: exact bigint money, stock-market tables, ledgers and Nepal-first locale (NPR, BS calendar), any currency.",
   "license": "MIT",
   "author": "Punji",
   "homepage": "https://design.punji.app",
@@ -19,7 +19,24 @@
     "css-variables",
     "dark-mode",
     "devanagari",
-    "nepali"
+    "nepali",
+    "finance",
+    "fintech",
+    "financial",
+    "stock-market",
+    "trading",
+    "nepse",
+    "nepal",
+    "portfolio",
+    "accounting",
+    "ledger",
+    "money",
+    "currency",
+    "invoice",
+    "banking",
+    "bikram-sambat",
+    "data-table",
+    "charts"
   ],
   "type": "module",
   "sideEffects": [
@@ -214,6 +231,22 @@
       "types": "./dist/column-chart/ColumnChart.d.ts",
       "default": "./dist/column-chart/ColumnChart.js"
     },
+    "./chart-math": {
+      "types": "./dist/chart-math/chartMath.d.ts",
+      "default": "./dist/chart-math/chartMath.js"
+    },
+    "./candlestick-chart": {
+      "types": "./dist/candlestick-chart/CandlestickChart.d.ts",
+      "default": "./dist/candlestick-chart/CandlestickChart.js"
+    },
+    "./performance-chart": {
+      "types": "./dist/performance-chart/PerformanceChart.d.ts",
+      "default": "./dist/performance-chart/PerformanceChart.js"
+    },
+    "./depth-chart": {
+      "types": "./dist/depth-chart/DepthChart.d.ts",
+      "default": "./dist/depth-chart/DepthChart.js"
+    },
     "./breakdown": {
       "types": "./dist/breakdown/Breakdown.d.ts",
       "default": "./dist/breakdown/Breakdown.js"
@@ -282,6 +315,30 @@
       "types": "./dist/market-heatmap/MarketHeatmap.d.ts",
       "default": "./dist/market-heatmap/MarketHeatmap.js"
     },
+    "./portfolio": {
+      "types": "./dist/portfolio/portfolio.d.ts",
+      "default": "./dist/portfolio/portfolio.js"
+    },
+    "./holdings-table": {
+      "types": "./dist/holdings-table/HoldingsTable.d.ts",
+      "default": "./dist/holdings-table/HoldingsTable.js"
+    },
+    "./portfolio-allocation": {
+      "types": "./dist/portfolio-allocation/PortfolioAllocation.d.ts",
+      "default": "./dist/portfolio-allocation/PortfolioAllocation.js"
+    },
+    "./portfolio-overview": {
+      "types": "./dist/portfolio-overview/PortfolioOverview.d.ts",
+      "default": "./dist/portfolio-overview/PortfolioOverview.js"
+    },
+    "./dividend-history": {
+      "types": "./dist/dividend-history/DividendHistory.d.ts",
+      "default": "./dist/dividend-history/DividendHistory.js"
+    },
+    "./transaction-history": {
+      "types": "./dist/transaction-history/TransactionHistory.d.ts",
+      "default": "./dist/transaction-history/TransactionHistory.js"
+    },
     "./ledger": {
       "types": "./dist/ledger/ledger.d.ts",
       "default": "./dist/ledger/ledger.js"
@@ -309,6 +366,38 @@
     "./payment-status": {
       "types": "./dist/payment-status/PaymentStatus.d.ts",
       "default": "./dist/payment-status/PaymentStatus.js"
+    },
+    "./banking": {
+      "types": "./dist/banking/banking.d.ts",
+      "default": "./dist/banking/banking.js"
+    },
+    "./account-number": {
+      "types": "./dist/account-number/AccountNumber.d.ts",
+      "default": "./dist/account-number/AccountNumber.js"
+    },
+    "./bank-account-card": {
+      "types": "./dist/bank-account-card/BankAccountCard.d.ts",
+      "default": "./dist/bank-account-card/BankAccountCard.js"
+    },
+    "./transaction-list": {
+      "types": "./dist/transaction-list/TransactionList.d.ts",
+      "default": "./dist/transaction-list/TransactionList.js"
+    },
+    "./transaction-status": {
+      "types": "./dist/transaction-status/TransactionStatus.d.ts",
+      "default": "./dist/transaction-status/TransactionStatus.js"
+    },
+    "./payment-receipt": {
+      "types": "./dist/payment-receipt/PaymentReceipt.d.ts",
+      "default": "./dist/payment-receipt/PaymentReceipt.js"
+    },
+    "./payment-timeline": {
+      "types": "./dist/payment-timeline/PaymentTimeline.d.ts",
+      "default": "./dist/payment-timeline/PaymentTimeline.js"
+    },
+    "./beneficiary-selector": {
+      "types": "./dist/beneficiary-selector/BeneficiarySelector.d.ts",
+      "default": "./dist/beneficiary-selector/BeneficiarySelector.js"
     },
     "./period-selector": {
       "types": "./dist/period-selector/FinancialPeriodSelector.d.ts",
@@ -488,7 +577,7 @@
     "check:types": "attw --pack . --profile esm-only --exclude-entrypoints styles.css tokens.css \"css/*.css\" package.json",
     "check:package": "npm run check:publint && npm run check:types && node scripts/check-pack.mjs && npm run check:exports",
     "check:lockfile": "lockfile-lint --path package-lock.json --type npm --allowed-hosts npm --validate-https --validate-integrity",
-    "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run size && npm run check:package && npm run build:examples && npm run typecheck:examples && npm run typecheck:portal && npm run typecheck:visual && npm run typecheck:site && npm run site:build && npm run check:examples",
+    "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run size && npm run check:package && npm run build:examples && npm run typecheck:examples && npm run typecheck:portal && npm run typecheck:visual && npm run typecheck:site && npm run site:build && npm run check:seo && npm run check:examples",
     "verify:deep": "npm run verify && npm run test:deep",
     "changeset": "changeset",
     "version-packages": "changeset version && npm install --package-lock-only --ignore-scripts",
@@ -514,11 +603,14 @@
     "typecheck:visual": "tsc -p test/visual/tsconfig.json --noEmit",
     "site:gen": "node scripts/site-gen.mjs",
     "site:dev": "npm run build && npm run site:gen && vite site",
-    "site:build": "npm run site:gen && vite build site",
+    "site:build": "npm run site:gen && vite build site && vite build site --ssr src/entry-server.tsx --outDir dist-server && node scripts/site-prerender.mjs",
     "site:preview": "vite preview site",
     "typecheck:site": "npm run site:gen && tsc -p site/tsconfig.json --noEmit",
     "check:site": "node scripts/check-site.mjs",
-    "check:consumer": "node scripts/check-consumer.mjs"
+    "check:seo": "node scripts/check-seo.mjs",
+    "site:brand": "node scripts/site-brand.mjs",
+    "check:consumer": "node scripts/check-consumer.mjs",
+    "dev": "node scripts/dev.mjs"
   },
   "peerDependencies": {
     "react": "^19.0.0",

@@ -65,7 +65,7 @@ jobs:
     needs: changes
     if: needs.changes.outputs.package == 'true' || github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     permissions:
       contents: read
     steps:
@@ -94,6 +94,8 @@ jobs:
       - run: npm run typecheck:site
       - name: Build the documentation site
         run: npm run site:build
+      - name: SEO check of the built site (titles, descriptions, canonicals, links, sitemap, JSON-LD)
+        run: npm run check:seo
       - run: npm run build:examples
       - name: Install Chromium for package example checks
         run: npx playwright install --with-deps chromium

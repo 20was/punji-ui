@@ -102,6 +102,7 @@ Sources: [docs/RESEARCH.md](docs/RESEARCH.md), [docs/research/](docs/research/),
 | One library theme (light/dark); host accents are scoped token overrides in the app | Separate public and account themes in the library | Keeps one token contract; apps own brand accents (docs/INTEGRATION.md §9) |
 | `src/styles/tokens.css` is the canonical UI token source | Generate from the app monorepo `tokens.json` | Single source of truth in the published package; app keeps app-only tokens |
 | `OrderBook` and `OrderBookDepth` stay separate | Fold into one component | A price ladder and a cumulative depth view are different jobs |
+| App-specific UI is shown as showcase patterns built from package exports, not exported components | Export app components (AppStrip etc.); drop their pages | More real-world examples and indexable pages without public API for product-specific pieces |
 | First release `0.1.0`, no release candidate | rc prerelease, committed tarball | No consumers yet; pre-1.0 already signals instability; exact pin in punji-web |
 
 ## Differences from docs/ARCHITECTURE.md

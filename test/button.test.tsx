@@ -74,6 +74,8 @@ describe('Button', () => {
     expect(buttonClass()).toBe('kit-btn primary');
     expect(buttonClass({ variant: 'danger', size: 'lg', block: true })).toBe('kit-btn danger lg block');
     expect(buttonClass({ variant: 'ghost', size: 'sm', iconOnly: true })).toBe('kit-btn ghost sm icon');
+    expect(buttonClass({ variant: 'secondary', stacked: true })).toBe('kit-btn secondary stacked');
+    expect(buttonClass({ iconOnly: true, stacked: true })).toBe('kit-btn primary icon');
   });
 
   it('has no serious axe violations', async () => {

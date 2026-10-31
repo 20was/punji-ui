@@ -25,21 +25,27 @@ export interface Option<T extends string> {
 }
 
 export interface ChipProps {
+  /** The chip's words. Short: a filter name or a suggested value. */
   children: ReactNode;
   /** A toggle or a filter: aria-pressed. Omit for a suggestion chip that acts (fills a field). */
   selected?: boolean;
   /** A jump link in an in-page section nav: aria-current instead of aria-pressed, drawn like selected. */
   current?: boolean;
+  /** Called when the chip is pressed. */
   onClick: () => void;
   /** sm 32, md 36 (default); a phone still gets a 44px tap area. */
   size?: 'sm' | 'md';
   /** A count after the label (tabular, quieter). */
   count?: ReactNode;
+  /** A small icon before the label. Decorative: the words name the chip. */
   icon?: ReactNode;
+  /** Cannot be pressed (nothing to filter by yet). */
   disabled?: boolean;
   /** An accessible name when the visible label is a symbol (¼, ½). */
   label?: string;
+  /** Becomes data-testid on the button. */
   testId?: string;
+  /** The button's id, for a label or a skip link to point at. */
   id?: string;
   /** Layout only (push to the row's end), never a restyle. */
   className?: string;
@@ -60,8 +66,25 @@ export function Chip({ children, selected, current, onClick, size = 'md', count,
   );
 }
 
+export interface ChipRowProps<T extends string> {
+  /** The chips in order: the value you receive, the label, and optionally a count. */
+  options: Option<T>[];
+  /** The chosen chip's value. The row is controlled. */
+  value: T;
+  /** Called with the chosen chip's value (not the event). */
+  onChange: (v: T) => void;
+  /** Each chip's testId is `${prefix}-${value}`. */
+  prefix: string;
+  /** The group's accessible name ("Sector", "Range"). */
+  label: string;
+  /** sm 32, md 36 (default). */
+  size?: 'sm' | 'md';
+  /** Wraps onto more lines on a wide screen instead of scrolling sideways. */
+  wrap?: boolean;
+}
+
 /** A single-select row of chips (the app's ChipRow). Wraps on wide screens with `wrap`, scrolls sideways otherwise. */
-export function ChipRow<T extends string>({ options, value, onChange, prefix, label, size, wrap }: { options: Option<T>[]; value: T; onChange: (v: T) => void; prefix: string; label: string; size?: 'sm' | 'md'; wrap?: boolean }) {
+export function ChipRow<T extends string>({ options, value, onChange, prefix, label, size, wrap }: ChipRowProps<T>) {
   return (
     <div className={`kit-chips${wrap ? ' wrap' : ''}`} role="group" aria-label={label}>
       {options.map((o) => (
@@ -74,8 +97,11 @@ export function ChipRow<T extends string>({ options, value, onChange, prefix, la
 }
 
 export interface SegmentedProps<T extends string> {
+  /** The segments in order: the value you receive, the label, and optionally a count, an icon and a keyboard shortcut. */
   options: Option<T>[];
+  /** The chosen segment's value. The control is controlled. */
   value: T;
+  /** Called with the chosen segment's value (not the event). */
   onChange: (v: T) => void;
   /** testIDs and ids are `${prefix}-${value}`. */
   prefix: string;
@@ -97,7 +123,9 @@ export interface SegmentedProps<T extends string> {
    * At most one accent control per page.
    */
   tone?: 'neutral' | 'accent';
+  /** Becomes data-testid on the group. */
   testId?: string;
+  /** Layout only (grow in a row); never restyle the control per page. */
   className?: string;
 }
 

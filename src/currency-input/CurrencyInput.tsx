@@ -25,19 +25,27 @@ export interface CurrencyInputChange {
 }
 
 export interface CurrencyInputOptions extends Partial<Pick<MoneyFormatConfig, 'locale' | 'numberingSystem'>>, Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'size' | 'type' | 'inputMode' | 'defaultValue'> {
+  /** The field's label. The currency's name is added for screen readers. */
   label: ReactNode;
+  /** Help text under the field; replaced by `error` when one is set. */
   hint?: ReactNode;
+  /** Error text under the field, announced as an alert. It replaces the hint and marks the field invalid. */
   error?: ReactNode;
+  /** Field size: 'lg' (default) or 'md'. */
   size?: 'md' | 'lg';
+  /** Hide the label visually; it stays in the accessible name. */
   hideLabel?: boolean;
+  /** Test id on the input element. */
   testId?: string;
   /** Controlled value: the exact ASCII decimal string from `onValueChange` ('' for none). */
   value: string;
+  /** Called with each accepted edit, and on blur when the text is finished (for example '12.' becomes '12.00'). */
   onValueChange: (change: CurrencyInputChange) => void;
   /** Accept a leading minus. Default false. */
   allowNegative?: boolean;
   /** Show the currency code inside the field. Default true. The currency is always in the accessible name. */
   showCurrency?: boolean;
+  /** Ref to the input element. */
   ref?: Ref<HTMLInputElement>;
 }
 

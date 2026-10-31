@@ -34,8 +34,11 @@ export interface MoneyDisplayOptions extends Partial<Omit<MoneyFormatConfig, 'cu
   missing?: string;
   /** Spoken for a missing value. Default 'No value'. */
   missingLabel?: string;
+  /** Extra class added to the outer element. */
   className?: string;
+  /** Test id on the outer element. */
   testId?: string;
+  /** Ref to the outer element. */
   ref?: Ref<HTMLElement>;
 }
 

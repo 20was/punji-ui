@@ -13,6 +13,7 @@ import type { ControlSize } from '../select/Select.tsx';
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
 
 interface ButtonBase extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'className'> {
+  /** The look: primary (default), secondary, ghost or danger. */
   variant?: ButtonVariant;
   /** The control scale: sm 32, md 36 (default), lg 44 (a form's or a phone bar's main action). */
   size?: ControlSize;
@@ -30,6 +31,7 @@ interface ButtonBase extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'clas
   newTabLabel?: string;
   /** The link element for an in-app `href` (wrap your router's link; it receives `href`). Default: a plain <a>. */
   linkComponent?: LinkComponent;
+  /** Test id on the rendered button or link. */
   testId?: string;
   /** Layout hooks only (margin, flex), never a restyle. */
   className?: string;

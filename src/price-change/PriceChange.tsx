@@ -17,10 +17,13 @@ const EN_LABELS: PriceChangeLabels = { up: 'up', down: 'down', flat: 'unchanged'
 export interface PriceChangeOptions extends Omit<MoneyDisplayOptions, 'value' | 'compact' | 'ref' | 'accounting' | 'signDisplay'> {
   /** Latest and previous price, in minor units. Use these, or `change`. */
   current?: bigint | null;
+  /** The previous price in minor units. The change is current minus previous. */
   previous?: bigint | null;
   /** A change you already computed (for example from `priceChange`). */
   change?: Change<bigint> | null;
+  /** Print the amount of the change. Default true. */
   showAbsolute?: boolean;
+  /** Print the percent change. Default true. */
   showPercent?: boolean;
   /** Fraction digits of the percent. Default 2. */
   percentDigits?: number;
@@ -30,6 +33,7 @@ export interface PriceChangeOptions extends Omit<MoneyDisplayOptions, 'value' | 
   labels?: PriceChangeLabels;
   /** sm: the 12px line under a price in a table row. */
   size?: 'sm';
+  /** Ref to the outer span. */
   ref?: Ref<HTMLSpanElement>;
 }
 

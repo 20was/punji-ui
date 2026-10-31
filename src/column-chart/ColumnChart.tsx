@@ -36,12 +36,16 @@ import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 export type ColumnTone = 'chart' | 'series2' | 'series3' | 'series4' | 'neutral' | 'gain' | 'loss';
 
 export interface ColumnSeries {
+  /** Stable key for the series (the React key). */
   key: string;
+  /** The series' name in the legend and the data table. */
   label: string;
+  /** The colour of its parts (see ColumnTone). */
   tone: ColumnTone;
 }
 
 export interface ColumnDatum {
+  /** Stable key for the column (the React key). */
   key: string;
   /** Under the column ("2081/82"). */
   label: string;
@@ -63,6 +67,7 @@ export interface ColumnChartLabels {
 }
 
 export interface ColumnChartProps {
+  /** The series to stack; the first one sits nearest the baseline. */
   series: readonly ColumnSeries[];
   /** Oldest first, left to right. */
   columns: readonly ColumnDatum[];
@@ -80,7 +85,9 @@ export interface ColumnChartProps {
   legend?: boolean;
   /** Print the labelled scale on the left. Default true. */
   axis?: boolean;
+  /** Overrides for the printed words: the empty message, the data table's heads and the missing-value text. */
   labels?: ColumnChartLabels;
+  /** Test id on the figure; each column gets `${testId}-${key}`. */
   testId?: string;
 }
 

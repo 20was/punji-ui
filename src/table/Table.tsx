@@ -24,10 +24,15 @@ import { paginate } from '../use-pagination/usePagination.ts';
 
 
 export interface Column<K extends string> {
+  /** Stable id for the column; the sort key that `onSort` and `sort` use. */
   key: K;
+  /** The column head. */
   label: ReactNode;
+  /** Right-aligned, tabular figures. */
   num?: boolean;
+  /** Hidden under 760px. */
   wide?: boolean;
+  /** Shows a sort button when `onSort` is given. */
   sortable?: boolean;
   /** Folds away between 760px and this width too (a table with more columns than a tablet column holds). */
   hideUnder?: 1024 | 1256;
@@ -101,10 +106,15 @@ export function DataTable<K extends string>({
   loading = false,
   loadingLabel = 'Loading records…',
 }: {
+  /** Names the table for screen readers: its caption, region and page controls. */
   caption: string;
+  /** The columns, in display order. */
   columns: Column<K>[];
+  /** The current sort: the sorted column's key and direction. Drives the arrow and aria-sort. */
   sort?: { key: K; dir: SortDir };
+  /** Called with a column's key when its sort button is pressed. */
   onSort?: (key: K) => void;
+  /** The DataListRow rows. */
   children: ReactNode;
   /** A narrow panel's table: no box, tighter cells, row labels that wrap; figures still never wrap. */
   dense?: boolean;
@@ -116,6 +126,7 @@ export function DataTable<K extends string>({
   stack?: boolean;
   /** Sort buttons are `${prefix}-${key}`. */
   sortTestIdPrefix?: string;
+  /** Test id on the table element. */
   testId?: string;
   /** Optional controlled search UI. Search the complete data set in the caller, before sorting and pagination. */
   search?: DataTableSearch;
@@ -127,6 +138,7 @@ export function DataTable<K extends string>({
   empty?: ReactNode;
   /** Keep headers visible and announce the loading state while the caller fetches rows. */
   loading?: boolean;
+  /** Text announced while `loading` is true. Default "Loading records…". */
   loadingLabel?: string;
 }) {
   const auto = useId();

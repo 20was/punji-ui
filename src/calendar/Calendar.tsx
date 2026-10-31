@@ -11,28 +11,42 @@ import { calendarLabels, gregorianMonths, weekDays, type CalendarLabels } from '
 export type { CalendarSystem, DateRange, CalendarLabels };
 
 export interface CalendarBaseProps {
+  /** Names the calendar for screen readers. */
   label: string;
+  /** The calendar system shown: 'gregory' (default) or 'bikram-sambat'. */
   calendar?: CalendarSystem;
+  /** Called when the user picks the other calendar system. Without it, only the current name is shown. */
   onCalendarChange?: (calendar: CalendarSystem) => void;
+  /** Language of the built-in words: 'en' (default) or 'ne'. */
   language?: NepalLanguage;
   /** Intl locale for Gregorian month/weekday names; override labels for translated controls. */
   locale?: string;
+  /** Digits shown: 'latn' (default) or Devanagari 'deva'. */
   digits?: 'latn' | 'deva';
+  /** Overrides for the built-in words, merged over the language's defaults. */
   labels?: Partial<CalendarLabels>;
   /** Sunday = 0 ... Saturday = 6. Default Sunday. */
   weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+  /** Earliest selectable ISO date (YYYY-MM-DD). Cannot go before the calendar's supported range. */
   min?: string;
+  /** Latest selectable ISO date (YYYY-MM-DD). Cannot go past the calendar's supported range. */
   max?: string;
+  /** Returns true for an ISO date that cannot be picked. */
   isDateUnavailable?: (iso: string) => boolean;
+  /** Disables every date and button. */
   disabled?: boolean;
+  /** Shows the value but blocks changes. */
   readOnly?: boolean;
+  /** Required: the clear button is disabled. */
   required?: boolean;
   /** Gregorian ISO day used for the today marker/button. Pass explicitly for deterministic SSR. */
   today?: string;
+  /** The month shown when there is no value, as an ISO date (kept within min and max). */
   defaultMonth?: string;
   autoFocus?: boolean;
   /** Remove its surface when composing inside an existing panel. */
   bare?: boolean;
+  /** Test id on the root element. */
   testId?: string;
 }
 export type CalendarProps = CalendarBaseProps & (

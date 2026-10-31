@@ -31,9 +31,11 @@ const TYPING = 'input, textarea, select, [contenteditable=""], [contenteditable=
 const phone = () => !!window.matchMedia?.('(max-width: 767px)').matches;
 
 export interface CompanySearchProps<T extends SymbolOption> {
+  /** The companies to search, each a symbol and a name. Ranked in memory: exact symbol, symbol prefix, name word prefix, then symbol contains. */
   options: readonly T[];
   /** The visible label over the field ("Find any company"); also its accessible name. */
   label: string;
+  /** The input's placeholder text. */
   placeholder: string;
   /** A suggestion was chosen (the finder opens it; the picker takes it as its new value). */
   onOpen: (symbol: string) => void;
@@ -43,9 +45,11 @@ export interface CompanySearchProps<T extends SymbolOption> {
   tags?: (o: T) => ReactNode;
   /** "No company matches “{q}”." */
   none: (q: string) => ReactNode;
+  /** Sets `data-testid` on the input (in the phone sheet: `<id>-sheet`, `<id>-sheet-input`, `<id>-sheet-close`). */
   testId: string;
   /** The suggestions' test ids: `${optionTestId}-${SYMBOL}`. */
   optionTestId: string;
+  /** Sets `data-testid` on the list of suggestions. */
   listTestId?: string;
   /** Hide the label visually (it stays the field's name). */
   hideLabel?: boolean;
@@ -55,7 +59,11 @@ export interface CompanySearchProps<T extends SymbolOption> {
   inputId?: string;
   /** The key shown in a finder: '/' (default, and bound here), another letter the page binds itself, or null for none. A picker shows none. */
   shortcut?: string | null;
-  /** Empty the field after a pick (an add field, ready for the next one). */
+  /**
+   * Empty the field and close the list after a pick (default true, an add field ready for the next one).
+   * `false` keeps what was typed in a finder, so a pick that only navigates leaves the query in place;
+   * a picker always closes.
+   */
   clearOnOpen?: boolean;
   /** A picker: the picked symbol (null: nothing yet). The field shows it with its name until it is clicked or focused. */
   value?: string | null;
@@ -78,7 +86,7 @@ export interface CompanySearchProps<T extends SymbolOption> {
 }
 
 
-export function CompanySearch<T extends SymbolOption>({ options, label, placeholder, onOpen: open, sub, tags, none, testId, optionTestId, listTestId, hideLabel, size = 'lg', inputId, shortcut = '/', value, valueName, meta, valueTestId, readOnly, error, loading, initialQuery, closeLabel = 'Close' }: CompanySearchProps<T>) {
+export function CompanySearch<T extends SymbolOption>({ options, label, placeholder, onOpen: open, sub, tags, none, testId, optionTestId, listTestId, hideLabel, size = 'lg', inputId, shortcut = '/', clearOnOpen = true, value, valueName, meta, valueTestId, readOnly, error, loading, initialQuery, closeLabel = 'Close' }: CompanySearchProps<T>) {
   const auto = useId();
   const id = inputId ?? `${auto}-in`;
   const picker = value !== undefined;
@@ -102,7 +110,7 @@ export function CompanySearch<T extends SymbolOption>({ options, label, placehol
   });
   const run = (e: ComboEvent) => {
     const r = comboStep({ ...live.current, picker }, e);
-    const next = r.pick ? comboClosed(r.state) : r.state;
+    const next = clearOnOpen && r.pick ? comboClosed(r.state) : r.state;
     live.current = next;
     setSt(next);
     if (sheet && !r.state.sheet) input.current?.focus();
@@ -119,7 +127,7 @@ export function CompanySearch<T extends SymbolOption>({ options, label, placehol
   const onOpen = (symbol: string) => {
     // A suggestion is a committed choice in both finder and picker modes.
     // Close the list (and the phone sheet) before notifying the consumer.
-    run({ type: 'close' });
+    if (clearOnOpen || picker) run({ type: 'close' });
     open(symbol);
   };
 
@@ -212,8 +220,9 @@ export function CompanySearch<T extends SymbolOption>({ options, label, placehol
       <path d="M11 11l3.5 3.5" strokeLinecap="round" />
     </svg>
   );
+  // The listbox exists only while there are options to hold (axe: aria-required-children); the loading and empty messages sit in the plain wrapper, which `aria-controls` names instead.
   const list = shown && (
-    <div className="kit-cs-sugg" id={`${auto}-list`} role="listbox" aria-label={label} aria-busy={loading || undefined} data-testid={listTestId}>
+    <div className="kit-cs-sugg" id={loading || hits.length === 0 ? `${auto}-list` : undefined} aria-busy={loading || undefined} data-testid={listTestId}>
       {loading ? (
         [0, 1, 2].map((i) => <span key={i} className="kit-skel kit-cs-sk" />)
       ) : hits.length === 0 ? (
@@ -221,7 +230,8 @@ export function CompanySearch<T extends SymbolOption>({ options, label, placehol
           {none(query.trim())}
         </p>
       ) : (
-        hits.map((s, i) => (
+        <div id={`${auto}-list`} role="listbox" aria-label={label}>
+          {hits.map((s, i) => (
           <div
             key={s.symbol}
             id={optId(s.symbol)}
@@ -238,7 +248,8 @@ export function CompanySearch<T extends SymbolOption>({ options, label, placehol
             </span>
             {tags && <span className="kit-cs-tags">{tags(s)}</span>}
           </div>
-        ))
+          ))}
+        </div>
       )}
     </div>
   );

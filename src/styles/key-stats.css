@@ -1,0 +1,16 @@
+/* Punji UI styles.
+   Styles for key-stats. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .kit-kstats { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px }
+  .kit-kstats.c3 { grid-template-columns: repeat(auto-fit, minmax(max(96px, calc((100% - 32px) / 3)), 1fr)) }
+  .kit-kstat { display: grid; align-content: start; gap: 2px; min-width: 0 }
+  .kit-kstat dt { font-size: 13px; line-height: 18px; color: var(--pu-color-text-muted) }
+  .kit-kstat dd { margin: 0; font: 700 15px / 20px var(--pu-font-body); font-variant-numeric: tabular-nums; color: var(--pu-color-text); white-space: nowrap }
+  .kit-kstat dd.up { color: var(--pu-color-gain) }
+  .kit-kstat dd.down { color: var(--pu-color-loss) }
+  .kit-kstat dd.none { font-weight: 500; font-size: 13px; color: var(--pu-color-text-muted); white-space: normal }
+  .kit-kstat dd.wait { display: flex; height: 20px; align-items: center }
+  .kit-kstat dd.sub { font-weight: 500; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted); white-space: normal }
+  .kit-kstats.strip { grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 0; overflow: hidden }
+  .kit-kstats.strip > .kit-kstat { padding: 6px 16px; box-shadow: -1px 0 0 var(--pu-color-border), 0 -1px 0 var(--pu-color-border) }
+}

@@ -1,0 +1,8 @@
+/* Punji UI styles.
+   Styles for retry-note. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .kit-retry { display: flex; align-items: center; gap: 8px 10px; min-width: 0; font-size: 13px; line-height: 18px; color: var(--pu-color-text-muted) }
+  .kit-retry-tx { flex: 1 1 0; min-width: 0 }
+  .kit-retry > button { flex: none }
+  .kit-retry > .kit-tone-ico { margin-top: 0 }
+}

@@ -1,0 +1,10 @@
+/* Punji UI styles.
+   Styles for PriceLimitIndicator. Needs tokens.css, base.css, meter.css and status-pill.css (styles.css has everything). */
+@layer punji.components {
+  .pu-limit { display: grid; gap: 6px; min-width: 0 }
+  .pu-limit-none { margin: 0; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-limit-flag:empty { display: none }
+  .pu-limit-icon { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round }
+  .pu-limit[data-state='at-upper'] .kit-range-track > b.strong { background: var(--pu-color-gain) }
+  .pu-limit[data-state='at-lower'] .kit-range-track > b.strong { background: var(--pu-color-loss) }
+}

@@ -1,22 +1,32 @@
-// Keep pure Nepal modules independently usable outside React and the browser.
+// Keep pure utility modules independently usable outside React and the browser.
 import { readFileSync, readdirSync } from 'node:fs';
 import { resolve, relative, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const problems = [];
-for (const name of readdirSync(resolve(root, 'src/nepal'))) {
-  if (!name.endsWith('.ts')) continue;
-  const file = resolve(root, 'src/nepal', name);
-  const source = readFileSync(file, 'utf8');
-  for (const match of source.matchAll(/(?:\bfrom\s*|\bimport\s*\(\s*|\bimport\s*)['"]([^'"]+)['"]/g)) {
-    const specifier = match[1];
-    const local = specifier.startsWith('.');
-    const target = local ? relative(resolve(root, 'src/nepal'), resolve(dirname(file), specifier)) : specifier;
-    if (local ? target.startsWith('..') || target.endsWith('.tsx') : !(name === 'calendar.ts' && specifier === '@remotemerge/nepali-date-converter')) {
-      problems.push(`nepal/${name}: forbidden dependency ${specifier}`);
+// Pure directories and the one external dependency each may use per file.
+const PURE = { nepal: { 'calendar.ts': '@remotemerge/nepali-date-converter' }, calculations: {}, money: {}, export: {}, ledger: {} };
+// Pure modules may reuse these other pure modules (never components): the exact decimal parser, minor-unit helpers and rounding.
+// The ledger helpers also reuse the calendar-date type, currency exponent and the CSV writer (all pure).
+const SHARED = {
+  money: new Set(['../nepal/decimal.ts', '../nepal/money.ts', '../calculations/rounding.ts']),
+  ledger: new Set(['../nepal/date-only.ts', '../nepal/money.ts', '../money/money.ts', '../export/csv.ts']),
+};
+for (const [dir, allowed] of Object.entries(PURE)) {
+  for (const name of readdirSync(resolve(root, 'src', dir))) {
+    if (!name.endsWith('.ts')) continue;
+    const file = resolve(root, 'src', dir, name);
+    const source = readFileSync(file, 'utf8');
+    for (const match of source.matchAll(/(?:\bfrom\s*|\bimport\s*\(\s*|\bimport\s*)['"]([^'"]+)['"]/g)) {
+      const specifier = match[1];
+      const local = specifier.startsWith('.');
+      const target = local ? relative(resolve(root, 'src', dir), resolve(dirname(file), specifier)) : specifier;
+      if (local ? (target.startsWith('..') && !SHARED[dir]?.has(specifier)) || target.endsWith('.tsx') : allowed[name] !== specifier) {
+        problems.push(`${dir}/${name}: forbidden dependency ${specifier}`);
+      }
     }
+    if (/\b(?:window|document|localStorage|sessionStorage|navigator)\b/.test(source)) problems.push(`${dir}/${name}: browser global in a pure module`);
   }
-  if (/\b(?:window|document|localStorage|sessionStorage|navigator)\b/.test(source)) problems.push(`nepal/${name}: browser global in a pure module`);
 }
 if (problems.length) throw new Error(problems.join('\n'));
-console.log('boundaries: Nepal utilities have no React, component, or browser dependencies; calendar dependency isolated');
+console.log(`boundaries: ${Object.keys(PURE).join(', ')} utilities have no React, component, or browser dependencies; calendar dependency isolated`);

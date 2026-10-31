@@ -4,7 +4,7 @@ const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
 const root = await import(pkg.name);
 let checked = 0;
 for (const [name, target] of Object.entries(pkg.exports)) {
-  if (name === '.' || typeof target === 'string') continue;
+  if (name === '.' || typeof target === 'string' || name.endsWith('.css')) continue;
   if (!existsSync(resolve(target.types))) throw new Error(`${name}: missing declaration ${target.types}`);
   const module = await import(`${pkg.name}${name.slice(1)}`);
   for (const key of Object.keys(module)) {

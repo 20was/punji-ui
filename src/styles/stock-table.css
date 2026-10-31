@@ -1,0 +1,22 @@
+/* Punji UI styles.
+   Styles for StockTable. Needs tokens.css, base.css, table.css, money.css and sparkline.css (styles.css has everything). */
+@layer punji.components {
+  .pu-stock { min-width: 0 }
+  .pu-stock .kit-tablebox { max-height: var(--stock-max-h, none) }
+  .pu-stock .kit-table tbody th { font-weight: 400; text-align: left }
+  .pu-stock .kit-table tbody th b { display: block; letter-spacing: 0.01em }
+  .pu-stock .kit-table tbody th .sub { max-width: 16rem }
+  .pu-stock[data-density='compact'] .kit-table { font-size: 13px }
+  .pu-stock[data-density='compact'] .kit-table :is(th, td) { padding: 5px 10px }
+  .pu-stock[data-density='compact'] .kit-table tbody th .sub { display: none }
+  @media (max-width: 639px) {
+    /* The stacked box is overflow:visible by default; with a maxHeight it must scroll inside the box, not spill out of it. */
+    .pu-stock .kit-tablebox.stack { overflow-x: hidden; overflow-y: auto }
+    /* The change ("+22.32 (+10.00%)") is the widest figure under the symbol: give it the wide column. */
+    .pu-stock .kit-tablebox.stack .kit-table tbody tr { grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr)) }
+    /* The LTP gets two tracks: one is too narrow for "2,150.00" and a right-aligned overflow spills out of the card. */
+    .pu-stock .kit-tablebox.stack .kit-table tbody tr > th { grid-column: 1 / 3 }
+    .pu-stock .kit-tablebox.stack .kit-table tbody tr > th + td { grid-column: 3 / 5 }
+    .pu-stock .kit-tablebox.stack .kit-table tbody th .sub { max-width: none }
+  }
+}

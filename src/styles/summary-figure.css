@@ -1,0 +1,31 @@
+/* Punji UI styles.
+   Styles for summary-figure. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .kit-sumfig { display: grid; gap: 4px; min-width: 0; padding: 14px 0; border-block: 1px solid var(--pu-color-card-border); color: var(--pu-color-text) }
+  .kit-sumfig.lead .kit-sumfig-k { color: var(--pu-color-text); font-weight: 500 }
+  .kit-sumfig-k { font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }
+  .kit-sumfig-row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 12px }
+  .kit-sumfig-v { font-size: 22px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; font-variant-numeric: tabular-nums }
+  .kit-sumfig.lg .kit-sumfig-v { font-size: 26px; line-height: 32px }
+  .kit-sumfig-n { font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums }
+
+  .kit-headfig { min-width: 0; color: var(--pu-color-text) }
+  .kit-headfig-k { margin: 0 0 6px; font-size: 13px; line-height: 16px; color: var(--pu-color-text-muted); overflow-wrap: anywhere }
+  .kit-headfig-kr { display: flex; align-items: center; gap: 4px; min-width: 0; margin: -8px 0 -2px }
+  .kit-headfig-kr > .kit-headfig-k { margin: 0 }
+  .kit-headfig-row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px }
+  .kit-headfig-v { max-width: 100%; font-weight: 600; font-variant-numeric: tabular-nums; overflow-wrap: anywhere }
+  .kit-headfig.xl .kit-headfig-v { font-size: 56px; line-height: 1; letter-spacing: -0.03em }
+  .kit-headfig.lg .kit-headfig-v { font-size: 30px; line-height: 36px; letter-spacing: -0.02em }
+  .kit-headfig-v .cur { font-size: 0.5em; color: var(--pu-color-text-muted); letter-spacing: -0.02em }
+  .kit-headfig-aside { font-size: 14px; font-variant-numeric: tabular-nums }
+  .kit-headfig-line { margin: 4px 0 0; font-size: 14px; line-height: 20px; color: var(--pu-color-text) }
+  .kit-headfig-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px }
+  .kit-figchip { display: inline-block; padding: 4px 10px; border-radius: var(--pu-radius-full); font-size: 13px; line-height: 20px; font-weight: 500; font-variant-numeric: tabular-nums; background: var(--pu-color-surface-tint); color: var(--pu-color-text-muted) }
+  .kit-figchip.up { background: var(--pu-color-gain-soft); color: var(--pu-color-gain) }
+  .kit-figchip.down { background: var(--pu-color-loss-soft); color: var(--pu-color-loss) }
+  @media (max-width: 699px) {
+    .kit-headfig.xl .kit-headfig-v { font-size: 42px }
+    .kit-headfig-chips { flex-direction: column; align-items: flex-start }
+  }
+}

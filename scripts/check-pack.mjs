@@ -6,7 +6,21 @@ import { execFileSync } from 'node:child_process';
 // Calendar/date pickers and the expanded financial table API add JS,
 // declarations and dedicated CSS. Keep a bounded allowance above the current
 // measured ~451 kB unpacked rather than letting the budget fail on valid output.
-const MAX_UNPACKED = 470 * 1024;
+// Hooks, CSV export, calculations and the generic money module with its three
+// primitives (JS, declarations, CSS) bring the measured size to ~549 kB; keep a
+// modest allowance above that and re-measure when adding modules.
+// The ten migrated status, meter and list components plus the web-parity work
+// (JS, declarations, CSS) bring it to ~649 KiB.
+// The second batch (HeadlineFigure, bars, Sparkline, ColumnChart, Breakdown, Pagination,
+// MetricTile: JS, declarations, CSS) brings it to ~713 KiB.
+// .size-limit.json takes no comments: the "Everything" budget went 45 -> 49 kB gzip (about +3.2 kB of real new JS) and
+// styles.css 18.4 -> 20.4 kB gzip (about +1.6 kB of CSS) for the same second batch.
+// The market components (StockTable, MarketMovers, MarketIndices, MarketStatus, PriceLimitIndicator,
+// Watchlist, MarketHeatmap: JS, declarations, CSS) add ~88 kB, bringing it to ~802 KiB.
+// The accounting components (ledger helpers, DebitCredit, LedgerTable, JournalEntryView, TrialBalance, StatementTable,
+// PaymentStatus, FinancialPeriodSelector: JS, declarations, CSS) add ~75 kB, bringing it to ~883 KiB (904,546 B).
+// Prop doc comments enlarge declarations; merged total measured 913,958 B on 2026-10-31.
+const MAX_UNPACKED = 960 * 1024;
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
 const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md']);
 const allowed = (p) => always.has(p) || /^dist\/.+\.(js|d\.ts|css)$/.test(p);

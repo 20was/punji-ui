@@ -19,7 +19,7 @@ unless you prefer otherwise, and publish a fixed release before the details.
 
 ## What this package does to stay safe
 
-- **No runtime dependencies.** Only React is a peer; nothing else runs in your app.
+- **One reviewed runtime dependency.** React is a peer; the only bundled dependency is `@remotemerge/nepali-date-converter` (MIT, pinned exactly, no transitive dependencies), loaded only by the Bikram Sambat calendar module. See [DEPENDENCY-AUDIT.md](DEPENDENCY-AUDIT.md).
 - **No HTML from data.** No `dangerouslySetInnerHTML`, no `eval`, no inline
   event-handler strings. Components render text as text.
 - **Releases you can verify.** Every version is published from the

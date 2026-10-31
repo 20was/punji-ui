@@ -58,6 +58,10 @@
       border-bottom: 1px solid var(--pu-color-border);
     }
     .kit-tablebox.stack .kit-table tbody tr:last-child { border-bottom: 0 }
+    /* A boxed table's stacked rows keep the box's edge off their text (a bare or dense table sits in a card that pads it). */
+    .kit-tablebox.stack:not(.bare, .dense) .kit-table tbody tr { padding-inline: 12px }
+    .kit-tablebox.stack.selection:not(.bare, .dense) .kit-table tbody tr { padding-left: 40px }
+    .kit-tablebox.stack.selection:not(.bare, .dense) .kit-table tbody tr > .kit-table-selection-cell { left: 12px }
     .kit-tablebox.stack .kit-table tbody tr > * { min-width: 0; padding: 0; border: 0; white-space: normal }
     .kit-tablebox.stack .kit-table tbody tr > th { grid-column: 1 / 4 }
     .kit-tablebox.stack .kit-table tbody tr > th + td { grid-column: 4; text-align: right; white-space: nowrap }
@@ -72,6 +76,9 @@
       line-height: 14px;
     }
     .kit-tablebox.stack .kit-table tbody tr:hover { background: transparent }
+    /* The loading and empty rows are one cell across the table, not a card of figures. */
+    .kit-tablebox.stack .kit-table tbody tr:has(> .kit-table-empty) { display: block; padding: 0 }
+    .kit-tablebox.stack .kit-table tbody tr > .kit-table-empty { display: block; height: auto; padding: 28px 12px }
     .kit-tablebox.stack.selection .kit-table tbody tr { position: relative; padding-left: 28px }
     .kit-tablebox.stack.selection .kit-table tbody tr > .kit-table-selection-cell { position: absolute; top: 12px; left: 0; width: 24px; min-width: 24px; padding: 0 }
   }

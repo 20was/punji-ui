@@ -1,0 +1,9 @@
+/* Punji UI styles.
+   Styles for MarketStatus. Needs tokens.css, base.css and status-pill.css (styles.css has everything). */
+@layer punji.components {
+  .pu-market-status { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 8px }
+  .pu-market-status-icon { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round }
+  .pu-market-status[data-state='open'] .pu-market-status-icon circle { fill: currentColor; stroke: none }
+  .pu-market-status[data-state='open'] .pu-market-status-icon path { stroke: var(--pu-color-surface) }
+  .pu-market-status-note { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+}

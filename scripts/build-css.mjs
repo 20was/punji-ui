@@ -17,6 +17,9 @@ function build(file, dest) {
   const { code, warnings } = bundle({ filename: `${src}${file}`, minify: true, sourceMap: false, targets, exclude: Features.LightDark });
   for (const w of warnings) console.warn(`${file}: ${w.message}`);
   writeFileSync(dest, code);
+  // An empty declaration lets TypeScript resolve `import '@punji/ui/styles.css'`
+  // without the app declaring '*.css' (TS 6+ checks side-effect imports).
+  writeFileSync(`${dest}.d.ts`, 'export {};\n');
 }
 
 mkdirSync(`${out}css`, { recursive: true });
@@ -26,4 +29,4 @@ for (const file of readdirSync(src)) {
   if (!file.endsWith('.css') || file === 'styles.css' || file === 'tokens.css') continue;
   build(file, `${out}css/${file}`);
 }
-console.log('css: built dist/styles.css, dist/tokens.css, dist/css/*.css');
+console.log('css: built dist/styles.css, dist/tokens.css, dist/css/*.css with empty declarations');

@@ -1,0 +1,36 @@
+/* Punji UI styles.
+   Styles for MarketHeatmap. Needs tokens.css and base.css; the data table uses table.css (styles.css has everything). */
+@layer punji.components {
+  .pu-heat { --heat-up: var(--pu-color-gain); --heat-down: var(--pu-color-loss); display: grid; gap: 10px; margin: 0; min-width: 0 }
+  .pu-heat[data-convention='red-up'] { --heat-up: var(--pu-color-loss); --heat-down: var(--pu-color-gain) }
+  .pu-heat-title { font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body); color: var(--pu-color-text) }
+  .pu-heat-map { position: relative; width: 100%; margin: 0; padding: 0; list-style: none; overflow: hidden; border-radius: var(--pu-radius-sm); background: var(--pu-color-surface-tint) }
+  .pu-heat-tile { position: absolute; box-sizing: border-box; border: 1px solid var(--pu-color-surface); overflow: hidden; background: var(--pu-color-surface-tint); color: var(--pu-color-text) }
+  .pu-heat-tile > :is(button, div) { appearance: none; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 2px; width: 100%; height: 100%; margin: 0; padding: 4px 6px; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; overflow: hidden }
+  .pu-heat-tile > button { cursor: pointer }
+  .pu-heat-tile > button:hover { background: color-mix(in srgb, var(--pu-color-text) 8%, transparent) }
+  .pu-heat-tile > button:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: -3px }
+  .pu-heat-sym { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 700 13px / 1.2 var(--pu-font-body); letter-spacing: 0.01em }
+  .pu-heat-chg { max-width: 100%; overflow: hidden; text-overflow: ellipsis; font: 600 11px / 1.2 var(--pu-font-body); font-variant-numeric: tabular-nums; white-space: nowrap }
+  .pu-heat-tile[data-size='sm'] .pu-heat-chg { display: none }
+  /* Too small to print: the words stay for assistive technology (display: none would remove the name too). */
+  .pu-heat-tile[data-size='xs'] > :is(button, div) > * { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap }
+  .pu-heat-tile > :is(button, div) > .kit-sr { white-space: nowrap }
+  .pu-heat-tile[data-size='sm'] > :is(button, div) { padding: 2px 4px }
+  .pu-heat-tile[data-size='sm'] .pu-heat-sym { font-size: 11px }
+  :is(.pu-heat-tile, .pu-heat-legend i)[data-step='1'] { background: color-mix(in srgb, var(--heat-up) 12%, var(--pu-color-surface)) }
+  :is(.pu-heat-tile, .pu-heat-legend i)[data-step='2'] { background: color-mix(in srgb, var(--heat-up) 24%, var(--pu-color-surface)) }
+  :is(.pu-heat-tile, .pu-heat-legend i)[data-step='3'] { background: color-mix(in srgb, var(--heat-up) 38%, var(--pu-color-surface)) }
+  :is(.pu-heat-tile, .pu-heat-legend i)[data-step='-1'] { background: color-mix(in srgb, var(--heat-down) 12%, var(--pu-color-surface)) }
+  :is(.pu-heat-tile, .pu-heat-legend i)[data-step='-2'] { background: color-mix(in srgb, var(--heat-down) 24%, var(--pu-color-surface)) }
+  :is(.pu-heat-tile, .pu-heat-legend i)[data-step='-3'] { background: color-mix(in srgb, var(--heat-down) 38%, var(--pu-color-surface)) }
+  :is(.pu-heat-tile, .pu-heat-legend i)[data-step='0'] { background: var(--pu-color-surface-tint) }
+  .pu-heat-legend i[data-step='none'] { background: repeating-linear-gradient(135deg, var(--pu-color-surface-tint) 0 3px, var(--pu-color-surface) 3px 6px) }
+  .pu-heat-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0; padding: 0; list-style: none; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }
+  .pu-heat-legend li { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap }
+  .pu-heat-legend i { flex: none; width: 14px; height: 14px; border-radius: 3px; border: 1px solid var(--pu-color-border-strong) }
+  .pu-heat-size-note, .pu-heat-skipped, .pu-heat-empty { margin: 0; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }
+  .pu-heat-data > summary { cursor: pointer; font-size: var(--pu-text-sm); color: var(--pu-color-text) }
+  .pu-heat-data > summary:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+  .pu-heat-data .kit-tablebox { margin-top: 8px; max-height: 320px }
+}

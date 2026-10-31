@@ -1,0 +1,37 @@
+/* Punji UI styles.
+   Styles for column-chart. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .kit-col { position: relative; margin: 0; display: grid; gap: 8px; min-width: 0; max-width: 100% }
+  .kit-col-empty { margin: 0; padding: 24px 0; text-align: center; font-size: 13px; line-height: 20px; color: var(--pu-color-text-muted) }
+  .kit-col-frame { display: grid; column-gap: 8px; min-width: 0 }
+  .kit-col-y { position: relative; grid-column: 1; grid-row: 1; padding-top: 22px; font: 500 11px / 14px var(--pu-font-body); color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums; text-align: right }
+  .kit-col-y-in { position: relative; height: 100%; min-width: 1.5ch }
+  .kit-col-y-w { display: block; height: 0; overflow: hidden; visibility: hidden; white-space: nowrap }
+  .kit-col-y-in > span:not(.kit-col-y-w) { position: absolute; right: 0; transform: translateY(50%); white-space: nowrap }
+  .kit-col-plot { position: relative; grid-column: -2 / -1; grid-row: 1; min-width: 0; padding-top: 22px }
+  .kit-col-area { position: relative; height: 100%; min-width: 0 }
+  .kit-col-grid { position: absolute; left: 0; right: 0; height: 0; border-top: 1px dashed color-mix(in srgb, var(--pu-color-border-strong) 80%, transparent); pointer-events: none }
+  .kit-col-zero { position: absolute; left: 0; right: 0; height: 1px; background: var(--pu-color-border-strong); pointer-events: none }
+  .kit-col-cols { position: absolute; inset: 0; display: grid }
+  .kit-col-c { position: relative; min-width: 0; height: 100% }
+  .kit-col-up, .kit-col-dn { position: absolute; left: 50%; width: 72%; max-width: 92px; transform: translateX(-50%); display: flex; gap: 2px }
+  .kit-col-up { flex-direction: column-reverse }
+  .kit-col-dn { flex-direction: column }
+  .kit-col-up > i, .kit-col-dn > i { display: block; flex: 1 1 0; min-height: 2px; border-radius: 4px }
+  .kit-col-v { position: absolute; left: 50%; bottom: 100%; transform: translateX(-50%); margin-bottom: 4px; font: 600 12px / 16px var(--pu-font-body); font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--pu-color-text); pointer-events: none }
+  .kit-col-x { display: grid; grid-column: -2 / -1; grid-row: 2; margin-top: 12px; font: 500 12px / 16px var(--pu-font-body); color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums; text-align: center }
+  .kit-col-x > span { display: flex; justify-content: center; min-width: 0; white-space: nowrap }
+  .kit-col-x > span.first { justify-content: flex-start }
+  .kit-col-x > span.last { justify-content: flex-end }
+  .kit-col-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0; padding: 0; list-style: none; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }
+  .kit-col-legend li { display: inline-flex; align-items: center; gap: 6px }
+  .kit-col-legend i { width: 10px; height: 10px; border-radius: 3px }
+  .kit-col figcaption { display: flex; justify-content: flex-end }
+  .kit-col-t-chart { background: var(--pu-color-chart) }
+  .kit-col-t-series2 { background: var(--pu-color-series-nepse) }
+  .kit-col-t-series3 { background: var(--pu-color-series-3) }
+  .kit-col-t-series4 { background: var(--pu-color-series-4) }
+  .kit-col-t-neutral { background: color-mix(in srgb, var(--pu-color-text) 30%, transparent) }
+  .kit-col-t-gain { background: var(--pu-color-gain) }
+  .kit-col-t-loss { background: var(--pu-color-loss) }
+}

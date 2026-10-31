@@ -29,6 +29,7 @@
   .pu-cal-error { display: block; margin-top: var(--pu-space-2); font-size: var(--pu-text-xs); color: var(--pu-color-loss); }
   .pu-date-picker { min-width: 0; width: 100%; max-width: 400px; }
   .pu-date-controls, .pu-date-fields { min-width: 0; }
+  .pu-date-controls { container-type: inline-size; }
   .pu-date-fields.range { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--pu-space-3); }
   .pu-date-actions { position: sticky; bottom: 0; background: var(--pu-color-surface-solid); display: flex; justify-content: flex-end; gap: var(--pu-space-2); padding: var(--pu-space-2) var(--pu-space-3); border-top: 1px solid var(--pu-color-border); }
   @media (max-width: 640px), (pointer: coarse) {
@@ -36,5 +37,6 @@
     .pu-cal-heading > .kit-btn, .pu-cal-footer .kit-btn, .pu-date-actions .kit-btn { min-height: var(--pu-tap-min); min-width: var(--pu-tap-min); }
   }
   @media (max-width: 480px) { .pu-date-fields.range { grid-template-columns: minmax(0, 1fr); } }
+  @container (max-width: 339px) { .pu-date-fields.range { grid-template-columns: minmax(0, 1fr); } }
   @media (forced-colors: active) { .pu-cal-grid .edge button { border: 2px solid Highlight; } .pu-cal-grid .range-middle { outline: 1px solid Highlight; } }
 }

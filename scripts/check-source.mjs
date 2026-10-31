@@ -24,7 +24,7 @@ for (const [name, version] of Object.entries(pkg.dependencies ?? {})) {
 }
 
 for (const [sub, target] of Object.entries(pkg.exports)) {
-  if (typeof target === 'string') continue;
+  if (typeof target === 'string' || sub.endsWith('.css')) continue;
   const src = target.default.replace('./dist/', 'src/').replace(/\.js$/, '');
   if (!existsSync(join(root, `${src}.ts`)) && !existsSync(join(root, `${src}.tsx`))) problems.push(`package.json: ${sub} has no source`);
 }

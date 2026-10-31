@@ -1,0 +1,122 @@
+/* Punji UI styles.
+   Styles for meter. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .kit-meter { position: relative; display: flex; height: 6px; border-radius: 3px; background: var(--pu-color-track); overflow: hidden }
+  .kit-meter.marked { overflow: visible }
+  .kit-meter > i { display: block; height: 100% }
+  .kit-meter > i:first-child { border-radius: 3px 0 0 3px }
+  .kit-meter > i:last-of-type { border-radius: 0 3px 3px 0 }
+  .kit-meter > i:only-of-type { border-radius: 3px }
+  .kit-meter > b { position: absolute; top: -3px; width: 2px; height: 12px; margin-left: -1px; border-radius: 1px; background: var(--pu-color-series-nepse) }
+  .kit-tone-neutral { background: color-mix(in srgb, var(--pu-color-text) 30%, transparent) }
+  .kit-tone-gain { background: var(--pu-color-gain) }
+  .kit-tone-loss { background: var(--pu-color-loss) }
+  .kit-tone-chart { background: var(--pu-color-chart) }
+  .kit-tone-series2 { background: var(--pu-color-series-nepse) }
+  .kit-tone-series3 { background: var(--pu-color-series-3) }
+  .kit-tone-series4 { background: var(--pu-color-series-4) }
+  .kit-tone-series5 { background: var(--pu-color-series-5) }
+  .kit-tone-series6 { background: var(--pu-color-series-6) }
+  .kit-tone-series7 { background: var(--pu-color-series-7) }
+  .kit-tone-series8 { background: var(--pu-color-series-8) }
+  .kit-tone-series9 { background: var(--pu-color-series-9) }
+  .kit-tone-series10 { background: var(--pu-color-series-10) }
+  .kit-tone-series11 { background: var(--pu-color-series-11) }
+  .kit-tone-series12 { background: var(--pu-color-series-12) }
+  .kit-tone-rest { background: var(--pu-color-text-tertiary) }
+  .kit-tone-strong { background: var(--pu-color-text) }
+  .kit-tone-scale0 { background: var(--pu-color-series-3) }
+  .kit-tone-scale1 { background: color-mix(in srgb, var(--pu-color-series-3) 50%, var(--pu-color-surface-tint)) }
+  .kit-tone-scale2 { background: color-mix(in srgb, var(--pu-color-text-tertiary) 45%, var(--pu-color-surface-tint)) }
+  .kit-tone-scale3 { background: color-mix(in srgb, var(--pu-color-series-nepse) 55%, var(--pu-color-surface-tint)) }
+  .kit-tone-scale4 { background: var(--pu-color-series-nepse) }
+
+  .kit-range { display: grid; gap: 8px; min-width: 0 }
+  .kit-range-head { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }
+  .kit-range-head b { font-weight: 500; color: var(--pu-color-text) }
+  .kit-range-head b.up { color: var(--pu-color-gain) }
+  .kit-range-head b.down { color: var(--pu-color-loss) }
+  .kit-range-track { position: relative; height: 8px; border-radius: 4px; background: var(--pu-color-track) }
+  .kit-range-track > i { position: absolute; left: 0; top: 0; height: 8px; border-radius: 4px; background: var(--pu-color-chart); opacity: 0.6 }
+  .kit-range-track > i.span { opacity: 0.45 }
+  .kit-range-track:has(> i.span) > b.tick { background: var(--pu-color-text-muted) }
+  .kit-range-track > b { position: absolute; top: -4px; height: 16px }
+  .kit-range-track > b.strong { width: 4px; margin-left: -2px; border-radius: 2px; background: var(--pu-color-text) }
+  .kit-range-track > b.accent { width: 2px; margin-left: -1px; background: var(--pu-color-series-nepse) }
+  .kit-range-track > b.dot { top: -5px; width: 18px; height: 18px; margin-left: -9px; border-radius: 50%; background: var(--pu-color-chart); box-shadow: 0 0 0 3px var(--pu-color-surface) }
+  .kit-range-track > b.tick { width: 2px; margin-left: -1px; border-radius: 1px; background: var(--pu-color-border-strong) }
+  .kit-range-track:has(> b.dot) { height: 4px; margin: 7px 0; border-radius: 2px }
+  .kit-range-track:has(> b.dot) > b.tick { top: -6px }
+  .kit-range-labels { --rh: 16px; position: relative; height: calc(var(--rows, 1) * var(--rh)); font-size: 11px; line-height: 16px; color: var(--pu-color-text-tertiary); font-variant-numeric: tabular-nums }
+  .kit-range-labels > span { position: absolute; top: calc(var(--r, 0) * var(--rh)); white-space: nowrap }
+  .kit-range-labels > span.accent { color: var(--pu-color-series-nepse) }
+  .kit-range-labels:has(> span.edge) { --rh: 32px }
+  .kit-range-labels > span :is(span, b) { display: block }
+  .kit-range-labels > span b { font-size: 12px; font-weight: 500; color: var(--pu-color-text) }
+  .kit-range-legend { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; font-size: 12px; line-height: 16px; color: var(--pu-color-text-tertiary); font-variant-numeric: tabular-nums }
+  .kit-range-legend > span:nth-child(2) { text-align: center }
+  .kit-range-legend > span:nth-child(3) { text-align: right }
+  .kit-range-legend :is(span, b) > :is(span, b) { display: block }
+  .kit-range-legend b { font-weight: 500; color: var(--pu-color-text) }
+
+  .kit-share { display: grid; gap: 12px; min-width: 0; container-type: inline-size }
+  .kit-share-bar { display: flex; gap: 2px; height: 12px; border-radius: 6px; overflow: hidden }
+  .kit-share-bar > i { display: block; min-width: 3px }
+  .kit-share-bar.empty { background: color-mix(in srgb, var(--pu-color-text) 10%, transparent) }
+  .kit-share-legend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; margin: 0; padding: 0; list-style: none }
+  .kit-share-legend.one { grid-template-columns: minmax(0, 1fr) }
+  @container (max-width: 299px) { .kit-share-legend:not(.list, .rows, .grid) { grid-template-columns: minmax(0, 1fr) } }
+  .kit-share-legend.list .kit-share-item { min-height: 28px; font-size: 14px }
+  .kit-share-legend.list .kit-share-item b { font-weight: 600 }
+  .kit-share-foot { margin: 0; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }
+  .kit-dist { display: grid; gap: 12px; min-width: 0; container-type: inline-size }
+  @container (min-width: 560px) { .kit-dist .kit-share-legend.list { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px } }
+  .kit-share-item { appearance: none; width: 100%; box-sizing: border-box; display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; align-items: center; gap: 8px; min-height: 36px; padding: 0; border: 0; background: none; color: var(--pu-color-text); font: 400 13px / 1.2 var(--pu-font-body); text-align: left }
+  button.kit-share-item { cursor: pointer; border-radius: 6px }
+  button.kit-share-item:hover .nm, button.kit-share-item[aria-pressed='true'] .nm { text-decoration: underline; text-underline-offset: 3px }
+  button.kit-share-item:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+  .kit-share-item > i { width: 10px; height: 10px; border-radius: 3px }
+  .kit-share-item .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+  .kit-share-item .sub { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: var(--pu-color-text-tertiary) }
+  .kit-share-item b { font-weight: 500; font-variant-numeric: tabular-nums }
+  .kit-share-legend.rows .kit-share-item { grid-template-columns: 12px minmax(0, 1fr) auto auto; min-height: 40px; padding: 10px 0; font-size: 14px }
+  .kit-share-legend.rows > li + li { border-top: 1px solid var(--pu-color-card-border) }
+  .kit-share-legend.grid { grid-template-columns: minmax(0, 1fr); column-gap: 32px }
+  @media (min-width: 768px) {
+    .kit-share-legend.grid { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+    .kit-share-legend.grid > li:nth-child(2) { border-top: 0 }
+  }
+  @media (min-width: 1256px) {
+    .kit-share-legend.grid { grid-template-columns: repeat(3, minmax(0, 1fr)) }
+    .kit-share-legend.grid > li:nth-child(3) { border-top: 0 }
+  }
+
+  .kit-donut { display: block; width: 180px; height: 180px; margin: 0 auto }
+  .kit-donut.sm { width: 120px; height: 120px }
+  .kit-donut circle { fill: none }
+  .kit-donut .track { stroke: var(--pu-color-track) }
+  .kit-donut-n { fill: var(--pu-color-text); font: 600 22px / 1 var(--pu-font-body); font-variant-numeric: tabular-nums }
+  .kit-donut-u { fill: var(--pu-color-text-muted); font: 400 11px / 1 var(--pu-font-body) }
+  .kit-stroke-neutral { stroke: color-mix(in srgb, var(--pu-color-text) 30%, transparent) }
+  .kit-stroke-gain { stroke: var(--pu-color-gain) }
+  .kit-stroke-loss { stroke: var(--pu-color-loss) }
+  .kit-stroke-strong { stroke: var(--pu-color-text) }
+  .kit-stroke-chart { stroke: var(--pu-color-chart) }
+  .kit-stroke-series2 { stroke: var(--pu-color-series-nepse) }
+  .kit-stroke-series3 { stroke: var(--pu-color-series-3) }
+  .kit-stroke-series4 { stroke: var(--pu-color-series-4) }
+  .kit-stroke-series5 { stroke: var(--pu-color-series-5) }
+  .kit-stroke-series6 { stroke: var(--pu-color-series-6) }
+  .kit-stroke-series7 { stroke: var(--pu-color-series-7) }
+  .kit-stroke-series8 { stroke: var(--pu-color-series-8) }
+  .kit-stroke-series9 { stroke: var(--pu-color-series-9) }
+  .kit-stroke-series10 { stroke: var(--pu-color-series-10) }
+  .kit-stroke-series11 { stroke: var(--pu-color-series-11) }
+  .kit-stroke-series12 { stroke: var(--pu-color-series-12) }
+  .kit-stroke-rest { stroke: var(--pu-color-text-tertiary) }
+  .kit-stroke-scale0 { stroke: var(--pu-color-series-3) }
+  .kit-stroke-scale1 { stroke: color-mix(in srgb, var(--pu-color-series-3) 50%, var(--pu-color-surface-tint)) }
+  .kit-stroke-scale2 { stroke: color-mix(in srgb, var(--pu-color-text-tertiary) 45%, var(--pu-color-surface-tint)) }
+  .kit-stroke-scale3 { stroke: color-mix(in srgb, var(--pu-color-series-nepse) 55%, var(--pu-color-surface-tint)) }
+  .kit-stroke-scale4 { stroke: var(--pu-color-series-nepse) }
+}

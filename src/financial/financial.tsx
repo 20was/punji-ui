@@ -31,20 +31,38 @@ export function FinancialSummary({ metrics, label }: { metrics: readonly Financi
   return <StatGrid label={label} cols={Math.min(4, Math.max(1, metrics.length))}>{metrics.map(metric => <StatTile key={metric.id} {...metric} />)}</StatGrid>;
 }
 
-export interface FinancialColumn<T> extends Column<string> { render: (row: T) => ReactNode; rowHeader?: boolean }
+export interface FinancialColumn<T> extends Column<string> {
+  /** Draws one row's cell for this column. */
+  render: (row: T) => ReactNode;
+  /** The cell is the row's header (a th scope="row"), usually the first column. */
+  rowHeader?: boolean;
+}
 export interface FinancialTableProps<T> {
+  /** Names the table region; also the sort and selection announcements' subject. */
   caption: string;
+  /** The columns in order: a key, a label, how to render a row's cell, and layout hints (`num`, `wide`, `hideUnder`, `rowHeader`). */
   columns: readonly FinancialColumn<T>[];
+  /** The records to show, in the order to show them. Sort, filter and page them yourself. */
   rows: readonly T[];
+  /** A stable, unique key per row, also the id used by `selection`. */
   rowKey: (row: T) => string;
+  /** ready (default), loading (a placeholder) or error (`errorTitle`). */
   state?: 'ready' | 'loading' | 'error';
+  /** The title shown when `rows` is empty (and no search or pagination is on). */
   emptyTitle: string;
+  /** A line under the empty title: why it is empty or what to do. */
   emptyBody?: ReactNode;
+  /** One button or link under the empty state. */
   emptyAction?: ReactNode;
+  /** Names the loading placeholder. Default "Loading records". */
   loadingLabel?: string;
+  /** What failed, shown in place of the table. Default "Records unavailable". */
   errorTitle?: string;
+  /** One button for the error state, for example a retry. */
   errorAction?: ReactNode;
+  /** The sort being shown: the column key and its direction. */
   sort?: { key: string; dir: SortDir };
+  /** Called with the column key a click on a sortable head asks for. The table does not reorder rows. */
   onSort?: (key: string) => void;
   /** Optional controlled search field. The caller filters the complete row set and supplies the filtered page. */
   search?: DataTableSearch;
@@ -58,15 +76,29 @@ export function FinancialTable<T>({ caption, columns, rows, rowKey, state = 'rea
   if (state === 'loading') return <div aria-busy="true"><Skeleton label={loadingLabel} height={160} /></div>;
   if (state === 'error') return <EmptyState title={errorTitle} action={errorAction} role="alert" />;
   if (!rows.length && !search && !pagination) return <EmptyState title={emptyTitle} body={emptyBody} action={emptyAction} />;
-  return <DataTable caption={caption} columns={[...columns]} sort={sort} onSort={onSort} search={search} pagination={pagination} selection={selection} empty={emptyTitle}>
+  return <DataTable caption={caption} columns={[...columns]} sort={sort} onSort={onSort} search={search} pagination={pagination} selection={selection} empty={emptyBody || emptyAction ? <EmptyState title={emptyTitle} body={emptyBody} action={emptyAction} headingLevel={3} bare /> : emptyTitle}>
     {rows.map(row => <DataListRow key={rowKey(row)} rowId={rowKey(row)}>{columns.map(column => <Cell key={column.key} num={column.num} wide={column.wide} hideUnder={column.hideUnder} header={column.rowHeader} label={typeof column.label === 'string' ? column.label : undefined}>{column.render(row)}</Cell>)}</DataListRow>)}
   </DataTable>;
 }
 
-export interface PricePoint { label: string; value: number | null }
+export interface PricePoint {
+  /** The observation's name (a date), in order, oldest first; printed in the data table. */
+  label: string;
+  /** The value at that label. Null or not finite is a gap: the line breaks and the table shows `missingLabel`. */
+  value: number | null;
+}
 /** Straight segments, gaps stay gaps, fixed aspect ratio, and an accessible data table. */
 export function PriceChart({ points, label, formatValue, dataLabel = 'View chart data', missingLabel = 'Unavailable' }: {
-  points: readonly PricePoint[]; label: string; formatValue: (value: number) => string; dataLabel?: string; missingLabel?: string;
+  /** The observations in order. With no finite value at all the chart is replaced by an empty state titled `missingLabel`. */
+  points: readonly PricePoint[];
+  /** Names the chart (its caption and the image's accessible name). */
+  label: string;
+  /** Formats a value for the high and low labels and the data table. */
+  formatValue: (value: number) => string;
+  /** The words on the disclosure that opens the data table. Default 'View chart data'. */
+  dataLabel?: string;
+  /** Shown for a missing value in the data table, and as the title of the empty state when nothing is published. Default 'Unavailable'. */
+  missingLabel?: string;
 }) {
   const valid = points.flatMap(p => p.value !== null && Number.isFinite(p.value) ? [p.value] : []);
   if (!valid.length) return <EmptyState title={missingLabel} body={label} />;
@@ -85,7 +117,7 @@ export function PriceChart({ points, label, formatValue, dataLabel = 'View chart
   }).join(' ');
   return <figure className="pu-chart"><figcaption>{label}</figcaption>
     <div className="pu-chart-range"><span>{formatValue(max)}</span><span>{formatValue(min)}</span></div>
-    <svg viewBox="0 0 480 130" role="img" aria-label={label}><path d={path} fill="none" stroke="currentColor" strokeWidth="2" />{points.map((p, i) => p.value !== null && Number.isFinite(p.value) ? <circle key={i} cx={x(i)} cy={y(p.value)} r="2" /> : null)}</svg>
+    <svg viewBox="0 0 480 130" preserveAspectRatio="none" role="img" aria-label={label}><path d={path} fill="none" stroke="currentColor" strokeWidth="2" />{points.map((p, i) => p.value !== null && Number.isFinite(p.value) ? <circle key={i} cx={x(i)} cy={y(p.value)} r="2" /> : null)}</svg>
     <details><summary>{dataLabel}</summary><table><caption>{label}</caption><tbody>{points.map((point, i) => <tr key={i}><th scope="row">{point.label}</th><td>{point.value !== null && Number.isFinite(point.value) ? formatValue(point.value) : missingLabel}</td></tr>)}</tbody></table></details>
   </figure>;
 }
@@ -93,16 +125,27 @@ export function PriceChart({ points, label, formatValue, dataLabel = 'View chart
 export interface OrderBookLevel { price: number; quantity: number }
 /** Display only: no order placement, totals, sorting or inferred market data. */
 export function OrderBook({ bids, asks, caption, labels, formatPrice, formatQuantity, missingLabel = '—' }: {
-  bids: readonly OrderBookLevel[]; asks: readonly OrderBookLevel[]; caption: string;
+  /** Buy levels, best first, as published. */
+  bids: readonly OrderBookLevel[];
+  /** Sell levels, best first, as published. */
+  asks: readonly OrderBookLevel[];
+  /** Names the table. */
+  caption: string;
+  /** The four column heads, in the reader's language. */
   labels: { bidQuantity: string; bid: string; ask: string; askQuantity: string };
-  formatPrice: (value: number) => string; formatQuantity: (value: number) => string; missingLabel?: string;
+  /** Prints a price. */
+  formatPrice: (value: number) => string;
+  /** Prints a quantity. */
+  formatQuantity: (value: number) => string;
+  /** Shown for a level that is missing or not a finite non-negative number. Default a dash. */
+  missingLabel?: string;
 }) {
   const rows = Array.from({ length: Math.max(bids.length, asks.length) }, (_, index) => ({ index, bid: bids[index], ask: asks[index] }));
   const value = (n: number | undefined, format: (n: number) => string) => n !== undefined && Number.isFinite(n) && n >= 0 ? format(n) : missingLabel;
-  return <FinancialTable caption={caption} rows={rows} rowKey={row => String(row.index)} emptyTitle={missingLabel} columns={[
+  return <div className="pu-orderbook"><FinancialTable caption={caption} rows={rows} rowKey={row => String(row.index)} emptyTitle={missingLabel} columns={[
     { key: 'bidQuantity', label: labels.bidQuantity, num: true, render: row => value(row.bid?.quantity, formatQuantity) },
     { key: 'bid', label: labels.bid, num: true, render: row => value(row.bid?.price, formatPrice) },
     { key: 'ask', label: labels.ask, num: true, render: row => value(row.ask?.price, formatPrice) },
     { key: 'askQuantity', label: labels.askQuantity, num: true, render: row => value(row.ask?.quantity, formatQuantity) },
-  ]} />;
+  ]} /></div>;
 }

@@ -32,7 +32,9 @@ pre-release software, with substantial work remaining before production use.
 - [Architecture and release boundaries](docs/ARCHITECTURE.md)
 - [Engineering research and upstream credits](docs/RESEARCH.md)
 - [Financial components and Nepal APIs](docs/FINANCIAL.md)
+- [Accounting display components and ledger helpers](docs/ACCOUNTING.md)
 - [Reusable hooks and upstream credits](docs/HOOKS.md)
+- [CSV export and its security boundary](docs/EXPORT.md)
 
 Run `npm run portal` for the full portal with new utility documentation (requires
 the sibling consumer checkout; see [portal setup](portal/README.md)).
@@ -190,7 +192,7 @@ subpath Punji's own code imports, and its documentation is on design.punji.app.
 <!-- components:end -->
 
 Financial additions: `AppShell`, `FinancialSummary`, `FinancialTable`, `PriceChart`,
-`OrderBook` (`@punji/ui/financial`) and Nepal utilities (`@punji/ui/nepal`).
+`OrderBook` (`@punji/ui/financial`), `OrderBookDepth` (the bars-and-totals depth view, `@punji/ui/order-book`) and Nepal utilities (`@punji/ui/nepal`).
 See [the financial API guide](docs/FINANCIAL.md) and [remaining gaps](docs/audit/README.md).
 
 ## Browser support
@@ -204,8 +206,8 @@ Safari and iOS Safari 16.4+ (the versions with CSS cascade layers and
 Every component follows its [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)
 pattern, works with the keyboard alone, draws one visible focus ring, respects
 `prefers-reduced-motion`, and passes axe-core with no serious or critical issue in
-the test suite. Colour contrast is measured on the documentation site's
-foundations page. If something does not work with your assistive technology,
+the test suite. Colour contrast is checked by axe-core in a real browser for
+every visual fixture in light and dark themes ([visual testing](docs/VISUAL-TESTING.md)). If something does not work with your assistive technology,
 please [open an issue](https://github.com/20was/punji-ui/issues/new/choose).
 
 ## Where the code lives

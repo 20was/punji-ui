@@ -15,11 +15,10 @@ export interface CompactUnits {
 /**
  * A rupee amount short enough for a tile: exact below `from` (1 crore by default), then
  * in crore or arba to two places ("Rs 1.24 Cr", "Rs 2.05 Arba"; lakh only when `from` is
- * lower). Returns the exact amount too, for the accessible name and the hover.
+ * lower). `mark` is the rupee prefix in the reader's language ("Rs" by default, "रु." in Nepali). Returns the exact amount too, for the accessible name and the hover.
  */
-export function compactRs(value: number | null | undefined, units: CompactUnits, from = 1e7): { short: string; full: string; compact: boolean } {
+export function compactRs(value: number | null | undefined, units: CompactUnits, from = 1e7, mark = 'Rs'): { short: string; full: string; compact: boolean } {
   if (!isNum(value)) return { short: '-', full: '-', compact: false };
-  const mark = 'Rs';
   const full = `${mark} ${int(value)}`;
   const a = Math.abs(value);
   if (a < from) return { short: full, full, compact: false };

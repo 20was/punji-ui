@@ -26,6 +26,8 @@ try {
   }
   const page = await browser.newPage({ viewport: { width: 390, height: 1000 } });
   await page.goto(base);
+  // Wait for the app to render before tabbing; a slow runner otherwise tabs into an empty document.
+  await page.getByRole('link', { name: 'Skip to content' }).waitFor({ state: 'attached' });
   await page.keyboard.press('Tab');
   if (!(await page.getByRole('link', { name: 'Skip to content' }).evaluate(el => el === document.activeElement))) throw new Error('Skip link is not the first tab stop');
   await page.keyboard.press('Enter');

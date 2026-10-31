@@ -110,6 +110,10 @@
       "types": "./dist/locked-note/LockedNote.d.ts",
       "default": "./dist/locked-note/LockedNote.js"
     },
+    "./order-book": {
+      "types": "./dist/order-book/OrderBookDepth.d.ts",
+      "default": "./dist/order-book/OrderBookDepth.js"
+    },
     "./overlay": {
       "types": "./dist/overlay/Overlay.d.ts",
       "default": "./dist/overlay/Overlay.js"
@@ -186,9 +190,142 @@
       "types": "./dist/live/live.d.ts",
       "default": "./dist/live/live.js"
     },
-    "./styles.css": "./dist/styles.css",
-    "./tokens.css": "./dist/tokens.css",
-    "./css/*.css": "./dist/css/*.css",
+    "./retry-note": {
+      "types": "./dist/retry-note/RetryNote.d.ts",
+      "default": "./dist/retry-note/RetryNote.js"
+    },
+    "./meter": {
+      "types": "./dist/meter/Meter.d.ts",
+      "default": "./dist/meter/Meter.js"
+    },
+    "./summary-figure": {
+      "types": "./dist/summary-figure/SummaryFigure.d.ts",
+      "default": "./dist/summary-figure/SummaryFigure.js"
+    },
+    "./bars": {
+      "types": "./dist/bars/Bars.d.ts",
+      "default": "./dist/bars/Bars.js"
+    },
+    "./sparkline": {
+      "types": "./dist/sparkline/Sparkline.d.ts",
+      "default": "./dist/sparkline/Sparkline.js"
+    },
+    "./column-chart": {
+      "types": "./dist/column-chart/ColumnChart.d.ts",
+      "default": "./dist/column-chart/ColumnChart.js"
+    },
+    "./breakdown": {
+      "types": "./dist/breakdown/Breakdown.d.ts",
+      "default": "./dist/breakdown/Breakdown.js"
+    },
+    "./pagination": {
+      "types": "./dist/pagination/Pagination.d.ts",
+      "default": "./dist/pagination/Pagination.js"
+    },
+    "./metric-tile": {
+      "types": "./dist/metric-tile/MetricTile.d.ts",
+      "default": "./dist/metric-tile/MetricTile.js"
+    },
+    "./check-row": {
+      "types": "./dist/check-row/CheckRow.d.ts",
+      "default": "./dist/check-row/CheckRow.js"
+    },
+    "./inline-state": {
+      "types": "./dist/inline-state/InlineState.d.ts",
+      "default": "./dist/inline-state/InlineState.js"
+    },
+    "./key-stats": {
+      "types": "./dist/key-stats/KeyStats.d.ts",
+      "default": "./dist/key-stats/KeyStats.js"
+    },
+    "./fact-list": {
+      "types": "./dist/fact-list/FactList.d.ts",
+      "default": "./dist/fact-list/FactList.js"
+    },
+    "./step-list": {
+      "types": "./dist/step-list/StepList.d.ts",
+      "default": "./dist/step-list/StepList.js"
+    },
+    "./card-link": {
+      "types": "./dist/card-link/CardLink.d.ts",
+      "default": "./dist/card-link/CardLink.js"
+    },
+    "./link-table": {
+      "types": "./dist/link-table/LinkTable.d.ts",
+      "default": "./dist/link-table/LinkTable.js"
+    },
+    "./stock-table": {
+      "types": "./dist/stock-table/StockTable.d.ts",
+      "default": "./dist/stock-table/StockTable.js"
+    },
+    "./market-movers": {
+      "types": "./dist/market-movers/MarketMovers.d.ts",
+      "default": "./dist/market-movers/MarketMovers.js"
+    },
+    "./market-indices": {
+      "types": "./dist/market-indices/MarketIndices.d.ts",
+      "default": "./dist/market-indices/MarketIndices.js"
+    },
+    "./market-status": {
+      "types": "./dist/market-status/MarketStatus.d.ts",
+      "default": "./dist/market-status/MarketStatus.js"
+    },
+    "./price-limit": {
+      "types": "./dist/price-limit/PriceLimitIndicator.d.ts",
+      "default": "./dist/price-limit/PriceLimitIndicator.js"
+    },
+    "./watchlist": {
+      "types": "./dist/watchlist/Watchlist.d.ts",
+      "default": "./dist/watchlist/Watchlist.js"
+    },
+    "./market-heatmap": {
+      "types": "./dist/market-heatmap/MarketHeatmap.d.ts",
+      "default": "./dist/market-heatmap/MarketHeatmap.js"
+    },
+    "./ledger": {
+      "types": "./dist/ledger/ledger.d.ts",
+      "default": "./dist/ledger/ledger.js"
+    },
+    "./debit-credit": {
+      "types": "./dist/debit-credit/DebitCredit.d.ts",
+      "default": "./dist/debit-credit/DebitCredit.js"
+    },
+    "./ledger-table": {
+      "types": "./dist/ledger-table/LedgerTable.d.ts",
+      "default": "./dist/ledger-table/LedgerTable.js"
+    },
+    "./journal-entry": {
+      "types": "./dist/journal-entry/JournalEntryView.d.ts",
+      "default": "./dist/journal-entry/JournalEntryView.js"
+    },
+    "./trial-balance": {
+      "types": "./dist/trial-balance/TrialBalance.d.ts",
+      "default": "./dist/trial-balance/TrialBalance.js"
+    },
+    "./statement-table": {
+      "types": "./dist/statement-table/StatementTable.d.ts",
+      "default": "./dist/statement-table/StatementTable.js"
+    },
+    "./payment-status": {
+      "types": "./dist/payment-status/PaymentStatus.d.ts",
+      "default": "./dist/payment-status/PaymentStatus.js"
+    },
+    "./period-selector": {
+      "types": "./dist/period-selector/FinancialPeriodSelector.d.ts",
+      "default": "./dist/period-selector/FinancialPeriodSelector.js"
+    },
+    "./styles.css": {
+      "types": "./dist/styles.css.d.ts",
+      "default": "./dist/styles.css"
+    },
+    "./tokens.css": {
+      "types": "./dist/tokens.css.d.ts",
+      "default": "./dist/tokens.css"
+    },
+    "./css/*.css": {
+      "types": "./dist/css/*.css.d.ts",
+      "default": "./dist/css/*.css"
+    },
     "./package.json": "./package.json",
     "./nepal": {
       "types": "./dist/nepal/nepal.d.ts",
@@ -197,6 +334,26 @@
     "./financial": {
       "types": "./dist/financial/financial.d.ts",
       "default": "./dist/financial/financial.js"
+    },
+    "./money": {
+      "types": "./dist/money/money.d.ts",
+      "default": "./dist/money/money.js"
+    },
+    "./money-display": {
+      "types": "./dist/money-display/MoneyDisplay.d.ts",
+      "default": "./dist/money-display/MoneyDisplay.js"
+    },
+    "./price-change": {
+      "types": "./dist/price-change/PriceChange.d.ts",
+      "default": "./dist/price-change/PriceChange.js"
+    },
+    "./currency-input": {
+      "types": "./dist/currency-input/CurrencyInput.d.ts",
+      "default": "./dist/currency-input/CurrencyInput.js"
+    },
+    "./calculations": {
+      "types": "./dist/calculations/calculations.d.ts",
+      "default": "./dist/calculations/calculations.js"
     },
     "./nepal/format": {
       "types": "./dist/nepal/format.d.ts",
@@ -249,6 +406,62 @@
     "./date-picker": {
       "types": "./dist/date-picker/DatePicker.d.ts",
       "default": "./dist/date-picker/DatePicker.js"
+    },
+    "./hooks": {
+      "types": "./dist/hooks/hooks.d.ts",
+      "default": "./dist/hooks/hooks.js"
+    },
+    "./export": {
+      "types": "./dist/export/export.d.ts",
+      "default": "./dist/export/export.js"
+    },
+    "./download": {
+      "types": "./dist/download/downloadText.d.ts",
+      "default": "./dist/download/downloadText.js"
+    },
+    "./use-debounce": {
+      "types": "./dist/use-debounce/useDebounce.d.ts",
+      "default": "./dist/use-debounce/useDebounce.js"
+    },
+    "./use-throttle": {
+      "types": "./dist/use-throttle/useThrottle.d.ts",
+      "default": "./dist/use-throttle/useThrottle.js"
+    },
+    "./use-controllable-state": {
+      "types": "./dist/use-controllable-state/useControllableState.d.ts",
+      "default": "./dist/use-controllable-state/useControllableState.js"
+    },
+    "./use-previous": {
+      "types": "./dist/use-previous/usePrevious.d.ts",
+      "default": "./dist/use-previous/usePrevious.js"
+    },
+    "./use-toggle": {
+      "types": "./dist/use-toggle/useToggle.d.ts",
+      "default": "./dist/use-toggle/useToggle.js"
+    },
+    "./use-clipboard": {
+      "types": "./dist/use-clipboard/useClipboard.d.ts",
+      "default": "./dist/use-clipboard/useClipboard.js"
+    },
+    "./use-storage": {
+      "types": "./dist/use-storage/useStorage.d.ts",
+      "default": "./dist/use-storage/useStorage.js"
+    },
+    "./use-click-outside": {
+      "types": "./dist/use-click-outside/useClickOutside.d.ts",
+      "default": "./dist/use-click-outside/useClickOutside.js"
+    },
+    "./use-pagination": {
+      "types": "./dist/use-pagination/usePagination.d.ts",
+      "default": "./dist/use-pagination/usePagination.js"
+    },
+    "./use-table-selection": {
+      "types": "./dist/use-table-selection/useTableSelection.d.ts",
+      "default": "./dist/use-table-selection/useTableSelection.js"
+    },
+    "./use-column-visibility": {
+      "types": "./dist/use-column-visibility/useColumnVisibility.d.ts",
+      "default": "./dist/use-column-visibility/useColumnVisibility.js"
     }
   },
   "files": [
@@ -265,7 +478,7 @@
   },
   "scripts": {
     "build": "node scripts/clean.mjs && tsc -p tsconfig.build.json && node scripts/build-css.mjs",
-    "lint": "oxlint --max-warnings 0 --deny-warnings src test scripts examples portal && node scripts/check-css.mjs && node scripts/check-source.mjs && node scripts/check-boundaries.mjs",
+    "lint": "oxlint --max-warnings 0 --deny-warnings src test scripts examples portal site fixtures playwright.config.ts && node scripts/check-css.mjs && node scripts/check-source.mjs && node scripts/check-boundaries.mjs",
     "sync": "node scripts/sync-from-web.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
@@ -275,7 +488,7 @@
     "check:types": "attw --pack . --profile esm-only --exclude-entrypoints styles.css tokens.css \"css/*.css\" package.json",
     "check:package": "npm run check:publint && npm run check:types && node scripts/check-pack.mjs && npm run check:exports",
     "check:lockfile": "lockfile-lint --path package-lock.json --type npm --allowed-hosts npm --validate-https --validate-integrity",
-    "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run size && npm run check:package && npm run build:examples && npm run typecheck:examples && npm run typecheck:portal",
+    "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run size && npm run check:package && npm run build:examples && npm run typecheck:examples && npm run typecheck:portal && npm run typecheck:visual && npm run typecheck:site && npm run site:build && npm run check:examples",
     "verify:deep": "npm run verify && npm run test:deep",
     "changeset": "changeset",
     "version-packages": "changeset version && npm install --package-lock-only --ignore-scripts",
@@ -293,7 +506,19 @@
     "check:calendar": "node scripts/check-calendar.mjs",
     "check:fields": "node scripts/check-fields.mjs",
     "check:select": "node scripts/check-select.mjs",
-    "check:table": "node scripts/check-table.mjs"
+    "check:table": "node scripts/check-table.mjs",
+    "visual:serve": "npm run build && vite build test/visual && vite preview test/visual",
+    "test:visual": "playwright test",
+    "test:visual:docker": "node scripts/visual-docker.mjs",
+    "test:visual:update": "node scripts/visual-docker.mjs --update-snapshots",
+    "typecheck:visual": "tsc -p test/visual/tsconfig.json --noEmit",
+    "site:gen": "node scripts/site-gen.mjs",
+    "site:dev": "npm run build && npm run site:gen && vite site",
+    "site:build": "npm run site:gen && vite build site",
+    "site:preview": "vite preview site",
+    "typecheck:site": "npm run site:gen && tsc -p site/tsconfig.json --noEmit",
+    "check:site": "node scripts/check-site.mjs",
+    "check:consumer": "node scripts/check-consumer.mjs"
   },
   "peerDependencies": {
     "react": "^19.0.0",
@@ -303,6 +528,7 @@
     "@arethetypeswrong/cli": "0.18.5",
     "@changesets/changelog-github": "1.0.1",
     "@changesets/cli": "3.0.3",
+    "@playwright/test": "1.64.1",
     "@size-limit/preset-small-lib": "14.2.0",
     "@testing-library/dom": "10.4.2",
     "@testing-library/react": "16.3.3",

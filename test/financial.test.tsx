@@ -23,6 +23,16 @@ describe('financial compositions', () => {
     expect(screen.getByText('No transactions')).toBeTruthy();
     expect(screen.queryByRole('table')).toBeNull();
   });
+  it('keeps the empty body and action when search or pagination is on', async () => {
+    const reset = vi.fn<() => void>();
+    const {container} = render(<FinancialTable caption="Holdings" rows={[]} columns={columns} rowKey={r=>r.id} emptyTitle="No matching records" emptyBody="Clear the search." emptyAction={<button type="button" onClick={reset}>Load sample records</button>}
+      search={{ label: 'Search records', value: 'zzz', onChange: () => {} }} pagination={{ pageIndex: 0, pageSize: 10, rowCount: 0, onPageChange: () => {} }} />);
+    expect(screen.getByRole('heading', { level: 3, name: 'No matching records' })).toBeTruthy();
+    expect(screen.getByText('Clear the search.')).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Load sample records' }));
+    expect(reset).toHaveBeenCalledOnce();
+    expect(await seriousViolations(container)).toEqual([]);
+  });
   it('forwards stable row selection without writing row IDs into DOM attributes', () => {
     const onChange = vi.fn<(selectedRowIds: readonly string[]) => void>();
     const { container } = render(<FinancialTable caption="Accounts" rows={[{ id: 'account-private-42', amount: 'NPR 1,250' }]} columns={columns} rowKey={row => row.id} emptyTitle="No accounts" selection={{ selectedRowIds: ['account-private-42'], onChange, rowLabel: () => 'Select NPR account ending 42', testIdPrefix: 'accounts' }} />);

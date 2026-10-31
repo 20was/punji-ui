@@ -170,3 +170,109 @@ Local working examples: /utilities/financial-formatters#market-formatters in the
 full portal (`npm run portal`). The added APIs increase the all-export bundle by
 about 0.22 kB gzip (measured ~21.85 kB total); aggregate allowance is 22.3 kB with a
 separate 750 B module budget. Existing primitive/tree-shaking budgets are unchanged.
+
+## Financial calculations
+
+`@punji/ui/calculations` (also on the root) is pure TypeScript: no React, no
+browser globals, no dependency, enforced by `scripts/check-boundaries.mjs`. It is
+currency-agnostic; Nepal is not assumed anywhere.
+
+Two numeric contracts, never mixed:
+
+| Layer | Inputs/outputs | Rounding |
+|---|---|---|
+| Ledger (`computePosition`, `valuePosition`, `breakEvenPrice`, `taxOnGain`, `applyRate`, `divideRounded`) | `bigint` minor units; quantity is an integer count of the smallest tradable unit | Caller passes a `RoundingMode` (`half-even`, `half-up` = ties away from zero, `floor`, `ceil`, `trunc`) wherever a fraction can appear. Break-even always rounds up. |
+| Ratios (`percentageChange`, `priceChange`, `returnOnCost`, `cagr`, `dividendYield`, `weightedAverage`, `allocation`) | `number` or `bigint` in, `number` in percent units out (5 = 5%, like `formatPercent`) | Display only. `null` when undefined: zero/negative base, non-positive price, zero total weight. |
+
+```ts
+import { computePosition, valuePosition, breakEvenPrice, taxOnGain, allocation } from '@punji/ui/calculations';
+
+const position = computePosition([
+  { side: 'buy', quantity: 100n, price: 50_000n, fees: 1_000n },  // 100 @ 500.00
+  { side: 'buy', quantity: 10n, price: 0n },                      // bonus shares
+  { side: 'sell', quantity: 50n, price: 70_000n, fees: 900n },
+], { method: 'fifo', rounding: 'half-even' });
+// { quantity, costBasis, realisedPnL, totalFees, averageCost, lots }
+
+valuePosition(position, 61_000n);                         // { marketValue, unrealisedPnL }
+breakEvenPrice(position.costBasis, position.quantity, { sellRate: '0.004' });
+taxOnGain(position.realisedPnL, { rate: rateFromYourVerifiedSchedule, rounding: 'half-up' });
+allocation([{ id: 'NABIL', value: 3n }, { id: 'NTC', value: 3n }, { id: 'HDL', value: 3n }]);
+// displayPercent: 33.34, 33.33, 33.33 (largest remainder, always sums to 100)
+```
+
+Guarantees, tested with fast-check: cost is conserved for every method and
+rounding mode (open cost + cost removed by sells = cost bought); weighted-average
+and FIFO give identical lifetime P&L once flat; every rounding mode lands on the
+floor or ceiling of the true quotient; allocation display shares sum to exactly
+100; break-even is the minimal recovering price.
+
+Deliberately out of scope: short positions, corporate actions other than bonus
+(zero-cost buy) and rights (buy at issue price), tiered/flat broker fee schedules,
+loss carry-forward, holding-period tax tiers and any built-in tax rate. Rates are
+decimal-fraction strings (`'0.075'`) parsed exactly; callers supply them from a
+verified, current source.
+
+## Money in any currency: formatter, MoneyDisplay, PriceChange, CurrencyInput
+
+`@punji/ui/money` is the currency-generic counterpart of the Nepal formatters. Configuration, not code, selects USD, AUD, INR, EUR, JPY, NPR and so on. Nepal is a preset. Everything is also exported from `@punji/ui`. The older `formatNPR`, `formatMinorUnits` and `createFinancialFormatters` are unchanged.
+
+```ts
+import { createMoneyFormatter, formatMoney, formatCompactMoney, parseMoney, nepalMoneyConfig } from '@punji/ui/money';
+
+formatMoney(123456n, { currency: 'USD', locale: 'en-US' });               // $1,234.56
+formatMoney(1234567n, { currency: 'JPY', locale: 'ja-JP' });              // ￥1,234,567 (exponent 0)
+formatMoney(1234567n, { currency: 'KWD', locale: 'en-US' });              // KWD 1,234.567 (exponent 3)
+formatMoney(123456n, { currency: 'EUR', locale: 'de-DE' });               // 1.234,56 €
+formatMoney(-123n, { currency: 'USD', accounting: true });                // ($1.23)
+formatMoney(123456789n, nepalMoneyConfig());                              // NPR 12,34,567.89
+formatMoney(123456789n, nepalMoneyConfig({ language: 'ne', digits: 'deva' })); // रू १२,३४,५६७.८९
+formatCompactMoney(12345678900n, nepalMoneyConfig());                     // NPR 12.35 Cr  (display-rounded)
+parseMoney('1.234,56', { currency: 'EUR', locale: 'de-DE' });             // { state: 'valid', value: '1234.56', minor: 123456n }
+```
+
+**How it stays exact.** The amount is a `bigint` of minor units. The currency exponent comes from Intl, never a table in this library. The integer and fraction are split with bigint arithmetic, grouped and digit-mapped with Intl, and slotted into the parts that `Intl.NumberFormat#formatToParts` produces for the locale, so the sign, symbol position and spacing are the locale's own. No amount passes through `Number`. For many rows call `createMoneyFormatter(config)` once; `getMoneyFormatter` is a cached lookup (64 entries) that `formatMoney` and the components use.
+
+**Config.** `{ currency, locale = 'en', display = 'symbol' | 'code' | 'name' | 'narrowSymbol' | 'none', accounting = false, signDisplay = 'auto', numberingSystem }`. `nepalMoneyPreset` is `{ currency: 'NPR', locale: 'en-IN', display: 'code' }`; `nepalMoneyConfig({ language, digits, accounting })` switches to `ne-NP` with the Nepali symbol and opts into Devanagari digits. Latin digits stay the default in both languages, as elsewhere in this library.
+
+**Compact is for display only.** `formatCompactMoney` rounds half up to `fractionDigits` (default 2). Locales in India and Nepal and the `ne` and `hi` languages get lakh and crore (`L`, `Cr`, `Arba`, `Kharba`, or Devanagari words for `ne`/`hi`); everything else gets the locale's K/M/B/T from Intl. Below one lakh (or 1,000) it prints the exact amount. Never store, sum or compare compact text.
+
+**Parsing is the strict inverse of `format` with `display: 'none'`.** It uses the locale's separators and grouping (lakh for en-IN/ne, thousands elsewhere), accepts Devanagari and Arabic-Indic digits, accounting parentheses when `accounting` is set, and delegates to `parseLocalizedDecimal` and `parseMinorUnits`. More fraction digits than the exponent is `invalid`, never rounded. Currency symbols and codes in the text are rejected.
+
+### MoneyDisplay
+
+```tsx
+<MoneyDisplay value={123456789n} preset={nepalMoneyConfig()} />            // NPR 12,34,567.89
+<MoneyDisplay value="1234.50" currency="AUD" locale="en-US" />               // A$1,234.50, spoken "1,234.50 Australian dollars"
+<MoneyDisplay value={-250n} currency="USD" accounting />                     // ($2.50), spoken "-2.50 US dollars"
+<MoneyDisplay value={null} currency="USD" />                                 // —  (spoken "No value")
+```
+
+Props: `value: bigint | string | null | undefined` (a string is exact major units and must fit the currency's exponent, otherwise it shows the missing mark), the format config fields, `preset`, `compact`, `missing`, `missingLabel`, `className`, `testId`, `ref`. Renders `<data value="1234.50">`; digits are tabular and never wrap. When the symbol is shared (`$`, `¥`, `kr`, narrow symbols) or the amount is compact or in accounting style, the visible text is `aria-hidden` and a screen-reader-only twin speaks the full name and exact amount.
+
+Use it for any money a reader sees. Do not use it to format a number that is not money (use `Figure` or `formatNepalNumber`), or to show a value for a calculation, which belongs to the exact functions in `@punji/ui/calculations`.
+
+### PriceChange
+
+```tsx
+<PriceChange current={10550n} previous={10000n} currency="USD" />           // ▲ +5.50 (+5.50%), spoken "up 5.50 (5.50%)"
+<PriceChange change={priceChange(9000n, 10000n)} currency="USD" display="symbol" convention="red-up" />
+```
+
+Props: `current` and `previous` (minor units) or a precomputed `change`; `showAbsolute`, `showPercent`, `percentDigits` (default 2), `convention: 'green-up' | 'red-up'`, `labels` (`{ up, down, flat }`, default English), `size="sm"`, the format fields (`display` defaults to `none`, since the column usually names the currency), `missing`, `missingLabel`. The absolute change is exact; the percent comes from `percentageChange` and is display-only. It is omitted when the base price is zero or negative. Direction is the sign of the exact absolute change. It is carried by the sign, an arrow-shaped icon (up, down, bar) and a spoken word; colour (`--pu-color-gain` / `--pu-color-loss`) only reinforces it. `red-up` swaps the colours for markets where red means up; the icon, sign and words are unchanged. Not a substitute for `Delta` when you only have a published percent number.
+
+### CurrencyInput
+
+```tsx
+const [amount, setAmount] = useState('');
+<CurrencyInput label="Amount" preset={nepalMoneyConfig({ digits: 'deva' })} value={amount}
+  onValueChange={({ value, minorUnits, state }) => { setAmount(value); /* minorUnits: bigint | null */ }} />
+```
+
+Built on `PriceField`, so label, hint, error, size and `hideLabel` are the same as the other fields. The label includes the currency name for assistive technology ("Amount (US Dollar)"); the code shows inside the field. `value` is the exact ASCII decimal string (`'1234567.89'`); `onValueChange` receives `{ value, minorUnits, state: 'empty' | 'partial' | 'valid' }`. Typing is grouped by the locale as you type (`1,23,45,678` for en-IN), the caret stays after the same typed characters, ASCII, Devanagari and Arabic-Indic digits are accepted, group marks you type or paste are dropped, and the locale decimal mark is honoured. Keystrokes that would add more fraction digits than the currency has, letters, or a minus sign (unless `allowNegative`) are refused and the text does not change. On blur the text is finished: `12.5` becomes `12.50`, `12.` becomes `12.00`, a lone `-` clears. JPY and other exponent-0 currencies take no decimal mark and get a numeric keyboard.
+
+Use it for entering an amount. It does not enforce a minimum, maximum or balance: check `minorUnits` yourself and pass `error`. Not for quantities or percentages (use `NumberField`). A pasted string with currency text or a letter is refused whole; paste the number only.
+
+Accessibility: native `<label for>`, hint and error wired through `aria-describedby`, `aria-invalid` and a live `role="alert"` error; every state has a text alternative; no information is colour-only. Contrast is checked in the browser pass, as for the other components.
+
+Notes: the `Intl` data (symbols, plural names, grouping) comes from the browser or Node. `PriceField` now lets a caller's `inputMode` override its `decimal` default, which `CurrencyInput` uses for exponent-0 currencies.

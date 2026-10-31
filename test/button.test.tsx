@@ -66,7 +66,7 @@ describe('Button', () => {
       </>,
     );
     expect(screen.getByRole('link', { name: 'Settings' }).getAttribute('data-router')).toBe('yes');
-    expect(screen.getByRole('link', { name: 'Away' }).getAttribute('data-router')).toBeNull();
+    expect(screen.getByRole('link', { name: 'Away (opens in a new tab)' }).getAttribute('data-router')).toBeNull();
     expect(seen).toEqual(['/settings']);
   });
 

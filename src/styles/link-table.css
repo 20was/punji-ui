@@ -1,0 +1,45 @@
+/* Punji UI styles.
+   Styles for link-table (LinkTable, LinkTableRow, StockLabel). Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .kit-lt { container-type: inline-size; min-width: 0 }
+  /* In a flush Card the rows' own 8px padding would inset them from the title; the extra 8px lines their text up with it. */
+  .kit-card.flush > .kit-lt { padding-inline: 8px }
+  .kit-lt-h, .kit-lt-row { display: grid; grid-template-columns: var(--kit-lt-cols); align-items: center; column-gap: 12px }
+  .kit-lt-h { padding: 0 8px 8px; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted); border-bottom: 1px solid var(--pu-color-border-default) }
+  .kit-lt-h > .end { text-align: right }
+  .kit-lt-rows { margin: 0; padding: 0; list-style: none }
+  .kit-lt-rows > li + li { border-top: 1px solid var(--pu-color-border-default) }
+  .kit-lt-row { min-height: 60px; padding: 8px; border-radius: var(--pu-radius-lg); color: var(--pu-color-text); text-decoration: none }
+  a.kit-lt-row { cursor: pointer; transition: background-color var(--pu-motion-fast) var(--pu-ease-out) }
+  a.kit-lt-row:hover { background: var(--pu-color-surface-tint) }
+  a.kit-lt-row:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: -2px }
+  .kit-lt-c { min-width: 0; font-size: 14px; line-height: 18px; font-variant-numeric: tabular-nums }
+  .kit-lt-c.end { justify-self: end; text-align: right; white-space: nowrap }
+  .kit-lt-ch { display: flex; justify-content: flex-end; color: var(--pu-color-text-tertiary) }
+  .kit-lt-ch .kit-chev { width: 14px; height: 14px }
+  .kit-lt-cp { display: none }
+  .kit-lt-cp > .r { display: grid; justify-items: end; gap: 2px; text-align: right; white-space: nowrap; font-size: 14px; font-variant-numeric: tabular-nums }
+  .kit-lt-cp > .l { min-width: 0 }
+  @container (max-width: 559px) {
+    .kit-lt:not(.cq-sm) .kit-lt-h { display: none }
+    .kit-lt:not(.cq-sm) .kit-lt-row.has-cp { grid-template-columns: minmax(0, 1fr) 14px; min-height: 64px; padding: 10px 4px }
+    .kit-card.flush > .kit-lt:not(.cq-sm) .kit-lt-row.has-cp { padding-inline: 8px }
+    .kit-lt:not(.cq-sm) .kit-lt-row.has-cp > .kit-lt-c { display: none }
+    .kit-lt:not(.cq-sm) .kit-lt-row.has-cp > .kit-lt-cp { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 12px; min-width: 0 }
+  }
+  @container (max-width: 359px) {
+    .kit-lt.cq-sm .kit-lt-h { display: none }
+    .kit-lt.cq-sm .kit-lt-row.has-cp { grid-template-columns: minmax(0, 1fr) 14px; min-height: 64px; padding: 10px 4px }
+    .kit-card.flush > .kit-lt.cq-sm .kit-lt-row.has-cp { padding-inline: 8px }
+    .kit-lt.cq-sm .kit-lt-row.has-cp > .kit-lt-c { display: none }
+    .kit-lt.cq-sm .kit-lt-row.has-cp > .kit-lt-cp { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 12px; min-width: 0 }
+  }
+  .kit-stock { display: grid; gap: 2px; min-width: 0 }
+  .kit-stock-1 { display: flex; align-items: center; gap: 6px; min-width: 0 }
+  .kit-stock-1 > b { flex: none; font-size: 15px; line-height: 20px; font-weight: 600; letter-spacing: -0.01em }
+  .kit-stock.shrink .kit-stock-1 > b { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+  .kit-stock-2 { display: flex; min-width: 0; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted); white-space: nowrap }
+  .kit-stock-n { min-width: 0; overflow: hidden; text-overflow: ellipsis }
+  .kit-stock-x { flex: none }
+  :lang(ne) .kit-stock-2 { line-height: 18px }
+}

@@ -8,6 +8,7 @@
   .kit-pill.warn { color: var(--pu-color-warn); background: color-mix(in srgb, var(--pu-color-warn) 12%, transparent) }
   .kit-pill.accent { color: color-mix(in srgb, var(--pu-color-accent) 85%, var(--pu-color-text)); background: color-mix(in srgb, var(--pu-color-accent) 14%, transparent) }
   .kit-pill.highlight { color: var(--pu-color-tag-text); background: var(--pu-color-tag-bg) }
+  .kit-pill.info { background: var(--pu-color-series-nepse-soft); color: var(--pu-color-series-nepse) }
   .kit-pill.link { text-decoration: none; cursor: pointer; transition: background-color var(--pu-motion-fast) var(--pu-ease-out) }
   .kit-pill.link:hover { background: color-mix(in srgb, var(--pu-color-text) 10%, var(--pu-color-surface-tint)) }
   .kit-pill.link:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }

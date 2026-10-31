@@ -25,16 +25,34 @@ the dark column means the light value applies in both.
 | `--pu-color-border-default` | `rgba(18, 19, 20, 0.1)` | `rgba(255, 255, 255, 0.1)` |
 | `--pu-color-border-strong` | `rgba(18, 19, 20, 0.18)` | `rgba(255, 255, 255, 0.18)` |
 | `--pu-color-card-border` | `#d9dcd2` | `#24272b` |
+| `--pu-color-chart` | `#5e8c00` | `#c8f23d` |
 | `--pu-color-gain` | `#3f6a00` | `#c8f23d` |
 | `--pu-color-gain-soft` | `rgba(63, 106, 0, 0.1)` | `rgba(200, 242, 61, 0.12)` |
+| `--pu-color-inverse-gain` | `#c8f23d` | `#3f6a00` |
+| `--pu-color-inverse-line` | `#2a2e33` | `#dcded6` |
+| `--pu-color-inverse-loss` | `#ff8a78` | `#a3321f` |
+| `--pu-color-inverse-muted` | `#a3a8ae` | `#4f5358` |
+| `--pu-color-inverse-nepse` | `#8ea8ff` | `#3552c8` |
+| `--pu-color-inverse-row` | `#1f2226` | `#ffffff` |
+| `--pu-color-inverse-warn` | `#f5b84b` | `#7e5200` |
 | `--pu-color-link` | `#3f6a00` | `#c8f23d` |
 | `--pu-color-loss` | `#a3321f` | `#ff8a78` |
 | `--pu-color-loss-soft` | `rgba(163, 50, 31, 0.1)` | `rgba(255, 122, 102, 0.14)` |
 | `--pu-color-on-accent-fill` | `#0d0e10` | - |
 | `--pu-color-on-loss` | `#ffffff` | `#1c0806` |
 | `--pu-color-scrim` | `rgba(17, 18, 20, 0.45)` | `rgba(0, 0, 0, 0.6)` |
+| `--pu-color-series-10` | `#8a5a2b` | `#d6a77a` |
+| `--pu-color-series-11` | `#a336b8` | `#e07cf0` |
+| `--pu-color-series-12` | `#77700f` | `#e8dc6a` |
 | `--pu-color-series-3` | `#d08a10` | `#f5b84b` |
+| `--pu-color-series-4` | `#7e4fd6` | `#c9a7ff` |
+| `--pu-color-series-5` | `#0b7f75` | `#3fd0c0` |
+| `--pu-color-series-6` | `#b8326f` | `#ff7eb6` |
+| `--pu-color-series-7` | `#0a6fae` | `#5cc8ff` |
+| `--pu-color-series-8` | `#c2570c` | `#ff9a52` |
+| `--pu-color-series-9` | `#2f8a4c` | `#7ddc8f` |
 | `--pu-color-series-nepse` | `#3552c8` | `#8ea8ff` |
+| `--pu-color-series-nepse-soft` | `rgba(53, 82, 200, 0.1)` | `rgba(142, 168, 255, 0.14)` |
 | `--pu-color-shimmer-base` | `#dcdfd5` | `rgba(255, 255, 255, 0.07)` |
 | `--pu-color-shimmer-highlight` | `#eceee7` | `rgba(255, 255, 255, 0.12)` |
 | `--pu-color-surface` | `#f7f8f3` | `#17191c` |
@@ -48,6 +66,7 @@ the dark column means the light value applies in both.
 | `--pu-color-text-inverse` | `#f3f4f1` | `#121314` |
 | `--pu-color-text-muted` | `#4f5358` | `#a3a8ae` |
 | `--pu-color-text-tertiary` | `#585c61` | `#8a8f96` |
+| `--pu-color-track` | `#dde0d6` | `#2a2e33` |
 | `--pu-color-warn` | `#7e5200` | `#f5b84b` |
 | `--pu-color-warn-accent` | `#d08a10` | `#f5b84b` |
 | `--pu-control-lg` | `44px` | - |

@@ -283,13 +283,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "70.3 kB",
+    "limit": "78.5 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "24.7 kB",
+    "limit": "25.4 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -648,6 +648,34 @@
     "path": "dist/column-chart/ColumnChart.js",
     "import": "*",
     "limit": "2.4 kB",
+    "gzip": true
+  },
+  {
+    "name": "chart-math (import from '@punji/ui/chart-math')",
+    "path": "dist/chart-math/chartMath.js",
+    "import": "*",
+    "limit": "1.8 kB",
+    "gzip": true
+  },
+  {
+    "name": "candlestick-chart (import from '@punji/ui/candlestick-chart')",
+    "path": "dist/candlestick-chart/CandlestickChart.js",
+    "import": "*",
+    "limit": "5.4 kB",
+    "gzip": true
+  },
+  {
+    "name": "performance-chart (import from '@punji/ui/performance-chart')",
+    "path": "dist/performance-chart/PerformanceChart.js",
+    "import": "*",
+    "limit": "4.3 kB",
+    "gzip": true
+  },
+  {
+    "name": "depth-chart (import from '@punji/ui/depth-chart')",
+    "path": "dist/depth-chart/DepthChart.js",
+    "import": "*",
+    "limit": "3.2 kB",
     "gzip": true
   },
   {

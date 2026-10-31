@@ -471,3 +471,57 @@ test.describe('banking and payments', () => {
     expect(await page.locator('[data-fixture]').innerHTML()).not.toContain('9867654320');
   });
 });
+
+const live = (page: Page) => page.locator('[data-testid="vr-candles"] [role="status"]');
+
+test.describe('financial charts', () => {
+
+  test('CandlestickChart: arrows, Home and End move between candles and the readout follows', async ({ page }) => {
+    await openFixture(page, 'candlestick-chart', 'light');
+    const plot = page.getByTestId('vr-candles').getByRole('group', { name: 'NABIL daily' });
+    await plot.focus();
+    await expect(live(page)).toContainText('Close');
+    await page.keyboard.press('Home');
+    const first = await live(page).textContent();
+    await page.keyboard.press('ArrowRight');
+    await expect(live(page)).not.toHaveText(first ?? '');
+    await expect(page.getByTestId('vr-candles-tip')).toBeVisible();
+    await page.keyboard.press('End');
+    await expect(live(page)).toContainText('Close');
+    await page.keyboard.press('Escape');
+    await expect(page.getByTestId('vr-candles-tip')).toHaveCount(0);
+  });
+
+  test('CandlestickChart: the pointer shows a crosshair and readout', async ({ page }) => {
+    await openFixture(page, 'candlestick-chart', 'dark');
+    const plot = page.getByTestId('vr-candles').getByRole('group', { name: 'NABIL daily' });
+    await plot.hover({ position: { x: 300, y: 120 } });
+    await expect(page.getByTestId('vr-candles-tip')).toBeVisible();
+  });
+
+  test('PerformanceChart: legend toggles hide a series and the last one stays', async ({ page }) => {
+    await openFixture(page, 'performance-chart', 'light');
+    const chart = page.getByTestId('vr-perf');
+    const nepse = chart.getByRole('button', { name: /NEPSE/ });
+    await nepse.focus();
+    await page.keyboard.press('Enter');
+    await expect(nepse).toHaveAttribute('aria-pressed', 'false');
+    await page.keyboard.press('Space');
+    await expect(nepse).toHaveAttribute('aria-pressed', 'true');
+    const plot = chart.getByRole('group', { name: 'Portfolio against indices' });
+    await plot.focus();
+    await page.keyboard.press('Home');
+    await expect(chart.locator('[role="status"]')).toContainText('Portfolio 0.00%');
+  });
+
+  test('DepthChart: arrows move one price level and announce the running total', async ({ page }) => {
+    await openFixture(page, 'depth-chart', 'light');
+    const chart = page.getByTestId('vr-depth');
+    await chart.getByRole('group', { name: 'NABIL depth' }).focus();
+    await page.keyboard.press('Home');
+    await expect(chart.locator('[role="status"]')).toContainText('Bid NPR');
+    await expect(chart.locator('[role="status"]')).toContainText('cumulative 22,550');
+    await page.keyboard.press('ArrowRight');
+    await expect(chart.locator('[role="status"]')).toContainText('cumulative 17,350');
+  });
+});

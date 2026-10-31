@@ -22,7 +22,9 @@ import { execFileSync } from 'node:child_process';
 // Prop doc comments enlarge declarations; merged total measured 913,958 B on 2026-10-31.
 // The banking components (pure helpers, AccountNumber, BankAccountCard, TransactionList, TransactionStatus, PaymentReceipt,
 // PaymentTimeline, BeneficiarySelector: JS, declarations with prop docs, CSS) add ~90 kB; measured 1,031,009 B (1007 KiB).
-const MAX_UNPACKED = 1030 * 1024;
+// The financial charts (chart-math, CandlestickChart, PerformanceChart, DepthChart: JS, declarations with prop docs, CSS) add ~75 kB, measured 1,024,197 B.
+// Banking and charts merged together: measured 1,120,613 B; ~3% headroom.
+const MAX_UNPACKED = 1130 * 1024;
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
 const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md']);
 const allowed = (p) => always.has(p) || /^dist\/.+\.(js|d\.ts|css)$/.test(p);

@@ -10,6 +10,7 @@ import {
 } from '@punji/ui';
 import { holdings, symbols, today, weeklyValue, type Holding } from '../../fixtures/market-data.ts';
 import { bankingRegistry } from './fixtures-banking.tsx';
+import { chartsRegistry } from './fixtures-charts.tsx';
 import { domainRegistry } from './fixtures-domain.tsx';
 import { kitRegistry } from './fixtures-kit.tsx';
 
@@ -317,6 +318,7 @@ export const registry: Record<string, () => ReactNode> = {
   ...kitRegistry,
   ...domainRegistry,
   ...bankingRegistry,
+  ...chartsRegistry,
 };
 // Fixtures that draw their own full-width stage (shell, overlays).
 export const ownStage = new Set(['shell', 'drawer', 'sheet', 'popover', 'command-palette', 'toast']);

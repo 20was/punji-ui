@@ -190,3 +190,83 @@ export const bookAsks = [
   { price: 547, quantity: 1210 }, { price: 547.5, quantity: 3340 }, { price: 548, quantity: 760 },
   { price: 548.6, quantity: 1580 }, { price: 549, quantity: 290 },
 ] as const;
+
+// ---- Charts: candles, performance and depth. Synthetic, deterministic. ----
+
+export interface SampleCandle {
+  date: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number | null;
+}
+
+/** NEPSE trades Sunday to Thursday: the next trading day after `date` ("YYYY-MM-DD"), skipping Friday and Saturday. */
+function nextSession(date: string): string {
+  const d = new Date(`${date}T00:00:00Z`);
+  do d.setUTCDate(d.getUTCDate() + 1); while (d.getUTCDay() === 5 || d.getUTCDay() === 6);
+  return d.toISOString().slice(0, 10);
+}
+
+/** `length` sessions from `start`, a seeded walk ending on `last`, with plausible wicks and volume. Valid by construction. */
+export function sampleCandles(length: number, seed = 1, last = 487.5, start = '2025-06-01'): SampleCandle[] {
+  let s = (seed * 2654435761) % 4294967296;
+  const rand = () => {
+    s = (s * 1664525 + 1013904223) % 4294967296;
+    return s / 4294967296;
+  };
+  const closes: number[] = [];
+  let p = 100;
+  for (let i = 0; i < length; i += 1) {
+    p *= 1 + (rand() - 0.49) * 0.03;
+    closes.push(p);
+  }
+  const k = last / closes[length - 1]!;
+  const out: SampleCandle[] = [];
+  let date = start;
+  let prev = closes[0]! * k;
+  for (let i = 0; i < length; i += 1) {
+    const close = Math.round(closes[i]! * k * 10) / 10;
+    const open = Math.round(prev * 10) / 10;
+    const high = Math.round((Math.max(open, close) + rand() * Math.abs(close) * 0.008) * 10) / 10;
+    const low = Math.round((Math.min(open, close) - rand() * Math.abs(close) * 0.008) * 10) / 10;
+    out.push({ date, open, high, low, close, volume: Math.round(20_000 + rand() * 180_000) });
+    prev = close;
+    date = nextSession(date);
+  }
+  return out;
+}
+
+/** Sixty NABIL sessions ending at Rs 487.50. */
+export const nabilCandles: readonly SampleCandle[] = sampleCandles(60, 7, 487.5, '2025-08-24');
+
+/** Trading dates (Sunday to Thursday) for the performance chart. */
+export const performanceDates: readonly string[] = (() => {
+  const out: string[] = [];
+  let d = '2025-08-24';
+  for (let i = 0; i < 60; i += 1) {
+    out.push(d);
+    d = nextSession(d);
+  }
+  return out;
+})();
+
+/** Portfolio value (NPR) against the NEPSE and Sensitive indices over the same sessions; NEPSE has two missing days. */
+export const performanceSeries = [
+  { key: 'portfolio', label: 'Portfolio', values: performanceDates.map((_, i) => Math.round(1_000_000 * (1 + i * 0.0035 + Math.sin(i * 0.5) * 0.02 + Math.cos(i * 0.21) * 0.015))) },
+  { key: 'nepse', label: 'NEPSE', values: performanceDates.map((_, i) => (i === 17 || i === 18 ? null : Math.round(2_650 * (1 + i * 0.0012 + Math.sin(i * 0.45) * 0.014) * 100) / 100)) },
+  { key: 'sensitive', label: 'Sensitive', values: performanceDates.map((_, i) => Math.round(470 * (1 + i * 0.0008 + Math.cos(i * 0.4) * 0.012) * 100) / 100) },
+];
+
+/** A deeper book for the depth chart: ten levels a side around Rs 487.50. */
+export const depthBids: readonly { price: number; quantity: number }[] = [
+  { price: 487.0, quantity: 1200 }, { price: 486.5, quantity: 850 }, { price: 486.0, quantity: 2400 }, { price: 485.5, quantity: 600 },
+  { price: 485.0, quantity: 3100 }, { price: 484.0, quantity: 1500 }, { price: 483.0, quantity: 4200 }, { price: 482.5, quantity: 900 },
+  { price: 481.0, quantity: 2600 }, { price: 480.0, quantity: 5200 },
+];
+export const depthAsks: readonly { price: number; quantity: number }[] = [
+  { price: 488.0, quantity: 900 }, { price: 488.5, quantity: 1500 }, { price: 489.0, quantity: 700 }, { price: 489.5, quantity: 2200 },
+  { price: 490.0, quantity: 1800 }, { price: 491.0, quantity: 3300 }, { price: 492.0, quantity: 1100 }, { price: 493.5, quantity: 2900 },
+  { price: 495.0, quantity: 1600 }, { price: 497.0, quantity: 4100 },
+];

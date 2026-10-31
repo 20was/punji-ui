@@ -33,6 +33,7 @@ pre-release software, with substantial work remaining before production use.
 - [Engineering research and upstream credits](docs/RESEARCH.md)
 - [Financial components and Nepal APIs](docs/FINANCIAL.md)
 - [Accounting display components and ledger helpers](docs/ACCOUNTING.md)
+- [Banking and payments display components and their security boundary](docs/BANKING.md)
 - [Reusable hooks and upstream credits](docs/HOOKS.md)
 - [CSV export and its security boundary](docs/EXPORT.md)
 

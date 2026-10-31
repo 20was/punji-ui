@@ -48,7 +48,7 @@
   .pu-tx[data-status='failed'] .pu-tx-amount, .pu-tx[data-status='reversed'] .pu-tx-amount { text-decoration: line-through; color: var(--pu-color-text-muted) }
   .pu-tx-dir { font-size: var(--pu-text-xs); letter-spacing: 0.04em; color: var(--pu-color-text-muted) }
   .pu-tx-bal { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); white-space: nowrap }
-  .pu-tx-skel { align-items: center }
+  .pu-tx-skel { align-items: center; min-height: 56px }
   @media (max-width: 479px) {
     .pu-tx { flex-wrap: wrap }
     .pu-tx-money { justify-items: start; text-align: left; width: 100% }
@@ -60,10 +60,10 @@
   .pu-receipt-title { margin: 0; font: 600 var(--pu-text-base) / 1.3 var(--pu-font-display) }
   .pu-receipt-amount { margin: 0; font: 700 24px / 1.2 var(--pu-font-display); font-variant-numeric: tabular-nums }
   .pu-receipt-facts, .pu-receipt-sum { display: grid; gap: var(--pu-space-3); margin: 0 }
-  .pu-receipt-facts > div, .pu-receipt-sum > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px var(--pu-space-3); min-width: 0 }
+  .pu-receipt-facts > div, .pu-receipt-sum > div { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px var(--pu-space-3); min-width: 0 }
   .pu-receipt dt { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
   .pu-receipt dd { margin: 0; display: grid; justify-items: end; text-align: right; font-size: var(--pu-text-sm); min-width: 0; overflow-wrap: anywhere }
-  .pu-receipt-ref { display: flex; align-items: center; justify-content: flex-end; gap: 4px }
+  .pu-receipt dd.pu-receipt-ref { display: flex; align-items: center; justify-content: flex-end; gap: 4px }
   .pu-receipt-refval { font-variant-numeric: tabular-nums; overflow-wrap: anywhere }
   .pu-receipt-name { font-weight: 600 }
   .pu-receipt-sub, .pu-receipt-note { color: var(--pu-color-text-muted); font-size: var(--pu-text-xs) }
@@ -104,7 +104,8 @@
   .pu-bene.bad .pu-bene-input { border-color: var(--pu-color-loss) }
   .pu-bene-err { font-size: var(--pu-text-xs); color: var(--pu-color-loss) }
   .pu-bene-sel { display: flex; flex-wrap: wrap; gap: 2px 8px; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums }
-  .pu-bene-pop { display: grid; gap: 2px; box-sizing: border-box; max-height: 18rem; overflow: auto; padding: 4px; background: var(--pu-color-surface-solid); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-lg); box-shadow: var(--pu-shadow-lg) }
+  .pu-bene-box { position: relative; display: grid }
+  .pu-bene-pop { position: absolute; inset-inline: 0; top: calc(100% + 4px); z-index: 3; display: grid; gap: 2px; box-sizing: border-box; max-height: 18rem; overflow: auto; padding: 4px; background: var(--pu-color-surface-solid); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-lg); box-shadow: var(--pu-shadow-lg) }
   .pu-bene-none { margin: 0; padding: 12px; color: var(--pu-color-text-muted); font-size: var(--pu-text-sm) }
   .pu-bene-group { padding: 8px 8px 4px; font: 600 var(--pu-text-xs) / 1.2 var(--pu-font-body); letter-spacing: 0.04em; color: var(--pu-color-text-muted) }
   .pu-bene-opt { display: grid; gap: 2px; padding: 8px; min-height: 44px; box-sizing: border-box; border-radius: var(--pu-radius-md); cursor: pointer }

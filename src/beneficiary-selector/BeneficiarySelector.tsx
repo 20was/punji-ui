@@ -110,6 +110,7 @@ export function BeneficiarySelector({ beneficiaries, value, onChange, label, vis
   return (
     <div className={cls}>
       <label className="pu-bene-label" htmlFor={`${uid}-in`}>{label}</label>
+      <div className="pu-bene-box">
       <input
         id={`${uid}-in`}
         ref={input}
@@ -132,14 +133,6 @@ export function BeneficiarySelector({ beneficiaries, value, onChange, label, vis
         onKeyDown={onKeyDown}
         data-testid={testId}
       />
-      {error && <span className="pu-bene-err" id={`${uid}-err`} role="alert">{error}</span>}
-      {selected && !open && (
-        <span className="pu-bene-sel" id={`${uid}-sel`}>
-          {selected.institution && <span>{selected.institution}</span>}
-          <span aria-hidden="true">{maskAccountNumber(selected.accountNumber, { visible, groupSize: 4 })}</span>
-          <span className="kit-sr">{words.endingIn} {tailOf(selected)}</span>
-        </span>
-      )}
       {open && loading && <div className="pu-bene-pop" aria-busy="true"><Skeleton width="60%" height={16} label={words.loading} /><Skeleton width="45%" height={16} /></div>}
       {open && !loading && flat.length === 0 && <p className="pu-bene-pop pu-bene-none" role="status">{words.none}</p>}
       {open && !loading && flat.length > 0 && (
@@ -175,6 +168,15 @@ export function BeneficiarySelector({ beneficiaries, value, onChange, label, vis
             </div>
           ))}
         </div>
+      )}
+      </div>
+      {error && <span className="pu-bene-err" id={`${uid}-err`} role="alert">{error}</span>}
+      {selected && !open && (
+        <span className="pu-bene-sel" id={`${uid}-sel`}>
+          {selected.institution && <span>{selected.institution}</span>}
+          <span aria-hidden="true">{maskAccountNumber(selected.accountNumber, { visible, groupSize: 4 })}</span>
+          <span className="kit-sr">{words.endingIn} {tailOf(selected)}</span>
+        </span>
       )}
     </div>
   );

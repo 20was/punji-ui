@@ -174,7 +174,9 @@ export function TransactionList({
     return (
       <div className={classes} aria-busy="true" data-testid={testId}>
         <Skeleton width={120} height={14} label={words.loading} />
-        {[0, 1, 2, 3].map((i) => <div key={i} className="pu-tx pu-tx-skel"><Skeleton width="45%" height={16} /><Skeleton width={90} height={16} /></div>)}
+        <div className="pu-txrows">
+          {[0, 1, 2, 3].map((i) => <div key={i} className="pu-tx pu-tx-skel"><Skeleton width="45%" height={16} /><Skeleton width={90} height={16} /></div>)}
+        </div>
       </div>
     );
   }

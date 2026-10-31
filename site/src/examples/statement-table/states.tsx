@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { StatementTable } from '@punji/ui/statement-table';
 import { SegmentedControl } from '@punji/ui/controls';
 import { periods } from '../../sample.ts';
+import { Stack } from '@punji/ui/stack';
 
 type View = 'loading' | 'error' | 'empty';
 
 export default function Example() {
   const [view, setView] = useState<View>('empty');
   return (
-    <div className="ex-stack">
+    <Stack>
       <SegmentedControl<View>
         label="State"
         prefix="st-state"
@@ -24,6 +25,6 @@ export default function Example() {
         state={view === 'empty' ? 'ready' : view}
         onRetry={() => setView('loading')}
       />
-    </div>
+    </Stack>
   );
 }

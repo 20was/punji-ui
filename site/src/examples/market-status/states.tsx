@@ -1,21 +1,26 @@
+import { Card } from '@punji/ui/card';
 import { MarketStatus, type MarketState } from '@punji/ui/market-status';
+import { DataRow, DataRows } from '@punji/ui/rows';
 
-const states: MarketState[] = ['open', 'pre-open', 'closed', 'halted', 'holiday'];
+const day: { time: string; state: MarketState; detail?: string }[] = [
+  { time: '10:30', state: 'pre-open' },
+  { time: '11:00', state: 'open' },
+  { time: '12:20', state: 'halted' },
+  { time: '15:00', state: 'closed' },
+  { time: 'Dashain', state: 'holiday', detail: 'Vijaya Dashami' },
+];
 
-// Each state has its own icon shape and its own word, so colour is never the only signal.
+// Each state has its own icon shape and word, so colour is never the only signal.
+// A Nepali label comes from labels; size="sm" fits a table caption or a header.
 export default function Example() {
   return (
-    <div className="ex-stack">
-      <div className="ex-row">
-        {states.map((state) => (
-          <MarketStatus key={state} state={state} market="NEPSE" />
+    <Card title="NEPSE session" description="One trading day, state by state" headingLevel={3}>
+      <DataRows label="Session states">
+        {day.map((d) => (
+          <DataRow key={d.time} label={d.time} value={<MarketStatus state={d.state} detail={d.detail} market="NEPSE" />} />
         ))}
-      </div>
-      <div className="ex-row">
-        <MarketStatus state="holiday" detail="Dashain" market="NEPSE" />
-        <MarketStatus state="pre-open" detail="Opens 11:00" market="NEPSE" size="sm" />
-        <MarketStatus state="closed" labels={{ closed: 'बन्द' }} market="NEPSE" />
-      </div>
-    </div>
+        <DataRow label="Nepali label" value={<MarketStatus state="closed" labels={{ closed: 'बन्द' }} market="NEPSE" size="sm" />} />
+      </DataRows>
+    </Card>
   );
 }

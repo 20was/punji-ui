@@ -1,6 +1,6 @@
 # Audit and findings
 
-State of the repository at `cfe3d47`. Original audit (2026-10-28): [docs/audit/README.md](docs/audit/README.md), kept as written. This page consolidates it with what was found afterwards. Evidence for the web comparison is in [COMPONENT-INVENTORY.md](COMPONENT-INVENTORY.md) and [docs/INTEGRATION.md](docs/INTEGRATION.md).
+State of the repository at the current `main`. Original audit (2026-10-28): [docs/audit/README.md](docs/audit/README.md), kept as written. This page consolidates it with what was found afterwards. Evidence for the web comparison is in [COMPONENT-INVENTORY.md](COMPONENT-INVENTORY.md) and [docs/INTEGRATION.md](docs/INTEGRATION.md).
 
 Severity: **P0** blocks any release or causes data loss; **P1** blocks production use; **P2** quality gap; **P3** polish. Status: **fixed**, **partial**, **open**.
 
@@ -8,7 +8,7 @@ Severity: **P0** blocks any release or causes data loss; **P1** blocks productio
 
 | Status | Findings |
 | --- | --- |
-| Fixed | Ownership of `src/`, public API drift, calculations layer, Nepal-locked money, visual regression (73 fixtures, 640 baselines; 43 added since the gate was built), divergence in shared modules, Button new-tab, the visual and accessibility defects listed below (eleven from the gate extension, seven from the final pass) |
+| Fixed | Ownership of `src/`, public API drift, calculations layer, Nepal-locked money, visual regression (fixture and baseline counts: [docs/VISUAL-TESTING.md](docs/VISUAL-TESTING.md)), divergence in shared modules, Button new-tab, the visual and accessibility defects listed below (eleven from the gate extension, seven from the final pass) |
 | Partial | Packaging (publishable, never published), web-only modules (17 of 96 migrated; see COMPONENT-INVENTORY.md), tables/charts/accounting/market compositions, browser a11y coverage, size budgets |
 | Open | Docs portal still lives in punji-web (P1), duplicates inside punji-web, manual screen-reader testing, first publish |
 
@@ -38,7 +38,7 @@ Nothing is published to npm (`version` is `0.0.0`). The package is not productio
 
 | Area | Finding | Sev | Status | Notes |
 | --- | --- | --- | --- | --- |
-| Docs portal ownership | The design site (`design.punji.app`, about 35 pages) is `src/design` in punji-web and is served by its Worker. `npm run portal` patches that checkout in memory; there is no independent portal build or deploy here | P1 | Open | Target and steps: [docs/INTEGRATION.md](docs/INTEGRATION.md) section 8. Docs hosting is an open owner decision |
+| Docs portal ownership | The design site (`design.punji.app`, a few dozen pages) is `src/design` in punji-web and is served by its Worker. `npm run portal` patches that checkout in memory; there is no independent portal build or deploy here | P1 | Open | Target and steps: [docs/INTEGRATION.md](docs/INTEGRATION.md) section 8. Docs hosting is an open owner decision |
 | Calculations layer | No exact position accounting or ratios | P1 | Fixed | `src/calculations/` (bigint minor units, explicit `RoundingMode`; ratios are display-only `number`). [docs/FINANCIAL.md](docs/FINANCIAL.md) |
 | Nepal-locked money | Formatters assumed NPR, `Rs` and `en-IN` | P1 | Fixed | `@punji/ui/money` is currency-generic (exponent from Intl); `MoneyDisplay`, `PriceChange`, `CurrencyInput`. Legacy `formatNPR` kept. Nepal is a preset |
 | No visual regression | No screenshot or real-browser a11y gate | P1 | Fixed locally | Playwright in the pinned Docker image; baselines committed under `test/visual/__screenshots__/`. The CI `visual` job exists in `ci.yml` but **has not been run on GitHub yet** |
@@ -46,7 +46,7 @@ Nothing is published to npm (`version` is `0.0.0`). The package is not productio
 | Web-only reusable modules | 96 of 167 kit modules in punji-web are reusable and absent here (P1 18, P2 15, P3 63) | P1 | Partial | 10 migrated: `CardLink`, `RetryNote`, `Meter`, `SummaryFigure`, `CheckRow`, `InlineState`, `KeyStats`, `FactList`, `StepList`, `LinkTable`. Not yet: `MetricTile`, `Bars`/`SplitBar`, `Sparkline`, `Pagination`, `ColumnChart`, `Breakdown`, and the rest of the 96. Counts are from the 2026-10-31 inventory and are not regenerated |
 | Duplicates inside punji-web | 12 families: formatting stacks, Delta/Figure, three Skeletons, alert distance, 21 files calling `window.matchMedia` directly, Sparkline, five icon sets, FAQ/disclosure, dead look-alikes, error/empty states, market status, copies of punji-ui hooks | P2 | Open | Lives in punji-web; resolved by migration order in INTEGRATION.md. Eight dead-code candidates listed in the inventory |
 | Button new tab | Web links opened a new tab and announced it; punji-ui did not | P1 | Fixed | `external` and `newTabLabel` props (`ce18320`) |
-| Size budget creep | Aggregate budget grew from 11.5 kB to 21 kB (docs/ARCHITECTURE.md) and is now set in `.size-limit.json` (48.3 kB measured on 2026-10-31); tarball allowance grew from 320 KiB to the value in `scripts/check-pack.mjs` (732 kB measured) | P2 | Open | Budgets were raised with each module batch rather than held. Per-subpath budgets (89 entries) still guard consumers who import subpaths. No ceiling policy yet. Current measured sizes not re-run for this page |
+| Size budget creep | Aggregate budget grew from 11.5 kB to 21 kB (docs/ARCHITECTURE.md) and is now set in `.size-limit.json` (`npm run size` prints the measured size); tarball allowance grew from 320 KiB to the value in `scripts/check-pack.mjs` (1240 KiB) | P2 | Open | Budgets were raised with each module batch rather than held. Per-subpath budgets (one per export in `.size-limit.json`) still guard consumers who import subpaths. No ceiling policy yet. Current measured sizes not re-run for this page |
 | Contrast coverage | jsdom axe disables colour contrast | P2 | Fixed | Contrast now checked by axe in the Playwright a11y spec (390 and 1440, both themes) |
 
 ### Visual defects

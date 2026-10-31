@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { SegmentedControl } from '@punji/ui/controls';
+import { Stack } from '@punji/ui/stack';
 
 type Scope = 'mine' | 'family' | 'all';
 
 export default function Example() {
   const [scope, setScope] = useState<Scope>('mine');
   return (
-    <div className="ex-stack">
+    <Stack>
       <p className="doc-muted">Accent tone: the one choice that frames a whole page. At most one per page.</p>
       <SegmentedControl<Scope>
         label="Whose portfolio"
@@ -33,6 +34,6 @@ export default function Example() {
           { value: 'all', label: 'Everyone' },
         ]}
       />
-    </div>
+    </Stack>
   );
 }

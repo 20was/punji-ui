@@ -15,29 +15,31 @@ permissions, backend clients, tax rules and trading execution.
 | --- | --- |
 | Financial utilities | Exact calculations (positions, P&L, break-even, ratios, allocation), generic money formatting/parsing, ledger maths, CSV export with formula neutralisation, hooks |
 | Components | Money primitives, stock market (StockTable, movers, indices, status, price limits, watchlist, heatmap, order books), accounting (ledger, journal, trial balance, statements, payment status, period selector), 17 modules migrated from punji-web |
-| Quality | Playwright visual regression in Docker (640 baselines, interaction and axe specs), unit and property tests, size budgets, package checks, clean-consumer install check |
-| Docs | Self-contained site with 49 pages and a finance-first sidebar; props generated from declarations |
+| Quality | Playwright visual regression in Docker (baseline and fixture counts in [docs/VISUAL-TESTING.md](docs/VISUAL-TESTING.md); interaction and axe specs), unit and property tests, size budgets, package checks, clean-consumer install check |
+| Docs | Self-contained site with a finance-first sidebar (page count: `npm run site:build`); props generated from declarations |
+
+## Done (merged in #25)
+
+| Area | What exists |
+| --- | --- |
+| Discoverability | SEO-ready docs site: clean URLs, prerendered HTML per page, unique titles and descriptions, canonical, Open Graph, JSON-LD, sitemap, robots.txt, llms.txt, favicon and social image, `check:seo` gate; finance-first README and package metadata |
+| Financial charts | CandlestickChart (volume pane, moving averages), PerformanceChart (vs benchmarks), DepthChart, shared chart maths with downsampling |
+| Banking and payments | AccountNumber, BankAccountCard, TransactionList, PaymentReceipt, PaymentTimeline, BeneficiarySelector |
+| Portfolio | HoldingsTable, allocation donut with legend, dividend and transaction history, portfolio overview |
+| Showcase | 13 copyable patterns at `/showcase/<slug>/` built only from `@punji/ui` exports; 32 portal paths redirect to them or to the nearest component page ([site/README.md](site/README.md)) |
+| Guides and docs pages | "Get started" section (introduction, installation, Next.js, Vite, theming, SSR, Tailwind, live data, security, roadmap, contributing) and pages for the planned generic components |
+| Container fit | Components size to their container rather than the viewport (`PortfolioAllocation`, `ShareBar`, `StatGrid`, `FinancialSummary`, `TrialBalance`, `JournalEntryView`, `LedgerTable`), covered by the `container-fit` visual fixture |
 
 ## Next, in order
 
 Each wave is independently mergeable; every item ships with tests, docs pages,
 visual baselines and size budgets.
 
-### Wave 1: discoverability and the biggest component gaps (in progress)
+### Wave 2: remaining compositions and forms
 
-- **SEO-ready docs site:** clean URLs, prerendered HTML per page, unique titles and descriptions, canonical, Open Graph, JSON-LD, sitemap, robots.txt, llms.txt, favicon and social image, `check:seo` gate.
-- **README and package metadata:** finance-first positioning, a 30-second quickstart that type-checks, accurate dependency and size claims, finance keywords.
-- **Financial charts:** CandlestickChart (with volume pane and moving averages), PerformanceChart (vs benchmarks), DepthChart, shared chart maths with downsampling.
-- **Banking & payments:** AccountNumber (masked, explicit reveal and copy), BankAccountCard, TransactionList, PaymentReceipt, PaymentTimeline, BeneficiarySelector.
-
-### Wave 2: compositions, showcase and guides (guides, generic pages and showcase done; portfolio and forms below still open)
-
-- **Showcase section on design.punji.app (done):** 13 patterns at `/showcase/<slug>/` (app header, app band, portfolio tracker, live market board, watchlist and alerts, stock detail, invoice, bank statement, payment flow, accounting dashboard, dividend tracker, IPO result check, mobile account home), built only from `@punji/ui` exports plus a layout stylesheet each, live with copyable typechecked source and labelled as patterns to copy, not package API. 32 portal paths redirect to them or to the nearest component page ([site/README.md](site/README.md)). Gaps the patterns exposed: `PageHeader` always renders an `h1` (no heading level); `FinancialSummary` columns follow the viewport, not its container; `TrialBalance`, `JournalEntryView` and `LedgerTable` do not stack below about 340 px; `Button` has no stacked icon-over-label (tile) variant; `Tile` shows only four characters of a five-letter symbol.
-
-- **Portfolio:** HoldingsTable, allocation donut with legend, dividend and transaction history, portfolio overview.
-- **Guides (done):** a "Get started" section with introduction and installation, Next.js App Router, Vite, theming and custom tokens, server rendering and hydration, Tailwind interop, live data adapters, security, roadmap and contributing (URLs `/get-started/<slug>/`, code typechecked by `typecheck:site`).
-- **Remaining docs pages (done for the planned lists):** pages for Field (with NumberField, PriceField, DateField, SelectField, SymbolField, TextAreaField), Select, SegmentedControl, Tabs, Checkbox, Switch, RangeSlider, ChoiceGroup, ListFilter, Popover, Drawer, CommandPalette, Toast, Tooltip and InfoTip, StatusPill, LockedNote, Figure and Delta, LiveFigure, page layout and header, AppShell, Rows (ValueRow, DataRows) and FinancialSummary, with every prop documented in source. Still without a page: Calendar, Chip, FilterChip, ShowMore, InlineConfirm, Avatar, StatusTag, StatGrid and StatTile, Sheet and Dock, DrawerScreen, and the cutover items in [site/README.md](site/README.md).
-- **Forms:** NumberInput, PercentageInput, OTP input, date-range presets, statement upload.
+- **Forms (done):** `NumberField` steppers (`step`, `min`, `max`, `steppers`; no separate NumberInput), `PercentageInput`, `OtpInput`, `DateRangePicker` presets with the pure `date-range-presets` helpers (Nepal Shrawan fiscal year), `StatementUpload`.
+- **Docs pages still missing:** Calendar, Chip, FilterChip, ShowMore, InlineConfirm, Avatar, StatusTag, StatGrid and StatTile, Sheet and Dock, DrawerScreen, and the cutover items in [site/README.md](site/README.md).
+- **Gaps the showcase exposed (check each against the current code before starting):** `PageHeader` always renders an `h1` (no heading level); `Button` has no stacked icon-over-label (tile) variant; `Tile` shows only four characters of a five-letter symbol.
 
 ### Wave 3: scale and trust
 

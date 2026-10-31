@@ -6,6 +6,13 @@
   .kit-field-action { position: absolute; inset-block: 3px; inset-inline-end: 3px; display: flex; align-items: center; border-radius: calc(var(--pu-radius-control) - 3px); overflow: hidden; }
   .kit-field-action > .kit-btn { height: 100%; max-height: 100%; min-height: 0; background: transparent; }
   .kit-field-action:has(:focus-visible) { outline: 2px solid var(--pu-color-accent); outline-offset: 0; }
+  .kit-field .kit-field-control input.pu-has-stepper { padding-inline-end: calc(var(--pu-control-md) * 2 + var(--pu-space-3)); }
+  .pu-stepper { display: flex; height: 100%; }
+  .pu-stepper-btn { display: inline-flex; align-items: center; justify-content: center; width: var(--pu-control-md); height: 100%; margin: 0; padding: 0; border: 0; background: transparent; color: var(--pu-color-text); cursor: pointer; }
+  .pu-stepper-btn:hover:not(:disabled) { background: var(--pu-color-surface-solid); }
+  .pu-stepper-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .pu-stepper-btn:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: -2px; }
+  @media (pointer: coarse) { .pu-stepper-btn { width: var(--pu-tap-min); } .kit-field .kit-field-control input.pu-has-stepper { padding-inline-end: calc(var(--pu-tap-min) * 2 + var(--pu-space-3)); } }
   .kit-symbol-control { position: relative; min-width: 0; }
   .kit-symbol-control > .kit-options { top: 100%; inset-inline: 0; z-index: 30; max-height: min(18rem, calc(100dvh - 2rem)); border: 1px solid var(--pu-color-card-border); }
 
@@ -31,7 +38,7 @@
   .kit-options li[aria-selected='true'] { background: var(--pu-color-surface-tint) }
   .kit-options b { flex-shrink: 0 }
   .kit-options span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--pu-color-text-muted); font-size: var(--pu-text-sm) }
-  .kit-field:has(> .kit-field-suffix) > input { grid-area: 2 / 1; padding-right: var(--pu-space-16) }
+  .kit-field:has(> .kit-field-suffix) > input { grid-area: 2 / 1; padding-inline-end: var(--pu-space-16) }
   .kit-field-suffix { grid-area: 2 / 1; justify-self: end; align-self: center; margin-inline-end: var(--pu-space-3); z-index: 1; display: flex; align-items: center }
 }
 

@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { RangeSlider } from '@punji/ui/range-slider';
+import { Stack } from '@punji/ui/stack';
 
 // Two native range inputs on one track: arrows, Page Up/Down, Home/End work per thumb, and a thumb never passes the other.
 export default function Example() {
   const [range, setRange] = useState<[number, number]>([2, 8]);
   return (
-    <div className="ex-stack">
+    <Stack>
       <RangeSlider
         min={0}
         max={12}
@@ -21,6 +22,6 @@ export default function Example() {
       <p className="doc-muted">
         Yield from {range[0]}% to {range[1]}%
       </p>
-    </div>
+    </Stack>
   );
 }

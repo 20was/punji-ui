@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { LedgerTable } from '@punji/ui/ledger-table';
 import { SegmentedControl } from '@punji/ui/controls';
 import { cashEntries } from '../../sample.ts';
+import { Stack } from '@punji/ui/stack';
 
 type View = 'ready' | 'loading' | 'error' | 'empty';
 
 export default function Example() {
   const [view, setView] = useState<View>('loading');
   return (
-    <div className="ex-stack">
+    <Stack>
       <SegmentedControl<View>
         label="State"
         prefix="ledger-state"
@@ -30,6 +31,6 @@ export default function Example() {
         emptyLabel="No postings in this period."
         onRetry={() => setView('loading')}
       />
-    </div>
+    </Stack>
   );
 }

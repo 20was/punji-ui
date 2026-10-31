@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { CheckList, CheckRow, StatusDisc } from '@punji/ui/check-row';
 import { StateGlyph } from '@punji/ui/inline-state';
+import { Stack } from '@punji/ui/stack';
 
 const checks = [
   { id: 'concentration', title: 'Concentration', line: 'Banking is 46% of holdings', status: 'Watch', tone: 'warn' as const },
@@ -28,13 +29,13 @@ export default function Example() {
           />
         ))}
       </CheckList>
-      <div id="check-panel" role="tabpanel" aria-labelledby={`tab-${current}`} className="ex-stack">
+      <Stack id="check-panel" role="tabpanel" aria-labelledby={`tab-${current}`}>
         <StatusDisc tone={detail.tone} size="lg">
           <StateGlyph name="info" size={22} />
         </StatusDisc>
         <strong>{detail.title}</strong>
         <span>{detail.line}</span>
-      </div>
+      </Stack>
     </div>
   );
 }

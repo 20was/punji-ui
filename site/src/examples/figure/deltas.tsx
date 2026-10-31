@@ -1,46 +1,23 @@
+import { Card } from '@punji/ui/card';
 import { Delta } from '@punji/ui/figures';
+import { DataRow, DataRows } from '@punji/ui/rows';
+import { holdings } from '../../sample.ts';
+
+const change = (symbol: string) => holdings.find((h) => h.symbol === symbol)!.change;
 
 // A change is a sign, an arrow, a colour and a spoken word ("up", "down", "unchanged"), never colour alone.
 // A move that prints as 0.00 is no move: grey, no arrow.
 export default function Example() {
   return (
-    <dl className="ex-grid">
-      <div>
-        <dt>Up, percent</dt>
-        <dd>
-          <Delta value={2.31} />
-        </dd>
-      </div>
-      <div>
-        <dt>Down, percent</dt>
-        <dd>
-          <Delta value={-1.08} />
-        </dd>
-      </div>
-      <div>
-        <dt>Rounds to nothing</dt>
-        <dd>
-          <Delta value={0.004} />
-        </dd>
-      </div>
-      <div>
-        <dt>Rupees, no arrow</dt>
-        <dd>
-          <Delta value={-12.5} kind="rs" arrow={false} />
-        </dd>
-      </div>
-      <div>
-        <dt>Small, other words</dt>
-        <dd>
-          <Delta value={0.82} size="sm" words={{ up: 'बढेको', down: 'घटेको', flat: 'उस्तै' }} />
-        </dd>
-      </div>
-      <div>
-        <dt>Missing</dt>
-        <dd>
-          <Delta value={undefined} />
-        </dd>
-      </div>
-    </dl>
+    <Card title="Today's moves" description="14 Nov close" headingLevel={3}>
+      <DataRows label="Daily change">
+        <DataRow label="HDL" value={<Delta value={change('HDL')} />} />
+        <DataRow label="NICA" value={<Delta value={change('NICA')} />} />
+        <DataRow label="SBL, unchanged" value={<Delta value={change('SBL')} />} />
+        <DataRow label="NTC, in rupees" value={<Delta value={-3.95} kind="rs" arrow={false} />} />
+        <DataRow label="UPPER, in Nepali" value={<Delta value={change('UPPER')} size="sm" words={{ up: 'बढेको', down: 'घटेको', flat: 'उस्तै' }} />} />
+        <DataRow label="BFC, not traded" value={<Delta value={undefined} />} />
+      </DataRows>
+    </Card>
   );
 }

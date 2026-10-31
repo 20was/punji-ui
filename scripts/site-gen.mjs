@@ -17,7 +17,7 @@ const out = resolve(root, 'site/src/generated/api.json');
 const problems = [];
 
 const pkg = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8'));
-const { PAGES, GROUPS, leadOf } = await import(resolve(root, 'site/src/registry.ts'));
+const { PAGES, GROUPS, leadOf, navTitleOf } = await import(resolve(root, 'site/src/registry.ts'));
 
 // --- registry validation -------------------------------------------------
 const slugs = new Set();
@@ -207,6 +207,9 @@ writeFileSync(resolve(dirname(out), 'sizes.json'), `${JSON.stringify(sizes, null
 // Written even on failure so the editor has data while you fix the registry; the exit code still fails the build.
 mkdirSync(dirname(out), { recursive: true });
 writeFileSync(out, `${JSON.stringify(apiData, null, 1)}\n`);
+// The browser's split page data (nav, search index, one file per page) comes from the registry and api.json.
+const { writePageData } = await import('./site-pages.mjs');
+writePageData({ PAGES, GROUPS, leadOf, navTitleOf });
 if (problems.length) {
   console.error(`site-gen failed:\n  ${problems.join('\n  ')}`);
   process.exit(1);

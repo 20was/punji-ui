@@ -1,0 +1,9 @@
+/* Punji UI styles.
+   Styles for code-block. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .pu-code { margin: 0; display: grid; gap: var(--pu-space-2); min-width: 0 }
+  .pu-code-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--pu-space-2) var(--pu-space-3) }
+  .pu-code-label { margin: 0; font: 600 0.8125rem / 1.3 var(--pu-font-body); color: var(--pu-color-text-muted) }
+  .pu-code-pre { margin: 0; padding: var(--pu-space-3); border-radius: var(--pu-radius-control); background: var(--pu-color-surface-tint); color: var(--pu-color-text); overflow-x: auto; font: 0.8125rem / 1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere }
+  .pu-code-pre code { font: inherit }
+}

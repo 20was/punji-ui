@@ -1,4 +1,5 @@
 import { NetBar, NetBarHead } from '@punji/ui/bars';
+import { Stack } from '@punji/ui/stack';
 
 // Net buying by broker (synthetic). The tip is read on pointer hover and always spoken after the figure.
 const rows = [
@@ -11,12 +12,12 @@ const fmt = (n: number) => `${n > 0 ? '+' : n < 0 ? '−' : ''}${Math.abs(n).toF
 
 export default function Example() {
   return (
-    <div className="ex-stack">
+    <Stack>
       <NetBarHead left="Net sold" right="Net bought" />
       {rows.map((r) => {
         const net = r.bought - r.sold;
         return (
-          <div key={r.broker} className="ex-stack">
+          <Stack key={r.broker}>
             <strong>{r.broker}</strong>
             <NetBar
               value={net}
@@ -31,9 +32,9 @@ export default function Example() {
                 ],
               }}
             />
-          </div>
+          </Stack>
         );
       })}
-    </div>
+    </Stack>
   );
 }

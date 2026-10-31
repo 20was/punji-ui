@@ -3,12 +3,13 @@ import { Button } from '@punji/ui/button';
 import { Delta, Figure } from '@punji/ui/figures';
 import { GroupedCell, RowList, Tile, ValueRow } from '@punji/ui/rows';
 import { StatusPill } from '@punji/ui/status-pill';
+import { Stack } from '@punji/ui/stack';
 
 // GroupedCell is the one card; rows never carry their own. ValueRow is a link (href), a button (onClick) or plain.
 export default function Example() {
   const [last, setLast] = useState('');
   return (
-    <div className="ex-stack">
+    <Stack>
       <GroupedCell label="Holdings">
         <RowList label="Holdings">
           <ValueRow lead={<Tile text="NABIL" />} symbol="NABIL" name="Nabil Bank Limited" line="120 shares" figure={<Figure value={58500} kind="rs" />} note={<Delta value={1.25} />} href="#nabil" chevron />
@@ -31,6 +32,6 @@ export default function Example() {
       <p role="status" className="doc-muted">
         {last ? `Pressed: ${last}` : 'Rows with a link or a button are focusable; the last row only shows data.'}
       </p>
-    </div>
+    </Stack>
   );
 }

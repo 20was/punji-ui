@@ -6,6 +6,8 @@
 // exact example source on the clipboard, the theme switch forces and persists a theme, the Command-K
 // search finds and opens pages, sidebar groups collapse and persist, the mobile drawer opens and
 // navigates, tabs deep-link, path routing, the hash redirect, the 404 page and the no-JS render.
+// SITE_SHARD="i/n" (1-based) runs every n-th page-sweep cell (width x theme x route) and, on shard 1
+// only, the behaviour checks, so CI can split the sweep across jobs. Unset, everything runs.
 import { chromium } from 'playwright';
 import { preview } from 'vite';
 import { readFileSync, mkdirSync } from 'node:fs';
@@ -21,6 +23,9 @@ const basePath = normaliseBase(process.env.BASE_PATH).replace(/\/$/, '');
 const base = `${process.env.CHECK_URL ?? 'http://127.0.0.1:4174'}${basePath}`;
 const axeSource = readFileSync('node_modules/axe-core/axe.min.js', 'utf8');
 const browser = await chromium.launch({ headless: true, ...(process.env.CHROME_CHANNEL ? { channel: process.env.CHROME_CHANNEL } : {}) });
+const [shardIndex, shardCount] = (process.env.SITE_SHARD ?? '1/1').split('/').map(Number);
+if (!Number.isInteger(shardIndex) || !Number.isInteger(shardCount) || shardIndex < 1 || shardIndex > shardCount) throw new Error(`SITE_SHARD must look like "1/4", got "${process.env.SITE_SHARD}"`);
+let cell = 0;
 const failures = [];
 const checked = { variants: 0, tabs: 0 };
 const fail = (message) => { failures.push(message); console.error(`FAIL ${message}`); };
@@ -127,6 +132,7 @@ try {
       const context = await browser.newContext({ viewport: { width, height: 900 }, colorScheme: theme, reducedMotion: 'reduce' });
       await context.addInitScript((t) => localStorage.setItem('punji-docs-theme', JSON.stringify(t)), theme);
       for (const route of routes) {
+        if (cell++ % shardCount !== shardIndex - 1) continue;
         const page = await context.newPage();
         const errors = [];
         page.on('pageerror', (error) => errors.push(error.message));
@@ -180,6 +186,8 @@ try {
     }
   }
 
+  // Behaviour checks run once, on the first shard.
+  if (shardIndex === 1) {
   // Behaviour: desktop.
   const desktop = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: 'light', permissions: ['clipboard-read', 'clipboard-write'] });
   const page = await desktop.newPage();
@@ -203,6 +211,46 @@ try {
   await page.getByRole('group', { name: 'Preview theme', exact: true }).getByRole('button', { name: 'Dark preview' }).click();
   if ((await page.locator('.doc-stage').getAttribute('data-theme')) !== 'dark') fail('preview theme: Dark preview did not set data-theme on the stage');
   if ((await page.locator('html').getAttribute('data-theme')) === 'dark') fail('preview theme: the page theme changed too');
+
+  // Phone width: the example runs in its own 375 px viewport (a same-origin iframe), so the package's viewport media
+  // queries and matchMedia apply; the frame follows the preview theme, grows to its content, passes axe, and takes focus.
+  await page.getByRole('group', { name: 'Preview width', exact: true }).getByRole('button', { name: 'Phone width, 375 pixels' }).click();
+  await page.frameLocator('iframe[data-testid=phone-frame]').getByTestId('preview').getByText('12,34,567.89').first().waitFor();
+  const frameState = () => page.getByTestId('phone-frame').evaluate((f) => ({
+    width: f.contentWindow.innerWidth,
+    phoneQuery: f.contentWindow.matchMedia('(width <= 639px)').matches,
+    theme: f.contentDocument.documentElement.getAttribute('data-theme'),
+    height: f.getBoundingClientRect().height,
+    content: f.contentDocument.getElementById('root').getBoundingClientRect().height,
+  }));
+  const phone = await frameState();
+  if (phone.width !== 375) fail(`phone width: the frame's viewport is ${phone.width}px, not 375`);
+  if (!phone.phoneQuery) fail('phone width: a (width <= 639px) media query does not match inside the frame');
+  if (phone.theme !== 'dark') fail(`phone width: the frame shows the ${phone.theme} theme, not the dark preview`);
+  if (Math.abs(phone.height - Math.max(320, Math.ceil(phone.content))) > 2) fail(`phone width: the frame is ${phone.height}px tall for ${phone.content}px of content`);
+  await page.getByRole('group', { name: 'Preview theme', exact: true }).getByRole('button', { name: 'Light preview' }).click();
+  await page.waitForFunction(() => document.querySelector('iframe[data-testid=phone-frame]')?.contentDocument?.documentElement.getAttribute('data-theme') === 'light');
+  const phoneDoc = page.frames().find((f) => f.url().includes('/preview-frame/'));
+  if (!phoneDoc) fail('phone width: no preview frame');
+  else {
+    await phoneDoc.addScriptTag({ content: axeSource });
+    // The frame holds one example, not a page: it has no h1 of its own (the docs page around it does).
+    const violations = await phoneDoc.evaluate(async () => (await globalThis.axe.run(document, { rules: { 'page-has-heading-one': { enabled: false } } })).violations.map((v) => `${v.id} (${v.impact})`));
+    for (const v of violations) fail(`phone width: axe ${v} inside the frame`);
+  }
+  await page.goto(`${base}/components/data-table/`);
+  await page.getByRole('group', { name: 'Preview width', exact: true }).getByRole('button', { name: 'Phone width, 375 pixels' }).click();
+  await page.frameLocator('iframe[data-testid=phone-frame]').getByRole('button').first().waitFor();
+  let reached = false;
+  for (let i = 0; i < 8 && !reached; i += 1) {
+    await page.keyboard.press('Tab');
+    reached = await page.getByTestId('phone-frame').evaluate((f) => document.activeElement === f && f.contentDocument.activeElement?.tagName === 'BUTTON');
+  }
+  if (!reached) fail('phone width: Tab does not move focus into the example in the frame');
+  await page.getByRole('group', { name: 'Preview width', exact: true }).getByRole('button', { name: 'Full width' }).click();
+  if (await page.getByTestId('phone-frame').count()) fail('phone width: Full width did not remove the frame');
+  await page.goto(`${base}/components/money-display/`);
+  await page.locator('#page-title').waitFor();
 
   // Tabs: the API tab shows the props table and records #api; a deep link opens its tab on load.
   await page.getByTestId('tab-api').click();
@@ -337,6 +385,7 @@ try {
   for (const id of ['examples', 'code', 'api', 'usage']) if (!(await bare.locator(`#${id}[data-tab]`).isVisible())) fail(`no-JS: the ${id} panel is not visible`);
   await bare.screenshot({ path: `${out}/no-js-money-display.png`, fullPage: true });
   await plain.close();
+  }
 } finally {
   await browser.close();
   await server?.close();
@@ -348,4 +397,4 @@ if (failures.length) {
   process.exit(1);
 }
 console.log(`layout flags: edge ${flagCounts.edge} (+${flagCounts.edgeAllowed} allowlisted), clip ${flagCounts.clip}, dup ${flagCounts.dup}, icon ${flagCounts.icon}`);
-console.log(`site check: ${routes.length} routes x 2 widths x 2 themes, ${checked.variants} example variants and ${checked.tabs} page tabs (axe, overflow, console, layout) and the copy, variant, preview theme, tabs, theme, search, sidebar, drawer, path routing, hash redirect, 404 and no-JS behaviours passed`);
+console.log(`site check${shardCount > 1 ? ` (shard ${shardIndex}/${shardCount})` : ''}: ${routes.length} routes x 2 widths x 2 themes, ${checked.variants} example variants and ${checked.tabs} page tabs (axe, overflow, console, layout) and the copy, variant, preview theme, phone-width frame, tabs, theme, search, sidebar, drawer, path routing, hash redirect, 404 and no-JS behaviours passed`);

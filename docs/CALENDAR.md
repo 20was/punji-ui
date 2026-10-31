@@ -57,6 +57,10 @@ There is no midnight timer; update the prop when your application's day changes.
 Use the separate date-only, instant/timezone, fiscal-year and exact-money utilities
 for their respective domains. Calendar selection performs no financial arithmetic.
 
+## Range presets
+
+`DateRangePicker` takes `presets` (from `dateRangePresets` or `nepalDateRangePresets`): Today, This week, This month, Last 30 days and fiscal year to date as buttons above the calendar. Choosing one applies it at once; one touching a day outside `min`/`max` or an unavailable day is disabled. The helpers are pure, take `today` from the caller and return Gregorian `YYYY-MM-DD` ranges that end today. The Nepal fiscal year is 1 Shrawan to the end of Asar.
+
 ## Selection and constraints
 
 `Calendar` is controlled with discriminated modes:

@@ -1,9 +1,10 @@
 import { RangeBar } from '@punji/ui/meter';
+import { Stack } from '@punji/ui/stack';
 
 // Without `label` the mark labels are real text; with it the bar is one image and the labels are hidden.
 export default function Example() {
   return (
-    <div className="ex-stack">
+    <Stack>
       <RangeBar
         head="52-week range, Rs 402 to Rs 612"
         domain={[402, 612]}
@@ -31,6 +32,6 @@ export default function Example() {
           { value: 2.6, kind: 'strong', label: 'NABIL 2.6' },
         ]}
       />
-    </div>
+    </Stack>
   );
 }

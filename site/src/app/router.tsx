@@ -1,5 +1,7 @@
 import { useMemo, useSyncExternalStore, type AnchorHTMLAttributes, type MouseEvent } from 'react';
-import { normaliseBase, parseRoute, type Route } from '../seo.ts';
+import { normaliseBase } from '../paths.ts';
+import { loadRoute } from './load.ts';
+import { parseClientRoute, type ClientRoute } from './nav.ts';
 
 // Path routing with the History API. The deploy base (BASE_PATH) comes from Vite's `base`.
 export const BASE = normaliseBase(import.meta.env.BASE_URL);
@@ -26,12 +28,27 @@ const subscribe = (notify: () => void) => {
 };
 
 /** The current route. `initial` is the pathname the HTML was rendered for (server render and hydration). */
-export function useRoute(initial: string): Route {
+export function useRoute(initial: string): ClientRoute {
   const path = useSyncExternalStore(subscribe, () => window.location.pathname, () => initial);
-  return useMemo(() => parseRoute(relativePath(path)), [path]);
+  return useMemo(() => parseClientRoute(relativePath(path)), [path]);
 }
 
-export function navigate(path: string): void {
+let latest = 0;
+
+/**
+ * Go to an app path. The route's chunks load first and the URL changes once they are in, so the old page stays until
+ * the new one can render whole. A click made while another page loads wins over it. If a chunk cannot be fetched
+ * (offline, or a new deploy removed it), the browser loads the page itself.
+ */
+export async function navigate(path: string): Promise<void> {
+  const ticket = ++latest;
+  try {
+    await loadRoute(parseClientRoute(path));
+  } catch {
+    window.location.assign(hrefFor(path));
+    return;
+  }
+  if (ticket !== latest) return;
   window.history.pushState(null, '', hrefFor(path));
   window.dispatchEvent(new Event(NAVIGATE));
 }
@@ -47,7 +64,7 @@ export function Link({ to, onClick, children, ...rest }: { to: string } & Omit<A
     onClick?.(event);
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || rest.target === '_blank') return;
     event.preventDefault();
-    navigate(to);
+    void navigate(to);
   };
   return (
     <a {...rest} href={hrefFor(to)} onClick={handle}>

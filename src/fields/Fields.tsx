@@ -7,11 +7,11 @@
  * DateField is the native date input; SymbolField is a
  * combobox over a list the page hands it (no request per keystroke).
  */
-import { useId, useMemo, useState, type InputHTMLAttributes, type ReactNode, type Ref, type TextareaHTMLAttributes } from 'react';
+import { useId, useMemo, useState, type InputHTMLAttributes, type KeyboardEvent, type ReactNode, type Ref, type TextareaHTMLAttributes } from 'react';
 
 import { Select } from '../select/Select.tsx';
 import { searchSymbols, type SymbolOption } from '../format/format.ts';
-import { parseLocalizedDecimal, type DecimalParseResult } from '../nepal/decimal.ts';
+import { compareDecimals, parseLocalizedDecimal, stepDecimal, type DecimalParseResult } from '../nepal/decimal.ts';
 
 interface BaseProps {
   /** The visible label, a real <label> tied to the control. Keep it short and specific ("Units", not "Enter units"). */
@@ -85,19 +85,93 @@ interface NumberExtras {
   grouping?: 'south-asian' | 'western' | 'none';
   /** Called with the parsed result on every change, next to onChange: `valid` carries a plain ASCII decimal string with no commas ("1234567.5"); `partial`, `empty` and `invalid` (with a reason) say why there is no number yet. Never rounds. */
   onValueChange?: (result: DecimalParseResult) => void;
+  /** Turns the field into a spin button: ArrowUp and ArrowDown add or subtract this much, exactly (a plain decimal string such as "10" or "0.05"; Shift or PageUp/PageDown move ten steps). Default "1" once `steppers` is set. */
+  step?: string;
+  /** Lowest value the steps reach (a plain decimal string). Steps clamp into min and max; typed text is never rejected or rewritten for being outside them. */
+  min?: string;
+  /** Highest value the steps reach (a plain decimal string). */
+  max?: string;
+  /** Shows decrease and increase buttons inside the field (kept out of the Tab order; the arrow keys do the same). */
+  steppers?: boolean;
+  /** Names of the two stepper buttons, for translation. Default "Decrease" and "Increase". */
+  stepperLabels?: { decrease: string; increase: string };
 }
 
-/** A Field for a number. The text stays exactly as typed (grouping commas and Devanagari digits included); `onValueChange` reports it parsed through parseLocalizedDecimal as an exact decimal string, never a float. It does not validate ranges or set `error` for you. */
-export function NumberField({ integer, maxFractionDigits, grouping, onValueChange, onChange, ...props }: InputProps & NumberExtras) {
-  const max = maxFractionDigits ?? (integer ? 0 : 2);
+type NumberFieldProps = Omit<InputProps, 'min' | 'max' | 'step'> & NumberExtras;
+
+const times10 = (step: string) => {
+  const [whole = '0', fraction = ''] = step.split('.');
+  const integer = `${whole}${fraction.slice(0, 1) || '0'}`.replace(/^0+(?=\d)/, '');
+  const rest = fraction.slice(1);
+  return rest ? `${integer}.${rest}` : integer;
+};
+const MinusIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M5 12h14" /></svg>;
+const PlusIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M5 12h14M12 5v14" /></svg>;
+
+/**
+ * A Field for a number. The text stays exactly as typed (grouping commas and Devanagari digits included); `onValueChange` reports it parsed through parseLocalizedDecimal as an exact decimal string, never a float.
+ * With `step` or `steppers` it is also a spin button (quantity, lot size, price tick): stepping is exact decimal arithmetic, clamped into `min` and `max`, and it does not validate ranges or set `error` for you.
+ */
+export function NumberField({ integer, maxFractionDigits, grouping, onValueChange, onChange, step, min, max, steppers, stepperLabels, onKeyDown, ...props }: NumberFieldProps) {
+  const fractionLimit = maxFractionDigits ?? (integer ? 0 : 2);
+  const stepping = step !== undefined || steppers === true;
+  const unit = step ?? '1';
+  if (stepping && (unit.split('.')[1]?.length ?? 0) > fractionLimit) throw new RangeError('NumberField step has more fraction digits than maxFractionDigits allows');
+  const options = { maxFractionDigits: fractionLimit, grouping };
+  const report = (text: string) => {
+    onChange(text);
+    onValueChange?.(parseLocalizedDecimal(text, options));
+  };
+  const current = parseLocalizedDecimal(props.value, options);
+  const move = (direction: 1 | -1, amount = unit) => {
+    if (props.disabled || props.readOnly) return;
+    if (current.state === 'partial' || current.state === 'invalid') return;
+    report(stepDecimal(current.state === 'valid' ? current.value : '', amount, direction, { min, max }));
+  };
+  const labels = stepperLabels ?? { decrease: 'Decrease', increase: 'Increase' };
+  const atMin = current.state === 'valid' && min !== undefined && compareDecimals(current.value, min) <= 0;
+  const atMax = current.state === 'valid' && max !== undefined && compareDecimals(current.value, max) >= 0;
+  // Decimal strings stay strings: aria-valuenow is a JS number in the types, so the exact text goes in aria-valuetext.
+  const spinAria: Record<string, string | undefined> = { 'aria-valuetext': current.state === 'valid' ? current.value : undefined, 'aria-valuemin': min, 'aria-valuemax': max };
+  const button = (direction: 1 | -1, atLimit: boolean) => (
+    <button
+      type="button"
+      className="pu-stepper-btn"
+      tabIndex={-1}
+      aria-label={direction === 1 ? labels.increase : labels.decrease}
+      disabled={props.disabled || props.readOnly || atLimit}
+      onPointerDown={(e) => e.preventDefault()}
+      onClick={() => move(direction)}
+    >
+      {direction === 1 ? <PlusIcon /> : <MinusIcon />}
+    </button>
+  );
   return <Field
     {...props}
-    onChange={(v) => {
-      onChange(v);
-      onValueChange?.(parseLocalizedDecimal(v, { maxFractionDigits: max, grouping }));
-    }}
+    onChange={report}
     inputMode={integer ? 'numeric' : 'decimal'}
     autoComplete="off"
+    {...(stepping ? {
+      role: 'spinbutton',
+      ...spinAria,
+      trailingAction: steppers ? <span className="pu-stepper">{button(-1, atMin)}{button(1, atMax)}</span> : undefined,
+      className: [props.className, steppers ? 'pu-has-stepper' : ''].filter(Boolean).join(' ') || undefined,
+      onKeyDown: (e: KeyboardEvent<HTMLInputElement>) => {
+        onKeyDown?.(e);
+        if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
+        const big = e.shiftKey;
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'PageUp' || e.key === 'PageDown') {
+          e.preventDefault();
+          move(e.key === 'ArrowUp' || e.key === 'PageUp' ? 1 : -1, big || e.key.startsWith('Page') ? times10(unit) : unit);
+        } else if (e.key === 'Home' && min !== undefined && !props.readOnly && !props.disabled) {
+          e.preventDefault();
+          report(min);
+        } else if (e.key === 'End' && max !== undefined && !props.readOnly && !props.disabled) {
+          e.preventDefault();
+          report(max);
+        }
+      },
+    } : onKeyDown ? { onKeyDown } : {})}
   />;
 }
 

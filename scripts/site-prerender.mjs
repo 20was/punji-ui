@@ -49,9 +49,34 @@ const template = readFileSync(resolve(dist, 'index.html'), 'utf8');
 if (!template.includes('<!--seo-head-->') || !template.includes('<!--app-->')) throw new Error('prerender: site/dist/index.html is not the template (run vite build site first)');
 const serverEntry = resolve('site/dist-server/entry-server.js');
 if (!existsSync(serverEntry)) throw new Error('prerender: site/dist-server/entry-server.js is missing (run the SSR build first)');
-const { render } = await import(pathToFileURL(serverEntry).href);
+const { preload, render } = await import(pathToFileURL(serverEntry).href);
 
-const page = (path, head) => template.replace('<!--seo-head-->', () => headHtml(head)).replace('<!--app-->', () => render(withBase(path)));
+// Each route's own chunks (its view, page data and examples, plus what they import) are preloaded from its HTML,
+// so the browser fetches them alongside the entry and main.tsx can hydrate without a second round trip.
+// Vite's manifest maps the modules preload() reports ('src/examples/button/basic.tsx?raw') to built files.
+const manifest = JSON.parse(readFileSync(resolve(dist, '.vite/manifest.json'), 'utf8'));
+const entryKey = Object.keys(manifest).find((key) => manifest[key].isEntry && key.endsWith('index.html') && !key.includes('preview-frame'));
+if (!entryKey) throw new Error('prerender: no index.html entry in site/dist/.vite/manifest.json');
+const chunkClosure = (keys, into = new Set()) => {
+  for (const key of keys) {
+    const chunk = manifest[key];
+    if (!chunk) throw new Error(`prerender: ${key} is not in the Vite manifest`);
+    if (into.has(chunk.file)) continue;
+    into.add(chunk.file);
+    chunkClosure(chunk.imports ?? [], into);
+  }
+  return into;
+};
+const entryFiles = chunkClosure([entryKey]);
+const preloadTags = (modules) =>
+  [...chunkClosure(modules)].filter((file) => !entryFiles.has(file)).map((file) => `<link rel="modulepreload" crossorigin href="${withBase(`/${file}`)}" />`).join('\n    ');
+
+const page = async (path, head) => {
+  const modules = await preload(withBase(path));
+  const tags = preloadTags(modules);
+  const html = render(withBase(path));
+  return template.replace('<!--seo-head-->', () => `${headHtml(head)}${tags ? `\n    ${tags}` : ''}`).replace('<!--app-->', () => html);
+};
 const write = (rel, content) => {
   const file = resolve(dist, rel);
   mkdirSync(dirname(file), { recursive: true });
@@ -61,12 +86,12 @@ const write = (rel, content) => {
 // Pages.
 for (const route of ROUTES) {
   const head = headFor(route, siteUrl, base);
-  write(`${head.path.replace(/^\//, '')}index.html`, page(head.path, head));
+  write(`${head.path.replace(/^\//, '')}index.html`, await page(head.path, head));
 }
 // 404: rendered for a path that matches nothing, so the client renders the same thing on hydration.
 {
   const head = headFor({ kind: 'notfound' }, siteUrl, base);
-  write('404.html', page('/page-not-found/', head));
+  write('404.html', await page('/page-not-found/', head));
 }
 
 // sitemap.xml

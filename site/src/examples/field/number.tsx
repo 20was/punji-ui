@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NumberField, PriceField } from '@punji/ui/fields';
 import { parseMinorUnits } from '@punji/ui/nepal/money';
+import { Stack } from '@punji/ui/stack';
 
 // NumberField keeps the text as typed and, through onValueChange, reports it parsed: "१,२०,०००" arrives as "120000".
 // For money, parse to exact minor units instead of Number(): parseMinorUnits throws rather than rounding silently.
@@ -18,7 +19,7 @@ export default function Example() {
   const [price, setPrice] = useState('487.50');
   const paisa = toPaisa(price);
   return (
-    <div className="ex-stack ex-narrow">
+    <Stack className="ex-narrow">
       <NumberField
         integer
         label="Units"
@@ -35,6 +36,6 @@ export default function Example() {
         error={paisa === null ? 'Enter a price with at most two decimals' : undefined}
         hint={paisa !== null ? `${paisa.toString()} paisa` : undefined}
       />
-    </div>
+    </Stack>
   );
 }

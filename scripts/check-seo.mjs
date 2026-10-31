@@ -3,9 +3,12 @@
 // Twitter tags, has more than one h1 or a skipped heading level, has a link with no name, when any internal
 // link or asset does not exist in the build, when sitemap.xml and the routes disagree, when robots.txt or
 // llms.txt do not point at real things, or when JSON-LD is not valid JSON with a @type.
+// Also the JavaScript budget: the gzipped JS each route loads up front (its entry script and modulepreloads) must stay
+// under JS_BUDGET, and every page must preload its own route chunks (so hydration never waits on a second request).
 // Set the same SITE_URL and BASE_PATH that built the site (the defaults match the default build).
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { gzipSync } from 'node:zlib';
 import { PAGES } from '../site/src/registry.ts';
 import { ROUTES, headFor, normaliseBase, pagePath, PORTAL_RENAMES, PORTAL_TO_HOME } from '../site/src/seo.ts';
 
@@ -46,12 +49,36 @@ const unique = (kind, value, where) => {
 
 const targets = [...ROUTES.map((route) => ({ route, file: `${headFor(route, siteUrl, base).path.replace(/^\//, '')}index.html` })), { route: { kind: 'notfound' }, file: '404.html' }];
 let links = 0;
+
+// JavaScript budget (gzip, the entry script plus every modulepreload). The shell (React, header, sidebar, router) is
+// about 85 kB; the rest is the route's own view, page data and examples. See site/README.md, "Loading".
+const JS_BUDGET = 150_000;
+const manifest = existsSync(resolve(dist, '.vite/manifest.json')) ? JSON.parse(read('.vite/manifest.json')) : null;
+if (!manifest) fail('.vite/manifest.json: not built (vite build site with build.manifest)');
+const gzipped = new Map();
+const gzipSize = (file) => {
+  if (!gzipped.has(file)) gzipped.set(file, gzipSync(readFileSync(file)).length);
+  return gzipped.get(file);
+};
+const jsSizes = [];
+const checkJs = (where, route, html) => {
+  const urls = [...html.matchAll(/<script type="module"[^>]*\ssrc="([^"]+)"|<link rel="modulepreload"[^>]*\shref="([^"]+)"/g)].map((m) => m[1] ?? m[2]);
+  const files = urls.map((url) => fileFor(url)).filter(Boolean);
+  const total = files.reduce((sum, file) => sum + gzipSize(file), 0);
+  jsSizes.push([total, where]);
+  if (total > JS_BUDGET) fail(`${where}: loads ${(total / 1000).toFixed(1)} kB of gzipped JavaScript up front; the budget is ${JS_BUDGET / 1000} kB (split what the page does not need at first)`);
+  const own = route.kind === 'page' ? `src/generated/routes/${route.page.slug}.ts` : route.kind === 'home' ? 'src/app/Home.tsx' : null;
+  const chunk = own && manifest?.[own]?.file;
+  if (own && manifest && (!chunk || !urls.includes(`${base}${chunk}`))) fail(`${where}: does not preload its route chunk ${own} (hydration would wait for it)`);
+};
+
 for (const { route, file } of targets) {
   const where = file;
   if (!existsSync(resolve(dist, file))) { fail(`${where}: not built`); continue; }
   const html = read(file);
   const expected = headFor(route, siteUrl, base);
   const noindex = route.kind === 'notfound';
+  checkJs(where, route, html);
 
   if (!/<html lang="[a-z-]+"/.test(html)) fail(`${where}: <html> has no lang`);
   const title = /<title>([^<]*)<\/title>/.exec(html)?.[1];
@@ -173,4 +200,6 @@ if (failures.length) {
   console.error(`\nseo check: ${failures.length} failure(s)`);
   process.exit(1);
 }
+const [largest, where] = jsSizes.toSorted((a, b) => b[0] - a[0])[0] ?? [0, ''];
 console.log(`seo check: ${targets.length} pages (unique title, description, canonical; OG and Twitter; JSON-LD; one h1, no skipped levels), ${links} internal links and assets resolve, sitemap/robots/llms agree with the ${ROUTES.length} routes`);
+console.log(`js budget: every page under ${JS_BUDGET / 1000} kB gzip up front and preloads its route chunk; largest ${(largest / 1000).toFixed(1)} kB (${where})`);

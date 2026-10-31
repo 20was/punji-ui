@@ -134,6 +134,9 @@ export const LEADS: Readonly<Record<string, string>> = {
   'drawer-screen': 'The inside of a Drawer: header, body and a footer that keeps Save and Cancel in reach.',
   'chart-scale': 'Round-tick Y scales that make a value line fill its plot, and name a second series that is far away.',
 
+  stack: 'Put children in a column or a wrapping row with a gap from the spacing scale, with no CSS of your own.',
+  'code-block': 'Show a CSV or JSON export as plain monospace text, with an optional label and a Copy button.',
+
   // Utilities
   hooks: 'Small React hooks for clipboard, storage, media queries, pagination and more, all safe to render on the server.',
 };

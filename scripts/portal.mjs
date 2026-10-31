@@ -10,7 +10,13 @@ const web = resolve(process.env.PUNJI_WEB_DIR ?? resolve(root, '../punji-web'));
 if (!existsSync(resolve(web, 'vite.config.ts'))) throw new Error('Set PUNJI_WEB_DIR to the consumer checkout containing the full docs portal');
 const loaded = await loadConfigFromFile({command:'serve',mode:'design'}, resolve(web,'vite.config.ts'));
 if (!loaded) throw new Error('Unable to load the full portal configuration');
-const routeModule = resolve(root,'portal/pages.tsx');
+// Generated code only ever embeds plain identifiers and route paths. `lit` rejects anything else
+// instead of escaping it, and module files are reached through constant module names, so no
+// file-system path is ever written into generated source.
+const lit = (value) => {
+  if (typeof value !== 'string' || !/^[A-Za-z0-9_/-]+$/.test(value)) throw new Error('Portal bridge: unsafe literal in generated code');
+  return `'${value}'`;
+};
 const inject = (source, marker, replacement) => {
   if (source.split(marker).length !== 2) throw new Error(`Portal bridge target changed: ${marker}`);
   return source.replace(marker,replacement);
@@ -54,10 +60,10 @@ const bridge = {
       return inject(registry,'export const PAGES: readonly DocPage[] = [',`export const PAGES: readonly DocPage[] = [\n...${JSON.stringify(pages)},`);
     }
     if (file === resolve(web,'src/design/App.tsx')) {
-      const routes = utilityPages.map(page=>`${JSON.stringify(page.path)}: page(() => import(${JSON.stringify(routeModule)}), ${JSON.stringify(page.view)}),`).join('\n');
-      const withCalendar = inject(source, "  '/get-started/roadmap': page(() => import('./pages/docs'), 'Roadmap'),", `  '/get-started/roadmap': page(() => import(${JSON.stringify(resolve(root,'portal/calendar-pages.tsx'))}), 'PackageRoadmapPage'),`);
-      const calendarRoutes = calendarPages.map(page=>`${JSON.stringify(page.path)}: page(() => import(${JSON.stringify(resolve(root,'portal/calendar-pages.tsx'))}), ${JSON.stringify(page.view)}),`).join('\n');
-      const withSelect = inject(withCalendar,"  '/components/select': page(() => import('./pages/inputs'), 'SelectPage'),", `  '/components/select': page(() => import(${JSON.stringify(resolve(root,'portal/select-page.tsx'))}), 'SelectComponentPage'),`);
+      const routes = utilityPages.map(page=>`${lit(page.path)}: page(() => import('@punji/portal-pages'), ${lit(page.view)}),`).join('\n');
+      const withCalendar = inject(source, "  '/get-started/roadmap': page(() => import('./pages/docs'), 'Roadmap'),", `  '/get-started/roadmap': page(() => import('@punji/portal-calendar-pages'), 'PackageRoadmapPage'),`);
+      const calendarRoutes = calendarPages.map(page=>`${lit(page.path)}: page(() => import('@punji/portal-calendar-pages'), ${lit(page.view)}),`).join('\n');
+      const withSelect = inject(withCalendar,"  '/components/select': page(() => import('./pages/inputs'), 'SelectPage'),", `  '/components/select': page(() => import('@punji/portal-select-page'), 'SelectComponentPage'),`);
       return inject(withSelect,'const VIEWS: Record<string, LazyExoticComponent<ComponentType>> = {',`const VIEWS: Record<string, LazyExoticComponent<ComponentType>> = {\n${routes}\n${calendarRoutes}`);
     }
   },
@@ -66,6 +72,9 @@ const server = await createServer({
   ...loaded.config, configFile:false, root:web,
   plugins:[bridge,...(loaded.config.plugins ?? [])],
   resolve:{...loaded.config.resolve,dedupe:['react','react-dom'],alias:[
+    {find:'@punji/portal-calendar-pages',replacement:resolve(root,'portal/calendar-pages.tsx')},
+    {find:'@punji/portal-select-page',replacement:resolve(root,'portal/select-page.tsx')},
+    {find:'@punji/portal-pages',replacement:resolve(root,'portal/pages.tsx')},
     {find:'@punji/package-company-search.css',replacement:resolve(root,'dist/css/company-search.css')},
     {find:'@punji/package-company-search',replacement:resolve(root,'dist/company-search/CompanySearch.js')},
     {find:'@punji/package-table.css',replacement:resolve(root,'dist/css/table.css')},

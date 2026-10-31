@@ -170,3 +170,45 @@ Local working examples: /utilities/financial-formatters#market-formatters in the
 full portal (`npm run portal`). The added APIs increase the all-export bundle by
 about 0.22 kB gzip (measured ~21.85 kB total); aggregate allowance is 22.3 kB with a
 separate 750 B module budget. Existing primitive/tree-shaking budgets are unchanged.
+
+## Financial calculations
+
+`@punji/ui/calculations` (also on the root) is pure TypeScript: no React, no
+browser globals, no dependency, enforced by `scripts/check-boundaries.mjs`. It is
+currency-agnostic; Nepal is not assumed anywhere.
+
+Two numeric contracts, never mixed:
+
+| Layer | Inputs/outputs | Rounding |
+|---|---|---|
+| Ledger (`computePosition`, `valuePosition`, `breakEvenPrice`, `taxOnGain`, `applyRate`, `divideRounded`) | `bigint` minor units; quantity is an integer count of the smallest tradable unit | Caller passes a `RoundingMode` (`half-even`, `half-up` = ties away from zero, `floor`, `ceil`, `trunc`) wherever a fraction can appear. Break-even always rounds up. |
+| Ratios (`percentageChange`, `priceChange`, `returnOnCost`, `cagr`, `dividendYield`, `weightedAverage`, `allocation`) | `number` or `bigint` in, `number` in percent units out (5 = 5%, like `formatPercent`) | Display only. `null` when undefined: zero/negative base, non-positive price, zero total weight. |
+
+```ts
+import { computePosition, valuePosition, breakEvenPrice, taxOnGain, allocation } from '@punji/ui/calculations';
+
+const position = computePosition([
+  { side: 'buy', quantity: 100n, price: 50_000n, fees: 1_000n },  // 100 @ 500.00
+  { side: 'buy', quantity: 10n, price: 0n },                      // bonus shares
+  { side: 'sell', quantity: 50n, price: 70_000n, fees: 900n },
+], { method: 'fifo', rounding: 'half-even' });
+// { quantity, costBasis, realisedPnL, totalFees, averageCost, lots }
+
+valuePosition(position, 61_000n);                         // { marketValue, unrealisedPnL }
+breakEvenPrice(position.costBasis, position.quantity, { sellRate: '0.004' });
+taxOnGain(position.realisedPnL, { rate: rateFromYourVerifiedSchedule, rounding: 'half-up' });
+allocation([{ id: 'NABIL', value: 3n }, { id: 'NTC', value: 3n }, { id: 'HDL', value: 3n }]);
+// displayPercent: 33.34, 33.33, 33.33 (largest remainder, always sums to 100)
+```
+
+Guarantees, tested with fast-check: cost is conserved for every method and
+rounding mode (open cost + cost removed by sells = cost bought); weighted-average
+and FIFO give identical lifetime P&L once flat; every rounding mode lands on the
+floor or ceiling of the true quotient; allocation display shares sum to exactly
+100; break-even is the minimal recovering price.
+
+Deliberately out of scope: short positions, corporate actions other than bonus
+(zero-cost buy) and rights (buy at issue price), tiered/flat broker fee schedules,
+loss carry-forward, holding-period tax tiers and any built-in tax rate. Rates are
+decimal-fraction strings (`'0.075'`) parsed exactly; callers supply them from a
+verified, current source.

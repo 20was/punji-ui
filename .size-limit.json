@@ -411,5 +411,12 @@
     "limit": "1.5 kB",
     "rolldown": false,
     "gzip": true
+  },
+  {
+    "name": "Financial calculations without React or formatters (import from '@punji/ui/calculations')",
+    "path": "dist/calculations/calculations.js",
+    "import": "*",
+    "limit": "2.2 kB",
+    "gzip": true
   }
 ]

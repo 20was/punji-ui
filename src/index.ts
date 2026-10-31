@@ -15,6 +15,7 @@ export * from './command-keys/commandKeys.ts';
 export * from './compact/compact.ts';
 export * from './nepal/nepal.ts';
 export * from './financial/financial.tsx';
+export * from './calculations/calculations.ts';
 export * from './button/Button.tsx';
 export * from './card/Card.tsx';
 export * from './checkbox/Checkbox.tsx';

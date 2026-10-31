@@ -198,6 +198,10 @@
       "types": "./dist/financial/financial.d.ts",
       "default": "./dist/financial/financial.js"
     },
+    "./calculations": {
+      "types": "./dist/calculations/calculations.d.ts",
+      "default": "./dist/calculations/calculations.js"
+    },
     "./nepal/format": {
       "types": "./dist/nepal/format.d.ts",
       "default": "./dist/nepal/format.js"

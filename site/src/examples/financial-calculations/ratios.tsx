@@ -1,19 +1,26 @@
-import { percentageChange, returnOnCost, cagr, dividendYield, weightedAverage } from '@punji/ui/calculations';
+import { cagr, dividendYield, percentageChange, returnOnCost, weightedAverage } from '@punji/ui/calculations';
+import { Card } from '@punji/ui/card';
+import { DataRow, DataRows } from '@punji/ui/rows';
 
-const show = (value: number | null) => (value === null ? 'null (undefined)' : `${value.toFixed(2)}%`);
+// Ratios return a number, or null when the answer is undefined (a zero base): show a dash, never 0%.
+const show = (value: number | null) => (value === null ? '—' : `${value.toFixed(2)}%`);
 
 export default function Example() {
+  // Rs 1,00,000 invested in NABIL, now worth Rs 1,25,000 after 5 years, with Rs 5,000 of dividends a year.
+  const buyPrices = [
+    { value: 480, weight: 100 },
+    { value: 520, weight: 300 },
+  ];
   return (
-    <dl className="ex-grid">
-      <div><dt>percentageChange(110, 100)</dt><dd>{show(percentageChange(110, 100))}</dd></div>
-      <div><dt>percentageChange(5, 0)</dt><dd>{show(percentageChange(5, 0))}</dd></div>
-      <div><dt>returnOnCost(250, 1000)</dt><dd>{show(returnOnCost(250, 1000))}</dd></div>
-      <div><dt>cagr(1000, 2000, 5 years)</dt><dd>{show(cagr(1000, 2000, 5))}</dd></div>
-      <div><dt>dividendYield(25, 500)</dt><dd>{show(dividendYield(25, 500))}</dd></div>
-      <div>
-        <dt>weightedAverage</dt>
-        <dd>{weightedAverage([{ value: 10, weight: 1 }, { value: 20, weight: 3 }])}</dd>
-      </div>
-    </dl>
+    <Card title="NABIL performance" description="Rs 1,00,000 invested five years ago" headingLevel={3}>
+      <DataRows label="Ratios">
+        <DataRow label="Gain since purchase" value={show(returnOnCost(25_000, 100_000))} />
+        <DataRow label="Yearly growth (CAGR)" value={show(cagr(100_000, 125_000, 5))} />
+        <DataRow label="Dividend yield on cost" value={show(dividendYield(5_000, 100_000))} />
+        <DataRow label="Today vs yesterday" value={show(percentageChange(487.5, 481.5))} />
+        <DataRow label="Change from a zero base" value={show(percentageChange(5, 0))} />
+        <DataRow label="Average buy price" value={`Rs ${weightedAverage(buyPrices)}`} />
+      </DataRows>
+    </Card>
   );
 }

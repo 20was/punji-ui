@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Card } from '@punji/ui/card';
 import { Switch } from '@punji/ui/switch';
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -14,13 +15,11 @@ export default function Example() {
     setBusy(false);
   };
   return (
-    <div className="ex-row">
-      <Switch checked={shared} onChange={(next) => void change(next)} busy={busy} disabled={busy} label="Share portfolio" />
-      <span role="status" className="doc-muted">
-        {busy ? 'Saving…' : shared ? 'Shared' : 'Private'}
-      </span>
-      <Switch checked disabled onChange={() => {}} label="Always on (locked)" />
-      <Switch checked={false} disabled onChange={() => {}} label="Not available" />
-    </div>
+    <Card title="Privacy" description="Who can see your holdings" headingLevel={3}>
+      <Switch checked={shared} onChange={(next) => void change(next)} busy={busy} disabled={busy} label="Share portfolio with family" />
+      <p role="status">{busy ? 'Saving…' : shared ? 'Family can see your holdings' : 'Only you can see your holdings'}</p>
+      <Switch checked disabled onChange={() => {}} label="Two-step login (required by your bank)" />
+      <Switch checked={false} disabled onChange={() => {}} label="Price alerts by SMS (not on your plan)" />
+    </Card>
   );
 }

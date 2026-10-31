@@ -29,14 +29,14 @@ export const SHOWCASE_PAGES: readonly PageDef[] = [
     use: [
       'Replace the section buttons with your router’s links (Button takes `href` and a `linkComponent`), keeping `aria-current="page"` on the current one.',
       'Keep the market mark derived from a schedule you maintain: `getMarketSession(now, schedule)` with your holidays.',
-      'Point CompanySearch’s `onOpen` at the company route.',
+      'Point `CompanySearch`’s `onOpen` at the company route.',
     ],
     avoid: [YOURS.routes, 'The brand mark: the wordmark here is plain text; use your own logo.', YOURS.data],
     api: [],
     examples: screen('App header', 'Sections, search and inbox are live; narrow the preview to see the drawer.'),
     keyboard: [
       'Tab moves through Menu (narrow), the sections, search, the inbox and the title row actions in reading order.',
-      'CompanySearch: arrow keys move through suggestions, Enter opens one, Escape closes the list.',
+      '`CompanySearch`: arrow keys move through suggestions, Enter opens one, Escape closes the list.',
       'The Drawer traps focus while open and Escape closes it.',
     ],
     accessibility: [
@@ -74,7 +74,7 @@ export const SHOWCASE_PAGES: readonly PageDef[] = [
     keyboard: ['Tab reaches only the two download actions; the phone screens are inert pictures.'],
     accessibility: [
       'Each phone is a `figure` with a caption saying what the screen shows; its contents are `inert`, so a screen reader is not walked through a picture.',
-      'The feature rows are a labelled list of CheckRows with words, not icons alone.',
+      'The feature rows are a labelled list of `CheckRows` with words, not icons alone.',
     ],
     responsive: ['Under 620 px one phone shows; from 620 px the second sits beside it, set lower; from 900 px copy and phones sit side by side.'],
     related: ['check-list', 'button', 'rows', 'watchlist', 'sparkline', 'market-status'],
@@ -98,7 +98,7 @@ export const SHOWCASE_PAGES: readonly PageDef[] = [
     examples: screen('Portfolio tracker', 'Sort the holdings, switch the chart period, export the table.'),
     keyboard: [
       'Column headers are sort buttons; Enter or Space sorts.',
-      'The chart’s period control is a SegmentedControl: arrow keys move between periods.',
+      'The chart’s period control is a `SegmentedControl`: arrow keys move between periods.',
       'Arrow keys move the chart crosshair when the chart has focus.',
     ],
     accessibility: [
@@ -132,7 +132,7 @@ export const SHOWCASE_PAGES: readonly PageDef[] = [
     examples: screen('Live market board', 'Press Receive a tick to push new prices through every panel.'),
     keyboard: [
       'Table headers sort; the movers tabs follow the tabs pattern (arrow keys).',
-      'Heatmap tiles are not focusable here (no onSelect); give it onSelect to make each tile a button.',
+      'Heatmap tiles are not focusable here (no `onSelect`); give it `onSelect` to make each tile a button.',
     ],
     accessibility: [
       'Live cells change without stealing focus; flashes are a tint plus the new value, never colour alone.',
@@ -161,9 +161,9 @@ export const SHOWCASE_PAGES: readonly PageDef[] = [
     api: [],
     examples: screen('Watchlist and alerts', 'Add a company, reorder or remove rows, choose a symbol to open its panel.'),
     keyboard: [
-      'Each row’s move and remove buttons are focusable; Alt+ArrowUp and Alt+ArrowDown move a row.',
+      'Each row’s move and remove buttons are focusable; Alt+`ArrowUp` and Alt+`ArrowDown` move a row.',
       'The symbol buttons are toggle buttons (`aria-pressed`) that open the panel.',
-      'CompanySearch: arrow keys, Enter to add, Escape to close.',
+      '`CompanySearch`: arrow keys, Enter to add, Escape to close.',
     ],
     accessibility: [
       'Rose, fell and unchanged are counted in words beside the bar.',
@@ -192,7 +192,7 @@ export const SHOWCASE_PAGES: readonly PageDef[] = [
     examples: screen('Stock detail', 'Switch the chart period; arrow keys move the chart crosshair.'),
     keyboard: [
       'The chart takes focus; arrow keys move the crosshair across sessions.',
-      'The period control is a SegmentedControl (arrow keys).',
+      'The period control is a `SegmentedControl` (arrow keys).',
       'Watch is a toggle button (`aria-pressed`).',
     ],
     accessibility: [
@@ -251,12 +251,12 @@ export const SHOWCASE_PAGES: readonly PageDef[] = [
     ],
     avoid: [
       'Bank integrations, statement periods and PDF statements.',
-      'Masking rules beyond the defaults: AccountNumber shows the last four digits and reveals on request.',
+      'Masking rules beyond the defaults: `AccountNumber` shows the last four digits and reveals on request.',
       YOURS.data,
     ],
     api: [],
     examples: screen('Bank statement', 'Search, filter by direction, switch BS and AD, download the CSV.'),
-    keyboard: ['Search is a labelled field; the filters are SegmentedControls (arrow keys).', 'The balance toggle and account number reveal are buttons with spoken state.'],
+    keyboard: ['Search is a labelled field; the filters are `SegmentedControls` (arrow keys).', 'The balance toggle and account number reveal are buttons with spoken state.'],
     accessibility: [
       'Money in and out carry Cr and Dr words and signs, not colour alone.',
       'Pending, failed and reversed entries show a status in words.',
@@ -283,7 +283,7 @@ export const SHOWCASE_PAGES: readonly PageDef[] = [
     api: [],
     examples: screen('Payment flow', 'Pick a payee, change the amount, review and send (nothing is submitted).'),
     keyboard: [
-      'BeneficiarySelector: type to filter, arrow keys to move, Enter to choose.',
+      '`BeneficiarySelector`: type to filter, arrow keys to move, Enter to choose.',
       'Continue is disabled until the step is valid; errors are announced when they appear.',
       'Back and Continue sit at the end of each step in reading order.',
     ],
@@ -348,7 +348,7 @@ export const SHOWCASE_PAGES: readonly PageDef[] = [
     examples: screen('Dividend tracker', 'Totals, yields and the chart all come from one transaction history.'),
     keyboard: ['The payouts filters and pagination are standard controls.', 'The chart is not interactive; its values are in the table under it.'],
     accessibility: [
-      'DividendHistory’s chart has a legend in text and the same figures in a table.',
+      '`DividendHistory`’s chart has a legend in text and the same figures in a table.',
       'Yields are written out with what they are measured against.',
       'Announced and proposed actions are words in pills, not colours alone.',
     ],

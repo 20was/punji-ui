@@ -16,12 +16,12 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       'A label over a boxed input, with a hint or an error under it. Field is the text input; NumberField, PriceField, DateField, SelectField, SymbolField and TextAreaField are the same box for other kinds of value. Every one wires the label, the hint and the error to the control for you.',
     use: [
       'Any single value a person types: a name, an email, a quantity, a price, a symbol, a note.',
-      'size="md" with hideLabel for a toolbar field whose purpose the row already shows.',
-      'SymbolField over a list you already have in memory: matching is local, with no request per keystroke.',
+      '`size="md"` with `hideLabel` for a toolbar field whose purpose the row already shows.',
+      '`SymbolField` over a list you already have in memory: matching is local, with no request per keystroke.',
     ],
     avoid: [
       'A raw input with page CSS: it will not match the heights, the focus ring or the error wiring.',
-      'NumberField for money: onValueChange gives a decimal string, not minor units. Parse that to exact minor units, or use CurrencyInput.',
+      '`NumberField` for money: `onValueChange` gives a decimal string, not minor units. Parse that to exact minor units, or use `CurrencyInput`.',
       'An error with no words ("Invalid"): say what to change.',
     ],
     api: [...ui('fields', 'Field', 'NumberField', 'PriceField', 'DateField', 'SelectField', 'SymbolField', 'TextAreaField')],
@@ -33,22 +33,22 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     ],
     keyboard: [
       'Tab moves into and out of the field; the label is a real <label>, so a click on it focuses the input.',
-      'SymbolField: ArrowDown and ArrowUp move through the matches, Enter picks the active one, Esc closes the list (the typed text stays).',
-      'DateField and the textarea use the browser\'s own keyboard behaviour.',
+      '`SymbolField`: `ArrowDown` and `ArrowUp` move through the matches, Enter picks the active one, Esc closes the list (the typed text stays).',
+      '`DateField` and the textarea use the browser\'s own keyboard behaviour.',
     ],
     accessibility: [
-      'The label is always rendered; hideLabel keeps it for screen readers only (kit-sr).',
-      'An error is a role="alert" line linked by aria-describedby and sets aria-invalid; a hint is linked the same way. An error replaces the hint.',
-      'SymbolField is an ARIA combobox with a listbox, aria-activedescendant and aria-expanded.',
+      'The label is always rendered; `hideLabel` keeps it for screen readers only (kit-sr).',
+      'An error is a `role="alert"` line linked by `aria-describedby` and sets `aria-invalid`; a hint is linked the same way. An error replaces the hint.',
+      '`SymbolField` is an ARIA combobox with a listbox, `aria-activedescendant` and `aria-expanded`.',
       'lg is 44px (forms, the default) so a phone does not zoom on focus; md is 36px for toolbars.',
     ],
     responsive: ['Fields fill their container; put them in a grid or stack. lg keeps the 44px touch target on phones.'],
     notes: {
       title: 'Limits',
       points: [
-        'NumberField shows the text exactly as typed and sets inputMode ("numeric" with integer, otherwise "decimal"). onValueChange reports the text parsed (grouping commas and Devanagari digits accepted, no rounding) as a plain decimal string or a reason it is not a number yet. It does not check ranges or set the error for you; for money, parse to minor units or use CurrencyInput.',
-        'The value is always a string and onChange gives a string. DateField\'s value is YYYY-MM-DD, the native date input\'s format; for Bikram Sambat dates use DatePicker.',
-        'SymbolField uppercases what is typed and matches by symbol and name through searchSymbols; it does not fetch.',
+        '`NumberField` shows the text exactly as typed and sets `inputMode` ("numeric" with integer, otherwise "decimal"). `onValueChange` reports the text parsed (grouping commas and Devanagari digits accepted, no rounding) as a plain decimal string or a reason it is not a number yet. It does not check ranges or set the error for you; for money, parse to minor units or use `CurrencyInput`.',
+        'The value is always a string and `onChange` gives a string. `DateField`\'s value is YYYY-MM-DD, the native date input\'s format; for Bikram Sambat dates use `DatePicker`.',
+        '`SymbolField` uppercases what is typed and matches by symbol and name through `searchSymbols`; it does not fetch.',
       ],
     },
     related: ['select', 'currency-input', 'date-picker', 'list-filter', 'checkbox'],
@@ -61,8 +61,8 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     kind: 'component',
     summary:
       'A native <select> in the kit box, at the shared control heights (32, 36, 44). On a desktop browser that supports it the open list is themed; touch and unsupported browsers keep the platform picker. It is generic over the value type, so options can be a union of string literals.',
-    use: ['One choice from five or more options, or from a long list.', 'Inside a Field as SelectField, or alone in a toolbar with a hidden label.', 'options with group to gather related choices under a heading.'],
-    avoid: ['Two to five short options that should all be visible: use SegmentedControl or ChoiceGroup.', 'Searching a long list by typing: use SymbolField or CompanySearch.', 'Restyling the box through className: it is for layout only.'],
+    use: ['One choice from five or more options, or from a long list.', 'Inside a Field as `SelectField`, or alone in a toolbar with a hidden label.', 'options with group to gather related choices under a heading.'],
+    avoid: ['Two to five short options that should all be visible: use `SegmentedControl` or `ChoiceGroup`.', 'Searching a long list by typing: use `SymbolField` or `CompanySearch`.', 'Restyling the box through `className`: it is for layout only.'],
     api: [...ui('select', 'Select', 'SelectOption')],
     examples: [
       { id: 'basic', title: 'Chart period', note: 'A native select in a card header; onChange receives the typed value, not a string.' },
@@ -72,8 +72,8 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     keyboard: ['Tab focuses the select; Space, Enter or the arrow keys open it; arrows move, Enter chooses, Esc closes. This is the browser\'s own behaviour on every device.'],
     accessibility: [
       'It is a real <select>: no proxy controls, so form submission, autofill and assistive technology work natively.',
-      'label names it; with labelPlacement "hidden" the name is for screen readers only. Omit label only when an outside <label htmlFor={id}> names it.',
-      'loading sets aria-busy and disables the control.',
+      'label names it; with `labelPlacement` "hidden" the name is for screen readers only. Omit label only when an outside `<label htmlFor={id}>` names it.',
+      'loading sets `aria-busy` and disables the control.',
     ],
     responsive: ['Touch devices always get the platform picker. block makes it fill its container.'],
     related: ['field', 'segmented-control', 'choice-group', 'company-search'],
@@ -86,7 +86,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     kind: 'component',
     summary:
       'A tinted track with a raised pill on the chosen segment, for small option sets such as a chart window, a period or a scope. Without panelId it is a toggle group of buttons; with panelId it is ARIA tabs. SegmentedSwitch is the same control at 44px for a page\'s own views.',
-    use: ['Two to five short options, always visible: a window (1D, 1W, 1M), a period, a scope.', 'tone="accent" for the one choice that frames a whole page (whose portfolio), at most once per page.', 'panelId when the segments switch a tabpanel.'],
+    use: ['Two to five short options, always visible: a window (1D, 1W, 1M), a period, a scope.', '`tone="accent"` for the one choice that frames a whole page (whose portfolio), at most once per page.', '`panelId` when the segments switch a tabpanel.'],
     avoid: ['Many options or long labels: use Select.', 'A section\'s views that need an underline: use Tabs.', 'Navigation to other URLs: those are links.'],
     api: [...ui('controls', 'SegmentedControl', 'SegmentedSwitch')],
     examples: [
@@ -96,12 +96,12 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     ],
     keyboard: [
       'Tab moves into the control. As a toggle group every segment is a tab stop; as tabs only the chosen one is (roving tab stop).',
-      'ArrowLeft and ArrowRight (and ArrowUp, ArrowDown) move the choice, Home and End go to the first and last. Moving also chooses, and focus follows.',
+      '`ArrowLeft` and `ArrowRight` (and `ArrowUp`, `ArrowDown`) move the choice, Home and End go to the first and last. Moving also chooses, and focus follows.',
       'Space or Enter on a focused segment chooses it. The control stops the arrow keys from reaching the page, so a page\'s own list keys do not also move.',
     ],
     accessibility: [
-      'Toggle group: role="group" named by label, each segment aria-pressed. Tabs: role="tablist" with role="tab", aria-selected and aria-controls.',
-      'o.keys sets aria-keyshortcuts on a segment when you also bind a shortcut.',
+      'Toggle group: `role="group"` named by label, each segment `aria-pressed`. Tabs: `role="tablist"` with `role="tab"`, `aria-selected` and `aria-controls`.',
+      'o.keys sets `aria-keyshortcuts` on a segment when you also bind a shortcut.',
       'A count is read after the label.',
     ],
     responsive: ['wrap lets the segments wrap onto a second line when they do not fit, instead of scrolling. fill shares the width.'],
@@ -115,8 +115,8 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     kind: 'component',
     summary:
       'A row of labels with an underline on the chosen one, for switching the views of one section. They are ARIA tabs with a roving tab stop, and each must control a tabpanel you render. PanelTabs is the variant for a side panel: an icon over one short word on a track.',
-    use: ['The views of one section on one page (Summary, Transactions, Documents).', 'fill for a phone\'s two or three views.', 'PanelTabs for the views of a panel beside a tool.'],
-    avoid: ['Tabs that change the URL: those are links in the page\'s navigation.', 'A small option set in a toolbar: use SegmentedControl.', 'Tabs with no panel: aria-controls must point at a real element.'],
+    use: ['The views of one section on one page (Summary, Transactions, Documents).', 'fill for a phone\'s two or three views.', '`PanelTabs` for the views of a panel beside a tool.'],
+    avoid: ['Tabs that change the URL: those are links in the page\'s navigation.', 'A small option set in a toolbar: use `SegmentedControl`.', 'Tabs with no panel: `aria-controls` must point at a real element.'],
     api: [...ui('tabs', 'Tabs', 'PanelTabs', 'TabsProps')],
     examples: [
       { id: 'line', title: 'Line tabs', note: 'An account page: the tabs switch the panel, which you render with role="tabpanel".' },
@@ -124,14 +124,14 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     ],
     keyboard: [
       'Tab moves into the tab list (to the chosen tab only) and then out to the panel.',
-      'ArrowLeft and ArrowRight move to the previous and next tab and choose it; Home and End go to the first and last. Focus follows the choice.',
+      '`ArrowLeft` and `ArrowRight` move to the previous and next tab and choose it; Home and End go to the first and last. Focus follows the choice.',
     ],
     accessibility: [
-      'role="tablist" named by label; each tab has role="tab", aria-selected, aria-controls and a roving tabindex.',
-      'The panel you render must have id=panelId, role="tabpanel" and aria-labelledby the chosen tab (`${prefix}-${value}`).',
-      'PanelTabs icons are decorative (aria-hidden); the label carries the name. Keep labels to one short word: five fit a 432px panel.',
+      '`role="tablist"` named by label; each tab has `role="tab"`, `aria-selected`, `aria-controls` and a roving tabindex.',
+      'The panel you render must have id=`panelId`, `role="tabpanel"` and `aria-labelledby` the chosen tab (`${prefix}-${value}`).',
+      '`PanelTabs` icons are decorative (`aria-hidden`); the label carries the name. Keep labels to one short word: five fit a 432px panel.',
     ],
-    responsive: ['Tabs scroll or fill their container; fill shares the width. PanelTabs always fills and fits five labels in a phone sheet.'],
+    responsive: ['Tabs scroll or fill their container; fill shares the width. `PanelTabs` always fills and fits five labels in a phone sheet.'],
     related: ['segmented-control', 'card', 'page-layout'],
   },
   {
@@ -143,7 +143,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     summary:
       'A real <input type="checkbox"> inside its <label>, so the whole row is the tap target (44px on touch). lead draws before the words (a series swatch), end after them (a count). Use it for choices that wait for a Save; a setting that applies at once is a Switch.',
     use: ['Several choices that can each be on: columns to show, lines on a chart, filters.', 'A single yes or no inside a form that is saved later.'],
-    avoid: ['A setting that takes effect immediately: use Switch.', 'Exclusive choices: use ChoiceGroup or SegmentedControl.', 'A group with no legend: wrap the checkboxes in a fieldset with a legend.'],
+    avoid: ['A setting that takes effect immediately: use Switch.', 'Exclusive choices: use `ChoiceGroup` or `SegmentedControl`.', 'A group with no legend: wrap the checkboxes in a fieldset with a legend.'],
     api: [...ui('checkbox', 'Checkbox')],
     examples: [
       { id: 'basic', title: 'A group', note: 'Wrapped in a fieldset with a legend, which names the group.' },
@@ -152,7 +152,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     keyboard: ['Tab moves between checkboxes; Space toggles the focused one.'],
     accessibility: [
       'A native checkbox inside a label: the browser provides the role, state and name from the visible words.',
-      'A swatch in lead is decorative: the words carry the meaning, so mark it aria-hidden.',
+      'A swatch in lead is decorative: the words carry the meaning, so mark it `aria-hidden`.',
       'Group related checkboxes in a fieldset with a legend.',
     ],
     responsive: ['The row is at least 44px tall on touch screens and fills its container.'],
@@ -167,7 +167,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     summary:
       'A button with role="switch" and aria-checked, for a setting that takes effect at once (an alert, sharing). Name it with labelledBy (the row\'s visible title) or label. Show busy while the change is saving.',
     use: ['A setting that applies the moment it is flipped: alerts on or off, sharing.', 'busy while the request runs, then flip it when the server confirms.'],
-    avoid: ['A choice that waits for a Save: use Checkbox.', 'A switch with no name: always give labelledBy or label.', 'Showing the new state before the server has accepted it, for something that matters.'],
+    avoid: ['A choice that waits for a Save: use Checkbox.', 'A switch with no name: always give `labelledBy` or label.', 'Showing the new state before the server has accepted it, for something that matters.'],
     api: [...ui('switch', 'Switch')],
     examples: [
       { id: 'basic', title: 'In a row', note: 'Named by the row\'s title and described by the line under it.' },
@@ -175,8 +175,8 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     ],
     keyboard: ['Tab focuses the switch; Space or Enter flips it.'],
     accessibility: [
-      'role="switch" with aria-checked; the name comes from labelledBy or label, a description from describedBy.',
-      'busy sets aria-busy; announce the result in a role="status" region next to it.',
+      '`role="switch"` with `aria-checked`; the name comes from `labelledBy` or label, a description from `describedBy`.',
+      'busy sets `aria-busy`; announce the result in a `role="status"` region next to it.',
       'On and off are shown by position as well as colour.',
     ],
     responsive: ['The hit area is at least 44px on touch screens. Lay the title and the switch out in a row that wraps.'],
@@ -190,14 +190,14 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     kind: 'component',
     summary:
       'A range between lo and hi on one track, the span filled. It is two native range inputs, so each thumb keeps the browser\'s keyboard, and a thumb never passes the other. valueText says each value in words, with its unit, to screen readers.',
-    use: ['A filter with a minimum and a maximum: yield, price, market cap.', 'valueText to print "Any" at an open end.'],
-    avoid: ['A single value: use a native range input or a Field.', 'Exact values that need typing: pair it with two NumberFields.'],
+    use: ['A filter with a minimum and a maximum: yield, price, market cap.', '`valueText` to print "Any" at an open end.'],
+    avoid: ['A single value: use a native range input or a Field.', 'Exact values that need typing: pair it with two `NumberFields`.'],
     api: [...ui('range-slider', 'RangeSlider', 'RangeSliderProps')],
     examples: [{ id: 'basic', title: 'Yield range', note: 'The labels name the thumbs; valueText gives the spoken value, with "Any" at the ends.' }],
-    keyboard: ['Tab moves between the two thumbs. Each thumb: ArrowLeft/ArrowDown and ArrowRight/ArrowUp change it by step, PageUp and PageDown by a larger step, Home and End go to the ends (the browser\'s behaviour).'],
+    keyboard: ['Tab moves between the two thumbs. Each thumb: `ArrowLeft`/`ArrowDown` and `ArrowRight`/`ArrowUp` change it by step, `PageUp` and `PageDown` by a larger step, Home and End go to the ends (the browser\'s behaviour).'],
     accessibility: [
-      'Two <input type="range"> with aria-label (labelLo, labelHi) and aria-valuetext (valueText), so the value is spoken with its unit.',
-      'The filled track is decorative (aria-hidden).',
+      'Two `<input type="range">` with `aria-label` (`labelLo`, `labelHi`) and `aria-valuetext` (`valueText`), so the value is spoken with its unit.',
+      'The filled track is decorative (`aria-hidden`).',
       'Show the chosen range as text too, near the slider.',
     ],
     responsive: ['The slider fills its container; the thumbs are large enough for touch.'],
@@ -212,14 +212,14 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     summary:
       'Exclusive choices as native radio inputs in a fieldset, drawn with an underline (default) or a compact look. Because they are real radios, the browser provides the arrow keys, the single tab stop and disabled handling.',
     use: ['Exclusive filters that should all be visible: All, Buy, Sell.', 'A form choice where a screen reader should hear "radio button, 2 of 3".'],
-    avoid: ['More than about five options: use Select.', 'A choice that changes the view of a panel: use Tabs or SegmentedControl.'],
+    avoid: ['More than about five options: use Select.', 'A choice that changes the view of a panel: use Tabs or `SegmentedControl`.'],
     api: [...ui('choice-group', 'ChoiceGroup', 'ChoiceOption', 'ChoiceGroupProps')],
     examples: [{ id: 'basic', title: 'Underline and compact', note: 'One disabled option; the compact appearance at the md height.' }],
     keyboard: ['Tab moves to the chosen radio (or the first); the arrow keys move and choose within the group; a disabled option is skipped. This is the browser\'s radio behaviour.'],
     accessibility: [
-      'A <fieldset> named by label, with native radios that share a name (testId).',
+      'A <fieldset> named by label, with native radios that share a name (`testId`).',
       'Each option\'s label is its visible text.',
-      'Give each group a unique testId: it is also the radio name.',
+      'Give each group a unique `testId`: it is also the radio name.',
     ],
     responsive: ['The options sit in a row and scroll or wrap inside their container; size lg is 44px.'],
     related: ['segmented-control', 'select', 'checkbox'],
@@ -232,8 +232,8 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     kind: 'component',
     summary:
       'One search field for a list that is already on the page, matched in memory with no request. The × button and Esc clear it. With slash, pressing / focuses it when nothing else is being typed in and no dialog is open. Sizes match Select so the two sit in one row.',
-    use: ['Narrowing a table or list you hold in memory: holdings, a watchlist, a symbol list.', 'size="lg" for a public toolbar: 44px with 16px text so a phone does not zoom on focus.'],
-    avoid: ['Searching a server: debounce the value and fetch yourself, or use CompanySearch.', 'A global command search: use CommandPalette.'],
+    use: ['Narrowing a table or list you hold in memory: holdings, a watchlist, a symbol list.', '`size="lg"` for a public toolbar: 44px with 16px text so a phone does not zoom on focus.'],
+    avoid: ['Searching a server: debounce the value and fetch yourself, or use `CompanySearch`.', 'A global command search: use `CommandPalette`.'],
     api: [...ui('list-filter', 'ListFilter')],
     examples: [
       { id: 'basic', title: 'Filter a list', note: 'Press / to focus; Esc or the x clears.' },
@@ -241,11 +241,11 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     ],
     keyboard: ['/ focuses the field (when slash is on, nothing else is being typed in and no dialog is open).', 'Esc clears a non-empty field and keeps focus.', 'Tab reaches the clear button when there is text.'],
     accessibility: [
-      'A role="search" region with an <input type="search"> named by label (aria-label, or a visible <label> with labelPlacement="above").',
+      'A `role="search"` region with an `<input type="search">` named by label (`aria-label`, or a visible <label> with `labelPlacement="above"`).',
       'The clear button is named by clear, a required prop: say it in the reader\'s language.',
-      'The / hint is decorative (aria-hidden).',
+      'The / hint is decorative (`aria-hidden`).',
     ],
-    responsive: ['Fills its container. lg uses 16px text so iOS does not zoom on focus.'],
+    responsive: ['Fills its container. lg uses 16px text so `iOS` does not zoom on focus.'],
     related: ['field', 'command-palette', 'company-search', 'data-table'],
   },
   {
@@ -256,24 +256,24 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     kind: 'component',
     summary:
       'A panel placed against the control that opened it, for a small menu or editor. Esc closes it and returns focus to the control; a click or tap outside closes it; focus leaving both closes it. Only one is open at a time. portal floats it above clipping ancestors and flips it above the anchor when there is no room.',
-    use: ['A small menu, a sort list, a quick editor (set an alert) under a button.', 'portal inside a card or scroller with overflow hidden.', 'fullScreenPhone for content that needs the whole screen on a phone.'],
-    avoid: ['A confirmation that must be answered: use a sheet.', 'A form beside the page: use Drawer.', 'Explaining a label: use InfoTip.'],
+    use: ['A small menu, a sort list, a quick editor (set an alert) under a button.', 'portal inside a card or scroller with overflow hidden.', '`fullScreenPhone` for content that needs the whole screen on a phone.'],
+    avoid: ['A confirmation that must be answered: use a sheet.', 'A form beside the page: use Drawer.', 'Explaining a label: use `InfoTip`.'],
     api: [...ui('popover', 'Popover', 'PopoverAnchor')],
     examples: [
       { id: 'basic', title: 'A menu', note: 'The button and the panel share one PopoverAnchor.' },
       { id: 'portal', title: 'Portal, with a field', note: 'Floats above a clipping box, focuses the input, and reports why it closed.' },
     ],
     keyboard: [
-      'Focus moves into the panel when it opens (the first control, or the element initialFocus selects).',
+      'Focus moves into the panel when it opens (the first control, or the element `initialFocus` selects).',
       'Esc closes it and puts focus back on the anchor. A click outside closes it. Tab past the last control (or Shift+Tab before the first) closes it and moves on to the next control after the anchor.',
       'A native select open inside handles Esc and Tab first.',
     ],
     accessibility: [
-      'role="dialog" named by label (or role "none" when the content names itself, for example a menu).',
-      'Put aria-haspopup, aria-expanded and aria-controls (the panel\'s id) on the anchor yourself.',
-      'onClose says why: "escape", "outside" or "blur".',
+      '`role="dialog"` named by label (or role "none" when the content names itself, for example a menu).',
+      'Put `aria-haspopup`, `aria-expanded` and `aria-controls` (the panel\'s id) on the anchor yourself.',
+      '`onClose` says why: "escape", "outside" or "blur".',
     ],
-    responsive: ['Portal panels are clamped to the viewport and use the visual viewport. With fullScreenPhone, under 768px the panel fills the screen and the content brings its own back button.'],
+    responsive: ['Portal panels are clamped to the viewport and use the visual viewport. With `fullScreenPhone`, under 768px the panel fills the screen and the content brings its own back button.'],
     related: ['drawer', 'tooltip', 'command-palette', 'button'],
   },
   {
@@ -284,13 +284,13 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     kind: 'component',
     summary:
       'The one place a page\'s actions open on a wide screen (add, sell, edit, review): a 432px panel slides in from the right over the page, wherever the reader has scrolled. It is modal: the page behind is inert to the pointer, Tab stays inside, Esc and the scrim close it, and focus returns to the button that opened it.',
-    use: ['A form or review step that should not leave the page: add a transaction, edit a holding.', 'DrawerScreen inside it for a header on top and Save and Cancel docked at the foot.'],
+    use: ['A form or review step that should not leave the page: add a transaction, edit a holding.', '`DrawerScreen` inside it for a header on top and Save and Cancel docked at the foot.'],
     avoid: ['A short confirmation: use a sheet.', 'Content that belongs on its own page.', 'A drawer that opens another drawer.'],
     api: [...ui('drawer', 'Drawer')],
     examples: [{ id: 'basic', title: 'A form', note: 'Open it, tab around, press Esc; focus returns to the button.' }],
-    keyboard: ['Opening moves focus into the panel (an element with autoFocus wins, otherwise the panel).', 'Tab and Shift+Tab cycle inside it.', 'Esc closes it unless the form inside used the key first. A click on the scrim closes it.'],
+    keyboard: ['Opening moves focus into the panel (an element with `autoFocus` wins, otherwise the panel).', 'Tab and Shift+Tab cycle inside it.', 'Esc closes it unless the form inside used the key first. A click on the scrim closes it.'],
     accessibility: [
-      'role="dialog" with aria-modal="true", named by label; it renders in a portal on document.body.',
+      '`role="dialog"` with `aria-modal="true"`, named by label; it renders in a portal on document.body.',
       'The page behind does not scroll while it is open; focus returns to the opener on close.',
       'Include a visible heading and a Cancel button inside; do not rely on Esc alone.',
     ],
@@ -306,20 +306,20 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     summary:
       'A search field over grouped results, run entirely by keyboard. You mount it when it is open, own the query, and filter the items; it draws them, handles the keys and reports what was run. Rows of kind "entity" carry action chips chosen with the left and right arrows.',
     use: ['"Search the app": pages, actions and companies in one dialog.', 'Actions on an entity (open, watch, set an alert) without leaving the keyboard.'],
-    avoid: ['Filtering the rows of one list: use ListFilter.', 'A form or settings: use Drawer.', 'Keeping it mounted while closed: mount it only when open.'],
+    avoid: ['Filtering the rows of one list: use `ListFilter`.', 'A form or settings: use Drawer.', 'Keeping it mounted while closed: mount it only when open.'],
     api: [...ui('command-palette', 'CommandPalette', 'CommandItem', 'CommandAction', 'CommandPaletteLabels')],
     examples: [
       { id: 'basic', title: 'Pages and actions', note: 'Grouped rows, an external row, and an empty message.' },
       { id: 'actions', title: 'Companies with action chips', note: 'Enter runs the first action; the left and right arrows choose another.' },
     ],
     keyboard: [
-      'ArrowDown and ArrowUp move through the results (wrapping). ArrowLeft and ArrowRight move between an entity row\'s action chips, wherever the caret is.',
+      '`ArrowDown` and `ArrowUp` move through the results (wrapping). `ArrowLeft` and `ArrowRight` move between an entity row\'s action chips, wherever the caret is.',
       'Enter runs the chosen action (the first unless moved). Tab moves between the field and the Esc button and never leaves the dialog. Esc closes it and focus goes back where it was.',
       'A pointer resting on the list does not take the row back while you arrow.',
     ],
     accessibility: [
-      'A modal dialog named by labels.dialog with a combobox field and a listbox; the active row is aria-selected.',
-      'Each entity row names its actions with aria-describedby, and a move between chips is announced in a polite status region (labels.chosen).',
+      'A modal dialog named by labels.dialog with a combobox field and a listbox; the active row is `aria-selected`.',
+      'Each entity row names its actions with `aria-describedby`, and a move between chips is announced in a polite status region (labels.chosen).',
       'The hint bar at the foot is decorative; every label is a prop so the dialog can be fully translated.',
       'The page does not scroll behind it.',
     ],
@@ -340,7 +340,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     examples: [{ id: 'basic', title: 'Kinds and undo', note: 'Success, error, info, and a toast with an Undo action.' }],
     keyboard: ['A toast\'s action button is a normal button in the tab order while it is shown. There is no key to dismiss one; it leaves on its own.'],
     accessibility: [
-      'The region is aria-live="polite". An error toast has role="alert"; success and info are role="status".',
+      'The region is `aria-live="polite"`. An error toast has `role="alert"`; success and info are `role="status"`.',
       'The title is bold and the body follows it; icons are decorative and the kind is also in the words.',
       'Because toasts vanish, never put information only there that the person needs later.',
     ],
@@ -348,7 +348,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     notes: {
       title: 'Limits',
       points: [
-        'useToast throws if it is used outside ToastProvider.',
+        '`useToast` throws if it is used outside `ToastProvider`.',
         'The display time and the three-toast cap are fixed (4 s, 6 s with an action; three). Words such as "Undo" are yours, so pass them in the reader\'s language.',
       ],
     },
@@ -362,20 +362,20 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     kind: 'component',
     summary:
       'Tooltip names a control that has only an icon; InfoTip explains a label on a visible ⓘ button beside it. Hover or keyboard focus shows either at once; an InfoTip click or tap keeps it open until Esc, a second tap, a tap elsewhere or a scroll. Never a native title attribute.',
-    use: ['Tooltip on an icon-only button, to show its name.', 'InfoTip beside a term that needs a definition: cost basis, circuit limit.', 'trigger for a short text trigger instead of the icon.'],
-    avoid: ['Hiding the only copy of a fact in a hover tip: a phone has no hover.', 'Long content: an InfoTip is one or two sentences.', 'A native title attribute: it waits a second, never shows on a phone and gives no sign it is there.'],
+    use: ['Tooltip on an icon-only button, to show its name.', '`InfoTip` beside a term that needs a definition: cost basis, circuit limit.', 'trigger for a short text trigger instead of the icon.'],
+    avoid: ['Hiding the only copy of a fact in a hover tip: a phone has no hover.', 'Long content: an `InfoTip` is one or two sentences.', 'A native title attribute: it waits a second, never shows on a phone and gives no sign it is there.'],
     api: [...ui('info-tip', 'Tooltip', 'InfoTip')],
     examples: [
       { id: 'basic', title: 'Tooltip', note: 'Names an icon-only button; describe also links it as the description.' },
       { id: 'info', title: 'InfoTip', note: 'An info button beside a label, and a text trigger.' },
     ],
-    keyboard: ['Tooltip shows at once on keyboard focus (focus-visible) and after 300 ms on mouse hover; Esc, blur, a press or leaving hides it.', 'InfoTip shows on focus or hover; Enter or Space pins it open; Esc, a second press, a press elsewhere or a scroll closes it.'],
+    keyboard: ['Tooltip shows at once on keyboard focus (focus-visible) and after 300 ms on mouse hover; Esc, blur, a press or leaving hides it.', '`InfoTip` shows on focus or hover; Enter or Space pins it open; Esc, a second press, a press elsewhere or a scroll closes it.'],
     accessibility: [
-      'InfoTip is a button named by label; while shown, the text is its description (aria-describedby) in a role="tooltip" bubble.',
-      'A Tooltip repeats the control\'s own name, so it is hidden from screen readers (the name already says it). With describe it is exposed and the control gets aria-describedby while the tip is open.',
-      'The bubble is kept inside the window and placed so it does not cover the figure below a label. Clicks inside an InfoTip never open a clickable row it sits in.',
+      '`InfoTip` is a button named by label; while shown, the text is its description (`aria-describedby`) in a `role="tooltip"` bubble.',
+      'A Tooltip repeats the control\'s own name, so it is hidden from screen readers (the name already says it). With describe it is exposed and the control gets `aria-describedby` while the tip is open.',
+      'The bubble is kept inside the window and placed so it does not cover the figure below a label. Clicks inside an `InfoTip` never open a clickable row it sits in.',
     ],
-    responsive: ['On touch the InfoTip opens on tap and stays until dismissed. A Tooltip appears on hover and focus only, so keep its text redundant.'],
+    responsive: ['On touch the `InfoTip` opens on tap and stays until dismissed. A Tooltip appears on hover and focus only, so keep its text redundant.'],
     related: ['popover', 'button', 'status-pill'],
   },
   {
@@ -386,7 +386,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     kind: 'component',
     summary:
       'A short label: a state, a tone, a tag ("Bonus", "Estimate", "Yours", "New"). It is not pressable, except as a link with href. swatch adds a series colour square, size="sm" is the 20px tag, and marker is an outlined pill with a state dot for beside a page title (live, warn, off). CountBadge shows how many are waiting.',
-    use: ['A status or tag in a row, a card header or beside a title.', 'marker for a market or data state next to a heading.', 'CountBadge beside a heading for a number of things waiting.'],
+    use: ['A status or tag in a row, a card header or beside a title.', 'marker for a market or data state next to a heading.', '`CountBadge` beside a heading for a number of things waiting.'],
     avoid: ['Something that looks pressable but is not: pills are labels.', 'Colour alone: the words must say the state.', 'A long sentence: keep to one or two words.'],
     api: [...ui('status-pill', 'StatusPill', 'CountBadge')],
     examples: [
@@ -395,8 +395,8 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     ],
     keyboard: ['A pill is not focusable unless it is a link (href); then it is a normal link: Tab, then Enter.'],
     accessibility: [
-      'The state is in the words; tone and dot are extra. A swatch is decorative (aria-hidden).',
-      'CountBadge is role="img" with aria-label (label), e.g. "2 waiting"; the heading beside it says what is counted.',
+      'The state is in the words; tone and dot are extra. A swatch is decorative (`aria-hidden`).',
+      '`CountBadge` is `role="img"` with `aria-label` (label), e.g. "2 waiting"; the heading beside it says what is counted.',
     ],
     responsive: ['Pills are inline and do not shrink below their text; let the row wrap.'],
     related: ['market-status', 'payment-status', 'locked-note', 'card'],
@@ -427,7 +427,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     summary:
       'Figure prints a number with tabular digits and en-IN grouping, and is never truncated (it has its own element and no wrapping). Delta prints a change as a sign, an arrow, a colour and a spoken word, so colour never carries it alone. A move that prints as zero is no move: grey, no arrow. Missing values print a dash, never zero.',
     use: ['Any number you format for display in a row, a card or a sentence: a price, a count, a percent.', 'Delta for a day\'s change; words to translate "up", "down" and "unchanged".'],
-    avoid: ['Exact money: use MoneyDisplay, which takes bigint minor units and a currency.', 'toFixed on a price: it does not group and can round differently from the table.', 'Colour alone for gain and loss.'],
+    avoid: ['Exact money: use `MoneyDisplay`, which takes bigint minor units and a currency.', '`toFixed` on a price: it does not group and can round differently from the table.', 'Colour alone for gain and loss.'],
     api: [...ui('figures', 'Figure', 'Delta')],
     examples: [
       { id: 'figures', title: 'Figures', note: 'rs, int, pct and num, and a missing value.' },
@@ -435,14 +435,14 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     ],
     keyboard: ['Figures are text and not interactive.'],
     accessibility: [
-      'Delta appends a visually hidden word (up, down, unchanged) after the number; arrows are aria-hidden. Pass words in the reader\'s language.',
+      'Delta appends a visually hidden word (up, down, unchanged) after the number; arrows are `aria-hidden`. Pass words in the reader\'s language.',
       'A figure that prints as 0.00 is neutral: it is grey and says "unchanged".',
       'Figures use tabular numerals so columns align.',
     ],
     responsive: ['Figures do not wrap or truncate; give them room or let the table scroll.'],
     notes: {
       title: 'Limits',
-      points: ['Figure and Delta take a JavaScript number and are for display only. Exact amounts, rounding and currency belong to MoneyDisplay and the calculations module.'],
+      points: ['Figure and Delta take a JavaScript number and are for display only. Exact amounts, rounding and currency belong to `MoneyDisplay` and the calculations module.'],
     },
     related: ['money-display', 'price-change', 'live-figure', 'headline-figure'],
   },
@@ -455,7 +455,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     summary:
       'A plain figure that moves. When the value changes it counts to the new one over 450 ms (the same formatting at every frame, exactly the new value at the end) and its ground flashes the gain or loss tint for 900 ms. Under reduced motion it simply shows the new value. Live does the same for any figure through a render function.',
     use: ['A last traded price, a value or a weight that updates while it is on screen.', 'Live to move a Delta, a signed amount or a figure inside a sentence.', 'id to say what the figure stands for, so picking another row snaps instead of tweening.'],
-    avoid: ['Fetching inside it or around it: pass the value as a prop. See the Live data adapters guide.', 'Static numbers: use Figure.', 'aria-live on every cell: put it on one container that needs it.'],
+    avoid: ['Fetching inside it or around it: pass the value as a prop. See the Live data adapters guide.', 'Static numbers: use Figure.', '`aria-live` on every cell: put it on one container that needs it.'],
     api: [...ui('live-figure', 'LiveFigure', 'Live')],
     examples: [
       { id: 'basic', title: 'A live price', note: 'Tick up and down to see the count and the tint; switching the id snaps.' },
@@ -463,8 +463,8 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     ],
     keyboard: ['Not interactive.'],
     accessibility: [
-      'While it moves, the frames are hidden from screen readers (aria-hidden) and the final value is read from a visually hidden copy; at rest there is one element.',
-      'Put aria-live on a container that needs it (the open stock\'s price), never on every cell.',
+      'While it moves, the frames are hidden from screen readers (`aria-hidden`) and the final value is read from a visually hidden copy; at rest there is one element.',
+      'Put `aria-live` on a container that needs it (the open stock\'s price), never on every cell.',
       'The tint is extra: the value itself changes. Reduced motion turns off both the count and the tint.',
     ],
     responsive: ['Same as Figure: it never wraps or truncates.'],
@@ -482,8 +482,8 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     kind: 'component',
     summary:
       'PageLayout is the page ground and the page\'s one <main>. PageHeader is the header every page uses: a back circle, a large title (an h1), a meta line under it and up to three actions. ListSectionHeader is a section title with one action or a quiet detail.',
-    use: ['PageHeader at the top of every page, with the one h1.', 'ListSectionHeader over a group of rows or a card.', 'stamp to say what the page\'s figures are as of; eyebrow for the page\'s group.'],
-    avoid: ['More than one PageHeader or PageLayout per page.', 'More than three actions in the header.', 'A back link on a root page: omit backTo.'],
+    use: ['`PageHeader` at the top of every page, with the one h1.', '`ListSectionHeader` over a group of rows or a card.', 'stamp to say what the page\'s figures are as of; eyebrow for the page\'s group.'],
+    avoid: ['More than one `PageHeader` or `PageLayout` per page.', 'More than three actions in the header.', 'A back link on a root page: omit `backTo`.'],
     api: [...ui('layout', 'PageLayout', 'PageHeader', 'ListSectionHeader', 'ChevronLeft', 'ChevronRight')],
     examples: [
       { id: 'sections', title: 'Section headers', note: 'Section titles with an action or a quiet detail, and the small form inside a card.' },
@@ -492,11 +492,11 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     ],
     keyboard: ['The back circle is a link: Tab, then Enter. Header actions are your buttons or links.'],
     accessibility: [
-      'PageLayout renders <main id="main" tabindex="-1">, the target for a skip link; PageHeader renders the h1 (or the level you give with headingLevel when it is embedded). Use one h1 per page.',
-      'The back link is named by backLabel (default "Back"); the chevron is decorative.',
-      'ListSectionHeader renders an h2 (h3 with level 3): keep the outline in order.',
+      '`PageLayout` renders `<main id="main" tabIndex="-1">`, the target for a skip link; `PageHeader` renders the h1 (or the level you give with `headingLevel` when it is embedded). Use one h1 per page.',
+      'The back link is named by `backLabel` (default "Back"); the chevron is decorative.',
+      '`ListSectionHeader` renders an h2 (h3 with level 3): keep the outline in order.',
     ],
-    responsive: ['The header wraps its actions under the title on narrow screens. compact keeps a tool in the first screen. headingLevel (1 to 6, default 1) makes the title an h2 or h3 when the header is embedded in a page, card or panel that already has its own h1.'],
+    responsive: ['The header wraps its actions under the title on narrow screens. compact keeps a tool in the first screen. `headingLevel` (1 to 6, default 1) makes the title an h2 or h3 when the header is embedded in a page, card or panel that already has its own h1.'],
     related: ['app-shell', 'card', 'tabs', 'status-pill'],
   },
   {
@@ -508,16 +508,16 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     summary:
       'The frame of an application: a skip link, a banner with your brand and actions, a navigation landmark, the main area and an optional footer. It does not know your router; you pass the navigation. On phones the navigation wraps, with no hidden menu that assistive technology cannot reach. This documentation site is built with it.',
     use: ['The outer frame of a dashboard or docs site.', 'Your own navigation component passed as `navigation`.'],
-    avoid: ['Two AppShells on one page: the landmarks would repeat.', 'Using it inside a layout that already provides a main element.'],
+    avoid: ['Two `AppShells` on one page: the landmarks would repeat.', 'Using it inside a layout that already provides a main element.'],
     api: [...ui('financial', 'AppShell', 'AppShellProps')],
     examples: [{ id: 'basic', title: 'A frame', note: 'Shown inert so this page keeps one set of landmarks.' }],
     keyboard: ['The first Tab stop is the skip link (default "Skip to content"), which moves focus to the main area (tabindex -1).'],
     accessibility: [
-      'Landmarks: header (banner), nav named by navigationLabel, main and an optional footer (contentinfo).',
-      'The skip link is visible on focus; skipLabel changes its words for another language.',
+      'Landmarks: header (banner), nav named by `navigationLabel`, main and an optional footer (contentinfo).',
+      'The skip link is visible on focus; `skipLabel` changes its words for another language.',
       'Navigation is always in the document; it wraps rather than hiding behind a menu button. If you add a menu button, make the open menu a dialog or a disclosure with proper state.',
     ],
-    responsive: ['The sidebar layout is your CSS: AppShell gives the structure (.pu-shell-*) and the navigation wraps by default; this site turns the navigation into a sidebar at 900px and a drawer below it.'],
+    responsive: ['The sidebar layout is your CSS: `AppShell` gives the structure (.pu-shell-*) and the navigation wraps by default; this site turns the navigation into a sidebar at 900px and a drawer below it.'],
     related: ['page-layout', 'drawer', 'tabs', 'financial-summary'],
   },
   {
@@ -528,8 +528,8 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     kind: 'component',
     summary:
       'Rows inside one grouped card. GroupedCell is the card, RowList a list of rows, ValueRow a row with a tile, a title, a line, a figure and a note, and DataRows / DataRow a flat list of label and value facts. Rows never carry a card of their own.',
-    use: ['A short list where each row is a holding, a transaction or an account, optionally opening something.', 'DataRows for a card of facts: cost, fees and a total.', 'bar and note on a DataRow to show what a value means on a scale.'],
-    avoid: ['A long or sortable table: use DataTable.', 'A card inside a card: put rows directly in the one GroupedCell.', 'A row that is a link and also contains a button: use the action prop.'],
+    use: ['A short list where each row is a holding, a transaction or an account, optionally opening something.', '`DataRows` for a card of facts: cost, fees and a total.', 'bar and note on a `DataRow` to show what a value means on a scale.'],
+    avoid: ['A long or sortable table: use `DataTable`.', 'A card inside a card: put rows directly in the one `GroupedCell`.', 'A row that is a link and also contains a button: use the action prop.'],
     api: [...ui('rows', 'GroupedCell', 'RowList', 'ValueRow', 'Tile', 'DataRows', 'DataRow')],
     examples: [
       { id: 'value-rows', title: 'Value rows', note: 'A link row, a button row and a plain row with a second action beside it.' },
@@ -537,9 +537,9 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     ],
     keyboard: ['A link row is a link (Tab, Enter) and a button row is a button (Tab, Enter or Space). A plain row is not focusable. An action sits beside the row\'s own control and is a separate tab stop.'],
     accessibility: [
-      'RowList is a list (role="list") with one item per row; DataRows is a description list (dl) of dt and dd pairs.',
-      'GroupedCell is a section named by label when you give one.',
-      'ariaLabel gives a row a fuller name when its visible text is in several pieces; it must contain the visible words. The tile is decorative.',
+      '`RowList` is a list (`role="list"`) with one item per row; `DataRows` is a description list (dl) of dt and dd pairs.',
+      '`GroupedCell` is a section named by label when you give one.',
+      '`ariaLabel` gives a row a fuller name when its visible text is in several pieces; it must contain the visible words. The tile is decorative.',
     ],
     responsive: ['Symbols never shrink or truncate (a Tile draws up to five letters, set a little smaller at five); the name beside a symbol is the part that gives way with an ellipsis. Figures stay on one line.'],
     related: ['link-table', 'card', 'key-stats', 'stock-table'],
@@ -573,7 +573,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     summary:
       'A pill you press. With selected it is a toggle (aria-pressed); without it, a suggestion that acts once, such as filling a field with a quarter of your units. ChipRow is exactly one choice out of several. A label that cannot be pressed is a StatusPill, never a chip.',
     use: ['Filtering a list by a few named groups: sector, type, held or not.', 'Quick values beside a field: a quarter, half or all of the units.', 'current for a jump link in an in-page section nav.'],
-    avoid: ['A label that is not pressable: use StatusPill.', 'Choosing between two or three modes of one view: use SegmentedControl.', 'A filter that is set to a value: use FilterChip.'],
+    avoid: ['A label that is not pressable: use `StatusPill`.', 'Choosing between two or three modes of one view: use `SegmentedControl`.', 'A filter that is set to a value: use `FilterChip`.'],
     api: [...ui('controls', 'Chip', 'ChipRow')],
     examples: [
       { id: 'sector', title: 'Sector filter', note: 'ChipRow with counts: one chip is always pressed.' },
@@ -581,12 +581,12 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     ],
     keyboard: ['Tab moves between chips; Enter or Space presses the focused one.', 'There is no arrow-key model: a row of chips is a row of buttons, not a tab list.'],
     accessibility: [
-      'A chip is a button. selected sets aria-pressed; current sets aria-current instead. A suggestion chip sets neither.',
-      'ChipRow is a role="group" named by label, so a screen reader announces "Sector, group".',
+      'A chip is a button. selected sets `aria-pressed`; current sets `aria-current` instead. A suggestion chip sets neither.',
+      '`ChipRow` is a `role="group"` named by label, so a screen reader announces "Sector, group".',
       'Use label when the visible text is a symbol (¼): the name says "A quarter, 30 units".',
       'Selection is shown by the inverse surface, not colour alone; hover never hides the text.',
     ],
-    responsive: ['ChipRow scrolls sideways on a phone, or wraps with wrap. A chip is 36px (32px at size="sm") with a 44px tap area on touch.'],
+    responsive: ['`ChipRow` scrolls sideways on a phone, or wraps with wrap. A chip is 36px (32px at `size="sm"`) with a 44px tap area on touch.'],
     related: ['segmented-control', 'filter-chip', 'status-pill', 'tabs'],
   },
   {
@@ -598,13 +598,13 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     summary:
       'One filter that is set, in words: the label, then its value. The chip opens its editor (a Popover or a Sheet you build) and its x removes the filter. Without an x it is a fixed filter such as Sector; with a caret it opens a list. Each of the two buttons draws its own focus ring.',
     use: ['The active filters of a screener or a transaction list, above the results.', 'A yes/no filter: the label alone with its x.', 'Showing that a filter cannot apply (error) while the editor says why.'],
-    avoid: ['A plain toggle with no value: use Chip.', 'A filter that has no editor and no removal: that is a StatusPill.', 'Colour alone for the error ring: say why in the editor.'],
+    avoid: ['A plain toggle with no value: use Chip.', 'A filter that has no editor and no removal: that is a `StatusPill`.', 'Colour alone for the error ring: say why in the editor.'],
     api: [...ui('filter-chip', 'FilterChip')],
     examples: [{ id: 'screener', title: 'A screener bar', note: 'Open a chip to edit it, remove another, and see the error ring on EPS.' }],
-    keyboard: ['Tab reaches the chip, then its x. Enter or Space on the chip calls onOpen with the button, so the editor can anchor to it and return focus.', 'The x is a separate button; Enter or Space removes the filter.'],
+    keyboard: ['Tab reaches the chip, then its x. Enter or Space on the chip calls `onOpen` with the button, so the editor can anchor to it and return focus.', 'The x is a separate button; Enter or Space removes the filter.'],
     accessibility: [
-      'The chip is a button with aria-haspopup="dialog" and aria-expanded; its name is openPrefix, label and value together ("Edit P/B 0.00 to 1.20").',
-      'The x has its own accessible name from removeLabel ("Remove P/B"); it is required with onRemove.',
+      'The chip is a button with `aria-haspopup="dialog"` and `aria-expanded`; its name is `openPrefix`, label and value together ("Edit P/B 0.00 to 1.20").',
+      'The x has its own accessible name from `removeLabel` ("Remove P/B"); it is required with `onRemove`.',
       'The error ring is extra: the editor must say what is wrong in words.',
     ],
     responsive: ['A 36px box that wraps with its neighbours; the x keeps a 44px tap area on touch.'],
@@ -619,12 +619,12 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     summary:
       'The last line of a long list inside its card. You keep the state and the words, including the count ("Show all 12"). It is a full-width quiet button that takes the colour of the card it sits on, so it also works on an inverse card.',
     use: ['Five rows of holdings with the rest behind "Show all 12".', 'Any list inside a Card that is long on a phone.'],
-    avoid: ['Paging through thousands of rows: use Pagination or DataTable.', 'Hiding content the reader must see: put it in the page.', 'A link to another page: use CardLink.'],
+    avoid: ['Paging through thousands of rows: use Pagination or `DataTable`.', 'Hiding content the reader must see: put it in the page.', 'A link to another page: use `CardLink`.'],
     api: [...ui('show-more', 'ShowMore')],
     examples: [{ id: 'list', title: 'Holdings list', note: 'Five rows, then all twelve; aria-controls points at the list.' }],
     keyboard: ['Tab to the button; Enter or Space toggles. Focus stays on the button after the list grows.'],
     accessibility: [
-      'A button with aria-expanded; pass controls (the list\'s id) for aria-controls.',
+      'A button with `aria-expanded`; pass controls (the list\'s id) for `aria-controls`.',
       'The words change with the state ("Show all 12", "Show fewer"), so the name is never stale.',
       'The chevron is decorative.',
     ],
@@ -639,13 +639,13 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     kind: 'component',
     summary:
       'The second step of a destructive action, drawn where the first step was. It shows a question, one line about what goes, a danger button that names it and the way back. The confirm takes focus; Esc backs out before anything around it reacts. A decision that needs the whole screen is a Sheet.',
-    use: ['Removing a symbol from a watchlist or a beneficiary from a saved list.', 'Replacing a row (as="li") or a toolbar with the question.'],
+    use: ['Removing a symbol from a watchlist or a beneficiary from a saved list.', 'Replacing a row (`as="li"`) or a toolbar with the question.'],
     avoid: ['Money moving or anything hard to undo: use a Sheet that repeats the amount.', 'A reversible action: do it and offer Undo in a Toast.', 'A generic "OK" on the danger button: name what goes.'],
     api: [...ui('inline-confirm', 'InlineConfirm')],
     examples: [{ id: 'remove', title: 'Remove from a watchlist', note: 'Press Remove, then Esc or Keep it; Remove NTC deletes the row.' }],
     keyboard: ['Focus moves to the danger button when it appears.', 'Tab moves between the two buttons. Esc cancels and stops there, so a drawer or popover around it stays open.'],
     accessibility: [
-      'A role="group" named by the title (aria-labelledby from id); role="alertdialog" when it interrupts.',
+      'A `role="group"` named by the title (`aria-labelledby` from id); `role="alertdialog"` when it interrupts.',
       'busy shows the confirm as loading and keeps it from being pressed twice.',
       'Pass an id so the title is linked; without a string title the group has no name.',
     ],
@@ -666,8 +666,8 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     examples: [{ id: 'people', title: 'Sizes, tones and fallbacks', note: 'sm, md and lg; name, email, nothing and loading; the accent tone for one account button.' }],
     keyboard: ['Not interactive. Put it inside a button or link if it should be pressed.'],
     accessibility: [
-      'Decorative by default (aria-hidden): the name beside it is the information.',
-      'label turns it into role="img" with that name, for an avatar that stands alone.',
+      'Decorative by default (`aria-hidden`): the name beside it is the information.',
+      'label turns it into `role="img"` with that name, for an avatar that stands alone.',
       'loading is hidden from assistive technology; the name arrives in the page text.',
     ],
     responsive: ['Fixed sizes: sm 32px, md 40px (a row) and lg 56px (the account line). It never shrinks.'],
@@ -682,13 +682,13 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     summary:
       'The state of a setting at the end of its row, in a word or two ("View only", "On", "Off", "Staff only"). It is quiet by design: read, never pressed, with no hover or focus. A tone or an event worth a look ("Bonus", "New") is a StatusPill instead. accent is for a setting that is on.',
     use: ['Settings and permissions lists: sharing, notifications, security.', 'A row whose only job is to tell you how a setting stands.'],
-    avoid: ['Something the reader should notice or act on: use StatusPill.', 'Anything pressable: use a Switch or a Button.', 'An icon without words: the word carries the state.'],
+    avoid: ['Something the reader should notice or act on: use `StatusPill`.', 'Anything pressable: use a Switch or a Button.', 'An icon without words: the word carries the state.'],
     api: [...ui('status-tag', 'StatusTag', 'StatusTagIcon')],
     examples: [{ id: 'settings', title: 'Account settings', note: 'Neutral and accent tones with the eye, check and lock icons.' }],
     keyboard: ['Not interactive and not focusable.'],
     accessibility: [
       'Plain text in a span: the state is in the words, so a screen reader reads "Portfolio sharing, View only".',
-      'The icon is decorative (aria-hidden); never use the tag with an icon alone.',
+      'The icon is decorative (`aria-hidden`); never use the tag with an icon alone.',
       'Tone adds contrast but never the meaning: "On" and "Off" differ in words.',
     ],
     responsive: ['Does not shrink below its text; the row it ends should let the name wrap.'],
@@ -703,7 +703,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     summary:
       'A grid of figures: each StatTile has a quiet label, the figure and an optional note. It is two columns on a phone and up to cols (default 4) on a wide screen. The figure is whatever you pass, usually a Figure or a MoneyDisplay, so formatting stays exact.',
     use: ['The headline numbers of a screen: value, today, holdings, fees.', 'A short set of related figures that should read as one block.'],
-    avoid: ['Many numbers with units that must line up: use a table.', 'A single hero number: use HeadlineFigure.', 'Facts as label and value rows: use DataRows.'],
+    avoid: ['Many numbers with units that must line up: use a table.', 'A single hero number: use `HeadlineFigure`.', 'Facts as label and value rows: use `DataRows`.'],
     api: [...ui('stats', 'StatGrid', 'StatTile')],
     examples: [{ id: 'portfolio', title: 'Portfolio today', note: 'Four tiles from the holdings, and a two-column grid for fees.' }],
     keyboard: ['Not interactive.'],
@@ -723,7 +723,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     summary:
       'Sheet is a short confirm: a title, one line and one or two controls, rising from the bottom on a phone and centred on a wide screen. Long forms are pages or a Drawer. Dock is the page\'s main action docked at the bottom, sticky while a long list scrolls.',
     use: ['Confirming a sell order, a transfer or a delete that needs the whole screen.', 'Dock for Review order on a long, scrolling form.'],
-    avoid: ['A long form: use Drawer or a page.', 'A small confirmation of a removal: use InlineConfirm.', 'A message that tells what happened: use Toast.'],
+    avoid: ['A long form: use Drawer or a page.', 'A small confirmation of a removal: use `InlineConfirm`.', 'A message that tells what happened: use Toast.'],
     api: [...ui('overlay', 'Sheet', 'Dock')],
     examples: [
       { id: 'confirm', title: 'Confirm a sale', note: 'Open it, press Tab and Esc; focus returns to the Sell button.' },
@@ -731,8 +731,8 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     ],
     keyboard: ['Opening moves focus to the first button, input, select or link inside.', 'Tab and Shift+Tab cycle inside it; Esc closes it and focus returns to the opener. A click on the scrim closes it.'],
     accessibility: [
-      'role="dialog" with aria-modal="true", named by the title.',
-      'A screen-reader-only close button follows the content; set closeLabel in the reader\'s language.',
+      '`role="dialog"` with `aria-modal="true"`, named by the title.',
+      'A screen-reader-only close button follows the content; set `closeLabel` in the reader\'s language.',
       'Name the buttons for what they do ("Confirm sale"), and state the amount in the body.',
     ],
     responsive: ['At most 28rem wide: pinned to the bottom edge on a phone, centred from 640px. Dock is sticky at the bottom of its scroll container.'],
@@ -750,11 +750,11 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     avoid: ['A short confirm: use Sheet.', 'Outside a Drawer or a full-screen phone page.', 'Putting Save in the body: the footer keeps it in reach.'],
     api: [...ui('drawer-screen', 'DrawerScreen', 'DrawerHeader', 'DrawerBody', 'DrawerFooter')],
     examples: [{ id: 'form', title: 'Add transaction', note: 'as="form": Enter in a field saves; the footer stays docked.' }],
-    keyboard: ['Tab moves through the header buttons, the fields and the footer buttons; with as="form" Enter in a field submits.', 'Esc and the focus trap come from the Drawer around it.'],
+    keyboard: ['Tab moves through the header buttons, the fields and the footer buttons; with `as="form"` Enter in a field submits.', 'Esc and the focus trap come from the Drawer around it.'],
     accessibility: [
-      'The title is an h2. The back and close buttons need backLabel and closeLabel: they are icon-only.',
-      'Use as="form" so Save is a real submit button and the browser reports validation.',
-      'DrawerBody\'s title is an h3 heading for content; pick it so the order of headings stays correct.',
+      'The title is an h2. The back and close buttons need `backLabel` and `closeLabel`: they are icon-only.',
+      'Use `as="form"` so Save is a real submit button and the browser reports validation.',
+      '`DrawerBody`\'s title is an h3 heading for content; pick it so the order of headings stays correct.',
     ],
     responsive: ['Fills the drawer\'s 432px; on a narrow screen it fills the width. The footer stays at the bottom however short the form is.'],
     related: ['drawer', 'field', 'sheet', 'button'],
@@ -768,7 +768,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     summary:
       'Two pure functions for value charts. bracketScale picks round ticks (1, 2, 2.5, 3, 4 or 5 of a power of ten) so the lowest tick is at or below the data and the highest at or above, and the line fills the plot. valueScale brackets the value line alone and reports whether a second series such as the money invested lies below or above it.',
     use: ['A portfolio value line with a benchmark or an amount invested.', 'Your own SVG chart that should look like the kit\'s.'],
-    avoid: ['Candles and volumes: use chart-math (niceTicks).', 'Rendering: these return numbers and a y function only.'],
+    avoid: ['Candles and volumes: use chart-math (`niceTicks`).', 'Rendering: these return numbers and a y function only.'],
     api: [...ui('chart-scale', 'bracketScale', 'valueScale')],
     examples: [{ id: 'value-line', title: 'A value line', note: 'Five weekly values with one missing; the invested series is off the plot.' }],
     keyboard: ['Not a UI module.'],

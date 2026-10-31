@@ -20,7 +20,7 @@
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > th { grid-column: 1 / -1; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > th.pu-ledger-label { font-size: var(--pu-text-sm) }
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > th + td ~ td { grid-column: auto; font-size: var(--pu-text-sm) }
-    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:has(.pu-ledger-desc) { grid-column: 1 / -1 }
+    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:has(.pu-ledger-desc) { grid-column: 1 / -1; text-align: left; white-space: normal }
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:has(.pu-ledger-desc)::before, .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:has(.pu-dc-blank)::before { content: none }
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td.num { text-align: left }
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:empty { display: none }

@@ -58,6 +58,10 @@
       border-bottom: 1px solid var(--pu-color-border);
     }
     .kit-tablebox.stack .kit-table tbody tr:last-child { border-bottom: 0 }
+    /* A boxed table's stacked rows keep the box's edge off their text (a bare or dense table sits in a card that pads it). */
+    .kit-tablebox.stack:not(.bare, .dense) .kit-table tbody tr { padding-inline: 12px }
+    .kit-tablebox.stack.selection:not(.bare, .dense) .kit-table tbody tr { padding-left: 40px }
+    .kit-tablebox.stack.selection:not(.bare, .dense) .kit-table tbody tr > .kit-table-selection-cell { left: 12px }
     .kit-tablebox.stack .kit-table tbody tr > * { min-width: 0; padding: 0; border: 0; white-space: normal }
     .kit-tablebox.stack .kit-table tbody tr > th { grid-column: 1 / 4 }
     .kit-tablebox.stack .kit-table tbody tr > th + td { grid-column: 4; text-align: right; white-space: nowrap }

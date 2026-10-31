@@ -8,7 +8,7 @@ Severity: **P0** blocks any release or causes data loss; **P1** blocks productio
 
 | Status | Findings |
 | --- | --- |
-| Fixed | Ownership of `src/`, public API drift, calculations layer, Nepal-locked money, visual regression (55 fixtures, 25 added since the gate was built), divergence in shared modules, Button new-tab, the eight open visual defects listed below (plus three more found while extending the gate) |
+| Fixed | Ownership of `src/`, public API drift, calculations layer, Nepal-locked money, visual regression (73 fixtures, 640 baselines; 43 added since the gate was built), divergence in shared modules, Button new-tab, the visual and accessibility defects listed below (eleven from the gate extension, seven from the final pass) |
 | Partial | Packaging (publishable, never published), web-only modules (17 of 96 migrated; see COMPONENT-INVENTORY.md), tables/charts/accounting/market compositions, browser a11y coverage, size budgets |
 | Open | Docs portal still lives in punji-web (P1), duplicates inside punji-web, manual screen-reader testing, first publish |
 
@@ -66,8 +66,19 @@ Found by the visual-regression review, then fixed when the gate was extended to 
 | `Card size="lg"` | `meta` inherits the 24 px title size | P3 | Fixed | 15 px meta in a large card (`card.css`) |
 | `ShareBar` | Two-column legend truncates names in a card under 300 px | P2 | Fixed | One column under a 300 px container (`meter.css`) |
 | `KeyStats` | Three columns overlap values in a card under 320 px | P2 | Fixed | Columns fall to two below 96 px per column (`key-stats.css`) |
+| `CompanySearch` | Loading state: `role="listbox"` with no options (axe `aria-required-children`, critical) | P1 | Fixed | The listbox renders only when there are options; the loading and empty messages sit in the plain wrapper that `aria-controls` names (`CompanySearch.tsx`, unit test with axe) |
+| `Watchlist` | At 390 px the rows were wider than the list (about 80 px) and the move and remove buttons clipped | P1 | Fixed | `min-width: 0` on the row, so a grid parent cannot size it to its content (`watchlist.css`); the docs site's `.doc-section ul` no longer styles component lists (`site/src/styles.css`); the site check now fails when a preview scrolls sideways |
+| `StockTable` (and `TrialBalance`, `StatementTable`, `LedgerTable`) | Error state drew a retry button with no `onRetry`; pressing did nothing | P2 | Fixed | `RetryNote` draws the button only when `onRetry` is given; prop comments updated (unit test) |
+| `DataTable`, `StockTable` | Select-all header cell empty in the stacked layout (axe `empty-table-header`) | P1 | Fixed | Visually hidden text in the header cell in every layout (`Table.tsx`, unit test with axe) |
+| `EmptyState` | Title always an `h2`, breaking the heading order inside a Card | P2 | Fixed | `headingLevel` prop (2, 3 or 4; default 2), like `StepList` (`States.tsx`, unit test) |
+| `StockTable` | Stacked rows: LTP clipped at the card edge (one narrow track), rows flush to the box border, Trend header misaligned with its lines at 1440 | P1 | Fixed | The LTP gets two tracks, a boxed stacked table pads its rows 12 px, the trend lines sit under their head (`stock-table.css`, `table.css`) |
+| `StockTable` with `maxHeight` | At under 640 px the stacked box did not scroll: rows spilled out of it | P2 | Fixed | The stacked box scrolls vertically (`stock-table.css`); found by the new site layout check |
+| `MarketHeatmap` | Symbol and change text cut off without a mark in small tiles | P3 | Fixed | Ellipsis in the tile (`market-heatmap.css`); found by the new site layout check |
+| `LedgerTable` | Stacked layout without the Ref column right-aligned the description | P2 | Fixed | Description cell is left aligned and wraps (`accounting.css`) |
+| `RetryNote` | Button left under the message when it wraps, right when it does not | P3 | Fixed | The row no longer wraps: the message shrinks and wraps, the button stays at the end (`retry-note.css`) |
+| `LinkTable` | Rows in a flush `Card` inset 8 px from the card title | P3 | Fixed | `.kit-card.flush > .kit-lt` adds 8 px so row text lines up with the title (`link-table.css`) |
 
-Open, minor (observed in the new baselines, not changed): `RetryNote` puts its button at the left under the message when the message wraps, but at the right when it does not; `CheckRow` with an `action` and no figure stacks the action under the text on phones, offset by the button padding; `LinkTable` rows in a flush `Card` are inset 8 px from the card title. The compact `ChoiceGroup` change is below the screenshot tolerance in the existing `controls` baseline, so that baseline is unchanged; `choice-compact-page` covers it.
+Still open, minor: `CheckRow` with an `action` and no figure stacks the action under the text on phones, offset by the button padding. The compact `ChoiceGroup` change is below the screenshot tolerance in the existing `controls` baseline, so that baseline is unchanged; `choice-compact-page` covers it.
 
 ## Still not done
 

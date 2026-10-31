@@ -20,6 +20,99 @@ const failures = [];
 const checked = { variants: 0 };
 const fail = (message) => { failures.push(message); console.error(`FAIL ${message}`); };
 const routes = [{ slug: '', title: 'Overview' }, ...PAGES];
+const flagCounts = { edge: 0, clip: 0, dup: 0, icon: 0, edgeAllowed: 0 };
+
+// Layout defects a plain axe/overflow pass misses, probed inside every example preview (the stage).
+//  edge  content within EDGE px of the stage's border box, or past it: missing padding, content flush to the frame.
+//  clip  content cut off by an overflow:hidden ancestor (the stage, its frame, or a clipping box inside it).
+//  dup   the same caption or note text twice in one example.
+//  icon  an inline link whose icon sits alone on its own line.
+// `edge` is allowlisted per page slug (and optional example id) with a reason; `clip`, `dup` and `icon` always fail.
+const EDGE = 8;
+const EDGE_ALLOW = {
+  // 'slug' or 'slug/example': 'why the component is intentionally edge to edge',
+};
+/* oxlint-disable unicorn/consistent-function-scoping, no-shadow -- the probe is serialised into the page, so it must be self-contained. */
+const layoutProbe = ({ edge }) => {
+  const stage = document.querySelector('[data-testid=preview]');
+  if (!stage) return [];
+  const out = [];
+  const box = stage.getBoundingClientRect();
+  // Not drawn: display none, a closed <details> body, a visually hidden (1px) box such as a stacked table's head.
+  const visible = (el) => {
+    const c = getComputedStyle(el); const r = el.getBoundingClientRect();
+    if (c.display === 'none' || c.visibility === 'hidden' || r.width <= 1 || r.height <= 1 || el.closest('.kit-sr')) return false;
+    for (let d = el.closest('details'); d; d = d.parentElement?.closest('details')) if (!d.open && !el.closest('summary')) return false;
+    return true;
+  };
+  const describe = (el) => `${el.tagName.toLowerCase()}${el.className && typeof el.className === 'string' ? `.${el.className.trim().split(/\s+/)[0]}` : ''}`;
+  const clipsInside = (el) => { for (let a = el.parentElement; a && a !== stage; a = a.parentElement) { const c = getComputedStyle(a); if (c.overflowX !== 'visible' || c.overflowY !== 'visible') return true; } return false; };
+  // (a) edge
+  const seen = new Set();
+  for (const el of stage.querySelectorAll('*')) {
+    if (el.closest('svg') && el.tagName.toLowerCase() !== 'svg') continue;
+    if (!visible(el) || clipsInside(el)) continue;
+    const r = el.getBoundingClientRect();
+    const sides = [];
+    if (r.left < box.left + edge) sides.push('left');
+    if (r.right > box.right - edge) sides.push('right');
+    if (r.top < box.top + edge) sides.push('top');
+    if (r.bottom > box.bottom - edge) sides.push('bottom');
+    if (sides.length) { const key = `${describe(el)}:${sides.join('+')}`; if (!seen.has(key)) { seen.add(key); out.push({ kind: 'edge', text: `${describe(el)} is within ${edge}px of the stage edge (${sides.join(', ')})` }); } }
+  }
+  // (b) clip
+  const hides = (v) => v === 'hidden' || v === 'clip';
+  const clippers = [...stage.querySelectorAll('*')].filter((el) => { const c = getComputedStyle(el); return (hides(c.overflowX) || hides(c.overflowY)) && c.textOverflow !== 'ellipsis' && visible(el); });
+  for (let a = stage.parentElement; a && a !== document.body; a = a.parentElement) { const c = getComputedStyle(a); if (hides(c.overflowX) || hides(c.overflowY)) clippers.push(a); }
+  for (const el of clippers) {
+    const c = getComputedStyle(el);
+    const w = el.scrollWidth - el.clientWidth; const h = el.scrollHeight - el.clientHeight;
+    if ((w > 1 && hides(c.overflowX)) || (h > 1 && hides(c.overflowY))) out.push({ kind: 'clip', text: `${describe(el)} clips content (scroll ${el.scrollWidth}x${el.scrollHeight} in ${el.clientWidth}x${el.clientHeight})` });
+  }
+  if (stage.scrollHeight - stage.clientHeight > 1 && !['auto', 'scroll', 'visible'].includes(getComputedStyle(stage).overflowY)) out.push({ kind: 'clip', text: 'the preview stage clips content vertically' });
+  // (c) duplicated caption or note text
+  const texts = new Map();
+  for (const el of stage.querySelectorAll('figcaption, caption, small, [class*=note], [class*=caption]')) {
+    if (!visible(el) || el.querySelector('p, figcaption, caption')) continue;
+    const t = (el.textContent ?? '').replace(/\s+/g, ' ').trim();
+    if (t.length < 16) continue;
+    texts.set(t, (texts.get(t) ?? 0) + 1);
+  }
+  for (const [t, n] of texts) if (n > 1) out.push({ kind: 'dup', text: `caption/note text appears ${n} times: "${t.slice(0, 60)}"` });
+  // (d) inline link whose icon wraps alone
+  const range = document.createRange();
+  for (const a of stage.querySelectorAll('a')) {
+    if (!visible(a)) continue;
+    const icon = [...a.querySelectorAll('svg, [aria-hidden=true]')].at(-1);
+    if (icon && icon.getBoundingClientRect().width > 0) {
+      const iconBox = icon.getBoundingClientRect();
+      let bottom = -Infinity;
+      const walker = document.createTreeWalker(a, NodeFilter.SHOW_TEXT);
+      for (let n = walker.nextNode(); n; n = walker.nextNode()) { if (icon.contains(n) || !n.textContent.trim()) continue; range.selectNodeContents(n); for (const r of range.getClientRects()) bottom = Math.max(bottom, r.bottom); }
+      if (bottom > -Infinity && iconBox.top >= bottom - 1) out.push({ kind: 'icon', text: `link "${a.textContent.trim().slice(0, 40)}" has its icon alone on a line` });
+    }
+    const content = a.textContent ?? '';
+    const last = content.trimEnd().at(-1);
+    if (last && '↗→↘↖'.includes(last)) {
+      const walker = document.createTreeWalker(a, NodeFilter.SHOW_TEXT);
+      let node = null;
+      for (let n = walker.nextNode(); n; n = walker.nextNode()) if (n.textContent.trim()) node = n;
+      if (node) {
+        const idx = node.textContent.trimEnd().length - 1;
+        range.setStart(node, idx); range.setEnd(node, idx + 1);
+        const glyph = range.getBoundingClientRect();
+        let bottom = -Infinity;
+        for (const child of a.childNodes) {
+          if (child === node) { range.setStart(node, 0); range.setEnd(node, idx); } else range.selectNodeContents(child);
+          for (const r of range.getClientRects()) if (r.width > 0) bottom = Math.max(bottom, r.bottom);
+        }
+        if (bottom > -Infinity && glyph.top >= bottom - 1) out.push({ kind: 'icon', text: `link "${content.trim().slice(0, 40)}" has its arrow alone on a line` });
+      }
+    }
+  }
+  return out;
+};
+
 
 try {
   for (const width of [390, 1440]) {
@@ -45,6 +138,12 @@ try {
           // The preview may scroll inside itself, but its content must not be wider than the page it sits on.
           const clipped = await page.evaluate(() => { const box = document.querySelector('[data-testid=preview]'); return box ? box.scrollWidth - box.clientWidth : 0; });
           if (clipped > 1) fail(`${name}: the preview scrolls sideways by ${clipped}px`);
+          const exampleId = name.includes('[') ? name.slice(name.indexOf('[') + 1, -1) : route.examples?.[0]?.id;
+          for (const flag of await page.evaluate(layoutProbe, { edge: EDGE })) {
+            if (flag.kind === 'edge' && (EDGE_ALLOW[route.slug] || EDGE_ALLOW[`${route.slug}/${exampleId}`])) { flagCounts.edgeAllowed += 1; continue; }
+            flagCounts[flag.kind] += 1;
+            fail(`${name}: layout ${flag.kind}: ${flag.text}`);
+          }
           for (const e of errors.splice(0)) fail(`${name}: console/page error ${e}`);
         };
         // The first variant gets the whole page; every other variant is audited in the preview it changes (the page chrome is the same).
@@ -122,7 +221,9 @@ try {
 }
 
 if (failures.length) {
-  console.error(`\nsite check: ${failures.length} failure(s)`);
+  console.error(`\nlayout flags: edge ${flagCounts.edge} (+${flagCounts.edgeAllowed} allowlisted), clip ${flagCounts.clip}, dup ${flagCounts.dup}, icon ${flagCounts.icon}`);
+  console.error(`site check: ${failures.length} failure(s)`);
   process.exit(1);
 }
+console.log(`layout flags: edge ${flagCounts.edge} (+${flagCounts.edgeAllowed} allowlisted), clip ${flagCounts.clip}, dup ${flagCounts.dup}, icon ${flagCounts.icon}`);
 console.log(`site check: ${routes.length} routes x 2 widths x 2 themes and ${checked.variants} example variants (axe, overflow, console) and the copy, variant, theme, search and drawer behaviours passed`);

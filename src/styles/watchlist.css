@@ -19,5 +19,7 @@
   .pu-watch-actions > button:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 1px }
   .pu-watch-actions > button:disabled { opacity: 0.35; cursor: default }
   .pu-watch-actions svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round }
+  /* Equal-width price cells keep the trend lines in one column. */
+  @media (min-width: 480px) { .pu-watch-price { min-width: 7.5rem } }
   @media (max-width: 479px) { .pu-watch-row { gap: 8px; padding: 10px 8px 10px 12px } .pu-watch-trend { display: none } }
 }

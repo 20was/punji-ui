@@ -27,7 +27,7 @@ export interface LedgerEntry {
   debit: bigint;
   /** Minor units, 0n or more. A line has a debit or a credit, not both. */
   credit: bigint;
-  /** A document number: invoice, voucher or receipt. */
+  /** A reference number: invoice, voucher or receipt. */
   reference?: string;
 }
 

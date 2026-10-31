@@ -81,12 +81,12 @@ const sectors: Record<string, string> = {
   CHCL: 'Hydropower', NLIC: 'Insurance', GBIME: 'Banking', SHIVM: 'Manufacturing', NMB: 'Banking', PRVU: 'Banking',
 };
 
-/** A repeatable wobbly walk that ends exactly on `last`, oldest first. */
-export function sampleCloses(last: number, seed: number, length = 30): number[] {
+/** A repeatable wobbly walk that ends exactly on `last`, oldest first. `rising` fixes the drift's direction (default: by seed), so a trend line can agree with the day's change. */
+export function sampleCloses(last: number, seed: number, length = 30, rising: boolean = seed % 2 === 0): number[] {
   const out: number[] = [];
   for (let i = 0; i < length; i += 1) {
     const wobble = Math.sin((i + seed) * 1.3) * 0.012 + Math.cos((i + seed * 2) * 0.55) * 0.018;
-    const drift = ((i - (length - 1)) / length) * (seed % 2 === 0 ? 0.04 : -0.04);
+    const drift = ((i - (length - 1)) / length) * (rising ? 0.04 : -0.04);
     out.push(Math.round(last * (1 + wobble + drift) * 100) / 100);
   }
   out[length - 1] = last;
@@ -105,7 +105,7 @@ export const quotes: readonly SampleQuote[] = holdings.map((h, i) => {
     previousClose,
     volume,
     turnover: ltp * BigInt(volume),
-    history: sampleCloses(h.ltp, i + 1),
+    history: sampleCloses(h.ltp, i + 1, 30, h.change >= 0),
   };
 });
 
@@ -118,9 +118,9 @@ export const quotesWithGaps: readonly SampleQuote[] = [
 
 /** Index values in points. */
 export const marketIndices = [
-  { id: 'nepse', name: 'NEPSE', value: 2_714.38, previousValue: 2_689.12, history: sampleCloses(2_714.38, 3, 30) },
-  { id: 'sensitive', name: 'Sensitive', value: 487.21, previousValue: 489.9, history: sampleCloses(487.21, 4, 30) },
-  { id: 'float', name: 'Float', value: 189.64, previousValue: 188.77, history: sampleCloses(189.64, 5, 30) },
+  { id: 'nepse', name: 'NEPSE', value: 2_714.38, previousValue: 2_689.12, history: sampleCloses(2_714.38, 3, 30, true) },
+  { id: 'sensitive', name: 'Sensitive', value: 487.21, previousValue: 489.9, history: sampleCloses(487.21, 4, 30, false) },
+  { id: 'float', name: 'Float', value: 189.64, previousValue: 188.77, history: sampleCloses(189.64, 5, 30, true) },
   { id: 'banking', name: 'Banking', value: null, previousValue: 1_402.5, history: [] },
 ] as const;
 

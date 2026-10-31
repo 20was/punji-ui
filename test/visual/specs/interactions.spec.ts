@@ -378,3 +378,64 @@ test.describe('pagination', () => {
     await expect(empty.getByRole('button', { name: /Page/ })).toHaveCount(0);
   });
 });
+
+test.describe('market and accounting components', () => {
+  test('Watchlist: Alt+Arrow moves a row and keeps focus on the control; removing moves focus to the neighbour', async ({ page }) => {
+    await openFixture(page, 'watchlist', 'light');
+    const list = page.getByRole('region', { name: 'My watchlist' });
+    const symbols = () => list.locator('.pu-watch-id b').allTextContents();
+    expect((await symbols()).slice(0, 3)).toEqual(['NABIL', 'NTC', 'HDL']);
+    const down = list.getByRole('button', { name: 'Move NABIL down' });
+    await down.focus();
+    await page.keyboard.press('Alt+ArrowDown');
+    expect((await symbols()).slice(0, 3)).toEqual(['NTC', 'NABIL', 'HDL']);
+    await expect(list.getByRole('button', { name: 'Move NABIL down' })).toBeFocused();
+    await expect(list.getByRole('status')).toHaveText('NABIL moved to position 2 of 5');
+    await page.keyboard.press('Alt+ArrowUp');
+    expect((await symbols()).slice(0, 2)).toEqual(['NABIL', 'NTC']);
+    await list.getByRole('button', { name: 'Remove NABIL from watchlist' }).click();
+    expect((await symbols()).slice(0, 2)).toEqual(['NTC', 'HDL']);
+    await expect(list.getByRole('button', { name: 'Remove NTC from watchlist' })).toBeFocused();
+  });
+
+  test('StockTable: a sort head toggles aria-sort and the order', async ({ page }) => {
+    await openFixture(page, 'stock-table', 'dark');
+    const table = page.getByTestId('vr-stock');
+    const head = table.getByRole('columnheader', { name: /LTP/ });
+    await table.getByTestId('vr-stock-sort-ltp').click();
+    await expect(head).toHaveAttribute('aria-sort', 'descending');
+    const first = async () => table.locator('tbody tr').first().locator('b').first().textContent();
+    expect(await first()).toBe('HDL');
+    await table.getByTestId('vr-stock-sort-ltp').click();
+    await expect(head).toHaveAttribute('aria-sort', 'ascending');
+    expect(await first()).not.toBe('HDL');
+  });
+
+  test('MarketMovers: tabs switch the table and move with the arrow keys', async ({ page }) => {
+    await openFixture(page, 'market-movers', 'light');
+    const tabs = page.getByRole('tablist', { name: 'Market movers' }).first();
+    const gainers = tabs.getByRole('tab', { name: 'Gainers' });
+    await expect(gainers).toHaveAttribute('aria-selected', 'true');
+    await gainers.focus();
+    await page.keyboard.press('ArrowRight');
+    const losers = tabs.getByRole('tab', { name: 'Losers' });
+    await expect(losers).toHaveAttribute('aria-selected', 'true');
+    await expect(losers).toBeFocused();
+    await page.keyboard.press('End');
+    await expect(tabs.getByRole('tab', { name: 'Most active' })).toHaveAttribute('aria-selected', 'true');
+    await page.keyboard.press('Home');
+    await expect(gainers).toHaveAttribute('aria-selected', 'true');
+  });
+
+  test('FinancialPeriodSelector: switching the kind keeps the time span', async ({ page }) => {
+    await openFixture(page, 'period-selector', 'light');
+    const period = page.getByRole('combobox', { name: 'Reporting period' });
+    await expect(period).toHaveValue('fy-2081');
+    await page.getByRole('radio', { name: 'Month' }).check({ force: true });
+    await expect(page.getByTestId('vr-period-value')).toHaveText(/^m-2081-/);
+    await page.getByRole('radio', { name: 'Year' }).check({ force: true });
+    await expect(page.getByTestId('vr-period-value')).toHaveText('fy-2081');
+    await period.selectOption('fy-2080');
+    await expect(page.getByTestId('vr-period-value')).toHaveText('fy-2080');
+  });
+});

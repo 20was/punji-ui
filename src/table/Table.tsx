@@ -20,6 +20,8 @@
  */
 import { Children, createContext, isValidElement, useContext, useId, type ReactNode } from 'react';
 
+import { paginate } from '../use-pagination/usePagination.ts';
+
 
 export interface Column<K extends string> {
   key: K;
@@ -153,12 +155,13 @@ export function DataTable<K extends string>({
       ? selection.selectedRowIds.filter((id) => id !== rowId)
       : [...new Set([...selection.selectedRowIds, rowId])]),
   } : null;
-  const pageIndex = pagination ? Math.max(0, Math.trunc(pagination.pageIndex) || 0) : 0;
-  const pageSize = pagination ? Math.max(1, Math.trunc(pagination.pageSize) || 1) : 1;
-  const rowCount = pagination ? Math.max(0, Math.trunc(pagination.rowCount) || 0) : 0;
-  const pageCount = Math.ceil(rowCount / pageSize);
-  const rangeStart = rowCount === 0 ? 0 : pageIndex * pageSize + 1;
-  const rangeEnd = Math.min((pageIndex + 1) * pageSize, rowCount);
+  // The same arithmetic as usePagination / Pagination: one clamped, one-based model; DataTable's props stay zero-based.
+  const range = paginate(pagination?.rowCount ?? 0, (pagination?.pageIndex ?? 0) + 1, pagination?.pageSize ?? 1);
+  const pageIndex = range.page - 1;
+  const rowCount = range.total;
+  const pageCount = rowCount === 0 ? 0 : range.pageCount;
+  const rangeStart = rowCount === 0 ? 0 : range.startIndex + 1;
+  const rangeEnd = range.endIndex;
   const searchChange = (next: string) => {
     search?.onChange(next);
     if (pagination && pageIndex > 0) pagination.onPageChange(0);

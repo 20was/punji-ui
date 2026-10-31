@@ -202,6 +202,30 @@
       "types": "./dist/summary-figure/SummaryFigure.d.ts",
       "default": "./dist/summary-figure/SummaryFigure.js"
     },
+    "./bars": {
+      "types": "./dist/bars/Bars.d.ts",
+      "default": "./dist/bars/Bars.js"
+    },
+    "./sparkline": {
+      "types": "./dist/sparkline/Sparkline.d.ts",
+      "default": "./dist/sparkline/Sparkline.js"
+    },
+    "./column-chart": {
+      "types": "./dist/column-chart/ColumnChart.d.ts",
+      "default": "./dist/column-chart/ColumnChart.js"
+    },
+    "./breakdown": {
+      "types": "./dist/breakdown/Breakdown.d.ts",
+      "default": "./dist/breakdown/Breakdown.js"
+    },
+    "./pagination": {
+      "types": "./dist/pagination/Pagination.d.ts",
+      "default": "./dist/pagination/Pagination.js"
+    },
+    "./metric-tile": {
+      "types": "./dist/metric-tile/MetricTile.d.ts",
+      "default": "./dist/metric-tile/MetricTile.js"
+    },
     "./check-row": {
       "types": "./dist/check-row/CheckRow.d.ts",
       "default": "./dist/check-row/CheckRow.js"

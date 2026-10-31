@@ -30,6 +30,11 @@ export function paginate(total: number, page: number, pageSize: number): PageRan
   return { page: clamped, pageSize: size, pageCount, total: count, startIndex, endIndex: Math.min(startIndex + size, count), hasPrevious: clamped > 1, hasNext: clamped < pageCount };
 }
 
+/** The one-based page that holds the item at zero-based `index` (to open a list on its selected row). */
+export function pageOfIndex(index: number, pageSize: number): number {
+  return Math.floor(whole(index, 0) / whole(pageSize, 1)) + 1;
+}
+
 export interface PaginationOptions {
   total: number;
   page?: number | undefined;
@@ -76,4 +81,12 @@ export function usePagination({ total, page, defaultPage = 1, onPageChange, page
     last: useCallback(() => setPage(pageCount), [setPage, pageCount]),
     setPageSize,
   };
+}
+
+/**
+ * DataTable's `pagination` fields from a pagination state (its page index is zero-based, the state's page is
+ * one-based): `<DataTable pagination={{ ...tablePagination(pager), testIdPrefix: 'holdings' }} />`.
+ */
+export function tablePagination(state: Pick<PaginationState, 'pageIndex' | 'pageSize' | 'total' | 'setPage'>): { pageIndex: number; pageSize: number; rowCount: number; onPageChange: (pageIndex: number) => void } {
+  return { pageIndex: state.pageIndex, pageSize: state.pageSize, rowCount: state.total, onPageChange: (pageIndex) => state.setPage(whole(pageIndex, 0) + 1) };
 }

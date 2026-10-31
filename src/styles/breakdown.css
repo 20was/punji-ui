@@ -1,0 +1,15 @@
+/* Punji UI styles.
+   Styles for breakdown. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .kit-bd { margin: 0; padding: 6px 16px; border-radius: var(--pu-radius-xl); background: var(--pu-color-surface-tint); color: var(--pu-color-text); font-variant-numeric: tabular-nums }
+  .kit-bd.kit-inv { background: var(--pu-color-surface-inverse) }
+  .kit-bd-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 8px 0 }
+  .kit-bd-row + .kit-bd-row { border-top: 1px solid var(--pu-color-border) }
+  .kit-bd-row > dt { min-width: 0; font-size: 13px; line-height: 20px; font-weight: 500; color: var(--pu-color-text-muted) }
+  .kit-bd-row > dt small { display: block; margin-top: 1px; font-size: 12px; line-height: 16px; font-weight: 400; color: var(--pu-color-text-tertiary) }
+  .kit-bd-row > dd { flex: none; margin: 0; text-align: right; font-size: 14px; line-height: 20px; font-weight: 600; white-space: nowrap }
+  .kit-bd-row.total > dt { color: var(--pu-color-text); font-weight: 600 }
+  .kit-bd-row.total > dd { font-size: 18px; line-height: 24px }
+  .kit-bd-row .up { color: var(--pu-color-gain) }
+  .kit-bd-row .down { color: var(--pu-color-loss) }
+}

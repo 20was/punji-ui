@@ -46,6 +46,12 @@
 @import './retry-note.css';
 @import './meter.css';
 @import './summary-figure.css';
+@import './bars.css';
+@import './sparkline.css';
+@import './column-chart.css';
+@import './breakdown.css';
+@import './pagination.css';
+@import './metric-tile.css';
 @import './check-row.css';
 @import './inline-state.css';
 @import './key-stats.css';

@@ -17,5 +17,6 @@
     "skipLibCheck": true,
     "types": []
   },
-  "include": ["src", "test", "vitest.config.ts", "vitest.setup.ts"]
+  "include": ["src", "test", "vitest.config.ts", "vitest.setup.ts"],
+  "exclude": ["test/visual"]
 }

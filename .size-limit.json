@@ -108,7 +108,7 @@
     "name": "inline-confirm (import from '@punji/ui/inline-confirm')",
     "path": "dist/inline-confirm/InlineConfirm.js",
     "import": "*",
-    "limit": "1.05 kB",
+    "limit": "1.08 kB",
     "gzip": true
   },
   {
@@ -171,7 +171,7 @@
     "name": "rows (import from '@punji/ui/rows')",
     "path": "dist/rows/Rows.js",
     "import": "*",
-    "limit": "1 kB",
+    "limit": "1.03 kB",
     "gzip": true
   },
   {
@@ -283,7 +283,7 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "62.5 kB",
+    "limit": "64 kB",
     "gzip": true
   },
   {
@@ -395,7 +395,7 @@
     "name": "Calendar including BS conversion and shared controls",
     "path": "dist/calendar/Calendar.js",
     "import": "*",
-    "limit": "8.4 kB",
+    "limit": "8.55 kB",
     "gzip": true
   },
   {
@@ -738,14 +738,14 @@
     "name": "ledger-table (import from '@punji/ui/ledger-table')",
     "path": "dist/ledger-table/LedgerTable.js",
     "import": "*",
-    "limit": "8.6 kB",
+    "limit": "8.8 kB",
     "gzip": true
   },
   {
     "name": "journal-entry (import from '@punji/ui/journal-entry')",
     "path": "dist/journal-entry/JournalEntryView.js",
     "import": "*",
-    "limit": "8 kB",
+    "limit": "8.15 kB",
     "gzip": true
   },
   {

@@ -30,7 +30,9 @@ visual baselines and size budgets.
 - **Financial charts:** CandlestickChart (with volume pane and moving averages), PerformanceChart (vs benchmarks), DepthChart, shared chart maths with downsampling.
 - **Banking & payments:** AccountNumber (masked, explicit reveal and copy), BankAccountCard, TransactionList, PaymentReceipt, PaymentTimeline, BeneficiarySelector.
 
-### Wave 2: compositions and guides
+### Wave 2: compositions, showcase and guides
+
+- **Showcase section on design.punji.app:** real-world patterns (app band like AppStrip, portfolio tracker screen, live market board, invoice, statement) built only from `@punji/ui` exports, live with copyable source and labelled as patterns to copy, not package API. Replaces the portal's app-specific component pages at cutover.
 
 - **Portfolio:** HoldingsTable, allocation donut with legend, dividend and transaction history, portfolio overview.
 - **Guides:** getting started with Next.js App Router and Vite, theming and custom tokens, SSR/RSC, Tailwind interop, live data adapters.
@@ -52,7 +54,7 @@ visual baselines and size budgets.
 ### After the first release
 
 - punji-web adopts the published package per [docs/INTEGRATION.md](docs/INTEGRATION.md); no punji-web changes until then.
-- Cut the docs over to design.punji.app (the only docs domain), replacing the punji-web portal with existing URLs preserved; app-specific pages are the cutover gap to resolve first.
+- Cut the docs over to design.punji.app (the only docs domain), replacing the punji-web portal with existing URLs preserved; app-specific component pages map to showcase patterns or redirects.
 
 ## Calendar notes
 

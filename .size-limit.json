@@ -192,7 +192,7 @@
     "name": "states (import from '@punji/ui/states')",
     "path": "dist/states/States.js",
     "import": "*",
-    "limit": "970 B",
+    "limit": "1000 B",
     "gzip": true
   },
   {

@@ -9,6 +9,7 @@ import {
   formatNPR, formatNepalNumber, formatPercent, useToast, type CommandItem, type DateRange, type FinancialColumn,
 } from '@punji/ui';
 import { holdings, symbols, today, weeklyValue, type Holding } from '../../fixtures/market-data.ts';
+import { domainRegistry } from './fixtures-domain.tsx';
 import { kitRegistry } from './fixtures-kit.tsx';
 
 const money = (v: number | null) => formatNPR(v);
@@ -313,6 +314,7 @@ export const registry: Record<string, () => ReactNode> = {
   shell: ShellFixture, 'drawer-screen': DrawerScreenFixture, drawer: DrawerFixture, sheet: SheetFixture, popover: PopoverFixture,
   'command-palette': CommandPaletteFixture, toast: ToastFixture,
   ...kitRegistry,
+  ...domainRegistry,
 };
 // Fixtures that draw their own full-width stage (shell, overlays).
 export const ownStage = new Set(['shell', 'drawer', 'sheet', 'popover', 'command-palette', 'toast']);

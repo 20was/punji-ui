@@ -144,7 +144,24 @@ describe('ListFilter', () => {
   });
 });
 
+const none = (q: string) => `No company matches “${q}”.`;
 describe('CompanySearch', () => {
+  it('has no empty listbox while loading or with no match, and stays axe-clean', async () => {
+    const { container, unmount } = render(<CompanySearch options={SYMBOLS} label="Find a company" placeholder="p" onOpen={() => {}} none={none} testId="cs" optionTestId="cs-opt" loading initialQuery="nab" />);
+    const input = screen.getByRole('combobox', { name: 'Find a company' });
+    expect(screen.queryByRole('listbox')).toBeNull();
+    expect(input.getAttribute('aria-expanded')).toBe('true');
+    expect(document.getElementById(input.getAttribute('aria-controls')!)).not.toBeNull();
+    expect(await seriousViolations(container)).toEqual([]);
+    unmount();
+    const second = render(<CompanySearch options={SYMBOLS} label="Find a company" placeholder="p" onOpen={() => {}} none={none} testId="cs" optionTestId="cs-opt" initialQuery="zzzz" />);
+    const input2 = screen.getByRole('combobox', { name: 'Find a company' });
+    expect(screen.queryByRole('listbox')).toBeNull();
+    expect(screen.getByRole('status').textContent).toContain('No company matches');
+    expect(document.getElementById(input2.getAttribute('aria-controls')!)).not.toBeNull();
+    expect(await seriousViolations(second.container)).toEqual([]);
+  });
+
   it('exposes the listbox relationship only while the combobox popup exists', async () => {
     render(<CsHarness onOpen={() => {}} />);
     const input = screen.getByRole('combobox', { name: 'Find a company' });

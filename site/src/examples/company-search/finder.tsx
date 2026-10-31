@@ -7,7 +7,7 @@ const sectorOf = new Map(holdings.map((h) => [h.symbol, h.qty > 100 ? 'Large pos
 export default function Example() {
   const [opened, setOpened] = useState<string | null>(null);
   return (
-    <div className="ex-stack">
+    <div className="ex-stack" style={{ minHeight: 360, alignContent: 'start' }}>
       <CompanySearch
         options={symbols}
         label="Find any company"

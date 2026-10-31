@@ -37,22 +37,35 @@ export const DEFAULT_TRIAL_BALANCE_LABELS: TrialBalanceLabels = {
 };
 
 export interface TrialBalanceProps {
+  /** Names the table region, for example "Trial balance, Shrawan 2081 (NPR)". */
   caption: string;
   /** Ledger entries, or journals (not a mix). Accounts appear in order of first posting. */
   data: readonly LedgerEntry[] | readonly JournalEntry[];
   /** net: each account's balance on its own side (default). totals: gross debits and credits posted. */
   basis?: 'net' | 'totals';
+  /** What an account cell holds, for example a link to its ledger. Default the account string. */
   renderAccount?: (account: string) => ReactNode;
+  /** Currency and locale of the amounts. Default NPR, en-IN, no currency mark: name the currency in the caption. */
   money?: MoneyFormatConfig;
+  /** Column and status words, in the reader's language. Partial overrides of the English defaults. */
   labels?: Partial<TrialBalanceLabels>;
+  /** No box of its own: the table sits in a card or a panel. */
   bare?: boolean;
+  /** The head sticks inside a box this tall that scrolls ('420px', 420). Without it the table is as tall as its rows. */
   maxHeight?: number | string;
+  /** ready (default), loading (headers stay, rows replaced by a status line) or error. */
   state?: 'ready' | 'loading' | 'error';
+  /** Shown in place of rows when there is nothing to show and `state` is `ready`. */
   emptyLabel?: ReactNode;
+  /** The status line shown while `state` is `loading`. */
   loadingLabel?: string;
+  /** What failed, shown with the retry button when `state` is `error`. */
   errorLabel?: ReactNode;
+  /** The retry button's words when `state` is `error`. Default 'Try again'. */
   retryLabel?: string;
+  /** Called when the retry button is pressed. The button is drawn only when this is given, so give it whenever `state` can be `error` and a retry is possible. */
   onRetry?: () => void;
+  /** Sets `data-testid` on the root. */
   testId?: string;
 }
 
@@ -67,7 +80,7 @@ export function TrialBalance({
     if (state !== 'ready') return null;
     try { return trialBalance(data); } catch { return 'invalid' as const; }
   }, [data, state]);
-  if (state === 'error') return <RetryNote retryLabel={retryLabel} onRetry={onRetry ?? (() => undefined)} testId={testId}>{errorLabel}</RetryNote>;
+  if (state === 'error') return <RetryNote retryLabel={retryLabel} onRetry={onRetry} testId={testId}>{errorLabel}</RetryNote>;
   if (result === 'invalid') return <div role="alert" data-testid={testId}><Note tone="error">{words.invalid}</Note></div>;
   const columns: Column<Key>[] = [
     { key: 'account', label: words.account },

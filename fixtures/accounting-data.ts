@@ -1,4 +1,4 @@
-// Illustrative small-business books in NPR (paisa). Invented for tests and docs; not real figures.
+// Illustrative small-business books in NPR (paisa). Invented for tests, the docs site and the visual gate (one source); not real figures.
 import type { JournalEntry, LedgerEntry, StatementRow } from '../src/ledger/ledger.ts';
 
 const d = (year: number, month: number, day: number) => ({ year, month, day });
@@ -65,3 +65,18 @@ export const incomeStatement: StatementRow[] = [{
     ] },
   ],
 }];
+
+/** Balance brought forward on the cash account (NPR 25,000.00), debit side. */
+export const cashOpening = 2500000n;
+
+/** Fiscal years (BS start years) and the year whose quarters and months the period selector offers. */
+export const periodSpec = { from: 2079, to: 2081, detailYear: 2081, initial: 'fy-2081' } as const;
+
+/** One entry per payment status the library draws. */
+export const paymentStatuses = ['paid', 'partial', 'unpaid', 'overdue', 'void'] as const;
+
+/** Hostile text in an account and a description: ledgerToCsv must neutralise both. */
+export const hostileEntries: LedgerEntry[] = [
+  { id: 'h1', date: d(2024, 8, 12), account: '=HYPERLINK("https://example.invalid","Cash")', reference: 'X-1', description: '@SUM(1+1)', debit: 125050n, credit: 0n },
+  { id: 'h2', date: d(2024, 8, 13), account: 'Sales', reference: 'X-2', description: '-2+3 "quoted", with comma', debit: 0n, credit: 125050n },
+];

@@ -48,25 +48,39 @@ export interface StatementTableLabels {
 export const DEFAULT_STATEMENT_LABELS: StatementTableLabels = { item: 'Item', variance: 'Change', variancePercent: 'Change %' };
 
 export interface StatementTableProps {
+  /** Names the table region, for example "Income statement (NPR)". */
   caption: string;
+  /** One column per period, oldest first. Each `key` matches a key in the rows' `values`. */
   periods: readonly StatementPeriod[];
+  /** The statement as a tree of lines and sections. Subtotals are printed as given: call `rollUp` first to fill them in. */
   rows: readonly StatementRow[];
   /** Add Change and Change % columns between two of the periods. */
   variance?: StatementVariance;
   /** parentheses: (1,200.00), the accounting convention (default). minus: -1,200.00. */
   negative?: 'parentheses' | 'minus';
+  /** Currency and locale of the amounts. Default NPR, en-IN, no currency mark: name the currency in the caption. */
   money?: MoneyFormatConfig;
+  /** Column and status words, in the reader's language. Partial overrides of the English defaults. */
   labels?: Partial<StatementTableLabels>;
   /** Fraction digits of the percent. Default 1. */
   percentDigits?: number;
+  /** No box of its own: the table sits in a card or a panel. */
   bare?: boolean;
+  /** The head sticks inside a box this tall that scrolls ('420px', 420). Without it the table is as tall as its rows. */
   maxHeight?: number | string;
+  /** ready (default), loading (headers stay, rows replaced by a status line) or error. */
   state?: 'ready' | 'loading' | 'error';
+  /** Shown in place of rows when there is nothing to show and `state` is `ready`. */
   emptyLabel?: ReactNode;
+  /** The status line shown while `state` is `loading`. */
   loadingLabel?: string;
+  /** What failed, shown with the retry button when `state` is `error`. */
   errorLabel?: ReactNode;
+  /** The retry button's words when `state` is `error`. Default 'Try again'. */
   retryLabel?: string;
+  /** Called when the retry button is pressed. The button is drawn only when this is given, so give it whenever `state` can be `error` and a retry is possible. */
   onRetry?: () => void;
+  /** Sets `data-testid` on the root. */
   testId?: string;
 }
 
@@ -86,7 +100,7 @@ export function StatementTable({
     else if (mismatches.length) devWarn(`StatementTable: ${mismatches.length} subtotal value(s) disagree with rollUp() of their rows (sections: ${[...new Set(mismatches.map(m => m.id))].join(', ')}). The values you passed are shown unchanged.`);
   }, [mismatches]);
 
-  if (state === 'error') return <RetryNote retryLabel={retryLabel} onRetry={onRetry ?? (() => undefined)} testId={testId}>{errorLabel}</RetryNote>;
+  if (state === 'error') return <RetryNote retryLabel={retryLabel} onRetry={onRetry} testId={testId}>{errorLabel}</RetryNote>;
 
   const config: MoneyFormatConfig = { ...money, accounting: negative === 'parentheses' };
   const locale = money.locale ?? 'en';

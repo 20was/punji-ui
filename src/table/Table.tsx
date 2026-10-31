@@ -241,6 +241,8 @@ export function DataTable<K extends string>({
                 disabled={selectableIds.length === 0}
                 data-testid={selection.testIdPrefix ? `${selection.testIdPrefix}-select-page` : undefined}
               />
+              {/* The checkbox is hidden in the stacked layout; the header keeps its name there (axe: empty-table-header). */}
+              <span className="kit-sr">{selection.selectPageLabel ?? 'Select all rows on this page'}</span>
             </th>}
             {columns.map((c) => {
               const active = sort?.key === c.key;

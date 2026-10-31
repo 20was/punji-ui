@@ -10,8 +10,8 @@
   .pu-heat-tile > button { cursor: pointer }
   .pu-heat-tile > button:hover { background: color-mix(in srgb, var(--pu-color-text) 8%, transparent) }
   .pu-heat-tile > button:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: -3px }
-  .pu-heat-sym { font: 700 13px / 1.2 var(--pu-font-body); letter-spacing: 0.01em }
-  .pu-heat-chg { font: 600 11px / 1.2 var(--pu-font-body); font-variant-numeric: tabular-nums; white-space: nowrap }
+  .pu-heat-sym { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 700 13px / 1.2 var(--pu-font-body); letter-spacing: 0.01em }
+  .pu-heat-chg { max-width: 100%; overflow: hidden; text-overflow: ellipsis; font: 600 11px / 1.2 var(--pu-font-body); font-variant-numeric: tabular-nums; white-space: nowrap }
   .pu-heat-tile[data-size='sm'] .pu-heat-chg { display: none }
   /* Too small to print: the words stay for assistive technology (display: none would remove the name too). */
   .pu-heat-tile[data-size='xs'] > :is(button, div) > * { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap }

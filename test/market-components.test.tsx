@@ -417,3 +417,22 @@ describe('MarketHeatmap', () => {
     expect(await seriousViolations(buttons.container)).toEqual([]);
   });
 });
+
+describe('final-pass defects', () => {
+  it('StockTable draws the retry button only when onRetry is given', async () => {
+    const { rerender } = render(<StockTable caption="q" quotes={[]} state="error" testId="e" />);
+    expect(screen.getByRole('alert')).toBeTruthy();
+    expect(screen.queryByRole('button')).toBeNull();
+    const retry = vi.fn<() => void>();
+    rerender(<StockTable caption="q" quotes={[]} state="error" onRetry={retry} testId="e" />);
+    await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
+    expect(retry).toHaveBeenCalledTimes(1);
+  });
+
+  it('the select-all header cell has text, so no layout leaves it empty', async () => {
+    const { container } = render(<StockTable caption="q" quotes={QUOTES.slice(0, 2)} selectedSymbols={[]} onSelectedSymbolsChange={() => undefined} />);
+    const th = container.querySelector('th.kit-table-selection-cell')!;
+    expect(th.textContent).toBe('Select all rows on this page');
+    expect(await seriousViolations(container)).toEqual([]);
+  });
+});

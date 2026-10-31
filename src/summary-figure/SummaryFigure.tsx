@@ -15,12 +15,17 @@
 import type { ReactNode } from 'react';
 
 export interface SummaryFigureProps {
+  /** What the figure is (a short name above it). */
   label: ReactNode;
   /** The figure, exactly as published or computed (a Figure, a MoneyDisplay). */
   value: ReactNode;
+  /** A qualifying line under the figure (the as-of date, a source). */
   note?: ReactNode;
+  /** 'inverse' (default) on the dark surface, or 'tint' on a tinted one. */
   tone?: 'inverse' | 'tint';
+  /** 'md' (default) or 'lg' for a page's lead figure. */
   size?: 'md' | 'lg';
+  /** Sets `data-testid` on the root. */
   testId?: string;
 }
 

@@ -46,7 +46,12 @@ export interface DebitCreditOptions extends Omit<MoneyDisplayOptions, 'value' | 
 }
 
 /** Currency comes from `currency` or `preset`; with neither it is NPR with no mark (`nepalLedgerMoney`). */
-export type DebitCreditProps = DebitCreditOptions & { currency?: string; preset?: MoneyFormatConfig };
+export type DebitCreditProps = DebitCreditOptions & {
+  /** ISO 4217 code of the currency to show, for example 'USD'. Without it (and without `preset`) the amount is NPR with no mark. */
+  currency?: string;
+  /** A ready-made format (currency, locale, display). Wins over the NPR default. */
+  preset?: MoneyFormatConfig;
+};
 
 export function DebitCredit({ value, variant = 'suffix', column = 'debit', labels, preset: presetProp, accounting, className, testId, ...money }: DebitCreditProps) {
   const words = { ...DEFAULT_DEBIT_CREDIT_LABELS, ...labels };

@@ -63,13 +63,21 @@ export interface LedgerTableProps {
   showReference?: boolean;
   /** The head sticks inside a box this tall that scrolls ('420px', 420). */
   maxHeight?: number | string;
+  /** No box of its own: the table sits in a card or a panel. */
   bare?: boolean;
+  /** ready (default), loading (headers stay, rows replaced by a status line) or error. */
   state?: 'ready' | 'loading' | 'error';
+  /** Shown in place of rows when there is nothing to show and `state` is `ready`. */
   emptyLabel?: ReactNode;
+  /** The status line shown while `state` is `loading`. */
   loadingLabel?: string;
+  /** What failed, shown with the retry button when `state` is `error`. */
   errorLabel?: ReactNode;
+  /** The retry button's words when `state` is `error`. Default 'Try again'. */
   retryLabel?: string;
+  /** Called when the retry button is pressed. The button is drawn only when this is given, so give it whenever `state` can be `error` and a retry is possible. */
   onRetry?: () => void;
+  /** Sets `data-testid` on the root. */
   testId?: string;
 }
 
@@ -95,7 +103,7 @@ export function LedgerTable({
     }
   }, [entries, normal, opening, state]);
 
-  if (state === 'error') return <RetryNote retryLabel={retryLabel} onRetry={onRetry ?? (() => undefined)} testId={testId}>{errorLabel}</RetryNote>;
+  if (state === 'error') return <RetryNote retryLabel={retryLabel} onRetry={onRetry} testId={testId}>{errorLabel}</RetryNote>;
   if (computed === 'invalid') return <div role="alert" data-testid={testId}><Note tone="error">{words.invalid}</Note></div>;
 
   const columns: Column<Key>[] = ([

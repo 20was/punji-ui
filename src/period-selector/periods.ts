@@ -17,11 +17,13 @@ export interface FinancialPeriod {
   id: string;
   /** The group it belongs to ('year', 'quarter', 'month', or your own). Two or more kinds show a kind switch. */
   kind: string;
+  /** What the period is called in the picker ("FY 2081/82"). */
   label: string;
   /** A second line under the picker: the range in BS and AD, for example. */
   detail?: string;
   /** Inclusive Gregorian bounds. Used to keep the same time span when the kind changes. */
   start?: CalendarDate;
+  /** Inclusive end, Gregorian. Used to keep the same time span when the kind changes. */
   end?: CalendarDate;
 }
 

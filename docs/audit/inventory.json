@@ -47,7 +47,21 @@
     "./css/*.css",
     "./package.json",
     "./nepal",
-    "./financial"
+    "./financial",
+    "./calculations",
+    "./nepal/format",
+    "./nepal/calendar",
+    "./nepal/money",
+    "./nepal/decimal",
+    "./nepal/financial-format",
+    "./use-media-query",
+    "./use-hydrated",
+    "./stable-order",
+    "./stable-order/keep-order",
+    "./nepal/date-only",
+    "./nepal/market-format",
+    "./calendar",
+    "./date-picker"
   ],
   "components": [
     {

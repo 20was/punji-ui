@@ -19,8 +19,10 @@ import { execFileSync } from 'node:child_process';
 // Watchlist, MarketHeatmap: JS, declarations, CSS) add ~88 kB, bringing it to ~802 KiB.
 // The accounting components (ledger helpers, DebitCredit, LedgerTable, JournalEntryView, TrialBalance, StatementTable,
 // PaymentStatus, FinancialPeriodSelector: JS, declarations, CSS) add ~75 kB, bringing it to ~883 KiB (904,546 B).
+// The portfolio compositions (HoldingsTable, PortfolioAllocation, PortfolioOverview, DividendHistory, TransactionHistory and the
+// pure helpers: JS, declarations with prop docs, CSS) bring the measured size to 1,041,164 B on 2026-11-01: budget 960 -> 1056 KiB.
 // Prop doc comments enlarge declarations; merged total measured 913,958 B on 2026-10-31.
-const MAX_UNPACKED = 960 * 1024;
+const MAX_UNPACKED = 1056 * 1024;
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
 const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md']);
 const allowed = (p) => always.has(p) || /^dist\/.+\.(js|d\.ts|css)$/.test(p);

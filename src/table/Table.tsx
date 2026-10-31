@@ -105,6 +105,7 @@ export function DataTable<K extends string>({
   empty = 'No records to display.',
   loading = false,
   loadingLabel = 'Loading records…',
+  footer,
 }: {
   /** Names the table for screen readers: its caption, region and page controls. */
   caption: string;
@@ -140,6 +141,8 @@ export function DataTable<K extends string>({
   loading?: boolean;
   /** Text announced while `loading` is true. Default "Loading records…". */
   loadingLabel?: string;
+  /** A totals row: one DataListRow (its first cell a row header) rendered in a `<tfoot>`, only when there are rows to total. It stacks like a body row on phones. Put your own empty cell first when the table has a selection column. */
+  footer?: ReactNode;
 }) {
   const auto = useId();
   const tableId = `${auto}-table`;
@@ -271,6 +274,7 @@ export function DataTable<K extends string>({
             <tr><td className="kit-table-empty" colSpan={columns.length + Number(Boolean(selection))}><span role="status">{empty}</span></td></tr>
           ) : children}
         </tbody>
+        {footer && !loading && rows.length > 0 && <tfoot>{footer}</tfoot>}
       </table>
       </SelectionContext.Provider>
       </div>

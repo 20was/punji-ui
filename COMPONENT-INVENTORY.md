@@ -166,7 +166,7 @@ All of these are **planned**; none exists as code in either repository.
 | Reusable holdings, transaction, dividend, IPO and alert detail compositions | `docs/audit/README.md` step 4 | Portfolio |
 | Composable table filters, RowMenu and destructive-confirm flows | `docs/audit/README.md` step 3 | Data and tables |
 | Specialised charts: TrendChart, CandleChart, EquityChart, ReturnBars with empty/constant/outlier behaviour | `docs/audit/README.md` Charts row, step 6 | Charts |
-| QuoteHero, watchlist and alert compositions | `docs/audit/README.md` Market workflows row | Market |
+| QuoteHero and alert compositions (the watchlist is built: `Watchlist`) | `docs/audit/README.md` Market workflows row | Market |
 | Advanced data tables and filters; financial form compositions; time fields; more calendar adapters | `ROADMAP.md`, portal roadmap "Later" | Data, Forms |
 | Multi-month ranges, RTL verification | `ROADMAP.md` section 1 | Forms |
 | Combobox/autocomplete beyond company search; alert dialog; file upload with progress; form validation helpers; accordion, breadcrumbs, stepper, navigation menu; rating and toast queue controls; chart primitives; headless hooks | roadmap table in punji-web `src/design/pages/docs.tsx` (**partly stale**: it still lists date picker and popover as "Next", which punji-ui has since built) | Forms, Layout, Feedback |
@@ -502,3 +502,10 @@ Non-visual helpers and hooks, including duplicates outside the kit.
 | `nepal/*` | `src/nepal/` | BS conversion, fiscal years, NPR formatting, exact decimals, date-only parsing | Web uses `lib/format.ts`; see duplicate 1 |
 | `calculations/*` | `src/calculations/` | Exact positions (average/FIFO), ratios, rounding, break-even, gain tax | Added by `dbb01aa`. Not interchangeable with backend-vendored number maths in the web (see note above) |
 | useMediaQuery, useHydrated, useStableOrder | `src/use-media-query/`, `src/use-hydrated/`, `src/stable-order/` | Hooks | Web has copies of two and 21 ad-hoc matchMedia call sites |
+| StockTable, `sortQuotes`, `nextQuoteSort` | `src/stock-table/` | Quote table over `DataTable`: symbol and name, LTP, change, compact volume and turnover, optional trend; controlled sort, column visibility, selection | Built new in punji-ui; no web counterpart (web `market/RankTable` is bound to repo snapshots). Docs: `docs/MARKET.md` |
+| MarketMovers, `rankMovers` | `src/market-movers/` | Gainers, losers and most active tabs over a compact `StockTable` | Built new; no web counterpart |
+| MarketIndices | `src/market-indices/` | Index cards or strip with value, change, trend and market status | Overlaps the web `MarketStrip` and `MarketMark` (keep-in-app, brand and feed bound); this one takes props only |
+| MarketStatus, `getMarketSession`, `nepseSchedule` | `src/market-status/` | Open, pre-open, closed, halted or holiday indicator and a pure session calculation from a caller schedule | Overlaps web `MarketMark` and `data/MarketStatusChip` (duplicate 11). The NEPSE preset is an example; hours and holidays must be verified by the caller |
+| PriceLimitIndicator, `circuitLimits`, `limitPosition` | `src/price-limit/` | Where LTP sits between daily circuit limits, with an at-limit flag | Built new; composes `RangeBar` |
+| Watchlist, `moveItem` | `src/watchlist/` | Followed stocks in the caller's order with keyboard reorder and remove, live-update friendly | Built new; web `WatchlistRow` stays in the app (inline styles, router) |
+| MarketHeatmap, `squarify`, `heatStep` | `src/market-heatmap/` | Squarified treemap sized by turnover, coloured on a diverging scale, with legend and data table | Built new; web `HeatMap` page is app-specific |

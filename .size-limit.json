@@ -283,13 +283,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "49 kB",
+    "limit": "56.5 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "20.4 kB",
+    "limit": "21.5 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -669,6 +669,55 @@
     "path": "dist/metric-tile/MetricTile.js",
     "import": "*",
     "limit": "450 B",
+    "gzip": true
+  },
+  {
+    "name": "stock-table (import from '@punji/ui/stock-table')",
+    "path": "dist/stock-table/StockTable.js",
+    "import": "*",
+    "limit": "10.2 kB",
+    "gzip": true
+  },
+  {
+    "name": "market-movers (import from '@punji/ui/market-movers')",
+    "path": "dist/market-movers/MarketMovers.js",
+    "import": "*",
+    "limit": "11.3 kB",
+    "gzip": true
+  },
+  {
+    "name": "market-indices (import from '@punji/ui/market-indices')",
+    "path": "dist/market-indices/MarketIndices.js",
+    "import": "*",
+    "limit": "6.4 kB",
+    "gzip": true
+  },
+  {
+    "name": "market-status (import from '@punji/ui/market-status')",
+    "path": "dist/market-status/MarketStatus.js",
+    "import": "*",
+    "limit": "2.4 kB",
+    "gzip": true
+  },
+  {
+    "name": "price-limit (import from '@punji/ui/price-limit')",
+    "path": "dist/price-limit/PriceLimitIndicator.js",
+    "import": "*",
+    "limit": "5.5 kB",
+    "gzip": true
+  },
+  {
+    "name": "watchlist (import from '@punji/ui/watchlist')",
+    "path": "dist/watchlist/Watchlist.js",
+    "import": "*",
+    "limit": "7.3 kB",
+    "gzip": true
+  },
+  {
+    "name": "market-heatmap (import from '@punji/ui/market-heatmap')",
+    "path": "dist/market-heatmap/MarketHeatmap.js",
+    "import": "*",
+    "limit": "2.5 kB",
     "gzip": true
   }
 ]

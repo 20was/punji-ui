@@ -254,6 +254,34 @@
       "types": "./dist/link-table/LinkTable.d.ts",
       "default": "./dist/link-table/LinkTable.js"
     },
+    "./stock-table": {
+      "types": "./dist/stock-table/StockTable.d.ts",
+      "default": "./dist/stock-table/StockTable.js"
+    },
+    "./market-movers": {
+      "types": "./dist/market-movers/MarketMovers.d.ts",
+      "default": "./dist/market-movers/MarketMovers.js"
+    },
+    "./market-indices": {
+      "types": "./dist/market-indices/MarketIndices.d.ts",
+      "default": "./dist/market-indices/MarketIndices.js"
+    },
+    "./market-status": {
+      "types": "./dist/market-status/MarketStatus.d.ts",
+      "default": "./dist/market-status/MarketStatus.js"
+    },
+    "./price-limit": {
+      "types": "./dist/price-limit/PriceLimitIndicator.d.ts",
+      "default": "./dist/price-limit/PriceLimitIndicator.js"
+    },
+    "./watchlist": {
+      "types": "./dist/watchlist/Watchlist.d.ts",
+      "default": "./dist/watchlist/Watchlist.js"
+    },
+    "./market-heatmap": {
+      "types": "./dist/market-heatmap/MarketHeatmap.d.ts",
+      "default": "./dist/market-heatmap/MarketHeatmap.js"
+    },
     "./styles.css": "./dist/styles.css",
     "./tokens.css": "./dist/tokens.css",
     "./css/*.css": "./dist/css/*.css",

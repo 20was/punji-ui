@@ -15,7 +15,9 @@ import { execFileSync } from 'node:child_process';
 // MetricTile: JS, declarations, CSS) brings it to ~713 KiB.
 // .size-limit.json takes no comments: the "Everything" budget went 45 -> 49 kB gzip (about +3.2 kB of real new JS) and
 // styles.css 18.4 -> 20.4 kB gzip (about +1.6 kB of CSS) for the same second batch.
-const MAX_UNPACKED = 720 * 1024;
+// The market components (StockTable, MarketMovers, MarketIndices, MarketStatus, PriceLimitIndicator,
+// Watchlist, MarketHeatmap: JS, declarations, CSS) add ~88 kB, bringing it to ~802 KiB.
+const MAX_UNPACKED = 810 * 1024;
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
 const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md']);
 const allowed = (p) => always.has(p) || /^dist\/.+\.(js|d\.ts|css)$/.test(p);

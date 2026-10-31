@@ -301,3 +301,7 @@ want none of them. Use `FinancialSummary` for a metrics list, `MetricTile` for c
     meter={<MeterBar parts={[{ value: 27, tone: 'gain' }]} max={100} />} />
 </MetricRow>
 ```
+
+## Market components
+
+`StockTable`, `MarketMovers`, `MarketIndices`, `MarketStatus`, `PriceLimitIndicator`, `Watchlist` and `MarketHeatmap`, with their pure helpers (`sortQuotes`, `rankMovers`, `getMarketSession`, `circuitLimits`, `squarify`): see [MARKET.md](MARKET.md).

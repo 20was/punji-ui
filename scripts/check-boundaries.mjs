@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const problems = [];
 // Pure directories and the one external dependency each may use per file.
-const PURE = { nepal: { 'calendar.ts': '@remotemerge/nepali-date-converter' }, calculations: {} };
+const PURE = { nepal: { 'calendar.ts': '@remotemerge/nepali-date-converter' }, calculations: {}, export: {} };
 for (const [dir, allowed] of Object.entries(PURE)) {
   for (const name of readdirSync(resolve(root, 'src', dir))) {
     if (!name.endsWith('.ts')) continue;
@@ -23,4 +23,4 @@ for (const [dir, allowed] of Object.entries(PURE)) {
   }
 }
 if (problems.length) throw new Error(problems.join('\n'));
-console.log('boundaries: Nepal and calculation utilities have no React, component, or browser dependencies; calendar dependency isolated');
+console.log('boundaries: Nepal, calculation and export utilities have no React, component, or browser dependencies; calendar dependency isolated');

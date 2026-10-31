@@ -33,6 +33,7 @@ pre-release software, with substantial work remaining before production use.
 - [Engineering research and upstream credits](docs/RESEARCH.md)
 - [Financial components and Nepal APIs](docs/FINANCIAL.md)
 - [Reusable hooks and upstream credits](docs/HOOKS.md)
+- [CSV export and its security boundary](docs/EXPORT.md)
 
 Run `npm run portal` for the full portal with new utility documentation (requires
 the sibling consumer checkout; see [portal setup](portal/README.md)).

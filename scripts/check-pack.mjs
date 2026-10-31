@@ -6,7 +6,10 @@ import { execFileSync } from 'node:child_process';
 // Calendar/date pickers and the expanded financial table API add JS,
 // declarations and dedicated CSS. Keep a bounded allowance above the current
 // measured ~451 kB unpacked rather than letting the budget fail on valid output.
-const MAX_UNPACKED = 470 * 1024;
+// The hooks, hooks aggregate and CSV export modules (JS plus declarations) raised the
+// measured size to ~482 kB unpacked, and the calculations module to ~500 kB;
+// keep a modest allowance above that.
+const MAX_UNPACKED = 540 * 1024;
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
 const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md']);
 const allowed = (p) => always.has(p) || /^dist\/.+\.(js|d\.ts|css)$/.test(p);

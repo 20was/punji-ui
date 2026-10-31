@@ -249,6 +249,62 @@
     "./date-picker": {
       "types": "./dist/date-picker/DatePicker.d.ts",
       "default": "./dist/date-picker/DatePicker.js"
+    },
+    "./hooks": {
+      "types": "./dist/hooks/hooks.d.ts",
+      "default": "./dist/hooks/hooks.js"
+    },
+    "./export": {
+      "types": "./dist/export/export.d.ts",
+      "default": "./dist/export/export.js"
+    },
+    "./download": {
+      "types": "./dist/download/downloadText.d.ts",
+      "default": "./dist/download/downloadText.js"
+    },
+    "./use-debounce": {
+      "types": "./dist/use-debounce/useDebounce.d.ts",
+      "default": "./dist/use-debounce/useDebounce.js"
+    },
+    "./use-throttle": {
+      "types": "./dist/use-throttle/useThrottle.d.ts",
+      "default": "./dist/use-throttle/useThrottle.js"
+    },
+    "./use-controllable-state": {
+      "types": "./dist/use-controllable-state/useControllableState.d.ts",
+      "default": "./dist/use-controllable-state/useControllableState.js"
+    },
+    "./use-previous": {
+      "types": "./dist/use-previous/usePrevious.d.ts",
+      "default": "./dist/use-previous/usePrevious.js"
+    },
+    "./use-toggle": {
+      "types": "./dist/use-toggle/useToggle.d.ts",
+      "default": "./dist/use-toggle/useToggle.js"
+    },
+    "./use-clipboard": {
+      "types": "./dist/use-clipboard/useClipboard.d.ts",
+      "default": "./dist/use-clipboard/useClipboard.js"
+    },
+    "./use-storage": {
+      "types": "./dist/use-storage/useStorage.d.ts",
+      "default": "./dist/use-storage/useStorage.js"
+    },
+    "./use-click-outside": {
+      "types": "./dist/use-click-outside/useClickOutside.d.ts",
+      "default": "./dist/use-click-outside/useClickOutside.js"
+    },
+    "./use-pagination": {
+      "types": "./dist/use-pagination/usePagination.d.ts",
+      "default": "./dist/use-pagination/usePagination.js"
+    },
+    "./use-table-selection": {
+      "types": "./dist/use-table-selection/useTableSelection.d.ts",
+      "default": "./dist/use-table-selection/useTableSelection.js"
+    },
+    "./use-column-visibility": {
+      "types": "./dist/use-column-visibility/useColumnVisibility.d.ts",
+      "default": "./dist/use-column-visibility/useColumnVisibility.js"
     }
   },
   "files": [

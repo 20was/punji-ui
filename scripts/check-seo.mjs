@@ -112,7 +112,7 @@ for (const { route, file } of targets) {
 
   // Links: a name for every link, and every internal link and asset exists.
   for (const m of html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/g)) {
-    const text = m[2].replace(/<[^>]*>/g, '').trim();
+    const text = m[2].replace(/<[^>]*>/g, '').replace(/</g, '').trim();
     if (!text && !/aria-label="[^"]+"/.test(m[1])) fail(`${where}: a link has no text or aria-label (${m[1].slice(0, 60)})`);
     if (/^(here|click here|read more|more|link)$/i.test(text)) fail(`${where}: non-descriptive link text "${text}"`);
     if (/target="_blank"/.test(m[1]) && !/rel="[^"]*noopener/.test(m[1])) fail(`${where}: target=_blank link without rel=noopener`);

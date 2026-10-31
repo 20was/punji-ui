@@ -48,8 +48,9 @@ describe('MoneyDisplay', () => {
     }
     expect(await seriousViolations(container)).toEqual([]);
   });
-  it('requires a currency', () => {
+  it('requires a currency in the types and at runtime for untyped callers', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
+    // @ts-expect-error currency or preset is required
     expect(() => render(<MoneyDisplay value={1n} />)).toThrow(RangeError);
   });
 });

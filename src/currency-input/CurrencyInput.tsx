@@ -10,6 +10,7 @@
 import { useCallback, useRef, type FocusEvent, type InputHTMLAttributes, type ReactNode, type Ref } from 'react';
 
 import { PriceField } from '../fields/Fields.tsx';
+import type { MoneySource } from '../money-display/MoneyDisplay.tsx';
 import { getMoneyFormatter, type MoneyFormatConfig, type MoneyFormatter } from '../money/money.ts';
 import { parseLocalizedDecimal } from '../nepal/decimal.ts';
 import { parseMinorUnits } from '../nepal/money.ts';
@@ -23,8 +24,7 @@ export interface CurrencyInputChange {
   state: 'empty' | 'partial' | 'valid';
 }
 
-export interface CurrencyInputProps extends Partial<Pick<MoneyFormatConfig, 'currency' | 'locale' | 'numberingSystem'>>, Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'size' | 'type' | 'inputMode' | 'defaultValue'> {
-  preset?: MoneyFormatConfig;
+export interface CurrencyInputOptions extends Partial<Pick<MoneyFormatConfig, 'locale' | 'numberingSystem'>>, Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'size' | 'type' | 'inputMode' | 'defaultValue'> {
   label: ReactNode;
   hint?: ReactNode;
   error?: ReactNode;
@@ -40,6 +40,9 @@ export interface CurrencyInputProps extends Partial<Pick<MoneyFormatConfig, 'cur
   showCurrency?: boolean;
   ref?: Ref<HTMLInputElement>;
 }
+
+/** Requires a `currency` or a `preset` that carries one. */
+export type CurrencyInputProps = CurrencyInputOptions & MoneySource;
 
 const SHAPE = /^-?\d*\.?\d*$/;
 

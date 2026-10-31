@@ -8,13 +8,13 @@
 import type { Ref } from 'react';
 
 import { priceChange, type Change } from '../calculations/ratios.ts';
-import { resolveMoneyConfig, type MoneyDisplayProps } from '../money-display/MoneyDisplay.tsx';
+import { resolveMoneyConfig, type MoneyDisplayOptions, type MoneySource } from '../money-display/MoneyDisplay.tsx';
 import { getMoneyFormatter } from '../money/money.ts';
 
 export interface PriceChangeLabels { up: string; down: string; flat: string }
 const EN_LABELS: PriceChangeLabels = { up: 'up', down: 'down', flat: 'unchanged' };
 
-export interface PriceChangeProps extends Omit<MoneyDisplayProps, 'value' | 'compact' | 'ref' | 'accounting' | 'signDisplay'> {
+export interface PriceChangeOptions extends Omit<MoneyDisplayOptions, 'value' | 'compact' | 'ref' | 'accounting' | 'signDisplay'> {
   /** Latest and previous price, in minor units. Use these, or `change`. */
   current?: bigint | null;
   previous?: bigint | null;
@@ -32,6 +32,8 @@ export interface PriceChangeProps extends Omit<MoneyDisplayProps, 'value' | 'com
   size?: 'sm';
   ref?: Ref<HTMLSpanElement>;
 }
+
+export type PriceChangeProps = PriceChangeOptions & MoneySource;
 
 const ICONS = {
   up: <path d="M5 1.5 9 8.5H1z" />,

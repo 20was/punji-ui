@@ -9,9 +9,23 @@ import type { Ref } from 'react';
 import { getMoneyFormatter, type MoneyCompactOptions, type MoneyFormatConfig } from '../money/money.ts';
 import { parseMinorUnits } from '../nepal/money.ts';
 
-export interface MoneyDisplayProps extends Partial<MoneyFormatConfig> {
-  /** Base configuration, for example `nepalMoneyConfig()`. The props above override it. */
-  preset?: MoneyFormatConfig;
+/** Where the currency comes from: an explicit `currency`, or a `preset` that carries one. One is required. */
+export type MoneySource =
+  | {
+      /** ISO 4217 code ('NPR', 'USD', 'JPY'). Sets the symbol and the number of minor-unit digits. */
+      currency: string;
+      /** Base configuration, for example `nepalMoneyConfig()`. Other props override it. */
+      preset?: MoneyFormatConfig;
+    }
+  | {
+      /** ISO 4217 code ('NPR', 'USD', 'JPY'). Overrides the preset's currency. */
+      currency?: string;
+      /** Base configuration, for example `nepalMoneyConfig()`. Other props override it. */
+      preset: MoneyFormatConfig;
+    };
+
+/** Display options shared by the money components; the currency comes from `MoneySource`. */
+export interface MoneyDisplayOptions extends Partial<Omit<MoneyFormatConfig, 'currency'>> {
   /** Integer minor units (paisa, cents), or an exact decimal string in major units ('1234.50'). null/undefined show the missing mark. */
   value: bigint | string | null | undefined;
   /** Shorten for tight spaces (lakh/crore or K/M/B). Display-rounded: the exact amount stays in the spoken text and the data value. */
@@ -24,6 +38,8 @@ export interface MoneyDisplayProps extends Partial<MoneyFormatConfig> {
   testId?: string;
   ref?: Ref<HTMLElement>;
 }
+
+export type MoneyDisplayProps = MoneyDisplayOptions & MoneySource;
 
 export function resolveMoneyConfig(props: Partial<MoneyFormatConfig>, preset?: MoneyFormatConfig): MoneyFormatConfig {
   const config = { ...preset } as Partial<MoneyFormatConfig>;

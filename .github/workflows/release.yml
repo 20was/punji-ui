@@ -55,6 +55,8 @@ jobs:
       # trigger CI on that PR, so every gate runs again here before publishing.
       - name: Every gate, again, before anything is published
         run: npm run verify
+      - name: Install the packed tarball into a fresh consumer app
+        run: npm run check:consumer
       - name: Version PR or publish
         id: changesets
         uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2

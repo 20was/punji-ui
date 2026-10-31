@@ -282,9 +282,18 @@
       "types": "./dist/market-heatmap/MarketHeatmap.d.ts",
       "default": "./dist/market-heatmap/MarketHeatmap.js"
     },
-    "./styles.css": "./dist/styles.css",
-    "./tokens.css": "./dist/tokens.css",
-    "./css/*.css": "./dist/css/*.css",
+    "./styles.css": {
+      "types": "./dist/styles.css.d.ts",
+      "default": "./dist/styles.css"
+    },
+    "./tokens.css": {
+      "types": "./dist/tokens.css.d.ts",
+      "default": "./dist/tokens.css"
+    },
+    "./css/*.css": {
+      "types": "./dist/css/*.css.d.ts",
+      "default": "./dist/css/*.css"
+    },
     "./package.json": "./package.json",
     "./nepal": {
       "types": "./dist/nepal/nepal.d.ts",
@@ -476,7 +485,8 @@
     "site:build": "npm run site:gen && vite build site",
     "site:preview": "vite preview site",
     "typecheck:site": "npm run site:gen && tsc -p site/tsconfig.json --noEmit",
-    "check:site": "node scripts/check-site.mjs"
+    "check:site": "node scripts/check-site.mjs",
+    "check:consumer": "node scripts/check-consumer.mjs"
   },
   "peerDependencies": {
     "react": "^19.0.0",

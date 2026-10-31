@@ -198,6 +198,22 @@
       "types": "./dist/financial/financial.d.ts",
       "default": "./dist/financial/financial.js"
     },
+    "./money": {
+      "types": "./dist/money/money.d.ts",
+      "default": "./dist/money/money.js"
+    },
+    "./money-display": {
+      "types": "./dist/money-display/MoneyDisplay.d.ts",
+      "default": "./dist/money-display/MoneyDisplay.js"
+    },
+    "./price-change": {
+      "types": "./dist/price-change/PriceChange.d.ts",
+      "default": "./dist/price-change/PriceChange.js"
+    },
+    "./currency-input": {
+      "types": "./dist/currency-input/CurrencyInput.d.ts",
+      "default": "./dist/currency-input/CurrencyInput.js"
+    },
     "./calculations": {
       "types": "./dist/calculations/calculations.d.ts",
       "default": "./dist/calculations/calculations.js"

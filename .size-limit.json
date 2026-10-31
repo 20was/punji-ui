@@ -276,7 +276,7 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "36 kB",
+    "limit": "40 kB",
     "gzip": true
   },
   {
@@ -515,6 +515,41 @@
     "path": "dist/download/downloadText.js",
     "import": "*",
     "limit": "620 B",
+    "gzip": true
+  },
+  {
+    "name": "Money formatter and parser without React (import from '@punji/ui/money')",
+    "path": "dist/money/money.js",
+    "import": "*",
+    "limit": "3.6 kB",
+    "gzip": true
+  },
+  {
+    "name": "MoneyDisplay (import from '@punji/ui/money-display')",
+    "path": "dist/money-display/MoneyDisplay.js",
+    "import": "*",
+    "limit": "4 kB",
+    "gzip": true
+  },
+  {
+    "name": "PriceChange (import from '@punji/ui/price-change')",
+    "path": "dist/price-change/PriceChange.js",
+    "import": "*",
+    "limit": "4.4 kB",
+    "gzip": true
+  },
+  {
+    "name": "CurrencyInput (import from '@punji/ui/currency-input')",
+    "path": "dist/currency-input/CurrencyInput.js",
+    "import": "*",
+    "limit": "4.7 kB",
+    "gzip": true
+  },
+  {
+    "name": "Money CSS",
+    "path": "dist/css/money.css",
+    "limit": "450 B",
+    "rolldown": false,
     "gzip": true
   }
 ]

@@ -17,7 +17,7 @@
     "name": "card (import from '@punji/ui/card')",
     "path": "dist/card/Card.js",
     "import": "*",
-    "limit": "580 B",
+    "limit": "590 B",
     "gzip": true
   },
   {
@@ -108,7 +108,7 @@
     "name": "inline-confirm (import from '@punji/ui/inline-confirm')",
     "path": "dist/inline-confirm/InlineConfirm.js",
     "import": "*",
-    "limit": "1.08 kB",
+    "limit": "1.1 kB",
     "gzip": true
   },
   {
@@ -206,7 +206,7 @@
     "name": "states (import from '@punji/ui/states')",
     "path": "dist/states/States.js",
     "import": "*",
-    "limit": "1000 B",
+    "limit": "1.01 kB",
     "gzip": true
   },
   {
@@ -297,20 +297,20 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "93.2 kB",
+    "limit": "93.26 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "27.5 kB",
+    "limit": "27.71 kB",
     "rolldown": false,
     "gzip": true
   },
   {
     "name": "tokens.css",
     "path": "dist/tokens.css",
-    "limit": "1.35 kB",
+    "limit": "1.37 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -318,7 +318,7 @@
     "name": "Nepal utilities including calendar table",
     "path": "dist/nepal/nepal.js",
     "import": "*",
-    "limit": "4.5 kB",
+    "limit": "4.59 kB",
     "gzip": true
   },
   {
@@ -633,7 +633,7 @@
     "name": "retry-note (import from '@punji/ui/retry-note')",
     "path": "dist/retry-note/RetryNote.js",
     "import": "*",
-    "limit": "1.1 kB",
+    "limit": "1.12 kB",
     "gzip": true
   },
   {
@@ -759,7 +759,7 @@
     "name": "pagination (import from '@punji/ui/pagination')",
     "path": "dist/pagination/Pagination.js",
     "import": "*",
-    "limit": "1.7 kB",
+    "limit": "1.72 kB",
     "gzip": true
   },
   {
@@ -780,7 +780,7 @@
     "name": "market-movers (import from '@punji/ui/market-movers')",
     "path": "dist/market-movers/MarketMovers.js",
     "import": "*",
-    "limit": "11.3 kB",
+    "limit": "11.4 kB",
     "gzip": true
   },
   {
@@ -801,21 +801,21 @@
     "name": "price-limit (import from '@punji/ui/price-limit')",
     "path": "dist/price-limit/PriceLimitIndicator.js",
     "import": "*",
-    "limit": "5.5 kB",
+    "limit": "5.54 kB",
     "gzip": true
   },
   {
     "name": "watchlist (import from '@punji/ui/watchlist')",
     "path": "dist/watchlist/Watchlist.js",
     "import": "*",
-    "limit": "7.3 kB",
+    "limit": "7.32 kB",
     "gzip": true
   },
   {
     "name": "market-heatmap (import from '@punji/ui/market-heatmap')",
     "path": "dist/market-heatmap/MarketHeatmap.js",
     "import": "*",
-    "limit": "2.5 kB",
+    "limit": "2.51 kB",
     "gzip": true
   },
   {
@@ -829,7 +829,7 @@
     "name": "debit-credit (import from '@punji/ui/debit-credit')",
     "path": "dist/debit-credit/DebitCredit.js",
     "import": "*",
-    "limit": "4.3 kB",
+    "limit": "4.32 kB",
     "gzip": true
   },
   {
@@ -857,7 +857,7 @@
     "name": "statement-table (import from '@punji/ui/statement-table')",
     "path": "dist/statement-table/StatementTable.js",
     "import": "*",
-    "limit": "8.2 kB",
+    "limit": "8.32 kB",
     "gzip": true
   },
   {
@@ -962,14 +962,14 @@
     "name": "dividend-history (import from '@punji/ui/dividend-history')",
     "path": "dist/dividend-history/DividendHistory.js",
     "import": "*",
-    "limit": "11.4 kB",
+    "limit": "11.45 kB",
     "gzip": true
   },
   {
     "name": "transaction-history (import from '@punji/ui/transaction-history')",
     "path": "dist/transaction-history/TransactionHistory.js",
     "import": "*",
-    "limit": "17.3 kB",
+    "limit": "17.39 kB",
     "gzip": true,
     "entry": [
       "index"
@@ -979,7 +979,7 @@
     "name": "transaction-history with the date picker panel (all chunks)",
     "path": "dist/transaction-history/TransactionHistory.js",
     "import": "*",
-    "limit": "22.95 kB",
+    "limit": "22.94 kB",
     "gzip": true
   }
 ]

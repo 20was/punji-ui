@@ -76,7 +76,7 @@ export function FinancialTable<T>({ caption, columns, rows, rowKey, state = 'rea
   if (state === 'loading') return <div aria-busy="true"><Skeleton label={loadingLabel} height={160} /></div>;
   if (state === 'error') return <EmptyState title={errorTitle} action={errorAction} role="alert" />;
   if (!rows.length && !search && !pagination) return <EmptyState title={emptyTitle} body={emptyBody} action={emptyAction} />;
-  return <DataTable caption={caption} columns={[...columns]} sort={sort} onSort={onSort} search={search} pagination={pagination} selection={selection} empty={emptyTitle}>
+  return <DataTable caption={caption} columns={[...columns]} sort={sort} onSort={onSort} search={search} pagination={pagination} selection={selection} empty={emptyBody || emptyAction ? <EmptyState title={emptyTitle} body={emptyBody} action={emptyAction} headingLevel={3} bare /> : emptyTitle}>
     {rows.map(row => <DataListRow key={rowKey(row)} rowId={rowKey(row)}>{columns.map(column => <Cell key={column.key} num={column.num} wide={column.wide} hideUnder={column.hideUnder} header={column.rowHeader} label={typeof column.label === 'string' ? column.label : undefined}>{column.render(row)}</Cell>)}</DataListRow>)}
   </DataTable>;
 }

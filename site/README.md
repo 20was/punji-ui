@@ -11,7 +11,7 @@ npm run site:build   # gen, client build, SSR build, prerender into site/dist (g
 npm run site:preview # serve site/dist on :4174
 npm run typecheck:site
 npm run check:site   # Playwright: needs site:build first; screenshots in test-results/site/
-npm run check:seo    # offline: reads site/dist (titles, descriptions, canonicals, links, sitemap, JSON-LD)
+npm run check:seo    # offline: reads site/dist (titles, descriptions, canonicals, links, sitemap, JSON-LD, JS budget)
 npm run site:brand   # regenerates site/public/favicon.svg, og.svg, og.png from .github/assets
 ```
 
@@ -26,6 +26,8 @@ npm run site:brand   # regenerates site/public/favicon.svg, og.svg, og.png from 
 | Tabs and no-JS | The tabs are in-page links (`#examples`, `#code`, `#api`, `#usage`). Every panel is in the prerendered HTML; JavaScript shows one at a time (`hidden`) and keeps the hash in step, and a deep link to any section id (`#keyboard`, `#ex-nepal`) opens the tab that holds it. Without JavaScript, a `<noscript>` style in `index.html` shows every panel under its own heading. |
 | `src/app/Home.tsx`, `HomeDashboard.tsx` | The overview: hero, a portfolio screen built only from package exports and shared fixtures, a live preview card per domain, and proof points whose figures are computed from the package (rounding, formatting) and the build (gzip sizes). |
 | `src/app/App.tsx` | The shell: sticky header (wordmark, version from `package.json` with a pre-release badge, search, GitHub, light/dark/system theme icons), the sidebar (`Sidebar.tsx`: collapsible groups persisted with the library's `useLocalStorage`, short `navTitle` labels), the library's `Drawer` as the mobile menu, and the footer. Search (`Search.tsx`) is the library's `CommandPalette` over titles, leads, descriptions and export names, opened with Command-K, Ctrl-K or `/`. Path routing (History API) through `src/app/router.tsx`; `entry-server.tsx` renders the same `App` for the prerender. |
+| `scripts/site-pages.mjs` | Run by `site-gen` (and by the dev server when a registry file changes): splits the registry and `api.json` into what the browser loads, `src/generated/nav.json` (groups and a slim entry per page, for the shell), `home.json`, `search.json` (the search index), `pages/<slug>.json` and `routes/<slug>.ts` (one route module per page: its data, examples and their source text). See "Loading". |
+| `src/app/PhoneFrame.tsx`, `preview-frame/index.html`, `src/frame.tsx` | The phone-width preview: the example runs in a same-origin iframe with its own 375 px viewport (390 px for showcase screens), so the package's viewport media queries, `matchMedia` and body portals behave as on a phone. Same stylesheet as the page, the preview theme passed in and kept in step, height follows the content (at least 320 px, room for a menu or listbox). |
 | `src/generated/sizes.json` | Written by `site-gen` from `size-limit --json` (the repository's own budget, about two seconds): gzip bytes per subpath for the size badges and the homepage. Gitignored like `api.json`. |
 
 Sample data comes from `fixtures/market-data.ts` through `src/sample.ts` (shared with the visual-regression fixture app; synthetic, not market data).
@@ -61,9 +63,21 @@ A showcase page (`kind: 'showcase'`, group `showcase`, URL `/showcase/<slug>/`) 
 
 The page shows the live screen in the demo frame (light/dark and phone-width toggles, the TSX with copy), then the layout CSS, the summary, "Built from" cards and the notes. `llms-full.txt` carries the TSX and the CSS.
 
+## Loading
+
+Each page loads only its own code. `src/app/load.ts` is the one place that knows how:
+
+- **Shell** (every page): React, the header, sidebar, router, theme and `nav.json`; about 85 kB gzip. `registry.ts` is never in the browser bundle: the shell imports `src/paths.ts` (registry-free routes and head data) and `nav.ts`, never `seo.ts`.
+- **Route chunks**: the view (`Home.tsx` or `PageView.tsx`) and, for a page, `generated/routes/<slug>.ts`, which statically imports the page data, every example module and their raw text. Package code shared between pages lands in shared chunks.
+- **First load**: the prerender asks the SSR build's `preload(path)` which modules the route used, maps them through Vite's manifest (`site/dist/.vite/manifest.json`) and writes a `<link rel="modulepreload">` for every chunk in their graph. `main.tsx` awaits `loadRoute()` before `hydrateRoot`, so hydration renders exactly the prerendered HTML with no extra round trip and no flash. CSS is one file (`cssCodeSplit: false`), linked from every page.
+- **Navigation**: `navigate()` loads the next route, then changes the URL, so a page never renders half-loaded. Back and Forward to a page not yet loaded keep the current page until it arrives. A chunk that cannot be fetched (offline, or removed by a new deploy) falls back to a full page load.
+- **Search**: the palette and `search.json` load when it first opens (hovering or focusing the button starts it).
+
+`check:seo` enforces the budget: every route's up-front JavaScript (entry script plus modulepreloads, gzip) stays under 150 kB, and every page preloads its own route chunk. On 2026-11-01 the largest route was 140 kB (a showcase screen), a typical component page 100 to 120 kB and the overview 138 kB, against 439 kB for every page before the split.
+
 ## Routing
 
-Clean paths, no hash. The section comes from the page kind (`src/seo.ts`, `pagePath`):
+Clean paths, no hash. The section comes from the page kind (`src/paths.ts`, `pagePath`):
 
 | Kind | Path |
 | --- | --- |
@@ -89,7 +103,7 @@ Set the same values for `site:build`, `check:seo` and `check:site`, for example 
 
 ## Prerender
 
-`npm run site:build` runs three steps: `vite build site` (client bundle; its `index.html` is the template), `vite build site --ssr src/entry-server.tsx --outDir dist-server` (a Node renderer of the same `App`), and `scripts/site-prerender.mjs`, which calls `renderToString` once per route and writes `site/dist/<path>/index.html` with the page's real head. Every heading, props table, code block and link is in the HTML without JavaScript; the client then calls `hydrateRoot`. The router takes its first location from the pathname the HTML was rendered for, so hydration is identical (`check:site` fails on any console warning or error). The pre-paint theme script in `index.html` is unchanged. `404.html` is rendered for a path that matches no page.
+`npm run site:build` runs three steps: `vite build site` (client bundle; its `index.html` is the template), `vite build site --ssr src/entry-server.tsx --outDir dist-server` (a Node renderer of the same `App`), and `scripts/site-prerender.mjs`, which awaits `preload` (the route's chunks) and calls `renderToString` once per route, and writes `site/dist/<path>/index.html` with the page's real head and its modulepreload links. Every heading, props table, code block and link is in the HTML without JavaScript; the client then calls `hydrateRoot`. The router takes its first location from the pathname the HTML was rendered for, so hydration is identical (`check:site` fails on any console warning or error). The pre-paint theme script in `index.html` is unchanged. `404.html` is rendered for a path that matches no page.
 
 The script also writes `sitemap.xml`, `robots.txt` (allow all, points at the sitemap), `llms.txt` (summary plus one line and URL per page), `llms-full.txt` (every page's text, API and example code), `_redirects` and `.nojekyll`. `favicon.svg`, `og.svg` and `og.png` (1200x630) are committed in `site/public/`, generated by `npm run site:brand` from the brand art in `.github/assets` and the installed Playwright Chromium, so a normal build needs no browser.
 

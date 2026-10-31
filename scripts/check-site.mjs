@@ -212,6 +212,46 @@ try {
   if ((await page.locator('.doc-stage').getAttribute('data-theme')) !== 'dark') fail('preview theme: Dark preview did not set data-theme on the stage');
   if ((await page.locator('html').getAttribute('data-theme')) === 'dark') fail('preview theme: the page theme changed too');
 
+  // Phone width: the example runs in its own 375 px viewport (a same-origin iframe), so the package's viewport media
+  // queries and matchMedia apply; the frame follows the preview theme, grows to its content, passes axe, and takes focus.
+  await page.getByRole('group', { name: 'Preview width', exact: true }).getByRole('button', { name: 'Phone width, 375 pixels' }).click();
+  await page.frameLocator('iframe[data-testid=phone-frame]').getByTestId('preview').getByText('12,34,567.89').first().waitFor();
+  const frameState = () => page.getByTestId('phone-frame').evaluate((f) => ({
+    width: f.contentWindow.innerWidth,
+    phoneQuery: f.contentWindow.matchMedia('(width <= 639px)').matches,
+    theme: f.contentDocument.documentElement.getAttribute('data-theme'),
+    height: f.getBoundingClientRect().height,
+    content: f.contentDocument.getElementById('root').getBoundingClientRect().height,
+  }));
+  const phone = await frameState();
+  if (phone.width !== 375) fail(`phone width: the frame's viewport is ${phone.width}px, not 375`);
+  if (!phone.phoneQuery) fail('phone width: a (width <= 639px) media query does not match inside the frame');
+  if (phone.theme !== 'dark') fail(`phone width: the frame shows the ${phone.theme} theme, not the dark preview`);
+  if (Math.abs(phone.height - Math.max(320, Math.ceil(phone.content))) > 2) fail(`phone width: the frame is ${phone.height}px tall for ${phone.content}px of content`);
+  await page.getByRole('group', { name: 'Preview theme', exact: true }).getByRole('button', { name: 'Light preview' }).click();
+  await page.waitForFunction(() => document.querySelector('iframe[data-testid=phone-frame]')?.contentDocument?.documentElement.getAttribute('data-theme') === 'light');
+  const phoneDoc = page.frames().find((f) => f.url().includes('/preview-frame/'));
+  if (!phoneDoc) fail('phone width: no preview frame');
+  else {
+    await phoneDoc.addScriptTag({ content: axeSource });
+    // The frame holds one example, not a page: it has no h1 of its own (the docs page around it does).
+    const violations = await phoneDoc.evaluate(async () => (await globalThis.axe.run(document, { rules: { 'page-has-heading-one': { enabled: false } } })).violations.map((v) => `${v.id} (${v.impact})`));
+    for (const v of violations) fail(`phone width: axe ${v} inside the frame`);
+  }
+  await page.goto(`${base}/components/data-table/`);
+  await page.getByRole('group', { name: 'Preview width', exact: true }).getByRole('button', { name: 'Phone width, 375 pixels' }).click();
+  await page.frameLocator('iframe[data-testid=phone-frame]').getByRole('button').first().waitFor();
+  let reached = false;
+  for (let i = 0; i < 8 && !reached; i += 1) {
+    await page.keyboard.press('Tab');
+    reached = await page.getByTestId('phone-frame').evaluate((f) => document.activeElement === f && f.contentDocument.activeElement?.tagName === 'BUTTON');
+  }
+  if (!reached) fail('phone width: Tab does not move focus into the example in the frame');
+  await page.getByRole('group', { name: 'Preview width', exact: true }).getByRole('button', { name: 'Full width' }).click();
+  if (await page.getByTestId('phone-frame').count()) fail('phone width: Full width did not remove the frame');
+  await page.goto(`${base}/components/money-display/`);
+  await page.locator('#page-title').waitFor();
+
   // Tabs: the API tab shows the props table and records #api; a deep link opens its tab on load.
   await page.getByTestId('tab-api').click();
   await page.getByRole('region', { name: 'MoneyDisplay props' }).waitFor({ state: 'visible' });
@@ -357,4 +397,4 @@ if (failures.length) {
   process.exit(1);
 }
 console.log(`layout flags: edge ${flagCounts.edge} (+${flagCounts.edgeAllowed} allowlisted), clip ${flagCounts.clip}, dup ${flagCounts.dup}, icon ${flagCounts.icon}`);
-console.log(`site check${shardCount > 1 ? ` (shard ${shardIndex}/${shardCount})` : ''}: ${routes.length} routes x 2 widths x 2 themes, ${checked.variants} example variants and ${checked.tabs} page tabs (axe, overflow, console, layout) and the copy, variant, preview theme, tabs, theme, search, sidebar, drawer, path routing, hash redirect, 404 and no-JS behaviours passed`);
+console.log(`site check${shardCount > 1 ? ` (shard ${shardIndex}/${shardCount})` : ''}: ${routes.length} routes x 2 widths x 2 themes, ${checked.variants} example variants and ${checked.tabs} page tabs (axe, overflow, console, layout) and the copy, variant, preview theme, phone-width frame, tabs, theme, search, sidebar, drawer, path routing, hash redirect, 404 and no-JS behaviours passed`);

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocalStorage } from '@punji/ui/hooks';
-import { GROUPS, PAGES, navTitleOf, type GroupId } from '../registry.ts';
-import { pagePath } from '../seo.ts';
+import type { GroupId } from '../registry.ts';
+import { pagePath } from '../paths.ts';
+import { GROUPS, NAV as PAGES, navTitleOf } from './nav.ts';
 import { Link } from './router.tsx';
 import { ChevronIcon } from './icons.tsx';
 

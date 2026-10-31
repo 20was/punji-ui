@@ -1,26 +1,26 @@
 import { Fragment, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { GROUPS, PAGES, leadOf, navTitleOf, pageBySlug, type ExampleDef, type GuideSection, type PageDef } from '../registry.ts';
-import { pagePath } from '../seo.ts';
+import type { ExampleDef, GuideSection } from '../registry.ts';
+import { pagePath } from '../paths.ts';
 import sizes from '../generated/sizes.json';
 import { Link } from './router.tsx';
-import { apiEntry, type ApiEntry } from './api.ts';
+import { apiEntryIn, type ApiEntry } from './api.ts';
 import { Code, CopyButton } from './Code.tsx';
-import { exampleCss, exampleSource, loadExample } from './examples.ts';
+import { formatBytes } from './format.ts';
+import { exampleCss, guideSource, loadedExample, type PageData } from './load.ts';
+import { GROUPS, NAV, groupTitleOf, navTitleOf, type NavPage, type PageCard } from './nav.ts';
+import { PhoneFrame } from './PhoneFrame.tsx';
 import { useResolvedTheme } from './theme.ts';
 import { ChevronIcon, CodeIcon, DoIcon, DontIcon, MonitorIcon, MoonIcon, PhoneIcon, SunIcon } from './icons.tsx';
 
 // ---------------------------------------------------------------------------------------------------------------
 // Shared bits
 
-const groupTitle = (page: PageDef) => GROUPS.find((g) => g.id === page.group)?.title ?? '';
+type Page = PageData['page'];
 const moduleSizes = (sizes as { modules: Record<string, number> }).modules;
 
-/** size-limit's own units: bytes under 1 kB, otherwise kB with one decimal (1 kB = 1000 B). */
-export const formatBytes = (bytes: number): string => (bytes < 1000 ? `${bytes} B` : `${(bytes / 1000).toFixed(1)} kB`);
-
 /** The sidebar order flattened: what comes before and after a page. */
-function neighbours(page: PageDef): { prev?: PageDef; next?: PageDef } {
-  const order = GROUPS.flatMap((g) => PAGES.filter((p) => p.group === g.id));
+function neighbours(page: NavPage): { prev?: NavPage; next?: NavPage } {
+  const order = GROUPS.flatMap((g) => NAV.filter((p) => p.group === g.id));
   const i = order.findIndex((p) => p.slug === page.slug);
   return { prev: order[i - 1], next: order[i + 1] };
 }
@@ -108,7 +108,7 @@ function Rail({ items }: { items: RailItem[] }) {
   );
 }
 
-function PrevNext({ page }: { page: PageDef }) {
+function PrevNext({ page }: { page: NavPage }) {
   const { prev, next } = neighbours(page);
   return (
     <nav className="doc-prevnext" aria-label="Previous and next page">
@@ -130,8 +130,7 @@ function PrevNext({ page }: { page: PageDef }) {
   );
 }
 
-function RelatedCards({ page, id = 'related', level = 3 }: { page: PageDef; id?: string; level?: 2 | 3 }) {
-  const others = page.related.map(pageBySlug).filter((p): p is PageDef => Boolean(p));
+function RelatedCards({ others, id = 'related', level = 3 }: { others: readonly PageCard[]; id?: string; level?: 2 | 3 }) {
   if (others.length === 0) return null;
   const H = level === 2 ? 'h2' : 'h3';
   return (
@@ -141,9 +140,9 @@ function RelatedCards({ page, id = 'related', level = 3 }: { page: PageDef; id?:
         {others.map((other) => (
           <li key={other.slug}>
             <Link to={pagePath(other)}>
-              <span className="doc-related-eyebrow">{groupTitle(other)}</span>
+              <span className="doc-related-eyebrow">{groupTitleOf(other.group)}</span>
               <strong>{other.title}</strong>
-              <span className="doc-related-lead">{leadOf(other)}</span>
+              <span className="doc-related-lead">{other.lead}</span>
             </Link>
           </li>
         ))}
@@ -152,14 +151,14 @@ function RelatedCards({ page, id = 'related', level = 3 }: { page: PageDef; id?:
   );
 }
 
-function PageHeader({ page, children }: { page: PageDef; children?: ReactNode }) {
+function PageHeader({ page, children }: { page: Page; children?: ReactNode }) {
   return (
     <header className="doc-head">
-      <p className="doc-eyebrow">{groupTitle(page)}</p>
+      <p className="doc-eyebrow">{groupTitleOf(page.group)}</p>
       <h1 tabIndex={-1} id="page-title">
         {page.title}
       </h1>
-      <p className="doc-lead">{leadOf(page)}</p>
+      <p className="doc-lead">{page.lead}</p>
       {children}
     </header>
   );
@@ -174,11 +173,11 @@ const wrap = (list: string[], from: string) => {
   return one.length <= 90 ? one : `import {\n  ${list.join(',\n  ')},\n} from '${from}';`;
 };
 
-function importLines(page: PageDef): { subpath: string; root: string } {
+function importLines({ page, api }: PageData): { subpath: string; root: string } {
   const byModule = new Map<string, string[]>();
   const all: string[] = [];
   for (const ref of page.api) {
-    const entry = apiEntry(ref.name);
+    const entry = apiEntryIn(api, ref.name);
     const list = byModule.get(entry.module) ?? [];
     list.push(names(entry, ref.name));
     byModule.set(entry.module, list);
@@ -190,7 +189,7 @@ function importLines(page: PageDef): { subpath: string; root: string } {
   };
 }
 
-function Badges({ page }: { page: PageDef }) {
+function Badges({ page }: { page: Page }) {
   const first = page.api[0];
   const module = first?.module;
   const size = module !== undefined ? moduleSizes[module] : undefined;
@@ -221,7 +220,7 @@ function Badges({ page }: { page: PageDef }) {
 
 type TabId = 'examples' | 'code' | 'api' | 'usage';
 
-function tabsFor(page: PageDef): { id: TabId; label: string }[] {
+function tabsFor(page: Page): { id: TabId; label: string }[] {
   const tabs: { id: TabId; label: string }[] = [];
   if (page.examples.length) tabs.push({ id: 'examples', label: 'Examples' });
   if (page.examples.length || page.api.length) tabs.push({ id: 'code', label: 'Code' });
@@ -234,8 +233,8 @@ const exampleFile = (slug: string, id: string) => `examples/${slug}/${id}.tsx`;
 const PEEK_LINES = 24;
 
 /** The demo frame: a title bar with the example's name, theme and width toggles, the live stage, then its code. */
-function Demo({ page, def, onPick }: { page: PageDef; def: ExampleDef; onPick: (id: string) => void }) {
-  const loaded = loadExample(page.slug, def.id);
+function Demo({ page, def, onPick }: { page: Page; def: ExampleDef; onPick: (id: string) => void }) {
+  const loaded = loadedExample(page.slug, def.id);
   const resolved = useResolvedTheme();
   const [theme, setTheme] = useState<'light' | 'dark' | null>(null);
   const [phone, setPhone] = useState(false);
@@ -287,7 +286,12 @@ function Demo({ page, def, onPick }: { page: PageDef; def: ExampleDef; onPick: (
         </div>
         <div className={`doc-stage${phone ? ' is-phone' : ''}`} data-theme={theme ?? undefined}>
           <div className="doc-stage-in" data-testid="preview">
-            <Component key={`${page.slug}/${def.id}`} />
+            {/* Phone width renders the example in its own 375 px viewport, so its media queries apply (PhoneFrame). */}
+            {phone ? (
+              <PhoneFrame slug={page.slug} id={def.id} title={def.title} theme={shown} showcase={page.kind === 'showcase'} />
+            ) : (
+              <Component key={`${page.slug}/${def.id}`} />
+            )}
           </div>
         </div>
         <div className="doc-demo-code">
@@ -405,13 +409,14 @@ function Bullets({ id, title, items }: { id: string; title: string; items: reado
   );
 }
 
-function ComponentPage({ page }: { page: PageDef }) {
+function ComponentPage({ data }: { data: PageData }) {
+  const { page } = data;
   const tabs = useMemo(() => tabsFor(page), [page]);
   const [tab, setTab] = useState<TabId>(tabs[0]!.id);
   const [active, setActive] = useState(page.examples[0]?.id ?? '');
   const def = page.examples.find((e) => e.id === active) ?? page.examples[0];
-  const imports = useMemo(() => (page.api.length > 0 ? importLines(page) : undefined), [page]);
-  const entries = useMemo(() => [...new Set(page.api.map((a) => a.name))].map(apiEntry), [page]);
+  const imports = useMemo(() => (page.api.length > 0 ? importLines(data) : undefined), [page, data]);
+  const entries = useMemo(() => [...new Set(page.api.map((a) => a.name))].map((name) => apiEntryIn(data.api, name)), [page, data]);
   const styled = page.kind === 'component' || page.kind === 'foundation';
 
   const show = useCallback(
@@ -512,7 +517,7 @@ function ComponentPage({ page }: { page: PageDef }) {
             </section>
           )}
           {page.examples.map((e) => {
-            const source = loadExample(page.slug, e.id)?.source ?? '';
+            const source = loadedExample(page.slug, e.id)?.source ?? '';
             return (
               <section key={e.id} aria-labelledby={`src-${e.id}`} className="doc-section">
                 <h3 id={`src-${e.id}`}>{e.title}</h3>
@@ -578,7 +583,7 @@ function ComponentPage({ page }: { page: PageDef }) {
           <Bullets id="a11y" title="Accessibility" items={page.accessibility} />
           <Bullets id="responsive" title="Responsive behaviour" items={page.responsive} />
           {page.notes && <Bullets id="notes" title={page.notes.title} items={page.notes.points} />}
-          <RelatedCards page={page} />
+          <RelatedCards others={data.related} />
         </section>
 
         <PrevNext page={page} />
@@ -615,14 +620,15 @@ function GuideBlock({ slug, section }: { slug: string; section: GuideSection }) 
           label={block.label}
           title={block.file ? `${block.label}` : block.label}
           lang={block.file ? 'tsx' : undefined}
-          code={block.file ? (exampleSource(slug, block.file) ?? '') : (block.text ?? '')}
+          code={block.file ? (guideSource(slug, block.file) ?? '') : (block.text ?? '')}
         />
       ))}
     </section>
   );
 }
 
-function GuidePage({ page }: { page: PageDef }) {
+function GuidePage({ data }: { data: PageData }) {
+  const { page } = data;
   const sections = useMemo(() => page.guide ?? [], [page]);
   const rail = useMemo((): RailItem[] => [...sections.map((s) => ({ id: s.id, label: s.title })), ...(page.related.length ? [{ id: 'related', label: 'Related' }] : [])], [sections, page]);
   return (
@@ -636,7 +642,7 @@ function GuidePage({ page }: { page: PageDef }) {
           <GuideBlock key={section.id} slug={page.slug} section={section} />
         ))}
         <div className="doc-guide-related">
-          <RelatedCards page={page} level={2} />
+          <RelatedCards others={data.related} level={2} />
         </div>
         <PrevNext page={page} />
       </article>
@@ -664,10 +670,11 @@ function ShowcaseList({ id, title, items }: { id: string; title: string; items: 
   );
 }
 
-function ShowcasePage({ page }: { page: PageDef }) {
+function ShowcasePage({ data }: { data: PageData }) {
+  const { page } = data;
   const def = page.examples[0];
   const css = def ? exampleCss(page.slug, def.id) : undefined;
-  const parts = page.related.map(pageBySlug).filter((p): p is PageDef => Boolean(p));
+  const parts = data.related;
   return (
     <div className="doc-page is-wide doc-showcase" data-testid={`page-${page.slug}`}>
       <article className="doc-article">
@@ -710,9 +717,9 @@ function ShowcasePage({ page }: { page: PageDef }) {
               {parts.map((other) => (
                 <li key={other.slug}>
                   <Link to={pagePath(other)}>
-                    <span className="doc-related-eyebrow">{groupTitle(other)}</span>
+                    <span className="doc-related-eyebrow">{groupTitleOf(other.group)}</span>
                     <strong>{other.title}</strong>
-                    <span className="doc-related-lead">{leadOf(other)}</span>
+                    <span className="doc-related-lead">{other.lead}</span>
                   </Link>
                 </li>
               ))}
@@ -731,8 +738,8 @@ function ShowcasePage({ page }: { page: PageDef }) {
   );
 }
 
-export function PageView({ page }: { page: PageDef }) {
-  if (page.kind === 'showcase') return <ShowcasePage page={page} />;
-  return page.guide ? <GuidePage page={page} /> : <ComponentPage page={page} />;
+export function PageView({ data }: { data: PageData }) {
+  if (data.page.kind === 'showcase') return <ShowcasePage data={data} />;
+  return data.page.guide ? <GuidePage data={data} /> : <ComponentPage data={data} />;
 }
 

@@ -27,6 +27,7 @@
     --pu-color-scrim: rgba(17, 18, 20, 0.45);
     --pu-color-series-3: #d08a10;
     --pu-color-series-nepse: #3552c8;
+    --pu-color-series-nepse-soft: rgba(53, 82, 200, 0.1);
     --pu-color-shimmer-base: #dcdfd5;
     --pu-color-shimmer-highlight: #eceee7;
     --pu-color-surface: #f7f8f3;
@@ -94,6 +95,7 @@
     --pu-color-scrim: rgba(0, 0, 0, 0.6);
     --pu-color-series-3: #f5b84b;
     --pu-color-series-nepse: #8ea8ff;
+    --pu-color-series-nepse-soft: rgba(142, 168, 255, 0.14);
     --pu-color-shimmer-base: rgba(255, 255, 255, 0.07);
     --pu-color-shimmer-highlight: rgba(255, 255, 255, 0.12);
     --pu-color-surface: #17191c;
@@ -134,6 +136,7 @@
       --pu-color-scrim: rgba(0, 0, 0, 0.6);
       --pu-color-series-3: #f5b84b;
       --pu-color-series-nepse: #8ea8ff;
+      --pu-color-series-nepse-soft: rgba(142, 168, 255, 0.14);
       --pu-color-shimmer-base: rgba(255, 255, 255, 0.07);
       --pu-color-shimmer-highlight: rgba(255, 255, 255, 0.12);
       --pu-color-surface: #17191c;

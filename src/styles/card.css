@@ -10,6 +10,8 @@
   .kit-card-ic { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--pu-radius-lg); background: var(--pu-color-surface-tint); color: var(--pu-color-series-nepse) }
   .kit-card.flush > [role='tabpanel'] > .kit-tablebox { border: 0; border-radius: 0; background: transparent }
   .kit-card-t :is(h2, h3) { margin: 0; font: 600 15px / 20px var(--pu-font-display); color: var(--pu-color-text) }
+  .kit-card-t p.kit-card-eyebrow { margin: 0 0 6px; font: 600 12px / 1.3 var(--pu-font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--pu-color-text-muted) }
+  .kit-card.kit-card-lg .kit-card-t :is(h2, h3) { font: 600 24px / 1.2 var(--pu-font-display); letter-spacing: -0.02em }
   .kit-card-meta { margin-left: 6px; font-weight: 400; color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums }
   .kit-card-t p { margin: 2px 0 0; font: 400 13px / 18px var(--pu-font-body); color: var(--pu-color-text-muted) }
   .kit-card-t p.clip { white-space: nowrap; overflow: hidden; text-overflow: ellipsis }

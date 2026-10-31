@@ -55,7 +55,11 @@ export interface CompanySearchProps<T extends SymbolOption> {
   inputId?: string;
   /** The key shown in a finder: '/' (default, and bound here), another letter the page binds itself, or null for none. A picker shows none. */
   shortcut?: string | null;
-  /** Empty the field after a pick (an add field, ready for the next one). */
+  /**
+   * Empty the field and close the list after a pick (default true, an add field ready for the next one).
+   * `false` keeps what was typed in a finder, so a pick that only navigates leaves the query in place;
+   * a picker always closes.
+   */
   clearOnOpen?: boolean;
   /** A picker: the picked symbol (null: nothing yet). The field shows it with its name until it is clicked or focused. */
   value?: string | null;
@@ -78,7 +82,7 @@ export interface CompanySearchProps<T extends SymbolOption> {
 }
 
 
-export function CompanySearch<T extends SymbolOption>({ options, label, placeholder, onOpen: open, sub, tags, none, testId, optionTestId, listTestId, hideLabel, size = 'lg', inputId, shortcut = '/', value, valueName, meta, valueTestId, readOnly, error, loading, initialQuery, closeLabel = 'Close' }: CompanySearchProps<T>) {
+export function CompanySearch<T extends SymbolOption>({ options, label, placeholder, onOpen: open, sub, tags, none, testId, optionTestId, listTestId, hideLabel, size = 'lg', inputId, shortcut = '/', clearOnOpen = true, value, valueName, meta, valueTestId, readOnly, error, loading, initialQuery, closeLabel = 'Close' }: CompanySearchProps<T>) {
   const auto = useId();
   const id = inputId ?? `${auto}-in`;
   const picker = value !== undefined;
@@ -102,7 +106,7 @@ export function CompanySearch<T extends SymbolOption>({ options, label, placehol
   });
   const run = (e: ComboEvent) => {
     const r = comboStep({ ...live.current, picker }, e);
-    const next = r.pick ? comboClosed(r.state) : r.state;
+    const next = clearOnOpen && r.pick ? comboClosed(r.state) : r.state;
     live.current = next;
     setSt(next);
     if (sheet && !r.state.sheet) input.current?.focus();
@@ -119,7 +123,7 @@ export function CompanySearch<T extends SymbolOption>({ options, label, placehol
   const onOpen = (symbol: string) => {
     // A suggestion is a committed choice in both finder and picker modes.
     // Close the list (and the phone sheet) before notifying the consumer.
-    run({ type: 'close' });
+    if (clearOnOpen || picker) run({ type: 'close' });
     open(symbol);
   };
 

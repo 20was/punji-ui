@@ -1,0 +1,24 @@
+/* Punji UI styles.
+   Styles for order-book (the depth view). Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .kit-ob { display: grid; gap: 12px; min-width: 0 }
+  .kit-ob-t { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 13px; line-height: 18px; font-variant-numeric: tabular-nums }
+  .kit-ob-t th { padding: 0 8px 8px; font-size: 12px; line-height: 16px; font-weight: 500; color: var(--pu-color-text-muted); text-align: left; border-bottom: 1px solid var(--pu-color-border) }
+  .kit-ob-t th.end { text-align: right }
+  .kit-ob-t td { position: relative; height: 32px; padding: 0 8px; white-space: nowrap }
+  .kit-ob-t tbody tr + tr td { border-top: 1px solid var(--pu-color-border) }
+  .kit-ob-t td.q span { position: relative }
+  .kit-ob-t td.q.s { text-align: right }
+  .kit-ob-t td.p { font-weight: 600 }
+  .kit-ob-t td.p.b { text-align: right; color: var(--pu-color-gain) }
+  .kit-ob-t td.p.s { color: var(--pu-color-loss) }
+  .kit-ob-bar { position: absolute; top: 4px; bottom: 4px; border-radius: var(--pu-radius-sm) }
+  .kit-ob-bar.b { right: 0; background: var(--pu-color-gain-soft) }
+  .kit-ob-bar.s { left: 0; background: var(--pu-color-loss-soft) }
+  .kit-ob-tot { display: grid; gap: 6px }
+  .kit-ob-split { display: flex; height: 6px; border-radius: 3px; background: var(--pu-color-surface-tint); overflow: hidden }
+  .kit-ob-split > i { display: block; height: 100% }
+  .kit-ob-split > i.b { background: var(--pu-color-gain) }
+  .kit-ob-split > i.s { background: var(--pu-color-loss) }
+  .kit-ob-tot p { display: flex; justify-content: space-between; gap: 12px; margin: 0; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums }
+}

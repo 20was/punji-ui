@@ -110,6 +110,10 @@
       "types": "./dist/locked-note/LockedNote.d.ts",
       "default": "./dist/locked-note/LockedNote.js"
     },
+    "./order-book": {
+      "types": "./dist/order-book/OrderBookDepth.d.ts",
+      "default": "./dist/order-book/OrderBookDepth.js"
+    },
     "./overlay": {
       "types": "./dist/overlay/Overlay.d.ts",
       "default": "./dist/overlay/Overlay.js"

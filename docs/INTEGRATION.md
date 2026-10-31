@@ -72,16 +72,31 @@ extra; punji-web's Vite compiles ESM from `node_modules`. Vite warns about the `
 
 From the diffs in COMPONENT-INVENTORY.md; punji-web features missing in punji-ui:
 
-- `Card`: `eyebrow`, `size="lg"` (web CSS `kit-card-eyebrow`, `kit-card-lg`).
-- `ListFilter`: `name`, `selectOnFocus`.
-- `Rows` `DataRow`: `bar`, `note` slots (`kit-data-bar`, `kit-data-note`, `has-bar`).
-- `StatusPill`: tone `info`.
-- `CompanySearch`: `clearOnOpen` (ui currently always closes/clears on pick).
-- `Button` (and `StatusPill`, `Rows`, `Layout` links): absolute URLs open in a new tab with
-  `rel="noopener noreferrer"` and an arrow in web; plain `<a>` in ui. Decide and document one behaviour.
-- `compact.ts`: ui hardcodes `Rs`, web uses the reader-language prefix. Make it a parameter.
-- `OrderBook`: two different components share a name. Rename one (for example `OrderBookTable` for the
-  financial one, or fold the web API into it) before the web module migrates.
+Status: every item below is closed in punji-ui (branch `feat/close-web-divergence`, one minor changeset).
+
+- `Card`: `eyebrow`, `size="lg"`. Done.
+- `ListFilter`: `name`, `selectOnFocus`. Done.
+- `Rows` `DataRow`: `bar`, `note` slots. Done.
+- `StatusPill`: tone `info` (new token `--pu-color-series-nepse-soft`, light and dark). Done.
+- `CompanySearch`: `clearOnOpen`, default `true` (ui's existing behaviour: empty and close after a pick).
+  Web finders that omit the prop keep their typed query today, so those call sites pass
+  `clearOnOpen={false}`; add-fields that already pass it keep passing `clearOnOpen`. A picker always closes.
+- `Button`: an absolute `http(s)` URL now renders `<a target="_blank" rel="noopener noreferrer">` and the
+  arrow (CSS already shipped), never through `linkComponent`, matching web. In-app paths render through
+  `linkComponent`. `StatusPill`, `ValueRow` (Rows) and `PageHeader` (Layout) links match web: web used the
+  router `Link` for them (`ValueRow` a plain `<a>` for absolute URLs), so they take `linkComponent` and
+  open in the same tab. These four are the only link-capable modules in the (b) set; no web prop takes a
+  `to` or href that ui lacks.
+- `compact.ts`: `compactRs(value, units, from, mark = 'Rs')`; the web wrapper passes `rsMark()` (the
+  reader-language global stays in web; ui has no global state).
+- `OrderBook`: two different components shared a name. Resolution (additive, implemented): web's
+  component is `OrderBookDepth` in `@punji/ui/order-book` (same props as web: `bids`, `asks`, `levels`,
+  `totals`, `labels`, `testId`; types `BookLevel`, `OrderBookDepthLabels`), self-contained (its totals
+  split bar is inline, because `MeterBar` is not in ui yet). The existing `OrderBook` in
+  `@punji/ui/financial` (caller-formatted, display-only table with a missing-value marker) is unchanged.
+  When web migrates, change its `import { OrderBook }` to `OrderBookDepth` (an import-name codemod).
+  The longer-term option is to fold the two, for example an optional bars-and-totals mode on the
+  financial table; that is a design call for the owner.
 
 punji-ui features missing in punji-web (no work, but they define the target): `Popover` portal mode,
 `Select` native-picker enhancement, `DataTable` search/pagination/selection/states, `Field.trailingAction`.
@@ -282,7 +297,7 @@ That is a stop-gap; the target is a standalone portal in punji-ui.
 2. One theme or two: should punji-ui render the same on the public host (`--v2-*` green) and the account
    host (lime)? This decides the shape of the token bridge.
 3. Token source of truth (monorepo `tokens.json` versus `tokens.css` here).
-4. External-link behaviour of `Button` and friends, and the `OrderBook` name.
+4. Resolved upstream (section 3.1): `Button` external links open a new tab; web's OrderBook becomes `OrderBookDepth`. Still open: whether to fold the two order books into one component.
 5. Where docs for the app-specific components live after the portal moves.
 6. Whether Cloudflare Workers Builds for punji-web needs registry access configuration for `npm ci`
    (unverified: only the public registry is needed for an unscoped-auth public package).

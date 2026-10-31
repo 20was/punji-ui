@@ -17,7 +17,7 @@
     "name": "card (import from '@punji/ui/card')",
     "path": "dist/card/Card.js",
     "import": "*",
-    "limit": "560 B",
+    "limit": "580 B",
     "gzip": true
   },
   {
@@ -137,6 +137,13 @@
     "path": "dist/locked-note/LockedNote.js",
     "import": "*",
     "limit": "500 B",
+    "gzip": true
+  },
+  {
+    "name": "order-book (import from '@punji/ui/order-book')",
+    "path": "dist/order-book/OrderBookDepth.js",
+    "import": "*",
+    "limit": "1.1 kB",
     "gzip": true
   },
   {
@@ -276,13 +283,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "40 kB",
+    "limit": "40.2 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "14 kB",
+    "limit": "14.4 kB",
     "rolldown": false,
     "gzip": true
   },

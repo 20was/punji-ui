@@ -9,6 +9,7 @@ import {
   formatNPR, formatNepalNumber, formatPercent, useToast, type CommandItem, type DateRange, type FinancialColumn,
 } from '@punji/ui';
 import { holdings, symbols, today, weeklyValue, type Holding } from '../../fixtures/market-data.ts';
+import { chartsRegistry } from './fixtures-charts.tsx';
 import { domainRegistry } from './fixtures-domain.tsx';
 import { kitRegistry } from './fixtures-kit.tsx';
 
@@ -315,6 +316,7 @@ export const registry: Record<string, () => ReactNode> = {
   'command-palette': CommandPaletteFixture, toast: ToastFixture,
   ...kitRegistry,
   ...domainRegistry,
+  ...chartsRegistry,
 };
 // Fixtures that draw their own full-width stage (shell, overlays).
 export const ownStage = new Set(['shell', 'drawer', 'sheet', 'popover', 'command-palette', 'toast']);

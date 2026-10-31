@@ -214,6 +214,22 @@
       "types": "./dist/column-chart/ColumnChart.d.ts",
       "default": "./dist/column-chart/ColumnChart.js"
     },
+    "./chart-math": {
+      "types": "./dist/chart-math/chartMath.d.ts",
+      "default": "./dist/chart-math/chartMath.js"
+    },
+    "./candlestick-chart": {
+      "types": "./dist/candlestick-chart/CandlestickChart.d.ts",
+      "default": "./dist/candlestick-chart/CandlestickChart.js"
+    },
+    "./performance-chart": {
+      "types": "./dist/performance-chart/PerformanceChart.d.ts",
+      "default": "./dist/performance-chart/PerformanceChart.js"
+    },
+    "./depth-chart": {
+      "types": "./dist/depth-chart/DepthChart.d.ts",
+      "default": "./dist/depth-chart/DepthChart.js"
+    },
     "./breakdown": {
       "types": "./dist/breakdown/Breakdown.d.ts",
       "default": "./dist/breakdown/Breakdown.js"

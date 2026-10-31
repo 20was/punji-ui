@@ -6,7 +6,7 @@
  * and Devanagari digits; DateField is the native date input; SymbolField is a
  * combobox over a list the page hands it (no request per keystroke).
  */
-import { useId, useMemo, useState, type InputHTMLAttributes, type ReactNode, type TextareaHTMLAttributes } from 'react';
+import { useId, useMemo, useState, type InputHTMLAttributes, type ReactNode, type Ref, type TextareaHTMLAttributes } from 'react';
 
 import { Select } from '../select/Select.tsx';
 import { searchSymbols, type SymbolOption } from '../format/format.ts';
@@ -177,15 +177,15 @@ export function SymbolField({ label, hint, error, testId, value, onChange, optio
 }
 
 /** An editable price with an optional source annotation, isolated from ordinary number fields. */
-export function PriceField({ label, source, hint, error, testId, value, onChange, id: idProp, size, hideLabel, ...rest }: InputProps & { /** A compact source annotation inside the editable price. */ source?: ReactNode }) {
+export function PriceField({ label, source, hint, error, testId, value, onChange, id: idProp, size, hideLabel, ...rest }: InputProps & { /** A compact source annotation inside the editable price. */ source?: ReactNode; /** React 19: a ref is a prop. */ ref?: Ref<HTMLInputElement> }) {
   const auto = useId();
   const id = idProp ?? auto;
   return (
     <Shell id={id} label={label} hint={hint} error={error} size={size} hideLabel={hideLabel}>
       <input
-        {...rest}
         inputMode="decimal"
         autoComplete="off"
+        {...rest}
         id={id}
         value={value}
         onChange={(e) => onChange(e.target.value)}

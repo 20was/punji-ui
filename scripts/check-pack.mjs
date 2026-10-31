@@ -6,7 +6,9 @@ import { execFileSync } from 'node:child_process';
 // Calendar/date pickers and the expanded financial table API add JS,
 // declarations and dedicated CSS. Keep a bounded allowance above the current
 // measured ~451 kB unpacked rather than letting the budget fail on valid output.
-const MAX_UNPACKED = 470 * 1024;
+// The generic money module and its three primitives (JS, declarations, CSS) bring the
+// measured size to ~495 kB; 520 kB keeps a small allowance above that.
+const MAX_UNPACKED = 520 * 1024;
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
 const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md']);
 const allowed = (p) => always.has(p) || /^dist\/.+\.(js|d\.ts|css)$/.test(p);

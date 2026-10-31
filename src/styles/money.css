@@ -1,0 +1,14 @@
+/* Punji UI styles.
+   Styles for MoneyDisplay, PriceChange and CurrencyInput. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .pu-money, .pu-change { font-variant-numeric: tabular-nums; white-space: nowrap; unicode-bidi: isolate }
+  .pu-money-missing, .pu-change-missing { color: var(--pu-color-text-muted) }
+  .pu-change { display: inline-flex; align-items: center; gap: 0.4em; font-weight: 600; color: var(--pu-color-text-muted) }
+  .pu-change.sm { font-size: 12px; line-height: 16px }
+  .pu-change-icon { flex: none; fill: currentColor; width: 0.75em; height: 0.75em }
+  .pu-change[data-tone='up'] { color: var(--pu-color-gain) }
+  .pu-change[data-tone='down'] { color: var(--pu-color-loss) }
+  .pu-change[data-convention='red-up'][data-tone='up'] { color: var(--pu-color-loss) }
+  .pu-change[data-convention='red-up'][data-tone='down'] { color: var(--pu-color-gain) }
+  .pu-currency-code { font: 600 12px / 16px var(--pu-font-body); letter-spacing: 0.04em; color: var(--pu-color-text-muted) }
+}

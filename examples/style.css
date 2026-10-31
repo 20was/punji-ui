@@ -2,3 +2,9 @@ body { margin: 0; }
 * { box-sizing: border-box; }
 .demo-controls { display: flex; flex-wrap: wrap; align-items: end; gap: var(--pu-space-4); }
 .demo-controls > :first-child { flex: 1; min-width: 200px; }
+.demo-money { display: grid; gap: var(--pu-space-4); padding: var(--pu-space-4); border-radius: var(--pu-radius-card); background: var(--pu-color-surface); }
+.demo-money h2 { margin: 0; font: 600 var(--pu-text-lg) / 1.3 var(--pu-font-display); }
+.demo-money-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--pu-space-4); align-items: start; }
+.demo-money-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--pu-space-3) var(--pu-space-4); margin: 0; }
+.demo-money-grid dt { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); }
+.demo-money-grid dd { margin: 0; font-weight: 600; }

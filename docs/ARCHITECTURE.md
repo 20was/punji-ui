@@ -37,6 +37,7 @@ choose smaller dependency graphs:
 - `@punji/ui/nepal/format`: Intl-based formatting and locale constants; no calendar converter or React.
 - `@punji/ui/nepal/calendar`: BS conversion, explicit instant/date handling and fiscal years; owns the converter dependency.
 - `@punji/ui/nepal/money`: exact decimal/minor-unit arithmetic; no calendar converter or React.
+- `@punji/ui/money`: currency-generic exact formatting and parsing of minor units (bigint) with Intl-derived exponents; pure, and may import only `nepal/decimal`, `nepal/money` and `calculations/rounding` (enforced by `check-boundaries`). `money-display`, `price-change` and `currency-input` are the React primitives over it.
 
 `check-boundaries.mjs` runs during lint and prevents Nepal modules from importing
 components, React, browser globals or unreviewed external modules. Only the

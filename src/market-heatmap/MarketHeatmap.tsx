@@ -21,6 +21,7 @@ export interface HeatmapItem {
   id: string;
   /** Printed on the tile. */
   label: string;
+  /** The company's name, used in the tile's spoken name and in the data table. */
   name?: string;
   /** Area weight: turnover, market cap. Missing, zero and negative sizes are not drawn. */
   size: number | null;
@@ -58,6 +59,7 @@ const EN: HeatmapLabels = {
 };
 
 export interface MarketHeatmapProps {
+  /** What to draw. The layout orders tiles by size; items without a positive size are listed under the map and in the table but not drawn. */
   items: readonly HeatmapItem[];
   /** Names the map ("NEPSE turnover heatmap"). */
   label: string;
@@ -69,10 +71,13 @@ export interface MarketHeatmapProps {
   scaleMax?: number;
   /** Width over height of the map. Default 1.5; use about 1 on a phone. */
   aspect?: number;
+  /** Which colour means up. Default green-up. */
   convention?: 'green-up' | 'red-up';
   /** Tiles become buttons that call this with the item's id. */
   onSelect?: (id: string) => void;
+  /** Overrides for the legend, table and tile words, in the reader's language. */
   labels?: Partial<HeatmapLabels>;
+  /** Sets `data-testid` on the figure. */
   testId?: string;
 }
 

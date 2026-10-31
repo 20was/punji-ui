@@ -30,17 +30,23 @@ export interface PaginationProps {
   page: number;
   /** How many items there are in all, and how many a page holds. */
   total: number;
+  /** How many items one page holds. */
   pageSize: number;
+  /** Called with the one-based page the reader chose. */
   onPageChange: (page: number) => void;
   /** What the pager moves through ("Holdings pages"). */
   label: string;
   /** Its words: previous and next, one page's name ("Page 2"), and the range ("6–10" and "12" become "6–10 of 12"). */
   previousLabel?: string;
+  /** The next button's accessible name. Default 'Next page'. */
   nextLabel?: string;
+  /** A page button's accessible name from its number. Default 'Page n'. */
   pageLabel?: (page: number) => string;
+  /** Builds the range text from the range ("6–10") and the total ("12"). Default "6–10 of 12". */
   rangeLabel?: (range: string, total: string) => string;
   /** Page numbers are drawn up to this many pages (default 4); past it only the range shows. */
   maxNumbers?: number;
+  /** Sets `data-testid` on the nav; the buttons get `<id>-prev` and `<id>-next`. */
   testId?: string;
 }
 

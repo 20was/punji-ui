@@ -47,18 +47,27 @@ export interface WatchlistProps<T extends Quote = Quote> {
   onReorder?: (symbols: string[]) => void;
   /** Called with the symbol to drop. Give it to show the remove buttons. */
   onRemove?: (symbol: string) => void;
+  /** The names of the move and remove buttons and the announcements, in the reader's language. Partial overrides of the English defaults. */
   labels?: Partial<WatchlistLabels>;
+  /** Currency and locale of the prices. Default NPR, en-IN, no currency mark. */
   money?: MoneyFormatConfig;
+  /** Which colour means up. Default green-up. */
   convention?: 'green-up' | 'red-up';
+  /** Spoken direction words for the change. */
   changeLabels?: PriceChangeLabels;
   /** Trend line per row when a quote has history (default true). */
   showTrend?: boolean;
   /** LTP counts to each new value and flashes its direction. */
   live?: boolean;
+  /** What the symbol cell holds, for example a link to the stock page. Default the symbol over the name. */
   renderSymbol?: (quote: T) => ReactNode;
+  /** The title shown when `quotes` is empty. Default 'Your watchlist is empty'. */
   emptyTitle?: ReactNode;
+  /** A line under the empty title: why it is empty or what to do. */
   emptyBody?: ReactNode;
+  /** One button or link under the empty state, for example to find a company. */
   emptyAction?: ReactNode;
+  /** Sets `data-testid` on the section; each row gets `<id>-row-<symbol>`. */
   testId?: string;
 }
 

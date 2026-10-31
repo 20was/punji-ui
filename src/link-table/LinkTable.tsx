@@ -19,7 +19,9 @@ import type { LinkComponent } from '../internal/link.tsx';
 import { ChevronRight } from '../layout/Layout.tsx';
 
 export interface LinkColumn {
+  /** Unique, stable key. */
   key: string;
+  /** The column head's words (drawn for the eye only). */
   label: ReactNode;
   /** The column's grid track ("minmax(0, 1.3fr)", "88px", "auto"). */
   track: string;
@@ -32,7 +34,9 @@ const Ctx = createContext<{ ends: readonly boolean[]; linkComponent?: LinkCompon
 export function LinkTable({ label, columns, children, chevron = true, heads = true, compactAt = 560, linkComponent, testId }: {
   /** Names the list for screen readers. */
   label: string;
+  /** The grid tracks and their heads, in cell order. */
   columns: readonly LinkColumn[];
+  /** The `LinkTableRow`s. */
   children: ReactNode;
   /** A chevron at each row's end (rows that open something). */
   chevron?: boolean;
@@ -42,6 +46,7 @@ export function LinkTable({ label, columns, children, chevron = true, heads = tr
   compactAt?: 560 | 360;
   /** The link element for in-app row addresses (wrap your router's link). Default: a plain <a>. */
   linkComponent?: LinkComponent;
+  /** Sets `data-testid` on the root. */
   testId?: string;
 }) {
   const tracks = `${columns.map((c) => c.track).join(' ')}${chevron ? ' 14px' : ''}`;
@@ -73,6 +78,7 @@ export interface LinkTableRowProps {
   href?: string;
   /** The link's full name when its cells say less than it means. */
   ariaLabel?: string;
+  /** Sets `data-testid` on the row. */
   testId?: string;
 }
 
@@ -123,13 +129,17 @@ export function LinkTableRow({ cells, compact, href, ariaLabel, testId }: LinkTa
  * ("100 shares").
  */
 export function StockLabel({ symbol, tag, line, extra, shrink = false, testId }: {
+  /** The first line; it never shrinks. */
   symbol: ReactNode;
+  /** A small element after the symbol, for example a StatusPill. */
   tag?: ReactNode;
+  /** The second line (a name); it takes the room left and ends in an ellipsis. */
   line?: ReactNode;
   /** After the line and a "·", never cut ("100 shares"): the line gives way first. */
   extra?: ReactNode;
   /** The first line is a name, not a symbol (a broker, whose number is its badge): it gives way with an ellipsis before the figures beside it do. */
   shrink?: boolean;
+  /** Sets `data-testid` on the label. */
   testId?: string;
 }) {
   return (

@@ -12,11 +12,14 @@
 import type { ReactNode } from 'react';
 
 export interface Step {
+  /** The step's name. */
   title: ReactNode;
+  /** One line under the title. */
   body?: ReactNode;
 }
 
 export function StepList({ title, eyebrow, lead, foot, steps, current = 0, tone = 'inverse', layout = 'tiles', headingLevel = 2, onDismiss, dismissLabel = 'Dismiss', dismissTestId, testId }: {
+  /** The heading over the steps. */
   title?: ReactNode;
   /** A small label over the title ("New here"). */
   eyebrow?: ReactNode;
@@ -24,10 +27,13 @@ export function StepList({ title, eyebrow, lead, foot, steps, current = 0, tone 
   lead?: ReactNode;
   /** A quiet line under the steps. */
   foot?: ReactNode;
+  /** The steps, in order. */
   steps: readonly Step[];
   /** The step to do now (0-based); -1 for none. */
   current?: number;
+  /** 'inverse' (default) or 'plain'. */
   tone?: 'inverse' | 'plain';
+  /** 'tiles' (default), 'rows' or 'banner'. */
   layout?: 'tiles' | 'rows' | 'banner';
   /** The title's heading level, to fit the page's outline (default 2). */
   headingLevel?: 2 | 3 | 4;
@@ -35,7 +41,9 @@ export function StepList({ title, eyebrow, lead, foot, steps, current = 0, tone 
   onDismiss?: () => void;
   /** The dismiss button's accessible name. */
   dismissLabel?: string;
+  /** Sets `data-testid` on the dismiss button. */
   dismissTestId?: string;
+  /** Sets `data-testid` on the root. */
   testId?: string;
 }) {
   const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';

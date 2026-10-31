@@ -39,6 +39,7 @@ export function SummaryFigure({ label, value, note, tone = 'inverse', size = 'md
 const has = (n: ReactNode) => n !== undefined && n !== null && n !== false && n !== '';
 
 export interface HeadlineFigureProps {
+  /** A quiet label above the figure. */
   label?: ReactNode;
   /** A small control at the end of the label's line (an amounts toggle). */
   labelAction?: ReactNode;
@@ -52,8 +53,11 @@ export interface HeadlineFigureProps {
   aside?: ReactNode;
   /** Under the figure: FigureChips. */
   children?: ReactNode;
+  /** 'xl' (default) or 'lg'. */
   size?: 'xl' | 'lg';
+  /** Sets `data-testid` on the root. */
   testId?: string;
+  /** Sets `data-testid` on the figure. */
   valueTestId?: string;
 }
 
@@ -94,6 +98,7 @@ export interface FigureChipProps {
   children: ReactNode;
   /** Spoken before the text and not shown ("Gain", "Loss"), for a change whose text has no sign or word. */
   srLabel?: string;
+  /** Sets `data-testid` on the chip. */
   testId?: string;
 }
 

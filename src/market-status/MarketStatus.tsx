@@ -35,7 +35,9 @@ export interface MarketStatusProps {
   detail?: ReactNode;
   /** Names the market for screen readers ("NEPSE"); spoken before the state. */
   market?: string;
+  /** 'sm' for a smaller pill in tight rows. Default the regular size. */
   size?: 'sm';
+  /** Sets `data-testid` on the status element. */
   testId?: string;
 }
 

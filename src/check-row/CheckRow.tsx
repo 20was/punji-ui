@@ -22,7 +22,16 @@ import { StatusPill } from '../status-pill/StatusPill.tsx';
 export type CheckTone = 'gain' | 'warn' | 'loss' | 'info' | 'series3' | 'neutral';
 
 /** The icon chip that leads a row or a panel: the tone tints it. `size="lg"` is the 44px tile of a title. Decorative: the words beside it carry the meaning. */
-export function StatusDisc({ tone = 'neutral', size, children, testId }: { tone?: CheckTone; size?: 'lg'; children: ReactNode; testId?: string }) {
+export function StatusDisc({ tone = 'neutral', size, children, testId }: {
+  /** The disc's tint. Default neutral. */
+  tone?: CheckTone;
+  /** 'lg' for the 44px tile that leads a title. */
+  size?: 'lg';
+  /** The icon, drawn in the disc. */
+  children: ReactNode;
+  /** Sets `data-testid` on the disc. */
+  testId?: string;
+}) {
   return (
     <span className={`kit-disc${tone === 'neutral' ? '' : ` ${tone}`}${size === 'lg' ? ' lg' : ''}`} aria-hidden="true" data-testid={testId} data-tone={tone}>
       {children}
@@ -37,12 +46,17 @@ export function StatusDisc({ tone = 'neutral', size, children, testId }: { tone?
  * name (`label` or `labelledBy`). Its width decides the rows' layout.
  */
 export function CheckList({ children, label, labelledBy, role, onKeyDown, testId }: {
+  /** The `CheckRow`s. */
   children: ReactNode;
+  /** Names the list for screen readers. A tab list needs this or `labelledBy`. */
   label?: string;
+  /** The id of an element that names the list. */
   labelledBy?: string;
+  /** 'list' (default) or 'tablist' for a vertical tab list beside its panel. */
   role?: 'tablist' | 'list';
   /** Tab list only: a key handler that runs before the built-in arrow keys. */
   onKeyDown?: (e: KeyboardEvent<HTMLElement>) => void;
+  /** Sets `data-testid` on the list. */
   testId?: string;
 }) {
   if (role === 'tablist')
@@ -88,6 +102,7 @@ export interface CheckRowProps {
   icon: ReactNode;
   /** The disc's tint: the check's tone ('neutral' for a row with no verdict). */
   tone?: CheckTone;
+  /** The check's name, the row's main text. */
   title: ReactNode;
   /** One line under the title: what the check found, or the row's state. */
   line?: ReactNode;
@@ -105,7 +120,9 @@ export interface CheckRowProps {
   status?: { label: ReactNode; tone?: 'gain' | 'warn' | 'loss' } | null;
   /** 'check' (default): a check with a verdict; 'report': a quieter row of what a report holds. */
   kind?: 'check' | 'report';
+  /** Makes the row a button (when it has no `action`). With `tab` it is a tab. */
   onClick?: () => void;
+  /** Makes the row a link (when it has no `action`). */
   href?: string;
   /** The link element for an in-app `href` (wrap your router's link). Default: a plain <a>. Absolute http(s) addresses are always a plain <a>. */
   linkComponent?: LinkComponent;
@@ -119,9 +136,11 @@ export interface CheckRowProps {
   tab?: { selected: boolean; controls: string; id: string; tabIndex: number };
   /** The row's whole sentence for screen readers, when the visible words are short forms. */
   ariaLabel?: string;
+  /** Sets `aria-haspopup` on a button row that opens a menu or dialog. */
   ariaHasPopup?: AriaAttributes['aria-haspopup'];
   /** A `data-row` hook for the caller (analytics-free: a plain attribute). */
   dataRow?: string;
+  /** Sets `data-testid` on the row; the figure gets `<id>-value` and the status `<id>-status`. */
   testId?: string;
 }
 

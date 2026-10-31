@@ -24,6 +24,7 @@ export interface SparklineProps {
   values?: readonly (number | null | undefined)[] | null;
   /** The drawing's own size in px (the aspect ratio when `fluid`). */
   width?: number;
+  /** Height of the drawing in px (with `width`, the aspect ratio when `fluid`). Default 28. */
   height?: number;
   /** Default: gain when the last value is above the first, loss when below, flat when equal. */
   tone?: SparklineTone;
@@ -33,6 +34,7 @@ export interface SparklineProps {
   maxPoints?: number;
   /** Names it (role img); decorative without. */
   label?: string;
+  /** Sets `data-testid` on the drawing. */
   testId?: string;
 }
 

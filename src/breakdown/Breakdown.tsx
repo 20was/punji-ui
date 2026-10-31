@@ -15,9 +15,11 @@ import type { ReactNode } from 'react';
 export interface BreakdownProps {
   /** BreakdownRows. */
   children: ReactNode;
+  /** 'inverse' (default): the inverse surface, for a form's summary. 'tint': a quiet tinted ground. */
   tone?: 'inverse' | 'tint';
   /** Announce changes politely as a form is filled. */
   live?: boolean;
+  /** Sets `data-testid` on the list. */
   testId?: string;
 }
 
@@ -30,6 +32,7 @@ export function Breakdown({ children, tone = 'inverse', live, testId }: Breakdow
 }
 
 export interface BreakdownRowProps {
+  /** What the amount is ("Sale amount"). */
   label: ReactNode;
   /** A quiet line under the label ("0.4% of the amount"). */
   note?: ReactNode;
@@ -39,6 +42,7 @@ export interface BreakdownRowProps {
   total?: boolean;
   /** Tint the amount as a gain or a loss; the amount also carries its sign. */
   tone?: 'up' | 'down';
+  /** Sets `data-testid` on the amount. */
   testId?: string;
 }
 

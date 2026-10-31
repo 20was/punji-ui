@@ -29,12 +29,15 @@ import { devWarn } from '../internal/devWarn.ts';
 export type BarTone = 'gain' | 'loss' | 'neutral' | 'nepse' | 'chart';
 
 export interface SplitPart {
+  /** Unique, stable key. */
   key: string;
   /** Its share of the whole. Zero, negative and non-finite values draw nothing (a negative share has no width). */
   value: number;
+  /** The part's colour. */
   tone: BarTone;
   /** Printed under the bar ("141 up"). */
   label?: ReactNode;
+  /** Sets `data-testid` on the part's label. */
   testId?: string;
 }
 
@@ -45,9 +48,11 @@ const finite = (v: unknown): v is number => typeof v === 'number' && Number.isFi
 const share = (value: number, max: number) => (finite(value) && finite(max) && max > 0 ? Math.min(100, (Math.abs(value) / max) * 100) : 0);
 
 export function SplitBar({ parts, label, testId }: {
+  /** The parts of the whole, in order. A part's share is its `value` over the sum of the positive values. */
   parts: readonly SplitPart[];
   /** Names the bar for screen readers when no words are printed under it. */
   label?: string;
+  /** Sets `data-testid` on the root. */
   testId?: string;
 }) {
   const shown = parts.filter((p) => finite(p.value) && p.value > 0);
@@ -74,10 +79,13 @@ export function SplitBar({ parts, label, testId }: {
 }
 
 export function DivergingBar({ value, max, label, testId }: {
+  /** Positive grows right of the centre line, negative grows left, on the scale where `max` is the end of either side. */
   value: number;
   /** The scale's end on either side (the largest move among the rows). */
   max: number;
+  /** Names the bar (an image) with its value in words. Without it the bar is decorative. */
   label?: string;
+  /** Sets `data-testid` on the bar. */
   testId?: string;
 }) {
   const w = share(value, max);
@@ -97,6 +105,7 @@ export interface NetBarTip {
 }
 
 export function NetBar({ value, max, text, tip, testId }: {
+  /** The net: positive grows right of the centre line, negative left, on the scale where `max` is the end of either side. */
   value: number;
   /** The scale's end on either side (the largest net among the rows). */
   max: number;
@@ -104,6 +113,7 @@ export function NetBar({ value, max, text, tip, testId }: {
   text: ReactNode;
   /** What the net is made of, read out on hover and spoken after the figure. */
   tip?: NetBarTip;
+  /** Sets `data-testid` on the root; the tip gets `<id>-tip`. */
   testId?: string;
 }) {
   const [anchor, setAnchor] = useState(NO_ANCHOR);
@@ -140,7 +150,12 @@ export function NetBar({ value, max, text, tip, testId }: {
 }
 
 /** A NetBar column's head: what each side of the centre line means. */
-export function NetBarHead({ left, right }: { left: ReactNode; right: ReactNode }) {
+export function NetBarHead({ left, right }: {
+  /** What the left side of the centre line means ("Net sold"). */
+  left: ReactNode;
+  /** What the right side means ("Net bought"). */
+  right: ReactNode;
+}) {
   return (
     <span className="kit-netbar-h">
       <span>

@@ -36,6 +36,7 @@ const clamp = (v: number) => Math.max(0, Math.min(100, v));
 const finite = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
 
 export function MeterBar({ parts, max, marker, label, testId }: {
+  /** The segments laid end to end: each a `value` on the scale and a `tone`. */
   parts: readonly { value: number; tone: MeterTone }[];
   /** The scale's whole (default: the parts' sum). */
   max?: number;
@@ -43,6 +44,7 @@ export function MeterBar({ parts, max, marker, label, testId }: {
   marker?: number | null;
   /** Names the bar (an img); without it the bar is decorative. */
   label?: string;
+  /** Sets `data-testid` on the bar. */
   testId?: string;
 }) {
   const whole = max ?? parts.reduce((n, p) => n + Math.max(0, p.value), 0);
@@ -59,12 +61,14 @@ export function MeterBar({ parts, max, marker, label, testId }: {
 }
 
 export interface RangeMark {
+  /** Where the mark sits, on the same scale as the domain. */
   value: number;
   /**
    * strong: the value itself (a price); accent: a reference (an alert); dot: the value as a round mark among
    * others (a company among its peers); tick: a quiet reference (a median); edge: a label only, at an end.
    */
   kind: 'strong' | 'accent' | 'dot' | 'tick' | 'edge';
+  /** Printed under the mark. Hidden when the bar has a `label` of its own. */
   label?: ReactNode;
 }
 
@@ -75,6 +79,7 @@ export function RangeBar({ head, fill, span, marks = [], domain, label, legend, 
   fill?: number | null;
   /** The track is filled between these two values (a month's low and high) instead of from the start; give the domain so rows share one scale. */
   span?: readonly [number, number];
+  /** The marks on the track, each a value, a kind and an optional label. */
   marks?: readonly RangeMark[];
   /** The track's ends; default: the smallest and largest of fill, span and marks. */
   domain?: readonly [number, number];
@@ -82,6 +87,7 @@ export function RangeBar({ head, fill, span, marks = [], domain, label, legend, 
   label?: string;
   /** Three labels in fixed places under the track (the low end, the middle, the high end), instead of labels under the marks. */
   legend?: readonly [ReactNode, ReactNode, ReactNode];
+  /** Sets `data-testid` on the bar. */
   testId?: string;
 }) {
   const values = [fill, ...(span ?? []), ...marks.map((m) => m.value)].filter(finite);
@@ -126,12 +132,15 @@ export function RangeBar({ head, fill, span, marks = [], domain, label, legend, 
 }
 
 export interface ShareItem {
+  /** Unique, stable key. */
   key: string;
+  /** The share's name in the legend. */
   label: ReactNode;
   /** A second line under the label (the stocks in a sector). */
   sub?: ReactNode;
   /** Share of the whole, 0 to 100. */
   pct: number;
+  /** The share's colour in the bar and the legend. Use `SHARE_TONES` for distinct categories. */
   tone: MeterTone;
   /** Printed share; default: pct to one decimal. */
   value?: ReactNode;
@@ -139,6 +148,7 @@ export interface ShareItem {
   onSelect?: () => void;
   /** With onSelect: this item is the one chosen (aria-pressed). */
   selected?: boolean;
+  /** Sets `data-testid` on the legend item. */
   testId?: string;
 }
 
@@ -169,7 +179,14 @@ export type ShareLegendLayout = 'columns' | 'rows' | 'list' | 'grid';
 const LEGEND_CLASS: Record<ShareLegendLayout, string> = { columns: '', rows: ' rows one', list: ' list one', grid: ' rows grid' };
 
 /** The legend alone, as rows (`layout="rows"`, beside a ShareDonut), a compact one-column list (`"list"`), two columns, or a grid of rows (`"grid"`, beside a wide ring). */
-export function ShareLegend({ items, layout = 'columns', label }: { items: readonly ShareItem[]; layout?: ShareLegendLayout; label?: string }) {
+export function ShareLegend({ items, layout = 'columns', label }: {
+  /** The shares, in legend order. */
+  items: readonly ShareItem[];
+  /** 'columns' (default), 'rows', 'list' or 'grid'. */
+  layout?: ShareLegendLayout;
+  /** Names the legend list for screen readers. */
+  label?: string;
+}) {
   return (
     <ul className={`kit-share-legend${LEGEND_CLASS[layout]}`} aria-label={label}>
       {items.map((s) => (
@@ -182,6 +199,7 @@ export function ShareLegend({ items, layout = 'columns', label }: { items: reado
 }
 
 export function ShareBar({ items, label, legend = 'columns', foot, testId }: {
+  /** The shares, in bar and legend order. Each `pct` is 0 to 100. */
   items: readonly ShareItem[];
   /** Names the bar for screen readers (the shares in words). */
   label: string;
@@ -189,6 +207,7 @@ export function ShareBar({ items, label, legend = 'columns', foot, testId }: {
   legend?: 'columns' | 'list' | 'grid' | 'none';
   /** A quiet line under the legend: what the bar leaves out. */
   foot?: ReactNode;
+  /** Sets `data-testid` on the root. */
   testId?: string;
 }) {
   const drawn = items.filter((s) => s.pct > 0);
@@ -206,7 +225,9 @@ export function ShareBar({ items, label, legend = 'columns', foot, testId }: {
 }
 
 export interface DistributionItem {
+  /** Unique, stable key. */
   key: string;
+  /** The step's name in the legend. */
   label: ReactNode;
   /** How many sit at this step. */
   count: number;
@@ -214,8 +235,11 @@ export interface DistributionItem {
   step: ScaleStep;
   /** The count as printed (grouped digits); default: the count. */
   value?: ReactNode;
+  /** Makes the legend item a button (filter by it, open it). */
   onSelect?: () => void;
+  /** With `onSelect`: this item is the one chosen (`aria-pressed`). */
   selected?: boolean;
+  /** Sets `data-testid` on the legend item. */
   testId?: string;
 }
 
@@ -227,6 +251,7 @@ export function DistributionBar({ items, label, foot, testId }: {
   label: string;
   /** What the bar leaves out ("21 low confidence and 12 not rated are left out"). */
   foot?: ReactNode;
+  /** Sets `data-testid` on the root. */
   testId?: string;
 }) {
   const total = items.reduce((n, i) => n + Math.max(0, i.count), 0);
@@ -247,13 +272,17 @@ const C = 2 * Math.PI * R;
 
 /** The same shares as a ring with a count in the middle. */
 export function ShareDonut({ items, count, unit, label, size, testId }: {
+  /** The shares around the ring: key, `pct` (0 to 100) and tone. */
   items: readonly Pick<ShareItem, 'key' | 'pct' | 'tone'>[];
+  /** Printed in the middle of the ring. */
   count?: ReactNode;
+  /** A small word under the count ("holdings"). */
   unit?: ReactNode;
   /** Names the ring (the shares in words). */
   label: string;
   /** 'sm': a 120px ring, for two or three shares beside their rows. */
   size?: 'sm';
+  /** Sets `data-testid` on the ring. */
   testId?: string;
 }) {
   const share = (s: Pick<ShareItem, 'pct'>) => (Number.isFinite(s.pct) ? Math.max(0, s.pct) : 0) / 100;

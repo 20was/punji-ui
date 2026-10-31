@@ -29,7 +29,12 @@ const PATHS: Record<StateIcon, string> = {
 };
 
 /** One of the state icons, drawn in the current colour (decorative). */
-export function StateGlyph({ name, size = 18 }: { name: StateIcon; size?: number }) {
+export function StateGlyph({ name, size = 18 }: {
+  /** Which icon. */
+  name: StateIcon;
+  /** Width and height in px. Default 18. */
+  size?: number;
+}) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d={PATHS[name]} />
@@ -38,10 +43,13 @@ export function StateGlyph({ name, size = 18 }: { name: StateIcon; size?: number
 }
 
 export function InlineState({ icon, tone, title, body, actions, layout = 'stack', bare = false, role, className, testId }: {
+  /** The state icon in the tile (decorative). */
   icon: StateIcon;
   /** The icon tile's colour: error (loss), warn (amber), or quiet (default). */
   tone?: 'error' | 'warn';
+  /** What the state is, in words ("Not included on this account"). */
   title?: ReactNode;
+  /** One line of detail under the title. */
   body?: ReactNode;
   /** Buttons or links (a Try again). */
   actions?: ReactNode;
@@ -53,6 +61,7 @@ export function InlineState({ icon, tone, title, body, actions, layout = 'stack'
   role?: 'alert' | 'status';
   /** Layout only (margin, flex, grid placement). */
   className?: string;
+  /** Sets `data-testid` on the root. */
   testId?: string;
 }) {
   return (

@@ -60,3 +60,104 @@ export const revenueByYear = [
   { key: '2081', label: '2081/82', short: '81/82', values: [498_000_000, 187_000_000] },
   { key: '2082', label: '2082/83', short: '82/83', values: [531_000_000, 214_000_000] },
 ] as const;
+
+// ---------------------------------------------------------------------------
+// Quotes, indices and series for the market components. Synthetic, deterministic.
+// Prices are bigint minor units (paisa), the shape of the library's `Quote`.
+// ---------------------------------------------------------------------------
+export interface SampleQuote {
+  symbol: string;
+  name: string;
+  sector: string;
+  ltp: bigint | null;
+  previousClose: bigint | null;
+  volume: number | null;
+  turnover: bigint | null;
+  history: number[];
+}
+
+const sectors: Record<string, string> = {
+  NABIL: 'Banking', NTC: 'Telecom', HDL: 'Manufacturing', NICA: 'Banking', SBL: 'Banking', UPPER: 'Hydropower',
+  CHCL: 'Hydropower', NLIC: 'Insurance', GBIME: 'Banking', SHIVM: 'Manufacturing', NMB: 'Banking', PRVU: 'Banking',
+};
+
+/** A repeatable wobbly walk that ends exactly on `last`, oldest first. */
+export function sampleCloses(last: number, seed: number, length = 30): number[] {
+  const out: number[] = [];
+  for (let i = 0; i < length; i += 1) {
+    const wobble = Math.sin((i + seed) * 1.3) * 0.012 + Math.cos((i + seed * 2) * 0.55) * 0.018;
+    const drift = ((i - (length - 1)) / length) * (seed % 2 === 0 ? 0.04 : -0.04);
+    out.push(Math.round(last * (1 + wobble + drift) * 100) / 100);
+  }
+  out[length - 1] = last;
+  return out;
+}
+
+export const quotes: readonly SampleQuote[] = holdings.map((h, i) => {
+  const ltp = BigInt(Math.round(h.ltp * 100));
+  const previousClose = BigInt(Math.round((h.ltp / (1 + h.change / 100)) * 100));
+  const volume = 4_000 + ((i * 7_919) % 52_000);
+  return {
+    symbol: h.symbol,
+    name: h.name,
+    sector: sectors[h.symbol] ?? 'Other',
+    ltp,
+    previousClose,
+    volume,
+    turnover: ltp * BigInt(volume),
+    history: sampleCloses(h.ltp, i + 1),
+  };
+});
+
+/** A board with the awkward rows a real feed has: not traded, no previous close. */
+export const quotesWithGaps: readonly SampleQuote[] = [
+  ...quotes.slice(0, 4),
+  { symbol: 'BFC', name: 'Butwal Finance', sector: 'Finance', ltp: null, previousClose: 41_250n, volume: null, turnover: null, history: [] },
+  { symbol: 'IPOX', name: 'Newly listed (no previous close)', sector: 'Other', ltp: 25_000n, previousClose: null, volume: 12_400, turnover: 310_000_000n, history: [] },
+];
+
+/** Index values in points. */
+export const marketIndices = [
+  { id: 'nepse', name: 'NEPSE', value: 2_714.38, previousValue: 2_689.12, history: sampleCloses(2_714.38, 3, 30) },
+  { id: 'sensitive', name: 'Sensitive', value: 487.21, previousValue: 489.9, history: sampleCloses(487.21, 4, 30) },
+  { id: 'float', name: 'Float', value: 189.64, previousValue: 188.77, history: sampleCloses(189.64, 5, 30) },
+  { id: 'banking', name: 'Banking', value: null, previousValue: 1_402.5, history: [] },
+] as const;
+
+/** A circuit-limit example: previous close Rs 487.50, +/-10% to the paisa. */
+export const circuit = { previousClose: 48_750n, lower: 43_875n, upper: 53_625n } as const;
+
+/** One symbol's closing prices for the price chart; one day is missing on purpose. */
+export const priceSeries = [
+  { label: '3 Nov', value: 478.2 },
+  { label: '4 Nov', value: 481.0 },
+  { label: '5 Nov', value: 484.9 },
+  { label: '6 Nov', value: null },
+  { label: '9 Nov', value: 486.1 },
+  { label: '10 Nov', value: 483.5 },
+  { label: '11 Nov', value: 485.8 },
+  { label: '12 Nov', value: 489.3 },
+  { label: '13 Nov', value: 486.2 },
+  { label: '14 Nov', value: 487.5 },
+] as const;
+
+/** Share of a portfolio by sector, percent. */
+export const sectorShares = [
+  { key: 'banking', label: 'Banking', pct: 46 },
+  { key: 'hydro', label: 'Hydropower', pct: 22 },
+  { key: 'manufacturing', label: 'Manufacturing', pct: 14 },
+  { key: 'insurance', label: 'Insurance', pct: 10 },
+  { key: 'telecom', label: 'Telecom', pct: 8 },
+] as const;
+
+/** How many holdings sit at each rating step, highest first. */
+export const ratingCounts = [
+  { key: 'a', label: 'Strong', count: 18, step: 4 },
+  { key: 'b', label: 'Good', count: 42, step: 3 },
+  { key: 'c', label: 'Fair', count: 63, step: 2 },
+  { key: 'd', label: 'Weak', count: 27, step: 1 },
+  { key: 'e', label: 'Poor', count: 9, step: 0 },
+] as const;
+
+/** A moment on a Sunday morning in Kathmandu (UTC 05:00 = 10:45 NPT), inside NEPSE's example pre-open. */
+export const sampleNow = new Date('2025-11-16T05:00:00Z');

@@ -13,14 +13,26 @@
 import type { ReactNode } from 'react';
 
 export interface Fact {
+  /** The fact's name, on the left. */
   label: ReactNode;
+  /** The fact, on the right (or under the label when stacked). */
   value: ReactNode;
   /** A value that is a note, not a figure ("Need 5 years"): muted. */
   quiet?: boolean;
+  /** Sets `data-testid` on the row. */
   testId?: string;
 }
 
-export function FactList({ title, facts, stack, testId }: { title?: ReactNode; facts: readonly Fact[]; /** Every value under its label. */ stack?: boolean; testId?: string }) {
+export function FactList({ title, facts, stack, testId }: {
+  /** A small title over the facts ("Across every month"). */
+  title?: ReactNode;
+  /** The facts, in reading order. */
+  facts: readonly Fact[];
+  /** Every value under its label. */
+  stack?: boolean;
+  /** Sets `data-testid` on the root. */
+  testId?: string;
+}) {
   return (
     <div className={`kit-facts${stack ? ' stack' : ''}`} data-testid={testId}>
       {title && <p className="kit-facts-k">{title}</p>}

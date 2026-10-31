@@ -33,16 +33,20 @@ export interface MarketHoliday {
 export interface MarketSchedule {
   /** IANA time zone, for example 'Asia/Kathmandu' or 'America/New_York'. */
   timeZone: string;
+  /** The pre-open and open windows. A moment inside none of them is `closed`. */
   sessions: readonly SessionWindow[];
+  /** Dates on which the market is closed all day (state `holiday`). Keep them current: none are built in. */
   holidays?: readonly MarketHoliday[];
 }
 
 export interface MarketSession {
+  /** What the market is doing at `now`. */
   state: MarketState;
   /** The session window's label, or the holiday's name, when there is one. */
   label?: string;
   /** The date and time on the exchange's clock at `now`. */
   localDate: string;
+  /** The time on the exchange's clock at `now`, 'HH:mm'. */
   localTime: string;
   /** The next instant the market changes between open, pre-open and closed (within 10 days), or null. A halt is not predictable, so it never appears here. */
   next: { state: Exclude<MarketState, 'halted' | 'holiday'>; at: Date } | null;

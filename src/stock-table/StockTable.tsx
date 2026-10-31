@@ -82,7 +82,7 @@ export interface StockTableProps<T extends Quote = Quote> {
   errorLabel?: ReactNode;
   /** The retry button's words when `state` is `error`. Default 'Try again'. */
   retryLabel?: string;
-  /** Called when the retry button is pressed. The button is drawn even without it (and then does nothing), so give it whenever `state` can be `error`. */
+  /** Called when the retry button is pressed. The error line shows the button only when this is given, so give it whenever `state` can be `error` and a retry is possible. */
   onRetry?: () => void;
   /** Sets `data-testid` on the root; inner parts get derived ids (`<id>-head-<column>`, `<id>-row-<symbol>`). */
   testId?: string;
@@ -95,7 +95,7 @@ export function StockTable<T extends Quote = Quote>({
   retryLabel = 'Try again', onRetry, testId,
 }: StockTableProps<T>) {
   if (state === 'error') {
-    return <RetryNote retryLabel={retryLabel} onRetry={onRetry ?? (() => undefined)} testId={testId}>{errorLabel}</RetryNote>;
+    return <RetryNote retryLabel={retryLabel} onRetry={onRetry} testId={testId}>{errorLabel}</RetryNote>;
   }
   const shown: StockColumn[] = ['symbol', ...columns.filter((c) => c !== 'symbol')];
   const sortable = Boolean(onSortChange);

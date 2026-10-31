@@ -137,3 +137,13 @@ describe('InfoTip and Tooltip', () => {
     expect(await seriousViolations(container)).toEqual([]);
   });
 });
+
+describe('EmptyState headingLevel', () => {
+  it('renders an h2 by default and the level asked for', () => {
+    const { container, rerender } = render(<EmptyState title="Nothing yet" />);
+    expect(container.querySelector('h2')?.textContent).toBe('Nothing yet');
+    rerender(<EmptyState title="Nothing yet" headingLevel={3} />);
+    expect(container.querySelector('h2')).toBeNull();
+    expect(container.querySelector('h3')?.textContent).toBe('Nothing yet');
+  });
+});

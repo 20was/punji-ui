@@ -220,8 +220,9 @@ export function CompanySearch<T extends SymbolOption>({ options, label, placehol
       <path d="M11 11l3.5 3.5" strokeLinecap="round" />
     </svg>
   );
+  // The listbox exists only while there are options to hold (axe: aria-required-children); the loading and empty messages sit in the plain wrapper, which `aria-controls` names instead.
   const list = shown && (
-    <div className="kit-cs-sugg" id={`${auto}-list`} role="listbox" aria-label={label} aria-busy={loading || undefined} data-testid={listTestId}>
+    <div className="kit-cs-sugg" id={loading || hits.length === 0 ? `${auto}-list` : undefined} aria-busy={loading || undefined} data-testid={listTestId}>
       {loading ? (
         [0, 1, 2].map((i) => <span key={i} className="kit-skel kit-cs-sk" />)
       ) : hits.length === 0 ? (
@@ -229,7 +230,8 @@ export function CompanySearch<T extends SymbolOption>({ options, label, placehol
           {none(query.trim())}
         </p>
       ) : (
-        hits.map((s, i) => (
+        <div id={`${auto}-list`} role="listbox" aria-label={label}>
+          {hits.map((s, i) => (
           <div
             key={s.symbol}
             id={optId(s.symbol)}
@@ -246,7 +248,8 @@ export function CompanySearch<T extends SymbolOption>({ options, label, placehol
             </span>
             {tags && <span className="kit-cs-tags">{tags(s)}</span>}
           </div>
-        ))
+          ))}
+        </div>
       )}
     </div>
   );

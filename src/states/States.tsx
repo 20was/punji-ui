@@ -6,8 +6,8 @@
 import type { CSSProperties, ReactNode } from 'react';
 
 
-export function EmptyState({ title, body, action, icon, bare, center, testId, role }: {
-  /** What is empty or what failed (rendered as an h2). */
+export function EmptyState({ title, body, action, icon, bare, center, headingLevel = 2, testId, role }: {
+  /** What is empty or what failed (rendered as a heading: an h2 unless `headingLevel` says otherwise). */
   title: ReactNode;
   /** One line: why it is empty or what to do next. */
   body?: ReactNode;
@@ -19,15 +19,18 @@ export function EmptyState({ title, body, action, icon, bare, center, testId, ro
   bare?: boolean;
   /** With an icon: centred under it (a page's first run), not left-aligned. */
   center?: boolean;
+  /** The title's heading level, to fit the page's outline (default 2; 3 inside a Card whose title is an h2). */
+  headingLevel?: 2 | 3 | 4;
   /** Sets `data-testid` on the root. */
   testId?: string;
   /** 'alert' when the state is a failure, 'status' when it can change. */
   role?: 'alert' | 'status';
 }) {
+  const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
   return (
     <div className={`kit-empty${icon ? ' has-icon' : ''}${bare ? ' bare' : ''}${center ? ' center' : ''}`} data-testid={testId} role={role}>
       {icon}
-      <h2>{title}</h2>
+      <Heading>{title}</Heading>
       {body && <p>{body}</p>}
       {action}
     </div>

@@ -43,7 +43,7 @@ h1:focus { outline: none; }
 .doc-eyebrow { margin: 0 0 var(--pu-space-1); font-size: var(--pu-text-xs, 0.75rem); text-transform: uppercase; letter-spacing: 0.04em; color: var(--pu-color-text-muted); }
 .doc-lead { margin: var(--pu-space-2) 0 0; font-size: 1.0625rem; max-width: 46rem; }
 .doc-section { display: grid; gap: var(--pu-space-2); min-width: 0; }
-.doc-section ul { margin: 0; padding-left: 1.25rem; display: grid; gap: var(--pu-space-1); }
+.doc-section ul:not([class]) { margin: 0; padding-left: 1.25rem; display: grid; gap: var(--pu-space-1); }
 .doc-split { display: grid; gap: var(--pu-space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); }
 .doc-muted { color: var(--pu-color-text-muted); margin: 0; font-size: 0.9375rem; }
 .doc-req { color: var(--pu-color-text-muted); font-size: 0.75rem; font-weight: 400; }

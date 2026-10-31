@@ -15,8 +15,8 @@ export function RetryNote({ children, retryLabel, onRetry, testId }: {
   children: ReactNode;
   /** The retry button's words ("Try again"): required, the package carries no copy. */
   retryLabel: string;
-  /** Called when the retry button is pressed. */
-  onRetry: () => void;
+  /** Called when the retry button is pressed. Without it no button is drawn (a retry that does nothing is worse than none). */
+  onRetry?: () => void;
   /** Sets `data-testid` on the root; the button gets `<id>-retry`. */
   testId?: string;
 }) {
@@ -24,9 +24,11 @@ export function RetryNote({ children, retryLabel, onRetry, testId }: {
     <div className="kit-retry" role="alert" data-testid={testId}>
       <ToneIcon tone="error" />
       <span className="kit-retry-tx">{children}</span>
-      <Button variant="ghost" size="sm" onClick={onRetry} testId={testId ? `${testId}-retry` : undefined}>
-        {retryLabel}
-      </Button>
+      {onRetry && (
+        <Button variant="ghost" size="sm" onClick={onRetry} testId={testId ? `${testId}-retry` : undefined}>
+          {retryLabel}
+        </Button>
+      )}
     </div>
   );
 }

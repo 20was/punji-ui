@@ -86,7 +86,7 @@ export function StatementTable({
     else if (mismatches.length) devWarn(`StatementTable: ${mismatches.length} subtotal value(s) disagree with rollUp() of their rows (sections: ${[...new Set(mismatches.map(m => m.id))].join(', ')}). The values you passed are shown unchanged.`);
   }, [mismatches]);
 
-  if (state === 'error') return <RetryNote retryLabel={retryLabel} onRetry={onRetry ?? (() => undefined)} testId={testId}>{errorLabel}</RetryNote>;
+  if (state === 'error') return <RetryNote retryLabel={retryLabel} onRetry={onRetry} testId={testId}>{errorLabel}</RetryNote>;
 
   const config: MoneyFormatConfig = { ...money, accounting: negative === 'parentheses' };
   const locale = money.locale ?? 'en';

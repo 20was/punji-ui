@@ -2,6 +2,8 @@
    Styles for link-table (LinkTable, LinkTableRow, StockLabel). Needs tokens.css and base.css (styles.css has everything). */
 @layer punji.components {
   .kit-lt { container-type: inline-size; min-width: 0 }
+  /* In a flush Card the rows' own 8px padding would inset them from the title; the extra 8px lines their text up with it. */
+  .kit-card.flush > .kit-lt { padding-inline: 8px }
   .kit-lt-h, .kit-lt-row { display: grid; grid-template-columns: var(--kit-lt-cols); align-items: center; column-gap: 12px }
   .kit-lt-h { padding: 0 8px 8px; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted); border-bottom: 1px solid var(--pu-color-border-default) }
   .kit-lt-h > .end { text-align: right }

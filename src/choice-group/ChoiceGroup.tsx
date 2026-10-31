@@ -2,15 +2,28 @@
 
 import type { ControlSize } from '../select/Select.tsx';
 
-export type ChoiceOption<T extends string = string> = { value: T; label: string; disabled?: boolean };
-export interface ChoiceGroupProps<T extends string = string> {
-  options: readonly ChoiceOption<T>[];
+export interface ChoiceOption<T extends string = string> {
+  /** What onChange receives when this option is chosen. */
   value: T;
+  /** The words shown for the option. */
+  label: string;
+  /** Shown dimmed and skipped by the arrow keys. */
+  disabled?: boolean;
+}
+export interface ChoiceGroupProps<T extends string = string> {
+  /** The choices, in order. */
+  options: readonly ChoiceOption<T>[];
+  /** The chosen option's value. The group is controlled. */
+  value: T;
+  /** Called with the chosen option's value (not the event). */
   onChange: (value: T) => void;
+  /** The group's accessible name (the fieldset's aria-label). */
   label: string;
   /** Unique per group, also used for native radio grouping. */
   testId: string;
+  /** Control height: sm 32px, md 36px, lg 44px (default). */
   size?: ControlSize;
+  /** underline (default): labels with an underline on the chosen one. compact: a tighter look for dense toolbars. */
   appearance?: 'underline' | 'compact';
 }
 

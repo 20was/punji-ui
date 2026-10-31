@@ -12,9 +12,10 @@ export const NOT_FOUND_TITLE = `Page not found — ${SITE_NAME}`;
 export const NOT_FOUND_DESCRIPTION = 'This page does not exist in the Punji UI documentation. Go to the overview to find a component.';
 export const THEME_COLOR = { light: '#e4e7de', dark: '#0d0e10' } as const;
 
-export type Section = 'foundations' | 'components' | 'utilities';
+export type Section = 'get-started' | 'foundations' | 'components' | 'utilities';
 
 export function sectionOf(page: PageDef): Section {
+  if (page.kind === 'guide') return 'get-started';
   if (page.kind === 'foundation') return 'foundations';
   if (page.kind === 'component') return 'components';
   return 'utilities';
@@ -56,6 +57,7 @@ export const PORTAL_RENAMES: Readonly<Record<string, string>> = {
   '/components/distribution-bar': 'share-bars',
   '/components/summary-figure': 'metric-tile',
   '/components/fact-list': 'key-stats',
+  '/components/panel-tabs': 'tabs',
 };
 /** Old portal paths that map to the overview. */
 export const PORTAL_TO_HOME: readonly string[] = ['/docs'];

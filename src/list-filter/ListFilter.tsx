@@ -17,16 +17,27 @@ import { useEffect, useId, useRef } from 'react';
 const TYPING = 'input, textarea, select, [contenteditable=""], [contenteditable="true"]';
 
 interface ListFilterProps {
+  /** The current query. The field is controlled. */
   value: string;
+  /** Called with the new query on every change, and with '' when it is cleared. */
   onChange: (v: string) => void;
+  /** The field's accessible name, also the placeholder unless `placeholder` is given. */
   label: string;
+  /** The clear button's accessible name ("Clear search"), in the reader's language. */
   clear: string;
+  /** Becomes data-testid on the input; the clear button is `${testId}-clear`. */
   testId: string;
+  /** Pressing / focuses the field when nothing else is being typed in and no dialog is open. Shows a / hint while empty. */
   slash?: boolean;
+  /** Height: md 36px (default) or lg 44px with 16px text so a phone does not zoom on focus. */
   size?: 'md' | 'lg';
+  /** hidden (default) keeps the label for screen readers; above shows it over the field. */
   labelPlacement?: 'hidden' | 'above';
+  /** Text shown in the empty field. Defaults to `label`. */
   placeholder?: string;
+  /** The id of the input element. */
   id?: string;
+  /** Called when the input loses focus. */
   onBlur?: () => void;
   /** The input's form name, for a field inside a plain GET form that works without script. */
   name?: string;
@@ -52,7 +63,7 @@ export function ListFilter({ value, onChange, label, clear, testId, slash = fals
     return () => window.removeEventListener('keydown', onKey, true);
   }, [slash]);
   const box = (
-    <div className={`kit-lf${size === 'lg' ? ' lg' : ''}`} role="search">
+    <div className={`kit-lf${size === 'lg' ? ' lg' : ''}`} role="search" aria-label={label}>
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
         <circle cx="7" cy="7" r="5" />
         <path d="M11 11l3.5 3.5" strokeLinecap="round" />

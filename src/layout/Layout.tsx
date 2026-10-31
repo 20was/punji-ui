@@ -8,7 +8,14 @@ import type { ReactNode } from 'react';
 import type { LinkComponent } from '../internal/link.tsx';
 
 
-export function PageLayout({ children, nav }: { children: ReactNode; nav?: ReactNode }) {
+export interface PageLayoutProps {
+  /** The page: a PageHeader and its sections. Rendered inside the page's one <main>. */
+  children: ReactNode;
+  /** Navigation drawn before <main> (a tab bar, a side nav). */
+  nav?: ReactNode;
+}
+
+export function PageLayout({ children, nav }: PageLayoutProps) {
   return (
     <div className="kit-page">
       {nav}
@@ -20,13 +27,17 @@ export function PageLayout({ children, nav }: { children: ReactNode; nav?: React
 }
 
 interface HeaderProps {
+  /** The page's title: the one h1. */
   title: ReactNode;
   /** Where back goes; omit on a root page (no back circle). */
   backTo?: string;
   /** The link element for `backTo` (wrap your router's link). Default: a plain <a>. */
   linkComponent?: LinkComponent;
+  /** The back link's accessible name. Default "Back". */
   backLabel?: string;
+  /** A line under the title saying what is on the page. */
   meta?: ReactNode;
+  /** Up to three actions on the right (Buttons or links). */
   actions?: ReactNode;
   /** A small label over the title: the page's group ("Research"). */
   eyebrow?: ReactNode;
@@ -34,6 +45,7 @@ interface HeaderProps {
   compact?: boolean;
   /** Beside the title: what the page's figures are as of (a StatusPill: "After the 19 Oct close"). */
   stamp?: ReactNode;
+  /** Becomes data-testid on the header. */
   testId?: string;
 }
 
@@ -62,7 +74,24 @@ export function PageHeader({ title, backTo, linkComponent, backLabel = 'Back', m
 }
 
 /** Section title + one action, as the app's ListSectionHeader. */
-export function ListSectionHeader({ title, detail, action, id, caption, size, level = 2 }: { title: ReactNode; detail?: ReactNode; action?: ReactNode; id?: string; /** A small capitalised caption over a group of rows inside a card. */ caption?: boolean; /** sm: a quiet sub-heading inside a card ("Family you track"). */ size?: 'sm'; level?: 2 | 3 }) {
+export interface ListSectionHeaderProps {
+  /** The section's title (an h2, or an h3 with level 3). */
+  title: ReactNode;
+  /** A quiet line at the end ("12 stocks"). Ignored when there is an `action`. */
+  detail?: ReactNode;
+  /** One action at the end (a ghost Button or a link). Replaces `detail`. */
+  action?: ReactNode;
+  /** The heading's id, for aria-labelledby on the section it names. */
+  id?: string;
+  /** A small capitalised caption over a group of rows inside a card. */
+  caption?: boolean;
+  /** sm: a quiet sub-heading inside a card ("Family you track"). */
+  size?: 'sm';
+  /** The heading level: 2 (default) or 3 inside a card. */
+  level?: 2 | 3;
+}
+
+export function ListSectionHeader({ title, detail, action, id, caption, size, level = 2 }: ListSectionHeaderProps) {
   const H = level === 3 ? 'h3' : 'h2';
   return (
     <div className={`kit-section-h${caption ? ' caption' : ''}${size === 'sm' ? ' sm' : ''}`}>

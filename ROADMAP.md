@@ -30,13 +30,13 @@ visual baselines and size budgets.
 - **Financial charts:** CandlestickChart (with volume pane and moving averages), PerformanceChart (vs benchmarks), DepthChart, shared chart maths with downsampling.
 - **Banking & payments:** AccountNumber (masked, explicit reveal and copy), BankAccountCard, TransactionList, PaymentReceipt, PaymentTimeline, BeneficiarySelector.
 
-### Wave 2: compositions, showcase and guides
+### Wave 2: compositions, showcase and guides (guides and generic pages done; showcase, portfolio and forms below still open)
 
 - **Showcase section on design.punji.app:** real-world patterns (app band like AppStrip, portfolio tracker screen, live market board, invoice, statement) built only from `@punji/ui` exports, live with copyable source and labelled as patterns to copy, not package API. Replaces the portal's app-specific component pages at cutover.
 
 - **Portfolio:** HoldingsTable, allocation donut with legend, dividend and transaction history, portfolio overview.
-- **Guides:** getting started with Next.js App Router and Vite, theming and custom tokens, SSR/RSC, Tailwind interop, live data adapters.
-- **Remaining docs pages:** forms, layout and feedback exports still listed as planned in the site sidebar.
+- **Guides (done):** a "Get started" section with introduction and installation, Next.js App Router, Vite, theming and custom tokens, server rendering and hydration, Tailwind interop, live data adapters, security, roadmap and contributing (URLs `/get-started/<slug>/`, code typechecked by `typecheck:site`).
+- **Remaining docs pages (done for the planned lists):** pages for Field (with NumberField, PriceField, DateField, SelectField, SymbolField, TextAreaField), Select, SegmentedControl, Tabs, Checkbox, Switch, RangeSlider, ChoiceGroup, ListFilter, Popover, Drawer, CommandPalette, Toast, Tooltip and InfoTip, StatusPill, LockedNote, Figure and Delta, LiveFigure, page layout and header, AppShell, Rows (ValueRow, DataRows) and FinancialSummary, with every prop documented in source. Still without a page: Calendar, Chip, FilterChip, ShowMore, InlineConfirm, Avatar, StatusTag, StatGrid and StatTile, Sheet and Dock, DrawerScreen, and the cutover items in [site/README.md](site/README.md).
 - **Forms:** NumberInput, PercentageInput, OTP input, date-range presets, statement upload.
 
 ### Wave 3: scale and trust

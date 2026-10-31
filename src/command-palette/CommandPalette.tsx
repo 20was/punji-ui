@@ -19,15 +19,20 @@ import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, 
 import { moveChip, moveIndex } from '../command-keys/commandKeys.ts';
 
 export interface CommandAction {
+  /** Stable id of the action ("open", "watch"), passed back to onRun. */
   id: string;
+  /** The words shown on the action's chip, and read out when it is chosen. */
   label: string;
 }
 
 export interface CommandItem {
+  /** Unique, stable id of the row. */
   id: string;
   /** Rows of one group sit together under its heading (null: no heading). */
   group: string;
+  /** The group's heading, printed above its first row. Omit or null for none. */
   groupLabel?: string | null;
+  /** The row's main words (a page name, a symbol). */
   title: string;
   /** A second line or a quieter name beside the title. */
   sub?: string;
@@ -48,29 +53,46 @@ export interface CommandItem {
 export interface CommandPaletteLabels {
   /** The dialog's and the field's accessible name. */
   dialog: string;
+  /** The close button's accessible name. */
   close: string;
+  /** The footer hint for the up and down keys ("Move"). */
   move: string;
+  /** The footer hint for the left and right keys ("Choose action"). */
   choose: string;
+  /** The footer hint for Enter ("Open"). */
   open: string;
+  /** The footer hint for Esc ("Close"). */
   closeKey: string;
+  /** Said (in a polite status region) when an action chip is chosen: "Watch chosen". */
   chosen: (label: string) => string;
+  /** Read after the chosen chip's label ("chosen"). */
   chosenMark: string;
+  /** Read after a row's actions, explaining how to choose one ("Left and right arrows choose an action"). */
   actionsHint: string;
 }
 
 interface Props {
+  /** Every word the dialog says, so it can be fully translated. */
   labels: CommandPaletteLabels;
+  /** Text shown in the empty search field. */
   placeholder: string;
+  /** The current query. You own it, and clear it when the palette closes. */
   query: string;
+  /** Called with the new query on every keystroke. */
   onQuery: (q: string) => void;
+  /** The rows to show, already filtered and ordered by you. The palette does not search. */
   items: readonly CommandItem[];
+  /** Called when a row or an action chip is run (Enter, a click). */
   onRun: (item: CommandItem, action: CommandAction) => void;
+  /** Called when the palette asks to close (Esc, the close button). Unmount it in response. */
   onClose: () => void;
   /** Shown above the results when nothing matched (a reason and a suggestion). */
   empty?: ReactNode;
   /** test id of a row: `${testIdPrefix}-item-${testKey(id)}`; the dialog is `${testIdPrefix}`. */
   testIdPrefix?: string;
+  /** Maps a row's id to the key used in its test id (default: the id itself). */
   testKey?: (id: string) => string;
+  /** The field's autocapitalize attribute: 'characters' when people type ticker symbols. Default 'off'. */
   autoCapitalize?: 'off' | 'characters';
 }
 

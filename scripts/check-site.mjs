@@ -34,6 +34,7 @@ const flagCounts = { edge: 0, clip: 0, dup: 0, icon: 0, edgeAllowed: 0 };
 const EDGE = 8;
 const EDGE_ALLOW = {
   // 'slug' or 'slug/example': 'why the component is intentionally edge to edge',
+  'app-shell': 'the skip link is position: fixed and parked above the viewport until it takes focus',
 };
 /* oxlint-disable unicorn/consistent-function-scoping, no-shadow -- the probe is serialised into the page, so it must be self-contained. */
 const layoutProbe = ({ edge }) => {
@@ -195,12 +196,12 @@ try {
   if ((await page.locator('html').getAttribute('data-theme')) !== 'light') fail('theme: Light did not set data-theme');
 
   // Search filters the sidebar; groups with nothing disappear.
-  await page.getByLabel('Search the documentation').fill('order book');
+  await page.getByRole('searchbox', { name: 'Search the documentation' }).fill('order book');
   const nav = page.getByRole('list', { name: 'Pages by domain' });
   if ((await nav.getByRole('link').count()) !== 2) fail('search: "order book" should leave Overview and Order book');
-  await page.getByLabel('Search the documentation').fill('zzzz');
+  await page.getByRole('searchbox', { name: 'Search the documentation' }).fill('zzzz');
   await nav.getByText('Nothing matches').waitFor();
-  await page.getByLabel('Search the documentation').fill('');
+  await page.getByRole('searchbox', { name: 'Search the documentation' }).fill('');
 
   // Sidebar lists exactly the registry's groups, in order, with planned counts.
   const titles = await page.locator('.doc-nav-title').allTextContents();

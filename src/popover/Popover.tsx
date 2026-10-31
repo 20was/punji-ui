@@ -33,13 +33,20 @@ const nativePickerOpen = (target:EventTarget|null):boolean => {
 
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]), [role="menuitem"]';
 
-export function PopoverAnchor({ children }: { children: ReactNode }) {
+export interface PopoverAnchorProps {
+  /** The control that opens the popover, and the Popover itself. */
+  children: ReactNode;
+}
+
+/** Wraps the control and its Popover so the panel is placed against the control. */
+export function PopoverAnchor({ children }: PopoverAnchorProps) {
   return <span className="kit-pop-at">{children}</span>;
 }
 
 export type PopoverCloseReason = 'escape' | 'outside' | 'blur';
 
-export function Popover({ open, onClose, anchor, label, role = 'dialog', id, align = 'end', wide = false, fullScreenPhone = false, initialFocus, children, testId, portal = false, width = 320, positionAnchor }: {
+export interface PopoverProps {
+  /** Whether the panel is shown. You own this state. */
   open: boolean;
   /** Float in a portal, avoiding ancestor clipping. An element supports nested native dialogs. */
   portal?: boolean | HTMLElement;
@@ -61,12 +68,17 @@ export function Popover({ open, onClose, anchor, label, role = 'dialog', id, ali
   align?: 'start' | 'end';
   /** 420px wide (an inbox) instead of fitting its content. */
   wide?: boolean;
+  /** Under 768px the panel fills the screen and the phone tab bar steps aside; the content brings its own back button. */
   fullScreenPhone?: boolean;
   /** A selector inside the panel to focus first. */
   initialFocus?: string;
+  /** The panel's content. */
   children: ReactNode;
+  /** Becomes data-testid on the panel. */
   testId?: string;
-}) {
+}
+
+export function Popover({ open, onClose, anchor, label, role = 'dialog', id, align = 'end', wide = false, fullScreenPhone = false, initialFocus, children, testId, portal = false, width = 320, positionAnchor }: PopoverProps) {
   const panel = useRef<HTMLDivElement>(null);
   const close = useRef(onClose);
   const [floating, setFloating] = useState<{left:number;top:number;width:number;maxHeight:number;theme?:string}>();

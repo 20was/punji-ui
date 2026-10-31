@@ -11,8 +11,11 @@ import { useMediaQuery } from '../use-media-query/useMediaQuery.ts';
 export type ControlSize = 'sm' | 'md' | 'lg';
 
 export interface SelectOption<T extends string = string> {
+  /** What onChange receives when this option is chosen. */
   value: T;
+  /** The words shown for the option. */
   label: string;
+  /** Listed but not choosable. */
   disabled?: boolean;
   /** The group's name ("Sectors"): consecutive options with the same group share one <optgroup>. */
   group?: string;
@@ -31,20 +34,27 @@ function groupOptions<T extends string>(options: readonly SelectOption<T>[]): { 
 }
 
 export interface SelectProps<T extends string> extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'value' | 'onChange' | 'size' | 'className'> {
+  /** The chosen option's value. The select is controlled. */
   value: T;
+  /** Called with the chosen option's value (not the event). */
   onChange: (v: T) => void;
+  /** The choices, in order. Consecutive options with the same `group` share one <optgroup>. */
   options: readonly SelectOption<T>[];
   /** The accessible name. Omit only when an outside <label htmlFor={id}> names it. */
   label?: ReactNode;
   /** 'hidden' (default) keeps the name for screen readers only. */
   labelPlacement?: 'hidden' | 'above' | 'inline';
+  /** Control height: sm 32px, md 36px (default), lg 44px. */
   size?: ControlSize;
   /** Fills its container's width. */
   block?: boolean;
+  /** No box: the select sits inside a surrounding control that draws its own. */
   bare?: boolean;
+  /** Disables the control, sets aria-busy and shows a spinner in place of the chevron. */
   loading?: boolean;
   /** Keep the platform picker on every device (also the automatic fallback). */
   native?: boolean;
+  /** Becomes data-testid on the <select>. */
   testId?: string;
   /** Layout only (grow in a row); never restyle the box per page. */
   className?: string;

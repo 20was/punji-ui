@@ -66,7 +66,13 @@ interface ToastApi {
 
 const ToastContext = createContext<ToastApi | null>(null);
 
-export function ToastProvider({ children }: { children: ReactNode }) {
+export interface ToastProviderProps {
+  /** The app (or the part of it) that may raise toasts with useToast. Render the provider once, near the root. */
+  children: ReactNode;
+}
+
+/** Provides useToast to everything below it and renders the polite live region that holds the toasts (three at most). */
+export function ToastProvider({ children }: ToastProviderProps) {
   const [items, setItems] = useState<ToastItem[]>([]);
   const seq = useRef(0);
   const dismiss = useCallback((id: number) => setItems((xs) => xs.filter((x) => x.id !== id)), []);

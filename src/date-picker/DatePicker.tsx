@@ -8,6 +8,8 @@ import type { CalendarBaseProps } from '../calendar/Calendar.tsx';
 import type DatePickerPanel from './DatePickerPanel.tsx';
 import { calendarLimits, displayParts, isoDate, parseDateInput, rangeAvailable, requireISO, type DateRange } from '../calendar/calendarMath.ts';
 import { calendarLabels } from '../calendar/labels.ts';
+import type { DateRangePreset } from '../date-range-presets/presets.ts';
+export { DateRangePresetList, type DateRangePresetListProps } from './DateRangePresetList.tsx';
 
 // The popover, the calendar grid and the range footer exist only while the picker is open, so they are their own
 // chunk. The typed fields and the trigger load with the picker; the panel loads on the first hover or focus (or the
@@ -38,6 +40,8 @@ export interface DateRangePickerProps extends DatePickerBaseProps {
   value: DateRange | null;
   /** Called with the applied range, or null when cleared. */
   onChange: (value: DateRange | null) => void;
+  /** Quick ranges shown above the calendar (build them with `dateRangePresets` or `nepalDateRangePresets`). Choosing one applies it at once and closes the popover; one that touches an unavailable or out-of-bounds day is disabled. */
+  presets?: readonly DateRangePreset[];
 }
 type PickerProps = (DatePickerProps & {range?:false}) | (DateRangePickerProps & {range:true});
 const CalendarIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4M17 3v4M3 11h18"/></svg>;
@@ -103,6 +107,8 @@ function Picker(props:PickerProps) {
   const finish=()=>{setOpen(false);anchor.current?.focus({preventScroll:true});};
   const choose=(value:string|null)=>{if(props.range||disabled||readOnly)return;props.onChange(value);setTyped(null);finish();};
   const approve=()=>{if(!props.range||disabled||readOnly)return;const range=draft as DateRange|null;if(range?!range.end:required)return;props.onChange(range);setTyped(null);finish();};
+  const presetOk=(range:{start:string;end:string})=>!unavailable(range.start)&&!unavailable(range.end)&&rangeAvailable(range.start,range.end,props.isDateUnavailable);
+  const choosePreset=(range:{start:string;end:string})=>{if(!props.range||disabled||readOnly||!presetOk(range))return;props.onChange({start:range.start,end:range.end});setTyped(null);finish();};
   const base:CalendarBaseProps={label:props.label,calendar,onCalendarChange:props.onCalendarChange,locale:props.locale,language,digits,labels:props.labels,weekStartsOn:props.weekStartsOn,min:props.min,max:props.max,isDateUnavailable:props.isDateUnavailable,today:props.today,defaultMonth:props.defaultMonth,required,disabled,readOnly,bare:true,autoFocus:true};
   return <div className="pu-date-picker" ref={root} data-testid={props.testId} onPointerEnter={()=>{void loadPanel();}} onFocus={()=>{void loadPanel();}}>
     <div className="pu-date-controls"><div className={`pu-date-fields${props.range?' range':''}`}>
@@ -112,7 +118,7 @@ function Picker(props:PickerProps) {
     {props.name&&(props.range?<><input type="hidden" name={`${props.name}.start`} value={valueStart} disabled={disabled}/><input type="hidden" name={`${props.name}.end`} value={valueEnd} disabled={disabled}/></>:<input type="hidden" name={props.name} value={valueStart} disabled={disabled}/>)}
     {(open||everOpened)&&(()=>{
       const Panel=loadedPanel??LazyPanel;
-      return <Suspense fallback={null}><Panel open={open} onClose={()=>setOpen(false)} anchor={anchor} positionAnchor={positionAnchor} label={props.label} id={panelId} host={host} touch={touch} calendar={base} range={!!props.range} draft={draft} setDraft={setDraft} choose={choose} finish={finish} approve={approve} words={words} disabled={disabled} readOnly={readOnly} required={required}/></Suspense>;
+      return <Suspense fallback={null}><Panel open={open} onClose={()=>setOpen(false)} anchor={anchor} positionAnchor={positionAnchor} label={props.label} id={panelId} host={host} touch={touch} calendar={base} presets={props.range?props.presets:undefined} presetOk={presetOk} choosePreset={choosePreset} range={!!props.range} draft={draft} setDraft={setDraft} choose={choose} finish={finish} approve={approve} words={words} disabled={disabled} readOnly={readOnly} required={required}/></Suspense>;
     })()}
   </div>;
 }

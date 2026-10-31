@@ -15,6 +15,7 @@ import { domainRegistry } from './fixtures-domain.tsx';
 import { fitRegistry } from './fixtures-fit.tsx';
 import { portfolioRegistry } from './fixtures-portfolio.tsx';
 import { kitRegistry } from './fixtures-kit.tsx';
+import { formsRegistry } from './fixtures-forms.tsx';
 
 const money = (v: number | null) => formatNPR(v);
 const Group = ({ title, children }: { title: string; children: ReactNode }) => <section aria-label={title}><h2 className="vr-h">{title}</h2><div className="vr-row" style={{ marginTop: 8 }}>{children}</div></section>;
@@ -318,6 +319,7 @@ export const registry: Record<string, () => ReactNode> = {
   shell: ShellFixture, 'drawer-screen': DrawerScreenFixture, drawer: DrawerFixture, sheet: SheetFixture, popover: PopoverFixture,
   'command-palette': CommandPaletteFixture, toast: ToastFixture,
   ...kitRegistry,
+  ...formsRegistry,
   ...domainRegistry,
   ...bankingRegistry,
   ...chartsRegistry,

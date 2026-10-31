@@ -27,7 +27,7 @@ import { execFileSync } from 'node:child_process';
 // The financial charts (chart-math, CandlestickChart, PerformanceChart, DepthChart: JS, declarations with prop docs, CSS) add ~75 kB, measured 1,024,197 B.
 // Banking and charts merged together: measured 1,120,613 B; ~3% headroom.
 // Banking, charts and portfolio merged: measured 1,232,502 B; ~3% headroom.
-const MAX_UNPACKED = 1240 * 1024;
+const MAX_UNPACKED = 1310 * 1024;
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
 const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md']);
 const allowed = (p) => always.has(p) || /^dist\/.+\.(js|d\.ts|css)$/.test(p);

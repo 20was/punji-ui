@@ -7,6 +7,7 @@
 
 import { GUIDES } from './registry-guides.ts';
 import { GENERIC_PAGES } from './registry-generic.ts';
+import { FORMS_PAGES } from './registry-forms.ts';
 import { SHOWCASE_PAGES } from './registry-showcase.ts';
 import { LEADS, NAV_TITLES } from './registry-leads.ts';
 
@@ -644,12 +645,13 @@ export const PAGES: readonly PageDef[] = [
       { id: 'ad', title: 'AD' },
       { id: 'bs', title: 'BS (Nepali)', note: 'Bikram Sambat with Nepali labels and Devanagari digits.' },
       { id: 'range', title: 'Range' },
+      { id: 'presets', title: 'Range with presets', note: 'Quick ranges above the calendar: Nepal fiscal year to date, this month, last 30 days. See Range presets.' },
     ],
     keyboard: ['Arrow keys move one day (left, right) or one week (up, down); Home and End move to the week boundaries.', 'Page Up and Page Down change month; Shift with them changes year. Enter or Space selects.', 'Escape closes the popover and restores focus to the trigger; Tab leaves in form order.'],
     accessibility: ['Typed input is strict and reports errors through `error` with `aria-invalid`.', 'Selected days expose `aria-selected`, today `aria-current` and unavailable days `aria-disabled`; month changes are announced through a live heading.'],
     responsive: ['The popover fits a 390px viewport; touch targets are 44px.'],
     notes: { title: 'Limits', points: ['BS support is bounded by the converter table; dates outside it are rejected, not guessed.', 'Not yet reviewed with VoiceOver or NVDA (see ROADMAP.md).'] },
-    related: ['currency-input', 'button'],
+    related: ['currency-input', 'date-range-presets', 'button'],
   },
   {
     slug: 'button',
@@ -1535,6 +1537,7 @@ export const PAGES: readonly PageDef[] = [
     related: ['account-number', 'transaction-list', 'csv-export'],
   },
   ...GENERIC_PAGES,
+  ...FORMS_PAGES,
   ...SHOWCASE_PAGES,
 ];
 

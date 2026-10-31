@@ -1,0 +1,13 @@
+/* Punji UI styles.
+   Styles for fact-list. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .kit-facts { min-width: 0; padding: 12px 0; border-block: 1px solid var(--pu-color-card-border) }
+  .kit-facts-k { margin: 0 0 10px; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }
+  .kit-facts dl { display: grid; gap: 10px; margin: 0 }
+  .kit-facts dl > div { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 12px; font-size: 13px; line-height: 18px }
+  .kit-facts dt { min-width: 0; color: var(--pu-color-text-muted) }
+  .kit-facts dd { margin: 0 0 0 auto; text-align: right; font-weight: 600; color: var(--pu-color-text); font-variant-numeric: tabular-nums }
+  .kit-facts .quiet dd { font-weight: 500; color: var(--pu-color-text-muted) }
+  .kit-facts.stack dl > div { flex-direction: column; align-items: flex-start }
+  .kit-facts.stack dd { margin: 0; text-align: left }
+}

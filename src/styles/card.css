@@ -2,6 +2,7 @@
    Styles for card. Needs tokens.css and base.css (styles.css has everything). */
 @layer punji.components {
   .kit-card { display: grid; align-content: start; gap: 12px; min-width: 0; padding: 16px; background: var(--pu-color-surface); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-card) }
+  .kit-card.kit-inv { background: var(--pu-color-surface-inverse); border-color: transparent }
   .kit-card.flush { gap: 0; padding: 0; overflow: hidden }
   .kit-card-h { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 32px; min-width: 0 }
   .kit-card.flush > .kit-card-h { padding: 14px 16px 10px }

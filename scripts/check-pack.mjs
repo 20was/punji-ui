@@ -9,7 +9,9 @@ import { execFileSync } from 'node:child_process';
 // Hooks, CSV export, calculations and the generic money module with its three
 // primitives (JS, declarations, CSS) bring the measured size to ~549 kB; keep a
 // modest allowance above that and re-measure when adding modules.
-const MAX_UNPACKED = 570 * 1024;
+// The ten migrated status, meter and list components plus the web-parity work
+// (JS, declarations, CSS) bring it to ~649 KiB.
+const MAX_UNPACKED = 680 * 1024;
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
 const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md']);
 const allowed = (p) => always.has(p) || /^dist\/.+\.(js|d\.ts|css)$/.test(p);

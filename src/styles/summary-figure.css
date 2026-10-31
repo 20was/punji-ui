@@ -1,0 +1,11 @@
+/* Punji UI styles.
+   Styles for summary-figure. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .kit-sumfig { display: grid; gap: 4px; min-width: 0; padding: 14px 0; border-block: 1px solid var(--pu-color-card-border); color: var(--pu-color-text) }
+  .kit-sumfig.lead .kit-sumfig-k { color: var(--pu-color-text); font-weight: 500 }
+  .kit-sumfig-k { font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }
+  .kit-sumfig-row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 12px }
+  .kit-sumfig-v { font-size: 22px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; font-variant-numeric: tabular-nums }
+  .kit-sumfig.lg .kit-sumfig-v { font-size: 26px; line-height: 32px }
+  .kit-sumfig-n { font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums }
+}

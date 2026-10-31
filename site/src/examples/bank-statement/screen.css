@@ -1,0 +1,11 @@
+/* Bank statement pattern: layout only. */
+.sc-bs { container: sc-bs / inline-size; display: grid; gap: var(--pu-space-4); }
+.sc-bs-grid { display: grid; gap: var(--pu-space-4); align-items: start; }
+.sc-bs-grid > * { min-width: 0; }
+.sc-bs-stack { display: grid; gap: var(--pu-space-4); }
+.sc-bs-filters { display: flex; flex-wrap: wrap; align-items: center; gap: var(--pu-space-3); }
+.sc-bs-search { flex: 1 1 240px; min-width: 0; }
+
+@container sc-bs (min-width: 900px) {
+  .sc-bs-grid { grid-template-columns: 300px minmax(0, 1fr); }
+}

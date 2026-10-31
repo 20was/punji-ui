@@ -24,3 +24,12 @@ export function loadExample(slug: string, id: string): LoadedExample | undefined
 export function exampleSource(slug: string, file: string): string | undefined {
   return guideSources[`../guides/${slug}/${file}.tsx`];
 }
+
+// Showcase patterns keep their layout CSS next to the screen (site/src/examples/<slug>/screen.css). The screen imports
+// it, so it is bundled like any CSS; its text is shown beside the TSX so a copy carries both halves.
+const styles = import.meta.glob<string>('../examples/*/*.css', { eager: true, query: '?raw', import: 'default' });
+
+/** The text of an example's CSS file (site/src/examples/<slug>/<id>.css), if it has one. */
+export function exampleCss(slug: string, id: string): string | undefined {
+  return styles[`../examples/${slug}/${id}.css`];
+}

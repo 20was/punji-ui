@@ -1,0 +1,23 @@
+/* Payment flow pattern: layout only. */
+.sc-pay { container: sc-pay / inline-size; }
+.sc-pay-in { display: grid; gap: var(--pu-space-4); align-items: start; }
+.sc-pay-in > * { min-width: 0; }
+.sc-pay-steps { display: grid; gap: var(--pu-space-4); }
+/* The paying account shows beside the steps on a wide screen; a phone keeps the form in the first screen. */
+.sc-pay-steps > :last-child { display: none; }
+.sc-pay-panel, .sc-pay-stack, .sc-pay-done { display: grid; gap: var(--pu-space-4); align-content: start; }
+.sc-pay-stack { min-height: 260px; align-content: start; }
+.sc-pay-parties { display: grid; gap: var(--pu-space-4); }
+.sc-pay-parties > div { display: grid; gap: 2px; justify-items: start; padding: var(--pu-space-3); border-radius: var(--pu-radius-control); background: var(--pu-color-surface-tint); }
+.sc-pay-label { margin: 0; font-size: var(--pu-text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--pu-color-text-muted); }
+.sc-pay-name { margin: 0; font-weight: 600; }
+.sc-pay-muted { margin: 0; font-size: var(--pu-text-sm); color: var(--pu-color-text-muted); }
+.sc-pay-nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--pu-space-2); }
+
+@container sc-pay (min-width: 560px) {
+  .sc-pay-parties { grid-template-columns: 1fr 1fr; }
+}
+@container sc-pay (min-width: 820px) {
+  .sc-pay-in { grid-template-columns: 280px minmax(0, 1fr); }
+  .sc-pay-steps > :last-child { display: revert-layer; }
+}

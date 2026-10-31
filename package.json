@@ -282,6 +282,38 @@
       "types": "./dist/market-heatmap/MarketHeatmap.d.ts",
       "default": "./dist/market-heatmap/MarketHeatmap.js"
     },
+    "./ledger": {
+      "types": "./dist/ledger/ledger.d.ts",
+      "default": "./dist/ledger/ledger.js"
+    },
+    "./debit-credit": {
+      "types": "./dist/debit-credit/DebitCredit.d.ts",
+      "default": "./dist/debit-credit/DebitCredit.js"
+    },
+    "./ledger-table": {
+      "types": "./dist/ledger-table/LedgerTable.d.ts",
+      "default": "./dist/ledger-table/LedgerTable.js"
+    },
+    "./journal-entry": {
+      "types": "./dist/journal-entry/JournalEntryView.d.ts",
+      "default": "./dist/journal-entry/JournalEntryView.js"
+    },
+    "./trial-balance": {
+      "types": "./dist/trial-balance/TrialBalance.d.ts",
+      "default": "./dist/trial-balance/TrialBalance.js"
+    },
+    "./statement-table": {
+      "types": "./dist/statement-table/StatementTable.d.ts",
+      "default": "./dist/statement-table/StatementTable.js"
+    },
+    "./payment-status": {
+      "types": "./dist/payment-status/PaymentStatus.d.ts",
+      "default": "./dist/payment-status/PaymentStatus.js"
+    },
+    "./period-selector": {
+      "types": "./dist/period-selector/FinancialPeriodSelector.d.ts",
+      "default": "./dist/period-selector/FinancialPeriodSelector.js"
+    },
     "./styles.css": {
       "types": "./dist/styles.css.d.ts",
       "default": "./dist/styles.css"

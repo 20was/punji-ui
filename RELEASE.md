@@ -1,6 +1,6 @@
 # Release and versioning
 
-How an npm release works as implemented at `cfe3d47`.
+How an npm release works as implemented at the current `main`.
 
 > **Nothing has been published.** `package.json` is `0.0.0`, there is no `CHANGELOG.md`, and no npm package, git tag or GitHub release exists. Publishing needs explicit owner approval and the owner steps below. Do not enable the release gate or publish from a laptop.
 

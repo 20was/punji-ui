@@ -6,6 +6,8 @@
 // exact example source on the clipboard, the theme switch forces and persists a theme, the Command-K
 // search finds and opens pages, sidebar groups collapse and persist, the mobile drawer opens and
 // navigates, tabs deep-link, path routing, the hash redirect, the 404 page and the no-JS render.
+// SITE_SHARD="i/n" (1-based) runs every n-th page-sweep cell (width x theme x route) and, on shard 1
+// only, the behaviour checks, so CI can split the sweep across jobs. Unset, everything runs.
 import { chromium } from 'playwright';
 import { preview } from 'vite';
 import { readFileSync, mkdirSync } from 'node:fs';
@@ -21,6 +23,9 @@ const basePath = normaliseBase(process.env.BASE_PATH).replace(/\/$/, '');
 const base = `${process.env.CHECK_URL ?? 'http://127.0.0.1:4174'}${basePath}`;
 const axeSource = readFileSync('node_modules/axe-core/axe.min.js', 'utf8');
 const browser = await chromium.launch({ headless: true, ...(process.env.CHROME_CHANNEL ? { channel: process.env.CHROME_CHANNEL } : {}) });
+const [shardIndex, shardCount] = (process.env.SITE_SHARD ?? '1/1').split('/').map(Number);
+if (!Number.isInteger(shardIndex) || !Number.isInteger(shardCount) || shardIndex < 1 || shardIndex > shardCount) throw new Error(`SITE_SHARD must look like "1/4", got "${process.env.SITE_SHARD}"`);
+let cell = 0;
 const failures = [];
 const checked = { variants: 0, tabs: 0 };
 const fail = (message) => { failures.push(message); console.error(`FAIL ${message}`); };
@@ -127,6 +132,7 @@ try {
       const context = await browser.newContext({ viewport: { width, height: 900 }, colorScheme: theme, reducedMotion: 'reduce' });
       await context.addInitScript((t) => localStorage.setItem('punji-docs-theme', JSON.stringify(t)), theme);
       for (const route of routes) {
+        if (cell++ % shardCount !== shardIndex - 1) continue;
         const page = await context.newPage();
         const errors = [];
         page.on('pageerror', (error) => errors.push(error.message));
@@ -180,6 +186,8 @@ try {
     }
   }
 
+  // Behaviour checks run once, on the first shard.
+  if (shardIndex === 1) {
   // Behaviour: desktop.
   const desktop = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: 'light', permissions: ['clipboard-read', 'clipboard-write'] });
   const page = await desktop.newPage();
@@ -337,6 +345,7 @@ try {
   for (const id of ['examples', 'code', 'api', 'usage']) if (!(await bare.locator(`#${id}[data-tab]`).isVisible())) fail(`no-JS: the ${id} panel is not visible`);
   await bare.screenshot({ path: `${out}/no-js-money-display.png`, fullPage: true });
   await plain.close();
+  }
 } finally {
   await browser.close();
   await server?.close();
@@ -348,4 +357,4 @@ if (failures.length) {
   process.exit(1);
 }
 console.log(`layout flags: edge ${flagCounts.edge} (+${flagCounts.edgeAllowed} allowlisted), clip ${flagCounts.clip}, dup ${flagCounts.dup}, icon ${flagCounts.icon}`);
-console.log(`site check: ${routes.length} routes x 2 widths x 2 themes, ${checked.variants} example variants and ${checked.tabs} page tabs (axe, overflow, console, layout) and the copy, variant, preview theme, tabs, theme, search, sidebar, drawer, path routing, hash redirect, 404 and no-JS behaviours passed`);
+console.log(`site check${shardCount > 1 ? ` (shard ${shardIndex}/${shardCount})` : ''}: ${routes.length} routes x 2 widths x 2 themes, ${checked.variants} example variants and ${checked.tabs} page tabs (axe, overflow, console, layout) and the copy, variant, preview theme, tabs, theme, search, sidebar, drawer, path routing, hash redirect, 404 and no-JS behaviours passed`);

@@ -1,6 +1,6 @@
 # Quality standards
 
-What is enforced today at `cfe3d47`, and what is not. Contributor workflow: [CONTRIBUTING.md](CONTRIBUTING.md). Browser gate detail: [docs/VISUAL-TESTING.md](docs/VISUAL-TESTING.md).
+What is enforced today at the current `main`, and what is not. Contributor workflow: [CONTRIBUTING.md](CONTRIBUTING.md). Browser gate detail: [docs/VISUAL-TESTING.md](docs/VISUAL-TESTING.md).
 
 ## Gates
 
@@ -13,7 +13,7 @@ What is enforced today at `cfe3d47`, and what is not. Contributor workflow: [CON
 | Build | `npm run build` | `tsc` ESM and declarations, Lightning CSS | `verify` |
 | Examples | `npm run typecheck:examples`, `build:examples`, `check:examples` | Examples typecheck and build against the built package; `check:examples` drives them in Chromium with axe (serious/critical) | `verify` |
 | Portal types | `npm run typecheck:portal` | Portal pages typecheck | `verify` |
-| Size | `npm run size` | size-limit, gzip, 130 entries in `.size-limit.json`: per subpath, root "Everything" and a root Button tree-shaking check; limits live in the file | `verify` |
+| Size | `npm run size` | size-limit, gzip, one entry per subpath in `.size-limit.json` (`npm run size` lists them): per subpath, root "Everything" and a root Button tree-shaking check; limits live in the file | `verify` |
 | Package | `npm run check:package` | `publint --strict`; `attw --profile esm-only`; `check-pack.mjs` (tarball allowlist, notices present, `MAX_UNPACKED` cap); `check:exports` (subpaths equal root) | `verify` |
 | Lockfile | `npm run check:lockfile` | lockfile-lint: npm registry, HTTPS, integrity | `verify` |
 | Signatures | `npm audit signatures` | Registry signatures and provenance of installed packages | `verify` and `release` |

@@ -186,6 +186,46 @@
       "types": "./dist/live/live.d.ts",
       "default": "./dist/live/live.js"
     },
+    "./retry-note": {
+      "types": "./dist/retry-note/RetryNote.d.ts",
+      "default": "./dist/retry-note/RetryNote.js"
+    },
+    "./meter": {
+      "types": "./dist/meter/Meter.d.ts",
+      "default": "./dist/meter/Meter.js"
+    },
+    "./summary-figure": {
+      "types": "./dist/summary-figure/SummaryFigure.d.ts",
+      "default": "./dist/summary-figure/SummaryFigure.js"
+    },
+    "./check-row": {
+      "types": "./dist/check-row/CheckRow.d.ts",
+      "default": "./dist/check-row/CheckRow.js"
+    },
+    "./inline-state": {
+      "types": "./dist/inline-state/InlineState.d.ts",
+      "default": "./dist/inline-state/InlineState.js"
+    },
+    "./key-stats": {
+      "types": "./dist/key-stats/KeyStats.d.ts",
+      "default": "./dist/key-stats/KeyStats.js"
+    },
+    "./fact-list": {
+      "types": "./dist/fact-list/FactList.d.ts",
+      "default": "./dist/fact-list/FactList.js"
+    },
+    "./step-list": {
+      "types": "./dist/step-list/StepList.d.ts",
+      "default": "./dist/step-list/StepList.js"
+    },
+    "./card-link": {
+      "types": "./dist/card-link/CardLink.d.ts",
+      "default": "./dist/card-link/CardLink.js"
+    },
+    "./link-table": {
+      "types": "./dist/link-table/LinkTable.d.ts",
+      "default": "./dist/link-table/LinkTable.js"
+    },
     "./styles.css": "./dist/styles.css",
     "./tokens.css": "./dist/tokens.css",
     "./css/*.css": "./dist/css/*.css",

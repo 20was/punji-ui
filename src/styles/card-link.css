@@ -1,0 +1,11 @@
+/* Punji UI styles.
+   Styles for card-link. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .kit-cardlink { flex: none; position: relative; display: inline-flex; align-items: center; gap: 2px; min-height: 32px; padding: 0 2px; border-radius: var(--pu-radius-sm); color: var(--pu-color-link); font: 500 13px / 18px var(--pu-font-body); white-space: nowrap; text-decoration: none; cursor: pointer }
+  .kit-cardlink:hover { text-decoration: underline; text-underline-offset: 3px }
+  .kit-cardlink:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+  .kit-ext { flex: none; width: 14px; height: 14px; vertical-align: -2px }
+  .kit-cardlink > .kit-chev { width: 14px; height: 14px; color: currentColor }
+  .kit-cardlink > .kit-ext { flex: none; width: 13px; height: 13px; margin-left: 2px }
+  @media (pointer: coarse) { .kit-cardlink::after { content: ''; position: absolute; inset: -6px -4px } }
+}

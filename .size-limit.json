@@ -276,20 +276,20 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "40 kB",
+    "limit": "44.5 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "14 kB",
+    "limit": "18 kB",
     "rolldown": false,
     "gzip": true
   },
   {
     "name": "tokens.css",
     "path": "dist/tokens.css",
-    "limit": "1.15 kB",
+    "limit": "1.35 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -550,6 +550,76 @@
     "path": "dist/css/money.css",
     "limit": "450 B",
     "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "retry-note (import from '@punji/ui/retry-note')",
+    "path": "dist/retry-note/RetryNote.js",
+    "import": "*",
+    "limit": "1.05 kB",
+    "gzip": true
+  },
+  {
+    "name": "meter (import from '@punji/ui/meter')",
+    "path": "dist/meter/Meter.js",
+    "import": "*",
+    "limit": "2.2 kB",
+    "gzip": true
+  },
+  {
+    "name": "summary-figure (import from '@punji/ui/summary-figure')",
+    "path": "dist/summary-figure/SummaryFigure.js",
+    "import": "*",
+    "limit": "400 B",
+    "gzip": true
+  },
+  {
+    "name": "check-row (import from '@punji/ui/check-row')",
+    "path": "dist/check-row/CheckRow.js",
+    "import": "*",
+    "limit": "1.65 kB",
+    "gzip": true
+  },
+  {
+    "name": "inline-state (import from '@punji/ui/inline-state')",
+    "path": "dist/inline-state/InlineState.js",
+    "import": "*",
+    "limit": "1 kB",
+    "gzip": true
+  },
+  {
+    "name": "key-stats (import from '@punji/ui/key-stats')",
+    "path": "dist/key-stats/KeyStats.js",
+    "import": "*",
+    "limit": "620 B",
+    "gzip": true
+  },
+  {
+    "name": "fact-list (import from '@punji/ui/fact-list')",
+    "path": "dist/fact-list/FactList.js",
+    "import": "*",
+    "limit": "380 B",
+    "gzip": true
+  },
+  {
+    "name": "step-list (import from '@punji/ui/step-list')",
+    "path": "dist/step-list/StepList.js",
+    "import": "*",
+    "limit": "800 B",
+    "gzip": true
+  },
+  {
+    "name": "card-link (import from '@punji/ui/card-link')",
+    "path": "dist/card-link/CardLink.js",
+    "import": "*",
+    "limit": "680 B",
+    "gzip": true
+  },
+  {
+    "name": "link-table (import from '@punji/ui/link-table')",
+    "path": "dist/link-table/LinkTable.js",
+    "import": "*",
+    "limit": "1.05 kB",
     "gzip": true
   }
 ]

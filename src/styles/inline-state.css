@@ -1,0 +1,28 @@
+/* Punji UI styles.
+   Styles for inline-state. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .kit-istate { display: grid; grid-template-columns: 40px minmax(0, 1fr); align-items: start; gap: 14px; min-width: 0; padding: 14px; border-radius: var(--pu-radius-xl); background: var(--pu-color-surface-tint); color: var(--pu-color-text) }
+  .kit-istate.row { grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; padding: 10px 10px 10px 12px }
+  .kit-istate.bare { padding: 0; background: none }
+  .kit-istate.bare .kit-istate-ic { background: var(--pu-color-surface-tint) }
+  .kit-istate-ic { display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--pu-radius-lg); background: var(--pu-color-surface); color: var(--pu-color-text-muted) }
+  .kit-istate.row .kit-istate-ic { width: 32px; height: 32px; background: transparent }
+  /* Inside a card the state sits on the card's own surface (no box in a card); the icon tile keeps its tint. */
+  :is(.kit-card, .kit-group, .kit-steps) .kit-istate { padding-inline: 0; border-radius: 0; background: none }
+  :is(.kit-card, .kit-group, .kit-steps) .kit-istate:not(.row, .bare) { border-block: 1px solid var(--pu-color-card-border) }
+  :is(.kit-card, .kit-group, .kit-steps) .kit-istate.row { border-bottom: 1px solid var(--pu-color-card-border) }
+  :is(.kit-card, .kit-group, .kit-steps) .kit-istate .kit-istate-ic { background: var(--pu-color-surface-tint) }
+  :is(.kit-card, .kit-group, .kit-steps) .kit-istate.row .kit-istate-ic { background: transparent }
+  .kit-istate.error .kit-istate-ic { color: var(--pu-color-loss) }
+  .kit-istate.warn .kit-istate-ic { color: var(--pu-color-warn) }
+  .kit-istate-tx { display: grid; gap: 4px; min-width: 0; align-self: center }
+  .kit-istate-tx > b { font-size: 15px; line-height: 20px; font-weight: 600 }
+  .kit-istate.row .kit-istate-tx > b { font-size: 14px; font-weight: 500 }
+  .kit-istate-tx > p { margin: 0; font-size: 13px; line-height: 1.5; color: var(--pu-color-text-muted) }
+  .kit-istate-acts { display: flex; flex-wrap: wrap; gap: 8px; grid-column: 2 }
+  .kit-istate.row .kit-istate-acts { grid-column: 3 }
+  @media (max-width: 559px) {
+    .kit-istate.row { grid-template-columns: 32px minmax(0, 1fr) }
+    .kit-istate.row .kit-istate-acts { grid-column: 2 }
+  }
+}

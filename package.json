@@ -310,6 +310,38 @@
       "types": "./dist/payment-status/PaymentStatus.d.ts",
       "default": "./dist/payment-status/PaymentStatus.js"
     },
+    "./banking": {
+      "types": "./dist/banking/banking.d.ts",
+      "default": "./dist/banking/banking.js"
+    },
+    "./account-number": {
+      "types": "./dist/account-number/AccountNumber.d.ts",
+      "default": "./dist/account-number/AccountNumber.js"
+    },
+    "./bank-account-card": {
+      "types": "./dist/bank-account-card/BankAccountCard.d.ts",
+      "default": "./dist/bank-account-card/BankAccountCard.js"
+    },
+    "./transaction-list": {
+      "types": "./dist/transaction-list/TransactionList.d.ts",
+      "default": "./dist/transaction-list/TransactionList.js"
+    },
+    "./transaction-status": {
+      "types": "./dist/transaction-status/TransactionStatus.d.ts",
+      "default": "./dist/transaction-status/TransactionStatus.js"
+    },
+    "./payment-receipt": {
+      "types": "./dist/payment-receipt/PaymentReceipt.d.ts",
+      "default": "./dist/payment-receipt/PaymentReceipt.js"
+    },
+    "./payment-timeline": {
+      "types": "./dist/payment-timeline/PaymentTimeline.d.ts",
+      "default": "./dist/payment-timeline/PaymentTimeline.js"
+    },
+    "./beneficiary-selector": {
+      "types": "./dist/beneficiary-selector/BeneficiarySelector.d.ts",
+      "default": "./dist/beneficiary-selector/BeneficiarySelector.js"
+    },
     "./period-selector": {
       "types": "./dist/period-selector/FinancialPeriodSelector.d.ts",
       "default": "./dist/period-selector/FinancialPeriodSelector.js"

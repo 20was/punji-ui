@@ -1,0 +1,116 @@
+/* Punji UI styles.
+   Styles for AccountNumber, BankAccountCard, TransactionList, TransactionStatus, PaymentReceipt, PaymentTimeline and BeneficiarySelector.
+   Needs tokens.css, base.css, card.css, money.css, status-pill.css, states.css, button.css and pagination.css (styles.css has everything). */
+@layer punji.components {
+  /* AccountNumber */
+  .pu-acct { display: inline-flex; align-items: center; gap: 4px; min-width: 0; font-variant-numeric: tabular-nums }
+  .pu-acct-num { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.95em; letter-spacing: 0.02em; overflow-wrap: anywhere }
+  .pu-acct-btn { flex: none; display: inline-grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; border-radius: var(--pu-radius-md); background: transparent; color: var(--pu-color-text-muted); cursor: pointer }
+  .pu-acct-btn:hover { background: var(--pu-color-surface-tint); color: var(--pu-color-text) }
+  .pu-acct-btn:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 1px }
+  .pu-acct-btn[aria-pressed='true'] { color: var(--pu-color-text); background: var(--pu-color-surface-tint) }
+  @media (pointer: coarse) { .pu-acct-btn { width: var(--pu-tap-min); height: var(--pu-tap-min) } }
+
+  /* BankAccountCard */
+  .pu-bank { max-width: 26rem }
+  .pu-bank-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--pu-space-3); min-width: 0 }
+  .pu-bank-id { min-width: 0 }
+  .pu-bank .pu-bank-name { margin: 0; font: 600 var(--pu-text-base) / 1.3 var(--pu-font-display); overflow-wrap: anywhere }
+  .pu-bank-type { margin: 2px 0 0; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-bank-status { flex: none }
+  .pu-bank-facts { display: grid; gap: var(--pu-space-2); margin: 0 }
+  .pu-bank-facts > div { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2px var(--pu-space-3); min-width: 0 }
+  .pu-bank-facts dt { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-bank-facts dd { margin: 0; font-size: var(--pu-text-sm); min-width: 0; overflow-wrap: anywhere }
+  .pu-bank-balance { display: flex; align-items: center; justify-content: space-between; gap: var(--pu-space-2); padding-top: var(--pu-space-3); border-top: 1px solid var(--pu-color-card-border) }
+  .pu-bank-balance .pu-bank-facts { flex: 1 1 auto }
+  .pu-bank-balance .pu-bank-facts dd.pu-bank-amount { font: 600 var(--pu-text-lg) / 1.2 var(--pu-font-display); font-variant-numeric: tabular-nums }
+  .pu-bank-actions { display: flex; flex-wrap: wrap; gap: var(--pu-space-2) }
+  .pu-bank-status-icon, .pu-txstatus-icon { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round }
+
+  /* TransactionStatus */
+  .pu-txstatus { gap: 4px }
+
+  /* TransactionList */
+  .pu-txlist { display: grid; gap: var(--pu-space-4); min-width: 0 }
+  .pu-txgroup { display: grid; gap: var(--pu-space-1); min-width: 0 }
+  .pu-txgroup-h { margin: 0; font: 600 var(--pu-text-xs) / 1.4 var(--pu-font-body); letter-spacing: 0.04em; color: var(--pu-color-text-muted) }
+  .pu-txrows { list-style: none; margin: 0; padding: 0; border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-card); background: var(--pu-color-surface) }
+  .pu-tx { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--pu-space-3); min-width: 0; min-height: 56px; padding: 10px 14px; box-sizing: border-box }
+  .pu-tx + .pu-tx { border-top: 1px solid var(--pu-color-card-border) }
+  .pu-tx-main { display: grid; gap: 3px; min-width: 0 }
+  .pu-tx-name { font: 500 var(--pu-text-sm) / 1.35 var(--pu-font-body); overflow-wrap: anywhere }
+  .pu-tx-sub { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-tx-ref { font-variant-numeric: tabular-nums; overflow-wrap: anywhere }
+  .pu-tx-money { display: grid; justify-items: end; gap: 3px; flex: none; text-align: right }
+  .pu-tx-amount { display: inline-flex; align-items: center; gap: 4px; font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body); font-variant-numeric: tabular-nums; white-space: nowrap }
+  .pu-tx[data-direction='credit'] .pu-tx-amount { color: var(--pu-color-gain) }
+  .pu-tx[data-status='failed'] .pu-tx-amount, .pu-tx[data-status='reversed'] .pu-tx-amount { text-decoration: line-through; color: var(--pu-color-text-muted) }
+  .pu-tx-dir { font-size: var(--pu-text-xs); letter-spacing: 0.04em; color: var(--pu-color-text-muted) }
+  .pu-tx-bal { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); white-space: nowrap }
+  .pu-tx-skel { align-items: center }
+  @media (max-width: 479px) {
+    .pu-tx { flex-wrap: wrap }
+    .pu-tx-money { justify-items: start; text-align: left; width: 100% }
+  }
+
+  /* PaymentReceipt */
+  .pu-receipt { display: grid; gap: var(--pu-space-4); max-width: 28rem; padding: var(--pu-space-4); box-sizing: border-box; background: var(--pu-color-surface); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-card); min-width: 0 }
+  .pu-receipt-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--pu-space-2) }
+  .pu-receipt-title { margin: 0; font: 600 var(--pu-text-base) / 1.3 var(--pu-font-display) }
+  .pu-receipt-amount { margin: 0; font: 700 24px / 1.2 var(--pu-font-display); font-variant-numeric: tabular-nums }
+  .pu-receipt-facts, .pu-receipt-sum { display: grid; gap: var(--pu-space-3); margin: 0 }
+  .pu-receipt-facts > div, .pu-receipt-sum > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px var(--pu-space-3); min-width: 0 }
+  .pu-receipt dt { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-receipt dd { margin: 0; display: grid; justify-items: end; text-align: right; font-size: var(--pu-text-sm); min-width: 0; overflow-wrap: anywhere }
+  .pu-receipt-ref { display: flex; align-items: center; justify-content: flex-end; gap: 4px }
+  .pu-receipt-refval { font-variant-numeric: tabular-nums; overflow-wrap: anywhere }
+  .pu-receipt-name { font-weight: 600 }
+  .pu-receipt-sub, .pu-receipt-note { color: var(--pu-color-text-muted); font-size: var(--pu-text-xs) }
+  .pu-receipt-sum { padding-top: var(--pu-space-3); border-top: 1px solid var(--pu-color-card-border); font-variant-numeric: tabular-nums }
+  .pu-receipt-total { padding-top: var(--pu-space-2); border-top: 1px solid var(--pu-color-border-strong) }
+  .pu-receipt-total :is(dt, dd) { font-weight: 700; color: var(--pu-color-text); font-size: var(--pu-text-base) }
+  .pu-receipt-qr { margin: 0; display: grid; place-items: center; padding: var(--pu-space-3); background: var(--pu-color-surface-solid); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-lg) }
+  .pu-receipt-qr :is(img, svg) { max-width: 180px; height: auto }
+  .pu-receipt-actions { display: flex; justify-content: flex-end }
+  @media print {
+    .pu-receipt { max-width: none; border: 1px solid currentColor; background: none; color: CanvasText; break-inside: avoid; page-break-inside: avoid }
+    .pu-receipt dt, .pu-receipt-sub, .pu-receipt-note { color: inherit }
+    .pu-receipt-noprint { display: none !important }
+  }
+
+  /* PaymentTimeline */
+  .pu-timeline { list-style: none; margin: 0; padding: 0; display: grid; min-width: 0 }
+  .pu-step { position: relative; display: flex; gap: var(--pu-space-3); padding-bottom: var(--pu-space-4); min-width: 0 }
+  .pu-step:last-child { padding-bottom: 0 }
+  .pu-step:not(:last-child)::before { content: ''; position: absolute; left: 13px; top: 28px; bottom: 0; width: 2px; background: var(--pu-color-border-strong) }
+  .pu-step[data-state='complete']:not(:last-child)::before { background: var(--pu-color-gain) }
+  .pu-step-mark { flex: none; display: grid; place-items: center; width: 28px; height: 28px; border-radius: var(--pu-radius-full); border: 2px solid var(--pu-color-border-strong); background: var(--pu-color-surface); color: var(--pu-color-text-muted) }
+  .pu-step[data-state='complete'] .pu-step-mark { border-color: var(--pu-color-gain); color: var(--pu-color-gain) }
+  .pu-step[data-state='current'] .pu-step-mark { border-color: var(--pu-color-series-nepse); color: var(--pu-color-series-nepse) }
+  .pu-step[data-state='failed'] .pu-step-mark { border-color: var(--pu-color-loss); color: var(--pu-color-loss) }
+  .pu-step[data-state='reversed'] .pu-step-mark { border-color: var(--pu-color-warn); color: var(--pu-color-warn) }
+  .pu-step-body { display: grid; gap: 2px; min-width: 0; padding-top: 3px }
+  .pu-step-label { font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body) }
+  .pu-step[data-state='upcoming'] .pu-step-label { color: var(--pu-color-text-muted); font-weight: 400 }
+  .pu-step-state, .pu-step-time, .pu-step-detail { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-step-time { font-variant-numeric: tabular-nums }
+
+  /* BeneficiarySelector */
+  .pu-bene { position: relative; display: grid; gap: 6px; max-width: 26rem; min-width: 0 }
+  .pu-bene-label { font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body) }
+  .pu-bene-input { box-sizing: border-box; width: 100%; height: var(--pu-control-md); padding: 0 12px; font: 400 var(--pu-text-base) / 1.3 var(--pu-font-body); color: var(--pu-color-text); background: var(--pu-color-surface); border: 1px solid var(--pu-color-border-control); border-radius: var(--pu-radius-control) }
+  .pu-bene-input:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 1px }
+  .pu-bene.bad .pu-bene-input { border-color: var(--pu-color-loss) }
+  .pu-bene-err { font-size: var(--pu-text-xs); color: var(--pu-color-loss) }
+  .pu-bene-sel { display: flex; flex-wrap: wrap; gap: 2px 8px; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums }
+  .pu-bene-pop { display: grid; gap: 2px; box-sizing: border-box; max-height: 18rem; overflow: auto; padding: 4px; background: var(--pu-color-surface-solid); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-lg); box-shadow: var(--pu-shadow-lg) }
+  .pu-bene-none { margin: 0; padding: 12px; color: var(--pu-color-text-muted); font-size: var(--pu-text-sm) }
+  .pu-bene-group { padding: 8px 8px 4px; font: 600 var(--pu-text-xs) / 1.2 var(--pu-font-body); letter-spacing: 0.04em; color: var(--pu-color-text-muted) }
+  .pu-bene-opt { display: grid; gap: 2px; padding: 8px; min-height: 44px; box-sizing: border-box; border-radius: var(--pu-radius-md); cursor: pointer }
+  .pu-bene-opt:hover, .pu-bene-opt.on { background: var(--pu-color-surface-tint) }
+  .pu-bene-opt[aria-selected='true'] .pu-bene-name { font-weight: 700 }
+  .pu-bene-name { font: 500 var(--pu-text-sm) / 1.3 var(--pu-font-body); overflow-wrap: anywhere }
+  .pu-bene-nick { color: var(--pu-color-text-muted); font-weight: 400 }
+  .pu-bene-meta { display: flex; flex-wrap: wrap; gap: 2px 8px; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums }
+}

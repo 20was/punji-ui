@@ -20,20 +20,26 @@ import type { ReactNode } from 'react';
 import { formatFigure } from '../format/format.ts';
 
 export interface BookLevel {
+  /** Price of this level. */
   price: number;
+  /** Quantity at this level. */
   quantity: number;
 }
 
 export interface OrderBookDepthLabels {
   /** The four column heads: buy quantity, bid, ask, sell quantity. */
   buyQty: string;
+  /** Head of the bid price column. */
   bid: string;
+  /** Head of the ask price column. */
   ask: string;
+  /** Head of the sell quantity column. */
   sellQty: string;
   /** The table's name ("Order book for NABIL"). */
   caption: string;
   /** Under the split bar: one side's share and quantity, as the page words it ("Buy 58.0% · 41,210"). */
   buyTotal: (pct: string, qty: string) => string;
+  /** Under the split bar: the sell side's share and quantity, as the page words it. */
   sellTotal: (pct: string, qty: string) => string;
 }
 
@@ -46,7 +52,9 @@ export function OrderBookDepth({ bids, asks, levels = 5, totals, labels, testId 
   levels?: number;
   /** Each side's whole quantity, when published; else the drawn levels' sum. */
   totals?: { buy: number; sell: number } | null;
+  /** The column heads, the table caption and the split bar's wording. */
   labels: OrderBookDepthLabels;
+  /** Test id on the outer element. */
   testId?: string;
 }) {
   const n = Math.min(levels, Math.max(bids.length, asks.length));

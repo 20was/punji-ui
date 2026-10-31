@@ -22,6 +22,7 @@ export interface MoneyFormatConfig {
   display?: CurrencyDisplay;
   /** Negative amounts in parentheses where the locale has an accounting style. Default false. */
   accounting?: boolean;
+  /** When to print the sign: 'auto' (default), 'always', 'exceptZero', 'negative' or 'never'. */
   signDisplay?: MoneySignDisplay;
   /** Intl numbering system, for example 'deva' for Devanagari digits. Default: the locale's. */
   numberingSystem?: string;

@@ -18,16 +18,19 @@
 import type { ReactNode } from 'react';
 
 export interface MetricTileProps {
+  /** The tile's label, above the figure. */
   label: ReactNode;
   /** The figure, formatted by the caller (a string or a MoneyDisplay). */
   value: ReactNode;
   /** A MeterBar showing the figure's size; decorative, so the figure must also be printed. */
   meter?: ReactNode;
+  /** A note under the figure. */
   note?: ReactNode;
   /** `inverse` marks the one figure a reader acts on. */
   tone?: 'tint' | 'inverse';
   /** No meter in the whole row: no meter space held, a tighter tile. */
   compact?: boolean;
+  /** Test id on the tile element. */
   testId?: string;
 }
 
@@ -43,6 +46,7 @@ export function MetricTile({ label, value, meter, note, tone = 'tint', compact, 
 }
 
 export interface MetricRowProps {
+  /** The MetricTile cells, in order. */
   children: ReactNode;
   /** Names the group for screen readers ("Portfolio totals"). */
   label?: string;
@@ -50,6 +54,7 @@ export interface MetricRowProps {
   count?: 2 | 3 | 4;
   /** Small tiles that stay `count` across in a narrow panel (a figure and one note each, no meter). */
   dense?: boolean;
+  /** Test id on the group element. */
   testId?: string;
 }
 

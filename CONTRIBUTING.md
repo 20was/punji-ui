@@ -15,7 +15,7 @@ npm ci --ignore-scripts
 
 ## The checks
 
-`npm run verify` runs every gate CI runs, in order:
+`npm run verify` runs the main gates CI runs, in order. CI additionally runs `npm run check:lockfile`, `npm audit signatures`, `npm run check:examples` and the Playwright visual gate (`npm run test:visual:docker` locally). What each gate checks and the component definition of done: [QUALITY.md](QUALITY.md).
 
 | Script | What it checks |
 | --- | --- |
@@ -24,7 +24,8 @@ npm ci --ignore-scripts
 | `npm run test` | Vitest in jsdom, including axe-core on every component |
 | `npm run build` | `tsc` to ES modules and types, Lightning CSS for the stylesheets |
 | `npm run size` | size-limit budgets for every component and the CSS |
-| `npm run check:package` | publint, are-the-types-wrong and the tarball allowlist |
+| `npm run check:package` | publint, are-the-types-wrong, the tarball allowlist and the export check |
+| `npm run build:examples`, `typecheck:examples`, `typecheck:portal`, `typecheck:visual` | Examples, portal pages and the visual fixture app typecheck and build |
 
 Before pushing, run `npm run verify:deep`: `verify` plus every test again with
 2000 inputs per property test (`npm run test:deep`), so a rare input fails on
@@ -37,7 +38,7 @@ push to "see if CI passes".
 ## Where the code lives
 
 This repository is the source of truth for reusable Punji UI. Edit `src/`,
-exports, CSS and tests here. `punji-web` is a reference and is not migrated yet.
+exports, CSS and tests here. `punji-web` is a read-only reference; it does not consume the package yet and the docs portal still lives there ([AUDIT.md](AUDIT.md)).
 The reverse sync workflow is retired; `npm run sync` fails deliberately to
 prevent old automation from overwriting source. Use `npm run audit:web` for a
 read-only inventory comparison. See [architecture](docs/ARCHITECTURE.md).
@@ -70,7 +71,8 @@ template repeats it as a checklist.
 7. **It is documented.** A page on the documentation site: examples, props, when
    to use it, do and don't, content guidance (English and Nepali) and
    accessibility notes.
-8. **It is exported twice.** From the root (`@punji/ui`) and from its own subpath
+8. **It has a visual fixture.** Add it to `test/visual/` and commit the Docker-rendered baselines ([docs/VISUAL-TESTING.md](docs/VISUAL-TESTING.md)).
+9. **It is exported twice.** From the root (`@punji/ui`) and from its own subpath
    (`@punji/ui/<name>`), with its own CSS file under `@punji/ui/css/`.
 
 ## Changesets and releases
@@ -81,7 +83,7 @@ Every pull request that changes what ships adds a changeset:
 npm run changeset
 ```
 
-Before 1.0, a breaking change is a **minor** and everything else a **patch**.
+Before 1.0, a breaking change is a **minor** and everything else a **patch**. The full procedure, and the fact that nothing is published yet, is in [RELEASE.md](RELEASE.md).
 Write the summary for the people who use the package.
 
 Once `UI_NPM_RELEASE_ENABLED=true` and npm Trusted Publishing are configured, on merge to `main` the release workflow opens or updates a "Version packages"

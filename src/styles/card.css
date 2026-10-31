@@ -3,6 +3,9 @@
 @layer punji.components {
   .kit-card { display: grid; align-content: start; gap: 12px; min-width: 0; padding: 16px; background: var(--pu-color-surface); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-card) }
   .kit-card.flush { gap: 0; padding: 0; overflow: hidden }
+  .kit-card.kit-inv { background: var(--pu-color-surface-inverse); border-color: transparent; color: var(--pu-color-text-inverse) }
+  .kit-card.kit-inv .kit-card-t :is(h2, h3) { color: var(--pu-color-text-inverse) }
+  .kit-card.kit-inv :is(.kit-card-t p, .kit-card-meta) { color: color-mix(in srgb, var(--pu-color-text-inverse) 72%, transparent) }
   .kit-card-h { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 32px; min-width: 0 }
   .kit-card.flush > .kit-card-h { padding: 14px 16px 10px }
   .kit-card.flush > :is(.kit-tablebox, .kit-group) { border: 0; border-radius: 0; background: transparent }

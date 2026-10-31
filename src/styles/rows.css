@@ -10,6 +10,7 @@
   a.kit-value-row:hover, button.kit-value-row:hover { background: var(--pu-color-surface-subtle) }
   button.kit-value-row { width: 100%; border: 0; background: none; text-align: left; font: inherit; cursor: pointer }
   .kit-value-row .lead:empty { display: none }
+  .kit-value-row:has(> .lead:empty) { grid-template-columns: minmax(0, 1fr) auto }
   .kit-value-row .main { display: grid; gap: 2px; min-width: 0 }
   .kit-value-row .title { display: flex; align-items: center; gap: 8px; min-width: 0; font-weight: 600; line-height: 1.35 }
   .kit-value-row .title .sym { flex-shrink: 0; font-variant-numeric: tabular-nums }

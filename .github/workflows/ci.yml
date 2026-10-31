@@ -1,5 +1,6 @@
-# CI: one fast job for the package, one for workflow files, and a single
-# required check ("CI OK") that passes when the jobs that had to run passed.
+# CI: one fast job for the package, one visual regression and browser a11y job,
+# one for workflow files, and a single required check ("CI OK") that passes when
+# the jobs that had to run passed.
 # Free: standard GitHub-hosted runners cost nothing on a public repository.
 name: CI
 
@@ -47,6 +48,7 @@ jobs:
               - '.nvmrc'
               - 'tsconfig*.json'
               - 'vitest.config.ts'
+              - 'playwright.config.ts'
               - 'vitest.setup.ts'
               - '.size-limit.json'
               - '.oxlintrc.json'
@@ -96,6 +98,46 @@ jobs:
       - name: Package (publint, are-the-types-wrong, tarball contents)
         run: npm run check:package
 
+  visual:
+    name: Visual regression and browser a11y
+    needs: changes
+    if: needs.changes.outputs.package == 'true' || github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    # Baselines are rendered in this exact image (Playwright 1.64.1, Ubuntu noble,
+    # linux/amd64), so Chromium and fonts match `npm run test:visual:update`.
+    # Keep the tag in step with the pinned @playwright/test version; browsers
+    # ship inside the image, so there is nothing to download or cache.
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble@sha256:47b510dd9230bf0b9bfc9b20102241e577ea7a99334ab4c3ca19f19770e9b8ea
+      options: --ipc=host
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install (no lifecycle scripts)
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Screenshot comparison, interactions and axe (builds the fixture app)
+        env:
+          CI: 'true'
+        run: npx playwright test
+      - name: Upload diffs, traces and report (failures only)
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: visual-regression-diffs
+          path: |
+            test-results/visual/
+            playwright-report/
+          retention-days: 7
+          if-no-files-found: ignore
+
   workflows:
     name: Workflow lint (actionlint, zizmor)
     needs: changes
@@ -125,7 +167,7 @@ jobs:
 
   ci-ok:
     name: CI OK
-    needs: [changes, verify, workflows]
+    needs: [changes, verify, visual, workflows]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 2

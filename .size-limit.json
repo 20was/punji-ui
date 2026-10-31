@@ -283,13 +283,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "56.5 kB",
+    "limit": "62.5 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "21.5 kB",
+    "limit": "22.4 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -718,6 +718,62 @@
     "path": "dist/market-heatmap/MarketHeatmap.js",
     "import": "*",
     "limit": "2.5 kB",
+    "gzip": true
+  },
+  {
+    "name": "ledger (import from '@punji/ui/ledger')",
+    "path": "dist/ledger/ledger.js",
+    "import": "*",
+    "limit": "2.5 kB",
+    "gzip": true
+  },
+  {
+    "name": "debit-credit (import from '@punji/ui/debit-credit')",
+    "path": "dist/debit-credit/DebitCredit.js",
+    "import": "*",
+    "limit": "4.3 kB",
+    "gzip": true
+  },
+  {
+    "name": "ledger-table (import from '@punji/ui/ledger-table')",
+    "path": "dist/ledger-table/LedgerTable.js",
+    "import": "*",
+    "limit": "8.6 kB",
+    "gzip": true
+  },
+  {
+    "name": "journal-entry (import from '@punji/ui/journal-entry')",
+    "path": "dist/journal-entry/JournalEntryView.js",
+    "import": "*",
+    "limit": "8 kB",
+    "gzip": true
+  },
+  {
+    "name": "trial-balance (import from '@punji/ui/trial-balance')",
+    "path": "dist/trial-balance/TrialBalance.js",
+    "import": "*",
+    "limit": "8.5 kB",
+    "gzip": true
+  },
+  {
+    "name": "statement-table (import from '@punji/ui/statement-table')",
+    "path": "dist/statement-table/StatementTable.js",
+    "import": "*",
+    "limit": "8.2 kB",
+    "gzip": true
+  },
+  {
+    "name": "payment-status (import from '@punji/ui/payment-status')",
+    "path": "dist/payment-status/PaymentStatus.js",
+    "import": "*",
+    "limit": "900 B",
+    "gzip": true
+  },
+  {
+    "name": "period-selector (import from '@punji/ui/period-selector')",
+    "path": "dist/period-selector/FinancialPeriodSelector.js",
+    "import": "*",
+    "limit": "4.7 kB",
     "gzip": true
   }
 ]

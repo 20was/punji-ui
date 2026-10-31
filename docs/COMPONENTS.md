@@ -305,3 +305,5 @@ want none of them. Use `FinancialSummary` for a metrics list, `MetricTile` for c
 ## Market components
 
 `StockTable`, `MarketMovers`, `MarketIndices`, `MarketStatus`, `PriceLimitIndicator`, `Watchlist` and `MarketHeatmap`, with their pure helpers (`sortQuotes`, `rankMovers`, `getMarketSession`, `circuitLimits`, `squarify`): see [MARKET.md](MARKET.md).
+
+Accounting: `DebitCredit`, `LedgerTable`, `JournalEntryView`, `TrialBalance`, `StatementTable`, `PaymentStatus`, `FinancialPeriodSelector` and the pure `@punji/ui/ledger` helpers (`isBalanced`, `trialBalance`, `runningBalance`, `rollUp`, `ledgerToCsv`): see [ACCOUNTING.md](ACCOUNTING.md).

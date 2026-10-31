@@ -1,0 +1,75 @@
+/* Punji UI styles.
+   Styles for DebitCredit, LedgerTable, JournalEntryView, TrialBalance, StatementTable, PaymentStatus and FinancialPeriodSelector.
+   Needs tokens.css, base.css, table.css, money.css, status-pill.css, states.css, choice-group.css and select.css (styles.css has everything). */
+@layer punji.components {
+  .pu-dc { display: inline-flex; align-items: baseline; justify-content: flex-end; gap: 0.35em; font-variant-numeric: tabular-nums; white-space: nowrap }
+  .pu-dc-side { min-width: 1.6em; text-align: left; font: 600 var(--pu-text-xs) / 1 var(--pu-font-body); letter-spacing: 0.04em; color: var(--pu-color-text-muted) }
+  .pu-dc-blank { display: inline-block; min-width: 1px }
+
+  /* Ledger-shaped tables: the head sticks inside a scrolling box when the caller sets a height. */
+  .pu-ledger, .pu-stmt { min-width: 0 }
+  .pu-ledger .kit-tablebox, .pu-trial .kit-tablebox, .pu-stmt .kit-tablebox { max-height: var(--ledger-max-h, none) }
+  .pu-ledger .kit-table tbody th, .pu-trial .kit-table tbody th, .pu-journal .kit-table tbody th, .pu-stmt .kit-table tbody th { font-weight: 400; text-align: left }
+  .pu-ledger .kit-table .pu-ledger-ref { display: none; margin-top: 2px }
+  @media (max-width: 759px) {
+    .pu-ledger .kit-table .pu-ledger-ref { display: block }
+  }
+  @media (max-width: 639px) {
+    /* A phone shows each entry as a card: date, description, then Debit, Credit and Balance side by side with their names. */
+    .pu-ledger .kit-tablebox.stack .kit-table tbody tr:not(:has(> .kit-table-empty)) { grid-template-columns: repeat(3, minmax(0, 1fr)) }
+    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > th { grid-column: 1 / -1; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > th.pu-ledger-label { font-size: var(--pu-text-sm) }
+    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > th + td ~ td { grid-column: auto; font-size: var(--pu-text-sm) }
+    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:has(.pu-ledger-desc) { grid-column: 1 / -1 }
+    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:has(.pu-ledger-desc)::before, .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:has(.pu-dc-blank)::before { content: none }
+    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td.num { text-align: left }
+    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:empty { display: none }
+    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:has(.pu-dc-blank) { min-height: 1px }
+    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td .pu-dc { justify-content: flex-start }
+    .pu-ledger-desc { min-width: 0 }
+    .pu-ledger .kit-tablebox { max-height: none }
+    .pu-ledger .kit-tablebox.stack .kit-table tbody tr:has(.pu-ledger-total) { border-top: 1px solid var(--pu-color-border-strong) }
+    .pu-ledger .kit-tablebox.stack .kit-table tbody tr:has(.pu-ledger-closing) { border-top: 2px double var(--pu-color-border-strong); background: var(--pu-color-surface-subtle) }
+    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > * { border-top: 0 !important; background: none !important }
+  }
+  .pu-ledger-desc { display: inline-block; min-width: 12rem; max-width: 24rem; white-space: normal }
+  .pu-ledger .kit-table tbody th[scope='row']:not(.pu-ledger-label) { font-variant-numeric: tabular-nums }
+  .pu-ledger-label { color: var(--pu-color-text-muted) }
+  .pu-ledger-total, .pu-ledger-closing { font-weight: 700; color: var(--pu-color-text) }
+  :is(.pu-ledger, .pu-trial, .pu-journal) .kit-table tbody th:is(.pu-ledger-total, .pu-ledger-closing) { font-weight: 700; color: var(--pu-color-text) }
+  .pu-ledger .kit-table tbody tr:has(.pu-ledger-total) > *, .pu-journal .kit-table tbody tr:has(.pu-ledger-total) > *, .pu-trial .kit-table tbody tr:has(.pu-ledger-total) > * { border-top: 1px solid var(--pu-color-border-strong) }
+  .pu-ledger .kit-table tbody tr:has(.pu-ledger-closing) > * { border-top: 2px double var(--pu-color-border-strong) }
+  .pu-ledger .kit-table tbody tr:has(.pu-ledger-closing) > * { background: var(--pu-color-surface-subtle) }
+
+  .pu-journal { display: grid; gap: var(--pu-space-3); min-width: 0 }
+  .pu-journal-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px var(--pu-space-4) }
+  .pu-journal-title { margin: 0; font: 700 var(--pu-text-sm) / 1.3 var(--pu-font-body); min-width: 0; overflow-wrap: anywhere }
+  .pu-journal-date { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-trial { display: grid; gap: var(--pu-space-3); min-width: 0 }
+
+  .pu-balance { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; font: 600 var(--pu-text-sm) / 1.4 var(--pu-font-body); color: var(--pu-color-text) }
+  .pu-balance-icon { flex: none }
+  .pu-balance[data-balanced='true'] .pu-balance-icon { color: var(--pu-color-gain) }
+  .pu-balance[data-balanced='false'] { padding: 6px 10px; border-radius: var(--pu-radius-lg); background: var(--pu-color-loss-soft); color: var(--pu-color-loss); outline: 1px solid currentColor; outline-offset: -1px }
+  .pu-balance-amount { font-weight: 700 }
+
+  /* Statement: sections indent by depth; subtotals take a rule above, the grand total a double rule. */
+  .pu-stmt .kit-table tbody th.pu-stmt-label { padding-inline-start: calc(12px + var(--depth, 0) * 18px); white-space: normal; min-width: 11rem; position: sticky; inset-inline-start: 0; background: var(--pu-color-surface); z-index: 1 }
+  .pu-stmt .kit-table tbody th.pu-stmt-section { position: static; font-weight: 700; color: var(--pu-color-text); background: var(--pu-color-surface-subtle) }
+  .pu-stmt .kit-table tbody tr:has(.pu-stmt-section) { background: var(--pu-color-surface-subtle) }
+  .pu-stmt .kit-table tbody tr:hover th.pu-stmt-label:not(.pu-stmt-section) { background: var(--pu-color-surface-tint) }
+  .pu-stmt .kit-table tbody :is(th, td).pu-stmt-subtotal { font-weight: 700; border-top: 1px solid var(--pu-color-border-strong) }
+  .pu-stmt .kit-table tbody :is(th, td).pu-stmt-subtotal.grand { border-top: 3px double var(--pu-color-border-strong); font-size: 1.05em }
+  .pu-stmt .kit-table tbody .pu-stmt-subtotal .pu-money { font-weight: 700 }
+
+  .pu-payment .pu-payment-icon { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round }
+  .pu-payment-void { text-decoration: line-through; text-decoration-thickness: 1px }
+
+  .pu-period { display: grid; gap: var(--pu-space-2); justify-items: start; min-width: 0 }
+  .pu-period-detail { margin: 0; font-size: var(--pu-text-xs); line-height: 1.5; color: var(--pu-color-text-muted); overflow-wrap: anywhere }
+  @media (max-width: 759px) {
+    .pu-stmt .kit-table { font-size: 13px }
+    .pu-stmt .kit-table :is(th, td) { padding: 9px 8px }
+    .pu-stmt .kit-table tbody th.pu-stmt-label { min-width: 4.5rem; padding-inline-start: calc(8px + var(--depth, 0) * 10px) }
+  }
+}

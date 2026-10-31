@@ -52,8 +52,7 @@ classification (97 modules were `pending`, 31 `web-only`).
 2. **Anything that merges**: depend on a **published** exact version:
    `"@punji/ui": "0.1.0"` (no `^` or `~`), with `save-exact=true` in a new `punji-web/.npmrc`. A bump is
    a one-line PR with the lockfile change. While the package is unpublished, publish a release candidate
-   first with Changesets prerelease mode (`npx changeset pre enter rc`, dist-tag `next`) and pin
-   `"0.1.0-rc.0"`. This needs the owner to enable the release variable and the npm Trusted Publisher
+   `0.1.0` directly (decision in section 9; no release candidate). This needs the owner to enable the release variable and the npm Trusted Publisher
    (`docs/ARCHITECTURE.md`); I cannot do that.
 3. Only if the owner delays publication: commit the tarball as `punji-web/vendor/punji-ui-<version>.tgz`
    and use `"@punji/ui": "file:vendor/punji-ui-<version>.tgz"`; replace it with the registry version at the
@@ -142,7 +141,9 @@ and, for the four most-used link-bearing modules (`Button` 59 files, `Layout`/`P
   (`docs/tokens.md`: "Maintained with src/styles/tokens.css"), while punji-web vendors tokens from
   `packages/design-tokens/tokens.json` in the app monorepo (ADR-6). Two sources will drift. Options:
   generate punji-ui `tokens.css` from the monorepo file, or make punji-ui canonical and drop `sync-tokens`
-  for UI tokens. **Owner decision.**
+  for UI tokens. **Decided 2026-10-31:** punji-ui `tokens.css` is canonical for every `--pu-*` UI
+  token; punji-web stops syncing UI tokens from the monorepo, bridges its `--color-*` names to `--pu-*`
+  during migration, and keeps `tokens.json` only for app-only values.
 
 ## 4. Change workflow (one reusable change, end to end)
 
@@ -297,14 +298,18 @@ That is a stop-gap; the target is a standalone portal in punji-ui.
 6. **Docs-site tests**: `src/design/__tests__` (punji-web) move with their pages; the browser checks
    (`check:portal`, `check:select`, `check:table`, and so on) already live in punji-ui.
 
-## 9. Open decisions for the owner
+## 9. Decisions (made 2026-10-31; the owner delegated all but publishing)
 
-1. Publish a release candidate now (needs `UI_NPM_RELEASE_ENABLED=true` and the npm Trusted Publisher),
-   or accept the committed-tarball fallback until the first release.
-2. One theme or two: should punji-ui render the same on the public host (`--v2-*` green) and the account
-   host (lime)? This decides the shape of the token bridge.
-3. Token source of truth (monorepo `tokens.json` versus `tokens.css` here).
-4. Resolved upstream (section 3.1): `Button` external links open a new tab; web's OrderBook becomes `OrderBookDepth`. Still open: whether to fold the two order books into one component.
-5. Where docs for the app-specific components live after the portal moves.
-6. Whether Cloudflare Workers Builds for punji-web needs registry access configuration for `npm ci`
-   (unverified: only the public registry is needed for an unscoped-auth public package).
+1. **First release is `0.1.0`, no release candidate.** There are no consumers yet and a pre-1.0 version
+   already signals an unstable API; an rc adds a dist-tag step for no benefit. punji-web pins
+   `"@punji/ui": "0.1.0"` exactly. Publishing itself is the owner's action (RELEASE.md).
+2. **One library theme.** punji-ui ships one token set with light and dark. Host accents (public `--v2-*`
+   green, account lime) are scoped overrides of `--pu-color-accent` and related tokens defined in
+   punji-web, not two library themes. Custom-theme overrides are the documented extension point.
+3. **Token source of truth:** punji-ui `tokens.css` (section 3).
+4. **Order books stay two components.** `OrderBook` (`@punji/ui/financial`) is a caller-ordered price
+   ladder; `OrderBookDepth` (`@punji/ui/order-book`) adds cumulative depth and a totals bar. Different
+   jobs, names say which; no fold. Button external links: resolved (`external`, `newTabLabel`).
+5. **Docs for app-specific components** stay in punji-web; the punji-ui site documents only package code.
+6. Still unverified: whether Cloudflare Workers Builds needs registry configuration for `npm ci` (a public
+   package should need none). Check on the first punji-web dependency bump.

@@ -72,13 +72,16 @@ Required before the workflow can do anything; none has been done or verified her
 
 `release.yml` mentions "the plan, What the owner must do"; that document is not in this repository.
 
-## Release candidates for punji-web
+## First release and punji-web
 
-Per [docs/INTEGRATION.md](docs/INTEGRATION.md): before the first stable release, publish a release candidate so punji-web can pin an exact version (`"@punji/ui": "0.1.0-rc.0"`, `save-exact=true`).
+Decided 2026-10-31 (docs/INTEGRATION.md section 9): the first release is `0.1.0` with no release
+candidate; punji-web pins it exactly (`"@punji/ui": "0.1.0"`, `save-exact=true`). Release candidates
+remain available later for risky changes:
 
 ```sh
 npx changeset pre enter rc   # then merge a version PR as usual
 npx changeset pre exit       # before the stable release
 ```
 
-Notes: INTEGRATION.md says the dist-tag is `next`; Changesets normally uses the pre-release tag (`rc`) as the dist-tag. Unverified; check `npm dist-tag ls` after the first rc and tell consumers the right tag. This requires the same owner steps; nothing has been run. While unpublished, the local loop is `npm pack` plus `npm install --no-save <tgz>` in punji-web (never committed).
+Changesets publishes prereleases under the pre tag (`rc`); check `npm dist-tag ls @punji/ui` after one.
+While unpublished, the local loop is `npm pack` plus `npm install --no-save <tgz>` in punji-web (never committed).

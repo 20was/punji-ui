@@ -99,6 +99,10 @@ Sources: [docs/RESEARCH.md](docs/RESEARCH.md), [docs/research/](docs/research/),
 | Per-subpath size budgets | One bundle budget | Guards consumers who import single modules; the aggregate budget was raised repeatedly (see AUDIT.md) |
 | Playwright in a digest-pinned Docker image for baselines | Host screenshots; hosted service | Deterministic fonts and anti-aliasing; no external service |
 | Trusted Publishing (OIDC) with provenance, no npm token | `NPM_TOKEN` secret | No long-lived secret; tarball linked to workflow run ([RELEASE.md](RELEASE.md)) |
+| One library theme (light/dark); host accents are scoped token overrides in the app | Separate public and account themes in the library | Keeps one token contract; apps own brand accents (docs/INTEGRATION.md §9) |
+| `src/styles/tokens.css` is the canonical UI token source | Generate from the app monorepo `tokens.json` | Single source of truth in the published package; app keeps app-only tokens |
+| `OrderBook` and `OrderBookDepth` stay separate | Fold into one component | A price ladder and a cumulative depth view are different jobs |
+| First release `0.1.0`, no release candidate | rc prerelease, committed tarball | No consumers yet; pre-1.0 already signals instability; exact pin in punji-web |
 
 ## Differences from docs/ARCHITECTURE.md
 

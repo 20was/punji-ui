@@ -63,6 +63,8 @@ export interface PageDef {
   kind: 'foundation' | 'component' | 'utility' | 'hooks';
   /** The overview: what it is and the one rule that matters. */
   summary: string;
+  /** The meta description and social card text: one or two sentences, at most 160 characters (the build checks). */
+  description: string;
   use: readonly string[];
   avoid: readonly string[];
   /** Exports documented on the page. Import statements and props tables are generated from these. */
@@ -83,6 +85,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'colour-tokens',
     title: 'Colour tokens',
+    description: "Every colour is a --pu-color-* CSS variable in tokens.css. Light and dark follow the system, and data-theme forces one for any subtree.",
     group: 'foundations',
     kind: 'foundation',
     summary:
@@ -99,6 +102,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'typography',
     title: 'Typography',
+    description: "Two font stacks, a fluid text scale and tabular figures so money columns align. Mukta is included, so Devanagari renders without a layout shift.",
     group: 'foundations',
     kind: 'foundation',
     summary: 'Two font stacks (body and display) and a fluid text scale. Figures use tabular digits so columns of money align. The stacks include Mukta, so Devanagari renders without a layout shift.',
@@ -114,6 +118,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'spacing',
     title: 'Spacing and shape',
+    description: "A short space scale, a 32/36/44 control height scale and radii. Every control reads the one height scale, so toolbars line up.",
     group: 'foundations',
     kind: 'foundation',
     summary: 'A short space scale, a control height scale (32, 36, 44) and radii. Every control reads the one height scale, so a Button, a Select and a SegmentedControl line up in a toolbar.',
@@ -129,6 +134,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'money-display',
     title: 'MoneyDisplay',
+    description: "Show one exact amount in any currency from bigint minor units, with tabular digits, locale-correct signs and a spoken currency name. React, accessible.",
     group: 'financial-primitives',
     kind: 'component',
     summary:
@@ -149,6 +155,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'price-change',
     title: 'PriceChange',
+    description: "Show the move between two prices as an amount and a percent. Direction is carried by sign, arrow shape and a spoken word, never by colour alone.",
     group: 'financial-primitives',
     kind: 'component',
     summary: 'The move between two prices as an absolute amount and a percent. Direction is carried by the sign, an arrow shape and a spoken word, never by colour alone. Colour follows a convention: green up (default) or red up.',
@@ -168,6 +175,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'currency-input',
     title: 'CurrencyInput',
+    description: "A money field that groups digits as you type, accepts Devanagari digits and refuses extra decimals instead of rounding. Exact decimal string and bigint value.",
     group: 'financial-primitives',
     kind: 'component',
     summary: 'A money field. Text is grouped in the currency locale as you type, Devanagari and Arabic-Indic digits are accepted, and more fraction digits than the currency allows (JPY 0, USD 2, KWD 3) are refused, never rounded. The value is an exact decimal string plus bigint minor units; it never passes through Number.',
@@ -187,6 +195,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'financial-calculations',
     title: 'Financial calculations',
+    description: "Pure TypeScript for positions and ratios with no React or dependencies. Bigint ledger maths with a chosen rounding mode, plus display-only ratios.",
     group: 'financial-primitives',
     kind: 'utility',
     summary: 'Pure TypeScript for positions and ratios: no React, no browser, no dependency. Ledger functions use bigint minor units and a rounding mode you choose; ratio functions are display-only numbers in percent units. Currency-agnostic.',
@@ -213,6 +222,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'formatters',
     title: 'Formatters',
+    description: "Generic money formatting for any currency beside Nepal helpers for lakh/crore, Devanagari digits and BS dates. Exact inputs, never silent rounding.",
     group: 'financial-primitives',
     kind: 'utility',
     summary: 'Generic money formatting (any currency, from Intl) beside the Nepal helpers (lakh/crore, Devanagari, BS dates). All accept exact inputs and never round silently.',
@@ -237,6 +247,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'order-book',
     title: 'Order book',
+    description: "OrderBookDepth draws best bids and asks with depth bars and a buy/sell split; OrderBook is the plain table. Display only, no order placement.",
     group: 'stock-market',
     kind: 'component',
     summary: 'OrderBookDepth draws the best bids and asks side by side with depth bars and a buy/sell split. OrderBook is the plain table. Both are display only: no order placement, no inferred market data.',
@@ -255,6 +266,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'metric-tile',
     title: 'MetricTile and SummaryFigure',
+    description: "MetricTile is one headline figure with a label, optional meter and note. SummaryFigure is the one figure a reader acts on. Figures never truncate.",
     group: 'portfolio',
     kind: 'component',
     summary: 'MetricTile is one headline figure with its label, an optional meter and a note, laid out in a MetricRow. SummaryFigure is the one figure a reader acts on, between hairlines inside a card. The figure never truncates.',
@@ -273,6 +285,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'data-table',
     title: 'DataTable and FinancialTable',
+    description: "FinancialTable takes typed rows and render callbacks with sticky heads, controlled sorting, and loading, error and empty states. DataTable is the base.",
     group: 'data',
     kind: 'component',
     summary: 'FinancialTable takes typed rows and render callbacks with a stable row key, semantic row headers, controlled sorting, and loading, error and empty states. DataTable is the lower-level table it is built on. The table never mutates or sorts your data.',
@@ -292,6 +305,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'column-chart',
     title: 'ColumnChart',
+    description: "Stacked columns per period with totals printed over each column and a labelled scale that includes zero. Never smoothed or 3D; gaps are never zero.",
     group: 'data',
     kind: 'component',
     summary: 'One column per period with its parts stacked from the baseline, the total printed over each column and a round labelled scale that includes zero. Never smoothed, never 3D. Missing values are drawn as nothing and written "none" in the data table, never zero.',
@@ -311,6 +325,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'csv-export',
     title: 'CSV export',
+    description: "toCsv writes RFC 4180 CSV from typed rows, and downloadText saves it. Cells starting with =, +, -, @ are neutralised so spreadsheets do not run them.",
     group: 'data',
     kind: 'utility',
     summary: 'toCsv writes RFC 4180 CSV from typed rows and column definitions; downloadText hands the file to the browser. Cells that start with =, +, -, @, tab or carriage return are neutralised by default so a spreadsheet will not run exported data as a formula.',
@@ -340,6 +355,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'date-picker',
     title: 'DatePicker',
+    description: "A date field with a calendar popover for Gregorian (AD) and Bikram Sambat (BS), Nepali or English labels, strict input, bounds and keyboard navigation.",
     group: 'forms',
     kind: 'component',
     summary: 'A date field with a calendar popover. Gregorian (AD) and Bikram Sambat (BS) with a switch between them, Nepali or English labels and digits, strict typed input, min and max bounds, unavailable days and keyboard navigation. Values are date-only ISO strings (YYYY-MM-DD), never instants.',
@@ -360,6 +376,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'button',
     title: 'Button',
+    description: "Primary, secondary, ghost and danger buttons in three sizes, icon-only with a required accessible name, a loading state, and link rendering with href.",
     group: 'forms',
     kind: 'component',
     summary: 'Primary, secondary, ghost and danger, in three sizes (32, 36, 44), icon-only with a required accessible name, and a loading state. With href it renders a link styled as a button.',
@@ -379,6 +396,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'hooks',
     title: 'Hooks overview',
+    description: "Component-free, SSR-safe React hooks from @punji/ui/hooks, with stable callback identities and listeners and timers that clean up.",
     group: 'developer',
     kind: 'hooks',
     summary: 'Component-free React hooks from one subpath, @punji/ui/hooks (each also has its own). SSR-safe: nothing touches the browser while rendering. Callback identities are stable and timers and listeners clean up.',
@@ -404,6 +422,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'stock-table',
     title: 'StockTable',
+    description: "A full quote board with symbol, LTP, change, volume, turnover and a trend line. The caller owns the data and sort; prices are exact bigint minor units.",
     group: 'stock-market',
     kind: 'component',
     summary:
@@ -430,6 +449,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'market-movers',
     title: 'MarketMovers',
+    description: "Gainers, losers and most active as accessible tabs over one compact StockTable. rankMovers does the ranking, and an unchanged quote is never a mover.",
     group: 'stock-market',
     kind: 'component',
     summary: 'Gainers, losers and most active as ARIA tabs over one compact StockTable. You pass every quote; rankMovers does the ranking. A quote with no change is never a gainer or a loser, and each tab has its own empty message.',
@@ -449,6 +469,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'market-indices',
     title: 'MarketIndices',
+    description: "Index cards or a one-row strip showing value in points, change since the previous close and an optional trend line, with market status above.",
     group: 'stock-market',
     kind: 'component',
     summary: 'Index cards (a responsive grid) or a one-row strip, each with its value in points, the change since the previous close and an optional trend line, with an optional market status above. The caller supplies every number. An unpublished value is a dash.',
@@ -468,6 +489,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'market-status',
     title: 'MarketStatus and getMarketSession',
+    description: "Show whether a market is open, pre-open, closed, halted or on holiday, as a word and a distinct icon, from a known state or getMarketSession.",
     group: 'stock-market',
     kind: 'component',
     summary:
@@ -497,6 +519,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'price-limit',
     title: 'PriceLimitIndicator',
+    description: "Show where the last traded price sits between the day's lower and upper circuit limits, with an at-limit flag. Exchange limits are the authority.",
     group: 'stock-market',
     kind: 'component',
     summary: "Where the last traded price sits between the day's lower and upper circuit limits, with an at-limit flag. The exchange's published limits are the authority; circuitLimits derives a band from the previous close only when none are supplied. Missing or inverted limits show a message instead of a bar.",
@@ -516,6 +539,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'watchlist',
     title: 'Watchlist',
+    description: "The stocks a person follows, in their own order, keyed by symbol so live prices change in place. Move and remove are real buttons you opt into.",
     group: 'stock-market',
     kind: 'component',
     summary: 'The stocks a person follows, in their own order. Rows are keyed by symbol and rendered in the order you pass, so live prices change in place and nothing jumps. Move and remove are real buttons that appear only when you give the callbacks; the callbacks only request, you apply them.',
@@ -535,6 +559,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'market-heatmap',
     title: 'MarketHeatmap',
+    description: "A squarified treemap where area is size and fill is change on a seven-step diverging scale. Deterministic layout; tiles print an arrow and signed change.",
     group: 'stock-market',
     kind: 'component',
     summary: 'A squarified treemap: area is a size (turnover, market cap), fill is the change on a seven-step diverging scale, with a legend. Layout is deterministic and positioned in percent, so it is responsive without measuring. Colour is never the only signal: tiles print an arrow and a signed change.',
@@ -553,6 +578,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'price-chart',
     title: 'PriceChart',
+    description: "A compact accessible line chart for a short labelled series. Missing values break the line instead of drawing zero, with a data table for every point.",
     group: 'stock-market',
     kind: 'component',
     summary: 'A compact line chart for a short labelled series. Straight segments, gaps stay gaps (a missing value breaks the line, never drawn as zero), fixed SVG proportions, and an exact-value data table for every point. Not for high-volume intraday series.',
@@ -571,6 +597,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'sparkline',
     title: 'Sparkline',
+    description: "A small trend line with no axes for use beside a printed figure. Missing values are dropped, never zero, and long series keep each bucket's extremes.",
     group: 'stock-market',
     kind: 'component',
     summary: "A small trend line with no axes, for use beside a printed figure. Missing and non-finite values are dropped, not drawn as zero; fewer than two real values draw a dashed rule; long series are reduced to each bucket's extremes so a spike survives. Decorative unless you give it a label.",
@@ -589,6 +616,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'company-search',
     title: 'CompanySearch',
+    description: "One field for symbol or name with ranked in-memory suggestions, as a finder or a picker, with a full-height sheet on phones. Nothing is fetched while typing.",
     group: 'stock-market',
     kind: 'component',
     summary: 'One field (symbol or name) with ranked suggestions under it, searched in memory over the options you pass, so nothing is fetched while typing. A finder opens the chosen company; a picker (give it a value) shows the pick and turns into the search when focused. On a phone the picker opens a full-height sheet.',
@@ -608,6 +636,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'breakdown',
     title: 'Breakdown',
+    description: "How a total is made: one row per part and the total ruled off, as a description list. It does no arithmetic and knows no fee or tax rule.",
     group: 'portfolio',
     kind: 'component',
     summary: 'How a total is made: one row per part (label, optional note, amount) and the total ruled off, as a description list. It does no arithmetic and knows no fee or tax rule: you compute and format every amount (a string, or a MoneyDisplay for an exact one) and say which row is the total.',
@@ -626,6 +655,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'share-bars',
     title: 'ShareBar, ShareDonut and DistributionBar',
+    description: "Shares of one whole as a stacked bar (ShareBar), a ring (ShareDonut) or counts on a five-step scale (DistributionBar), each with a worded legend.",
     group: 'portfolio',
     kind: 'component',
     summary: 'Shares of one whole as a stacked bar with a legend (ShareBar), as a ring with a count in the middle (ShareDonut, with ShareLegend alone), or counts on a five-step scale (DistributionBar). Each needs a label that says the shares in words, and every share has a legend row with its name and value, so tone is never the only carrier of meaning.',
@@ -646,6 +676,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'meter-range',
     title: 'MeterBar and RangeBar',
+    description: "MeterBar lays parts on one track with a benchmark marker; RangeBar shows where a value sits among others. Decorative unless labelled; print figures beside them.",
     group: 'portfolio',
     kind: 'component',
     summary: 'MeterBar lays parts end to end on one track, with an optional marker for a benchmark on the same scale. RangeBar shows where a value sits among other values: a fill or a span, and marks whose labels sit under the mark. Both are decorative unless you give them a label: print the figures they draw beside them.',
@@ -664,6 +695,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'headline-figure',
     title: 'HeadlineFigure and FigureChip',
+    description: "A page's lead figure: a quiet label, the figure large, and changes as FigureChips. The figure never truncates and chip tint never carries direction.",
     group: 'portfolio',
     kind: 'component',
     summary: "A page's or a view's lead figure: a quiet label, the figure large (\"Rs\" smaller and muted), and the changes as FigureChips. The figure never truncates and a long label wraps. A chip's tint never carries direction: write the sign and words in its text.",
@@ -682,6 +714,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'key-stats',
     title: 'KeyStats and FactList',
+    description: "KeyStats lays a panel's facts as label-over-value cells; FactList is one column of label-and-value lines. Unknown values say so in words, never zero.",
     group: 'portfolio',
     kind: 'component',
     summary: 'KeyStats is a panel\'s facts as label-over-value cells in two or three columns, or a strip of cells split by hairlines. FactList is one column of label-and-value lines under a small title. A value that is not known says so in words (empty, quiet), never a dash or a zero. Both are description lists.',
@@ -701,6 +734,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'split-bars',
     title: 'SplitBar, DivergingBar and NetBar',
+    description: "SplitBar, DivergingBar and NetBar print beside their figures: parts of a whole, rises and falls from a centre line, and a signed net with its parts.",
     group: 'portfolio',
     kind: 'component',
     summary: 'Bars that print beside their figures. SplitBar splits one whole into parts with labels under it; DivergingBar grows right for a rise and left for a fall from a drawn centre line on a shared max; NetBar adds its own signed figure and a readout of the parts it nets. The bars are decorative unless given a label.',
@@ -720,6 +754,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'inline-state',
     title: 'InlineState',
+    description: "A state shown inside a card where its data would be: locked, failed, empty, offline, stale or slow, with an icon tile, one line and its actions.",
     group: 'feedback',
     kind: 'component',
     summary: 'A state inside a card, where its data would be: an icon tile, a title, one line and its actions. Locked, failed, empty, offline, stale or slow. row is a one-line banner with its action at the end; stack puts the actions under the words. A failure is an alert. The icon is decorative and the tone only tints it.',
@@ -739,6 +774,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'retry-note',
     title: 'RetryNote',
+    description: "A part of a page failed to load: say so in its own place with a Try again button while the rest stays. An alert that screen readers announce.",
     group: 'feedback',
     kind: 'component',
     summary: 'One part of a page did not load; it says so in its own place with a Try again while the rest of the page stays as it is. An alert, so screen readers hear it, and the retry is a real Button. The package carries no copy: retryLabel is required.',
@@ -757,6 +793,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'empty-skeleton',
     title: 'EmptyState, Note and Skeleton',
+    description: "EmptyState covers empty and error states, Note qualifies nearby data, and Skeleton holds the space of loading content so nothing jumps.",
     group: 'feedback',
     kind: 'component',
     summary: 'EmptyState (also the error state) is a title, a line and one action. Note qualifies the data beside it. Skeleton holds the space of what is loading, in its shape, so nothing jumps; give the whole region one label. A card never holds a card, so inside a Card use bare.',
@@ -775,6 +812,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'check-list',
     title: 'CheckList, CheckRow and StatusDisc',
+    description: "A list of checks with an icon disc, title, one line, figure, status in words and chevron. Rows can be buttons, links, plain, or a vertical tab list.",
     group: 'feedback',
     kind: 'component',
     summary: 'A list of checks, one row each: an icon disc, a title and one line, an optional small visual, a figure, a status in words and a chevron. A row can be a button (pressed while its detail shows), a link, or plain. With role="tablist" it is a vertical tab list beside its panel.',
@@ -793,6 +831,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'step-list',
     title: 'StepList',
+    description: "What to do first as numbered steps, each a title and one line, with the current step marked aria-current. Tiles, rows or a dismissible first-visit banner.",
     group: 'feedback',
     kind: 'component',
     summary: 'What to do first, as numbered steps, each a title and one line, in an ordered list. The current step\'s number is filled and marked aria-current="step". Three layouts: tiles in a card, rows with round numbers, and a banner over a tool on a first visit with a dismiss button.',
@@ -811,6 +850,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'card',
     title: 'Card',
+    description: "One surface for one section of a page: an optional header with title, line, count and one action, then content. Rows use hairlines, never nested cards.",
     group: 'layout',
     kind: 'component',
     summary: 'One surface for one section of a page: an optional header (title, a line, a count, one action) and its content. Rows inside are separated by hairlines, never by another card. tone="inverse" is the one card on a page that stands out; never two on one screen.',
@@ -830,6 +870,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'card-link',
     title: 'CardLink',
+    description: "The one text link in a card's header: in-app paths stay in the tab with a chevron, external addresses open a new tab with the new-tab words spoken.",
     group: 'layout',
     kind: 'component',
     summary: "The one text link of a card's header (\"Open portfolio\", \"Markets\"), in the link colour. An in-app path stays in the same tab with a chevron (through your router's linkComponent or a plain <a>); an absolute http(s) address opens a new tab with rel=\"noopener noreferrer\", an arrow, and the new-tab words spoken after the label.",
@@ -848,6 +889,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'link-table',
     title: 'LinkTable and StockLabel',
+    description: "A short list where every row opens something, with quiet column heads and right-aligned figures that never truncate. Compact layout under 560px.",
     group: 'layout',
     kind: 'component',
     summary: 'A short list where every row opens something (a holding, a watched stock, a sector), with quiet column heads. Each row is one link, or a plain row when it opens nothing. Figures sit right-aligned and never truncate; only a name gives way, with an ellipsis (StockLabel). Under 560px of its own width the heads go and each row shows its compact layout.',
@@ -866,6 +908,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'pagination',
     title: 'Pagination',
+    description: "Page through a list: '6-10 of 12', numbered pages and named previous/next icon buttons. Takes the usePagination hook's state directly.",
     group: 'layout',
     kind: 'component',
     summary: 'A list shown a page at a time: "6–10 of 12", page numbers up to maxNumbers pages (default 4), and previous and next as named icon buttons. One model: the arithmetic is paginate from use-pagination (one-based, clamped), and Pagination takes the hook\'s state directly. An empty list reads "0 of 0".',
@@ -884,6 +927,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'debit-credit',
     title: 'DebitCredit',
+    description: "Show one ledger amount with its side from a signed bigint net: '12,500.00 Dr', parentheses for credits, or under its own column. Worded for screen readers.",
     group: 'accounting',
     kind: 'component',
     summary: 'One ledger amount with its side. The value is a signed net in minor units (debit positive, credit negative); three presentations print it as "12,500.00 Dr", as a signed amount with credits in accounting parentheses, or only under its own Debit or Credit column. The side is always words as well as letters, so a screen reader hears "debit" or "credit".',
@@ -906,6 +950,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'ledger-table',
     title: 'LedgerTable',
+    description: "The general ledger of one account: date, reference, description, debit, credit and a running balance naming its side, with opening and closing rows.",
     group: 'accounting',
     kind: 'component',
     summary: 'The general ledger of one account: date, reference, description, debit, credit and a running balance that names its side, with an opening row, period totals and a closing row. A composition over DataTable, so the sticky head, caption and loading and empty rows are the table\'s own. It displays the postings it is given, oldest first; it does not sort, post or reconcile.',
@@ -924,6 +969,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'journal-entry',
     title: 'JournalEntryView',
+    description: "One journal with its lines, totals row and status. An unbalanced entry says 'Out of balance by' with a warning icon, never by colour alone.",
     group: 'accounting',
     kind: 'component',
     summary: 'One journal with its lines, a totals row and a status. When debits and credits differ it says "Out of balance by 5.00 (debits exceed credits)" with a warning icon in a status line, never by colour alone; a balanced entry has a check. It displays the entry; it does not correct or reject it.',
@@ -942,6 +988,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'trial-balance',
     title: 'TrialBalance',
+    description: "Accounts by debit and credit with a totals row and a Balanced or Out of balance status line. Sums are exact bigint arithmetic over ledger entries or journals.",
     group: 'accounting',
     kind: 'component',
     summary: 'Accounts by debit and credit, a totals row and a "Balanced" or "Out of balance by X" status line with a different icon for each. Give it ledger entries or journals; the sums are exact bigint arithmetic. A balanced trial balance does not prove the books are right: two opposite errors cancel.',
@@ -965,6 +1012,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'statement-table',
     title: 'StatementTable',
+    description: "An income statement, balance sheet or cash-flow style report from a typed tree of lines, one column per period, with optional change columns.",
     group: 'accounting',
     kind: 'component',
     summary: 'An income statement, balance sheet or cash-flow style report from a typed tree of lines and sections, one column per period, with optional Change and Change % columns. It never adds a subtotal for you: it prints the values it is given. Call rollUp() yourself when you want the sums.',
@@ -988,6 +1036,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'payment-status',
     title: 'PaymentStatus',
+    description: "Show where an invoice or bill stands: paid, partly paid, unpaid, overdue or void, as a pill with its own icon and words. It labels, never decides.",
     group: 'accounting',
     kind: 'component',
     summary: 'Where an invoice or bill stands: paid, partly paid, unpaid, overdue or void, as a pill with an icon and words. Each status has its own icon shape, so colour is never the only signal. It labels a status you already know; it does not compare dates or amounts to decide "overdue".',
@@ -1006,6 +1055,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'period-selector',
     title: 'FinancialPeriodSelector',
+    description: "Pick a reporting period from a list you supply, with a choice of period kind that keeps the time span. Nepal builders make fiscal years, quarters and months.",
     group: 'accounting',
     kind: 'component',
     summary: 'Pick a reporting period from a list you supply: a Select for the period and, when the list has two or more kinds, a choice group to switch kind (switching keeps the same time span when periods carry start and end). The selected period\'s detail, for example its BS and AD range, is shown under it. The Nepal builders make fiscal years, quarters and months; any other calendar passes its own list.',
@@ -1024,6 +1074,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'ledger-helpers',
     title: 'Ledger helpers',
+    description: "Pure bigint maths for bookkeeping screens: journal totals and balance checks, running balances, trial balance, statement roll-ups and an exact ledgerToCsv.",
     group: 'accounting',
     kind: 'utility',
     summary: 'Pure bigint arithmetic for bookkeeping screens (@punji/ui/ledger): journal totals and balance checks, running balances, a trial balance over entries or journals, statement roll-ups, and ledgerToCsv, an exact RFC 4180 export of a ledger. No React, no browser globals, no tax or jurisdiction rules. Invalid input throws (TypeError for a non-bigint, RangeError for a negative or two-sided amount).',

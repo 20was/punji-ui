@@ -9,17 +9,20 @@ import { preview } from 'vite';
 import { readFileSync, mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { PAGES, GROUPS } from '../site/src/registry.ts';
+import { normaliseBase, pagePath } from '../site/src/seo.ts';
 
 const out = resolve('test-results/site');
 mkdirSync(out, { recursive: true });
-const server = process.env.SITE_URL ? null : await preview({ root: 'site', preview: { host: '127.0.0.1', port: 4174, strictPort: true } });
-const base = process.env.SITE_URL ?? 'http://127.0.0.1:4174';
+const server = process.env.CHECK_URL ? null : await preview({ root: 'site', preview: { host: '127.0.0.1', port: 4174, strictPort: true } });
+// BASE_PATH must match the build (default '/'). CHECK_URL tests an already running server instead of vite preview.
+const basePath = normaliseBase(process.env.BASE_PATH).replace(/\/$/, '');
+const base = `${process.env.CHECK_URL ?? 'http://127.0.0.1:4174'}${basePath}`;
 const axeSource = readFileSync('node_modules/axe-core/axe.min.js', 'utf8');
 const browser = await chromium.launch({ headless: true, ...(process.env.CHROME_CHANNEL ? { channel: process.env.CHROME_CHANNEL } : {}) });
 const failures = [];
 const checked = { variants: 0 };
 const fail = (message) => { failures.push(message); console.error(`FAIL ${message}`); };
-const routes = [{ slug: '', title: 'Overview' }, ...PAGES];
+const routes = [{ slug: '', title: 'Overview', path: '/' }, ...PAGES.map((p) => ({ ...p, path: pagePath(p) }))];
 const flagCounts = { edge: 0, clip: 0, dup: 0, icon: 0, edgeAllowed: 0 };
 
 // Layout defects a plain axe/overflow pass misses, probed inside every example preview (the stage).
@@ -124,7 +127,7 @@ try {
         const errors = [];
         page.on('pageerror', (error) => errors.push(error.message));
         page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
-        await page.goto(`${base}/#/${route.slug}`);
+        await page.goto(`${base}${route.path}`);
         await page.locator('#page-title').waitFor();
         if ((await page.locator('html').getAttribute('data-theme')) !== theme) fail(`${route.slug || 'home'} ${width} ${theme}: data-theme not applied`);
         const label = `${route.slug || 'home'}-${width}-${theme}`;
@@ -165,7 +168,7 @@ try {
   // Behaviour: desktop.
   const desktop = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: 'light', permissions: ['clipboard-read', 'clipboard-write'] });
   const page = await desktop.newPage();
-  await page.goto(`${base}/#/money-display`);
+  await page.goto(`${base}/components/money-display/`);
   await page.locator('#page-title').waitFor();
 
   // Copy: the clipboard holds the exact file that renders the preview.
@@ -207,14 +210,72 @@ try {
   // Behaviour: mobile drawer.
   const mobile = await browser.newContext({ viewport: { width: 390, height: 844 }, colorScheme: 'light' });
   const m = await mobile.newPage();
-  await m.goto(`${base}/#/`);
+  await m.goto(`${base}/`);
   await m.getByTestId('menu').click();
   await m.getByRole('dialog', { name: 'Documentation pages' }).waitFor();
   await m.getByRole('dialog').getByRole('link', { name: 'Button', exact: true }).click();
   await m.getByRole('heading', { level: 1, name: 'Button' }).waitFor();
   if (await m.getByRole('dialog').count()) fail('drawer: still open after navigating');
   await m.screenshot({ path: `${out}/mobile-after-drawer.png` });
+  if (new URL(m.url()).pathname !== `${basePath}/components/button/`) fail(`drawer: navigating to Button left the URL at ${m.url()}`);
   await mobile.close();
+
+  // Path routing: a link click uses the History API (no reload), updates URL, title, canonical and heading; back and forward work.
+  const navCtx = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: 'light' });
+  const n = await navCtx.newPage();
+  const navErrors = [];
+  n.on('pageerror', (e) => navErrors.push(e.message));
+  n.on('console', (msg) => { if (msg.type() === 'error' || msg.type() === 'warning') navErrors.push(msg.text()); });
+  await n.goto(`${base}/`);
+  await n.locator('#page-title').waitFor();
+  await n.evaluate(() => { window.noReload = true; });
+  await n.getByRole('list', { name: 'Pages by domain' }).getByRole('link', { name: 'Order book', exact: true }).click();
+  await n.getByRole('heading', { level: 1, name: 'Order book' }).waitFor();
+  if (new URL(n.url()).pathname !== `${basePath}/components/order-book/`) fail(`routing: link click went to ${n.url()}`);
+  if (!(await n.evaluate(() => window.noReload))) fail('routing: a link click reloaded the page');
+  if ((await n.title()) !== 'Order book — Punji UI') fail(`routing: title after navigation is "${await n.title()}"`);
+  if (!(await n.locator('link[rel=canonical]').getAttribute('href'))?.endsWith('/components/order-book/')) fail('routing: canonical not updated after navigation');
+  if (!(await n.locator('meta[name=description]').getAttribute('content'))?.startsWith('OrderBookDepth')) fail('routing: meta description not updated after navigation');
+  await n.goBack();
+  await n.getByRole('heading', { level: 1, name: 'Punji UI documentation' }).waitFor();
+  if ((await n.title()) !== 'Punji UI: finance-first React components') fail(`routing: title after back is "${await n.title()}"`);
+  await n.goForward();
+  await n.getByRole('heading', { level: 1, name: 'Order book' }).waitFor();
+
+  // Old hash links redirect to the new path.
+  await n.goto(`${base}/#/money-display`);
+  await n.getByRole('heading', { level: 1, name: 'MoneyDisplay' }).waitFor();
+  if (new URL(n.url()).pathname !== `${basePath}/components/money-display/` || new URL(n.url()).hash) fail(`routing: #/money-display ended at ${n.url()}`);
+  if ((await n.title()) !== 'MoneyDisplay — Punji UI') fail(`routing: title after hash redirect is "${await n.title()}"`);
+  await n.goto(`${base}/#/`);
+  await n.getByRole('heading', { level: 1, name: 'Punji UI documentation' }).waitFor();
+  if (new URL(n.url()).pathname !== `${basePath}/`) fail(`routing: #/ ended at ${n.url()}`);
+  for (const e of navErrors) fail(`routing: console ${e}`);
+  await navCtx.close();
+
+  // The 404 page: unknown paths render it (client side) and it is noindex.
+  const nf = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: 'light' });
+  const missing = await nf.newPage();
+  const nfErrors = [];
+  missing.on('console', (msg) => { if (msg.type() === 'error' || msg.type() === 'warning') nfErrors.push(msg.text()); });
+  await missing.goto(`${base}/404.html`);
+  await missing.getByRole('heading', { level: 1, name: 'Page not found' }).waitFor();
+  if ((await missing.locator('meta[name=robots]').getAttribute('content')) !== 'noindex') fail('404: not noindex');
+  for (const e of nfErrors) fail(`404: console ${e}`);
+  await nf.close();
+
+  // No JavaScript: the prerendered HTML carries the page (heading, props table, code, links).
+  const plain = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1440, height: 900 } });
+  const bare = await plain.newPage();
+  await bare.goto(`${base}/components/money-display/`);
+  for (const [what, locator] of [
+    ['h1', bare.getByRole('heading', { level: 1, name: 'MoneyDisplay' })],
+    ['props table', bare.getByRole('region', { name: 'MoneyDisplay props' })],
+    ['code', bare.getByLabel('Currencies example code', { exact: true })],
+    ['nav link', bare.getByRole('list', { name: 'Pages by domain' }).getByRole('link', { name: 'Button', exact: true })],
+  ]) if (!(await locator.count())) fail(`no-JS: ${what} missing from the prerendered page`);
+  await bare.screenshot({ path: `${out}/no-js-money-display.png`, fullPage: true });
+  await plain.close();
 } finally {
   await browser.close();
   await server?.close();
@@ -226,4 +287,4 @@ if (failures.length) {
   process.exit(1);
 }
 console.log(`layout flags: edge ${flagCounts.edge} (+${flagCounts.edgeAllowed} allowlisted), clip ${flagCounts.clip}, dup ${flagCounts.dup}, icon ${flagCounts.icon}`);
-console.log(`site check: ${routes.length} routes x 2 widths x 2 themes and ${checked.variants} example variants (axe, overflow, console) and the copy, variant, theme, search and drawer behaviours passed`);
+console.log(`site check: ${routes.length} routes x 2 widths x 2 themes and ${checked.variants} example variants (axe, overflow, console) and the copy, variant, theme, search, drawer, path routing, hash redirect, 404 and no-JS behaviours passed`);

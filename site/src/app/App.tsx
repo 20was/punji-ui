@@ -1,22 +1,19 @@
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AppShell } from '@punji/ui/financial';
 import { Button } from '@punji/ui/button';
 import { SegmentedControl } from '@punji/ui/controls';
 import { Drawer } from '@punji/ui/drawer';
 import { ListFilter } from '@punji/ui/list-filter';
 import { useMediaQuery } from '@punji/ui/hooks';
-import { GROUPS, PAGES, pageBySlug, type PageDef } from '../registry.ts';
+import { GROUPS, PAGES, type PageDef } from '../registry.ts';
+import { headFor, pagePath, type Route } from '../seo.ts';
+import { applyHead } from './head.ts';
+import { BASE, Link, useRoute } from './router.tsx';
 import { PageView } from './PageView.tsx';
 import { useTheme, type ThemeChoice } from './theme.ts';
 
 const REPO = 'https://github.com/20was/punji-ui';
 const ROADMAP = `${REPO}/blob/main/ROADMAP.md`;
-
-const subscribe = (notify: () => void) => {
-  window.addEventListener('hashchange', notify);
-  return () => window.removeEventListener('hashchange', notify);
-};
-const currentSlug = () => window.location.hash.replace(/^#\/?/, '').split('?')[0] ?? '';
 
 function matches(page: PageDef, query: string): boolean {
   const q = query.trim().toLowerCase();
@@ -25,7 +22,7 @@ function matches(page: PageDef, query: string): boolean {
   return q.split(/\s+/).every((word) => haystack.includes(word));
 }
 
-function Sidebar({ slug, query, onQuery, onNavigate }: { slug: string; query: string; onQuery: (q: string) => void; onNavigate: () => void }) {
+function Sidebar({ current, query, onQuery, onNavigate }: { current: string; query: string; onQuery: (q: string) => void; onNavigate: () => void }) {
   const groups = GROUPS.map((group) => ({ group, pages: PAGES.filter((p) => p.group === group.id && matches(p, query)) }));
   const shown = groups.filter(({ pages }) => pages.length > 0 || !query.trim());
   return (
@@ -33,20 +30,20 @@ function Sidebar({ slug, query, onQuery, onNavigate }: { slug: string; query: st
       <ListFilter value={query} onChange={onQuery} label="Search the documentation" clear="Clear search" testId="search" placeholder="Search components" size="md" />
       <ul className="doc-nav" aria-label="Pages by domain">
         <li>
-          <a href="#/" aria-current={slug === '' ? 'page' : undefined} onClick={onNavigate}>
+          <Link to="/" aria-current={current === '/' ? 'page' : undefined} onClick={onNavigate}>
             Overview
-          </a>
+          </Link>
         </li>
         {shown.map(({ group, pages }) => (
           <li key={group.id} className="doc-nav-group">
-            <h2 className="doc-nav-title">{group.title}</h2>
+            <p className="doc-nav-title">{group.title}</p>
             {pages.length > 0 ? (
               <ul>
                 {pages.map((page) => (
                   <li key={page.slug}>
-                    <a href={`#/${page.slug}`} aria-current={page.slug === slug ? 'page' : undefined} onClick={onNavigate}>
+                    <Link to={pagePath(page)} aria-current={pagePath(page) === current ? 'page' : undefined} onClick={onNavigate}>
                       {page.title}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -91,7 +88,7 @@ function Home() {
               <ul>
                 {PAGES.filter((p) => p.group === group.id).map((p) => (
                   <li key={p.slug}>
-                    <a href={`#/${p.slug}`}>{p.title}</a>
+                    <Link to={pagePath(p)}>{p.title}</Link>
                   </li>
                 ))}
               </ul>
@@ -105,6 +102,29 @@ function Home() {
           <li>The package is not published yet; see RELEASE.md in the repository.</li>
           <li>
             The legacy full portal still lives in punji-web; this site is the self-contained replacement and grows page by page (<a href={ROADMAP} target="_blank" rel="noopener noreferrer">ROADMAP.md</a>).
+          </li>
+        </ul>
+      </section>
+    </article>
+  );
+}
+
+function NotFound() {
+  return (
+    <article className="doc-page" data-testid="page-not-found">
+      <header>
+        <p className="doc-eyebrow">404</p>
+        <h1 tabIndex={-1} id="page-title">Page not found</h1>
+        <p className="doc-lead">There is no page at this address. It may have moved, or the link may be mistyped.</p>
+      </header>
+      <section aria-labelledby="nf-go" className="doc-section">
+        <h2 id="nf-go">Where to go</h2>
+        <ul>
+          <li>
+            <Link to="/">The documentation overview</Link>, with every page listed by domain
+          </li>
+          <li>
+            <Link to="/components/button/">Button</Link>, <Link to="/components/money-display/">MoneyDisplay</Link> and <Link to="/components/data-table/">DataTable</Link>, the most used pages
           </li>
         </ul>
       </section>
@@ -130,34 +150,36 @@ function ThemeSwitch() {
   );
 }
 
-export function App() {
-  const slug = useSyncExternalStore(subscribe, currentSlug, () => '');
+/** `path` is the pathname the HTML was rendered for; it keeps the server render and hydration identical. */
+export function App({ path }: { path: string }) {
+  const route: Route = useRoute(path);
+  const current = route.kind === 'page' ? pagePath(route.page) : route.kind === 'home' ? '/' : '';
   const wide = useMediaQuery('(min-width: 900px)', true);
   const [query, setQuery] = useState('');
   const [menu, setMenu] = useState(false);
-  const page = pageBySlug(slug);
+  const page = route.kind === 'page' ? route.page : undefined;
   const first = useRef(true);
 
   // Route change: set the title, scroll to the top and move focus to the new page's heading.
   useEffect(() => {
-    document.title = page ? `${page.title} · Punji UI` : 'Punji UI documentation';
     if (first.current) {
       first.current = false;
       return;
     }
+    applyHead(headFor(route, SITE_ORIGIN, BASE));
     window.scrollTo(0, 0);
     document.getElementById('page-title')?.focus({ preventScroll: true });
-  }, [page]);
+  }, [route]);
 
-  const view = useMemo(() => (page ? <PageView page={page} /> : <Home />), [page]);
-  const sidebar = <Sidebar slug={slug} query={query} onQuery={setQuery} onNavigate={() => setMenu(false)} />;
+  const view = useMemo(() => (route.kind === 'notfound' ? <NotFound /> : page ? <PageView page={page} /> : <Home />), [route, page]);
+  const sidebar = <Sidebar current={current} query={query} onQuery={setQuery} onNavigate={() => setMenu(false)} />;
 
   return (
     <AppShell
       brand={
-        <a className="doc-brand" href="#/">
+        <Link className="doc-brand" to="/">
           Punji UI <span className="doc-brand-sub">documentation</span>
-        </a>
+        </Link>
       }
       actions={<ThemeSwitch />}
       navigationLabel="Documentation"

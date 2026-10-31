@@ -1,0 +1,6 @@
+/* Punji UI styles.
+   Styles for MarketMovers. Needs tokens.css, base.css, tabs.css and stock-table.css (styles.css has everything). */
+@layer punji.components {
+  .pu-movers { display: grid; gap: 8px; min-width: 0 }
+  .pu-movers-foot { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+}

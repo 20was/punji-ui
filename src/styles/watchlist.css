@@ -1,0 +1,23 @@
+/* Punji UI styles.
+   Styles for Watchlist. Needs tokens.css, base.css, money.css and sparkline.css (styles.css has everything). */
+@layer punji.components {
+  .pu-watchlist { min-width: 0 }
+  .pu-watchlist:focus { outline: none }
+  .pu-watchlist-list { margin: 0; padding: 0; list-style: none; border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-2xl); background: var(--pu-color-surface) }
+  .pu-watch-row { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-bottom: 1px solid var(--pu-color-border) }
+  .pu-watch-row:last-child { border-bottom: 0 }
+  .pu-watch-row:hover { background: var(--pu-color-surface-subtle) }
+  .pu-watch-id { flex: 1 1 auto; min-width: 0; font-size: var(--pu-text-sm) }
+  .pu-watch-id b { display: block; font-weight: 700; letter-spacing: 0.01em }
+  .pu-watch-id .sub { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-watch-trend { flex: none }
+  .pu-watch-price { flex: none; display: grid; justify-items: end; gap: 2px; font-size: var(--pu-text-sm); font-variant-numeric: tabular-nums }
+  .pu-watch-ltp { font-weight: 600 }
+  .pu-watch-actions { flex: none; display: inline-flex; gap: 2px }
+  .pu-watch-actions > button { appearance: none; display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 0; border-radius: var(--pu-radius-sm); background: transparent; color: var(--pu-color-text-muted); cursor: pointer }
+  .pu-watch-actions > button:hover:not(:disabled) { background: var(--pu-color-surface-tint); color: var(--pu-color-text) }
+  .pu-watch-actions > button:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 1px }
+  .pu-watch-actions > button:disabled { opacity: 0.35; cursor: default }
+  .pu-watch-actions svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round }
+  @media (max-width: 479px) { .pu-watch-row { gap: 8px; padding: 10px 8px 10px 12px } .pu-watch-trend { display: none } }
+}

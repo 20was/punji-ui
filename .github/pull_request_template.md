@@ -12,7 +12,7 @@
 
 - [ ] General purpose (useful outside one product)
 - [ ] Follows a named WAI-ARIA APG pattern or wraps a native element:
-- [ ] No new runtime dependency
+- [ ] Any new runtime dependency has a documented licence, maintenance, security and bundle review
 - [ ] Size budget added or updated in `.size-limit.json`
 - [ ] Tokens only; works in light and dark; one focus ring; 44 px touch targets; reduced motion respected
 - [ ] Exported from the root and from its own subpath, with its own CSS file

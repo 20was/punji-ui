@@ -1,0 +1,7947 @@
+{
+  "consumerCommit": "f6df01a149318af373b7b0605edd2f446e9722f7",
+  "method": "Static named-export/import inventory; does not certify visual or behavior parity.",
+  "packageEntrypoints": [
+    ".",
+    "./avatar",
+    "./button",
+    "./card",
+    "./checkbox",
+    "./choice-group",
+    "./command-palette",
+    "./company-search",
+    "./controls",
+    "./drawer",
+    "./drawer-screen",
+    "./fields",
+    "./figures",
+    "./filter-chip",
+    "./floating-tooltip",
+    "./info-tip",
+    "./inline-confirm",
+    "./layout",
+    "./list-filter",
+    "./live-figure",
+    "./locked-note",
+    "./overlay",
+    "./popover",
+    "./range-slider",
+    "./rows",
+    "./select",
+    "./show-more",
+    "./states",
+    "./stats",
+    "./status-pill",
+    "./status-tag",
+    "./switch",
+    "./table",
+    "./tabs",
+    "./chart-scale",
+    "./combo-step",
+    "./command-keys",
+    "./compact",
+    "./format",
+    "./live",
+    "./styles.css",
+    "./tokens.css",
+    "./css/*.css",
+    "./package.json",
+    "./nepal",
+    "./financial"
+  ],
+  "components": [
+    {
+      "file": "src/components/Breadcrumb.tsx",
+      "exports": [
+        "Breadcrumb"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Breadcrumb"
+      ],
+      "imports": [
+        "react-router-dom"
+      ]
+    },
+    {
+      "file": "src/components/GuideArticlePage.tsx",
+      "exports": [
+        "GuideArticlePage"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "GuideArticlePage"
+      ],
+      "imports": [
+        "./Seo",
+        "react-router-dom",
+        "./LearnLayout",
+        "../data/guideContent"
+      ]
+    },
+    {
+      "file": "src/components/GuidePage.tsx",
+      "exports": [
+        "GuidePage"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "GuidePage"
+      ],
+      "imports": [
+        "react-router-dom",
+        "./LearnLayout",
+        "./ui/AnnotatedShot",
+        "../data/guides/types"
+      ]
+    },
+    {
+      "file": "src/components/InstallBar.tsx",
+      "exports": [
+        "InstallBar"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "InstallBar"
+      ],
+      "imports": [
+        "react",
+        "./StoreButtons"
+      ]
+    },
+    {
+      "file": "src/components/LearnLayout.tsx",
+      "exports": [
+        "LearnLayout"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "LearnLayout"
+      ],
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../data/guides/types",
+        "./ui/FaqList",
+        "./ui/NavIcon",
+        "./StoreButtons",
+        "./layout/Section",
+        "./ui/Toc",
+        "../lib/learnIndex",
+        "../lib/toc"
+      ]
+    },
+    {
+      "file": "src/components/LegalLayout.tsx",
+      "exports": [
+        "LegalLayout"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "LegalLayout"
+      ],
+      "imports": [
+        "react",
+        "react-router-dom",
+        "./Breadcrumb",
+        "./product/Product",
+        "./ui/NavIcon",
+        "./ui/Toc",
+        "../lib/toc"
+      ]
+    },
+    {
+      "file": "src/components/ScrollToTop.tsx",
+      "exports": [
+        "ScrollToTop"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "ScrollToTop"
+      ],
+      "imports": [
+        "react",
+        "react-router-dom"
+      ]
+    },
+    {
+      "file": "src/components/Seo.tsx",
+      "exports": [
+        "Seo"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Seo"
+      ],
+      "imports": []
+    },
+    {
+      "file": "src/components/StoreButtons.tsx",
+      "exports": [
+        "StoreButtons"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "StoreButtons"
+      ],
+      "imports": [
+        "@punji/ui/store-buttons",
+        "../config/stores",
+        "../analytics/posthog",
+        "./layout/siteLang"
+      ]
+    },
+    {
+      "file": "src/components/auth/SignInHost.tsx",
+      "exports": [
+        "SignInHost"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "SignInHost"
+      ],
+      "imports": [
+        "react",
+        "./signInRequest"
+      ]
+    },
+    {
+      "file": "src/components/auth/SignInPanel.tsx",
+      "exports": [
+        "SignInPanel"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "SignInPanel"
+      ],
+      "imports": [
+        "react",
+        "../../analytics/posthog",
+        "../../analytics/signIn",
+        "../../analytics/events",
+        "../../lib/hosts",
+        "../../lib/session",
+        "./authText",
+        "./Turnstile"
+      ]
+    },
+    {
+      "file": "src/components/auth/SignInSheet.tsx",
+      "exports": [],
+      "availableAtRoot": [],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "../../lib/hosts",
+        "./signInRequest",
+        "./SignInPanel"
+      ]
+    },
+    {
+      "file": "src/components/auth/Turnstile.tsx",
+      "exports": [
+        "Turnstile"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Turnstile"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/charts/BarsSvg.tsx",
+      "exports": [
+        "BarsSvg"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "BarsSvg"
+      ],
+      "imports": [
+        "react",
+        "./ChartInspect",
+        "./geometry"
+      ]
+    },
+    {
+      "file": "src/components/charts/ChartInspect.tsx",
+      "exports": [
+        "ChartInspect"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "ChartInspect"
+      ],
+      "imports": [
+        "react",
+        "../kit/FloatingTooltip",
+        "./inspection"
+      ]
+    },
+    {
+      "file": "src/components/charts/LineSvg.tsx",
+      "exports": [
+        "LineSvg",
+        "Sparkline"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "LineSvg",
+        "Sparkline"
+      ],
+      "imports": [
+        "react",
+        "./ChartInspect",
+        "./geometry"
+      ]
+    },
+    {
+      "file": "src/components/charts/MarkTooltip.tsx",
+      "exports": [
+        "MarkTooltip"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "MarkTooltip"
+      ],
+      "imports": [
+        "react",
+        "../kit/FloatingTooltip"
+      ]
+    },
+    {
+      "file": "src/components/charts/UPlotChart.tsx",
+      "exports": [
+        "UPlotChart"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "UPlotChart"
+      ],
+      "imports": [
+        "react",
+        "./geometry"
+      ]
+    },
+    {
+      "file": "src/components/charts/tv/AdvancedChart.tsx",
+      "exports": [
+        "AdvancedChart"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "AdvancedChart"
+      ],
+      "imports": [
+        "react",
+        "./datafeed",
+        "./feeds",
+        "./layoutStore",
+        "./library",
+        "./theme",
+        "./types"
+      ]
+    },
+    {
+      "file": "src/components/data/DataError.tsx",
+      "exports": [
+        "DataError"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "DataError"
+      ],
+      "imports": [
+        "react",
+        "../../lib/api"
+      ]
+    },
+    {
+      "file": "src/components/data/Delta.tsx",
+      "exports": [
+        "Delta"
+      ],
+      "availableAtRoot": [
+        "Delta"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "../../lib/format"
+      ]
+    },
+    {
+      "file": "src/components/data/Figure.tsx",
+      "exports": [
+        "Figure"
+      ],
+      "availableAtRoot": [
+        "Figure"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "../../lib/format"
+      ]
+    },
+    {
+      "file": "src/components/data/Illustrative.tsx",
+      "exports": [
+        "Illustrative"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Illustrative"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/data/MarketStatusChip.tsx",
+      "exports": [
+        "MarketStatusChip"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "MarketStatusChip"
+      ],
+      "imports": [
+        "react",
+        "../../lib/format",
+        "../../lib/marketData"
+      ]
+    },
+    {
+      "file": "src/components/data/ProvenanceNote.tsx",
+      "exports": [
+        "ProvenanceNote"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "ProvenanceNote"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/data/Skeleton.tsx",
+      "exports": [
+        "Skeleton"
+      ],
+      "availableAtRoot": [
+        "Skeleton"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/data/Timestamp.tsx",
+      "exports": [
+        "Timestamp"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Timestamp"
+      ],
+      "imports": [
+        "react",
+        "../../lib/format"
+      ]
+    },
+    {
+      "file": "src/components/fundamentals/Board.tsx",
+      "exports": [
+        "Board"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Board"
+      ],
+      "imports": [
+        "react",
+        "@punji/ui",
+        "../../contracts/fundamentals",
+        "./Checklist",
+        "./Detail",
+        "./useDetail",
+        "./fileLogic",
+        "./fileRows",
+        "./logic",
+        "../../me/desk/marketMark",
+        "./Management",
+        "./text"
+      ]
+    },
+    {
+      "file": "src/components/fundamentals/Checklist.tsx",
+      "exports": [
+        "Checklist"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Checklist"
+      ],
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/check-row",
+        "@punji/ui/health-summary",
+        "@punji/ui/quarter-bars",
+        "../../contracts/fundamentals",
+        "./fileLogic",
+        "../../contracts/fundamentals",
+        "./fileRows",
+        "./healthSummary",
+        "./logic",
+        "./text",
+        "./marks",
+        "./visual"
+      ]
+    },
+    {
+      "file": "src/components/fundamentals/Detail.tsx",
+      "exports": [
+        "Detail"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Detail"
+      ],
+      "imports": [
+        "@punji/ui",
+        "./useDetail",
+        "./useDetail"
+      ]
+    },
+    {
+      "file": "src/components/fundamentals/Ledger.tsx",
+      "exports": [
+        "Ledger"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Ledger"
+      ],
+      "imports": [
+        "@punji/ui",
+        "../../contracts/fundamentals",
+        "./logic",
+        "./text"
+      ]
+    },
+    {
+      "file": "src/components/fundamentals/Management.tsx",
+      "exports": [
+        "Management"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Management"
+      ],
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/quote-list",
+        "../../contracts/fundamentals",
+        "./fileLogic",
+        "./logic",
+        "./text"
+      ]
+    },
+    {
+      "file": "src/components/fundamentals/PeersTable.tsx",
+      "exports": [
+        "PeersTable"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "PeersTable"
+      ],
+      "imports": [
+        "@punji/ui",
+        "../../contracts/fundamentals",
+        "./logic",
+        "./text"
+      ]
+    },
+    {
+      "file": "src/components/fundamentals/PillarPanel.tsx",
+      "exports": [
+        "PillarPanel"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "PillarPanel"
+      ],
+      "imports": [
+        "@punji/ui",
+        "@punji/ui/meter",
+        "@punji/ui/floor-gauge",
+        "@punji/ui/metric-tile",
+        "@punji/ui/quarter-bars",
+        "@punji/ui/summary-figure",
+        "../charts/ChartInspect",
+        "../../contracts/fundamentals",
+        "./fileLogic",
+        "./fileRows",
+        "./logic",
+        "./text"
+      ]
+    },
+    {
+      "file": "src/components/fundamentals/States.tsx",
+      "exports": [
+        "FundamentalsSkeleton",
+        "FundamentalsGate",
+        "StateCard"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "FundamentalsSkeleton",
+        "FundamentalsGate",
+        "StateCard"
+      ],
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/check-row",
+        "../ui/icons",
+        "./text"
+      ]
+    },
+    {
+      "file": "src/components/fundamentals/Valuation.tsx",
+      "exports": [
+        "Valuation"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Valuation"
+      ],
+      "imports": [
+        "react",
+        "@punji/ui",
+        "../../contracts/fundamentals",
+        "./logic",
+        "./fileRows",
+        "./text"
+      ]
+    },
+    {
+      "file": "src/components/fundamentals/marks.tsx",
+      "exports": [
+        "StatusIcon",
+        "ROW_ICON"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "StatusIcon",
+        "ROW_ICON"
+      ],
+      "imports": [
+        "react",
+        "./fileLogic",
+        "./healthSummary",
+        "../ui/icons",
+        "../ui/icons"
+      ]
+    },
+    {
+      "file": "src/components/fundamentals/useDetail.tsx",
+      "exports": [
+        "useDetail"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "useDetail"
+      ],
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/check-row",
+        "../../contracts/fundamentals",
+        "../../lib/hosts",
+        "../../lib/learnTerms",
+        "../ui/icons",
+        "./fileLogic",
+        "./fileRows",
+        "./Ledger",
+        "./logic",
+        "./Management",
+        "./marks",
+        "./PillarPanel",
+        "./text",
+        "./PeersTable",
+        "./Valuation",
+        "./visual"
+      ]
+    },
+    {
+      "file": "src/components/fundamentals/visual.tsx",
+      "exports": [
+        "unranked",
+        "checkTone",
+        "discTone",
+        "statusPill",
+        "sectorVisual"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "unranked",
+        "checkTone",
+        "discTone",
+        "statusPill",
+        "sectorVisual"
+      ],
+      "imports": [
+        "react",
+        "@punji/ui/check-row",
+        "../ui/icons",
+        "./fileLogic",
+        "./healthSummary",
+        "./logic",
+        "./text"
+      ]
+    },
+    {
+      "file": "src/components/gate/SignInFree.tsx",
+      "exports": [
+        "SignInFreePanel",
+        "SignInFree"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "SignInFreePanel",
+        "SignInFree"
+      ],
+      "imports": [
+        "react",
+        "../auth/signInRequest",
+        "../ui/NavIcon",
+        "../../lib/hosts",
+        "../../lib/useHydrated",
+        "../../lib/session",
+        "./links"
+      ]
+    },
+    {
+      "file": "src/components/kit/ActionNotice.tsx",
+      "exports": [
+        "ActionNotice",
+        "ActionNoticeList",
+        "ActionNoticeRow",
+        "NoticeIcon"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "ActionNotice",
+        "ActionNoticeList",
+        "ActionNoticeRow",
+        "NoticeIcon"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/AlertForm.tsx",
+      "exports": [
+        "AlertForm"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "AlertForm"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/AlertPanel.tsx",
+      "exports": [
+        "AlertPanel"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "AlertPanel"
+      ],
+      "imports": [
+        "react",
+        "react-dom",
+        "./Button",
+        "./Card",
+        "./DrawerScreen"
+      ]
+    },
+    {
+      "file": "src/components/kit/AlertRow.tsx",
+      "exports": [
+        "AlertGlyph",
+        "AlertBar",
+        "AlertActionIcon",
+        "AlertRowList",
+        "AlertRow",
+        "AlertRowSkeleton",
+        "AlertRowCompact",
+        "AlertStartRow",
+        "AlertListEmpty"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "AlertGlyph",
+        "AlertBar",
+        "AlertActionIcon",
+        "AlertRowList",
+        "AlertRow",
+        "AlertRowSkeleton",
+        "AlertRowCompact",
+        "AlertStartRow",
+        "AlertListEmpty"
+      ],
+      "imports": [
+        "react",
+        "react-router-dom",
+        "./States"
+      ]
+    },
+    {
+      "file": "src/components/kit/AlertSummary.tsx",
+      "exports": [
+        "AlertSummary",
+        "AlertSummarySection",
+        "AlertSummaryNote",
+        "AlertDelivery",
+        "AlertStartCard",
+        "AlertCardSection",
+        "AlertCard",
+        "AlertFacts"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "AlertSummary",
+        "AlertSummarySection",
+        "AlertSummaryNote",
+        "AlertDelivery",
+        "AlertStartCard",
+        "AlertCardSection",
+        "AlertCard",
+        "AlertFacts"
+      ],
+      "imports": [
+        "react",
+        "./States"
+      ]
+    },
+    {
+      "file": "src/components/kit/AppStrip.tsx",
+      "exports": [
+        "AppStrip"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "AppStrip"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/AppTabBar.tsx",
+      "exports": [
+        "AppTabBar"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "AppTabBar"
+      ],
+      "imports": [
+        "react",
+        "react-dom",
+        "react-router-dom",
+        "../../lib/hosts",
+        "../layout/navLinks",
+        "./NavIcon",
+        "./tabRoutes"
+      ]
+    },
+    {
+      "file": "src/components/kit/Avatar.tsx",
+      "exports": [
+        "avatarInitials",
+        "Avatar"
+      ],
+      "availableAtRoot": [
+        "avatarInitials",
+        "Avatar"
+      ],
+      "missingAtRoot": [],
+      "imports": []
+    },
+    {
+      "file": "src/components/kit/BarButton.tsx",
+      "exports": [
+        "BarButton",
+        "BarSearch",
+        "BarAnchor"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "BarButton",
+        "BarSearch",
+        "BarAnchor"
+      ],
+      "imports": [
+        "react",
+        "./BarSwitch"
+      ]
+    },
+    {
+      "file": "src/components/kit/BarList.tsx",
+      "exports": [
+        "BarList"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "BarList"
+      ],
+      "imports": [
+        "react",
+        "./States"
+      ]
+    },
+    {
+      "file": "src/components/kit/BarSwitch.tsx",
+      "exports": [
+        "BarSwitch"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "BarSwitch"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/Bars.tsx",
+      "exports": [
+        "SplitBar",
+        "DivergingBar",
+        "NetBar",
+        "NetBarHead"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "SplitBar",
+        "DivergingBar",
+        "NetBar",
+        "NetBarHead"
+      ],
+      "imports": [
+        "react",
+        "./FloatingTooltip"
+      ]
+    },
+    {
+      "file": "src/components/kit/BreadthBar.tsx",
+      "exports": [
+        "BreadthBar"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "BreadthBar"
+      ],
+      "imports": []
+    },
+    {
+      "file": "src/components/kit/Breakdown.tsx",
+      "exports": [
+        "Breakdown",
+        "BreakdownRow"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Breakdown",
+        "BreakdownRow"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/BrokerBadge.tsx",
+      "exports": [
+        "BrokerBadge"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "BrokerBadge"
+      ],
+      "imports": []
+    },
+    {
+      "file": "src/components/kit/BrokerDays.tsx",
+      "exports": [
+        "brokerDayStep",
+        "BrokerDays"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "brokerDayStep",
+        "BrokerDays"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/BrokerLookup.tsx",
+      "exports": [
+        "BROKER_LOOKUP_EN",
+        "findBrokers",
+        "BrokerLookup"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "BROKER_LOOKUP_EN",
+        "findBrokers",
+        "BrokerLookup"
+      ],
+      "imports": [
+        "react",
+        "react-router-dom",
+        "./BrokerBadge",
+        "./Button",
+        "./Layout",
+        "./LinkRow",
+        "./ListFilter",
+        "./TmsAddress"
+      ]
+    },
+    {
+      "file": "src/components/kit/Button.tsx",
+      "exports": [
+        "buttonClass",
+        "Button"
+      ],
+      "availableAtRoot": [
+        "buttonClass",
+        "Button"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "react-router-dom",
+        "./Select"
+      ]
+    },
+    {
+      "file": "src/components/kit/CandleChart.tsx",
+      "exports": [
+        "volumeTop",
+        "CandleChart"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "volumeTop",
+        "CandleChart"
+      ],
+      "imports": [
+        "react",
+        "../charts/ChartInspect",
+        "./chartScale"
+      ]
+    },
+    {
+      "file": "src/components/kit/Card.tsx",
+      "exports": [
+        "Card"
+      ],
+      "availableAtRoot": [
+        "Card"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/CardLink.tsx",
+      "exports": [
+        "NEW_TAB_PUNJI",
+        "ExternalIcon",
+        "CardLink"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "NEW_TAB_PUNJI",
+        "ExternalIcon",
+        "CardLink"
+      ],
+      "imports": [
+        "react",
+        "react-router-dom",
+        "./Layout"
+      ]
+    },
+    {
+      "file": "src/components/kit/CardSection.tsx",
+      "exports": [
+        "CardSection",
+        "CardSectionRow"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "CardSection",
+        "CardSectionRow"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/CaveatList.tsx",
+      "exports": [
+        "CaveatList"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "CaveatList"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/ChartStrip.tsx",
+      "exports": [
+        "ChartStrip",
+        "StripSheet"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "ChartStrip",
+        "StripSheet"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/CheckRow.tsx",
+      "exports": [
+        "StatusDisc",
+        "CheckList",
+        "CheckRow"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "StatusDisc",
+        "CheckList",
+        "CheckRow"
+      ],
+      "imports": [
+        "react",
+        "react-router-dom",
+        "./StatusPill"
+      ]
+    },
+    {
+      "file": "src/components/kit/Checkbox.tsx",
+      "exports": [
+        "Checkbox"
+      ],
+      "availableAtRoot": [
+        "Checkbox"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/Checklist.tsx",
+      "exports": [
+        "Checklist",
+        "ProgressPill"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Checklist",
+        "ProgressPill"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/ChoiceGroup.tsx",
+      "exports": [
+        "ChoiceGroup"
+      ],
+      "availableAtRoot": [
+        "ChoiceGroup"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "./Select"
+      ]
+    },
+    {
+      "file": "src/components/kit/ColumnChart.tsx",
+      "exports": [
+        "columnScaleTop",
+        "ColumnLegend",
+        "ColumnChart",
+        "mirrorScaleTop",
+        "labelledColumns"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "columnScaleTop",
+        "ColumnLegend",
+        "ColumnChart",
+        "mirrorScaleTop",
+        "labelledColumns"
+      ],
+      "imports": [
+        "react",
+        "../charts/ChartInspect"
+      ]
+    },
+    {
+      "file": "src/components/kit/CommandPalette.tsx",
+      "exports": [
+        "CommandPalette"
+      ],
+      "availableAtRoot": [
+        "CommandPalette"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "./commandKeys"
+      ]
+    },
+    {
+      "file": "src/components/kit/CompanySearch.tsx",
+      "exports": [
+        "CompanySearch"
+      ],
+      "availableAtRoot": [
+        "CompanySearch"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "react-dom",
+        "./format",
+        "./comboStep"
+      ]
+    },
+    {
+      "file": "src/components/kit/ContrastCard.tsx",
+      "exports": [
+        "ContrastCard",
+        "ContrastRows",
+        "ContrastRow",
+        "ContrastSwitchRow"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "ContrastCard",
+        "ContrastRows",
+        "ContrastRow",
+        "ContrastSwitchRow"
+      ],
+      "imports": [
+        "react",
+        "./Switch"
+      ]
+    },
+    {
+      "file": "src/components/kit/Controls.tsx",
+      "exports": [
+        "Chip",
+        "ChipRow",
+        "SegmentedControl",
+        "SegmentedSwitch"
+      ],
+      "availableAtRoot": [
+        "Chip",
+        "ChipRow",
+        "SegmentedControl",
+        "SegmentedSwitch"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "./format",
+        "./Select"
+      ]
+    },
+    {
+      "file": "src/components/kit/CorrelationMatrix.tsx",
+      "exports": [
+        "CorrelationMatrix"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "CorrelationMatrix"
+      ],
+      "imports": [
+        "react",
+        "../../lib/rotationView"
+      ]
+    },
+    {
+      "file": "src/components/kit/CtaBand.tsx",
+      "exports": [
+        "CtaBand"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "CtaBand"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/DangerConfirm.tsx",
+      "exports": [
+        "confirmMatches",
+        "DangerConfirm"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "confirmMatches",
+        "DangerConfirm"
+      ],
+      "imports": [
+        "react",
+        "./Button",
+        "./Fields"
+      ]
+    },
+    {
+      "file": "src/components/kit/Disclosure.tsx",
+      "exports": [
+        "Disclosure",
+        "DisclosureList"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Disclosure",
+        "DisclosureList"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/DivergingRows.tsx",
+      "exports": [
+        "DivergingRows"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "DivergingRows"
+      ],
+      "imports": []
+    },
+    {
+      "file": "src/components/kit/Drawer.tsx",
+      "exports": [
+        "Drawer"
+      ],
+      "availableAtRoot": [
+        "Drawer"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "react-dom"
+      ]
+    },
+    {
+      "file": "src/components/kit/DrawerScreen.tsx",
+      "exports": [
+        "DrawerScreen",
+        "DrawerHeader",
+        "DrawerBody",
+        "DrawerFooter"
+      ],
+      "availableAtRoot": [
+        "DrawerScreen",
+        "DrawerHeader",
+        "DrawerBody",
+        "DrawerFooter"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/EquityChart.tsx",
+      "exports": [
+        "equityPaths",
+        "EquityChart",
+        "EquityLegend"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "equityPaths",
+        "EquityChart",
+        "EquityLegend"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/FactList.tsx",
+      "exports": [
+        "FactList"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "FactList"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/FaqSection.tsx",
+      "exports": [
+        "FaqSection"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "FaqSection"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/FeatureCard.tsx",
+      "exports": [
+        "FeatureGrid",
+        "FeatureCard"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "FeatureGrid",
+        "FeatureCard"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/Fields.tsx",
+      "exports": [
+        "Field",
+        "NumberField",
+        "TextAreaField",
+        "DateField",
+        "SelectField",
+        "SymbolField",
+        "PriceField"
+      ],
+      "availableAtRoot": [
+        "Field",
+        "NumberField",
+        "TextAreaField",
+        "DateField",
+        "SelectField",
+        "SymbolField",
+        "PriceField"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "./Select",
+        "./format"
+      ]
+    },
+    {
+      "file": "src/components/kit/Figures.tsx",
+      "exports": [
+        "Figure",
+        "Delta"
+      ],
+      "availableAtRoot": [
+        "Figure",
+        "Delta"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "../../lib/format",
+        "./format"
+      ]
+    },
+    {
+      "file": "src/components/kit/FilterChip.tsx",
+      "exports": [
+        "FilterChip"
+      ],
+      "availableAtRoot": [
+        "FilterChip"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/FilterMenu.tsx",
+      "exports": [
+        "FilterMenu",
+        "FilterMenuGroup",
+        "FilterMenuItem"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "FilterMenu",
+        "FilterMenuGroup",
+        "FilterMenuItem"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/FloatingTooltip.tsx",
+      "exports": [
+        "FloatingTooltip",
+        "IconHint"
+      ],
+      "availableAtRoot": [
+        "FloatingTooltip",
+        "IconHint"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "react-dom"
+      ]
+    },
+    {
+      "file": "src/components/kit/FloorGauge.tsx",
+      "exports": [
+        "FloorGauge"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "FloorGauge"
+      ],
+      "imports": []
+    },
+    {
+      "file": "src/components/kit/FlowWaterfall.tsx",
+      "exports": [
+        "FlowWaterfall"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "FlowWaterfall"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/ForecastNote.tsx",
+      "exports": [
+        "ForecastNote"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "ForecastNote"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/GroupChangeList.tsx",
+      "exports": [
+        "GroupChangeList"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "GroupChangeList"
+      ],
+      "imports": [
+        "react",
+        "../../lib/rotationView",
+        "./GroupPill"
+      ]
+    },
+    {
+      "file": "src/components/kit/GroupCounts.tsx",
+      "exports": [
+        "GroupCounts"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "GroupCounts"
+      ],
+      "imports": [
+        "react",
+        "../../lib/rotationView",
+        "./Card"
+      ]
+    },
+    {
+      "file": "src/components/kit/GroupPill.tsx",
+      "exports": [
+        "GroupPill"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "GroupPill"
+      ],
+      "imports": [
+        "react",
+        "../../lib/rotationView",
+        "./StatusPill"
+      ]
+    },
+    {
+      "file": "src/components/kit/HeadlineList.tsx",
+      "exports": [
+        "HeadlineList"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "HeadlineList"
+      ],
+      "imports": [
+        "react",
+        "./CardLink"
+      ]
+    },
+    {
+      "file": "src/components/kit/HealthSummary.tsx",
+      "exports": [
+        "HealthSummary"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "HealthSummary"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/Histogram.tsx",
+      "exports": [
+        "Histogram"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Histogram"
+      ],
+      "imports": [
+        "react",
+        "./FloatingTooltip"
+      ]
+    },
+    {
+      "file": "src/components/kit/InboxList.tsx",
+      "exports": [
+        "InboxList",
+        "InboxGroup",
+        "InboxState",
+        "InboxRow",
+        "InboxSkeleton"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "InboxList",
+        "InboxGroup",
+        "InboxState",
+        "InboxRow",
+        "InboxSkeleton"
+      ],
+      "imports": [
+        "react",
+        "./States"
+      ]
+    },
+    {
+      "file": "src/components/kit/InfoTip.tsx",
+      "exports": [
+        "InfoTip",
+        "Tooltip"
+      ],
+      "availableAtRoot": [
+        "InfoTip",
+        "Tooltip"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "react-dom"
+      ]
+    },
+    {
+      "file": "src/components/kit/InlineConfirm.tsx",
+      "exports": [
+        "InlineConfirm"
+      ],
+      "availableAtRoot": [
+        "InlineConfirm"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "./Button"
+      ]
+    },
+    {
+      "file": "src/components/kit/InlineState.tsx",
+      "exports": [
+        "StateGlyph",
+        "InlineState"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "StateGlyph",
+        "InlineState"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/KeyStats.tsx",
+      "exports": [
+        "KeyStats"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "KeyStats"
+      ],
+      "imports": [
+        "react",
+        "./States"
+      ]
+    },
+    {
+      "file": "src/components/kit/LandingSection.tsx",
+      "exports": [
+        "LandingHero",
+        "LandingSection",
+        "PointGrid",
+        "Point",
+        "LandingIcon"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "LandingHero",
+        "LandingSection",
+        "PointGrid",
+        "Point",
+        "LandingIcon"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/Layout.tsx",
+      "exports": [
+        "PageLayout",
+        "PageHeader",
+        "ListSectionHeader",
+        "ChevronLeft",
+        "ChevronRight"
+      ],
+      "availableAtRoot": [
+        "PageLayout",
+        "PageHeader",
+        "ListSectionHeader",
+        "ChevronLeft",
+        "ChevronRight"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "react-router-dom"
+      ]
+    },
+    {
+      "file": "src/components/kit/LinkRow.tsx",
+      "exports": [
+        "LinkRowList",
+        "LinkRow"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "LinkRowList",
+        "LinkRow"
+      ],
+      "imports": [
+        "react",
+        "react-router-dom",
+        "./Layout"
+      ]
+    },
+    {
+      "file": "src/components/kit/LinkTable.tsx",
+      "exports": [
+        "LinkTable",
+        "LinkTableRow",
+        "StockLabel"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "LinkTable",
+        "LinkTableRow",
+        "StockLabel"
+      ],
+      "imports": [
+        "react",
+        "react-router-dom",
+        "./Layout"
+      ]
+    },
+    {
+      "file": "src/components/kit/ListFilter.tsx",
+      "exports": [
+        "ListFilter"
+      ],
+      "availableAtRoot": [
+        "ListFilter"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/LiveFigure.tsx",
+      "exports": [
+        "Live",
+        "LiveFigure"
+      ],
+      "availableAtRoot": [
+        "Live",
+        "LiveFigure"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "./format",
+        "./live"
+      ]
+    },
+    {
+      "file": "src/components/kit/LockedCell.tsx",
+      "exports": [
+        "LockedHead",
+        "LockedCell"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "LockedHead",
+        "LockedCell"
+      ],
+      "imports": []
+    },
+    {
+      "file": "src/components/kit/LockedNote.tsx",
+      "exports": [
+        "LockedNote"
+      ],
+      "availableAtRoot": [
+        "LockedNote"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/LockedPreview.tsx",
+      "exports": [
+        "LockedPreview",
+        "LockedRow",
+        "LockedTile"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "LockedPreview",
+        "LockedRow",
+        "LockedTile"
+      ],
+      "imports": [
+        "react",
+        "./Card"
+      ]
+    },
+    {
+      "file": "src/components/kit/Logo.tsx",
+      "exports": [
+        "Logo"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Logo"
+      ],
+      "imports": []
+    },
+    {
+      "file": "src/components/kit/LogoWordmark.tsx",
+      "exports": [
+        "LogoWordmark"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "LogoWordmark"
+      ],
+      "imports": []
+    },
+    {
+      "file": "src/components/kit/MarkToggleList.tsx",
+      "exports": [
+        "MarkToggleList"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "MarkToggleList"
+      ],
+      "imports": [
+        "react",
+        "./Checkbox"
+      ]
+    },
+    {
+      "file": "src/components/kit/MarketMark.tsx",
+      "exports": [
+        "MarketMark"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "MarketMark"
+      ],
+      "imports": [
+        "react",
+        "./format"
+      ]
+    },
+    {
+      "file": "src/components/kit/MarketMarkDetail.tsx",
+      "exports": [
+        "MarketMarkDetail"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "MarketMarkDetail"
+      ],
+      "imports": [
+        "react",
+        "./Button",
+        "./InfoTip",
+        "./MarketMark",
+        "./Popover"
+      ]
+    },
+    {
+      "file": "src/components/kit/MarketReport.tsx",
+      "exports": [
+        "ReportDelta",
+        "IndexSummary",
+        "MoveHistogram",
+        "MoverList",
+        "IndexRows",
+        "MarketNotice",
+        "ReportHeader",
+        "ReportCard",
+        "ReportFacts"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "ReportDelta",
+        "IndexSummary",
+        "MoveHistogram",
+        "MoverList",
+        "IndexRows",
+        "MarketNotice",
+        "ReportHeader",
+        "ReportCard",
+        "ReportFacts"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/MarketStrip.tsx",
+      "exports": [
+        "MarketStrip",
+        "MarketStripCell",
+        "MarketStripFigure",
+        "MarketStripMoves",
+        "MarketLine"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "MarketStrip",
+        "MarketStripCell",
+        "MarketStripFigure",
+        "MarketStripMoves",
+        "MarketLine"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/MenuList.tsx",
+      "exports": [
+        "MenuList",
+        "MenuHead",
+        "MenuSeparator",
+        "MenuItem"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "MenuList",
+        "MenuHead",
+        "MenuSeparator",
+        "MenuItem"
+      ],
+      "imports": [
+        "react",
+        "react-router-dom"
+      ]
+    },
+    {
+      "file": "src/components/kit/MenuPanel.tsx",
+      "exports": [
+        "MenuPanel",
+        "MenuSection",
+        "MenuRow"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "MenuPanel",
+        "MenuSection",
+        "MenuRow"
+      ],
+      "imports": [
+        "react",
+        "react-router-dom"
+      ]
+    },
+    {
+      "file": "src/components/kit/Meter.tsx",
+      "exports": [
+        "MeterBar",
+        "RangeBar",
+        "ShareLegend",
+        "ShareBar",
+        "DistributionBar",
+        "ShareDonut",
+        "SHARE_TONES"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "MeterBar",
+        "RangeBar",
+        "ShareLegend",
+        "ShareBar",
+        "DistributionBar",
+        "ShareDonut",
+        "SHARE_TONES"
+      ],
+      "imports": [
+        "react",
+        "./RatingChip",
+        "../../lib/rangeLabels"
+      ]
+    },
+    {
+      "file": "src/components/kit/MetricTile.tsx",
+      "exports": [
+        "MetricTile",
+        "MetricRow"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "MetricTile",
+        "MetricRow"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/MonthGrid.tsx",
+      "exports": [
+        "MonthGrid"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "MonthGrid"
+      ],
+      "imports": [
+        "../../contracts/seasonality",
+        "../../lib/seasonality"
+      ]
+    },
+    {
+      "file": "src/components/kit/MonthStrip.tsx",
+      "exports": [
+        "MonthStrip"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "MonthStrip"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/NavIcon.tsx",
+      "exports": [
+        "NavIcon"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "NavIcon"
+      ],
+      "imports": []
+    },
+    {
+      "file": "src/components/kit/NotificationBell.tsx",
+      "exports": [
+        "badgeText",
+        "NotificationBell"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "badgeText",
+        "NotificationBell"
+      ],
+      "imports": [
+        "react",
+        "./BarButton"
+      ]
+    },
+    {
+      "file": "src/components/kit/OptionTile.tsx",
+      "exports": [
+        "OptionTile",
+        "OptionList"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "OptionTile",
+        "OptionList"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/OrderBook.tsx",
+      "exports": [
+        "OrderBook"
+      ],
+      "availableAtRoot": [
+        "OrderBook"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "./format",
+        "./Meter"
+      ]
+    },
+    {
+      "file": "src/components/kit/Overlay.tsx",
+      "exports": [
+        "Sheet",
+        "ToastProvider",
+        "useToast",
+        "Dock"
+      ],
+      "availableAtRoot": [
+        "Sheet",
+        "ToastProvider",
+        "useToast",
+        "Dock"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "./States"
+      ]
+    },
+    {
+      "file": "src/components/kit/Pagination.tsx",
+      "exports": [
+        "pageCount",
+        "pageOf",
+        "Pagination"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "pageCount",
+        "pageOf",
+        "Pagination"
+      ],
+      "imports": [
+        "react",
+        "./Button",
+        "./format"
+      ]
+    },
+    {
+      "file": "src/components/kit/PeriodHistory.tsx",
+      "exports": [
+        "PeriodHistory"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "PeriodHistory"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/PersonTile.tsx",
+      "exports": [
+        "PersonTile",
+        "TileRow",
+        "TileRowItem"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "PersonTile",
+        "TileRow",
+        "TileRowItem"
+      ],
+      "imports": [
+        "react",
+        "react-router-dom"
+      ]
+    },
+    {
+      "file": "src/components/kit/PhaseStrip.tsx",
+      "exports": [
+        "PhaseStrip"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "PhaseStrip"
+      ],
+      "imports": [
+        "../../lib/rotationView"
+      ]
+    },
+    {
+      "file": "src/components/kit/PhoneMenu.tsx",
+      "exports": [
+        "PhoneMenu",
+        "PhoneMenuLink"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "PhoneMenu",
+        "PhoneMenuLink"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/Popover.tsx",
+      "exports": [
+        "PopoverAnchor",
+        "Popover"
+      ],
+      "availableAtRoot": [
+        "PopoverAnchor",
+        "Popover"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/PresetTile.tsx",
+      "exports": [
+        "PresetRow",
+        "PresetTile"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "PresetRow",
+        "PresetTile"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/PriceLevelChart.tsx",
+      "exports": [
+        "PriceLevelChart"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "PriceLevelChart"
+      ],
+      "imports": [
+        "react",
+        "./levelsMath",
+        "./States"
+      ]
+    },
+    {
+      "file": "src/components/kit/PrincipleList.tsx",
+      "exports": [
+        "PrincipleList"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "PrincipleList"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/PrivateAmount.tsx",
+      "exports": [
+        "amountsHidden",
+        "setAmountsHidden",
+        "useAmountsHidden",
+        "MASK",
+        "PrivateAmount",
+        "EyeIcon",
+        "AmountsToggle"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "amountsHidden",
+        "setAmountsHidden",
+        "useAmountsHidden",
+        "MASK",
+        "PrivateAmount",
+        "EyeIcon",
+        "AmountsToggle"
+      ],
+      "imports": [
+        "react",
+        "./Button",
+        "./Select"
+      ]
+    },
+    {
+      "file": "src/components/kit/ProductShot.tsx",
+      "exports": [
+        "SHOT_NARROW_MAX",
+        "ProductShot",
+        "ShotTwin"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "SHOT_NARROW_MAX",
+        "ProductShot",
+        "ShotTwin"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/ProfileRail.tsx",
+      "exports": [
+        "ProfileRail"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "ProfileRail"
+      ],
+      "imports": [
+        "react",
+        "./levelsMath",
+        "./PriceLevelChart"
+      ]
+    },
+    {
+      "file": "src/components/kit/ProgressRow.tsx",
+      "exports": [
+        "ProgressRow"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "ProgressRow"
+      ],
+      "imports": [
+        "react",
+        "react-router-dom"
+      ]
+    },
+    {
+      "file": "src/components/kit/PromptCard.tsx",
+      "exports": [
+        "PromptCard",
+        "OutlineTile"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "PromptCard",
+        "OutlineTile"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/QuarterBars.tsx",
+      "exports": [
+        "QuarterBars"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "QuarterBars"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/QuoteHero.tsx",
+      "exports": [
+        "QuoteHero"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "QuoteHero"
+      ],
+      "imports": [
+        "react",
+        "./format",
+        "./SymbolBlock",
+        "./States"
+      ]
+    },
+    {
+      "file": "src/components/kit/QuoteList.tsx",
+      "exports": [
+        "QuoteList",
+        "Quote"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "QuoteList",
+        "Quote"
+      ],
+      "imports": [
+        "react",
+        "./Controls"
+      ]
+    },
+    {
+      "file": "src/components/kit/RangeEditor.tsx",
+      "exports": [
+        "FilterPopover",
+        "RangeEditor"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "FilterPopover",
+        "RangeEditor"
+      ],
+      "imports": [
+        "react",
+        "react-dom",
+        "./Button",
+        "./Fields"
+      ]
+    },
+    {
+      "file": "src/components/kit/RangeSlider.tsx",
+      "exports": [
+        "RangeSlider"
+      ],
+      "availableAtRoot": [
+        "RangeSlider"
+      ],
+      "missingAtRoot": [],
+      "imports": []
+    },
+    {
+      "file": "src/components/kit/RatingChangeRow.tsx",
+      "exports": [
+        "RatingChangeHead",
+        "RatingChangeList",
+        "RatingChangeRow"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "RatingChangeHead",
+        "RatingChangeList",
+        "RatingChangeRow"
+      ],
+      "imports": [
+        "react",
+        "react-router-dom",
+        "./CheckRow",
+        "./RatingChip",
+        "./RatingScale"
+      ]
+    },
+    {
+      "file": "src/components/kit/RatingChip.tsx",
+      "exports": [
+        "scaleClass",
+        "RatingChip"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "scaleClass",
+        "RatingChip"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/RatingScale.tsx",
+      "exports": [
+        "RatingScale"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "RatingScale"
+      ],
+      "imports": [
+        "react",
+        "./RatingChip"
+      ]
+    },
+    {
+      "file": "src/components/kit/ReorderList.tsx",
+      "exports": [
+        "moveKey",
+        "ReorderList"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "moveKey",
+        "ReorderList"
+      ],
+      "imports": [
+        "react",
+        "./Button"
+      ]
+    },
+    {
+      "file": "src/components/kit/RetryNote.tsx",
+      "exports": [
+        "RetryNote"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "RetryNote"
+      ],
+      "imports": [
+        "react",
+        "./Button",
+        "./States"
+      ]
+    },
+    {
+      "file": "src/components/kit/ReturnBars.tsx",
+      "exports": [
+        "ReturnBars"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "ReturnBars"
+      ],
+      "imports": [
+        "react",
+        "../charts/ChartInspect",
+        "./States"
+      ]
+    },
+    {
+      "file": "src/components/kit/ReturnsHeatTable.tsx",
+      "exports": [
+        "ReturnsHeatTable"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "ReturnsHeatTable"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/RotationMap.tsx",
+      "exports": [
+        "RotationMap"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "RotationMap"
+      ],
+      "imports": [
+        "react",
+        "../../lib/rotationView",
+        "./Controls"
+      ]
+    },
+    {
+      "file": "src/components/kit/RowMenu.tsx",
+      "exports": [
+        "RowMenu"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "RowMenu"
+      ],
+      "imports": [
+        "react",
+        "react-dom",
+        "./Button",
+        "./MenuList",
+        "./Overlay",
+        "./Popover"
+      ]
+    },
+    {
+      "file": "src/components/kit/Rows.tsx",
+      "exports": [
+        "GroupedCell",
+        "RowList",
+        "ValueRow",
+        "DataRows",
+        "DataRow",
+        "Tile"
+      ],
+      "availableAtRoot": [
+        "GroupedCell",
+        "RowList",
+        "ValueRow",
+        "DataRows",
+        "DataRow",
+        "Tile"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "react-router-dom",
+        "./Layout"
+      ]
+    },
+    {
+      "file": "src/components/kit/RuleSentence.tsx",
+      "exports": [
+        "RuleSentence"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "RuleSentence"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/RunQuota.tsx",
+      "exports": [
+        "RunQuota",
+        "Stamp",
+        "RunBar"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "RunQuota",
+        "Stamp",
+        "RunBar"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/SaleEstimate.tsx",
+      "exports": [
+        "SaleEstimate"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "SaleEstimate"
+      ],
+      "imports": [
+        "react",
+        "./Controls"
+      ]
+    },
+    {
+      "file": "src/components/kit/SecurityTitle.tsx",
+      "exports": [
+        "SecurityTitle"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "SecurityTitle"
+      ],
+      "imports": [
+        "react",
+        "./CheckRow"
+      ]
+    },
+    {
+      "file": "src/components/kit/Select.tsx",
+      "exports": [
+        "ChevronDown",
+        "Select"
+      ],
+      "availableAtRoot": [
+        "ChevronDown",
+        "Select"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/SelectableMonthGrid.tsx",
+      "exports": [
+        "SelectableMonthGrid"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "SelectableMonthGrid"
+      ],
+      "imports": [
+        "react",
+        "./States",
+        "../../contracts/seasonality",
+        "./MonthGrid",
+        "../../lib/seasonality"
+      ]
+    },
+    {
+      "file": "src/components/kit/SettingIcon.tsx",
+      "exports": [
+        "SettingIcon"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "SettingIcon"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/SettingRow.tsx",
+      "exports": [
+        "SettingList",
+        "SettingRow"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "SettingList",
+        "SettingRow"
+      ],
+      "imports": [
+        "react",
+        "react-router-dom",
+        "./CheckRow",
+        "./Switch"
+      ]
+    },
+    {
+      "file": "src/components/kit/ShowMore.tsx",
+      "exports": [
+        "ShowMore"
+      ],
+      "availableAtRoot": [
+        "ShowMore"
+      ],
+      "missingAtRoot": [],
+      "imports": []
+    },
+    {
+      "file": "src/components/kit/SiteFooter.tsx",
+      "exports": [
+        "SiteFooter",
+        "SiteFooterColumn",
+        "SiteFooterGroup",
+        "siteFooterLinkClass",
+        "SiteFooterLink",
+        "SiteFooterIcons"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "SiteFooter",
+        "SiteFooterColumn",
+        "SiteFooterGroup",
+        "siteFooterLinkClass",
+        "SiteFooterLink",
+        "SiteFooterIcons"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/SiteHeader.tsx",
+      "exports": [
+        "SiteHeader",
+        "SiteNav",
+        "siteNavWordClass",
+        "SiteNavButton",
+        "SiteNavItem",
+        "SiteSpacer",
+        "SiteSearch",
+        "SiteEnd",
+        "SiteWide",
+        "SiteSignIn",
+        "SiteMenuButton"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "SiteHeader",
+        "SiteNav",
+        "siteNavWordClass",
+        "SiteNavButton",
+        "SiteNavItem",
+        "SiteSpacer",
+        "SiteSearch",
+        "SiteEnd",
+        "SiteWide",
+        "SiteSignIn",
+        "SiteMenuButton"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/Sparkline.tsx",
+      "exports": [
+        "Sparkline"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Sparkline"
+      ],
+      "imports": []
+    },
+    {
+      "file": "src/components/kit/States.tsx",
+      "exports": [
+        "EmptyState",
+        "ToneIcon",
+        "Note",
+        "Skeleton",
+        "SkeletonText"
+      ],
+      "availableAtRoot": [
+        "EmptyState",
+        "ToneIcon",
+        "Note",
+        "Skeleton",
+        "SkeletonText"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/Stats.tsx",
+      "exports": [
+        "StatGrid",
+        "StatTile"
+      ],
+      "availableAtRoot": [
+        "StatGrid",
+        "StatTile"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/StatusNotice.tsx",
+      "exports": [
+        "StatusNotice"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "StatusNotice"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/StatusPill.tsx",
+      "exports": [
+        "StatusPill",
+        "CountBadge"
+      ],
+      "availableAtRoot": [
+        "StatusPill",
+        "CountBadge"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "react-router-dom"
+      ]
+    },
+    {
+      "file": "src/components/kit/StatusTag.tsx",
+      "exports": [
+        "StatusTag"
+      ],
+      "availableAtRoot": [
+        "StatusTag"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/StepField.tsx",
+      "exports": [
+        "StepField"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "StepField"
+      ],
+      "imports": [
+        "react",
+        "./Button"
+      ]
+    },
+    {
+      "file": "src/components/kit/StepList.tsx",
+      "exports": [
+        "StepList"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "StepList"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/StoreButtons.tsx",
+      "exports": [
+        "StoreButtons"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "StoreButtons"
+      ],
+      "imports": []
+    },
+    {
+      "file": "src/components/kit/StoryStepper.tsx",
+      "exports": [
+        "StoryStepper"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "StoryStepper"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/SummaryFigure.tsx",
+      "exports": [
+        "SummaryFigure",
+        "HeadlineFigure",
+        "FigureChip"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "SummaryFigure",
+        "HeadlineFigure",
+        "FigureChip"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/Switch.tsx",
+      "exports": [
+        "Switch"
+      ],
+      "availableAtRoot": [
+        "Switch"
+      ],
+      "missingAtRoot": [],
+      "imports": []
+    },
+    {
+      "file": "src/components/kit/SymbolBlock.tsx",
+      "exports": [
+        "QuoteChange",
+        "SymbolBlock"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "QuoteChange",
+        "SymbolBlock"
+      ],
+      "imports": [
+        "react",
+        "./format",
+        "./States"
+      ]
+    },
+    {
+      "file": "src/components/kit/Table.tsx",
+      "exports": [
+        "DataTable",
+        "DataListRow",
+        "Cell"
+      ],
+      "availableAtRoot": [
+        "DataTable",
+        "DataListRow",
+        "Cell"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/Tabs.tsx",
+      "exports": [
+        "Tabs",
+        "PanelTabs"
+      ],
+      "availableAtRoot": [
+        "Tabs",
+        "PanelTabs"
+      ],
+      "missingAtRoot": [],
+      "imports": [
+        "./format",
+        "./Controls"
+      ]
+    },
+    {
+      "file": "src/components/kit/TargetChart.tsx",
+      "exports": [
+        "targetChartRange",
+        "TargetChart"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "targetChartRange",
+        "TargetChart"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/TemplateTabs.tsx",
+      "exports": [
+        "TemplateTabs"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "TemplateTabs"
+      ],
+      "imports": [
+        "react",
+        "./Controls"
+      ]
+    },
+    {
+      "file": "src/components/kit/TmsAddress.tsx",
+      "exports": [
+        "splitTmsHost",
+        "TmsAddress"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "splitTmsHost",
+        "TmsAddress"
+      ],
+      "imports": [
+        "react",
+        "./Button"
+      ]
+    },
+    {
+      "file": "src/components/kit/TmsAnatomy.tsx",
+      "exports": [
+        "TmsAnatomy"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "TmsAnatomy"
+      ],
+      "imports": [
+        "react",
+        "./TmsAddress"
+      ]
+    },
+    {
+      "file": "src/components/kit/ToolMenu.tsx",
+      "exports": [
+        "ToolMenu",
+        "ToolMenuTitle",
+        "ToolMenuItem",
+        "ToolMenuNote"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "ToolMenu",
+        "ToolMenuTitle",
+        "ToolMenuItem",
+        "ToolMenuNote"
+      ],
+      "imports": [
+        "react",
+        "./Popover",
+        "./WorkspaceToolbar"
+      ]
+    },
+    {
+      "file": "src/components/kit/TrendChart.tsx",
+      "exports": [
+        "TrendChart"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "TrendChart"
+      ],
+      "imports": [
+        "react",
+        "./chartScale"
+      ]
+    },
+    {
+      "file": "src/components/kit/TwoLineChart.tsx",
+      "exports": [
+        "TwoLineChart"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "TwoLineChart"
+      ],
+      "imports": [
+        "react",
+        "../charts/ChartInspect",
+        "../charts/geometry"
+      ]
+    },
+    {
+      "file": "src/components/kit/WatchSummary.tsx",
+      "exports": [
+        "WatchSummary",
+        "WatchBreadth",
+        "WatchSummarySection",
+        "WatchSummaryRow",
+        "WatchSummaryTiles",
+        "WatchSummaryTile"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "WatchSummary",
+        "WatchBreadth",
+        "WatchSummarySection",
+        "WatchSummaryRow",
+        "WatchSummaryTiles",
+        "WatchSummaryTile"
+      ],
+      "imports": [
+        "react",
+        "./CardLink"
+      ]
+    },
+    {
+      "file": "src/components/kit/WatchlistRow.tsx",
+      "exports": [
+        "WatchlistList",
+        "WatchlistHead",
+        "WatchlistRow",
+        "WatchlistEmpty",
+        "WatchlistWords",
+        "WatchlistRowSkeleton"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "WatchlistList",
+        "WatchlistHead",
+        "WatchlistRow",
+        "WatchlistEmpty",
+        "WatchlistWords",
+        "WatchlistRowSkeleton"
+      ],
+      "imports": [
+        "react",
+        "./States",
+        "./Sparkline"
+      ]
+    },
+    {
+      "file": "src/components/kit/WorkspacePanel.tsx",
+      "exports": [
+        "WorkspacePanel",
+        "PanelSection",
+        "PanelSteps"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "WorkspacePanel",
+        "PanelSection",
+        "PanelSteps"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/kit/WorkspaceToolbar.tsx",
+      "exports": [
+        "WorkspaceToolbar",
+        "ToolbarButton"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "WorkspaceToolbar",
+        "ToolbarButton"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/layout/AccountMenu.tsx",
+      "exports": [
+        "AccountMenu"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "AccountMenu"
+      ],
+      "imports": [
+        "react",
+        "../../lib/useHydrated",
+        "./SignInLink",
+        "./SignedInPending"
+      ]
+    },
+    {
+      "file": "src/components/layout/AccountMenuSession.tsx",
+      "exports": [],
+      "availableAtRoot": [],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "../../lib/hosts",
+        "../../lib/session",
+        "./PublicTabBar",
+        "./SignedInPending",
+        "./SignInLink",
+        "./siteLang"
+      ]
+    },
+    {
+      "file": "src/components/layout/Footer.tsx",
+      "exports": [
+        "Footer"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Footer"
+      ],
+      "imports": [
+        "react-router-dom",
+        "@punji/ui/site-footer",
+        "../kit/LogoWordmark",
+        "../StoreButtons",
+        "../../lib/hosts",
+        "../../lib/ledgerRoutes",
+        "../../lib/session",
+        "../ui/ThemeToggle",
+        "./siteLang"
+      ]
+    },
+    {
+      "file": "src/components/layout/NavPanels.tsx",
+      "exports": [
+        "DesktopPanel",
+        "PhoneMenuBody"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "DesktopPanel",
+        "PhoneMenuBody"
+      ],
+      "imports": [
+        "react-router-dom",
+        "@punji/ui/button",
+        "@punji/ui/disclosure",
+        "@punji/ui/menu-panel",
+        "@punji/ui/phone-menu",
+        "react",
+        "../../lib/hosts",
+        "../StoreButtons",
+        "../ui/NavIcon",
+        "./navLinks",
+        "./SiteSwitches",
+        "./siteLang"
+      ]
+    },
+    {
+      "file": "src/components/layout/Navbar.tsx",
+      "exports": [
+        "Navbar"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Navbar"
+      ],
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui/site-header",
+        "../../lib/hosts",
+        "../../lib/translated",
+        "../../lib/useHydrated",
+        "../kit/LogoWordmark",
+        "./AccountMenu",
+        "./barMarket",
+        "./navLinks",
+        "./siteLang"
+      ]
+    },
+    {
+      "file": "src/components/layout/PageLoader.tsx",
+      "exports": [
+        "PageLoader"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "PageLoader"
+      ],
+      "imports": []
+    },
+    {
+      "file": "src/components/layout/PublicTabBar.tsx",
+      "exports": [],
+      "availableAtRoot": [],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "react-dom",
+        "react-router-dom",
+        "../../lib/hosts",
+        "../../lib/session",
+        "../../theme/ThemeContext",
+        "../kit/AppTabBar",
+        "../kit/tabRoutes",
+        "./siteLang"
+      ]
+    },
+    {
+      "file": "src/components/layout/RouteAnnouncer.tsx",
+      "exports": [
+        "RouteAnnouncer"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "RouteAnnouncer"
+      ],
+      "imports": [
+        "react",
+        "react-router-dom"
+      ]
+    },
+    {
+      "file": "src/components/layout/SearchPalette.tsx",
+      "exports": [],
+      "availableAtRoot": [],
+      "missingAtRoot": [],
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../ui/NavIcon",
+        "./navLinks"
+      ]
+    },
+    {
+      "file": "src/components/layout/Section.tsx",
+      "exports": [
+        "Section",
+        "Container"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Section",
+        "Container"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/layout/SignInLink.tsx",
+      "exports": [
+        "SignInLink",
+        "SignedOut"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "SignInLink",
+        "SignedOut"
+      ],
+      "imports": [
+        "@punji/ui/site-header",
+        "../../lib/hosts"
+      ]
+    },
+    {
+      "file": "src/components/layout/SignedInPending.tsx",
+      "exports": [
+        "SignedInPending"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "SignedInPending"
+      ],
+      "imports": [
+        "../../lib/hosts"
+      ]
+    },
+    {
+      "file": "src/components/layout/SiteSwitches.tsx",
+      "exports": [
+        "LangSwitch",
+        "ThemeSwitch"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "LangSwitch",
+        "ThemeSwitch"
+      ],
+      "imports": [
+        "react",
+        "@punji/ui/bar-switch",
+        "../../lib/useHydrated",
+        "../../theme/ThemeContext"
+      ]
+    },
+    {
+      "file": "src/components/layout/SkipLink.tsx",
+      "exports": [
+        "SkipLink"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "SkipLink"
+      ],
+      "imports": []
+    },
+    {
+      "file": "src/components/layout/ToolPage.tsx",
+      "exports": [
+        "ToolPage"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "ToolPage"
+      ],
+      "imports": [
+        "react",
+        "../Breadcrumb",
+        "../ui/CtaPanel",
+        "../ui/FaqList",
+        "../ui/Ledger",
+        "../ui/LinkIndex",
+        "../ui/ScreenCard",
+        "./Section",
+        "../ui/SectionIntro",
+        "../Seo",
+        "../StoreButtons",
+        "../../hooks/useScrollReveal"
+      ]
+    },
+    {
+      "file": "src/components/layout/noticeStrip.tsx",
+      "exports": [
+        "showNotice"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "showNotice"
+      ],
+      "imports": [
+        "react",
+        "react-dom/client",
+        "@punji/ui/status-notice",
+        "../../lib/statusNotice"
+      ]
+    },
+    {
+      "file": "src/components/learn/LatestFromLearn.tsx",
+      "exports": [
+        "LatestFromLearn"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "LatestFromLearn"
+      ],
+      "imports": [
+        "react-router-dom",
+        "../layout/Section",
+        "../ui/SectionIntro",
+        "../../lib/learnIndex",
+        "../../lib/format"
+      ]
+    },
+    {
+      "file": "src/components/learn/Sources.tsx",
+      "exports": [
+        "Sources"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Sources"
+      ],
+      "imports": [
+        "../../lib/learnSources"
+      ]
+    },
+    {
+      "file": "src/components/learn/figures.tsx",
+      "exports": [
+        "KeyFacts",
+        "Timeline",
+        "RateShift",
+        "Callout",
+        "RoleCards",
+        "StepFlow"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "KeyFacts",
+        "Timeline",
+        "RateShift",
+        "Callout",
+        "RoleCards",
+        "StepFlow"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/market/CostLedger.tsx",
+      "exports": [
+        "CostLedger"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "CostLedger"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/market/NepseToday.tsx",
+      "exports": [
+        "NepseToday"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "NepseToday"
+      ],
+      "imports": [
+        "react",
+        "../data/Delta",
+        "../data/DataError",
+        "../data/MarketStatusChip",
+        "../data/Skeleton",
+        "../../hooks/useApiResource",
+        "../../lib/format",
+        "../../lib/marketData"
+      ]
+    },
+    {
+      "file": "src/components/market/RangeMark.tsx",
+      "exports": [
+        "RangeMark"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "RangeMark"
+      ],
+      "imports": [
+        "../../lib/market"
+      ]
+    },
+    {
+      "file": "src/components/market/RankTable.tsx",
+      "exports": [
+        "RankTable"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "RankTable"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/market/SectorInside.tsx",
+      "exports": [
+        "SectorInside"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "SectorInside"
+      ],
+      "imports": [
+        "react",
+        "@punji/ui/button",
+        "@punji/ui/controls",
+        "../../contracts/routeCapabilities",
+        "../../contracts/seasonality",
+        "../../lib/market",
+        "../../lib/seasonality",
+        "../../lib/sectorInside",
+        "../../lib/sectionState",
+        "../../lib/session",
+        "../../lib/useHydrated"
+      ]
+    },
+    {
+      "file": "src/components/market/StatCharts.tsx",
+      "exports": [
+        "Lines",
+        "SplitBars"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Lines",
+        "SplitBars"
+      ],
+      "imports": [
+        "../charts/ChartInspect",
+        "../../lib/market"
+      ]
+    },
+    {
+      "file": "src/components/product/Product.tsx",
+      "exports": [
+        "ProductPage",
+        "IconChip",
+        "Go",
+        "Actions",
+        "Hero",
+        "Section",
+        "Head",
+        "Bento",
+        "Feature",
+        "Facts",
+        "Proof",
+        "Stats",
+        "Phone",
+        "Phones",
+        "BrowserFrame",
+        "WebShot",
+        "WebCrop",
+        "Faq",
+        "Close"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "ProductPage",
+        "IconChip",
+        "Go",
+        "Actions",
+        "Hero",
+        "Section",
+        "Head",
+        "Bento",
+        "Feature",
+        "Facts",
+        "Proof",
+        "Stats",
+        "Phone",
+        "Phones",
+        "BrowserFrame",
+        "WebShot",
+        "WebCrop",
+        "Faq",
+        "Close"
+      ],
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../Breadcrumb",
+        "../StoreButtons",
+        "../ui/NavIcon",
+        "../../lib/hosts",
+        "./content"
+      ]
+    },
+    {
+      "file": "src/components/screener-me/FilterBar.tsx",
+      "exports": [
+        "FilterBar"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "FilterBar"
+      ],
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/filter-menu",
+        "@punji/ui/histogram",
+        "@punji/ui/range-editor",
+        "../dividends/labelsNe",
+        "./link",
+        "./logic",
+        "./text",
+        "../../contracts/screener"
+      ]
+    },
+    {
+      "file": "src/components/screener-me/Results.tsx",
+      "exports": [
+        "Results"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Results"
+      ],
+      "imports": [
+        "react",
+        "../../contracts/screener",
+        "../../lib/hosts",
+        "@punji/ui",
+        "@punji/ui/card-link",
+        "@punji/ui/list-filter",
+        "@punji/ui/meter",
+        "./logic",
+        "./text"
+      ]
+    },
+    {
+      "file": "src/components/statements/StatementTable.tsx",
+      "exports": [
+        "StatementTable"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "StatementTable"
+      ],
+      "imports": [
+        "react",
+        "../../lib/statements",
+        "./TermDetail"
+      ]
+    },
+    {
+      "file": "src/components/statements/TermChart.tsx",
+      "exports": [
+        "TermChart"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "TermChart"
+      ],
+      "imports": [
+        "react",
+        "../charts/LineSvg",
+        "../../lib/statements"
+      ]
+    },
+    {
+      "file": "src/components/statements/TermDetail.tsx",
+      "exports": [
+        "TERM_PANEL_ID",
+        "TermPanel",
+        "TermSheet"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "TERM_PANEL_ID",
+        "TermPanel",
+        "TermSheet"
+      ],
+      "imports": [
+        "react",
+        "react-dom",
+        "react-router-dom",
+        "../../lib/statements"
+      ]
+    },
+    {
+      "file": "src/components/statements/TermGate.tsx",
+      "exports": [
+        "useTermGate"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "useTermGate"
+      ],
+      "imports": [
+        "react",
+        "../gate/links",
+        "../../lib/hosts",
+        "../../lib/ledgerRoutes",
+        "../../lib/session",
+        "../../lib/statements",
+        "../../lib/useHydrated",
+        "../../contracts/routeCapabilities"
+      ]
+    },
+    {
+      "file": "src/components/stocks/meters.tsx",
+      "exports": [
+        "RangeMeter",
+        "SplitBar",
+        "FlowBar",
+        "HiLoBar",
+        "MiniSpark"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "RangeMeter",
+        "SplitBar",
+        "FlowBar",
+        "HiLoBar",
+        "MiniSpark"
+      ],
+      "imports": [
+        "../charts/ChartInspect",
+        "../../lib/stocks",
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/ui/Accordion.tsx",
+      "exports": [
+        "Accordion"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Accordion"
+      ],
+      "imports": [
+        "react",
+        "../../analytics/posthog"
+      ]
+    },
+    {
+      "file": "src/components/ui/AnnotatedShot.tsx",
+      "exports": [
+        "AnnotatedShot"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "AnnotatedShot"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/ui/Badge.tsx",
+      "exports": [
+        "Badge"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Badge"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/ui/CodeBlock.tsx",
+      "exports": [
+        "CodeBlock"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "CodeBlock"
+      ],
+      "imports": []
+    },
+    {
+      "file": "src/components/ui/CtaPanel.tsx",
+      "exports": [
+        "CtaPanel"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "CtaPanel"
+      ],
+      "imports": [
+        "../StoreButtons"
+      ]
+    },
+    {
+      "file": "src/components/ui/FaqList.tsx",
+      "exports": [
+        "FaqList",
+        "FaqHead"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "FaqList",
+        "FaqHead"
+      ],
+      "imports": [
+        "react",
+        "./Accordion"
+      ]
+    },
+    {
+      "file": "src/components/ui/Ledger.tsx",
+      "exports": [
+        "Ledger"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Ledger"
+      ],
+      "imports": [
+        "react",
+        "./RichText"
+      ]
+    },
+    {
+      "file": "src/components/ui/LinkIndex.tsx",
+      "exports": [
+        "LinkIndex"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "LinkIndex"
+      ],
+      "imports": [
+        "react-router-dom"
+      ]
+    },
+    {
+      "file": "src/components/ui/NavIcon.tsx",
+      "exports": [
+        "NavIcon"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "NavIcon"
+      ],
+      "imports": []
+    },
+    {
+      "file": "src/components/ui/RichText.tsx",
+      "exports": [
+        "InlineCode",
+        "RichText"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "InlineCode",
+        "RichText"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/ui/ScreenCard.tsx",
+      "exports": [
+        "ScreenCard"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "ScreenCard"
+      ],
+      "imports": [
+        "react",
+        "../data/Illustrative"
+      ]
+    },
+    {
+      "file": "src/components/ui/SectionIntro.tsx",
+      "exports": [
+        "SectionIntro"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "SectionIntro"
+      ],
+      "imports": []
+    },
+    {
+      "file": "src/components/ui/StatCard.tsx",
+      "exports": [
+        "StatCard"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "StatCard"
+      ],
+      "imports": []
+    },
+    {
+      "file": "src/components/ui/TableScroll.tsx",
+      "exports": [
+        "TableScroll"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "TableScroll"
+      ],
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/components/ui/ThemeToggle.tsx",
+      "exports": [
+        "ThemeToggle"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "ThemeToggle"
+      ],
+      "imports": [
+        "../../theme/ThemeContext",
+        "../../lib/useHydrated"
+      ]
+    },
+    {
+      "file": "src/components/ui/Toc.tsx",
+      "exports": [
+        "Toc"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "Toc"
+      ],
+      "imports": [
+        "../../lib/toc"
+      ]
+    },
+    {
+      "file": "src/components/ui/icons.tsx",
+      "exports": [
+        "IconChartLine",
+        "IconWallet",
+        "IconBell",
+        "IconShieldLock",
+        "IconReceipt",
+        "IconUsers",
+        "IconFunnel",
+        "IconRows",
+        "IconTrophy",
+        "IconTicket",
+        "IconCalculator",
+        "IconScales",
+        "IconGrid",
+        "IconGlobe",
+        "IconDeviceLock",
+        "IconSparkle",
+        "IconClock",
+        "IconCheck",
+        "LucideHandCoins",
+        "LucideShieldCheck",
+        "LucideTrendingUp",
+        "LucideChartColumnIncreasing",
+        "LucideUmbrella",
+        "LucidePercent",
+        "LucideLandmark",
+        "LucideMessageSquareText",
+        "LucideScale",
+        "LucideTable",
+        "LucideCircleCheck",
+        "LucideTriangleAlert",
+        "LucideOctagonX",
+        "LucideChevronRight",
+        "LucideInfo",
+        "LucideX",
+        "LucideWallet",
+        "LucideLink",
+        "LucideSparkles",
+        "LucideCheck",
+        "LucideEye",
+        "LucideStar",
+        "LucideBell",
+        "LucideSearch",
+        "LucideFileText",
+        "LucideDroplet",
+        "LucideFactory",
+        "LucideShield",
+        "LucideRefreshCw",
+        "LucideLock",
+        "LucideBriefcase",
+        "LucideCalendar"
+      ],
+      "availableAtRoot": [],
+      "missingAtRoot": [
+        "IconChartLine",
+        "IconWallet",
+        "IconBell",
+        "IconShieldLock",
+        "IconReceipt",
+        "IconUsers",
+        "IconFunnel",
+        "IconRows",
+        "IconTrophy",
+        "IconTicket",
+        "IconCalculator",
+        "IconScales",
+        "IconGrid",
+        "IconGlobe",
+        "IconDeviceLock",
+        "IconSparkle",
+        "IconClock",
+        "IconCheck",
+        "LucideHandCoins",
+        "LucideShieldCheck",
+        "LucideTrendingUp",
+        "LucideChartColumnIncreasing",
+        "LucideUmbrella",
+        "LucidePercent",
+        "LucideLandmark",
+        "LucideMessageSquareText",
+        "LucideScale",
+        "LucideTable",
+        "LucideCircleCheck",
+        "LucideTriangleAlert",
+        "LucideOctagonX",
+        "LucideChevronRight",
+        "LucideInfo",
+        "LucideX",
+        "LucideWallet",
+        "LucideLink",
+        "LucideSparkles",
+        "LucideCheck",
+        "LucideEye",
+        "LucideStar",
+        "LucideBell",
+        "LucideSearch",
+        "LucideFileText",
+        "LucideDroplet",
+        "LucideFactory",
+        "LucideShield",
+        "LucideRefreshCw",
+        "LucideLock",
+        "LucideBriefcase",
+        "LucideCalendar"
+      ],
+      "imports": [
+        "react"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "file": "src/design/App.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui",
+        "@punji/ui/command-palette",
+        "@punji/ui/info-tip",
+        "@punji/ui/logo",
+        "@punji/ui/nav-icon",
+        "../me/i18n",
+        "../theme/ThemeContext",
+        "./registry",
+        "./GitHubMark",
+        "./version",
+        "./searchIndex",
+        "./site",
+        "@punji/ui/card-link"
+      ]
+    },
+    {
+      "file": "src/design/ChangelogParts.tsx",
+      "imports": [
+        "@punji/ui",
+        "./changelog",
+        "./parts"
+      ]
+    },
+    {
+      "file": "src/design/GitHubMark.tsx",
+      "imports": []
+    },
+    {
+      "file": "src/design/gallery.tsx",
+      "imports": [
+        "react",
+        "@punji/ui"
+      ]
+    },
+    {
+      "file": "src/design/main.tsx",
+      "imports": [
+        "react",
+        "react-dom/client",
+        "react-router-dom",
+        "./App",
+        "@punji/ui",
+        "../me/i18n",
+        "../theme/ThemeContext"
+      ]
+    },
+    {
+      "file": "src/design/pages/Foundations.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "../contrast",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/Landing.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui",
+        "../gallery",
+        "../registry",
+        "../sizes.generated.json",
+        "../GitHubMark",
+        "../site",
+        "@punji/ui/card-link"
+      ]
+    },
+    {
+      "file": "src/design/pages/Patterns.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "../../components/charts/LineSvg",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/account.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/card",
+        "@punji/ui/avatar",
+        "@punji/ui/danger-confirm",
+        "@punji/ui/setting-icon",
+        "@punji/ui/setting-row",
+        "@punji/ui/status-tag",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/actions.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/info-tip",
+        "@punji/ui/nav-icon",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/alerts.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/menu-list",
+        "@punji/ui/row-menu",
+        "@punji/ui/alert-distance",
+        "@punji/ui/alert-target",
+        "@punji/ui/alert-form",
+        "@punji/ui/alert-panel",
+        "@punji/ui/alert-row",
+        "@punji/ui/alert-summary",
+        "@punji/ui/target-chart",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/bar-list.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "../parts",
+        "@punji/ui/bar-list"
+      ]
+    },
+    {
+      "file": "src/design/pages/bar.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/bar-button",
+        "@punji/ui/inbox-list",
+        "@punji/ui/inline-state",
+        "@punji/ui/market-mark",
+        "@punji/ui/market-mark-detail",
+        "@punji/ui/menu-list",
+        "@punji/ui/nav-icon",
+        "@punji/ui/notification-bell",
+        "@punji/ui/popover",
+        "@punji/ui/row-menu",
+        "@punji/ui/controls",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/blocks.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/bars",
+        "@punji/ui/checklist",
+        "@punji/ui/inline-state",
+        "@punji/ui/link-table",
+        "@punji/ui/person-tile",
+        "@punji/ui/progress-row",
+        "@punji/ui/sparkline",
+        "@punji/ui/trend-chart",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/brand.tsx",
+      "imports": [
+        "react",
+        "@punji/ui/logo",
+        "../parts",
+        "../site",
+        "@punji/ui/card-link"
+      ]
+    },
+    {
+      "file": "src/design/pages/brokers.tsx",
+      "imports": [
+        "@punji/ui/button",
+        "@punji/ui/broker-badge",
+        "@punji/ui/broker-lookup",
+        "@punji/ui/link-row",
+        "@punji/ui/locked-preview",
+        "@punji/ui/order-book",
+        "@punji/ui/tms-address",
+        "@punji/ui/tms-anatomy",
+        "@punji/ui",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/candle-chart.tsx",
+      "imports": [
+        "react",
+        "@punji/ui/candle-chart",
+        "@punji/ui",
+        "../parts",
+        "@punji/ui/candle-chart"
+      ]
+    },
+    {
+      "file": "src/design/pages/dataviz.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/action-notice",
+        "@punji/ui/breakdown",
+        "@punji/ui/flow-waterfall",
+        "@punji/ui/meter",
+        "@punji/ui/metric-tile",
+        "@punji/ui/option-tile",
+        "@punji/ui/retry-note",
+        "@punji/ui/private-amount",
+        "@punji/ui/pagination",
+        "@punji/ui/prompt-card",
+        "@punji/ui/sparkline",
+        "@punji/ui/step-list",
+        "@punji/ui/summary-figure",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/dataviz2.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/card-section",
+        "@punji/ui/column-chart",
+        "@punji/ui/contrast-card",
+        "@punji/ui/headline-list",
+        "@punji/ui/link-row",
+        "@punji/ui/meter",
+        "@punji/ui/two-line-chart",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/display.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "react-router-dom",
+        "@punji/ui/nav-icon",
+        "@punji/ui/card-link",
+        "@punji/ui/meter",
+        "../../contracts/seasonality",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/docs.tsx",
+      "imports": [
+        "react-router-dom",
+        "@punji/ui",
+        "../gallery",
+        "../parts",
+        "../registry",
+        "../site",
+        "@punji/ui/card-link",
+        "@punji/ui",
+        "@punji/ui/drawer"
+      ]
+    },
+    {
+      "file": "src/design/pages/feedback.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/status-notice",
+        "@punji/ui/floating-tooltip",
+        "@punji/ui/info-tip",
+        "@punji/ui/nav-icon",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/filters.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/filter-menu",
+        "@punji/ui/histogram",
+        "@punji/ui/preset-tile",
+        "@punji/ui/range-editor",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/home-parts.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/app-strip",
+        "@punji/ui/principle-list",
+        "@punji/ui/product-shot",
+        "@punji/ui/sale-estimate",
+        "@punji/ui/story-stepper",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/inputs.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/info-tip",
+        "@punji/ui/choice-group",
+        "@punji/ui/list-filter",
+        "@punji/ui/range-slider",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/levels.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/price-level-chart",
+        "@punji/ui/profile-rail",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/marketing.tsx",
+      "imports": [
+        "@punji/ui",
+        "@punji/ui/breadth-bar",
+        "@punji/ui/cta-band",
+        "@punji/ui/faq-section",
+        "@punji/ui/feature-card",
+        "@punji/ui/landing-section",
+        "@punji/ui/market-strip",
+        "@punji/ui/product-shot",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/overlays.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/command-palette",
+        "@punji/ui/drawer",
+        "@punji/ui/drawer-screen",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/report.tsx",
+      "imports": [
+        "@punji/ui/market-report",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/research.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/check-row",
+        "@punji/ui/floor-gauge",
+        "@punji/ui/health-summary",
+        "@punji/ui/quarter-bars",
+        "@punji/ui/quote-list",
+        "@punji/ui/security-title",
+        "../../components/ui/icons",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/rotation.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "../../lib/rotationView",
+        "../parts",
+        "@punji/ui/rotation-map",
+        "@punji/ui/group-counts",
+        "@punji/ui/group-pill",
+        "@punji/ui/phase-strip",
+        "@punji/ui/diverging-rows",
+        "@punji/ui/group-change-list",
+        "@punji/ui/returns-heat-table",
+        "@punji/ui/correlation-matrix"
+      ]
+    },
+    {
+      "file": "src/design/pages/scale.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/meter",
+        "@punji/ui/rating-change-row",
+        "@punji/ui/rating-chip",
+        "@punji/ui/rating-scale",
+        "@punji/ui/avatar",
+        "@punji/ui/danger-confirm",
+        "@punji/ui/setting-icon",
+        "@punji/ui/setting-row",
+        "@punji/ui/status-tag",
+        "../../components/ui/icons",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/seasonal.tsx",
+      "imports": [
+        "react",
+        "@punji/ui/fact-list",
+        "@punji/ui/period-history",
+        "@punji/ui/return-bars",
+        "@punji/ui/selectable-month-grid",
+        "../../contracts/seasonality",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/shell.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "../../me/desk/Skeleton",
+        "../../me/desk/DeskChrome",
+        "@punji/ui/bar-button",
+        "@punji/ui/market-mark",
+        "@punji/ui/nav-icon",
+        "@punji/ui/notification-bell",
+        "../../me/pages/shell/useBarMarket",
+        "../../me/pages/shell/Sidebar",
+        "../../me/pages/shell/sections",
+        "../../me/i18n",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/site.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/bar-button",
+        "@punji/ui/disclosure",
+        "@punji/ui/market-mark",
+        "@punji/ui/menu-panel",
+        "@punji/ui/nav-icon",
+        "@punji/ui/phone-menu",
+        "@punji/ui/site-header",
+        "@punji/ui/site-footer",
+        "@punji/ui/store-buttons",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/tools.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/caveat-list",
+        "@punji/ui/equity-chart",
+        "@punji/ui/forecast-note",
+        "@punji/ui/month-strip",
+        "@punji/ui/rule-sentence",
+        "@punji/ui/run-quota",
+        "@punji/ui/step-field",
+        "@punji/ui/template-tabs",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/utilities.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/alert-target",
+        "@punji/ui/compact",
+        "@punji/ui/company-name",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/watch.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/menu-list",
+        "@punji/ui/row-menu",
+        "@punji/ui/meter",
+        "@punji/ui/reorder-list",
+        "@punji/ui/watch-summary",
+        "@punji/ui/watchlist-row",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/pages/workspace.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/broker-days",
+        "@punji/ui/chart-strip",
+        "@punji/ui/key-stats",
+        "@punji/ui/mark-toggle-list",
+        "@punji/ui/tool-menu",
+        "@punji/ui/quote-hero",
+        "@punji/ui/symbol-block",
+        "@punji/ui/tabs",
+        "@punji/ui/workspace-panel",
+        "@punji/ui/workspace-toolbar",
+        "../parts"
+      ]
+    },
+    {
+      "file": "src/design/parts.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui",
+        "./formatCode",
+        "./registry",
+        "${mod}"
+      ]
+    },
+    {
+      "file": "src/me/pages/Alerts.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui",
+        "@punji/ui/drawer",
+        "@punji/ui/drawer-screen",
+        "@punji/ui/retry-note",
+        "@punji/ui/alert-summary",
+        "@punji/ui/alert-row",
+        "../../contracts/routeCapabilities",
+        "../../lib/session",
+        "../data/api",
+        "../data/types",
+        "../hooks",
+        "../i18n",
+        "../desk/DeskChrome",
+        "../desk/skeletonState",
+        "../desk/useMarketClosed",
+        "../desk/useNarrow",
+        "./alerts/AlertDetail",
+        "./alerts/AlertForm",
+        "./alerts/AlertList",
+        "./alerts/AlertPanel",
+        "./alerts/AlertSuggest",
+        "./alerts/alertLogic",
+        "./alerts/useAlertData",
+        "../data/useStableOrder",
+        "./portfolio/deskLogic",
+        "./portfolio/useDeskKeys"
+      ]
+    },
+    {
+      "file": "src/me/pages/Backtest.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/caveat-list",
+        "@punji/ui/equity-chart",
+        "@punji/ui/forecast-note",
+        "@punji/ui/locked-note",
+        "@punji/ui/metric-tile",
+        "@punji/ui/month-strip",
+        "@punji/ui/rule-sentence",
+        "@punji/ui/run-quota",
+        "@punji/ui/check-row",
+        "@punji/ui/step-field",
+        "@punji/ui/step-list",
+        "@punji/ui/summary-figure",
+        "@punji/ui/template-tabs",
+        "../../components/charts/ChartInspect",
+        "../../contracts/backtest",
+        "../../contracts/backtest",
+        "../../lib/session",
+        "../hooks",
+        "../i18n",
+        "./backtest/client",
+        "./backtest/format",
+        "./backtest/logic",
+        "./backtest/outcome",
+        "./backtest/text"
+      ]
+    },
+    {
+      "file": "src/me/pages/ChartWorkspace.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui",
+        "@punji/ui/chart-strip",
+        "@punji/ui/tabs",
+        "@punji/ui/workspace-panel",
+        "../../contracts/chartWorkspace",
+        "../../contracts/chartWorkspace",
+        "../../contracts/routeCapabilities",
+        "../../components/charts/tv/theme",
+        "../../lib/marketData",
+        "../../lib/sectionState",
+        "../../lib/session",
+        "../data/api",
+        "../data/livePrices",
+        "../data/types",
+        "../hooks",
+        "../i18n",
+        "./alerts/AlertForm",
+        "./shell/sections",
+        "./chart/chartApi",
+        "./chart/icons",
+        "./chart/layoutAdapter",
+        "./chart/lists",
+        "./chart/marks",
+        "./chart/prefs",
+        "./chart/SymbolSearch",
+        "./chart/tabs",
+        "./chart/targetText",
+        "./chart/Toolbar",
+        "./chart/WorkspaceChart",
+        "./chart/workspaceFeed",
+        "./chart/indexSlugs",
+        "./shell/useNepseIndex",
+        "../lib/portfolio",
+        "../../contracts/chartWorkspace",
+        "../../contracts/screener"
+      ]
+    },
+    {
+      "file": "src/me/pages/Dividends.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui",
+        "../../components/dividends/text",
+        "../../contracts/routeCapabilities",
+        "../../lib/session",
+        "../i18n",
+        "./fundamentals/fdUrl",
+        "./dividends/Company",
+        "./dividends/Home"
+      ]
+    },
+    {
+      "file": "src/me/pages/Feedback.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui",
+        "../data/types",
+        "../data/api",
+        "../i18n"
+      ]
+    },
+    {
+      "file": "src/me/pages/Fundamentals.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../../analytics/posthog",
+        "../../components/fundamentals/Board",
+        "../../components/fundamentals/States",
+        "../../components/fundamentals/access",
+        "../../components/fundamentals/fileLogic",
+        "../../components/fundamentals/logic",
+        "../../components/fundamentals/text",
+        "../../components/fundamentals/marks",
+        "../../components/fundamentals/visual",
+        "@punji/ui",
+        "@punji/ui/check-row",
+        "@punji/ui/security-title",
+        "@punji/ui/step-list",
+        "../../contracts/fundamentals",
+        "../../lib/session",
+        "../data/api",
+        "../data/livePrices",
+        "../data/useResource",
+        "../data/types",
+        "../desk/DeskChrome",
+        "../desk/marketMark",
+        "../desk/useMarketClosed",
+        "../desk/useNarrow",
+        "../hooks",
+        "../../lib/format",
+        "../i18n",
+        "../lib/fundRecent",
+        "./shell/cmdData",
+        "./shell/commandLogic",
+        "./fundamentals/fdUrl",
+        "./fundamentals/useNarrative",
+        "./stock/StockLink",
+        "../../contracts/routeCapabilities"
+      ]
+    },
+    {
+      "file": "src/me/pages/Home.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/inline-state",
+        "../i18n",
+        "../desk/DeskChrome",
+        "./portfolio/usePhone",
+        "./overview/useWide",
+        "./overview/Attention",
+        "./overview/Hero",
+        "./overview/Lists",
+        "./overview/NepseToday",
+        "./overview/overviewLogic",
+        "./overview/ovText",
+        "./overview/SetupGuide",
+        "./overview/useGuideHidden",
+        "./overview/useOverviewData",
+        "./overview/Held"
+      ]
+    },
+    {
+      "file": "src/me/pages/Login.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../../components/auth/SignInPanel",
+        "../../lib/hosts",
+        "../../lib/session",
+        "../data/types",
+        "../i18n",
+        "../lib/auth"
+      ]
+    },
+    {
+      "file": "src/me/pages/Portfolio.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../../analytics/posthog",
+        "@punji/ui",
+        "@punji/ui/tab-routes",
+        "../../config/stores",
+        "./stock/stockLogic",
+        "../../lib/session",
+        "../data/api",
+        "../data/types",
+        "../data/usePortfolio",
+        "../data/useResource",
+        "../data/useStableOrder",
+        "../i18n",
+        "../lib/portfolio",
+        "../lib/tracked",
+        "../desk/DeskChrome",
+        "../desk/Skeleton",
+        "../desk/skeletonState",
+        "../desk/useNarrow",
+        "../shared",
+        "./portfolio/DeskChart",
+        "./portfolio/AddKinds",
+        "./portfolio/addMath",
+        "./portfolio/DeskForms",
+        "./portfolio/overviewMath",
+        "./portfolio/DeskOverview",
+        "./portfolio/DeskTable",
+        "./portfolio/PendingNotice",
+        "./portfolio/DeskTransactions",
+        "./portfolio/HoldingBuys",
+        "./portfolio/HoldingMore",
+        "./portfolio/HoldingCard",
+        "./portfolio/MoneyCard",
+        "./portfolio/BottomCards",
+        "@punji/ui/drawer",
+        "@punji/ui/drawer-screen",
+        "@punji/ui/summary-figure",
+        "@punji/ui/prompt-card",
+        "@punji/ui/action-notice",
+        "@punji/ui/retry-note",
+        "@punji/ui/step-list",
+        "./portfolio/SaleReview",
+        "./portfolio/SubjectSwitcher",
+        "./portfolio/deskLogic",
+        "./portfolio/useDeskKeys",
+        "./portfolio/usePanelData",
+        "./portfolio/wholeRupees",
+        "../../contracts/routeCapabilities",
+        "../lib/privacy",
+        "../../lib/readerLang"
+      ]
+    },
+    {
+      "file": "src/me/pages/PortfolioAdd.tsx",
+      "imports": [
+        "react-router-dom",
+        "@punji/ui",
+        "../i18n",
+        "./portfolio/DeskForms"
+      ]
+    },
+    {
+      "file": "src/me/pages/PortfolioSell.tsx",
+      "imports": [
+        "react-router-dom",
+        "@punji/ui",
+        "../i18n",
+        "./portfolio/DeskForms"
+      ]
+    },
+    {
+      "file": "src/me/pages/PortfolioSymbol.tsx",
+      "imports": [
+        "react-router-dom",
+        "./shell/commandLogic"
+      ]
+    },
+    {
+      "file": "src/me/pages/PriceLevels.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui",
+        "@punji/ui/check-row",
+        "@punji/ui/drawer",
+        "@punji/ui/drawer-screen",
+        "@punji/ui/price-level-chart",
+        "@punji/ui/profile-rail",
+        "../../components/fundamentals/marks",
+        "../../contracts/stockPage",
+        "./shell/sections",
+        "../../lib/session",
+        "../data/useResource",
+        "../desk/marketMark",
+        "../hooks",
+        "../i18n",
+        "../data/api",
+        "../data/usePortfolio",
+        "./levels/api",
+        "./levels/logic",
+        "./levels/model",
+        "./levels/Panel",
+        "./levels/text"
+      ]
+    },
+    {
+      "file": "src/me/pages/Register.tsx",
+      "imports": [
+        "react-router-dom"
+      ]
+    },
+    {
+      "file": "src/me/pages/Screener.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../../components/screener-me/FilterBar",
+        "../../components/screener-me/Results",
+        "../../components/screener-me/link",
+        "../../components/screener-me/logic",
+        "../../components/screener-me/text",
+        "@punji/ui",
+        "@punji/ui/check-row",
+        "@punji/ui/preset-tile",
+        "@punji/ui/step-list",
+        "../../contracts/screener",
+        "../../lib/hosts",
+        "../../lib/session",
+        "../data/api",
+        "../data/useResource",
+        "../i18n"
+      ]
+    },
+    {
+      "file": "src/me/pages/Seasonality.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui",
+        "@punji/ui/check-row",
+        "@punji/ui/locked-note",
+        "@punji/ui/fact-list",
+        "@punji/ui/period-history",
+        "@punji/ui/return-bars",
+        "@punji/ui/security-title",
+        "@punji/ui/selectable-month-grid",
+        "@punji/ui/step-list",
+        "@punji/ui/summary-figure",
+        "../../components/fundamentals/visual",
+        "../../components/fundamentals/marks",
+        "../../contracts/routeCapabilities",
+        "../../contracts/seasonality",
+        "../../lib/format",
+        "../../lib/seasonality",
+        "../../lib/session",
+        "../data/api",
+        "../data/useResource",
+        "../hooks",
+        "../i18n",
+        "./fundamentals/fdUrl",
+        "./seasonal/logic",
+        "./seasonal/months"
+      ]
+    },
+    {
+      "file": "src/me/pages/Sector.tsx",
+      "imports": [
+        "react-router-dom",
+        "@punji/ui",
+        "../../components/fundamentals/logic",
+        "../../contracts/stockPage",
+        "../../lib/sectionState",
+        "../../lib/session",
+        "../data/api",
+        "../i18n",
+        "./stock/Card",
+        "./stock/icons",
+        "./stock/stockLogic",
+        "./stock/useSection"
+      ]
+    },
+    {
+      "file": "src/me/pages/Settings.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui",
+        "@punji/ui/card",
+        "@punji/ui/avatar",
+        "@punji/ui/danger-confirm",
+        "@punji/ui/locked-note",
+        "@punji/ui/retry-note",
+        "@punji/ui/setting-icon",
+        "@punji/ui/setting-row",
+        "@punji/ui/status-tag",
+        "../../contracts/routeCapabilities",
+        "../../lib/hosts",
+        "../../lib/sectionState",
+        "../../lib/session",
+        "../../theme/ThemeContext",
+        "../data/api",
+        "../data/types",
+        "../data/useResource",
+        "../i18n",
+        "../lib/tracked",
+        "../desk/DeskChrome",
+        "./settings/useDownloadCopy",
+        "./settings/exportCsv"
+      ]
+    },
+    {
+      "file": "src/me/pages/Signals.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui",
+        "@punji/ui/card-link",
+        "@punji/ui/check-row",
+        "@punji/ui/meter",
+        "@punji/ui/company-name",
+        "@punji/ui/metric-tile",
+        "@punji/ui/summary-figure",
+        "@punji/ui/rating-change-row",
+        "@punji/ui/rating-chip",
+        "@punji/ui/rating-scale",
+        "@punji/ui/setting-row",
+        "@punji/ui/step-list",
+        "../../contracts/technicalRatings",
+        "../../lib/hosts",
+        "../../lib/sectionState",
+        "../../lib/session",
+        "../data/api",
+        "../data/types",
+        "../hooks",
+        "../i18n",
+        "./shell/cmdData",
+        "./signals/api",
+        "./stock/ratingsText",
+        "./stock/icons",
+        "./portfolio/sectorColor",
+        "./stock/ratingLogic",
+        "./stock/stockLogic",
+        "./stock/useSection"
+      ]
+    },
+    {
+      "file": "src/me/pages/Stock.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui",
+        "../../analytics/posthog",
+        "../../contracts/dividends",
+        "../../contracts/fundamentals",
+        "../../contracts/stockPage",
+        "../../lib/sectionState",
+        "../../lib/session",
+        "../data/api",
+        "../data/livePrices",
+        "../data/types",
+        "../desk/useMarketClosed",
+        "../desk/useNarrow",
+        "../hooks",
+        "../i18n",
+        "./stock/Financials",
+        "./stock/Flow",
+        "./stock/Header",
+        "./stock/Health",
+        "./stock/Holdings",
+        "./stock/Info",
+        "./stock/StockChartSlot",
+        "./stock/StockSkeleton",
+        "./stock/Ratings",
+        "./stock/Technical",
+        "./stock/stockLogic",
+        "./stock/stockTypes",
+        "./stock/useSection"
+      ]
+    },
+    {
+      "file": "src/me/pages/Watchlist.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../../analytics/posthog",
+        "@punji/ui",
+        "./stock/StockLink",
+        "@punji/ui/locked-note",
+        "@punji/ui/drawer",
+        "@punji/ui/drawer-screen",
+        "@punji/ui/prompt-card",
+        "@punji/ui/watchlist-row",
+        "../../contracts/routeCapabilities",
+        "../../lib/session",
+        "../data/api",
+        "../data/types",
+        "../data/livePrices",
+        "../data/useResource",
+        "../data/useStableOrder",
+        "../hooks",
+        "../desk/DeskChrome",
+        "../desk/useMarketClosed",
+        "../desk/skeletonState",
+        "../desk/useNarrow",
+        "./portfolio/usePhone",
+        "./stock/stockLogic",
+        "./portfolio/AddKinds",
+        "./portfolio/addMath",
+        "../data/usePortfolio",
+        "./alerts/AlertForm",
+        "./portfolio/deskLogic",
+        "./watchlist/useWatchKeys",
+        "./watchlist/WatchDetail",
+        "./watchlist/WatchList",
+        "./watchlist/WatchOverview",
+        "./watchlist/WatchReorder",
+        "./watchlist/wlData",
+        "./watchlist/wlLogic",
+        "../i18n"
+      ]
+    },
+    {
+      "file": "src/me/pages/alerts/AlertChart.tsx",
+      "imports": [
+        "react",
+        "@punji/ui/target-chart",
+        "../../i18n",
+        "../../lib/portfolio",
+        "./alertLogic",
+        "./alertText",
+        "./useAlertData",
+        "../../desk/marketMark"
+      ]
+    },
+    {
+      "file": "src/me/pages/alerts/AlertDetail.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/alert-summary",
+        "@punji/ui/alert-row",
+        "@punji/ui/summary-figure",
+        "../../hooks",
+        "../../i18n",
+        "../../data/types",
+        "../stock/StockLink",
+        "./AlertChart",
+        "./alertLogic",
+        "./alertText",
+        "./useAlertData"
+      ]
+    },
+    {
+      "file": "src/me/pages/alerts/AlertForm.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui",
+        "@punji/ui/alert-form",
+        "@punji/ui/alert-panel",
+        "../../../analytics/posthog",
+        "../../../lib/session",
+        "../../data/api",
+        "../../data/types",
+        "../../hooks",
+        "../../i18n",
+        "./AlertChart",
+        "./alertLogic",
+        "../../desk/useMarketClosed",
+        "../../lib/portfolio",
+        "./alertText",
+        "./useAlertData"
+      ]
+    },
+    {
+      "file": "src/me/pages/alerts/AlertList.tsx",
+      "imports": [
+        "@punji/ui",
+        "@punji/ui/row-menu",
+        "@punji/ui/menu-list",
+        "@punji/ui/info-tip",
+        "@punji/ui/alert-row",
+        "../../hooks",
+        "../../i18n",
+        "../../data/types",
+        "./alertLogic",
+        "./alertText",
+        "./useAlertData"
+      ]
+    },
+    {
+      "file": "src/me/pages/alerts/AlertPanel.tsx",
+      "imports": [
+        "@punji/ui",
+        "../../desk/skeletonState",
+        "@punji/ui/alert-row",
+        "@punji/ui/alert-summary",
+        "../../data/useStableOrder",
+        "../../i18n",
+        "./alertLogic",
+        "./alertText",
+        "./useAlertData"
+      ]
+    },
+    {
+      "file": "src/me/pages/alerts/AlertSuggest.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/alert-summary",
+        "@punji/ui/alert-row",
+        "../../data/api",
+        "../../data/types",
+        "./alertLogic",
+        "../../data/useResource",
+        "../../hooks",
+        "./useAlertData",
+        "../../i18n",
+        "../../desk/skeletonState"
+      ]
+    },
+    {
+      "file": "src/me/pages/chart/ChartWorkspaceLink.tsx",
+      "imports": [
+        "react-router-dom",
+        "@punji/ui",
+        "../../i18n",
+        "./icons",
+        "./useChartWorkspaceHref"
+      ]
+    },
+    {
+      "file": "src/me/pages/chart/SymbolSearch.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "../../../contracts/chartWorkspace",
+        "../../hooks",
+        "../../i18n",
+        "./icons",
+        "./indexSlugs"
+      ]
+    },
+    {
+      "file": "src/me/pages/chart/Toolbar.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/mark-toggle-list",
+        "@punji/ui/tool-menu",
+        "@punji/ui/symbol-block",
+        "@punji/ui/workspace-toolbar",
+        "../../../contracts/chartWorkspace",
+        "../../hooks",
+        "../../i18n",
+        "./icons",
+        "./indexSlugs",
+        "./WorkspaceChart",
+        "./prefs"
+      ]
+    },
+    {
+      "file": "src/me/pages/chart/WorkspaceChart.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "../../../components/charts/tv/datafeed",
+        "../../../components/charts/tv/layoutStore",
+        "../../../components/charts/tv/library",
+        "../../../components/charts/tv/theme",
+        "../../../components/charts/tv/types",
+        "./indexSlugs",
+        "./layoutAdapter",
+        "./marks",
+        "./workspaceFeed",
+        "../../../components/charts/tv/feeds"
+      ]
+    },
+    {
+      "file": "src/me/pages/chart/icons.tsx",
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/me/pages/chart/tabs.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/locked-note",
+        "@punji/ui/card-link",
+        "@punji/ui/broker-days",
+        "@punji/ui/compact",
+        "@punji/ui/key-stats",
+        "@punji/ui/meter",
+        "@punji/ui/quote-hero",
+        "@punji/ui/retry-note",
+        "@punji/ui/workspace-panel",
+        "../../../contracts/chartWorkspace",
+        "../../../contracts/screener",
+        "../../../lib/brokers",
+        "../../../lib/format",
+        "../../data/types",
+        "../../hooks",
+        "../../i18n",
+        "../portfolio/sectorColor",
+        "../stock/StockLink",
+        "./chartApi",
+        "./lists",
+        "./targetText",
+        "./icons"
+      ]
+    },
+    {
+      "file": "src/me/pages/dividends/Company.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui",
+        "@punji/ui/card-section",
+        "../../../components/dividends/bookLogic",
+        "../../../components/dividends/text",
+        "../../../contracts/routeCapabilities",
+        "../../../lib/format",
+        "../../../lib/hosts",
+        "../../../lib/session",
+        "../../data/api",
+        "../../data/declarations",
+        "../../data/livePrices",
+        "../../data/useResource",
+        "../../hooks",
+        "./bookView",
+        "./parts",
+        "./format"
+      ]
+    },
+    {
+      "file": "src/me/pages/dividends/Home.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui",
+        "@punji/ui/step-list",
+        "@punji/ui/card-section",
+        "@punji/ui/contrast-card",
+        "@punji/ui/link-row",
+        "@punji/ui/list-filter",
+        "../../../components/dividends/bookLogic",
+        "../../../components/dividends/text",
+        "../../../contracts/finance/dividendBook",
+        "../../../contracts/routeCapabilities",
+        "../../../lib/format",
+        "../../../lib/session",
+        "../../data/api",
+        "../../data/declarations",
+        "../../data/useResource",
+        "../../hooks",
+        "./bookView",
+        "./parts",
+        "./format"
+      ]
+    },
+    {
+      "file": "src/me/pages/dividends/parts.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/card-section",
+        "@punji/ui/column-chart",
+        "@punji/ui/compact",
+        "@punji/ui/contrast-card",
+        "@punji/ui/locked-note",
+        "@punji/ui/meter",
+        "@punji/ui/two-line-chart",
+        "../../../contracts/dividends",
+        "../../../contracts/finance/dividendBook",
+        "../../../components/dividends/bookLogic",
+        "../../../components/dividends/text",
+        "../portfolio/usePhone",
+        "./format",
+        "./bookView",
+        "../../../lib/readerLang"
+      ]
+    },
+    {
+      "file": "src/me/pages/levels/Panel.tsx",
+      "imports": [
+        "@punji/ui",
+        "@punji/ui/fact-list",
+        "@punji/ui/key-stats",
+        "@punji/ui/summary-figure",
+        "@punji/ui/meter",
+        "../../../contracts/stockPage",
+        "../../data/useResource",
+        "./logic",
+        "./model",
+        "./text"
+      ]
+    },
+    {
+      "file": "src/me/pages/overview/Attention.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui",
+        "@punji/ui/retry-note",
+        "@punji/ui/card-link",
+        "@punji/ui/inline-state",
+        "@punji/ui/progress-row",
+        "../../../contracts/webOverview",
+        "../../i18n",
+        "../../lib/portfolio",
+        "./overviewLogic",
+        "./ovText",
+        "../../desk/skeletonState",
+        "./useOverviewData",
+        "../portfolio/PendingNotice"
+      ]
+    },
+    {
+      "file": "src/me/pages/overview/Held.tsx",
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/me/pages/overview/Hero.tsx",
+      "imports": [
+        "react-router-dom",
+        "@punji/ui",
+        "@punji/ui/inline-state",
+        "@punji/ui/metric-tile",
+        "@punji/ui/person-tile",
+        "@punji/ui/sparkline",
+        "@punji/ui/bars",
+        "@punji/ui/summary-figure",
+        "@punji/ui/trend-chart",
+        "@punji/ui/compact",
+        "../../i18n",
+        "../../lib/privacy",
+        "../portfolio/overviewMath",
+        "../../lib/portfolio",
+        "../portfolio/wholeRupees",
+        "./overviewLogic",
+        "./ovText",
+        "./useOverviewData",
+        "./Attention",
+        "../../../contracts/webOverview"
+      ]
+    },
+    {
+      "file": "src/me/pages/overview/Lists.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/bars",
+        "@punji/ui/card-link",
+        "@punji/ui/retry-note",
+        "@punji/ui/inline-state",
+        "@punji/ui/link-table",
+        "@punji/ui/sparkline",
+        "../../../lib/hosts",
+        "../../i18n",
+        "../../lib/portfolio",
+        "./overviewLogic",
+        "./ovText",
+        "../../lib/privacy",
+        "./useOverviewData",
+        "../../desk/skeletonState",
+        "./useFitRows"
+      ]
+    },
+    {
+      "file": "src/me/pages/overview/NepseToday.tsx",
+      "imports": [
+        "@punji/ui",
+        "@punji/ui/card-link",
+        "@punji/ui/retry-note",
+        "@punji/ui/inline-state",
+        "@punji/ui/check-row",
+        "@punji/ui/meter",
+        "@punji/ui/metric-tile",
+        "@punji/ui/compact",
+        "../../../lib/format",
+        "@punji/ui/bars",
+        "@punji/ui/trend-chart",
+        "../../../lib/marketData",
+        "../../../lib/hosts",
+        "../../i18n",
+        "./overviewLogic",
+        "./ovText",
+        "./overviewLogic",
+        "./useOverviewData"
+      ]
+    },
+    {
+      "file": "src/me/pages/overview/SetupGuide.tsx",
+      "imports": [
+        "@punji/ui",
+        "@punji/ui/checklist",
+        "@punji/ui/inline-state",
+        "@punji/ui/prompt-card",
+        "../../../lib/hosts",
+        "../../i18n",
+        "./overviewLogic"
+      ]
+    },
+    {
+      "file": "src/me/pages/portfolio/AddKinds.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/drawer-screen",
+        "@punji/ui/breakdown",
+        "@punji/ui/option-tile",
+        "../../../analytics/posthog",
+        "../../../lib/session",
+        "../../data/api",
+        "../../i18n",
+        "../../lib/portfolio",
+        "../../data/types",
+        "./addMath",
+        "./DeskForms",
+        "./deskLogic",
+        "./addMath",
+        "./addMath",
+        "../../../lib/readerLang"
+      ]
+    },
+    {
+      "file": "src/me/pages/portfolio/BottomCards.tsx",
+      "imports": [
+        "@punji/ui",
+        "@punji/ui/info-tip",
+        "@punji/ui/retry-note",
+        "../../desk/Skeleton",
+        "@punji/ui/flow-waterfall",
+        "../../../contracts/finance/fees",
+        "../../i18n",
+        "../../lib/portfolio",
+        "./Money",
+        "../../lib/privacy",
+        "./overviewMath",
+        "./usePanelData"
+      ]
+    },
+    {
+      "file": "src/me/pages/portfolio/DeskChart.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../../../components/charts/geometry",
+        "@punji/ui",
+        "@punji/ui/info-tip",
+        "@punji/ui/compact",
+        "@punji/ui/chart-scale",
+        "../../lib/privacy",
+        "../../../lib/format",
+        "../../data/api",
+        "../../data/types",
+        "../../data/useResource",
+        "../../i18n",
+        "../../hooks",
+        "../../lib/portfolio",
+        "../../lib/tracked",
+        "./deskChartMath",
+        "./valueFill",
+        "../../../lib/readerLang"
+      ]
+    },
+    {
+      "file": "src/me/pages/portfolio/DeskForms.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/info-tip",
+        "../../../analytics/posthog",
+        "../../../lib/session",
+        "../../../contracts/finance/fees",
+        "../../data/api",
+        "../../data/usePortfolio",
+        "../../data/livePrices",
+        "../../i18n",
+        "../../lib/portfolio",
+        "../../shared",
+        "../../hooks",
+        "./deskLogic",
+        "./Signed",
+        "@punji/ui/drawer-screen",
+        "@punji/ui/breakdown"
+      ]
+    },
+    {
+      "file": "src/me/pages/portfolio/DeskOverview.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "../../data/types",
+        "../../lib/portfolio",
+        "../../i18n",
+        "../../desk/Skeleton",
+        "../../hooks",
+        "../../desk/skeletonState",
+        "@punji/ui/info-tip",
+        "@punji/ui/meter",
+        "@punji/ui/retry-note",
+        "@punji/ui/metric-tile",
+        "./Signed",
+        "./Money",
+        "./NoteParts",
+        "./overviewMath",
+        "./panelMath",
+        "../../lib/privacy",
+        "./usePanelData"
+      ]
+    },
+    {
+      "file": "src/me/pages/portfolio/DeskTable.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/pagination",
+        "@punji/ui/sparkline",
+        "@punji/ui/info-tip",
+        "../../hooks",
+        "../../data/useStableOrder",
+        "../../i18n",
+        "../../lib/portfolio",
+        "../../desk/Skeleton",
+        "./deskLogic",
+        "./panelMath",
+        "./RowActions",
+        "./deskLogic",
+        "../../lib/privacy",
+        "../../../lib/readerLang"
+      ]
+    },
+    {
+      "file": "src/me/pages/portfolio/DeskTransactions.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/retry-note",
+        "../../data/api",
+        "../../data/types",
+        "../../data/useResource",
+        "../../hooks",
+        "../../i18n",
+        "../../lib/portfolio",
+        "../../desk/Skeleton",
+        "../../desk/skeletonState",
+        "./DeskTable",
+        "./deskLogic",
+        "../../lib/privacy",
+        "../../../lib/readerLang"
+      ]
+    },
+    {
+      "file": "src/me/pages/portfolio/HoldingBuys.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "../../../contracts/finance/fees",
+        "@punji/ui/drawer-screen",
+        "../../data/api",
+        "../../../lib/session",
+        "../../data/types",
+        "../../data/usePortfolio",
+        "../../i18n",
+        "../../lib/portfolio",
+        "../../hooks",
+        "./addMath",
+        "./deskLogic",
+        "../../shared",
+        "../../lib/privacy"
+      ]
+    },
+    {
+      "file": "src/me/pages/portfolio/HoldingCard.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/card-link",
+        "@punji/ui/metric-tile",
+        "@punji/ui/sparkline",
+        "./Signed",
+        "../../shared",
+        "@punji/ui/meter",
+        "@punji/ui/summary-figure",
+        "../../../contracts/finance/fees",
+        "../../data/types",
+        "../../data/api",
+        "../../data/useResource",
+        "../../data/week52",
+        "../../../lib/hosts",
+        "../overview/overviewLogic",
+        "./rangeWords",
+        "../../hooks",
+        "../../i18n",
+        "../../lib/portfolio",
+        "../../desk/DeskChrome",
+        "../../desk/Skeleton",
+        "../stock/StockLink",
+        "./deskLogic",
+        "./Money",
+        "../../lib/privacy",
+        "./addMath",
+        "./NoteParts",
+        "./panelMath",
+        "./sectorColor"
+      ]
+    },
+    {
+      "file": "src/me/pages/portfolio/HoldingMore.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui",
+        "../../data/api",
+        "../../i18n",
+        "../../lib/portfolio",
+        "../stock/StockLink",
+        "../../../lib/session",
+        "../../../contracts/routeCapabilities"
+      ]
+    },
+    {
+      "file": "src/me/pages/portfolio/Money.tsx",
+      "imports": [
+        "@punji/ui/compact",
+        "../../hooks",
+        "../../i18n",
+        "../../lib/privacy"
+      ]
+    },
+    {
+      "file": "src/me/pages/portfolio/MoneyCard.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/meter",
+        "../../i18n",
+        "../../lib/portfolio",
+        "../../desk/Skeleton",
+        "../../desk/skeletonState",
+        "./usePhone"
+      ]
+    },
+    {
+      "file": "src/me/pages/portfolio/NoteParts.tsx",
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/me/pages/portfolio/PendingNotice.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/action-notice",
+        "../../data/api",
+        "../../data/types",
+        "../../hooks",
+        "../../i18n",
+        "../../desk/Skeleton",
+        "../../desk/skeletonState"
+      ]
+    },
+    {
+      "file": "src/me/pages/portfolio/RowActions.tsx",
+      "imports": [
+        "@punji/ui/menu-list",
+        "@punji/ui/card-link",
+        "@punji/ui/row-menu",
+        "../../i18n",
+        "../../../lib/session",
+        "../../../contracts/routeCapabilities",
+        "../stock/stockLogic",
+        "./deskLogic"
+      ]
+    },
+    {
+      "file": "src/me/pages/portfolio/SaleReview.tsx",
+      "imports": [
+        "@punji/ui",
+        "@punji/ui/breakdown",
+        "@punji/ui/drawer-screen",
+        "../../../contracts/finance/fees",
+        "../../data/api",
+        "../../data/types",
+        "../../data/useResource",
+        "../../hooks",
+        "../../i18n",
+        "../../shared",
+        "./DeskForms",
+        "./addMath",
+        "../../lib/privacy"
+      ]
+    },
+    {
+      "file": "src/me/pages/portfolio/Signed.tsx",
+      "imports": [
+        "../../hooks",
+        "../../i18n",
+        "../../lib/privacy",
+        "./panelMath"
+      ]
+    },
+    {
+      "file": "src/me/pages/portfolio/SubjectSwitcher.tsx",
+      "imports": [
+        "@punji/ui",
+        "../../data/types",
+        "../../i18n",
+        "../../lib/tracked"
+      ]
+    },
+    {
+      "file": "src/me/pages/shell/AccountMenu.tsx",
+      "imports": [
+        "react",
+        "@punji/ui/menu-list",
+        "@punji/ui/nav-icon",
+        "@punji/ui/popover",
+        "../../../lib/hosts",
+        "../../../lib/session",
+        "../../data/manifest",
+        "../../i18n",
+        "./commandLogic",
+        "@punji/ui/private-amount",
+        "../../lib/privacy"
+      ]
+    },
+    {
+      "file": "src/me/pages/shell/BarMarkDetail.tsx",
+      "imports": [
+        "@punji/ui/format",
+        "@punji/ui/market-mark",
+        "@punji/ui/market-mark-detail",
+        "../../desk/opensWhen",
+        "../../i18n",
+        "./marketLine",
+        "./useBarMarket"
+      ]
+    },
+    {
+      "file": "src/me/pages/shell/CommandMenu.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../../../analytics/posthog",
+        "../../../components/fundamentals/access",
+        "@punji/ui/command-palette",
+        "@punji/ui/format",
+        "@punji/ui/overlay",
+        "../../../lib/hosts",
+        "../stock/stockLogic",
+        "../../../lib/session",
+        "../../../theme/ThemeContext",
+        "../../data/api",
+        "../../data/livePrices",
+        "../../hooks",
+        "../../i18n",
+        "../../lib/fundRecent",
+        "./cmdData",
+        "./commandLogic",
+        "./useSections",
+        "./navLabels",
+        "./sections",
+        "./useSidebarState",
+        "../../../contracts/routeCapabilities",
+        "../../../lib/readerLang"
+      ]
+    },
+    {
+      "file": "src/me/pages/shell/MoreValue.tsx",
+      "imports": [
+        "react-router-dom",
+        "@punji/ui/format",
+        "../../data/usePortfolio",
+        "../../i18n",
+        "./MoreValueWait",
+        "../../../lib/readerLang"
+      ]
+    },
+    {
+      "file": "src/me/pages/shell/MoreValueWait.tsx",
+      "imports": [
+        "../../desk/Skeleton",
+        "../../i18n"
+      ]
+    },
+    {
+      "file": "src/me/pages/shell/Sidebar.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui/floating-tooltip",
+        "@punji/ui/nav-icon",
+        "@punji/ui/status-pill",
+        "@punji/ui/logo",
+        "@punji/ui/overlay",
+        "../../i18n",
+        "./navLabels",
+        "../../lib/fundRecent",
+        "../../data/manifest",
+        "./sections",
+        "./sidebarState",
+        "./useSidebarState",
+        "./useSections"
+      ]
+    },
+    {
+      "file": "src/me/pages/shell/TopBar.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui/overlay",
+        "@punji/ui/floating-tooltip",
+        "@punji/ui/app-tab-bar",
+        "@punji/ui/bar-button",
+        "@punji/ui/market-mark",
+        "@punji/ui/nav-icon",
+        "@punji/ui/notification-bell",
+        "@punji/ui/format",
+        "../../../lib/hosts",
+        "../../../lib/session",
+        "../../../theme/ThemeContext",
+        "../../i18n",
+        "./cmdData",
+        "./commandLogic",
+        "./hotkeys",
+        "./useBarMarket",
+        "./Sidebar",
+        "./MoreValueWait",
+        "./navLabels",
+        "./useRail",
+        "./useSections",
+        "./sections",
+        "./sidebarState",
+        "./useSidebarState",
+        "./inbox/inboxCount",
+        "../../desk/marketMark",
+        "../../lib/fundRecent",
+        "../../../contracts/routeCapabilities"
+      ]
+    },
+    {
+      "file": "src/me/pages/shell/inbox/InboxPanel.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../../../../contracts/notifications",
+        "@punji/ui/button",
+        "@punji/ui/controls",
+        "@punji/ui/inbox-list",
+        "@punji/ui/inline-state",
+        "@punji/ui/overlay",
+        "@punji/ui/popover",
+        "../../../../lib/session",
+        "../../../i18n/inbox.en",
+        "../../../i18n",
+        "../../../lib/privacy",
+        "./inboxCount",
+        "./inboxLogic",
+        "../useSections"
+      ]
+    },
+    {
+      "file": "src/me/pages/stock/Card.tsx",
+      "imports": [
+        "react",
+        "../../../lib/sectionState",
+        "../../../lib/session",
+        "../../i18n",
+        "./icons"
+      ]
+    },
+    {
+      "file": "src/me/pages/stock/Financials.tsx",
+      "imports": [
+        "@punji/ui",
+        "../../../components/fundamentals/logic",
+        "../../../contracts/stockPage",
+        "../../i18n",
+        "./Card",
+        "./stockLogic",
+        "./stockTypes",
+        "./useSection"
+      ]
+    },
+    {
+      "file": "src/me/pages/stock/Flow.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "../../../components/fundamentals/logic",
+        "../../../contracts/stockPage",
+        "../../../lib/sectionState",
+        "../../../lib/session",
+        "../../data/api",
+        "../../i18n",
+        "./Card",
+        "./icons",
+        "./stockLogic",
+        "./stockTypes",
+        "./useSection"
+      ]
+    },
+    {
+      "file": "src/me/pages/stock/Header.tsx",
+      "imports": [
+        "@punji/ui",
+        "@punji/ui/card-link",
+        "../../../contracts/stockPage",
+        "../../../lib/hosts",
+        "../../i18n",
+        "../portfolio/sectorColor",
+        "./icons",
+        "../../../lib/readerLang"
+      ]
+    },
+    {
+      "file": "src/me/pages/stock/Health.tsx",
+      "imports": [
+        "react-router-dom",
+        "../../../components/fundamentals/fileLogic",
+        "../../../components/fundamentals/healthSummary",
+        "../../../components/fundamentals/logic",
+        "../../../components/fundamentals/text",
+        "../../../contracts/fundamentals",
+        "../../i18n",
+        "./Card",
+        "./icons",
+        "./useSection"
+      ]
+    },
+    {
+      "file": "src/me/pages/stock/Holdings.tsx",
+      "imports": [
+        "react-router-dom",
+        "@punji/ui",
+        "../../../components/fundamentals/logic",
+        "../../i18n",
+        "../portfolio/Signed",
+        "../portfolio/panelMath",
+        "./Card",
+        "./useSection",
+        "./stockLogic",
+        "./stockTypes",
+        "../../lib/privacy",
+        "../../../lib/readerLang"
+      ]
+    },
+    {
+      "file": "src/me/pages/stock/Info.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui",
+        "../../../contracts/dividends",
+        "../../i18n",
+        "../../data/types",
+        "./Card",
+        "./stockLogic",
+        "./stockTypes",
+        "./useSection"
+      ]
+    },
+    {
+      "file": "src/me/pages/stock/Ratings.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/card-link",
+        "@punji/ui/metric-tile",
+        "../../../contracts/technicalRatings",
+        "../../../lib/hosts",
+        "../../../lib/format",
+        "../../../lib/session",
+        "../../data/api",
+        "../../i18n",
+        "./ratingsText",
+        "./Card",
+        "./icons",
+        "./ratingLogic",
+        "./useSection"
+      ]
+    },
+    {
+      "file": "src/me/pages/stock/StockChartSlot.tsx",
+      "imports": [
+        "react",
+        "../../../components/charts/tv/AdvancedChart",
+        "../../i18n",
+        "../chart/ChartWorkspaceLink"
+      ]
+    },
+    {
+      "file": "src/me/pages/stock/StockLink.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui/card-link",
+        "../../../lib/session",
+        "../../i18n",
+        "./stockLogic"
+      ]
+    },
+    {
+      "file": "src/me/pages/stock/StockSkeleton.tsx",
+      "imports": [
+        "../../desk/Skeleton",
+        "../../desk/useNarrow"
+      ]
+    },
+    {
+      "file": "src/me/pages/stock/Technical.tsx",
+      "imports": [
+        "react-router-dom",
+        "@punji/ui",
+        "@punji/ui/card-link",
+        "../../../contracts/stockPage",
+        "../../../lib/hosts",
+        "../../../lib/pairPath",
+        "../../i18n",
+        "../portfolio/Signed",
+        "./Card",
+        "./icons",
+        "./stockLogic",
+        "./useSection"
+      ]
+    },
+    {
+      "file": "src/me/pages/stock/icons.tsx",
+      "imports": [
+        "react"
+      ]
+    },
+    {
+      "file": "src/me/pages/watchlist/WatchChart.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "../../../lib/format",
+        "../../hooks",
+        "../portfolio/deskChartMath",
+        "./wlLogic",
+        "../../i18n"
+      ]
+    },
+    {
+      "file": "src/me/pages/watchlist/WatchDetail.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/alert-target",
+        "@punji/ui/meter",
+        "@punji/ui/metric-tile",
+        "@punji/ui/summary-figure",
+        "@punji/ui/watch-summary",
+        "../../data/types",
+        "../../data/week52",
+        "../../desk/marketMark",
+        "../../hooks",
+        "../../lib/portfolio",
+        "../../i18n",
+        "./icons",
+        "./WatchChart",
+        "./wlLogic",
+        "../../../lib/readerLang"
+      ]
+    },
+    {
+      "file": "src/me/pages/watchlist/WatchList.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/info-tip",
+        "@punji/ui/inline-confirm",
+        "@punji/ui/menu-list",
+        "@punji/ui/row-menu",
+        "@punji/ui/list-filter",
+        "@punji/ui/retry-note",
+        "@punji/ui/watchlist-row",
+        "@punji/ui/watch-summary",
+        "../../../lib/session",
+        "../../hooks",
+        "../stock/stockLogic",
+        "../../i18n",
+        "./icons",
+        "./wlLogic"
+      ]
+    },
+    {
+      "file": "src/me/pages/watchlist/WatchOverview.tsx",
+      "imports": [
+        "@punji/ui",
+        "@punji/ui/alert-target",
+        "@punji/ui/alert-row",
+        "@punji/ui/step-list",
+        "@punji/ui/watch-summary",
+        "../../data/useStableOrder",
+        "../../../contracts/webOverview",
+        "../../data/types",
+        "../../hooks",
+        "../../desk/marketMark",
+        "../../i18n",
+        "./icons",
+        "./wlLogic"
+      ]
+    },
+    {
+      "file": "src/me/pages/watchlist/WatchReorder.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/reorder-list",
+        "@punji/ui/retry-note",
+        "../../../lib/session",
+        "../../data/api",
+        "../../i18n",
+        "./wlLogic"
+      ]
+    },
+    {
+      "file": "src/me/pages/watchlist/icons.tsx",
+      "imports": []
+    },
+    {
+      "file": "src/pages/About.tsx",
+      "imports": [
+        "react-router-dom",
+        "../components/Seo",
+        "../components/product/Product"
+      ]
+    },
+    {
+      "file": "src/pages/BrokerDetail.tsx",
+      "imports": [
+        "react-router-dom",
+        "../lib/deferredComponent",
+        "../components/Breadcrumb",
+        "../components/Seo",
+        "../components/gate/links",
+        "../components/kit/BrokerBadge",
+        "../components/kit/BrokerLookup",
+        "../components/kit/Card",
+        "../components/kit/CardLink",
+        "../components/kit/FaqSection",
+        "../components/kit/LinkRow",
+        "../components/kit/StepList",
+        "../components/kit/TmsAddress",
+        "../lib/brokers",
+        "./brokers/Gated",
+        "./brokers/shared",
+        "./brokers/words",
+        "./brokers/useBrokerText"
+      ]
+    },
+    {
+      "file": "src/pages/Brokers.tsx",
+      "imports": [
+        "react",
+        "../components/Breadcrumb",
+        "../components/Seo",
+        "../components/gate/links",
+        "../components/kit/BrokerBadge",
+        "../components/kit/BrokerLookup",
+        "../components/kit/Card",
+        "../components/kit/Rows",
+        "../components/kit/FaqSection",
+        "../components/kit/LinkRow",
+        "../components/kit/ListFilter",
+        "../components/kit/MarketReport",
+        "../components/kit/Controls",
+        "../components/kit/TmsAnatomy",
+        "../lib/brokers",
+        "../lib/readerLang",
+        "./brokers/Gated",
+        "./brokers/shared",
+        "./brokers/words",
+        "./brokers/useBrokerText"
+      ]
+    },
+    {
+      "file": "src/pages/BulkIpo.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../components/Breadcrumb",
+        "../components/data/DataError",
+        "../components/data/Skeleton",
+        "../components/InstallBar",
+        "../components/Seo",
+        "../components/StoreButtons",
+        "../hooks/useApiResource",
+        "../lib/market",
+        "../lib/marketData",
+        "./home/LangProvider",
+        "./home/i18n"
+      ]
+    },
+    {
+      "file": "src/pages/Calculators.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../components/Breadcrumb",
+        "../components/InstallBar",
+        "../components/Seo",
+        "../components/product/Product",
+        "../data/calc.json",
+        "../contracts/finance/fees",
+        "../lib/feeSchedule",
+        "../lib/sellMath",
+        "./home/bits",
+        "./home/LangProvider",
+        "./home/SellSheet",
+        "./home/i18n",
+        "../lib/format"
+      ]
+    },
+    {
+      "file": "src/pages/Changelog.tsx",
+      "imports": [
+        "../components/Breadcrumb",
+        "../components/Seo",
+        "../components/StoreButtons",
+        "../components/ui/NavIcon",
+        "../data/changelog",
+        "../lib/ledgerRoutes"
+      ]
+    },
+    {
+      "file": "src/pages/Compare.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../components/Breadcrumb",
+        "../components/product/Product",
+        "../components/Seo",
+        "../lib/compareData",
+        "../lib/deferredComponent",
+        "../lib/format",
+        "../lib/market",
+        "../lib/session",
+        "../lib/stocks",
+        "./stock/accountLink",
+        "./compare/bits",
+        "./compare/logic",
+        "./compare/Picker",
+        "./compare/recent",
+        "./compare/Sections",
+        "./compare/SideBySide",
+        "./compare/words",
+        "./compare/PerfChart"
+      ]
+    },
+    {
+      "file": "src/pages/DeleteAccount.tsx",
+      "imports": [
+        "../components/Seo",
+        "../components/LegalLayout"
+      ]
+    },
+    {
+      "file": "src/pages/Digest.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../config/stores"
+      ]
+    },
+    {
+      "file": "src/pages/DividendYear.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../lib/deferredComponent",
+        "../components/Breadcrumb",
+        "../components/Seo",
+        "../components/StoreButtons",
+        "../lib/dividends",
+        "../lib/stocks",
+        "../components/kit/ListFilter"
+      ]
+    },
+    {
+      "file": "src/pages/Dividends.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../components/Breadcrumb",
+        "../components/Seo",
+        "../components/StoreButtons",
+        "../lib/dividends",
+        "../lib/market",
+        "../lib/stocks",
+        "../components/kit/ListFilter"
+      ]
+    },
+    {
+      "file": "src/pages/Features.tsx",
+      "imports": [
+        "react-router-dom",
+        "../components/Seo",
+        "../components/product/Product",
+        "../components/product/content",
+        "../components/ui/NavIcon"
+      ]
+    },
+    {
+      "file": "src/pages/Floorsheet.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../components/Breadcrumb",
+        "../components/InstallBar",
+        "../components/Seo",
+        "../components/StoreButtons",
+        "../components/gate/SignInFree",
+        "../components/ui/NavIcon",
+        "../components/gate/links",
+        "../data/floor.json",
+        "./home/LangProvider",
+        "./home/i18n"
+      ]
+    },
+    {
+      "file": "src/pages/Forex.tsx",
+      "imports": [
+        "react-router-dom",
+        "../components/data/ProvenanceNote",
+        "../components/market/RankTable",
+        "../components/layout/Section",
+        "../components/layout/ToolPage",
+        "../lib/forex",
+        "../lib/stocks"
+      ]
+    },
+    {
+      "file": "src/pages/GoldSilver.tsx",
+      "imports": [
+        "react-router-dom",
+        "../components/data/ProvenanceNote",
+        "../components/layout/Section",
+        "../components/layout/ToolPage",
+        "../lib/bullion",
+        "../components/stocks/meters",
+        "../lib/stocks"
+      ]
+    },
+    {
+      "file": "src/pages/HeatMap.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../components/Breadcrumb",
+        "../components/InstallBar",
+        "../components/kit/ChoiceGroup",
+        "../components/kit/Select",
+        "../components/market/NepseToday",
+        "../components/Seo",
+        "../components/StoreButtons",
+        "../lib/market",
+        "../lib/treemap",
+        "../components/data/Delta",
+        "../lib/format",
+        "./heatmapControls"
+      ]
+    },
+    {
+      "file": "src/pages/Home.tsx",
+      "imports": [
+        "@punji/ui",
+        "@punji/ui/app-strip",
+        "@punji/ui/cta-band",
+        "@punji/ui/faq-section",
+        "@punji/ui/landing-section",
+        "@punji/ui/link-row",
+        "@punji/ui/market-strip",
+        "@punji/ui/principle-list",
+        "@punji/ui/product-shot",
+        "@punji/ui/story-stepper",
+        "react-router-dom",
+        "../components/Seo",
+        "../components/StoreButtons",
+        "../analytics/posthog",
+        "../contracts/finance/fees",
+        "../lib/hosts",
+        "./home/cgt",
+        "./home/copy",
+        "./home/features",
+        "./home/HomeSale",
+        "./home/saleData",
+        "./home/i18n",
+        "./home/LangProvider",
+        "./home/seo",
+        "./home/shots"
+      ]
+    },
+    {
+      "file": "src/pages/HowItWorks.tsx",
+      "imports": [
+        "react-router-dom",
+        "../components/Seo",
+        "../components/product/Product",
+        "../components/product/content",
+        "../components/ui/NavIcon"
+      ]
+    },
+    {
+      "file": "src/pages/Invite.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../components/kit/LogoWordmark",
+        "../config/stores"
+      ]
+    },
+    {
+      "file": "src/pages/ListedCompanies.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../components/Breadcrumb",
+        "../components/kit/Controls",
+        "../components/kit/Select",
+        "../components/kit/ListFilter",
+        "../components/Seo",
+        "../components/StoreButtons",
+        "../components/ui/NavIcon",
+        "../data/sectorNotes",
+        "../lib/securities",
+        "../lib/stocks",
+        "../analytics/posthog"
+      ]
+    },
+    {
+      "file": "src/pages/MarketBreadth.tsx",
+      "imports": [
+        "react-router-dom",
+        "../components/Breadcrumb",
+        "../components/Seo",
+        "../components/StoreButtons",
+        "../components/market/StatCharts",
+        "../lib/ledgerRoutes",
+        "../lib/market",
+        "../lib/marketStats"
+      ]
+    },
+    {
+      "file": "src/pages/NepseToday.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "@punji/ui/button",
+        "@punji/ui/breadth-bar",
+        "@punji/ui/controls",
+        "@punji/ui/cta-band",
+        "@punji/ui/faq-section",
+        "@punji/ui/market-report",
+        "../components/Breadcrumb",
+        "../components/Seo",
+        "../components/StoreButtons",
+        "../data/today.json",
+        "../lib/hosts",
+        "../lib/ledgerRoutes",
+        "../lib/sectorSlug",
+        "../lib/format",
+        "../lib/marketStats",
+        "./today/status"
+      ]
+    },
+    {
+      "file": "src/pages/NotFound.tsx",
+      "imports": [
+        "react-router-dom",
+        "../components/ui/NavIcon"
+      ]
+    },
+    {
+      "file": "src/pages/Plus.tsx",
+      "imports": [
+        "react-router-dom",
+        "../components/Seo",
+        "../components/layout/Section",
+        "../components/ui/SectionIntro",
+        "../components/ui/Ledger",
+        "../components/ui/FaqList",
+        "../components/ui/icons",
+        "../hooks/useScrollReveal",
+        "../config/plus"
+      ]
+    },
+    {
+      "file": "src/pages/PortfolioTracker.tsx",
+      "imports": [
+        "@punji/ui",
+        "@punji/ui/app-strip",
+        "@punji/ui/cta-band",
+        "@punji/ui/faq-section",
+        "@punji/ui/landing-section",
+        "@punji/ui/link-row",
+        "@punji/ui/principle-list",
+        "@punji/ui/product-shot",
+        "@punji/ui/story-stepper",
+        "@punji/ui/table",
+        "react-router-dom",
+        "../components/market/CostLedger",
+        "../components/Seo",
+        "../components/StoreButtons",
+        "../components/product/Product",
+        "../components/product/content",
+        "../contracts/finance/fees",
+        "../lib/feeSchedule",
+        "../lib/format",
+        "../lib/hosts",
+        "./home/shots"
+      ]
+    },
+    {
+      "file": "src/pages/Press.tsx",
+      "imports": [
+        "react-router-dom",
+        "../components/Seo",
+        "../components/product/Product",
+        "../components/product/content",
+        "../config/stores"
+      ]
+    },
+    {
+      "file": "src/pages/Pricing.tsx",
+      "imports": [
+        "react-router-dom",
+        "../components/Seo",
+        "../components/product/Product",
+        "../components/product/content"
+      ]
+    },
+    {
+      "file": "src/pages/Privacy.tsx",
+      "imports": [
+        "../components/Seo",
+        "../components/LegalLayout"
+      ]
+    },
+    {
+      "file": "src/pages/Screener.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../components/Breadcrumb",
+        "../components/kit/Controls",
+        "../components/kit/Select",
+        "../components/InstallBar",
+        "../components/Seo",
+        "../components/StoreButtons",
+        "../lib/market",
+        "../components/market/RangeMark",
+        "../lib/marketStats",
+        "./home/bits",
+        "./home/LangProvider",
+        "./home/i18n"
+      ]
+    },
+    {
+      "file": "src/pages/Seasonality.tsx",
+      "imports": [
+        "react",
+        "@punji/ui/breadth-bar",
+        "@punji/ui/button",
+        "@punji/ui/card",
+        "@punji/ui/cta-band",
+        "@punji/ui/fact-list",
+        "@punji/ui/faq-section",
+        "@punji/ui/locked-preview",
+        "@punji/ui/market-report",
+        "@punji/ui/states",
+        "@punji/ui/status-pill",
+        "@punji/ui/summary-figure",
+        "../components/Breadcrumb",
+        "../components/gate/SignInFree",
+        "../components/gate/links",
+        "../components/Seo",
+        "../components/StoreButtons",
+        "../lib/hosts",
+        "../lib/ledgerRoutes",
+        "../lib/session",
+        "../lib/seasonality",
+        "./seasonality/SeasonDesk",
+        "./seasonality/model",
+        "./NotFound"
+      ]
+    },
+    {
+      "file": "src/pages/SectorDetail.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../lib/deferredComponent",
+        "../components/Breadcrumb",
+        "../components/Seo",
+        "../components/StoreButtons",
+        "../data/sectorNotes",
+        "../lib/securities",
+        "../lib/stocks",
+        "../lib/sectorStats",
+        "../lib/market",
+        "../lib/treemap",
+        "../lib/rotationGroups",
+        "../lib/rotationView",
+        "../lib/format"
+      ]
+    },
+    {
+      "file": "src/pages/SectorRotation.tsx",
+      "imports": [
+        "react",
+        "@punji/ui/button",
+        "@punji/ui/card",
+        "@punji/ui/cta-band",
+        "@punji/ui/faq-section",
+        "@punji/ui/group-counts",
+        "@punji/ui/locked-preview",
+        "../components/Breadcrumb",
+        "../components/gate/SignInFree",
+        "../components/gate/links",
+        "../components/Seo",
+        "../components/StoreButtons",
+        "../lib/hosts",
+        "../lib/ledgerRoutes",
+        "../lib/rotationGroups",
+        "../lib/rotationView",
+        "../lib/session",
+        "./NotFound",
+        "./rotation/RotationHead",
+        "./rotation/RotationSkeleton",
+        "./rotation/words"
+      ]
+    },
+    {
+      "file": "src/pages/Sectors.tsx",
+      "imports": [
+        "react-router-dom",
+        "../components/Breadcrumb",
+        "../components/Seo",
+        "../components/StoreButtons",
+        "../data/sectorNotes",
+        "../lib/stocks",
+        "../lib/securities",
+        "../lib/sectorStats",
+        "../lib/market",
+        "../lib/treemap",
+        "../lib/ledgerRoutes",
+        "../lib/rotationGroups",
+        "../lib/rotationView"
+      ]
+    },
+    {
+      "file": "src/pages/StockDetail.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../components/Breadcrumb",
+        "../components/InstallBar",
+        "../components/Seo",
+        "../components/StoreButtons",
+        "../lib/hosts",
+        "../hooks/useLivePrices",
+        "./stock/StockActions",
+        "../components/gate/links",
+        "../lib/session",
+        "../lib/deferredComponent",
+        "../lib/livePrices",
+        "../lib/sectorSlug",
+        "../lib/stocks",
+        "../lib/stocks",
+        "./home/bits",
+        "./home/LangProvider",
+        "./stock/facts",
+        "./stock/flowEmpty",
+        "./stock/Record",
+        "./stock/Related",
+        "./stock/Terminal",
+        "./stock/terminalText",
+        "../components/kit/Button",
+        "../components/kit/Card",
+        "../components/kit/CtaBand",
+        "../components/kit/format",
+        "../components/kit/KeyStats",
+        "../components/kit/States",
+        "../components/kit/StatusPill"
+      ]
+    },
+    {
+      "file": "src/pages/StockDividends.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../components/Breadcrumb",
+        "../components/Seo",
+        "../components/dividends/ledger",
+        "../components/kit/Button",
+        "../components/kit/Card",
+        "../components/kit/Figures",
+        "../components/kit/KeyStats",
+        "../components/kit/LinkTable",
+        "../components/kit/States",
+        "../components/kit/StatusPill",
+        "../components/kit/Table",
+        "../contracts/finance/dividendBook",
+        "../contracts/routeCapabilities",
+        "../lib/deferredComponent",
+        "../lib/hosts",
+        "../lib/ledgerRoutes",
+        "../lib/session",
+        "../lib/sectorSlug",
+        "../lib/stocks",
+        "../lib/useHydrated",
+        "./stock/lazyChart",
+        "./stock/linkRows",
+        "./stock/ledgerText",
+        "./stock/sharedText"
+      ]
+    },
+    {
+      "file": "src/pages/Stocks.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../analytics/posthog",
+        "../components/Breadcrumb",
+        "../components/kit/Controls",
+        "../components/kit/Select",
+        "../components/kit/ListFilter",
+        "../components/stocks/meters",
+        "../components/Seo",
+        "../components/StoreButtons",
+        "../components/ui/NavIcon",
+        "../lib/stockIndex",
+        "../lib/stocks"
+      ]
+    },
+    {
+      "file": "src/pages/Support.tsx",
+      "imports": [
+        "../components/Seo",
+        "../components/LegalLayout"
+      ]
+    },
+    {
+      "file": "src/pages/TechnicalRatings.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../components/Breadcrumb",
+        "../components/kit/Controls",
+        "../components/Seo",
+        "../components/StoreButtons",
+        "../contracts/technicalRatings",
+        "../contracts/technicals-en.json",
+        "../lib/session",
+        "../lib/ledgerRoutes"
+      ]
+    },
+    {
+      "file": "src/pages/Terms.tsx",
+      "imports": [
+        "../components/Seo",
+        "../components/LegalLayout"
+      ]
+    },
+    {
+      "file": "src/pages/VirtualTrading.tsx",
+      "imports": [
+        "react-router-dom",
+        "../components/market/CostLedger",
+        "../components/Seo",
+        "../components/product/Product",
+        "../components/product/content",
+        "../contracts/finance/fees",
+        "../lib/feeSchedule",
+        "../lib/format"
+      ]
+    },
+    {
+      "file": "src/pages/__tests__/brokers.test.tsx",
+      "imports": [
+        "react-dom/server",
+        "react-router-dom",
+        "vitest",
+        "../BrokerDetail",
+        "../Brokers",
+        "../../lib/translated",
+        "../../lib/brokers"
+      ]
+    },
+    {
+      "file": "src/pages/__tests__/hiddenTeasers.test.tsx",
+      "imports": [
+        "react",
+        "react-dom/server",
+        "vitest"
+      ]
+    },
+    {
+      "file": "src/pages/__tests__/home.test.tsx",
+      "imports": [
+        "node:fs",
+        "node:path",
+        "node:url",
+        "react-dom/server",
+        "react-router-dom",
+        "vitest",
+        "../Home",
+        "../home/seo",
+        "../home/copy",
+        "../home/saleData",
+        "../home/copy-ne",
+        "../home/copy-data",
+        "../home/features",
+        "../home/LangProvider",
+        "../../contracts/finance/fees"
+      ]
+    },
+    {
+      "file": "src/pages/__tests__/nepseToday.test.tsx",
+      "imports": [
+        "react-dom/server",
+        "react-router-dom",
+        "vitest",
+        "../NepseToday",
+        "../../data/today.json"
+      ]
+    },
+    {
+      "file": "src/pages/__tests__/sectorRotation.test.tsx",
+      "imports": [
+        "react-dom/server",
+        "react-router-dom",
+        "vitest"
+      ]
+    },
+    {
+      "file": "src/pages/brokers/BoardRows.tsx",
+      "imports": [
+        "../../components/kit/LinkTable",
+        "../../components/kit/States",
+        "./boardColumns",
+        "./shared"
+      ]
+    },
+    {
+      "file": "src/pages/brokers/BrokerLive.tsx",
+      "imports": [
+        "react",
+        "../../components/kit/Bars",
+        "../../components/kit/Card",
+        "../../components/kit/CardSection",
+        "../../components/kit/ColumnChart",
+        "../../components/kit/Controls",
+        "../../components/kit/Figures",
+        "../../components/kit/LinkTable",
+        "../../components/kit/Meter",
+        "../../components/kit/MetricTile",
+        "../../components/kit/Pagination",
+        "../../components/kit/States",
+        "../../components/kit/RetryNote",
+        "../../components/kit/SummaryFigure",
+        "../../contracts/brokerWindows",
+        "../../contracts/topBrokers",
+        "../../lib/format",
+        "./liveFormat",
+        "./shared",
+        "./useBffData",
+        "./useLiveText"
+      ]
+    },
+    {
+      "file": "src/pages/brokers/BrokersLive.tsx",
+      "imports": [
+        "react",
+        "../../components/kit/BrokerBadge",
+        "../../components/kit/Card",
+        "../../components/kit/Controls",
+        "../../components/kit/Bars",
+        "../../components/kit/States",
+        "../../components/kit/Figures",
+        "../../components/kit/Pagination",
+        "../../components/kit/LinkTable",
+        "../../components/kit/Meter",
+        "../../components/kit/MetricTile",
+        "../../components/kit/RetryNote",
+        "../../components/kit/StatusPill",
+        "../../contracts/topBrokers",
+        "../../lib/format",
+        "../../lib/brokers",
+        "./BoardRows",
+        "./boardColumns",
+        "./liveFormat",
+        "./shared",
+        "./useBffData",
+        "./useLiveText"
+      ]
+    },
+    {
+      "file": "src/pages/brokers/Gated.tsx",
+      "imports": [
+        "react",
+        "../../components/gate/SignInFree",
+        "../../components/kit/Card",
+        "../../components/kit/States",
+        "../../lib/session",
+        "./BoardRows",
+        "./shared"
+      ]
+    },
+    {
+      "file": "src/pages/brokers/shared.tsx",
+      "imports": [
+        "react-router-dom",
+        "../../components/StoreButtons",
+        "../../components/kit/Button",
+        "../../components/kit/CtaBand",
+        "../../lib/hosts",
+        "./text"
+      ]
+    },
+    {
+      "file": "src/pages/compare/PerfChart.tsx",
+      "imports": [
+        "react",
+        "../../lib/format",
+        "../../lib/market",
+        "../../lib/compareData",
+        "./logic",
+        "./bits"
+      ]
+    },
+    {
+      "file": "src/pages/compare/Picker.tsx",
+      "imports": [
+        "react",
+        "../../lib/market",
+        "./logic"
+      ]
+    },
+    {
+      "file": "src/pages/compare/Sections.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../../lib/format",
+        "../../lib/market",
+        "../../lib/compareData",
+        "./logic",
+        "./recent"
+      ]
+    },
+    {
+      "file": "src/pages/compare/SideBySide.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../../components/auth/signInRequest",
+        "../../contracts/routeCapabilities",
+        "../../lib/format",
+        "../../lib/sectionState",
+        "../../lib/session",
+        "../../lib/compareData",
+        "../../lib/market",
+        "./bits",
+        "./logic"
+      ]
+    },
+    {
+      "file": "src/pages/compare/bits.tsx",
+      "imports": [
+        "../../lib/format",
+        "../../lib/market"
+      ]
+    },
+    {
+      "file": "src/pages/guide/index.tsx",
+      "imports": [
+        "react-router-dom",
+        "../../components/Seo",
+        "../../components/product/Product",
+        "../../components/ui/NavIcon",
+        "../../data/guideContent",
+        "../../lib/stocks"
+      ]
+    },
+    {
+      "file": "src/pages/home/AnyCompany.tsx",
+      "imports": [
+        "@punji/ui/company-search",
+        "./data",
+        "./i18n"
+      ]
+    },
+    {
+      "file": "src/pages/home/HomeSale.tsx",
+      "imports": [
+        "react",
+        "@punji/ui",
+        "@punji/ui/controls",
+        "@punji/ui/sale-estimate",
+        "../../contracts/finance/fees",
+        "./saleData",
+        "./i18n",
+        "./sale"
+      ]
+    },
+    {
+      "file": "src/pages/home/LangProvider.tsx",
+      "imports": [
+        "react",
+        "./copy",
+        "./copy-ne",
+        "./i18n"
+      ]
+    },
+    {
+      "file": "src/pages/home/SellSheet.tsx",
+      "imports": [
+        "react",
+        "../../contracts/finance/fees",
+        "../../lib/sellMath",
+        "../../components/kit/Select",
+        "./bits",
+        "./i18n"
+      ]
+    },
+    {
+      "file": "src/pages/home/bits.tsx",
+      "imports": [
+        "react",
+        "./i18n",
+        "./copy"
+      ]
+    },
+    {
+      "file": "src/pages/learn/AsbaVsCasba.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout"
+      ]
+    },
+    {
+      "file": "src/pages/learn/BonusDividendTaxWaccCalculation.tsx",
+      "imports": [
+        "react-router-dom",
+        "../../components/Seo",
+        "../../components/LearnLayout",
+        "../../components/learn/Sources",
+        "../../components/learn/figures",
+        "../../lib/learnSources",
+        "../../lib/feeSchedule",
+        "../../lib/format",
+        "../../contracts/finance/fees",
+        "../../lib/calcExplainer"
+      ]
+    },
+    {
+      "file": "src/pages/learn/BonusSharesVsRightSharesNepal.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout"
+      ]
+    },
+    {
+      "file": "src/pages/learn/ChoosingANepseApp.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout"
+      ]
+    },
+    {
+      "file": "src/pages/learn/DebenturesNepal.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout"
+      ]
+    },
+    {
+      "file": "src/pages/learn/DividendsInNepalExplained.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout",
+        "../../components/learn/Sources",
+        "../../lib/learnSources"
+      ]
+    },
+    {
+      "file": "src/pages/learn/EvaluateBankingStocks.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout"
+      ]
+    },
+    {
+      "file": "src/pages/learn/FpoVsIpo.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout"
+      ]
+    },
+    {
+      "file": "src/pages/learn/HowNepseTradingWorks.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout",
+        "../../components/learn/Sources",
+        "../../lib/learnSources"
+      ]
+    },
+    {
+      "file": "src/pages/learn/HowToAddStock.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../../components/GuidePage",
+        "../../data/guides/addStock"
+      ]
+    },
+    {
+      "file": "src/pages/learn/HowToApplyIpoInNepal.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout",
+        "../../components/learn/Sources",
+        "../../lib/learnSources"
+      ]
+    },
+    {
+      "file": "src/pages/learn/HowToImportCsv.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../../components/GuidePage",
+        "../../data/guides/csvImport"
+      ]
+    },
+    {
+      "file": "src/pages/learn/HowToInvestInNepalShareMarket.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout",
+        "../../components/learn/Sources",
+        "../../lib/learnSources"
+      ]
+    },
+    {
+      "file": "src/pages/learn/HowToOpenDematAccountNepal.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout"
+      ]
+    },
+    {
+      "file": "src/pages/learn/HowToReadFloorsheet.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout"
+      ]
+    },
+    {
+      "file": "src/pages/learn/HowToUseWatchlist.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../../components/GuidePage",
+        "../../data/guides/watchlist"
+      ]
+    },
+    {
+      "file": "src/pages/learn/MarginLendingNepal.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout",
+        "../../components/learn/Sources",
+        "../../lib/learnSources"
+      ]
+    },
+    {
+      "file": "src/pages/learn/MeroshareEdis.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout",
+        "../../components/learn/Sources",
+        "../../lib/learnSources"
+      ]
+    },
+    {
+      "file": "src/pages/learn/MeroshareWacc.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout",
+        "../../components/learn/Sources",
+        "../../lib/learnSources"
+      ]
+    },
+    {
+      "file": "src/pages/learn/Meroshareguide.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout",
+        "../../components/learn/Sources",
+        "../../lib/learnSources"
+      ]
+    },
+    {
+      "file": "src/pages/learn/Nepse15PercentPriceLimitCircuitBreakers.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout",
+        "../../components/learn/Sources",
+        "../../lib/learnSources"
+      ]
+    },
+    {
+      "file": "src/pages/learn/Nepse21PointReformPlan2026.tsx",
+      "imports": [
+        "react-router-dom",
+        "../../components/Seo",
+        "../../components/LearnLayout",
+        "../../components/learn/Sources",
+        "../../lib/learnSources",
+        "../../components/learn/figures"
+      ]
+    },
+    {
+      "file": "src/pages/learn/Nepse247OrderPlacement.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout",
+        "../../components/learn/Sources",
+        "../../lib/learnSources"
+      ]
+    },
+    {
+      "file": "src/pages/learn/NepseCgtCalculator.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout",
+        "../../components/learn/Sources",
+        "../../lib/learnSources"
+      ]
+    },
+    {
+      "file": "src/pages/learn/NepseNewCgtRates208384.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout",
+        "../../components/learn/Sources",
+        "../../lib/learnSources"
+      ]
+    },
+    {
+      "file": "src/pages/learn/NepseTmsGuide.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout"
+      ]
+    },
+    {
+      "file": "src/pages/learn/NepseTradingCalendarHolidays.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout",
+        "../../components/learn/Sources",
+        "../../lib/learnSources"
+      ]
+    },
+    {
+      "file": "src/pages/learn/NepseTradingHours.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout",
+        "../../components/learn/Sources",
+        "../../lib/learnSources"
+      ]
+    },
+    {
+      "file": "src/pages/learn/OpenEndVsCloseEndFunds.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout"
+      ]
+    },
+    {
+      "file": "src/pages/learn/PeRatioBookValue.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout"
+      ]
+    },
+    {
+      "file": "src/pages/learn/PromoterVsOrdinaryShares.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout"
+      ]
+    },
+    {
+      "file": "src/pages/learn/RightSharesNepal.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout"
+      ]
+    },
+    {
+      "file": "src/pages/learn/SebonNewIpoRules2026.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout",
+        "../../components/learn/Sources",
+        "../../lib/learnSources"
+      ]
+    },
+    {
+      "file": "src/pages/learn/ShortSellingIntradayMarginNepal.tsx",
+      "imports": [
+        "react-router-dom",
+        "../../components/Seo",
+        "../../components/LearnLayout",
+        "../../components/learn/figures"
+      ]
+    },
+    {
+      "file": "src/pages/learn/SipInNepal.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout"
+      ]
+    },
+    {
+      "file": "src/pages/learn/WhatIsNepse.tsx",
+      "imports": [
+        "../../components/Seo",
+        "react-router-dom",
+        "../../components/LearnLayout",
+        "../../components/learn/Sources",
+        "../../lib/learnSources"
+      ]
+    },
+    {
+      "file": "src/pages/learn/index.tsx",
+      "imports": [
+        "react-router-dom",
+        "../../components/Seo",
+        "../../components/product/Product",
+        "../../components/ui/NavIcon",
+        "../../lib/learnIndex",
+        "../../lib/stocks"
+      ]
+    },
+    {
+      "file": "src/pages/learn/statements/Hub.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../../../components/Breadcrumb",
+        "../../../components/Seo",
+        "../../../components/StoreButtons",
+        "../../../components/ui/FaqList",
+        "../../../components/ui/NavIcon",
+        "../../../components/statements/TermDetail",
+        "../../../components/statements/StatementTable",
+        "../../../components/gate/links",
+        "../../../lib/hosts",
+        "../../../lib/ledgerRoutes",
+        "../../../lib/session",
+        "../../../lib/useHydrated",
+        "../../../lib/statements",
+        "../../../components/kit/ListFilter",
+        "../../../contracts/routeCapabilities"
+      ]
+    },
+    {
+      "file": "src/pages/learn/statements/Term.tsx",
+      "imports": [
+        "react",
+        "react-router-dom",
+        "../../../components/Breadcrumb",
+        "../../../components/Seo",
+        "../../../components/StoreButtons",
+        "../../../components/ui/FaqList",
+        "../../../components/statements/TermChart",
+        "../../../components/statements/TermGate",
+        "../../../components/gate/links",
+        "../../../lib/ledgerRoutes",
+        "../../../lib/format",
+        "../../../lib/deferredComponent",
+        "../../../lib/format",
+        "../../../lib/statements"
+      ]
+    },
+    {
+      "file": "src/pages/rotation/RotationHead.tsx",
+      "imports": [
+        "@punji/ui/market-report",
+        "@punji/ui/states",
+        "./words"
+      ]
+    },
+    {
+      "file": "src/pages/rotation/RotationSkeleton.tsx",
+      "imports": [
+        "@punji/ui/card",
+        "@punji/ui/states",
+        "react",
+        "./words"
+      ]
+    },
+    {
+      "file": "src/pages/rotation/SectorRotationLive.tsx",
+      "imports": [
+        "react",
+        "@punji/ui/bar-list",
+        "@punji/ui/button",
+        "@punji/ui/card",
+        "@punji/ui/controls",
+        "@punji/ui/correlation-matrix",
+        "@punji/ui/diverging-rows",
+        "@punji/ui/group-change-list",
+        "@punji/ui/group-counts",
+        "@punji/ui/group-pill",
+        "@punji/ui/key-stats",
+        "@punji/ui/locked-note",
+        "@punji/ui/phase-strip",
+        "@punji/ui/retry-note",
+        "@punji/ui/returns-heat-table",
+        "@punji/ui/rotation-map",
+        "@punji/ui/states",
+        "../../components/market/SectorInside",
+        "../../lib/market",
+        "../../lib/rotationGroups",
+        "../../lib/rotationView",
+        "../../lib/sectorRotation",
+        "../../lib/sectionState",
+        "../../lib/session",
+        "../brokers/useBffData",
+        "./RotationHead",
+        "./RotationSkeleton",
+        "./words"
+      ]
+    },
+    {
+      "file": "src/pages/seasonality/SeasonDesk.tsx",
+      "imports": [
+        "react",
+        "@punji/ui/button",
+        "@punji/ui/card",
+        "@punji/ui/check-row",
+        "@punji/ui/controls",
+        "@punji/ui/fact-list",
+        "@punji/ui/month-grid",
+        "@punji/ui/period-history",
+        "@punji/ui/return-bars",
+        "@punji/ui/selectable-month-grid",
+        "@punji/ui/states",
+        "@punji/ui/status-pill",
+        "@punji/ui/summary-figure",
+        "../../components/fundamentals/marks",
+        "../../contracts/seasonality",
+        "../../lib/seasonality",
+        "../../me/pages/seasonal/logic",
+        "./model",
+        "./usePhone"
+      ]
+    },
+    {
+      "file": "src/pages/seasonality/SeasonalityLive.tsx",
+      "imports": [
+        "react",
+        "@punji/ui/card",
+        "@punji/ui/company-search",
+        "@punji/ui/select",
+        "@punji/ui/locked-note",
+        "../../contracts/routeCapabilities",
+        "../../contracts/seasonality",
+        "../../lib/seasonality",
+        "../../lib/sectionState",
+        "../../lib/session",
+        "./SeasonDesk",
+        "./model",
+        "./usePhone"
+      ]
+    },
+    {
+      "file": "src/pages/stock/DividendChart.tsx",
+      "imports": [
+        "@punji/ui/column-chart",
+        "./sharedText"
+      ]
+    },
+    {
+      "file": "src/pages/stock/Record.tsx",
+      "imports": [
+        "react",
+        "@punji/ui/card",
+        "@punji/ui/card-link",
+        "@punji/ui/disclosure",
+        "@punji/ui/fact-list",
+        "@punji/ui/figures",
+        "@punji/ui/states",
+        "@punji/ui/status-tag",
+        "@punji/ui/table",
+        "../../lib/stocks",
+        "./monthly",
+        "./lazyChart",
+        "./Terminal",
+        "./sharedText",
+        "./terminalText"
+      ]
+    },
+    {
+      "file": "src/pages/stock/Related.tsx",
+      "imports": [
+        "react",
+        "@punji/ui/card",
+        "@punji/ui/link-table",
+        "../../lib/pairPath",
+        "./linkRows",
+        "./Terminal",
+        "./terminalText"
+      ]
+    },
+    {
+      "file": "src/pages/stock/StockActions.tsx",
+      "imports": [
+        "react",
+        "../../components/auth/signInRequest",
+        "../../lib/hosts",
+        "../../analytics/posthog",
+        "../../lib/session",
+        "./accountLink"
+      ]
+    },
+    {
+      "file": "src/pages/stock/StockCharts.tsx",
+      "imports": [
+        "@punji/ui/candle-chart",
+        "../../lib/stocks",
+        "./monthly",
+        "./Record",
+        "./terminalText"
+      ]
+    },
+    {
+      "file": "src/pages/stock/Terminal.tsx",
+      "imports": [
+        "react",
+        "../../components/kit/Card",
+        "../../components/kit/CardLink",
+        "../../components/kit/Figures",
+        "../../components/kit/format",
+        "../../components/kit/LinkTable",
+        "../../components/kit/LockedPreview",
+        "../../components/kit/Meter",
+        "../../components/kit/Pagination",
+        "../../components/kit/Rows",
+        "../../components/kit/States",
+        "../../components/gate/SignInFree",
+        "../../lib/useHydrated",
+        "../../lib/livePrices",
+        "../../lib/session",
+        "../../lib/stocks",
+        "./facts",
+        "./monthly",
+        "./terminalText"
+      ]
+    },
+    {
+      "file": "src/pages/stock/TerminalChart.tsx",
+      "imports": [
+        "react",
+        "../../components/charts/tv/AdvancedChart",
+        "../../components/charts/tv/feeds",
+        "../../lib/session",
+        "../../lib/stocks",
+        "./terminalText"
+      ]
+    },
+    {
+      "file": "src/pages/stock/TerminalLive.tsx",
+      "imports": [
+        "react",
+        "../../components/kit/Bars",
+        "../../components/kit/BrokerBadge",
+        "../../components/kit/Card",
+        "../../components/kit/CardLink",
+        "../../components/kit/Controls",
+        "../../components/kit/Figures",
+        "../../components/kit/format",
+        "../../components/kit/Rows",
+        "../../components/kit/HeadlineList",
+        "../../components/kit/LinkTable",
+        "../../components/kit/LockedNote",
+        "../../components/kit/LockedPreview",
+        "../../components/kit/Meter",
+        "../../components/kit/OrderBook",
+        "../../components/kit/RetryNote",
+        "../../components/kit/Sparkline",
+        "../../components/kit/States",
+        "../../contracts/routeCapabilities",
+        "../../lib/hosts",
+        "../../lib/livePrices",
+        "../../lib/sectionState",
+        "../../lib/session",
+        "../../lib/stocks",
+        "../../me/pages/stock/stockLogic",
+        "../../me/pages/stock/stockTypes",
+        "./Terminal",
+        "../../me/desk/useMarketClosed",
+        "../../me/lib/nepseHours",
+        "../../me/desk/marketMark",
+        "./bookClosed",
+        "./terminalText"
+      ]
+    },
+    {
+      "file": "src/pages/stock/__tests__/flowEmpty.test.tsx",
+      "imports": [
+        "react-dom/server",
+        "react-router-dom",
+        "vitest",
+        "../../../lib/session",
+        "../../../lib/stocks",
+        "../../../../e2e/fixtures/stocks/HIDCL.json",
+        "../facts",
+        "../Terminal",
+        "../flowEmpty",
+        "../flowEmpty-ne"
+      ]
+    },
+    {
+      "file": "src/pages/stock/__tests__/publicBoard.test.tsx",
+      "imports": [
+        "react-dom/server",
+        "react-router-dom",
+        "vitest",
+        "../../../components/gate/SignInFree",
+        "../../../lib/session",
+        "../../../lib/stocks",
+        "../../../../scripts/vite-stock-data.mjs",
+        "../../../../e2e/fixtures/stocks/NABIL.json",
+        "../../../contracts/routeCapabilities",
+        "../accountLink",
+        "../facts",
+        "../Terminal",
+        "../terminalText"
+      ]
+    },
+    {
+      "file": "src/pages/stock/__tests__/stockActions.test.tsx",
+      "imports": [
+        "react-dom/server",
+        "vitest",
+        "../StockActions"
+      ]
+    },
+    {
+      "file": "src/pages/stock/__tests__/terminalLive.test.tsx",
+      "imports": [
+        "react-dom/server",
+        "react-router-dom",
+        "react",
+        "vitest",
+        "../../../contracts/routeCapabilities",
+        "../../../lib/session",
+        "../TerminalLive"
+      ]
+    },
+    {
+      "file": "src/pages/stock/lazyChart.tsx",
+      "imports": [
+        "react",
+        "@punji/ui/states",
+        "./sharedText"
+      ]
+    },
+    {
+      "file": "src/pages/stock/linkRows.tsx",
+      "imports": [
+        "@punji/ui/link-table"
+      ]
+    }
+  ]
+}

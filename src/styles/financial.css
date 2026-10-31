@@ -1,0 +1,25 @@
+@layer punji.components {
+  .pu-shell { color: var(--pu-color-text); background: var(--pu-color-bg); min-height: 100vh; font-family: var(--pu-font-body); }
+  .pu-shell-header, .pu-shell-footer { padding: calc(var(--pu-space-3) * 2); border-bottom: 1px solid var(--pu-color-border-strong); }
+  .pu-shell-header { display: flex; align-items: center; justify-content: space-between; gap: var(--pu-space-4); flex-wrap: wrap; }
+  .pu-shell-actions { display: flex; gap: var(--pu-space-3); flex-wrap: wrap; }
+  .pu-shell-body { display: grid; grid-template-columns: 200px minmax(0, 1fr); }
+  .pu-shell-nav { display: flex; flex-direction: column; gap: var(--pu-space-2); padding: var(--pu-space-4); }
+  .pu-shell-nav a { color: var(--pu-color-text-muted); padding: var(--pu-space-3); border-radius: var(--pu-radius-control); text-decoration: none; }
+  .pu-shell-nav a[aria-current='page'] { color: var(--pu-color-text); background: var(--pu-color-surface); font-weight: 600; }
+  .pu-shell-main { min-width: 0; padding: calc(var(--pu-space-3) * 2); display: grid; align-content: start; gap: calc(var(--pu-space-3) * 2); }
+  .pu-shell-footer { color: var(--pu-color-text-muted); }
+  .pu-skip { position: fixed; top: -100px; left: var(--pu-space-4); z-index: 100; padding: var(--pu-space-3); background: var(--pu-color-surface); color: var(--pu-color-text); }
+  .pu-skip:focus { top: var(--pu-space-4); }
+  .pu-chart { margin: 0; padding: calc(var(--pu-space-1) * 5); border-radius: var(--pu-radius-card); background: var(--pu-color-surface); }
+  .pu-chart svg { display: block; width: 100%; height: auto; max-height: 260px; color: var(--pu-color-accent); fill: currentColor; }
+  .pu-chart-range { display: flex; justify-content: space-between; color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums; }
+  .pu-chart summary { cursor: pointer; min-height: var(--pu-control-lg); display: list-item; align-content: center; }
+  .pu-chart table { width: 100%; text-align: left; }
+  .pu-chart td { text-align: right; font-variant-numeric: tabular-nums; }
+  @media (max-width: 760px) {
+    .pu-shell-body { grid-template-columns: minmax(0, 1fr); }
+    .pu-shell-nav { flex-direction: row; flex-wrap: wrap; }
+    .pu-shell-main { padding: var(--pu-space-3); }
+  }
+}

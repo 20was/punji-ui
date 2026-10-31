@@ -1,0 +1,9 @@
+/* The shared portal clips ground demos at their rounded frame edge. Give the
+   first glyph a little room while keeping all demo content on the same edge. */
+.ds-demo:has(> .ds-stage.ground):has(.kit-sel) > .ds-demo-t { padding: 4px 0 0 4px; }
+
+.select-example-form {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+}

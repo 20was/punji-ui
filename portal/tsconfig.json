@@ -1,0 +1,35 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@punji/package-utilities": [
+        "../dist/nepal/nepal.d.ts"
+      ],
+      "@punji/package-media": [
+        "../dist/use-media-query/useMediaQuery.d.ts"
+      ],
+      "@punji/package-hydrated": [
+        "../dist/use-hydrated/useHydrated.d.ts"
+      ],
+      "@punji/package-order": [
+        "../dist/stable-order/useStableOrder.d.ts"
+      ],
+      "@punji/package-calendar": [
+        "../dist/calendar/Calendar.d.ts"
+      ],
+      "@punji/package-datepicker": [
+        "../dist/date-picker/DatePicker.d.ts"
+      ],
+      "@punji/package-select": [
+        "../dist/select/Select.d.ts"
+      ]
+    }
+  },
+  "include": [
+    "pages.tsx",
+    "bridge.d.ts",
+    "calendar-pages.tsx",
+    "env.d.ts",
+    "select-page.tsx"
+  ]
+}

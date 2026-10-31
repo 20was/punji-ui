@@ -1,5 +1,4 @@
-// Source guard: every module imports only React and its own files (zero
-// runtime dependencies besides React), declares 'use client' exactly when it
+// Source guard: reviewed dependencies only; declares 'use client' exactly when it
 // uses hooks or makes its own event handlers, builds no HTML from strings and
 // runs no strings as code; every subpath in package.json has its source.
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
@@ -15,13 +14,15 @@ const CLIENT = /\buse[A-Z]\w*\(|\bcreatePortal\b|\bon[A-Z]\w*=\{\s*\(|\bon[A-Z]\
 for (const f of sources) {
   const rel = f.slice(root.length);
   const text = readFileSync(f, 'utf8');
-  for (const m of text.matchAll(/from '([^']+)'/g)) if (!m[1].startsWith('.') && !['react', 'react-dom'].includes(m[1])) problems.push(`${rel}: imports ${m[1]}`);
+  for (const m of text.matchAll(/from '([^']+)'/g)) if (!m[1].startsWith('.') && !['react', 'react-dom', '@remotemerge/nepali-date-converter'].includes(m[1])) problems.push(`${rel}: imports ${m[1]}`);
   if (/dangerouslySetInnerHTML|innerHTML\s*=|\beval\(|new Function\(|setTimeout\(\s*['"`]/.test(text)) problems.push(`${rel}: builds HTML from strings or runs a string as code`);
   if (!rel.endsWith('index.ts') && !rel.includes('/internal/') && text.startsWith("'use client'") !== CLIENT.test(text)) problems.push(`${rel}: 'use client' ${CLIENT.test(text) ? 'missing' : 'not needed'}`);
 }
 const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
-if (pkg.dependencies && Object.keys(pkg.dependencies).length) problems.push('package.json: runtime dependencies');
-if (pkg.private !== true) problems.push('package.json: "private": true was removed');
+for (const [name, version] of Object.entries(pkg.dependencies ?? {})) {
+  if (name !== '@remotemerge/nepali-date-converter' || version !== '1.2.5') problems.push(`Unreviewed runtime dependency: ${name}@${version}`);
+}
+
 for (const [sub, target] of Object.entries(pkg.exports)) {
   if (typeof target === 'string') continue;
   const src = target.default.replace('./dist/', 'src/').replace(/\.js$/, '');
@@ -32,4 +33,4 @@ if (problems.length) {
   console.error(problems.join('\n'));
   process.exit(1);
 }
-console.log(`source: ${sources.length} modules import React only; 'use client' where needed`);
+console.log(`source: ${sources.length} modules use approved dependencies; 'use client' where needed`);

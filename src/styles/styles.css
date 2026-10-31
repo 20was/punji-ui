@@ -26,6 +26,9 @@
 @import './list-filter.css';
 @import './live-figure.css';
 @import './money.css';
+@import './otp-input.css';
+@import './percentage-input.css';
+@import './statement-upload.css';
 @import './order-book.css';
 @import './overlay.css';
 @import './popover.css';

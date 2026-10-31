@@ -500,6 +500,26 @@
       "types": "./dist/calendar/Calendar.d.ts",
       "default": "./dist/calendar/Calendar.js"
     },
+    "./date-range-presets": {
+      "types": "./dist/date-range-presets/presets.d.ts",
+      "default": "./dist/date-range-presets/presets.js"
+    },
+    "./date-range-presets/nepal": {
+      "types": "./dist/date-range-presets/nepal.d.ts",
+      "default": "./dist/date-range-presets/nepal.js"
+    },
+    "./percentage-input": {
+      "types": "./dist/percentage-input/PercentageInput.d.ts",
+      "default": "./dist/percentage-input/PercentageInput.js"
+    },
+    "./otp-input": {
+      "types": "./dist/otp-input/OtpInput.d.ts",
+      "default": "./dist/otp-input/OtpInput.js"
+    },
+    "./statement-upload": {
+      "types": "./dist/statement-upload/StatementUpload.d.ts",
+      "default": "./dist/statement-upload/StatementUpload.js"
+    },
     "./date-picker": {
       "types": "./dist/date-picker/DatePicker.d.ts",
       "default": "./dist/date-picker/DatePicker.js"

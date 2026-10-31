@@ -28,11 +28,13 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     examples: [
       { id: 'basic', title: 'Text, hint and error', note: 'The error replaces the hint and is announced when it appears.' },
       { id: 'number', title: 'Number and price', note: 'inputMode asks a phone for the right keypad; the value is still text.' },
+      { id: 'stepper', title: 'Steppers', note: 'step, min, max and steppers turn NumberField into an exact spin button: lots of 10, a 0.10 price tick.' },
       { id: 'symbol', title: 'Symbol', note: 'A combobox over the list you pass; arrows choose, Enter picks, Esc closes.' },
       { id: 'long', title: 'Select, date, long text', note: 'The same box for a dropdown, the native date input and several lines of text.' },
     ],
     keyboard: [
       'Tab moves into and out of the field; the label is a real <label>, so a click on it focuses the input.',
+      '`NumberField` with `step` or `steppers`: `ArrowUp` and `ArrowDown` add or subtract one step, Shift or `PageUp`/`PageDown` ten steps, `Home` and `End` jump to `min` and `max`. The - and + buttons are out of the Tab order.',
       '`SymbolField`: `ArrowDown` and `ArrowUp` move through the matches, Enter picks the active one, Esc closes the list (the typed text stays).',
       '`DateField` and the textarea use the browser\'s own keyboard behaviour.',
     ],
@@ -46,12 +48,13 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     notes: {
       title: 'Limits',
       points: [
+        'There is no separate quantity component. `NumberField` with `step`, `min`, `max` and `steppers` is the spin button (role spinbutton, `aria-valuemin` and `aria-valuemax`, `aria-valuetext` carrying the exact string). Stepping is exact decimal arithmetic through `stepDecimal`, clamps into the limits and leaves typed text outside them alone for you to flag; unfinished text such as "12." is not stepped. Hold-to-repeat is not implemented.',
         '`NumberField` shows the text exactly as typed and sets `inputMode` ("numeric" with integer, otherwise "decimal"). `onValueChange` reports the text parsed (grouping commas and Devanagari digits accepted, no rounding) as a plain decimal string or a reason it is not a number yet. It does not check ranges or set the error for you; for money, parse to minor units or use `CurrencyInput`.',
         'The value is always a string and `onChange` gives a string. `DateField`\'s value is YYYY-MM-DD, the native date input\'s format; for Bikram Sambat dates use `DatePicker`.',
         '`SymbolField` uppercases what is typed and matches by symbol and name through `searchSymbols`; it does not fetch.',
       ],
     },
-    related: ['select', 'currency-input', 'date-picker', 'list-filter', 'checkbox'],
+    related: ['select', 'currency-input', 'percentage-input', 'otp-input', 'date-picker', 'list-filter', 'checkbox'],
   },
   {
     slug: 'select',

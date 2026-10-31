@@ -1,0 +1,24 @@
+/* Punji UI styles.
+   Styles for StatementUpload. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .pu-upload { display: grid; gap: 6px; min-width: 0 }
+  .pu-upload-label { font: 500 13px / 16px var(--pu-font-body); color: var(--pu-color-text-muted) }
+  .pu-upload[data-invalid='true'] .pu-upload-label { color: var(--pu-color-loss) }
+  .pu-upload-zone { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--pu-space-2); padding: var(--pu-space-4); border: 1.5px dashed var(--pu-color-border-control); border-radius: var(--pu-radius-control); background: var(--pu-color-surface-tint); text-align: center; transition: border-color var(--pu-motion-fast) var(--pu-ease-out), background-color var(--pu-motion-fast) var(--pu-ease-out) }
+  .pu-upload-zone[data-dragging='true'] { border-color: var(--pu-color-accent); border-style: solid; background: var(--pu-color-surface-solid) }
+  .pu-upload-zone[data-disabled='true'] { border-style: dotted; background: transparent }
+  .pu-upload[data-invalid='true'] .pu-upload-zone { border-color: var(--pu-color-loss) }
+  .pu-upload-prompt { font: 400 var(--pu-text-sm) / 1.3 var(--pu-font-body); color: var(--pu-color-text-muted) }
+  .pu-upload-choose { min-height: var(--pu-tap-min); padding: 0 var(--pu-space-4); border: 1px solid var(--pu-color-border-control); border-radius: var(--pu-radius-control); background: var(--pu-color-surface-solid); color: var(--pu-color-text); font: 600 14px / 1 var(--pu-font-body); cursor: pointer }
+  .pu-upload-choose:hover:not(:disabled) { border-color: var(--pu-color-text-tertiary) }
+  .pu-upload-choose:focus-visible, .pu-upload-remove:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+  .pu-upload-choose:disabled, .pu-upload-remove:disabled { cursor: not-allowed }
+  .pu-upload-hint { font: 400 12px / 16px var(--pu-font-body); color: var(--pu-color-text-tertiary) }
+  .pu-upload-error { margin: 0; padding: 0; list-style: none; font: 600 12px / 16px var(--pu-font-body); color: var(--pu-color-loss) }
+  .pu-upload-files { display: grid; gap: var(--pu-space-2); margin: 0; padding: 0; list-style: none }
+  .pu-upload-file { display: flex; align-items: center; gap: var(--pu-space-3); min-width: 0; min-height: var(--pu-tap-min); padding: 0 var(--pu-space-1) 0 var(--pu-space-3); border: 1px solid var(--pu-color-border-default); border-radius: var(--pu-radius-control); background: var(--pu-color-surface-solid) }
+  .pu-upload-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 500 14px / 1.2 var(--pu-font-body); color: var(--pu-color-text) }
+  .pu-upload-size { flex: none; font: 400 12px / 16px var(--pu-font-body); font-variant-numeric: tabular-nums; color: var(--pu-color-text-muted) }
+  .pu-upload-remove { display: inline-flex; align-items: center; justify-content: center; flex: none; width: var(--pu-tap-min); height: var(--pu-tap-min); padding: 0; border: 0; border-radius: var(--pu-radius-control); background: transparent; color: var(--pu-color-text); cursor: pointer }
+  .pu-upload-remove:hover:not(:disabled) { background: var(--pu-color-surface-tint) }
+}

@@ -37,7 +37,7 @@ visual baselines and size budgets.
 
 ### Wave 2: remaining compositions and forms
 
-- **Forms:** NumberInput, PercentageInput, OTP input, date-range presets, statement upload.
+- **Forms (done):** `NumberField` steppers (`step`, `min`, `max`, `steppers`; no separate NumberInput), `PercentageInput`, `OtpInput`, `DateRangePicker` presets with the pure `date-range-presets` helpers (Nepal Shrawan fiscal year), `StatementUpload`.
 - **Docs pages still missing:** Calendar, Chip, FilterChip, ShowMore, InlineConfirm, Avatar, StatusTag, StatGrid and StatTile, Sheet and Dock, DrawerScreen, and the cutover items in [site/README.md](site/README.md).
 - **Gaps the showcase exposed (check each against the current code before starting):** `PageHeader` always renders an `h1` (no heading level); `Button` has no stacked icon-over-label (tile) variant; `Tile` shows only four characters of a five-letter symbol.
 

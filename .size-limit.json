@@ -133,6 +133,20 @@
     "gzip": true
   },
   {
+    "name": "stack (import from '@punji/ui/stack')",
+    "path": "dist/stack/Stack.js",
+    "import": "*",
+    "limit": "400 B",
+    "gzip": true
+  },
+  {
+    "name": "code-block (import from '@punji/ui/code-block')",
+    "path": "dist/code-block/CodeBlock.js",
+    "import": "*",
+    "limit": "1.5 kB",
+    "gzip": true
+  },
+  {
     "name": "locked-note (import from '@punji/ui/locked-note')",
     "path": "dist/locked-note/LockedNote.js",
     "import": "*",
@@ -283,13 +297,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "87.3 kB",
+    "limit": "87.5 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "26.8 kB",
+    "limit": "27 kB",
     "rolldown": false,
     "gzip": true
   },

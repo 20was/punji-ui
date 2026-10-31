@@ -760,6 +760,53 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     related: ['drawer', 'field', 'sheet', 'button'],
   },
   {
+    slug: 'stack',
+    title: 'Stack and Cluster',
+    description: 'Two layout primitives: Stack puts children in one column and Cluster in a row that wraps, both spaced by the --pu-space-* scale and nothing else.',
+    group: 'layout',
+    kind: 'component',
+    summary:
+      'Stack lays its children out in one column; Cluster lays them out in a row that wraps onto the next line when it is full. Each takes a `gap` from the spacing scale (1, 2, 3, 4 or 16) and draws nothing else: no colour, border or padding. Use them in place of one-off flex and grid rules, so copied code works without any CSS of your own.',
+    use: ['A form or card body: fields and notes one under the other (Stack).', 'A toolbar of buttons and chips that wraps on a phone (Cluster, `justify="between"` to push the last to the far end).', 'A list: `as="ul"` with `li` children removes the bullets and the padding for you.'],
+    avoid: ['A grid of equal columns: write a CSS grid.', 'Spacing with a pixel value: pick a step of the scale.', 'A `nav` or `section` in `as` without a name: give it an `aria-label`.'],
+    api: [...ui('stack', 'Stack', 'Cluster')],
+    examples: [
+      { id: 'basic', title: 'Fields in a column', note: 'The gap is the only space between the children; paragraphs inside lose their own margin.' },
+      { id: 'cluster', title: 'Actions that wrap', note: 'Narrow the window: the row wraps instead of overflowing. justify="between" splits the ends.' },
+    ],
+    keyboard: ['Not interactive. Tab order is the order of the children in the document, so the visual order should match it.'],
+    accessibility: [
+      'They add no role. With `as="ul"` or `as="ol"` the children must be `li`; `as="nav"` and `as="section"` need an `aria-label`.',
+      'Layout never changes reading order: do not use `align` or `justify` to move something away from where it sits in the source.',
+    ],
+    responsive: ['Both shrink to their container (min-width 0). Cluster wraps onto new lines; Stack is always one column.'],
+    related: ['spacing', 'card', 'rows', 'code-block'],
+  },
+  {
+    slug: 'code-block',
+    title: 'CodeBlock',
+    description: 'A monospace box for plain text people read or copy, such as a CSV export or a JSON payload, with an optional label and Copy button. No syntax highlighting.',
+    group: 'layout',
+    kind: 'component',
+    summary:
+      'A block of plain text in a monospace box, for output a person reads or copies: a CSV export, a JSON payload, an account statement. The text is shown exactly as given. Add a `label` to name it, and `copy` for a Copy button that puts the whole text on the clipboard. It does not colour syntax.',
+    use: ['Showing the CSV a user is about to download.', 'A JSON response or a reference number to copy (`copy`).'],
+    avoid: ['Long source code: it is plain text, with no highlighting or line numbers.', 'A secret such as a full account number: the copy button puts it on a clipboard shared with every app.', 'Columns of figures: use a table.'],
+    api: [...ui('code-block', 'CodeBlock')],
+    examples: [
+      { id: 'basic', title: 'A CSV export', note: 'The label names it; Copy puts the whole text on the clipboard and says so.' },
+      { id: 'json', title: 'JSON with no label', note: 'Without a visible label, give it an aria-label.' },
+    ],
+    keyboard: ['The Copy button is a Button: Tab to it, then Enter or Space. Nothing is copied until it is pressed.'],
+    accessibility: [
+      'A `figure` named by the label (or `aria-label` when there is none); the text is in `pre` and `code`.',
+      'The result of Copy ("Copied", "Could not copy") is announced in a polite status region; set `labels` in the reader\'s language.',
+      'Copy is disabled where the browser has no clipboard API.',
+    ],
+    responsive: ['Fills its container; long lines wrap rather than scroll, so a phone shows every character.'],
+    related: ['csv-export', 'hooks', 'stack', 'button'],
+  },
+  {
     slug: 'chart-scale',
     title: 'Chart scales',
     description: 'Pure Y scales for value charts: round ticks that bracket the line so it fills the plot, and a far-off second series named instead of squashed at the edge.',

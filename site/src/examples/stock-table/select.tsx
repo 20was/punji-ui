@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { StockTable, sortQuotes, type QuoteSort } from '@punji/ui/stock-table';
 import { quotes } from '../../sample.ts';
+import { Stack } from '@punji/ui/stack';
 
 // Selection is controlled: keep the symbols in state and pass them back. Rows are keyed by symbol.
 export default function Example() {
   const [sort, setSort] = useState<QuoteSort>({ key: 'turnover', dir: 'desc' });
   const [selected, setSelected] = useState<readonly string[]>(['NABIL']);
   return (
-    <div className="ex-stack">
+    <Stack>
       <StockTable
         caption="Select stocks to compare"
         quotes={sortQuotes(quotes, sort).slice(0, 6)}
@@ -21,6 +22,6 @@ export default function Example() {
         stack={false}
       />
       <p>{selected.length ? `Selected: ${selected.join(', ')}` : 'Nothing selected.'}</p>
-    </div>
+    </Stack>
   );
 }

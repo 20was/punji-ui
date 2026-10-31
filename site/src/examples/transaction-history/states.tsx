@@ -1,11 +1,12 @@
 import { TransactionHistory } from '@punji/ui/transaction-history';
+import { Stack } from '@punji/ui/stack';
 
 export default function Example() {
   return (
-    <div className="ex-stack">
+    <Stack>
       <TransactionHistory transactions={[]} caption="Loading" state="loading" />
       <TransactionHistory transactions={[]} caption="Empty" />
       <TransactionHistory transactions={[]} caption="Error" state="error" onRetry={() => undefined} />
-    </div>
+    </Stack>
   );
 }

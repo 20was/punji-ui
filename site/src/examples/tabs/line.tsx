@@ -6,6 +6,7 @@ import { nepalMoneyConfig } from '@punji/ui/money';
 import { Tabs } from '@punji/ui/tabs';
 import { TransactionList } from '@punji/ui/transaction-list';
 import { accounts, transactions } from '../../sample.ts';
+import { Stack } from '@punji/ui/stack';
 
 type Tab = 'summary' | 'activity' | 'statements';
 const npr = nepalMoneyConfig();
@@ -18,7 +19,7 @@ export default function Example() {
   return (
     <div className="ex-narrow">
       <Card title={accounts.savings.institution} description={accounts.savings.accountType} headingLevel={3}>
-        <div className="ex-stack">
+        <Stack>
           <Tabs<Tab>
             label="Account sections"
             prefix="tabs-line"
@@ -60,7 +61,7 @@ export default function Example() {
               </ul>
             )}
           </div>
-        </div>
+        </Stack>
       </Card>
     </div>
   );

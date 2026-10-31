@@ -29,6 +29,8 @@ export * from './fields/Fields.tsx';
 export * from './figures/Figures.tsx';
 export * from './filter-chip/FilterChip.tsx';
 export * from './inline-confirm/InlineConfirm.tsx';
+export * from './stack/Stack.tsx';
+export * from './code-block/CodeBlock.tsx';
 export * from './layout/Layout.tsx';
 export * from './live-figure/LiveFigure.tsx';
 export * from './locked-note/LockedNote.tsx';

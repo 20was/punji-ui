@@ -3,6 +3,7 @@ import { Button } from '@punji/ui/button';
 import { Drawer } from '@punji/ui/drawer';
 import { DrawerBody, DrawerFooter, DrawerHeader, DrawerScreen } from '@punji/ui/drawer-screen';
 import { Field, NumberField } from '@punji/ui/fields';
+import { Cluster, Stack } from '@punji/ui/stack';
 
 // DrawerScreen as the form: Enter submits, the header carries the title and the close, the footer stays docked.
 export default function Example() {
@@ -11,12 +12,12 @@ export default function Example() {
   const [units, setUnits] = useState('10');
   const [saved, setSaved] = useState('');
   return (
-    <div className="ex-stack">
-      <div className="ex-row">
+    <Stack>
+      <Cluster>
         <Button onClick={() => setOpen(true)} aria-haspopup="dialog">
           Add transaction
         </Button>
-      </div>
+      </Cluster>
       <p role="status" className="ex-label">
         {saved || 'Nothing saved yet.'}
       </p>
@@ -31,10 +32,10 @@ export default function Example() {
         >
           <DrawerHeader title="Add transaction" closeLabel="Close" backLabel="Back" onClose={() => setOpen(false)} />
           <DrawerBody title="Buy" description="Brokerage and fees are added when it settles.">
-            <div className="ex-stack">
+            <Stack>
               <Field label="Symbol" value={symbol} onChange={setSymbol} />
               <NumberField integer label="Units" value={units} onChange={setUnits} />
-            </div>
+            </Stack>
           </DrawerBody>
           <DrawerFooter note="Enter saves, Esc closes">
             <Button type="submit">Save</Button>
@@ -44,6 +45,6 @@ export default function Example() {
           </DrawerFooter>
         </DrawerScreen>
       </Drawer>
-    </div>
+    </Stack>
   );
 }

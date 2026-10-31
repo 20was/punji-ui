@@ -1,9 +1,10 @@
 import { SplitBar } from '@punji/ui/bars';
+import { Stack } from '@punji/ui/stack';
 
 // Part labels are printed under the bar, so the bar can stay decorative. With neither labels nor `label` it warns in development.
 export default function Example() {
   return (
-    <div className="ex-stack">
+    <Stack>
       <SplitBar
         parts={[
           { key: 'u', value: 141, tone: 'gain', label: '141 up' },
@@ -18,6 +19,6 @@ export default function Example() {
           { key: 'todo', value: 3, tone: 'neutral' },
         ]}
       />
-    </div>
+    </Stack>
   );
 }

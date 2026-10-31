@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { CompanySearch } from '@punji/ui/company-search';
 import { symbols } from '../../sample.ts';
+import { Stack } from '@punji/ui/stack';
 
 // A picker: pass `value`. The field shows the pick and its name until it is clicked or focused.
 export default function Example() {
   const [symbol, setSymbol] = useState<string | null>('NABIL');
   return (
-    <div className="ex-stack">
+    <Stack>
       <CompanySearch
         options={symbols}
         label="Stock"
@@ -34,6 +35,6 @@ export default function Example() {
         size="md"
         shortcut={null}
       />
-    </div>
+    </Stack>
   );
 }

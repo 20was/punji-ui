@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FinancialPeriodSelector, nepalFiscalMonthPeriods, nepalFiscalQuarterPeriods, nepalFiscalYearPeriods } from '@punji/ui/period-selector';
 import { periodSpec } from '../../sample.ts';
+import { Stack } from '@punji/ui/stack';
 
 const periods = [
   ...nepalFiscalYearPeriods(periodSpec.from, periodSpec.to),
@@ -12,7 +13,7 @@ const periods = [
 export default function Example() {
   const [value, setValue] = useState<string>(periodSpec.initial);
   return (
-    <div className="ex-stack">
+    <Stack>
       <FinancialPeriodSelector
         periods={periods}
         value={value}
@@ -21,6 +22,6 @@ export default function Example() {
         kindLabels={{ year: 'Year', quarter: 'Quarter', month: 'Month' }}
       />
       <output>Selected: {value}</output>
-    </div>
+    </Stack>
   );
 }

@@ -1,12 +1,13 @@
 import { Pagination } from '@punji/ui/pagination';
 import { usePagination } from '@punji/ui/use-pagination';
 import { holdings } from '../../sample.ts';
+import { Stack } from '@punji/ui/stack';
 
 // The hook owns the arithmetic (one-based page, clamped); Pagination takes its state directly.
 export default function Example() {
   const pager = usePagination({ total: holdings.length, defaultPageSize: 5 });
   return (
-    <div className="ex-stack">
+    <Stack>
       <ul>
         {holdings.slice(pager.startIndex, pager.endIndex).map((h) => (
           <li key={h.symbol}>
@@ -15,6 +16,6 @@ export default function Example() {
         ))}
       </ul>
       <Pagination {...pager} onPageChange={pager.setPage} label="Holdings pages" />
-    </div>
+    </Stack>
   );
 }

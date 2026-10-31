@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Breakdown, BreakdownRow } from '@punji/ui/breakdown';
 import { formatNepalNumber } from '@punji/ui/nepal/format';
+import { Stack } from '@punji/ui/stack';
 
 const rs = (n: number) => `Rs ${formatNepalNumber(n)}`;
 
@@ -10,8 +11,8 @@ export default function Example() {
   const amount = shares * 1240;
   const commission = Math.round(amount * 0.004);
   return (
-    <div className="ex-stack">
-      <label className="ex-row">
+    <Stack>
+      <label style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--pu-space-3)' }}>
         Shares to sell
         <input type="number" min={0} value={shares} onChange={(e) => setShares(Math.max(0, Number(e.target.value) || 0))} />
       </label>
@@ -20,6 +21,6 @@ export default function Example() {
         <BreakdownRow label="Broker commission" note="0.40% of the amount" value={`- ${rs(commission)}`} tone="down" />
         <BreakdownRow label="You receive" total value={rs(amount - commission)} />
       </Breakdown>
-    </div>
+    </Stack>
   );
 }

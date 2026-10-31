@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { MarketMovers } from '@punji/ui/market-movers';
 import { SegmentedControl } from '@punji/ui/controls';
 import { quotes } from '../../sample.ts';
+import { Stack } from '@punji/ui/stack';
 
 type View = 'ready' | 'loading' | 'error' | 'flat';
 
@@ -10,7 +11,7 @@ export default function Example() {
   const [view, setView] = useState<View>('loading');
   const flat = quotes.map((q) => ({ ...q, previousClose: q.ltp }));
   return (
-    <div className="ex-stack">
+    <Stack>
       <SegmentedControl<View>
         label="State"
         prefix="movers-state"
@@ -33,6 +34,6 @@ export default function Example() {
         onRetry={() => setView('loading')}
         emptyLabels={{ gainers: 'No gainers today.', losers: 'No losers today.' }}
       />
-    </div>
+    </Stack>
   );
 }

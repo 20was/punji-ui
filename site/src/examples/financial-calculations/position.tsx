@@ -4,6 +4,7 @@ import { KeyStats } from '@punji/ui/key-stats';
 import { MoneyDisplay } from '@punji/ui/money-display';
 import { nepalMoneyConfig } from '@punji/ui/money';
 import { PriceChange } from '@punji/ui/price-change';
+import { Stack } from '@punji/ui/stack';
 
 const npr = nepalMoneyConfig();
 const ltp = 61_000n; // Rs 610.00, in paisa
@@ -25,7 +26,7 @@ export default function Example() {
   return (
     <div className="ex-narrow">
       <Card title="NABIL position" description={`${position.quantity} shares at Rs 610.00`} headingLevel={3}>
-        <div className="ex-stack">
+        <Stack>
           <div>
             <p className="ex-label">Market value</p>
             <p className="ex-big">{money(value.marketValue)}</p>
@@ -43,7 +44,7 @@ export default function Example() {
               { label: 'Tax on the gain', value: money(tax), sub: 'At an illustrative 5%' },
             ]}
           />
-        </div>
+        </Stack>
       </Card>
     </div>
   );

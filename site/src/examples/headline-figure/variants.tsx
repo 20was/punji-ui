@@ -3,13 +3,14 @@ import { HeadlineFigure, FigureChip } from '@punji/ui/summary-figure';
 import { MoneyDisplay } from '@punji/ui/money-display';
 import { nepalMoneyConfig } from '@punji/ui/money';
 import { Button } from '@punji/ui/button';
+import { Stack } from '@punji/ui/stack';
 
 const preset = nepalMoneyConfig();
 
 export default function Example() {
   const [hidden, setHidden] = useState(false);
   return (
-    <div className="ex-stack">
+    <Stack>
       <HeadlineFigure
         size="lg"
         label="Total return"
@@ -26,6 +27,6 @@ export default function Example() {
           Rs 12,500
         </FigureChip>
       </HeadlineFigure>
-    </div>
+    </Stack>
   );
 }

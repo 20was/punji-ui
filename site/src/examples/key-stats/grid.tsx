@@ -1,9 +1,10 @@
 import { KeyStats } from '@punji/ui/key-stats';
+import { Stack } from '@punji/ui/stack';
 
 // A value that is not known (null) says so in words, never a dash or a zero.
 export default function Example() {
   return (
-    <div className="ex-stack">
+    <Stack>
       <KeyStats
         label="NABIL fundamentals"
         empty="Not published"
@@ -26,6 +27,6 @@ export default function Example() {
           { label: 'Low', value: 'Rs 478.20' },
         ]}
       />
-    </div>
+    </Stack>
   );
 }

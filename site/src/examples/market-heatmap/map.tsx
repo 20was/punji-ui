@@ -4,6 +4,7 @@ import { MoneyDisplay } from '@punji/ui/money-display';
 import { nepalMoneyConfig } from '@punji/ui/money';
 import { PriceChange } from '@punji/ui/price-change';
 import { quotes } from '../../sample.ts';
+import { Stack } from '@punji/ui/stack';
 
 const npr = nepalMoneyConfig();
 const items = heatmapItemsFromQuotes(quotes, 'turnover');
@@ -13,7 +14,7 @@ export default function Example() {
   const [picked, setPicked] = useState(quotes[0]!.symbol);
   const quote = quotes.find((q) => q.symbol === picked) ?? quotes[0]!;
   return (
-    <div className="ex-stack">
+    <Stack>
       <MarketHeatmap items={items} label="NEPSE turnover heatmap" sizeLabel="Turnover" onSelect={setPicked} />
       <p className="ex-quote" aria-live="polite">
         <b>{quote.symbol}</b>
@@ -21,6 +22,6 @@ export default function Example() {
         <MoneyDisplay value={quote.ltp} preset={npr} />
         <PriceChange size="sm" current={quote.ltp} previous={quote.previousClose} preset={npr} />
       </p>
-    </div>
+    </Stack>
   );
 }

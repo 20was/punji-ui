@@ -1,6 +1,6 @@
 # Dependency audit and bundle analysis
 
-Measured 2026-10-31 on branch `feat/financial-calculations` (after merging calculations, hooks/export
+Measured 2026-10-31 on branch `feat/financial-calculations` (after merging calculations, hooks/export, the two migration batches
 and money primitives). Re-run the commands at the end to refresh; update this file in the same PR as
 any dependency or budget change.
 
@@ -60,7 +60,7 @@ selection:
 
 | Entry | Gzip | Notes |
 |---|---|---|
-| `@punji/ui` (everything) | 39.38 kB | Budget 40 kB. Only for measuring; apps should import named exports and let tree-shaking drop the rest |
+| `@punji/ui` (everything) | 48.31 kB | Grew with the migrated component batches (see `.size-limit.json`). Only for measuring; apps should import named exports and let tree-shaking drop the rest |
 | `@punji/ui/button` | 576 B | Tree-shaking check: one component stays small |
 | `@punji/ui/table` | 2.22 kB | |
 | `@punji/ui/calculations` | 1.92 kB | Pure; no React |
@@ -74,7 +74,7 @@ selection:
 | `styles.css` (all) | 13.94 kB | Per-component CSS available under `@punji/ui/css/*.css` |
 | `tokens.css` | 1.07 kB | |
 
-Tarball: 211 files, 145 kB packed, 549 kB unpacked (budget 570 KiB in `scripts/check-pack.mjs`).
+Tarball: 264 files, 191 kB packed, 732 kB unpacked (budget in `scripts/check-pack.mjs`). `styles.css` all components: 20.04 kB gzip.
 
 Known follow-ups:
 

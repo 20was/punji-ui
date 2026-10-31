@@ -205,8 +205,8 @@ Safari and iOS Safari 16.4+ (the versions with CSS cascade layers and
 Every component follows its [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)
 pattern, works with the keyboard alone, draws one visible focus ring, respects
 `prefers-reduced-motion`, and passes axe-core with no serious or critical issue in
-the test suite. Colour contrast is measured on the documentation site's
-foundations page. If something does not work with your assistive technology,
+the test suite. Colour contrast is checked by axe-core in a real browser for
+every visual fixture in light and dark themes ([visual testing](docs/VISUAL-TESTING.md)). If something does not work with your assistive technology,
 please [open an issue](https://github.com/20was/punji-ui/issues/new/choose).
 
 ## Where the code lives

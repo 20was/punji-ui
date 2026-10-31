@@ -13,8 +13,8 @@ What is enforced today at `cfe3d47`, and what is not. Contributor workflow: [CON
 | Build | `npm run build` | `tsc` ESM and declarations, Lightning CSS | `verify` |
 | Examples | `npm run typecheck:examples`, `build:examples`, `check:examples` | Examples typecheck and build against the built package; `check:examples` drives them in Chromium with axe (serious/critical) | `verify` |
 | Portal types | `npm run typecheck:portal` | Portal pages typecheck | `verify` |
-| Size | `npm run size` | size-limit, gzip, 90 entries in `.size-limit.json`: per subpath, root "Everything" (45 kB), root Button tree-shaking (640 B) | `verify` |
-| Package | `npm run check:package` | `publint --strict`; `attw --profile esm-only`; `check-pack.mjs` (tarball allowlist, notices present, 680 KiB unpacked cap); `check:exports` (subpaths equal root) | `verify` |
+| Size | `npm run size` | size-limit, gzip, 90 entries in `.size-limit.json`: per subpath, root "Everything" and a root Button tree-shaking check; limits live in the file | `verify` |
+| Package | `npm run check:package` | `publint --strict`; `attw --profile esm-only`; `check-pack.mjs` (tarball allowlist, notices present, `MAX_UNPACKED` cap); `check:exports` (subpaths equal root) | `verify` |
 | Lockfile | `npm run check:lockfile` | lockfile-lint: npm registry, HTTPS, integrity | `verify` |
 | Signatures | `npm audit signatures` | Registry signatures and provenance of installed packages | `verify` and `release` |
 | Visual, interaction, axe (browser) | `npm run test:visual:docker` (CI runs `npx playwright test`) | Screenshots vs committed baselines, keyboard/focus interactions, axe with colour contrast | `visual` job |
@@ -75,8 +75,8 @@ Gaps recorded in the original audit: full keyboard, mobile and overlay audit, na
 | Standard | Enforced by |
 | --- | --- |
 | Per-subpath gzip budgets; a typical control under 1 kB gzip | `npm run size` |
-| Everything under 45 kB gzip; root Button import under 640 B (tree-shaking regression) | `npm run size` |
-| Tarball allowlist and 680 KiB unpacked cap | `check-pack.mjs` |
+| Everything and root Button import within their `.size-limit.json` budgets (Button guards tree-shaking) | `npm run size` |
+| Tarball allowlist and `MAX_UNPACKED` cap | `check-pack.mjs` |
 | One runtime dependency (converter), isolated to `nepal/calendar` | `check-source`, `check-boundaries` |
 | No runtime CSS-in-JS; static CSS in layers | Build design |
 

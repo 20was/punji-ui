@@ -35,7 +35,7 @@ classification (97 modules were `pending`, 31 `web-only`).
 |---|---|---|---|---|
 | **Published npm package, exact version** | Yes: version plus lockfile integrity; Trusted Publishing gives provenance | Yes (needs only the registry) | It is the release | **Use for anything that merges** |
 | `npm pack` tarball installed with `--no-save` (local loop) | Yes for the bytes (`sha512` of the tarball); not recorded in `package.json` | Not meant for CI | Same artefact that is published (`files`, exports, CSS) | **Use for the local development loop only** |
-| Committed tarball (`file:vendor/punji-ui-X.tgz`) | Yes (integrity in lock) | Yes | Not the registry artefact | Fallback only if publishing is delayed; adds a binary of up to 470 KiB unpacked (budget in `scripts/check-pack.mjs`) per bump to git history |
+| Committed tarball (`file:vendor/punji-ui-X.tgz`) | Yes (integrity in lock) | Yes | Not the registry artefact | Fallback only if publishing is delayed; adds a binary of roughly 190 kB packed per bump (unpacked budget in `scripts/check-pack.mjs`) per bump to git history |
 | `file:../punji-ui` (directory) | No: needs a prior build, symlink, path differs per machine | **No**: the sibling repo is absent in CI and Workers Builds | No | Reject |
 | `npm link` | No: global symlink, not recorded | No | No | Reject. Also resolves React from punji-ui's tree: two Reacts, "invalid hook call" |
 | npm workspaces | Yes inside one repo | Yes | Needs one monorepo; punji-ui and punji-web are separate repos with separate release and CI (`AGENTS.md` rule 1: one repo per task) | Reject |

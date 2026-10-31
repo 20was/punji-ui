@@ -1,0 +1,6 @@
+/* Punji UI styles.
+   Styles for PercentageInput. Needs tokens.css, base.css and fields.css (styles.css has everything). */
+@layer punji.components {
+  .kit-field input.pu-percentage-input { text-align: end; font-variant-numeric: tabular-nums; unicode-bidi: plaintext }
+  .pu-percent-sign { font: 600 14px / 16px var(--pu-font-body); color: var(--pu-color-text-muted) }
+}

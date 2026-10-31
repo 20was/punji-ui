@@ -1,27 +1,21 @@
 import { Avatar, avatarInitials } from '@punji/ui/avatar';
-import { accounts } from '../../sample.ts';
+import { Card } from '@punji/ui/card';
+import { DataRow, DataRows } from '@punji/ui/rows';
+import { accounts, beneficiaries } from '../../sample.ts';
 
 // Initials only: never a photo. Beside a written name the avatar is decorative; alone it needs a label.
 export default function Example() {
   const holder = accounts.savings.holder;
-  const company = accounts.current.holder;
   return (
-    <div className="ex-stack">
-      <div className="ex-row">
-        <Avatar size="sm" name={holder} />
-        <Avatar size="md" name={holder} />
-        <Avatar size="lg" name={holder} />
-        <Avatar name={company} />
-        <Avatar email="ram.thapa@example.com" />
-        <Avatar />
-      </div>
-      <div className="ex-row">
-        <Avatar tone="accent" name={holder} label={`Account: ${holder}`} />
-        <Avatar loading />
-        <span>
-          {holder} <small className="ex-label">initials {avatarInitials(holder)}</small>
-        </span>
-      </div>
-    </div>
+    <Card title="Who can see this account" description={`Owner ${holder}, initials ${avatarInitials(holder)}`} headingLevel={3}>
+      <DataRows label="People">
+        <DataRow label={holder} value={<Avatar tone="accent" name={holder} label={`Owner: ${holder}`} />} />
+        <DataRow label={accounts.current.holder} value={<Avatar name={accounts.current.holder} />} />
+        <DataRow label="ram.thapa@example.com" value={<Avatar email="ram.thapa@example.com" />} />
+        <DataRow label={beneficiaries[0]?.name ?? 'Beneficiary'} value={<Avatar size="sm" name={beneficiaries[0]?.name} />} />
+        <DataRow label="Invite pending" value={<Avatar />} />
+        <DataRow label="Loading the team" value={<Avatar loading />} />
+      </DataRows>
+    </Card>
   );
 }

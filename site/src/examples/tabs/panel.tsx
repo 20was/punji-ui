@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { PanelTabs } from '@punji/ui/tabs';
+import { Stack } from '@punji/ui/stack';
 
 type View = 'watch' | 'lists' | 'alerts';
 
@@ -13,7 +14,7 @@ const icon = (path: string) => (
 export default function Example() {
   const [view, setView] = useState<View>('watch');
   return (
-    <div className="ex-stack">
+    <Stack>
       <PanelTabs<View>
         label="Side panel"
         prefix="panel-tabs"
@@ -29,6 +30,6 @@ export default function Example() {
       <div id="panel-tabs-body" role="tabpanel" aria-labelledby={`panel-tabs-${view}`} tabIndex={0}>
         Showing {view}.
       </div>
-    </div>
+    </Stack>
   );
 }

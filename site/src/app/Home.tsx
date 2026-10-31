@@ -12,7 +12,9 @@ import { StatusPill } from '@punji/ui/status-pill';
 import { ColumnChart } from '@punji/ui/column-chart';
 import { TransactionStatus } from '@punji/ui/transaction-status';
 import { useHydrated } from '@punji/ui/use-hydrated';
-import { GROUPS, PAGES, leadOf, type GroupId } from '../registry.ts';
+import type { GroupId } from '../registry.ts';
+import home from '../generated/home.json';
+import { GROUPS, NAV as PAGES, type PageCard } from './nav.ts';
 import { pagePath, REPO } from '../seo.ts';
 import sizes from '../generated/sizes.json';
 import { quotes, sectorShares } from '../sample.ts';
@@ -20,7 +22,7 @@ import { Link } from './router.tsx';
 import { CopyButton } from './Code.tsx';
 import { tokenize } from './highlight.ts';
 import { HomeDashboard } from './HomeDashboard.tsx';
-import { formatBytes } from './PageView.tsx';
+import { formatBytes } from './format.ts';
 import { ArrowRightIcon, ExternalIcon } from './icons.tsx';
 
 const npr = nepalMoneyConfig();
@@ -360,11 +362,11 @@ export function Home() {
           </p>
         </div>
         <ul className="home-showcase">
-          {PAGES.filter((p) => p.kind === 'showcase').map((p) => (
+          {(home.showcase as PageCard[]).map((p) => (
             <li key={p.slug}>
               <Link to={pagePath(p)}>
                 <strong>{p.title}</strong>
-                <span>{leadOf(p)}</span>
+                <span>{p.lead}</span>
               </Link>
             </li>
           ))}

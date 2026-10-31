@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Select } from '@punji/ui/select';
+import { Cluster, Stack } from '@punji/ui/stack';
 
 const options = [
   { value: 'all', label: 'All sectors' },
@@ -13,17 +14,17 @@ export default function Example() {
   const [inline, setInline] = useState('bank');
   const [size, setSize] = useState('hydro');
   return (
-    <div className="ex-stack">
-      <div className="ex-row">
+    <Stack>
+      <Cluster>
         <Select label="Sector" labelPlacement="above" value={above} onChange={setAbove} options={options} />
         <Select label="Sector" labelPlacement="inline" value={inline} onChange={setInline} options={options} />
-      </div>
-      <div className="ex-row">
+      </Cluster>
+      <Cluster>
         {(['sm', 'md', 'lg'] as const).map((s) => (
           <Select key={s} label={`Size ${s}`} size={s} value={size} onChange={setSize} options={options} />
         ))}
-      </div>
+      </Cluster>
       <Select label="Full width" labelPlacement="above" block value={above} onChange={setAbove} options={options} />
-    </div>
+    </Stack>
   );
 }

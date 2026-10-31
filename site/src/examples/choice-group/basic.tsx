@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ChoiceGroup } from '@punji/ui/choice-group';
+import { Stack } from '@punji/ui/stack';
 
 type Kind = 'all' | 'buy' | 'sell' | 'bonus';
 
@@ -7,7 +8,7 @@ type Kind = 'all' | 'buy' | 'sell' | 'bonus';
 export default function Example() {
   const [kind, setKind] = useState<Kind>('all');
   return (
-    <div className="ex-stack">
+    <Stack>
       <ChoiceGroup<Kind>
         label="Transaction type"
         testId="choice-kind"
@@ -33,6 +34,6 @@ export default function Example() {
           { value: 'sell', label: 'Sell' },
         ]}
       />
-    </div>
+    </Stack>
   );
 }

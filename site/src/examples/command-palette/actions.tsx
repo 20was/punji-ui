@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '@punji/ui/button';
 import { CommandPalette, type CommandItem, type CommandPaletteLabels } from '@punji/ui/command-palette';
 import { symbols } from '../../sample.ts';
+import { Cluster } from '@punji/ui/stack';
 
 const labels: CommandPaletteLabels = {
   dialog: 'Find a company',
@@ -38,7 +39,7 @@ export default function Example() {
   const q = query.trim().toLowerCase();
   const items = symbols.filter((o) => !q || `${o.symbol} ${o.name}`.toLowerCase().includes(q)).slice(0, 6).map(toItem);
   return (
-    <div className="ex-row">
+    <Cluster>
       <Button variant="secondary" onClick={() => setOpen(true)} aria-haspopup="dialog">
         Find a company
       </Button>
@@ -64,6 +65,6 @@ export default function Example() {
           }}
         />
       )}
-    </div>
+    </Cluster>
   );
 }

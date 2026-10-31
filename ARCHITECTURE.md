@@ -1,6 +1,6 @@
 # Architecture
 
-Top-level view of `@punji/ui` at `cfe3d47`. Detail, security notes and size reasoning: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Where the two differ, this page says so under "Differences".
+Top-level view of `@punji/ui` at the current `main`. Detail, security notes and size reasoning: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Where the two differ, this page says so under "Differences".
 
 ## Ownership model
 
@@ -14,13 +14,13 @@ punji-ui (this repo, source of truth)  -->  npm @punji/ui (exact version)  -->  
 | Reverse sync from punji-web | Retired; `npm run sync` throws |
 | Published to npm | No. `version` is `0.0.0`; release is gated ([RELEASE.md](RELEASE.md)) |
 | punji-web consumption | Not started. It still aliases `@punji/ui` to its own `src/components/kit/`. Plan: [docs/INTEGRATION.md](docs/INTEGRATION.md) |
-| Docs site | `site/` is a self-contained docs app in this repo (`npm run site:dev`, `site:build`, built in CI; [site/README.md](site/README.md)) with 16 pages. The legacy full portal (`design.punji.app`, about 35 pages) still lives in punji-web; `npm run portal` patches a sibling checkout in memory. Hosting is undecided, see [AUDIT.md](AUDIT.md) |
+| Docs site | `site/` is a self-contained docs app in this repo (`npm run site:dev`, `site:build`, built in CI; [site/README.md](site/README.md)) (page count: the `prerender:` line of `npm run site:build`). The legacy full portal (`design.punji.app`, about 35 pages) still lives in punji-web; `npm run portal` patches a sibling checkout in memory. Hosting is undecided, see [AUDIT.md](AUDIT.md) |
 | `scripts/audit-web.mjs` | Read-only comparison against a punji-web checkout |
 
 ## Module layout and exports
 
 - One folder per module under `src/` (for example `src/button/Button.tsx`), each with its own CSS in `src/styles/<name>.css`.
-- `package.json` `exports` has 89 entries: `.` (everything), one subpath per module (`./button`, `./table`, `./money`, `./nepal/calendar`, ...), `./styles.css`, `./tokens.css`, `./css/*.css`.
+- `package.json` `exports` entries (count them with `node -p "Object.keys(require('./package.json').exports).length"`; 128 on 2026-11-01): `.` (everything), one subpath per module (`./button`, `./table`, `./money`, `./nepal/calendar`, ...), `./styles.css`, `./tokens.css`, `./css/*.css`.
 - Every subpath value must also exist on the root barrel and be the same object (`check:exports`). Small subpaths exist so consumers do not pay for the whole kit; the root is a compatibility barrel.
 - Granular Nepal entry points: `nepal/format`, `nepal/calendar` (the only importer of the converter), `nepal/money`. `@punji/ui/money` is the currency-generic layer.
 - Output is ESM only plus `.d.ts` (`engines.node >=22.12`, React 19 peers, `sideEffects: ["**/*.css"]`). `files` ships `dist`, `CHANGELOG.md`, `THIRD_PARTY_NOTICES.md`.
@@ -73,7 +73,7 @@ Nepal support (BS calendar, NPR, `en-IN` grouping, Devanagari digits, fiscal yea
 | Property | fast-check, `FC_NUM_RUNS` (default 100) | `test/fc.ts` |
 | Accessibility (jsdom) | axe-core, serious/critical | `test/axe.ts`; contrast disabled |
 | Visual, interaction, axe (browser) | Playwright in the pinned Docker image | `test/visual/`, [docs/VISUAL-TESTING.md](docs/VISUAL-TESTING.md) |
-| Docs site | `scripts/site-gen.mjs` (registry and props from built `.d.ts`), `typecheck:site` (examples are real TSX), `check:site` (Playwright: 17 routes x 2 widths x 2 themes, axe, overflow, console, copy/theme/search/drawer) | `site/`, `npm run site:build` |
+| Docs site | `scripts/site-gen.mjs` (registry and props from built `.d.ts`), `typecheck:site` (examples are real TSX), `check:site` (Playwright: every route x 2 widths x 2 themes (the route count is printed by the command), axe, overflow, console, copy/theme/search/drawer) | `site/`, `npm run site:build` |
 | Packaged-example checks | Playwright against `examples/` | `check:examples`, `check:portal`, `check:calendar`, `check:fields`, `check:select`, `check:table` |
 | Package | publint, attw, pack, exports, size-limit | [QUALITY.md](QUALITY.md) |
 
@@ -109,6 +109,6 @@ Sources: [docs/RESEARCH.md](docs/RESEARCH.md), [docs/research/](docs/research/),
 
 | Topic | docs/ARCHITECTURE.md | Reality |
 | --- | --- | --- |
-| Aggregate budget | 21 kB gzip, 4 kB financial, 4.5 kB Nepal | `.size-limit.json` (48.3 kB measured 2026-10-31) |
-| Tarball ceiling | 400 KiB | `MAX_UNPACKED` in `scripts/check-pack.mjs` (732 kB measured 2026-10-31) |
+| Aggregate budget | 21 kB gzip, 4 kB financial, 4.5 kB Nepal | `.size-limit.json` (`npm run size` prints the measured "Everything" size; 84.33 kB against an 87.3 kB limit on 2026-11-01) |
+| Tarball ceiling | 400 KiB | `MAX_UNPACKED` in `scripts/check-pack.mjs` (1350 KiB; `npm run check:package` prints the measured size) |
 | Status line | "implemented foundation, 2026-10-28"; the 4 kB financial and 4.5 kB Nepal budgets still match `.size-limit.json` | Hooks, export, calculations, money, 10 migrated modules and the visual gate were added since |

@@ -1,4 +1,6 @@
+import { Card } from '@punji/ui/card';
 import { Sparkline } from '@punji/ui/sparkline';
+import { DataRow, DataRows } from '@punji/ui/rows';
 import { sampleCloses } from '../../sample.ts';
 
 // Gaps are dropped (not zero). Fewer than two real values draw a dashed rule. Long series keep their spikes.
@@ -7,27 +9,13 @@ long[200] = 700;
 
 export default function Example() {
   return (
-    <dl className="ex-grid">
-      <div>
-        <dt>Missing values dropped</dt>
-        <dd><Sparkline values={[10, null, 12, undefined, Number.NaN, 15, 14]} /></dd>
-      </div>
-      <div>
-        <dt>One value</dt>
-        <dd><Sparkline values={[42]} /></dd>
-      </div>
-      <div>
-        <dt>No data</dt>
-        <dd><Sparkline values={[]} /></dd>
-      </div>
-      <div>
-        <dt>400 points, spike kept (maxPoints 60)</dt>
-        <dd><Sparkline values={long} maxPoints={60} label="400 closes with one spike" /></dd>
-      </div>
-      <div>
-        <dt>fluid</dt>
-        <dd><Sparkline values={sampleCloses(300, 6)} fluid width={240} height={48} label="Fills its cell" /></dd>
-      </div>
-    </dl>
+    <Card title="Awkward feeds" description="What a trend column shows when the data is thin" headingLevel={3}>
+      <DataRows label="Trend edge cases">
+        <DataRow label="Two missing days" value={<Sparkline values={[10, null, 12, undefined, Number.NaN, 15, 14]} label="Gaps dropped" />} />
+        <DataRow label="Newly listed" value={<Sparkline values={[42]} label="One close" />} />
+        <DataRow label="No history" value={<Sparkline values={[]} label="No closes" />} />
+        <DataRow label="400 closes, one spike" value={<Sparkline values={long} maxPoints={60} label="400 closes with one spike" />} />
+      </DataRows>
+    </Card>
   );
 }

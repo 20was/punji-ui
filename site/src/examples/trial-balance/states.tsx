@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { TrialBalance } from '@punji/ui/trial-balance';
 import { SegmentedControl } from '@punji/ui/controls';
 import { journals } from '../../sample.ts';
+import { Stack } from '@punji/ui/stack';
 
 type View = 'ready' | 'loading' | 'error' | 'empty';
 
 export default function Example() {
   const [view, setView] = useState<View>('error');
   return (
-    <div className="ex-stack">
+    <Stack>
       <SegmentedControl<View>
         label="State"
         prefix="tb-state"
@@ -28,6 +29,6 @@ export default function Example() {
         state={view === 'loading' || view === 'error' ? view : 'ready'}
         onRetry={() => setView('loading')}
       />
-    </div>
+    </Stack>
   );
 }

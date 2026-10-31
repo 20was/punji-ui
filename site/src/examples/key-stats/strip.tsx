@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { KeyStats } from '@punji/ui/key-stats';
 import { SegmentedControl } from '@punji/ui/controls';
+import { Stack } from '@punji/ui/stack';
 
 type View = 'ready' | 'loading';
 
 export default function Example() {
   const [view, setView] = useState<View>('loading');
   return (
-    <div className="ex-stack">
+    <Stack>
       <SegmentedControl<View>
         label="State"
         prefix="keystats-state"
@@ -28,6 +29,6 @@ export default function Example() {
           { label: 'Close', value: 'Rs 487.50' },
         ]}
       />
-    </div>
+    </Stack>
   );
 }

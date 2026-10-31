@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@punji/ui/button';
 import { CommandPalette, type CommandItem, type CommandPaletteLabels } from '@punji/ui/command-palette';
+import { Cluster, Stack } from '@punji/ui/stack';
 
 const labels: CommandPaletteLabels = {
   dialog: 'Search the app',
@@ -29,15 +30,15 @@ export default function Example() {
   const [ran, setRan] = useState('');
   const items = all.filter((item) => item.title.toLowerCase().includes(query.trim().toLowerCase()));
   return (
-    <div className="ex-stack">
-      <div className="ex-row">
+    <Stack>
+      <Cluster>
         <Button variant="secondary" onClick={() => setOpen(true)} aria-haspopup="dialog">
           Search…
         </Button>
         <span role="status" className="doc-muted">
           {ran ? `Ran: ${ran}` : 'Nothing run yet'}
         </span>
-      </div>
+      </Cluster>
       {open && (
         <CommandPalette
           labels={labels}
@@ -57,6 +58,6 @@ export default function Example() {
           }}
         />
       )}
-    </div>
+    </Stack>
   );
 }

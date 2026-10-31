@@ -5,12 +5,13 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const problems = [];
 // Pure directories and the one external dependency each may use per file.
-const PURE = { nepal: { 'calendar.ts': '@remotemerge/nepali-date-converter' }, calculations: {}, money: {}, export: {}, ledger: {}, banking: {}, 'chart-math': {} };
+const PURE = { nepal: { 'calendar.ts': '@remotemerge/nepali-date-converter' }, calculations: {}, money: {}, export: {}, ledger: {}, banking: {}, 'chart-math': {}, 'date-range-presets': {} };
 // Pure modules may reuse these other pure modules (never components): the exact decimal parser, minor-unit helpers and rounding.
 // The ledger helpers also reuse the calendar-date type, currency exponent and the CSV writer (all pure).
 const SHARED = {
   money: new Set(['../nepal/decimal.ts', '../nepal/money.ts', '../calculations/rounding.ts']),
   banking: new Set(['../export/csv.ts', '../money/money.ts', '../nepal/money.ts']),
+  'date-range-presets': new Set(['../nepal/date-only.ts', '../nepal/calendar.ts']),
   ledger: new Set(['../nepal/date-only.ts', '../nepal/money.ts', '../money/money.ts', '../export/csv.ts']),
 };
 for (const [dir, allowed] of Object.entries(PURE)) {

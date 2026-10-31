@@ -267,7 +267,7 @@ That is a stop-gap; the target is a standalone portal in punji-ui.
 
 **Status (first slice done):** `site/` in punji-ui is now a self-contained docs site that builds in CI
 (`npm run site:build`), imports `@punji/ui` only through the export map, generates props tables from the built
-`.d.ts` (so steps 3 and part of 1 are done for the pages it has) and covers 16 representative pages. See
+`.d.ts` (so steps 3 and part of 1 are done for the pages it has) and covers the pages listed in the `prerender:` line of `npm run site:build`. See
 `site/README.md`. What still lives in punji-web: the other ~20 component pages, the app-specific and product pages
 (`docs.tsx`, `brand.tsx`), changelog, sizes, and the hosting (`design.punji.app` is served by the web Worker).
 `portal/` and `scripts/portal.mjs` stay until every page it bridges exists in `site/`; then step 5 applies.

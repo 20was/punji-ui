@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { MarketIndices } from '@punji/ui/market-indices';
 import { SegmentedControl } from '@punji/ui/controls';
 import { marketIndices } from '../../sample.ts';
+import { Stack } from '@punji/ui/stack';
 
 type View = 'ready' | 'loading' | 'empty';
 
 export default function Example() {
   const [view, setView] = useState<View>('loading');
   return (
-    <div className="ex-stack">
+    <Stack>
       <SegmentedControl<View>
         label="State"
         prefix="indices-state"
@@ -28,6 +29,6 @@ export default function Example() {
         loadingLabel="Loading indices…"
         emptyLabel="No index values are published yet."
       />
-    </div>
+    </Stack>
   );
 }

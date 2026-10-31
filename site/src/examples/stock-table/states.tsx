@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { StockTable } from '@punji/ui/stock-table';
 import { SegmentedControl } from '@punji/ui/controls';
 import { quotes } from '../../sample.ts';
+import { Stack } from '@punji/ui/stack';
 
 type View = 'ready' | 'loading' | 'error' | 'empty';
 
 export default function Example() {
   const [view, setView] = useState<View>('loading');
   return (
-    <div className="ex-stack">
+    <Stack>
       <SegmentedControl<View>
         label="State"
         prefix="stock-state"
@@ -32,6 +33,6 @@ export default function Example() {
         retryLabel="Try again"
         onRetry={() => setView('loading')}
       />
-    </div>
+    </Stack>
   );
 }

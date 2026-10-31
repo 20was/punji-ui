@@ -1,18 +1,19 @@
 import { useState } from 'react';
 import { Button } from '@punji/ui/button';
 import { Sheet } from '@punji/ui/overlay';
+import { Cluster, Stack } from '@punji/ui/stack';
 
 // A Sheet is a short, modal decision: a title, one line, one or two controls. Esc, the scrim and the hidden close button dismiss it.
 export default function Example() {
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
   return (
-    <div className="ex-stack">
-      <div className="ex-row">
+    <Stack>
+      <Cluster>
         <Button variant="danger" onClick={() => { setDone(false); setOpen(true); }} aria-haspopup="dialog">
           Sell 40 NTC
         </Button>
-      </div>
+      </Cluster>
       <p role="status" className="ex-label">
         {done ? 'Order sent: sell 40 NTC at NPR 842.00.' : 'The order is sent only when you confirm.'}
       </p>
@@ -24,6 +25,6 @@ export default function Example() {
           Cancel
         </Button>
       </Sheet>
-    </div>
+    </Stack>
   );
 }

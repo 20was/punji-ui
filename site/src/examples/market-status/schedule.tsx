@@ -1,4 +1,5 @@
 import { MarketStatus, getMarketSession, type MarketSchedule } from '@punji/ui/market-status';
+import { Cluster, Stack } from '@punji/ui/stack';
 
 // Any exchange: an IANA time zone, session windows and the holidays you announce.
 // A window includes its start and excludes its end. Daylight saving is the platform's (Intl).
@@ -19,17 +20,17 @@ const instants = [
 
 export default function Example() {
   return (
-    <div className="ex-stack">
+    <Stack>
       {instants.map(([name, iso]) => {
         const session = getMarketSession(new Date(iso), nyse);
         return (
-          <div key={name} className="ex-row">
+          <Cluster key={name}>
             <strong>{name}</strong>
             <MarketStatus session={session} market="NYSE" />
             <span>{session.next ? `next: ${session.next.state} at ${session.next.at.toISOString()}` : 'no change within ten days'}</span>
-          </div>
+          </Cluster>
         );
       })}
-    </div>
+    </Stack>
   );
 }

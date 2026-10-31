@@ -115,25 +115,25 @@ export function BankAccountCard({
   const classes = `pu-bank kit-card${className ? ` ${className}` : ''}`;
   if (loading) {
     return (
-      <section className={classes} aria-busy="true" aria-label={words.loading} data-testid={testId}>
+      <article className={classes} aria-busy="true" aria-label={words.loading} data-testid={testId}>
         <Skeleton width="55%" height={20} label={words.loading} />
         <Skeleton width="40%" height={14} />
         <Skeleton width="70%" height={16} />
         <Skeleton width="50%" height={28} />
-      </section>
+      </article>
     );
   }
   if (error) {
     return (
-      <section className={classes} aria-label={institution} data-testid={testId}>
-        <Heading className="pu-bank-name">{institution}</Heading>
+      <article className={classes} aria-labelledby={`${uid}-name`} data-testid={testId}>
+        <Heading className="pu-bank-name" id={`${uid}-name`}>{institution}</Heading>
         <RetryNote retryLabel={words.retry} onRetry={onRetry} testId={testId ? `${testId}-error` : undefined}>{words.error}</RetryNote>
-      </section>
+      </article>
     );
   }
   const balanceHidden = balanceToggle && hidden;
   return (
-    <section className={classes} aria-labelledby={`${uid}-name`} data-testid={testId}>
+    <article className={classes} aria-labelledby={`${uid}-name`} data-testid={testId}>
       <div className="pu-bank-head">
         <div className="pu-bank-id">
           <Heading className="pu-bank-name" id={`${uid}-name`}>{institution}</Heading>
@@ -174,6 +174,6 @@ export function BankAccountCard({
         )}
       </div>
       {actions && <div className="pu-bank-actions">{actions}</div>}
-    </section>
+    </article>
   );
 }

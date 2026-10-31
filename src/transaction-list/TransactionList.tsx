@@ -14,7 +14,7 @@
  * Display only. Totals, balances and statuses come from your server; nothing
  * here validates, sums or posts anything.
  */
-import { useState, type ReactNode } from 'react';
+import { useId, useState, type ReactNode } from 'react';
 
 import { directionOf, type BankTransaction, type TransactionStatusValue } from '../banking/transactions.ts';
 import { formatTransactionReference } from '../banking/account.ts';
@@ -167,6 +167,7 @@ export function TransactionList({
   loading, error, onRetry, labels, statusLabels, className, testId,
 }: TransactionListProps) {
   const words = { ...DEFAULT_TRANSACTION_LIST_LABELS, ...labels };
+  const uid = useId();
   const [own, setOwn] = useState(1);
   const current = page ?? own;
   const classes = `pu-txlist${className ? ` ${className}` : ''}`;
@@ -199,14 +200,14 @@ export function TransactionList({
     else groups.push({ date: t.date, rows: [t] });
   }
   return (
-    <div className={classes} data-testid={testId}>
+    <div className={classes} role="group" aria-label={words.list} data-testid={testId}>
       {groups.map((g, index) => (
-        <section key={`${g.date}-${g.rows[0]!.id}`} className="pu-txgroup" aria-labelledby={`${testId ?? 'pu-txlist'}-h-${index}`}>
-          <h3 className="pu-txgroup-h" id={`${testId ?? 'pu-txlist'}-h-${index}`}><time dateTime={parseCalendarDate(g.date) ? g.date : undefined}>{dateHeading(g.date, calendar, language, words.unknownDate)}</time></h3>
-          <ul className="pu-txrows" aria-label={index === 0 ? words.list : undefined}>
+        <div key={`${g.date}-${g.rows[0]!.id}`} className="pu-txgroup">
+          <h3 className="pu-txgroup-h" id={`${uid}-h-${index}`}><time dateTime={parseCalendarDate(g.date) ? g.date : undefined}>{dateHeading(g.date, calendar, language, words.unknownDate)}</time></h3>
+          <ul className="pu-txrows" aria-labelledby={`${uid}-h-${index}`}>
             {g.rows.map((t) => <TransactionRow key={t.id} transaction={t} money={money} showBalance={showBalance} showCompletedStatus={showCompletedStatus} labels={labels} statusLabels={statusLabels} />)}
           </ul>
-        </section>
+        </div>
       ))}
       {paged && paged.pageCount > 1 && (
         <Pagination page={paged.page} total={paged.total} pageSize={paged.pageSize} onPageChange={(next) => { setOwn(next); onPageChange?.(next); }} label={words.pages} testId={testId ? `${testId}-pager` : undefined} />

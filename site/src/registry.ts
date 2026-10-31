@@ -1090,7 +1090,7 @@ export const PAGES: readonly PageDef[] = [
       { id: 'states', title: 'Loading, error, missing balance', note: 'A missing balance is a dash with a spoken "No value", never zero.' },
     ],
     keyboard: ['The hide-balance and number buttons are Tab stops; Enter or Space toggles them.', 'Your actions are your own controls and keep their order.'],
-    accessibility: ['A section named by its institution heading (h3 by default; headingLevel changes it).', 'Holder, number and balance are a description list. Status is words plus a distinct icon shape.', 'Hidden balance reads "Balance hidden"; the toggle is a button with aria-pressed.', 'Loading is aria-busy with a named status; an error is an alert with an optional retry.'],
+    accessibility: ['An article (not a landmark, so many cards per page are fine) named by its institution heading (h3 by default; headingLevel changes it).', 'Holder, number and balance are a description list. Status is words plus a distinct icon shape.', 'Hidden balance reads "Balance hidden"; the toggle is a button with aria-pressed.', 'Loading is aria-busy with a named status; an error is an alert with an optional retry.'],
     responsive: ['Up to 26rem wide; it fills a narrow column. Place several in a grid.'],
     notes: {
       title: 'Security boundary',
@@ -1114,7 +1114,7 @@ export const PAGES: readonly PageDef[] = [
       { id: 'csv', title: 'transactionsToCsv', note: 'Exact decimals, ISO dates, direction in words; =HYPERLINK and @ text is neutralised.' },
     ],
     keyboard: ['Rows are not interactive. The pager buttons are Tab stops (Enter or Space).'],
-    accessibility: ['Each date is an h3 inside a section; entries are a list. Direction is words (a screen reader hears "debit" or "credit"), an arrow and Dr or Cr, never colour alone; failed and reversed amounts are also struck through.', 'The amount reads with its currency name where the symbol is shared (MoneyDisplay). Status pills have icon and words.', 'The pager announces its range politely.'],
+    accessibility: ['Each date is an h3 and names the list under it; the whole list is a named group. Direction is words (a screen reader hears "debit" or "credit"), an arrow and Dr or Cr, never colour alone; failed and reversed amounts are also struck through.', 'The amount reads with its currency name where the symbol is shared (MoneyDisplay). Status pills have icon and words.', 'The pager announces its range politely.'],
     responsive: ['On a phone the amount drops under the counterparty. Dates are never read in the browser\'s time zone.'],
     notes: {
       title: 'Limits',

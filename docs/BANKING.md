@@ -88,7 +88,7 @@ Props: `institution`, `holder`, `accountNumber`, `accountType`, `balance`, `mone
 `numberProps`, `actions`, `loading`, `error`, `onRetry`, `headingLevel` (3), `labels`.
 
 While the balance is hidden the amount is not in the DOM. A missing balance is a dash with a spoken "No value",
-never zero. Keyboard: the number and balance buttons are Tab stops. A11y: a section named by its heading; facts are
+never zero. Keyboard: the number and balance buttons are Tab stops. A11y: an article named by its heading; facts are
 a description list; loading is `aria-busy` with a status; an error is an alert.
 
 ## TransactionList

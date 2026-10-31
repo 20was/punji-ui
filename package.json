@@ -1,7 +1,6 @@
 {
   "name": "@punji/ui",
   "version": "0.0.0",
-  "private": true,
   "description": "Accessible, tree-shakeable React components themed with CSS variables, with light and dark modes and Devanagari-ready type.",
   "license": "MIT",
   "author": "Punji",
@@ -190,11 +189,72 @@
     "./styles.css": "./dist/styles.css",
     "./tokens.css": "./dist/tokens.css",
     "./css/*.css": "./dist/css/*.css",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./nepal": {
+      "types": "./dist/nepal/nepal.d.ts",
+      "default": "./dist/nepal/nepal.js"
+    },
+    "./financial": {
+      "types": "./dist/financial/financial.d.ts",
+      "default": "./dist/financial/financial.js"
+    },
+    "./nepal/format": {
+      "types": "./dist/nepal/format.d.ts",
+      "default": "./dist/nepal/format.js"
+    },
+    "./nepal/calendar": {
+      "types": "./dist/nepal/calendar.d.ts",
+      "default": "./dist/nepal/calendar.js"
+    },
+    "./nepal/money": {
+      "types": "./dist/nepal/money.d.ts",
+      "default": "./dist/nepal/money.js"
+    },
+    "./nepal/decimal": {
+      "types": "./dist/nepal/decimal.d.ts",
+      "default": "./dist/nepal/decimal.js"
+    },
+    "./nepal/financial-format": {
+      "types": "./dist/nepal/financial-format.d.ts",
+      "default": "./dist/nepal/financial-format.js"
+    },
+    "./use-media-query": {
+      "types": "./dist/use-media-query/useMediaQuery.d.ts",
+      "default": "./dist/use-media-query/useMediaQuery.js"
+    },
+    "./use-hydrated": {
+      "types": "./dist/use-hydrated/useHydrated.d.ts",
+      "default": "./dist/use-hydrated/useHydrated.js"
+    },
+    "./stable-order": {
+      "types": "./dist/stable-order/useStableOrder.d.ts",
+      "default": "./dist/stable-order/useStableOrder.js"
+    },
+    "./stable-order/keep-order": {
+      "types": "./dist/stable-order/keepOrder.d.ts",
+      "default": "./dist/stable-order/keepOrder.js"
+    },
+    "./nepal/date-only": {
+      "types": "./dist/nepal/date-only.d.ts",
+      "default": "./dist/nepal/date-only.js"
+    },
+    "./nepal/market-format": {
+      "types": "./dist/nepal/market-format.d.ts",
+      "default": "./dist/nepal/market-format.js"
+    },
+    "./calendar": {
+      "types": "./dist/calendar/Calendar.d.ts",
+      "default": "./dist/calendar/Calendar.js"
+    },
+    "./date-picker": {
+      "types": "./dist/date-picker/DatePicker.d.ts",
+      "default": "./dist/date-picker/DatePicker.js"
+    }
   },
   "files": [
     "dist",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "THIRD_PARTY_NOTICES.md"
   ],
   "engines": {
     "node": ">=22.12"
@@ -205,7 +265,7 @@
   },
   "scripts": {
     "build": "node scripts/clean.mjs && tsc -p tsconfig.build.json && node scripts/build-css.mjs",
-    "lint": "oxlint --max-warnings 0 --deny-warnings src test scripts && node scripts/check-css.mjs && node scripts/check-source.mjs",
+    "lint": "oxlint --max-warnings 0 --deny-warnings src test scripts examples portal && node scripts/check-css.mjs && node scripts/check-source.mjs && node scripts/check-boundaries.mjs",
     "sync": "node scripts/sync-from-web.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
@@ -213,13 +273,27 @@
     "size": "size-limit",
     "check:publint": "publint --strict",
     "check:types": "attw --pack . --profile esm-only --exclude-entrypoints styles.css tokens.css \"css/*.css\" package.json",
-    "check:package": "npm run check:publint && npm run check:types && node scripts/check-pack.mjs",
+    "check:package": "npm run check:publint && npm run check:types && node scripts/check-pack.mjs && npm run check:exports",
     "check:lockfile": "lockfile-lint --path package-lock.json --type npm --allowed-hosts npm --validate-https --validate-integrity",
-    "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run size && npm run check:package",
+    "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run size && npm run check:package && npm run build:examples && npm run typecheck:examples && npm run typecheck:portal",
     "verify:deep": "npm run verify && npm run test:deep",
     "changeset": "changeset",
     "version-packages": "changeset version && npm install --package-lock-only --ignore-scripts",
-    "release": "npm run build && changeset publish"
+    "release": "npm run build && changeset publish",
+    "audit:web": "node scripts/audit-web.mjs",
+    "examples": "vite examples --host 127.0.0.1",
+    "build:examples": "vite build examples",
+    "prepack": "npm run build",
+    "check:exports": "node scripts/check-exports.mjs",
+    "typecheck:examples": "tsc -p examples/tsconfig.json --noEmit",
+    "check:examples": "node scripts/check-examples.mjs",
+    "portal": "npm run build && node scripts/portal.mjs",
+    "typecheck:portal": "tsc -p portal/tsconfig.json --noEmit",
+    "check:portal": "node scripts/check-portal.mjs",
+    "check:calendar": "node scripts/check-calendar.mjs",
+    "check:fields": "node scripts/check-fields.mjs",
+    "check:select": "node scripts/check-select.mjs",
+    "check:table": "node scripts/check-table.mjs"
   },
   "peerDependencies": {
     "react": "^19.0.0",
@@ -241,11 +315,16 @@
     "lightningcss": "1.33.0",
     "lockfile-lint": "5.1.0",
     "oxlint": "1.88.0",
+    "playwright": "1.64.1",
     "publint": "0.3.25",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "size-limit": "14.2.0",
     "typescript": "7.0.2",
+    "vite": "8.3.4",
     "vitest": "5.0.5"
+  },
+  "dependencies": {
+    "@remotemerge/nepali-date-converter": "1.2.5"
   }
 }

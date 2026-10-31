@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { useState } from 'react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { CompanySearch } from '../src/company-search/CompanySearch.tsx';
 import { DateField, Field, NumberField, SelectField, SymbolField, TextAreaField } from '../src/index.ts';
@@ -77,6 +77,33 @@ describe('Field family', () => {
     await userEvent.keyboard('{ArrowDown}{Enter}');
     expect((input as HTMLInputElement).value).toBe('NABIL');
     expect(screen.queryByRole('listbox')).toBeNull();
+    expect(input.hasAttribute('aria-controls')).toBe(false);
+  });
+
+  it('connects SymbolField help and errors and selects suggestions with a pointer', async () => {
+    const onChange = vi.fn<(value: string) => void>();
+    render(<SymbolField label="Stock" hint="Listed symbol" error="Choose a valid symbol" value="NA" onChange={onChange} options={SYMBOLS} />);
+    const input = screen.getByRole('combobox', { name: 'Stock' });
+    await userEvent.click(input);
+    expect(input.getAttribute('aria-invalid')).toBe('true');
+    expect(input.getAttribute('aria-describedby')).toBe(screen.getByRole('alert').id);
+    expect(input.getAttribute('aria-controls')).toBe(screen.getByRole('listbox').id);
+    await userEvent.click(screen.getByRole('option', { name: /NABIL.*Nabil Bank/ }));
+    expect(onChange).toHaveBeenCalledWith('NABIL');
+    expect(input.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('closes SymbolField suggestions on blur and prevents stale active descendants', async () => {
+    const options = [...SYMBOLS, { symbol: 'NAR', name: 'Nara Bank' }, { symbol: 'NAS', name: 'Nasa Finance' }];
+    const { rerender } = render(<SymbolField label="Stock" value="NA" onChange={() => {}} options={options} />);
+    const input = screen.getByRole('combobox', { name: 'Stock' });
+    input.focus();
+    await userEvent.keyboard('{ArrowDown}{ArrowDown}{ArrowDown}{ArrowDown}');
+    expect(document.getElementById(input.getAttribute('aria-activedescendant') ?? '')).not.toBeNull();
+    rerender(<SymbolField label="Stock" value="NA" onChange={() => {}} options={[SYMBOLS[0]!]} />);
+    expect(document.getElementById(input.getAttribute('aria-activedescendant') ?? '')).not.toBeNull();
+    await userEvent.tab();
+    expect(screen.queryByRole('listbox')).toBeNull();
   });
 
   it('has no serious axe violations', async () => {
@@ -118,6 +145,20 @@ describe('ListFilter', () => {
 });
 
 describe('CompanySearch', () => {
+  it('exposes the listbox relationship only while the combobox popup exists', async () => {
+    render(<CsHarness onOpen={() => {}} />);
+    const input = screen.getByRole('combobox', { name: 'Find a company' });
+    expect(input.getAttribute('aria-expanded')).toBe('false');
+    expect(input.hasAttribute('aria-controls')).toBe(false);
+    await userEvent.type(input, 'nab');
+    const list = screen.getByRole('listbox');
+    expect(input.getAttribute('aria-expanded')).toBe('true');
+    expect(input.getAttribute('aria-controls')).toBe(list.id);
+    await userEvent.keyboard('{Escape}');
+    expect(input.getAttribute('aria-expanded')).toBe('false');
+    expect(input.hasAttribute('aria-controls')).toBe(false);
+  });
+
   it('suggests as you type, arrows wrap, Enter opens the chosen one', async () => {
     const opened: string[] = [];
     render(<CsHarness onOpen={(s) => opened.push(s)} />);
@@ -126,6 +167,21 @@ describe('CompanySearch', () => {
     expect(screen.getAllByRole('option')).toHaveLength(3);
     await userEvent.keyboard('{ArrowUp}{Enter}');
     expect(opened).toEqual(['NABIL']);
+    expect(screen.queryByRole('listbox')).toBeNull();
+    expect(input.getAttribute('aria-expanded')).toBe('false');
+    expect(input.hasAttribute('aria-controls')).toBe(false);
+  });
+
+  it('closes suggestions after a pointer selection', async () => {
+    const opened: string[] = [];
+    render(<CsHarness onOpen={(s) => opened.push(s)} />);
+    const input = screen.getByRole('combobox', { name: 'Find a company' });
+    await userEvent.type(input, 'nab');
+    await userEvent.click(screen.getByRole('option', { name: /NABIL/ }));
+    expect(opened).toEqual(['NABIL']);
+    expect(screen.queryByRole('listbox')).toBeNull();
+    expect(input.getAttribute('aria-expanded')).toBe('false');
+    expect(input.hasAttribute('aria-controls')).toBe(false);
   });
 
   it('says when nothing matches; Esc clears, then leaves', async () => {

@@ -1,6 +1,13 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["typescript", "react", "jsx-a11y", "import", "unicorn", "vitest"],
+  "plugins": [
+    "typescript",
+    "react",
+    "jsx-a11y",
+    "import",
+    "unicorn",
+    "vitest"
+  ],
   "categories": {
     "correctness": "error",
     "suspicious": "warn"
@@ -21,7 +28,11 @@
   },
   "overrides": [
     {
-      "files": ["src/fields/Fields.tsx", "src/company-search/CompanySearch.tsx", "src/command-palette/CommandPalette.tsx"],
+      "files": [
+        "src/fields/Fields.tsx",
+        "src/company-search/CompanySearch.tsx",
+        "src/command-palette/CommandPalette.tsx"
+      ],
       "rules": {
         "jsx-a11y/click-events-have-key-events": "off",
         "jsx-a11y/interactive-supports-focus": "off",
@@ -31,27 +42,59 @@
       }
     },
     {
-      "files": ["src/drawer/Drawer.tsx", "src/overlay/Overlay.tsx", "src/floating-tooltip/FloatingTooltip.tsx", "src/info-tip/InfoTip.tsx"],
+      "files": [
+        "src/drawer/Drawer.tsx",
+        "src/overlay/Overlay.tsx",
+        "src/floating-tooltip/FloatingTooltip.tsx",
+        "src/info-tip/InfoTip.tsx"
+      ],
       "rules": {
         "jsx-a11y/no-static-element-interactions": "off"
       }
     },
     {
-      "files": ["src/table/Table.tsx"],
-      "rules": { "jsx-a11y/no-noninteractive-tabindex": "off" }
+      "files": [
+        "src/table/Table.tsx"
+      ],
+      "rules": {
+        "jsx-a11y/no-noninteractive-tabindex": "off"
+      }
     },
     {
-      "files": ["src/rows/Rows.tsx"],
-      "rules": { "jsx-a11y/no-redundant-roles": "off" }
+      "files": [
+        "src/rows/Rows.tsx"
+      ],
+      "rules": {
+        "jsx-a11y/no-redundant-roles": "off"
+      }
     },
     {
-      "files": ["src/live/live.ts"],
-      "rules": { "unicorn/no-useless-spread": "off" }
+      "files": [
+        "src/live/live.ts"
+      ],
+      "rules": {
+        "unicorn/no-useless-spread": "off"
+      }
     },
     {
-      "files": ["src/info-tip/InfoTip.tsx"],
-      "rules": { "react/exhaustive-effect-dependencies": "off" }
+      "files": [
+        "src/info-tip/InfoTip.tsx"
+      ],
+      "rules": {
+        "react/exhaustive-effect-dependencies": "off"
+      }
+    },
+    {
+      "files": [
+        "src/calendar/Calendar.tsx"
+      ],
+      "rules": {
+        "jsx-a11y/no-noninteractive-element-to-interactive-role": "off"
+      }
     }
   ],
-  "ignorePatterns": ["dist/**", "node_modules/**"]
+  "ignorePatterns": [
+    "dist/**",
+    "node_modules/**"
+  ]
 }

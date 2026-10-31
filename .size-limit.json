@@ -73,7 +73,7 @@
     "name": "fields (import from '@punji/ui/fields')",
     "path": "dist/fields/Fields.js",
     "import": "*",
-    "limit": "2.2 kB",
+    "limit": "2.65 kB",
     "gzip": true
   },
   {
@@ -150,7 +150,7 @@
     "name": "popover (import from '@punji/ui/popover')",
     "path": "dist/popover/Popover.js",
     "import": "*",
-    "limit": "1.7 kB",
+    "limit": "2 kB",
     "gzip": true
   },
   {
@@ -171,7 +171,7 @@
     "name": "select (import from '@punji/ui/select')",
     "path": "dist/select/Select.js",
     "import": "*",
-    "limit": "850 B",
+    "limit": "1.3 kB",
     "gzip": true
   },
   {
@@ -220,7 +220,7 @@
     "name": "table (import from '@punji/ui/table')",
     "path": "dist/table/Table.js",
     "import": "*",
-    "limit": "820 B",
+    "limit": "2.4 kB",
     "gzip": true
   },
   {
@@ -276,13 +276,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "11.5 kB",
+    "limit": "30.6 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "11.8 kB",
+    "limit": "14 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -290,6 +290,125 @@
     "name": "tokens.css",
     "path": "dist/tokens.css",
     "limit": "1.15 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "Nepal utilities including calendar table",
+    "path": "dist/nepal/nepal.js",
+    "import": "*",
+    "limit": "4.5 kB",
+    "gzip": true
+  },
+  {
+    "name": "Financial compositions",
+    "path": "dist/financial/financial.js",
+    "import": "*",
+    "limit": "4 kB",
+    "gzip": true
+  },
+  {
+    "name": "Button from root (tree-shaking regression)",
+    "path": "dist/index.js",
+    "import": "{ Button }",
+    "limit": "640 B",
+    "gzip": true
+  },
+  {
+    "name": "Nepal formatting without calendar or React",
+    "path": "dist/nepal/format.js",
+    "import": "*",
+    "limit": "1.3 kB",
+    "gzip": true
+  },
+  {
+    "name": "Exact minor-unit calculations without calendar or React",
+    "path": "dist/nepal/money.js",
+    "import": "*",
+    "limit": "700 B",
+    "gzip": true
+  },
+  {
+    "name": "Exact financial display factory",
+    "path": "dist/nepal/financial-format.js",
+    "import": "*",
+    "limit": "1 kB",
+    "gzip": true
+  },
+  {
+    "name": "Localized decimal parser",
+    "path": "dist/nepal/decimal.js",
+    "import": "*",
+    "limit": "1 kB",
+    "gzip": true
+  },
+  {
+    "name": "Media query hook",
+    "path": "dist/use-media-query/useMediaQuery.js",
+    "import": "*",
+    "limit": "500 B",
+    "gzip": true
+  },
+  {
+    "name": "Hydration hook",
+    "path": "dist/use-hydrated/useHydrated.js",
+    "import": "*",
+    "limit": "250 B",
+    "gzip": true
+  },
+  {
+    "name": "Stable ordering hook",
+    "path": "dist/stable-order/useStableOrder.js",
+    "import": "*",
+    "limit": "650 B",
+    "gzip": true
+  },
+  {
+    "name": "Pure key ordering",
+    "path": "dist/stable-order/keepOrder.js",
+    "import": "*",
+    "limit": "300 B",
+    "gzip": true
+  },
+  {
+    "name": "Gregorian date-only utilities without converter or React",
+    "path": "dist/nepal/date-only.js",
+    "import": "*",
+    "limit": "1 kB",
+    "gzip": true
+  },
+  {
+    "name": "Market display formatters without converter or React",
+    "path": "dist/nepal/market-format.js",
+    "import": "*",
+    "limit": "750 B",
+    "gzip": true
+  },
+  {
+    "name": "Calendar including BS conversion and shared controls",
+    "path": "dist/calendar/Calendar.js",
+    "import": "*",
+    "limit": "8.4 kB",
+    "gzip": true
+  },
+  {
+    "name": "Date pickers including Calendar",
+    "path": "dist/date-picker/DatePicker.js",
+    "import": "*",
+    "limit": "11.5 kB",
+    "gzip": true
+  },
+  {
+    "name": "Calendar and date picker CSS",
+    "path": "dist/css/calendar.css",
+    "limit": "1.3 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "Select CSS including desktop picker enhancement",
+    "path": "dist/css/select.css",
+    "limit": "1.5 kB",
     "rolldown": false,
     "gzip": true
   }

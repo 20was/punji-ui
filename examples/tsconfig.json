@@ -1,0 +1,1 @@
+{"extends": "../tsconfig.json", "compilerOptions": {"rootDir": ".."}, "include": ["main.tsx", "env.d.ts"], "exclude": ["dist"]}

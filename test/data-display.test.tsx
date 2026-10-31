@@ -41,6 +41,35 @@ function TableHarness() {
   );
 }
 
+function SearchPaginatedTableHarness() {
+  const [query, setQuery] = useState('');
+  const [pageIndex, setPageIndex] = useState(0);
+  const [selectedRowIds, setSelectedRowIds] = useState<readonly string[]>([]);
+  const holdings = [
+    { symbol: 'NABIL', name: 'Nabil Bank Limited', shares: 25 },
+    { symbol: 'NICA', name: 'NIC Asia Bank Limited', shares: 10 },
+    { symbol: 'SCB', name: 'Standard Chartered Bank', shares: 8 },
+    { symbol: 'ADBL', name: 'Agricultural Development Bank', shares: 14 },
+    { symbol: 'HRL', name: 'Himalayan Reinsurance Limited', shares: 5 },
+  ];
+  const matching = holdings.filter((holding) => `${holding.symbol} ${holding.name}`.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()));
+  const pageSize = 2;
+  const page = matching.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize);
+  return (
+    <DataTable
+      caption="Holdings"
+      columns={[{ key: 'holding', label: 'Holding' }, { key: 'shares', label: 'Shares', num: true }]}
+      search={{ label: 'Search holdings', value: query, onChange: setQuery, placeholder: 'Symbol or company', testId: 'holdings-search' }}
+      pagination={{ pageIndex, pageSize, rowCount: matching.length, onPageChange: setPageIndex, testIdPrefix: 'holdings-page' }}
+      selection={{ selectedRowIds, onChange: setSelectedRowIds, rowLabel: (id) => `Select ${id}`, testIdPrefix: 'holdings-selection' }}
+      empty="No holdings match your search."
+      testId="holdings-table"
+    >
+      {page.map((holding) => <DataListRow key={holding.symbol} rowId={holding.symbol}><Cell sym header>{holding.symbol} · {holding.name}</Cell><Cell num>{holding.shares}</Cell></DataListRow>)}
+    </DataTable>
+  );
+}
+
 describe('Rows', () => {
   it('a ValueRow is a link (plain or your link component), a button, or static', async () => {
     const onClick = vi.fn<() => void>();
@@ -180,8 +209,57 @@ describe('DataTable', () => {
     expect(screen.getByRole('rowheader', { name: 'NABIL' }).className).toBe('sym');
   });
 
+  it('searches a complete caller dataset, resets to page one, and reports filtered ranges', async () => {
+    render(<SearchPaginatedTableHarness />);
+    const search = screen.getByRole('searchbox', { name: 'Search holdings' });
+    expect(screen.getByText('1–2 of 5')).toBeTruthy();
+    await userEvent.type(search, 'bank');
+    expect(screen.getByText('1–2 of 4')).toBeTruthy();
+    expect(screen.getByRole('rowheader', { name: /NABIL/ })).toBeTruthy();
+    await userEvent.click(screen.getByTestId('holdings-page-next'));
+    expect(screen.getByText('3–4 of 4')).toBeTruthy();
+    expect(screen.getByRole('rowheader', { name: /SCB/ })).toBeTruthy();
+    await userEvent.clear(search);
+    await userEvent.type(search, 'himalayan');
+    expect(screen.getByText('1–1 of 1')).toBeTruthy();
+    expect(screen.getByRole('rowheader', { name: /HRL/ })).toBeTruthy();
+    expect(screen.getByTestId('holdings-page-previous').hasAttribute('disabled')).toBe(true);
+    expect(screen.getByTestId('holdings-page-next').hasAttribute('disabled')).toBe(true);
+  });
+
+  it('selects the current page, indicates partial selection, and preserves selected IDs across pages', async () => {
+    render(<SearchPaginatedTableHarness />);
+    const selectPage = screen.getByRole('checkbox', { name: 'Select all rows on this page' }) as HTMLInputElement;
+    const nabil = screen.getByRole('checkbox', { name: 'Select NABIL' }) as HTMLInputElement;
+    await userEvent.click(nabil);
+    expect(nabil.checked).toBe(true);
+    expect(selectPage.indeterminate).toBe(true);
+    expect(screen.getByText('1 selected')).toBeTruthy();
+    await userEvent.click(selectPage);
+    expect(selectPage.checked).toBe(true);
+    expect(screen.getByText('2 selected')).toBeTruthy();
+    await userEvent.click(screen.getByTestId('holdings-page-next'));
+    expect(screen.getByText('2 selected')).toBeTruthy();
+    expect((screen.getByRole('checkbox', { name: 'Select all rows on this page' }) as HTMLInputElement).checked).toBe(false);
+    await userEvent.click(screen.getByRole('checkbox', { name: 'Select SCB' }));
+    expect(screen.getByText('3 selected')).toBeTruthy();
+    await userEvent.click(screen.getByRole('button', { name: 'Clear selection' }));
+    expect(screen.queryByText('selected')).toBeNull();
+    expect((screen.getByRole('checkbox', { name: 'Select all rows on this page' }) as HTMLInputElement).checked).toBe(false);
+  });
+
+  it('announces empty search results and loading state without dropping headers', () => {
+    const { rerender } = render(<DataTable caption="No holdings" columns={COLS} search={{ label: 'Search holdings', value: 'missing', onChange: () => {} }} pagination={{ pageIndex: 0, pageSize: 25, rowCount: 0, onPageChange: () => {} }} empty="No holdings match this search." testId="empty-table">{null}</DataTable>);
+    expect(screen.getByRole('status').textContent).toBe('No holdings match this search.');
+    expect(screen.getByText('0 results')).toBeTruthy();
+    expect(screen.getByRole('table', { name: 'No holdings' })).toBeTruthy();
+    rerender(<DataTable caption="No holdings" columns={COLS} loading loadingLabel="Loading holdings…" testId="empty-table">{null}</DataTable>);
+    expect(screen.getByRole('status').textContent).toBe('Loading holdings…');
+    expect(screen.getByRole('region', { name: 'No holdings' }).getAttribute('aria-busy')).toBe('true');
+  });
+
   it('has no serious axe violations', async () => {
-    const { container } = render(<TableHarness />);
+    const { container } = render(<SearchPaginatedTableHarness />);
     expect(await seriousViolations(container)).toEqual([]);
   });
 });

@@ -1,0 +1,4 @@
+body { margin: 0; }
+* { box-sizing: border-box; }
+.demo-controls { display: flex; flex-wrap: wrap; align-items: end; gap: var(--pu-space-4); }
+.demo-controls > :first-child { flex: 1; min-width: 200px; }

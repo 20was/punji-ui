@@ -1,64 +1,23 @@
 # Roadmap
 
-Punji UI is a general-purpose React kit: the pieces a complete web app needs
-(forms, navigation, overlays, feedback, data display), small and accessible.
-It is a mirror of the kit that runs the Punji web app: Punji stays the source
-of truth, and `npm run sync` brings each change here (see
-[CONTRIBUTING.md](./CONTRIBUTING.md#how-the-kit-is-kept-in-sync-with-punji)).
-This file mirrors the status on [design.punji.app](https://design.punji.app).
+Punji UI is becoming an independent financial design system.
+The maintained [audit and prioritised checklist](docs/audit/README.md) records
+implemented foundations and release-critical gaps. The consumer app is a
+reference, not the source of truth; migration has not started.
 
-## Shipped (in this repository, not on npm)
+Brand artwork, application routes, authentication, permissions, backend clients,
+tax rules and trading execution remain outside this reusable UI package.
 
-- **Package pipeline**: ES modules with one file per module, types checked with
-  are-the-types-wrong, size budgets, axe-core and property-based tests,
-  Changesets, npm Trusted Publishing and provenance ready for the first release.
-- **Design tokens**: Punji's theme as `--pu-*` CSS variables, light and dark
-  ([docs/tokens.md](./docs/tokens.md)).
-- **The sync** from Punji's web kit, which refuses anything it cannot classify.
-- **Inputs and actions**: Button (router links through `linkComponent`),
-  Select, SegmentedControl and SegmentedSwitch, Tabs, Chip and ChipRow,
-  Checkbox, Switch, ChoiceGroup, ShowMore.
-- **Inputs**: Field, NumberField, DateField, TextAreaField, SelectField and
-  SymbolField; CompanySearch; ListFilter; RangeSlider.
-- **Overlays and feedback**: Sheet, Toast and Dock, Drawer, CommandPalette,
-  InlineConfirm, Tooltip, InfoTip, FloatingTooltip and IconHint; EmptyState,
-  Note, Skeleton.
-- **Data display**: Card, StatusPill, Rows and lists (GroupedCell, RowList,
-  ValueRow with `linkComponent`, DataRows, DataRow, Tile), DataTable, StatGrid
-  and StatTile, Figure and Delta, Live and LiveFigure.
-- **Layout**: PageLayout, PageHeader (back link through `linkComponent`),
-  ListSectionHeader.
-- **Helpers**: `formatFigure`, `toneOf`, `parseNumber` (Devanagari digits
-  too), `searchSymbols`, `segmentTarget`, `compactRs`, `useTweenedNumber` and
-  the tween maths.
+## 1. Date picker and calendar
 
-## Next
+Implemented for local review: Calendar (single/range/multiple), DatePicker and
+DateRangePicker, Gregorian/BS display, Nepali/English labels and digits, strict
+input, date bounds, unavailable intervals and keyboard navigation. Examples live
+at `/components/calendar` and `/components/date-picker`; the full local portal's
+roadmap links to both. See [API and limits](docs/CALENDAR.md) and
+[upstream research](docs/research/calendar-2026-10-29.md).
 
-- **Month grid**, once it takes general props instead of Punji's data shape.
-- Screenshots of every component in light and dark on design.punji.app, then
-  in this README.
-
-## Later
-
-- **Publishing to npm**, once the API has settled across these steps. Until
-  then the package stays `"private": true`.
-- An optional `@punji/ui/fonts.css` with the OFL font files and their licence.
-- A general icon set (Punji's navigation glyphs are named for its own pages).
-- Headless hooks for the same behaviour without the styles.
-- Combobox, date picker, menu and popover built on the platform (`<dialog>`,
-  the Popover API, CSS anchor positioning) rather than a positioning library.
-- Visual regression screenshots on pull requests.
-- 1.0: a stable API, semver from then on.
-
-## Stays in Punji
-
-These are part of Punji's own product, not the kit, and are never mirrored:
-
-| Piece | Why |
-| --- | --- |
-| Logo, LogoWordmark | Punji brand artwork; the name and logo are trademarks ([TRADEMARKS.md](./TRADEMARKS.md)). |
-| Phone tab bar | Punji's own navigation: its sites, routes and sections. |
-| Tab routes | Punji's addresses, cookies and session keys. |
-| Navigation icons | Glyphs named for Punji's pages (a general set is under Later). |
-
-Want something here sooner, or something missing? [Open a feature request](https://github.com/20was/punji-ui/issues/new/choose).
+Before release: owner visual review, native Nepali copy review, VoiceOver/NVDA
+checks and independent production portal build. Later: multi-month ranges,
+time selection, RTL verification and other calendar adapters. Keep date-only
+selection separate from instants, financial calculations and business rules.

@@ -22,7 +22,7 @@ concurrency:
 jobs:
   release:
     name: Version PR or publish
-    if: github.repository == '20was/punji-ui'
+    if: github.repository == '20was/punji-ui' && vars.UI_NPM_RELEASE_ENABLED == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     environment: npm

@@ -3,12 +3,15 @@
 // dotfiles, and an upper bound on the unpacked size.
 import { execFileSync } from 'node:child_process';
 
-// The whole kit (38 modules: JS, types with their docs, styles.css and the
-// per-module sheets) is 300 kB unpacked; the budget is that plus headroom.
-const MAX_UNPACKED = 320 * 1024;
+// Calendar/date pickers and the expanded financial table API add JS,
+// declarations and dedicated CSS. Keep a bounded allowance above the current
+// measured ~451 kB unpacked rather than letting the budget fail on valid output.
+const MAX_UNPACKED = 470 * 1024;
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
-const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md']);
+const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md']);
 const allowed = (p) => always.has(p) || /^dist\/.+\.(js|d\.ts|css)$/.test(p);
+
+if (!info.files.some(file => file.path === 'THIRD_PARTY_NOTICES.md')) throw new Error('pack: missing required upstream licence notices');
 
 const bad = info.files.map((f) => f.path).filter((p) => !allowed(p));
 for (const f of info.files) console.log(`  ${String(f.size).padStart(7)}  ${f.path}`);

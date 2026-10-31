@@ -1,3 +1,4 @@
+// Historical migration inventory only; reverse sync is retired. See docs/ARCHITECTURE.md.
 // What the sync knows about Punji's web kit: every module and how it is
 // classified, the adapters applied to the modules that need one, which CSS
 // class belongs to which module, and the size budgets. The sync fails on

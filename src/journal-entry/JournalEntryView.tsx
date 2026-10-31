@@ -35,15 +35,21 @@ export const DEFAULT_JOURNAL_LABELS: JournalEntryLabels = {
 };
 
 export interface JournalEntryViewProps {
+  /** The journal to show: its id, date, memo and lines. A journal with an invalid line shows an alert. */
   journal: JournalEntry;
   /** What an account cell holds, for example a link or "1010 Cash". Default the account string. */
   renderAccount?: (account: string) => ReactNode;
+  /** Currency and locale of the amounts. Default NPR, en-IN, no currency mark: name the currency in the caption. */
   money?: MoneyFormatConfig;
+  /** Print the journal date. Default `3 Aug 2024` from the Gregorian date. */
   formatDate?: (date: CalendarDate) => string;
+  /** Column, status and heading words, in the reader's language. */
   labels?: Partial<JournalEntryLabels>;
   /** Heading level of the title (2-6). Default 3. */
   headingLevel?: 2 | 3 | 4 | 5 | 6;
+  /** No box of its own: the table sits in a card or a panel. */
   bare?: boolean;
+  /** Sets `data-testid` on the root. */
   testId?: string;
 }
 

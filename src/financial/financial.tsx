@@ -31,20 +31,38 @@ export function FinancialSummary({ metrics, label }: { metrics: readonly Financi
   return <StatGrid label={label} cols={Math.min(4, Math.max(1, metrics.length))}>{metrics.map(metric => <StatTile key={metric.id} {...metric} />)}</StatGrid>;
 }
 
-export interface FinancialColumn<T> extends Column<string> { render: (row: T) => ReactNode; rowHeader?: boolean }
+export interface FinancialColumn<T> extends Column<string> {
+  /** Draws one row's cell for this column. */
+  render: (row: T) => ReactNode;
+  /** The cell is the row's header (a th scope="row"), usually the first column. */
+  rowHeader?: boolean;
+}
 export interface FinancialTableProps<T> {
+  /** Names the table region; also the sort and selection announcements' subject. */
   caption: string;
+  /** The columns in order: a key, a label, how to render a row's cell, and layout hints (`num`, `wide`, `hideUnder`, `rowHeader`). */
   columns: readonly FinancialColumn<T>[];
+  /** The records to show, in the order to show them. Sort, filter and page them yourself. */
   rows: readonly T[];
+  /** A stable, unique key per row, also the id used by `selection`. */
   rowKey: (row: T) => string;
+  /** ready (default), loading (a placeholder) or error (`errorTitle`). */
   state?: 'ready' | 'loading' | 'error';
+  /** The title shown when `rows` is empty (and no search or pagination is on). */
   emptyTitle: string;
+  /** A line under the empty title: why it is empty or what to do. */
   emptyBody?: ReactNode;
+  /** One button or link under the empty state. */
   emptyAction?: ReactNode;
+  /** Names the loading placeholder. Default "Loading records". */
   loadingLabel?: string;
+  /** What failed, shown in place of the table. Default "Records unavailable". */
   errorTitle?: string;
+  /** One button for the error state, for example a retry. */
   errorAction?: ReactNode;
+  /** The sort being shown: the column key and its direction. */
   sort?: { key: string; dir: SortDir };
+  /** Called with the column key a click on a sortable head asks for. The table does not reorder rows. */
   onSort?: (key: string) => void;
   /** Optional controlled search field. The caller filters the complete row set and supplies the filtered page. */
   search?: DataTableSearch;
@@ -107,9 +125,20 @@ export function PriceChart({ points, label, formatValue, dataLabel = 'View chart
 export interface OrderBookLevel { price: number; quantity: number }
 /** Display only: no order placement, totals, sorting or inferred market data. */
 export function OrderBook({ bids, asks, caption, labels, formatPrice, formatQuantity, missingLabel = '—' }: {
-  bids: readonly OrderBookLevel[]; asks: readonly OrderBookLevel[]; caption: string;
+  /** Buy levels, best first, as published. */
+  bids: readonly OrderBookLevel[];
+  /** Sell levels, best first, as published. */
+  asks: readonly OrderBookLevel[];
+  /** Names the table. */
+  caption: string;
+  /** The four column heads, in the reader's language. */
   labels: { bidQuantity: string; bid: string; ask: string; askQuantity: string };
-  formatPrice: (value: number) => string; formatQuantity: (value: number) => string; missingLabel?: string;
+  /** Prints a price. */
+  formatPrice: (value: number) => string;
+  /** Prints a quantity. */
+  formatQuantity: (value: number) => string;
+  /** Shown for a level that is missing or not a finite non-negative number. Default a dash. */
+  missingLabel?: string;
 }) {
   const rows = Array.from({ length: Math.max(bids.length, asks.length) }, (_, index) => ({ index, bid: bids[index], ask: asks[index] }));
   const value = (n: number | undefined, format: (n: number) => string) => n !== undefined && Number.isFinite(n) && n >= 0 ? format(n) : missingLabel;

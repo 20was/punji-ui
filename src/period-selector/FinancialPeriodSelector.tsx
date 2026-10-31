@@ -23,9 +23,11 @@ import type { FinancialPeriod } from './periods.ts';
 export * from './periods.ts';
 
 export interface FinancialPeriodSelectorProps {
+  /** The periods to choose from, in display order. Two or more `kind`s show the kind switch. */
   periods: readonly FinancialPeriod[];
   /** The selected period's id. */
   value: string;
+  /** Called with the chosen period's id and the period itself. Keep the id in state and pass it back as `value`. */
   onChange: (id: string, period: FinancialPeriod) => void;
   /** The accessible name of the picker, for example "Reporting period". */
   label: string;
@@ -35,7 +37,9 @@ export interface FinancialPeriodSelectorProps {
   kindGroupLabel?: string;
   /** Print the selected period's `detail` under the picker. Default true. */
   showDetail?: boolean;
+  /** Control height: sm, md (default) or lg. */
   size?: ControlSize;
+  /** Sets `data-testid` on the root; also the prefix of the detail line's id. */
   testId?: string;
 }
 

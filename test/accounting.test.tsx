@@ -8,7 +8,7 @@ import {
   nepalFiscalMonthPeriods, nepalFiscalQuarterPeriods, nepalFiscalYearPeriods, type FinancialPeriod, type PaymentStatusValue,
 } from '../src/index.ts';
 import { seriousViolations } from './axe.ts';
-import { cashEntries, depositJournal, incomeStatement, journals, periods, saleJournal, unbalancedJournal } from './accounting-fixtures.ts';
+import { cashEntries, depositJournal, incomeStatement, journals, periods, saleJournal, unbalancedJournal } from '../fixtures/accounting-data.ts';
 
 const flat = (s: string | null | undefined) => (s ?? '').replace(/[  ]/g, ' ');
 const visible = (el: Element) => flat([...el.querySelectorAll('[aria-hidden="true"]')].map(n => n.textContent).join('') || el.textContent);

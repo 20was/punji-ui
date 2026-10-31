@@ -15,14 +15,19 @@ export type NormalSide = 'debit' | 'credit';
 
 /** One posting to one account, as a general ledger lists it. */
 export interface LedgerEntry {
+  /** Unique and stable: a key for the row (and the prefix of each posting's id when journals are flattened). */
   id: string;
+  /** The posting date, Gregorian and date-only (no time zone). */
   date: CalendarDate;
+  /** The account the amount is posted to, as your chart of accounts names it. */
   account: string;
+  /** A line of words about the posting. */
   description?: string;
   /** Minor units, 0n or more. */
   debit: bigint;
   /** Minor units, 0n or more. A line has a debit or a credit, not both. */
   credit: bigint;
+  /** A document number: invoice, voucher or receipt. */
   reference?: string;
 }
 
@@ -30,9 +35,13 @@ export interface JournalLine { account: string; debit: bigint; credit: bigint }
 
 /** One business event posted as two or more lines that should balance. */
 export interface JournalEntry {
+  /** Unique and stable: a key for the row (and the prefix of each posting's id when journals are flattened). */
   id: string;
+  /** The posting date, Gregorian and date-only (no time zone). */
   date: CalendarDate;
+  /** A line of words about the whole entry. */
   memo?: string;
+  /** The postings, in order. They should balance: debits equal credits. */
   lines: readonly JournalLine[];
 }
 
@@ -120,6 +129,7 @@ export function accountBalance(entries: readonly LedgerEntry[], account: string,
 }
 
 export interface TrialBalanceAccount {
+  /** The account the amount is posted to, as your chart of accounts names it. */
   account: string;
   /** Σ debits posted to the account. */
   debit: bigint;

@@ -24,11 +24,15 @@ const ICONS: Record<PaymentStatusValue, ReactNode> = {
 };
 
 export interface PaymentStatusProps {
+  /** Where the invoice or bill stands: paid, partial, unpaid, overdue or void. Decided by the caller. */
   status: PaymentStatusValue;
   /** Replace the words, in the reader's language. */
   labels?: Partial<Record<PaymentStatusValue, string>>;
+  /** 'sm' for a smaller pill, for a dense list. */
   size?: 'sm';
+  /** Extra class for layout. */
   className?: string;
+  /** Sets `data-testid` on the pill. */
   testId?: string;
 }
 

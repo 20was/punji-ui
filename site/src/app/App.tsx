@@ -81,6 +81,9 @@ function Home() {
       <section aria-labelledby="start" className="doc-section">
         <h2 id="start">Pages</h2>
         <p className="doc-muted">{PAGES.length} pages so far. Components that exist but are not documented yet are counted as planned in the sidebar.</p>
+        <p className="doc-muted">
+          Banking and payments has no components of its own yet. Its planned count is the generic status primitives (StatusPill, LockedNote) that exist but have no page; nothing banking-specific is documented or implied. PaymentStatus, for invoices and bills, is under Accounting and bookkeeping.
+        </p>
         <div className="doc-cards">
           {GROUPS.filter((g) => PAGES.some((p) => p.group === g.id)).map((group) => (
             <section key={group.id} className="doc-card" aria-labelledby={`home-${group.id}`}>

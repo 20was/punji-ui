@@ -1,6 +1,7 @@
 // Browser verification of the built documentation site (npm run site:build first).
 // Every page at 390 and 1440 px, light and dark: screenshot (test-results/site/, ignored),
-// in-browser axe, no horizontal overflow, no console errors. Then behaviour: the copy
+// in-browser axe, no horizontal overflow, no console errors; and EVERY example variant of
+// every page (switched through the variant buttons), not only the first. Then behaviour: the copy
 // button puts the exact example source on the clipboard, the theme switch forces and
 // persists a theme, search filters the sidebar, the mobile drawer opens and navigates.
 import { chromium } from 'playwright';
@@ -16,6 +17,7 @@ const base = process.env.SITE_URL ?? 'http://127.0.0.1:4174';
 const axeSource = readFileSync('node_modules/axe-core/axe.min.js', 'utf8');
 const browser = await chromium.launch({ headless: true, ...(process.env.CHROME_CHANNEL ? { channel: process.env.CHROME_CHANNEL } : {}) });
 const failures = [];
+const checked = { variants: 0 };
 const fail = (message) => { failures.push(message); console.error(`FAIL ${message}`); };
 const routes = [{ slug: '', title: 'Overview' }, ...PAGES];
 
@@ -35,11 +37,26 @@ try {
         const label = `${route.slug || 'home'}-${width}-${theme}`;
         await page.screenshot({ path: `${out}/${label}.png`, fullPage: true });
         await page.addScriptTag({ content: axeSource });
-        const violations = await page.evaluate(async () => (await globalThis.axe.run()).violations.map((v) => `${v.id} (${v.impact}): ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`));
-        for (const v of violations) fail(`${label}: axe ${v}`);
-        const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
-        if (overflow > 0) fail(`${label}: horizontal overflow by ${overflow}px`);
-        for (const e of errors) fail(`${label}: console/page error ${e}`);
+        const audit = async (name, scope) => {
+          const violations = await page.evaluate(async (selector) => (await globalThis.axe.run(selector ? document.querySelector(selector) : document)).violations.map((v) => `${v.id} (${v.impact}): ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`), scope);
+          for (const v of violations) fail(`${name}: axe ${v}`);
+          const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
+          if (overflow > 0) fail(`${name}: horizontal overflow by ${overflow}px`);
+          // The preview may scroll inside itself, but its content must not be wider than the page it sits on.
+          const clipped = await page.evaluate(() => { const box = document.querySelector('[data-testid=preview]'); return box ? box.scrollWidth - box.clientWidth : 0; });
+          if (clipped > 1) fail(`${name}: the preview scrolls sideways by ${clipped}px`);
+          for (const e of errors.splice(0)) fail(`${name}: console/page error ${e}`);
+        };
+        // The first variant gets the whole page; every other variant is audited in the preview it changes (the page chrome is the same).
+        await audit(label, null);
+        const variants = 'examples' in route ? route.examples : [];
+        for (const variant of variants.slice(1)) {
+          await page.getByRole('group', { name: `${route.title} variants` }).getByRole('button', { name: variant.title, exact: true }).click();
+          await page.getByLabel(`${variant.title} example code`, { exact: true }).waitFor();
+          checked.variants += 1;
+          await audit(`${label} [${variant.id}]`, '[data-testid=preview]');
+        }
+        checked.variants += variants.length ? 1 : 0;
         await page.close();
       }
       await context.close();
@@ -108,4 +125,4 @@ if (failures.length) {
   console.error(`\nsite check: ${failures.length} failure(s)`);
   process.exit(1);
 }
-console.log(`site check: ${routes.length} routes x 2 widths x 2 themes (axe, overflow, console) and the copy, variant, theme, search and drawer behaviours passed`);
+console.log(`site check: ${routes.length} routes x 2 widths x 2 themes and ${checked.variants} example variants (axe, overflow, console) and the copy, variant, theme, search and drawer behaviours passed`);

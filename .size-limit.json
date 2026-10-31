@@ -283,13 +283,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "45 kB",
+    "limit": "49 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "18.4 kB",
+    "limit": "20.4 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -486,7 +486,7 @@
     "name": "Pagination hook and arithmetic",
     "path": "dist/use-pagination/usePagination.js",
     "import": "*",
-    "limit": "940 B",
+    "limit": "1 kB",
     "gzip": true
   },
   {
@@ -577,7 +577,7 @@
     "name": "summary-figure (import from '@punji/ui/summary-figure')",
     "path": "dist/summary-figure/SummaryFigure.js",
     "import": "*",
-    "limit": "400 B",
+    "limit": "700 B",
     "gzip": true
   },
   {
@@ -627,6 +627,48 @@
     "path": "dist/link-table/LinkTable.js",
     "import": "*",
     "limit": "1.05 kB",
+    "gzip": true
+  },
+  {
+    "name": "bars (import from '@punji/ui/bars')",
+    "path": "dist/bars/Bars.js",
+    "import": "*",
+    "limit": "1.6 kB",
+    "gzip": true
+  },
+  {
+    "name": "sparkline (import from '@punji/ui/sparkline')",
+    "path": "dist/sparkline/Sparkline.js",
+    "import": "*",
+    "limit": "900 B",
+    "gzip": true
+  },
+  {
+    "name": "column-chart (import from '@punji/ui/column-chart')",
+    "path": "dist/column-chart/ColumnChart.js",
+    "import": "*",
+    "limit": "2.4 kB",
+    "gzip": true
+  },
+  {
+    "name": "breakdown (import from '@punji/ui/breakdown')",
+    "path": "dist/breakdown/Breakdown.js",
+    "import": "*",
+    "limit": "400 B",
+    "gzip": true
+  },
+  {
+    "name": "pagination (import from '@punji/ui/pagination')",
+    "path": "dist/pagination/Pagination.js",
+    "import": "*",
+    "limit": "1.7 kB",
+    "gzip": true
+  },
+  {
+    "name": "metric-tile (import from '@punji/ui/metric-tile')",
+    "path": "dist/metric-tile/MetricTile.js",
+    "import": "*",
+    "limit": "450 B",
     "gzip": true
   }
 ]

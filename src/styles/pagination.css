@@ -1,0 +1,8 @@
+/* Punji UI styles.
+   Styles for pagination. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .kit-pager { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 8px; min-width: 0 }
+  .kit-pager-r { font-size: 13px; line-height: 16px; color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums; white-space: nowrap }
+  .kit-pager-b { display: flex; align-items: center; gap: 4px }
+  .kit-pager-n { min-width: var(--pu-control-sm); padding-inline: 0 }
+}

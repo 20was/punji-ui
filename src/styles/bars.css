@@ -1,0 +1,47 @@
+/* Punji UI styles.
+   Styles for bars. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .kit-bar-gain { background: var(--pu-color-gain) }
+  .kit-bar-loss { background: var(--pu-color-loss) }
+  .kit-bar-neutral { background: color-mix(in srgb, var(--pu-color-text) 30%, transparent) }
+  .kit-bar-nepse { background: var(--pu-color-series-nepse) }
+  .kit-bar-chart { background: var(--pu-color-chart) }
+
+  .kit-split { display: grid; gap: 8px; min-width: 0 }
+  .kit-split-bar { display: flex; gap: 4px; height: 8px }
+  .kit-split-bar > i { display: block; min-width: 4px; height: 100%; border-radius: 4px }
+  .kit-split-l { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 12px; font-size: 12px; line-height: 16px; font-variant-numeric: tabular-nums }
+  .kit-split-l.n1 { justify-content: flex-start }
+  .kit-split-t { white-space: nowrap; color: var(--pu-color-text-muted) }
+  .kit-split-t.gain { color: var(--pu-color-gain) }
+  .kit-split-t.loss { color: var(--pu-color-loss) }
+
+  .kit-div { display: grid; grid-template-columns: 1fr 1fr; align-items: center; width: 100%; min-width: 48px; height: 8px }
+  .kit-div-l, .kit-div-r { display: flex; height: 8px }
+  .kit-div-l { justify-content: flex-end }
+  .kit-div i { display: block; height: 8px }
+  .kit-div-l i { border-radius: 4px 0 0 4px; background: var(--pu-color-loss) }
+  .kit-div-r i { border-radius: 0 4px 4px 0; background: var(--pu-color-gain) }
+  .kit-div-r { border-left: 2px solid var(--pu-color-text-tertiary) }
+
+  .kit-netbar { display: grid; grid-template-columns: minmax(48px, 1fr) 64px; align-items: center; column-gap: 10px; width: 100%; min-width: 0 }
+  .kit-netbar-t { position: relative; display: grid; grid-template-columns: 1fr 1fr; align-items: center; height: 16px }
+  .kit-netbar-t::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 2px; margin-top: -1px; border-radius: 1px; background: var(--pu-color-track) }
+  .kit-netbar-t::after { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; border-radius: 1px; background: var(--pu-color-text-tertiary) }
+  .kit-netbar-l, .kit-netbar-r { position: relative; z-index: 1; display: flex; height: 8px }
+  .kit-netbar-l { justify-content: flex-end }
+  .kit-netbar-t i { display: block; height: 8px }
+  .kit-netbar-l i { border-radius: 4px 0 0 4px; background: var(--pu-color-loss) }
+  .kit-netbar-r i { border-radius: 0 4px 4px 0; background: var(--pu-color-gain) }
+  .kit-netbar-v { justify-self: end; font-size: 14px; line-height: 18px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--pu-color-text-muted) }
+  .kit-netbar.up .kit-netbar-v { color: var(--pu-color-gain) }
+  .kit-netbar.down .kit-netbar-v { color: var(--pu-color-loss) }
+  .kit-netbar-h { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 12px; margin-right: 74px; min-width: 0 }
+  .kit-netbar-h > span:first-child { text-align: right }
+
+  .kit-bar-tip { min-width: min(180px, calc(100vw - 16px)); font-variant-numeric: tabular-nums }
+  .kit-bar-tip > strong { display: block; padding-bottom: 8px; margin-bottom: 8px; border-bottom: 1px solid var(--pu-color-border); font-size: 12px; font-weight: 600; color: var(--pu-color-text-muted) }
+  .kit-bar-tip > span { display: flex; align-items: center; gap: 8px; line-height: 24px }
+  .kit-bar-tip i { flex: none; width: 10px; height: 10px; border-radius: 2px }
+  .kit-bar-tip b { flex: none; margin-left: auto; padding-left: 12px; font-weight: 600; white-space: nowrap }
+}

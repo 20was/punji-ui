@@ -11,7 +11,11 @@ import { execFileSync } from 'node:child_process';
 // modest allowance above that and re-measure when adding modules.
 // The ten migrated status, meter and list components plus the web-parity work
 // (JS, declarations, CSS) bring it to ~649 KiB.
-const MAX_UNPACKED = 680 * 1024;
+// The second batch (HeadlineFigure, bars, Sparkline, ColumnChart, Breakdown, Pagination,
+// MetricTile: JS, declarations, CSS) brings it to ~713 KiB.
+// .size-limit.json takes no comments: the "Everything" budget went 45 -> 49 kB gzip (about +3.2 kB of real new JS) and
+// styles.css 18.4 -> 20.4 kB gzip (about +1.6 kB of CSS) for the same second batch.
+const MAX_UNPACKED = 720 * 1024;
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
 const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md']);
 const allowed = (p) => always.has(p) || /^dist\/.+\.(js|d\.ts|css)$/.test(p);

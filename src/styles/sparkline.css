@@ -1,0 +1,12 @@
+/* Punji UI styles.
+   Styles for sparkline. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .kit-spark { display: block; max-width: 100%; overflow: visible }
+  .kit-spark polyline { fill: none; stroke: var(--pu-color-text-tertiary); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round }
+  .kit-spark.gain polyline { stroke: var(--pu-color-gain) }
+  .kit-spark.loss polyline { stroke: var(--pu-color-loss) }
+  .kit-spark.chart polyline { stroke: var(--pu-color-chart); stroke-width: 2 }
+  .kit-spark.fluid { width: 100%; height: auto }
+  .kit-spark.fluid polyline { vector-effect: non-scaling-stroke }
+  .kit-spark-none { display: block; max-width: 100%; border-bottom: 1px dashed var(--pu-color-border-strong) }
+}

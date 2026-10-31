@@ -8,7 +8,7 @@ import {
   StatGrid, StatTile, StatusPill, StatusTag, Switch, SymbolField, Tabs, TextAreaField, DateField, ToastProvider, Tooltip, ValueRow,
   formatNPR, formatNepalNumber, formatPercent, useToast, type CommandItem, type DateRange, type FinancialColumn,
 } from '@punji/ui';
-import { holdings, symbols, today, weeklyValue, type Holding } from './data.ts';
+import { holdings, symbols, today, weeklyValue, type Holding } from '../../fixtures/market-data.ts';
 
 const money = (v: number | null) => formatNPR(v);
 const Group = ({ title, children }: { title: string; children: ReactNode }) => <section aria-label={title}><h2 className="vr-h">{title}</h2><div className="vr-row" style={{ marginTop: 8 }}>{children}</div></section>;

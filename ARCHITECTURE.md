@@ -14,7 +14,7 @@ punji-ui (this repo, source of truth)  -->  npm @punji/ui (exact version)  -->  
 | Reverse sync from punji-web | Retired; `npm run sync` throws |
 | Published to npm | No. `version` is `0.0.0`; release is gated ([RELEASE.md](RELEASE.md)) |
 | punji-web consumption | Not started. It still aliases `@punji/ui` to its own `src/components/kit/`. Plan: [docs/INTEGRATION.md](docs/INTEGRATION.md) |
-| Docs portal (`design.punji.app`) | Still in punji-web. `npm run portal` patches a sibling checkout in memory. Open (P1), see [AUDIT.md](AUDIT.md) |
+| Docs site | `site/` is a self-contained docs app in this repo (`npm run site:dev`, `site:build`, built in CI; [site/README.md](site/README.md)) with 16 pages. The legacy full portal (`design.punji.app`, about 35 pages) still lives in punji-web; `npm run portal` patches a sibling checkout in memory. Hosting is undecided, see [AUDIT.md](AUDIT.md) |
 | `scripts/audit-web.mjs` | Read-only comparison against a punji-web checkout |
 
 ## Module layout and exports
@@ -73,6 +73,7 @@ Nepal support (BS calendar, NPR, `en-IN` grouping, Devanagari digits, fiscal yea
 | Property | fast-check, `FC_NUM_RUNS` (default 100) | `test/fc.ts` |
 | Accessibility (jsdom) | axe-core, serious/critical | `test/axe.ts`; contrast disabled |
 | Visual, interaction, axe (browser) | Playwright in the pinned Docker image | `test/visual/`, [docs/VISUAL-TESTING.md](docs/VISUAL-TESTING.md) |
+| Docs site | `scripts/site-gen.mjs` (registry and props from built `.d.ts`), `typecheck:site` (examples are real TSX), `check:site` (Playwright: 17 routes x 2 widths x 2 themes, axe, overflow, console, copy/theme/search/drawer) | `site/`, `npm run site:build` |
 | Packaged-example checks | Playwright against `examples/` | `check:examples`, `check:portal`, `check:calendar`, `check:fields`, `check:select`, `check:table` |
 | Package | publint, attw, pack, exports, size-limit | [QUALITY.md](QUALITY.md) |
 

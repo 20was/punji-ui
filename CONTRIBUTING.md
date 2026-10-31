@@ -13,6 +13,17 @@ cd punji-ui
 npm ci --ignore-scripts
 ```
 
+### See changes live
+
+```sh
+npm run dev
+```
+
+Opens the docs site at http://127.0.0.1:5185/. Saving a file in `src/` rebuilds
+the library into `dist/` (TypeScript in watch mode, CSS on change) and the open
+page reloads; edits under `site/` hot-reload directly. The site always renders the
+built package, so what you see is what a consumer installs.
+
 ## The checks
 
 `npm run verify` runs the main gates CI runs, in order. CI additionally runs `npm run check:lockfile`, `npm audit signatures`, `npm run check:examples` and the Playwright visual gate (`npm run test:visual:docker` locally). What each gate checks and the component definition of done: [QUALITY.md](QUALITY.md).

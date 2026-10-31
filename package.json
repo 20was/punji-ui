@@ -585,7 +585,8 @@
     "check:site": "node scripts/check-site.mjs",
     "check:seo": "node scripts/check-seo.mjs",
     "site:brand": "node scripts/site-brand.mjs",
-    "check:consumer": "node scripts/check-consumer.mjs"
+    "check:consumer": "node scripts/check-consumer.mjs",
+    "dev": "node scripts/dev.mjs"
   },
   "peerDependencies": {
     "react": "^19.0.0",

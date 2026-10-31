@@ -39,7 +39,7 @@ for (const page of PAGES) {
     if (code.file && !existsSync(resolve(root, 'site/src/guides', page.slug, `${code.file}.tsx`))) problems.push(`registry: ${page.slug} guide file ${code.file} is missing in site/src/guides/${page.slug}/`);
   }
   if (page.kind === 'guide' && !(page.guide?.length > 0)) problems.push(`registry: guide ${page.slug} has no sections`);
-  if (page.kind !== 'foundation' && page.kind !== 'guide' && !(page.api?.length > 0)) problems.push(`registry: ${page.slug} registers no API entries`);
+  if (page.kind !== 'foundation' && page.kind !== 'guide' && page.kind !== 'showcase' && !(page.api?.length > 0)) problems.push(`registry: ${page.slug} registers no API entries`);
   for (const rel of page.related ?? []) if (!PAGES.some((p) => p.slug === rel)) problems.push(`registry: ${page.slug} relates to unknown page ${rel}`);
 }
 // Example files that no page registers would silently rot.

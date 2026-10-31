@@ -30,9 +30,9 @@ visual baselines and size budgets.
 - **Financial charts:** CandlestickChart (with volume pane and moving averages), PerformanceChart (vs benchmarks), DepthChart, shared chart maths with downsampling.
 - **Banking & payments:** AccountNumber (masked, explicit reveal and copy), BankAccountCard, TransactionList, PaymentReceipt, PaymentTimeline, BeneficiarySelector.
 
-### Wave 2: compositions, showcase and guides (guides and generic pages done; showcase, portfolio and forms below still open)
+### Wave 2: compositions, showcase and guides (guides, generic pages and showcase done; portfolio and forms below still open)
 
-- **Showcase section on design.punji.app:** real-world patterns (app band like AppStrip, portfolio tracker screen, live market board, invoice, statement) built only from `@punji/ui` exports, live with copyable source and labelled as patterns to copy, not package API. Replaces the portal's app-specific component pages at cutover.
+- **Showcase section on design.punji.app (done):** 13 patterns at `/showcase/<slug>/` (app header, app band, portfolio tracker, live market board, watchlist and alerts, stock detail, invoice, bank statement, payment flow, accounting dashboard, dividend tracker, IPO result check, mobile account home), built only from `@punji/ui` exports plus a layout stylesheet each, live with copyable typechecked source and labelled as patterns to copy, not package API. 32 portal paths redirect to them or to the nearest component page ([site/README.md](site/README.md)). Gaps the patterns exposed: `PageHeader` always renders an `h1` (no heading level); `FinancialSummary` columns follow the viewport, not its container; `TrialBalance`, `JournalEntryView` and `LedgerTable` do not stack below about 340 px; `Button` has no stacked icon-over-label (tile) variant; `Tile` shows only four characters of a five-letter symbol.
 
 - **Portfolio:** HoldingsTable, allocation donut with legend, dividend and transaction history, portfolio overview.
 - **Guides (done):** a "Get started" section with introduction and installation, Next.js App Router, Vite, theming and custom tokens, server rendering and hydration, Tailwind interop, live data adapters, security, roadmap and contributing (URLs `/get-started/<slug>/`, code typechecked by `typecheck:site`).

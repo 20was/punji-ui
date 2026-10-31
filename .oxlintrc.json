@@ -94,7 +94,8 @@
     },
     {
       "files": [
-        "site/src/guides/**"
+        "site/src/guides/**",
+        "site/src/examples/*/screen.tsx"
       ],
       "rules": {
         "import/no-unassigned-import": "off"

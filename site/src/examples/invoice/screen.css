@@ -1,0 +1,37 @@
+/* Invoice pattern: layout only. The paper sheet prints alone (see the print rule at the end). */
+.sc-inv { container: sc-inv / inline-size; display: grid; gap: var(--pu-space-4); }
+.sc-inv-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--pu-space-3); }
+.sc-inv-title { display: flex; flex-wrap: wrap; align-items: center; gap: var(--pu-space-2) var(--pu-space-3); }
+.sc-inv-title h3 { margin: 0; font: 700 1.5rem/1.15 var(--pu-font-display); letter-spacing: -0.02em; }
+.sc-inv-actions { display: flex; flex-wrap: wrap; gap: var(--pu-space-2); }
+.sc-inv-grid { display: grid; gap: var(--pu-space-4); align-items: start; }
+.sc-inv-grid > * { min-width: 0; }
+.sc-inv-paper {
+  display: grid;
+  gap: calc(var(--pu-space-4) * 1.5);
+  padding: calc(var(--pu-space-4) * 1.25);
+  border: 1px solid var(--pu-color-card-border);
+  border-radius: var(--pu-radius-card);
+  background: var(--pu-color-surface-solid);
+  box-shadow: var(--pu-shadow-sm);
+}
+.sc-inv-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: var(--pu-space-3); padding-bottom: var(--pu-space-4); border-bottom: 2px solid var(--pu-color-text); }
+.sc-inv-from { margin: 0; font: 700 1.125rem/1.2 var(--pu-font-display); }
+.sc-inv-kind { margin: 0; font: 700 var(--pu-text-sm)/1 var(--pu-font-body); text-transform: uppercase; letter-spacing: 0.08em; color: var(--pu-color-accent); }
+.sc-inv-muted { margin: 4px 0 0; font-size: var(--pu-text-sm); color: var(--pu-color-text-muted); }
+.sc-inv-item { display: grid; gap: 2px; }
+.sc-inv-item b { font-weight: 600; }
+.sc-inv-item small { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); font-weight: 400; }
+.sc-inv-totals { justify-self: end; width: min(100%, 380px); }
+.sc-inv-foot { margin: 0; padding-top: var(--pu-space-3); border-top: 1px solid var(--pu-color-border); }
+.sc-inv-side, .sc-inv-stack { display: grid; gap: var(--pu-space-3); }
+.sc-inv-balance { margin: 0; font: 700 1.75rem/1.1 var(--pu-font-display); letter-spacing: -0.02em; }
+
+@container sc-inv (min-width: 900px) {
+  .sc-inv-grid { grid-template-columns: minmax(0, 1fr) 300px; }
+  .sc-inv-paper { padding: calc(var(--pu-space-4) * 2); }
+}
+@media print {
+  .sc-inv-bar, .sc-inv-side { display: none; }
+  .sc-inv-paper { border: 0; box-shadow: none; padding: 0; }
+}

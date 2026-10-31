@@ -12,10 +12,11 @@ export const NOT_FOUND_TITLE = `Page not found — ${SITE_NAME}`;
 export const NOT_FOUND_DESCRIPTION = 'This page does not exist in the Punji UI documentation. Go to the overview to find a component.';
 export const THEME_COLOR = { light: '#e4e7de', dark: '#0d0e10' } as const;
 
-export type Section = 'get-started' | 'foundations' | 'components' | 'utilities';
+export type Section = 'get-started' | 'foundations' | 'components' | 'utilities' | 'showcase';
 
 export function sectionOf(page: PageDef): Section {
   if (page.kind === 'guide') return 'get-started';
+  if (page.kind === 'showcase') return 'showcase';
   if (page.kind === 'foundation') return 'foundations';
   if (page.kind === 'component') return 'components';
   return 'utilities';
@@ -58,6 +59,41 @@ export const PORTAL_RENAMES: Readonly<Record<string, string>> = {
   '/components/summary-figure': 'metric-tile',
   '/components/fact-list': 'key-stats',
   '/components/panel-tabs': 'tabs',
+  // Portal pages for the shell and the old pattern notes, now covered by a component page here.
+  '/shell/title-row': 'page-layout',
+  '/shell/loading': 'empty-skeleton',
+  '/patterns/states': 'empty-skeleton',
+  // App-specific portal pages of the Punji product whose home is now a Showcase pattern (built from package
+  // exports, not exported themselves). See site/README.md, "Replacing the portal".
+  '/components/app-strip': 'app-band',
+  '/components/store-buttons': 'app-band',
+  '/components/product-shot': 'app-band',
+  '/components/site-header': 'app-header',
+  '/shell/top-bar': 'app-header',
+  '/components/market-mark': 'app-header',
+  '/components/market-mark-detail': 'app-header',
+  '/components/notification-bell': 'app-header',
+  '/components/menu-panel': 'app-header',
+  '/components/phone-menu': 'app-header',
+  '/components/market-strip': 'market-board',
+  '/components/market-report': 'market-board',
+  '/components/breadth-bar': 'market-board',
+  '/components/quote-list': 'market-board',
+  '/components/quote-hero': 'stock-detail',
+  '/components/symbol-block': 'stock-detail',
+  '/components/security-title': 'stock-detail',
+  '/components/candle-chart': 'stock-detail',
+  '/patterns/charts': 'stock-detail',
+  '/components/watchlist-row': 'watchlist-alerts',
+  '/components/watch-summary': 'watchlist-alerts',
+  '/components/alert-row': 'watchlist-alerts',
+  '/components/alert-summary': 'watchlist-alerts',
+  '/components/alert-panel': 'watchlist-alerts',
+  '/utilities/alert-distance': 'watchlist-alerts',
+  '/components/two-line-chart': 'portfolio-tracker',
+  '/patterns/figures': 'portfolio-tracker',
+  '/components/app-tab-bar': 'mobile-account-home',
+  '/patterns/forms': 'payment-flow',
 };
 /** Old portal paths that map to the overview. */
 export const PORTAL_TO_HOME: readonly string[] = ['/docs'];

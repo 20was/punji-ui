@@ -1,0 +1,10 @@
+/* Dividend tracker pattern: layout only. */
+.sc-div { container: sc-div / inline-size; display: grid; gap: var(--pu-space-4); }
+.sc-div-top { display: grid; gap: var(--pu-space-4); align-items: start; }
+.sc-div-top > * { min-width: 0; }
+.sc-div-lead { display: grid; gap: calc(var(--pu-space-4) * 1.5); }
+.sc-div-action b { font-weight: 700; margin-right: 4px; }
+
+@container sc-div (min-width: 860px) {
+  .sc-div-top { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); }
+}

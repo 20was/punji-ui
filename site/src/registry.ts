@@ -7,6 +7,7 @@
 
 import { GUIDES } from './registry-guides.ts';
 import { GENERIC_PAGES } from './registry-generic.ts';
+import { SHOWCASE_PAGES } from './registry-showcase.ts';
 import { LEADS, NAV_TITLES } from './registry-leads.ts';
 
 export type GroupId =
@@ -21,7 +22,8 @@ export type GroupId =
   | 'forms'
   | 'layout'
   | 'feedback'
-  | 'developer';
+  | 'developer'
+  | 'showcase';
 
 export interface Group {
   id: GroupId;
@@ -44,6 +46,7 @@ export const GROUPS: readonly Group[] = [
   { id: 'layout', title: 'Layout', planned: [] },
   { id: 'feedback', title: 'Feedback', planned: [] },
   { id: 'developer', title: 'Utilities', planned: [] },
+  { id: 'showcase', title: 'Showcase', planned: [] },
 ];
 
 export interface ApiRef {
@@ -73,7 +76,7 @@ export interface PageDef {
    */
   lead?: string;
   group: GroupId;
-  kind: 'foundation' | 'component' | 'utility' | 'hooks' | 'guide';
+  kind: 'foundation' | 'component' | 'utility' | 'hooks' | 'guide' | 'showcase';
   /** The overview: what it is and the one rule that matters. */
   summary: string;
   /** The meta description and social card text: one or two sentences, at most 160 characters (the build checks). */
@@ -1531,6 +1534,7 @@ export const PAGES: readonly PageDef[] = [
     related: ['account-number', 'transaction-list', 'csv-export'],
   },
   ...GENERIC_PAGES,
+  ...SHOWCASE_PAGES,
 ];
 
 /** The page's one-line lead: its own `lead`, else LEADS[slug], else the first sentence of `description`. */

@@ -1,0 +1,42 @@
+/* App header pattern: layout only. Colours, type and controls come from @punji/ui and its tokens. */
+.sc-hdr { container: sc-hdr / inline-size; display: grid; gap: var(--pu-space-4); }
+.sc-hdr-bar {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas: 'start end' 'search search';
+  align-items: center;
+  gap: var(--pu-space-3);
+  padding: var(--pu-space-2) var(--pu-space-3);
+  border: 1px solid var(--pu-color-card-border);
+  border-radius: var(--pu-radius-card);
+  background: var(--pu-color-surface);
+}
+.sc-hdr-start { grid-area: start; display: flex; align-items: center; gap: var(--pu-space-2); min-width: 0; }
+.sc-hdr-brand { font: 700 1.375rem/1 var(--pu-font-display); letter-spacing: -0.03em; color: var(--pu-color-text); }
+.sc-hdr-brand span { color: var(--pu-color-accent); }
+.sc-hdr-nav { display: none; }
+.sc-hdr-links { display: flex; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.sc-hdr-links [aria-current='page'] { background: var(--pu-color-surface-tint); color: var(--pu-color-text); font-weight: 600; }
+.sc-hdr-search { grid-area: search; min-width: 0; }
+.sc-hdr-end { grid-area: end; display: flex; align-items: center; justify-content: flex-end; gap: var(--pu-space-2); }
+.sc-hdr-bell { position: relative; display: inline-flex; }
+.sc-hdr-bell > :last-child { position: absolute; top: -2px; right: -4px; pointer-events: none; }
+.sc-hdr-strip { min-width: 0; overflow-x: auto; }
+.sc-hdr-title { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--pu-space-3); }
+.sc-hdr-heading { display: flex; flex-wrap: wrap; align-items: center; gap: var(--pu-space-2) var(--pu-space-3); }
+.sc-hdr-heading h3 { margin: 0; font: 700 1.75rem/1.1 var(--pu-font-display); letter-spacing: -0.02em; }
+.sc-hdr-actions { display: flex; gap: var(--pu-space-2); }
+.sc-hdr-note { margin: 0; font-size: var(--pu-text-sm); color: var(--pu-color-text-muted); }
+.sc-hdr-drawer { padding: var(--pu-space-4); }
+.sc-hdr-drawer .sc-hdr-links { flex-direction: column; align-items: stretch; }
+.sc-hdr-drawer .sc-hdr-links > li > * { width: 100%; justify-content: flex-start; }
+
+@container sc-hdr (min-width: 760px) {
+  .sc-hdr-menu { display: none; }
+  .sc-hdr-nav { display: block; }
+  .sc-hdr-bar { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: 'start end' 'search search'; }
+}
+@container sc-hdr (min-width: 960px) {
+  .sc-hdr-bar { grid-template-columns: auto minmax(200px, 1fr) auto; grid-template-areas: 'start search end'; gap: var(--pu-space-4); }
+  .sc-hdr-search { max-width: 340px; justify-self: end; width: 100%; }
+}

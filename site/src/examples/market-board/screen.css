@@ -1,0 +1,15 @@
+/* Live market board pattern: layout only. */
+.sc-mkt { container: sc-mkt / inline-size; display: grid; gap: var(--pu-space-4); }
+.sc-mkt-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--pu-space-3); }
+.sc-mkt-title { display: flex; flex-wrap: wrap; align-items: center; gap: var(--pu-space-2) var(--pu-space-3); }
+.sc-mkt-title h3 { margin: 0; font: 700 1.75rem/1.1 var(--pu-font-display); letter-spacing: -0.02em; }
+.sc-mkt-row, .sc-mkt-main { display: grid; gap: var(--pu-space-4); }
+.sc-mkt-row > *, .sc-mkt-main > * { min-width: 0; }
+.sc-mkt-breadth { display: grid; align-content: start; gap: calc(var(--pu-space-4) * 1.5); }
+
+@container sc-mkt (min-width: 760px) {
+  .sc-mkt-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); }
+}
+@container sc-mkt (min-width: 940px) {
+  .sc-mkt-main { grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); align-items: start; }
+}

@@ -5,7 +5,7 @@ import sizes from '../generated/sizes.json';
 import { Link } from './router.tsx';
 import { apiEntry, type ApiEntry } from './api.ts';
 import { Code, CopyButton } from './Code.tsx';
-import { exampleSource, loadExample } from './examples.ts';
+import { exampleCss, exampleSource, loadExample } from './examples.ts';
 import { useResolvedTheme } from './theme.ts';
 import { ChevronIcon, CodeIcon, DoIcon, DontIcon, MonitorIcon, MoonIcon, PhoneIcon, SunIcon } from './icons.tsx';
 
@@ -645,7 +645,94 @@ function GuidePage({ page }: { page: PageDef }) {
   );
 }
 
+// ---------------------------------------------------------------------------------------------------------------
+// Showcase patterns: a real screen built only from package exports, with its source and layout CSS. Not package API.
+
+function ShowcaseList({ id, title, items }: { id: string; title: string; items: readonly string[] }) {
+  if (items.length === 0) return null;
+  return (
+    <section aria-labelledby={id} className="doc-section">
+      <h2 id={id}>{title}</h2>
+      <ul className="doc-list">
+        {items.map((item) => (
+          <li key={item}>
+            <Rich text={item} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function ShowcasePage({ page }: { page: PageDef }) {
+  const def = page.examples[0];
+  const css = def ? exampleCss(page.slug, def.id) : undefined;
+  const parts = page.related.map(pageBySlug).filter((p): p is PageDef => Boolean(p));
+  return (
+    <div className="doc-page is-wide doc-showcase" data-testid={`page-${page.slug}`}>
+      <article className="doc-article">
+        <PageHeader page={page}>
+          <ul className="doc-badges" aria-label="About this pattern">
+            <li className="doc-badge is-pattern">Pattern to copy</li>
+            <li className="doc-badge">Not package API</li>
+            <li className="doc-badge">Built from {parts.length} documented components</li>
+          </ul>
+        </PageHeader>
+        <p className="doc-showcase-note">
+          <strong>A pattern to copy, not package API.</strong> Every part you see is a documented <code>@punji/ui</code> export; the
+          screen, its layout CSS and its data are site code you copy and change. Nothing here is installed with the package.
+        </p>
+        {def && (
+          <section id="screen" className="doc-section doc-showcase-screen" aria-labelledby="screen-h">
+            <h2 id="screen-h" className="kit-sr">
+              Live screen
+            </h2>
+            <Demo page={page} def={def} onPick={() => undefined} />
+          </section>
+        )}
+        {css && def && (
+          <section aria-labelledby="layout-css" className="doc-section">
+            <h2 id="layout-css">Layout CSS</h2>
+            <p className="doc-p">
+              The only CSS the screen adds: grid placement and spacing, read from the package tokens so it follows light and dark. Container queries
+              size it to the space it is given, so it works in a sidebar layout, a phone and the phone-width preview above.
+            </p>
+            <Code label={`${page.title} layout CSS`} title={`examples/${page.slug}/${def.id}.css`} lang="css" code={css} />
+          </section>
+        )}
+        <p className="doc-p">
+          <Rich text={page.summary} />
+        </p>
+        {parts.length > 0 && (
+          <section aria-labelledby="built-from" className="doc-section">
+            <h2 id="built-from">Built from</h2>
+            <ul className="doc-related">
+              {parts.map((other) => (
+                <li key={other.slug}>
+                  <Link to={pagePath(other)}>
+                    <span className="doc-related-eyebrow">{groupTitle(other)}</span>
+                    <strong>{other.title}</strong>
+                    <span className="doc-related-lead">{leadOf(other)}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+        <ShowcaseList id="adapt" title="Adapting it" items={page.use} />
+        <ShowcaseList id="yours" title="What stays yours" items={page.avoid} />
+        <ShowcaseList id="keyboard" title="Keyboard" items={page.keyboard} />
+        <ShowcaseList id="a11y" title="Accessibility" items={page.accessibility} />
+        <ShowcaseList id="responsive" title="Responsive behaviour" items={page.responsive} />
+        {page.notes && <ShowcaseList id="notes" title={page.notes.title} items={page.notes.points} />}
+        <PrevNext page={page} />
+      </article>
+    </div>
+  );
+}
+
 export function PageView({ page }: { page: PageDef }) {
+  if (page.kind === 'showcase') return <ShowcasePage page={page} />;
   return page.guide ? <GuidePage page={page} /> : <ComponentPage page={page} />;
 }
 

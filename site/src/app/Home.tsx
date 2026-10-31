@@ -12,7 +12,7 @@ import { StatusPill } from '@punji/ui/status-pill';
 import { ColumnChart } from '@punji/ui/column-chart';
 import { TransactionStatus } from '@punji/ui/transaction-status';
 import { useHydrated } from '@punji/ui/use-hydrated';
-import { GROUPS, PAGES, type GroupId } from '../registry.ts';
+import { GROUPS, PAGES, leadOf, type GroupId } from '../registry.ts';
 import { pagePath, REPO } from '../seo.ts';
 import sizes from '../generated/sizes.json';
 import { quotes, sectorShares } from '../sample.ts';
@@ -348,6 +348,27 @@ export function Home() {
           </p>
         </div>
         <HomeDashboard />
+      </section>
+
+      <section className="home-section" id="showcase" aria-labelledby="showcase-h">
+        <div className="home-section-head">
+          <p className="home-eyebrow">Showcase</p>
+          <h2 id="showcase-h">Real screens to copy</h2>
+          <p>
+            Product screens built only from package components and a small layout stylesheet each, live, with their source. They are patterns to copy, not
+            package API.
+          </p>
+        </div>
+        <ul className="home-showcase">
+          {PAGES.filter((p) => p.kind === 'showcase').map((p) => (
+            <li key={p.slug}>
+              <Link to={pagePath(p)}>
+                <strong>{p.title}</strong>
+                <span>{leadOf(p)}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="home-section" id="components" aria-labelledby="domains">

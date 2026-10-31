@@ -50,6 +50,17 @@ Each `code` block is either `file`, a real TSX file in `src/guides/<slug>/<file>
 
 Component pages that follow the portal's slugs live in `src/registry-generic.ts` (`GENERIC_PAGES`); other registries can be added the same way and spread into `PAGES`.
 
+## Add a showcase pattern
+
+A showcase page (`kind: 'showcase'`, group `showcase`, URL `/showcase/<slug>/`) is a real product screen built **only** from `@punji/ui` exports plus a small layout stylesheet. It is a pattern to copy, not package API: the page says so in its header badges and a note, and nothing in it is exported by the package. Patterns live in `src/registry-showcase.ts` (`SHOWCASE_PAGES`).
+
+1. Add `src/examples/<slug>/screen.tsx` (`export default function Example()`, imports from `@punji/ui/...`, `../../sample.ts` and `./screen.css` only) and `src/examples/<slug>/screen.css` (layout only: grid, gaps, container queries; colours and type from `--pu-*` tokens). Prefix every class with `sc-<short>-`, because every example's CSS is bundled into the site. Size the layout with container queries on the screen's root, not viewport media queries, so it works in the docs column, a phone and the phone-width preview.
+2. Add the entry: `description`, `lead`, `summary`, `use` (shown as "Adapting it"), `avoid` ("What stays yours"), `keyboard`, `accessibility`, `responsive`, `api: []`, one example `{ id: 'screen' }`, and `related`, the documented component pages the screen is built from ("Built from").
+3. Headings inside a screen start at `h3` (the page has the `h1` and a visually hidden `h2`); `PageHeader` renders an `h1`, so a screen uses its own `h3` title instead.
+4. If a portal page now has its home in the pattern, add the old path to `PORTAL_RENAMES` in `src/seo.ts`. The prerender fails if a redirect source is itself a page here.
+
+The page shows the live screen in the demo frame (light/dark and phone-width toggles, the TSX with copy), then the layout CSS, the summary, "Built from" cards and the notes. `llms-full.txt` carries the TSX and the CSS.
+
 ## Routing
 
 Clean paths, no hash. The section comes from the page kind (`src/seo.ts`, `pagePath`):
@@ -61,6 +72,7 @@ Clean paths, no hash. The section comes from the page kind (`src/seo.ts`, `pageP
 | `component` | `/components/<slug>/` |
 | `utility`, `hooks` | `/utilities/<slug>/` |
 | `guide` | `/get-started/<slug>/` |
+| `showcase` | `/showcase/<slug>/` |
 
 The section names match the current design.punji.app portal so its URLs and rankings survive the cutover. Canonical URLs carry a trailing slash because every page is a `<path>/index.html`. Links are real `<a href>` (middle-click, copy, no-JS crawlers work); a plain click is intercepted and uses `history.pushState`, then the title, meta description, canonical, Open Graph and JSON-LD are updated and focus moves to the new `h1`. An unknown path renders the 404 view.
 
@@ -114,13 +126,29 @@ No deploy workflow is included.
 
 This site is meant to replace the current portal there. The cutover keeps `/components/<slug>`, `/utilities/<slug>` and `/foundations/<slug>` where the same page exists (17 paths are identical, for example `/components/button`, `/components/data-table`, `/foundations/typography`). Where the slug differs, `_redirects` sends the old path to the new page with a 301: `/foundations/colour` to `colour-tokens`, `/utilities/formatting` to `formatters`, `/components/meter` to `meter-range`, `/components/bars` to `split-bars`, `/components/empty-state` and `/components/skeleton` to `empty-skeleton`, `/components/checklist` and `/components/check-row` to `check-list`, `/components/distribution-bar` to `share-bars`, `/components/summary-figure` to `metric-tile`, `/components/fact-list` to `key-stats`, and `/docs` to `/`. The list is `PORTAL_RENAMES` in `src/seo.ts`.
 
-Portal URLs that still have no page here (they will return 404 until each is given a page, a redirect or a deliberate retirement), counted from the portal's `src/design/registry.ts` (178 paths) against this site's routes and `PORTAL_RENAMES`: **125 of 178**. Every `/get-started/*` page, and every generic kit component that the groups' `planned` lists named, now has a page; the `planned` lists are empty except `Calendar`.
+**Showcase homes (2026-11-01).** 32 portal paths now redirect to a Showcase pattern or the nearest component page (the second block of `PORTAL_RENAMES`):
+
+| Showcase pattern | Old portal paths |
+| --- | --- |
+| `/showcase/app-band/` | app-strip, store-buttons, product-shot |
+| `/showcase/app-header/` | site-header, `/shell/top-bar`, market-mark, market-mark-detail, notification-bell, menu-panel, phone-menu |
+| `/showcase/market-board/` | market-strip, market-report, breadth-bar, quote-list |
+| `/showcase/stock-detail/` | quote-hero, symbol-block, security-title, candle-chart, `/patterns/charts` |
+| `/showcase/watchlist-alerts/` | watchlist-row, watch-summary, alert-row, alert-summary, alert-panel, `/utilities/alert-distance` |
+| `/showcase/portfolio-tracker/` | two-line-chart, `/patterns/figures` |
+| `/showcase/mobile-account-home/` | app-tab-bar |
+| `/showcase/payment-flow/` | `/patterns/forms` |
+| component pages | `/shell/title-row` to page-layout; `/shell/loading` and `/patterns/states` to empty-skeleton |
+
+The other patterns (invoice, bank statement, accounting dashboard, dividend tracker, IPO result check) have no portal predecessor. Brand pages, the marketing parts (landing-section, cta-band, faq-section, feature-card, site-footer) and the remaining product components still need an owner decision.
+
+Portal URLs that still have no page here (they will return 404 until each is given a page, a redirect or a deliberate retirement), counted from the portal's `src/design/registry.ts` (178 paths) against this site's routes and `PORTAL_RENAMES` before the showcase redirects: **125 of 178**; the 32 redirects above bring it to **93**, less any component pages added in parallel (re-run the count). Every `/get-started/*` page, and every generic kit component that the groups' `planned` lists named, now has a page; the `planned` lists are empty except `Calendar`.
 
 - `/get-started/`: none left. `using`, `security`, `roadmap` and `agents` keep their portal slugs; `nextjs`, `vite`, `theming`, `ssr`, `tailwind` and `live-data` are new guides in the same section. The sidebar group is "Get started".
 - **Brand (4):** logo, usage, app-icon, downloads. Brand owner decides (301 to the overview, or brand pages).
-- **Shell (4):** sidebar, top-bar, title-row, loading. **Patterns (4):** states, forms, figures, charts. **Foundations (2):** motion, icons. **Utilities (2):** alert-distance, routes. Patterns are for Showcase pages (ROADMAP.md wave 2).
+- **Shell (1 left):** sidebar (top-bar, title-row and loading now redirect). **Patterns:** all four redirect (see the table above). **Foundations (2):** motion, icons. **Utilities (1 left):** routes (alert-distance redirects to the watchlist pattern).
 - **Generic components with an export in `@punji/ui` but no page yet (10 of the 109 missing `/components/` pages):** chip, filter-chip, show-more, inline-confirm, avatar, status-tag, stat-tile (`StatGrid`, `StatTile`), sheet (`Sheet`, `Dock`), drawer-screen, and trend-chart (only the `bracketScale` and `valueScale` helpers are exported). These are the next candidates for real pages; `Calendar` is the one export still in a `planned` list.
-- **App-specific components of the Punji product, not in this package (99):** broker-badge, broker-lookup, broker-days, tms-address, tms-anatomy, alert-form, alert-panel, alert-row, alert-summary, rotation-map, group-counts, group-pill, phase-strip, group-change-list, rating-chip, rating-scale, rating-change-row, run-quota, forecast-note, sale-estimate, store-buttons, app-strip, site-header, site-footer, phone-menu, landing-section, cta-band, faq-section, product-shot, feature-card, market-strip, market-report, market-mark, quote-hero, symbol-block, and the chart, row and tile pages (candle-chart, equity-chart, histogram, correlation-matrix, and so on). The owner decides, page by page, whether each gets a redirect to the nearest page here, a Showcase page, or a retirement.
+- **App-specific components of the Punji product, not in this package (99, of which 26 now redirect to a Showcase pattern, listed above):** broker-badge, broker-lookup, broker-days, tms-address, tms-anatomy, alert-form, alert-panel, alert-row, alert-summary, rotation-map, group-counts, group-pill, phase-strip, group-change-list, rating-chip, rating-scale, rating-change-row, run-quota, forecast-note, sale-estimate, store-buttons, app-strip, site-header, site-footer, phone-menu, landing-section, cta-band, faq-section, product-shot, feature-card, market-strip, market-report, market-mark, quote-hero, symbol-block, and the chart, row and tile pages (candle-chart, equity-chart, histogram, correlation-matrix, and so on). The owner decides, page by page, whether each gets a redirect to the nearest page here, a Showcase page, or a retirement.
 - Other agents are adding chart, banking and portfolio pages in parallel; re-run the count (a script comparing the portal's paths with `ROUTES` and `PORTAL_RENAMES`) when those land, since some of the 99 will then have pages.
 
 Decisions (2026-10-31):

@@ -409,7 +409,7 @@
   },
   "scripts": {
     "build": "node scripts/clean.mjs && tsc -p tsconfig.build.json && node scripts/build-css.mjs",
-    "lint": "oxlint --max-warnings 0 --deny-warnings src test scripts examples portal playwright.config.ts && node scripts/check-css.mjs && node scripts/check-source.mjs && node scripts/check-boundaries.mjs",
+    "lint": "oxlint --max-warnings 0 --deny-warnings src test scripts examples portal site fixtures playwright.config.ts && node scripts/check-css.mjs && node scripts/check-source.mjs && node scripts/check-boundaries.mjs",
     "sync": "node scripts/sync-from-web.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
@@ -419,7 +419,7 @@
     "check:types": "attw --pack . --profile esm-only --exclude-entrypoints styles.css tokens.css \"css/*.css\" package.json",
     "check:package": "npm run check:publint && npm run check:types && node scripts/check-pack.mjs && npm run check:exports",
     "check:lockfile": "lockfile-lint --path package-lock.json --type npm --allowed-hosts npm --validate-https --validate-integrity",
-    "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run size && npm run check:package && npm run build:examples && npm run typecheck:examples && npm run typecheck:portal && npm run typecheck:visual",
+    "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run size && npm run check:package && npm run build:examples && npm run typecheck:examples && npm run typecheck:portal && npm run typecheck:visual && npm run typecheck:site && npm run site:build",
     "verify:deep": "npm run verify && npm run test:deep",
     "changeset": "changeset",
     "version-packages": "changeset version && npm install --package-lock-only --ignore-scripts",
@@ -442,7 +442,13 @@
     "test:visual": "playwright test",
     "test:visual:docker": "node scripts/visual-docker.mjs",
     "test:visual:update": "node scripts/visual-docker.mjs --update-snapshots",
-    "typecheck:visual": "tsc -p test/visual/tsconfig.json --noEmit"
+    "typecheck:visual": "tsc -p test/visual/tsconfig.json --noEmit",
+    "site:gen": "node scripts/site-gen.mjs",
+    "site:dev": "npm run build && npm run site:gen && vite site",
+    "site:build": "npm run site:gen && vite build site",
+    "site:preview": "vite preview site",
+    "typecheck:site": "npm run site:gen && tsc -p site/tsconfig.json --noEmit",
+    "check:site": "node scripts/check-site.mjs"
   },
   "peerDependencies": {
     "react": "^19.0.0",

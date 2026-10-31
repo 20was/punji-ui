@@ -41,6 +41,8 @@ jobs:
               - 'test/**'
               - 'examples/**'
               - 'portal/**'
+              - 'site/**'
+              - 'fixtures/**'
               - 'scripts/**'
               - 'package.json'
               - 'package-lock.json'
@@ -89,10 +91,15 @@ jobs:
       - run: npm run build
       - run: npm run typecheck:examples
       - run: npm run typecheck:portal
+      - run: npm run typecheck:site
+      - name: Build the documentation site
+        run: npm run site:build
       - run: npm run build:examples
       - name: Install Chromium for package example checks
         run: npx playwright install --with-deps chromium
       - run: npm run check:examples
+      - name: Documentation site in a browser (axe, overflow, console, copy, theme)
+        run: npm run check:site
       - name: Size budgets
         run: npm run size
       - name: Package (publint, are-the-types-wrong, tarball contents)

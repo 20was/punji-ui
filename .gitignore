@@ -9,3 +9,4 @@ coverage/
 .vitest-attachments/
 test-results/
 playwright-report/
+site/src/generated/

@@ -1,6 +1,6 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": { "rootDir": "../.." },
-  "include": ["*.ts", "*.tsx", "specs/*.ts", "../../playwright.config.ts"],
+  "include": ["*.ts", "*.tsx", "specs/*.ts", "../../fixtures/*.ts", "../../playwright.config.ts"],
   "exclude": ["dist"]
 }

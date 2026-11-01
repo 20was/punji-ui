@@ -4,7 +4,7 @@
 # NPM_TOKEN secret anywhere, and npm attaches a provenance attestation that
 # links the tarball to this workflow run and commit.
 #
-# Owner setup before the first publish: see the plan, "What the owner must do".
+# Owner setup before the first publish: docs/RELEASE-SETUP-RUNBOOK.md.
 # The npm Trusted Publisher must name this repository, the workflow file
 # "release.yml" and the environment "npm".
 name: Release

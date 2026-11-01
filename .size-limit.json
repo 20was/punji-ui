@@ -66,7 +66,7 @@
     "name": "drawer-screen (import from '@punji/ui/drawer-screen')",
     "path": "dist/drawer-screen/DrawerScreen.js",
     "import": "*",
-    "limit": "0.76 kB",
+    "limit": "790 B",
     "gzip": true
   },
   {
@@ -261,7 +261,7 @@
   {
     "name": "Virtual table CSS",
     "path": "dist/css/virtual-table.css",
-    "limit": "1.03 kB",
+    "limit": "1.06 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -324,14 +324,14 @@
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "34.92 kB",
+    "limit": "37.35 kB",
     "rolldown": false,
     "gzip": true
   },
   {
     "name": "tokens.css",
     "path": "dist/tokens.css",
-    "limit": "1.37 kB",
+    "limit": "1.52 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -1063,6 +1063,16 @@
     "name": "Split pane CSS",
     "path": "dist/css/split-pane.css",
     "limit": "0.65 kB",
+    "name": "theme (import from '@punji/ui/theme')",
+    "path": "dist/theme/theme.js",
+    "import": "*",
+    "limit": "2.47 kB",
+    "gzip": true
+  },
+  {
+    "name": "css/contrast.css (high-contrast themes, forced colours)",
+    "path": "dist/css/contrast.css",
+    "limit": "1.92 kB",
     "rolldown": false,
     "gzip": true
   },

@@ -37,7 +37,7 @@ export function RangeSlider({ min, max, step, lo, hi, onChange, labelLo, labelHi
   return (
     <div className="kit-rs" data-testid={testId}>
       <div className="kit-rs-track" aria-hidden="true">
-        <i className="kit-rs-fill" style={{ left: `${pLo}%`, right: `${100 - pHi}%` }} />
+        <i className="kit-rs-fill" style={{ insetInlineStart: `${pLo}%`, insetInlineEnd: `${100 - pHi}%` }} />
       </div>
       <input
         type="range"

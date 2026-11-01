@@ -44,7 +44,7 @@ visual baselines and size budgets.
 ### Wave 3: scale and trust
 
 - Virtualised data table for 10k+ rows; column pinning, resizing and multi-sort; export controls. Done: `VirtualFinancialTable` and `TableExport`, no new dependency ([docs/TABLES.md](docs/TABLES.md)).
-- High-contrast theme, density setting, RTL verification.
+- High-contrast theme, density setting, RTL verification. Done: `light-hc` and `dark-hc` (AAA, gated), forced colours, `data-pu-density`, `createTheme` brand theming, logical properties and RTL fixtures ([docs/THEMING.md](docs/THEMING.md)). Open: visual baselines for the `rtl` and `theme-modes` fixtures, a manual Windows High Contrast pass.
 - Performance profiling of live-updating tables and charts with published numbers. Tables done ([docs/PERFORMANCE.md](docs/PERFORMANCE.md), `scripts/bench-table.mjs`); charts and `Live` tweening still open.
 - Manual VoiceOver/NVDA pass; automated Next.js App Router consumer build.
 

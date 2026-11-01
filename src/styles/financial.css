@@ -9,7 +9,7 @@
   .pu-shell-nav a[aria-current='page'] { color: var(--pu-color-text); background: var(--pu-color-surface); font-weight: 600; }
   .pu-shell-main { min-width: 0; padding: calc(var(--pu-space-3) * 2); display: grid; align-content: start; gap: calc(var(--pu-space-3) * 2); }
   .pu-shell-footer { color: var(--pu-color-text-muted); }
-  .pu-skip { position: fixed; top: -100px; left: var(--pu-space-4); z-index: 100; padding: var(--pu-space-3); background: var(--pu-color-surface); color: var(--pu-color-text); }
+  .pu-skip { position: fixed; top: -100px; inset-inline-start: var(--pu-space-4); z-index: 100; padding: var(--pu-space-3); background: var(--pu-color-surface); color: var(--pu-color-text); }
   .pu-skip:focus { top: var(--pu-space-4); }
   .pu-chart { margin: 0; padding: calc(var(--pu-space-1) * 5); border-radius: var(--pu-radius-card); background: var(--pu-color-surface); }
   .pu-chart figcaption { margin-bottom: var(--pu-space-2); }
@@ -18,13 +18,13 @@
   .pu-chart-plot { position: relative; border-radius: var(--pu-radius-control); }
   .pu-chart-plot:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px; }
   .pu-chart-cursor { stroke: var(--pu-color-text-muted); stroke-width: 1; stroke-dasharray: 2 2; vector-effect: non-scaling-stroke; }
-  .pu-chart-read { position: absolute; top: 0; left: 0; max-width: 100%; padding: 2px 8px; border: 1px solid var(--pu-color-border-default); border-radius: var(--pu-radius-sm); background: var(--pu-color-surface); color: var(--pu-color-text); font-size: var(--pu-text-sm); font-variant-numeric: tabular-nums; pointer-events: none; }
+  .pu-chart-read { position: absolute; top: 0; inset-inline-start: 0; max-width: 100%; padding: 2px 8px; border: 1px solid var(--pu-color-border-default); border-radius: var(--pu-radius-sm); background: var(--pu-color-surface); color: var(--pu-color-text); font-size: var(--pu-text-sm); font-variant-numeric: tabular-nums; pointer-events: none; }
   .pu-chart-range { gap: var(--pu-space-3); margin-bottom: var(--pu-space-1); }
   @media (max-width: 520px) { .pu-chart svg { height: 180px; max-height: none; } }
   .pu-chart-range { display: flex; justify-content: space-between; color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums; }
   .pu-chart summary { cursor: pointer; min-height: var(--pu-control-lg); display: list-item; align-content: center; }
-  .pu-chart table { width: 100%; text-align: left; }
-  .pu-chart td { text-align: right; font-variant-numeric: tabular-nums; }
+  .pu-chart table { width: 100%; text-align: start; }
+  .pu-chart td { text-align: end; font-variant-numeric: tabular-nums; }
   .pu-orderbook .kit-tablebox { background: linear-gradient(to right, var(--pu-color-surface) 30%, transparent) left center / 28px 100% no-repeat local, linear-gradient(to left, var(--pu-color-surface) 30%, transparent) right center / 28px 100% no-repeat local, linear-gradient(to right, var(--pu-color-border-strong), transparent) left center / 12px 100% no-repeat scroll, linear-gradient(to left, var(--pu-color-border-strong), transparent) right center / 12px 100% no-repeat scroll, var(--pu-color-surface); }
   .pu-orderbook .kit-table thead th { background: transparent; }
   @media (max-width: 480px) {
@@ -77,16 +77,16 @@
     .pu-fin .kit-tablebox.stack:not(.bare, .dense) .kit-table tfoot tr { padding-inline: 12px; border-radius: 0 0 var(--pu-radius-2xl) var(--pu-radius-2xl) }
     .pu-fin .kit-tablebox.stack .kit-table tfoot tr > * { min-width: 0; padding: 0; border: 0; background: transparent; white-space: normal }
     .pu-fin .kit-tablebox.stack .kit-table tfoot tr > th { grid-column: 1 / 4 }
-    .pu-fin .kit-tablebox.stack .kit-table tfoot tr > th + td { grid-column: 4; text-align: right; white-space: nowrap }
-    .pu-fin .kit-tablebox.stack .kit-table tfoot tr > th + td ~ td { font-size: 13px; text-align: left }
+    .pu-fin .kit-tablebox.stack .kit-table tfoot tr > th + td { grid-column: 4; text-align: end; white-space: nowrap }
+    .pu-fin .kit-tablebox.stack .kit-table tfoot tr > th + td ~ td { font-size: 13px; text-align: start }
     .pu-fin .kit-tablebox.stack .kit-table tfoot tr > th + td ~ td::before { content: attr(data-label); display: block; margin-bottom: 2px; color: var(--pu-color-text-muted); font-size: 11px; font-weight: 400; line-height: 14px }
     .pu-fin .kit-tablebox.stack:not(.bare, .dense) .kit-table tbody tr { padding-inline: 12px }
-    .pu-fin .kit-tablebox.stack.selection:not(.bare, .dense) .kit-table tbody tr { padding-left: 40px }
-    .pu-fin .kit-tablebox.stack.selection:not(.bare, .dense) .kit-table tbody tr > .kit-table-selection-cell { left: 12px }
+    .pu-fin .kit-tablebox.stack.selection:not(.bare, .dense) .kit-table tbody tr { padding-inline-start: 40px }
+    .pu-fin .kit-tablebox.stack.selection:not(.bare, .dense) .kit-table tbody tr > .kit-table-selection-cell { inset-inline-start: 12px }
     .pu-fin .kit-tablebox.stack .kit-table tbody tr > * { min-width: 0; padding: 0; border: 0; white-space: normal }
     .pu-fin .kit-tablebox.stack .kit-table tbody tr > th { grid-column: 1 / 4 }
-    .pu-fin .kit-tablebox.stack .kit-table tbody tr > th + td { grid-column: 4; text-align: right; white-space: nowrap }
-    .pu-fin .kit-tablebox.stack .kit-table tbody tr > th + td ~ td { font-size: 13px; text-align: left }
+    .pu-fin .kit-tablebox.stack .kit-table tbody tr > th + td { grid-column: 4; text-align: end; white-space: nowrap }
+    .pu-fin .kit-tablebox.stack .kit-table tbody tr > th + td ~ td { font-size: 13px; text-align: start }
     /* A text headline cell (a company name, not a figure) wraps in its track instead of pushing the card wider. */
     .pu-fin .kit-tablebox.stack .kit-table tbody tr > th + td:not(.num) { white-space: normal; overflow-wrap: anywhere }
     .pu-fin .kit-tablebox.stack .kit-table tbody tr > th + td ~ td::before {
@@ -101,8 +101,8 @@
     .pu-fin .kit-tablebox.stack .kit-table tbody tr:hover { background: transparent }
     .pu-fin .kit-tablebox.stack .kit-table tbody tr:has(> .kit-table-empty) { display: block; padding: 0 }
     .pu-fin .kit-tablebox.stack .kit-table tbody tr > .kit-table-empty { display: block; height: auto; padding: 28px 12px }
-    .pu-fin .kit-tablebox.stack.selection .kit-table tbody tr { position: relative; padding-left: 28px }
-    .pu-fin .kit-tablebox.stack.selection .kit-table tbody tr > .kit-table-selection-cell { position: absolute; top: 12px; left: 0; width: 24px; min-width: 24px; padding: 0 }
+    .pu-fin .kit-tablebox.stack.selection .kit-table tbody tr { position: relative; padding-inline-start: 28px }
+    .pu-fin .kit-tablebox.stack.selection .kit-table tbody tr > .kit-table-selection-cell { position: absolute; top: 12px; inset-inline-start: 0; width: 24px; min-width: 24px; padding: 0 }
     .pu-fin .kit-tablebox.stack.selection .kit-table thead .kit-table-selection-cell > input { display: none }
     .pu-fin .kit-table-mobile-select { display: flex; align-items: center; min-height: 40px; padding: 0 12px; border-bottom: 1px solid var(--pu-color-border); color: var(--pu-color-text-muted); font-size: var(--pu-text-sm) }
     .pu-fin .kit-table-mobile-select label { display: inline-flex; align-items: center; gap: 9px; min-height: 40px; cursor: pointer }

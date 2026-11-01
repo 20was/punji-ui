@@ -7,7 +7,7 @@
   .kit-tabs.fill > button { flex: 1 1 0; min-width: 0 }
   .kit-tabs > button:hover { color: var(--pu-color-text); background: var(--pu-color-surface-subtle) }
   .kit-tabs > button[aria-selected='true'] { color: var(--pu-color-text) }
-  .kit-tabs > button[aria-selected='true']::after { content: ''; position: absolute; left: 12px; right: 12px; bottom: 0; height: 2px; border-radius: 2px; background: var(--pu-color-accent) }
+  .kit-tabs > button[aria-selected='true']::after { content: ''; position: absolute; inset-inline-start: 12px; inset-inline-end: 12px; bottom: 0; height: 2px; border-radius: 2px; background: var(--pu-color-accent) }
   .kit-tabs > button:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: -2px }
   .kit-tabs > button .count { font-weight: 500; font-variant-numeric: tabular-nums }
   .kit-tabs.panel { gap: 2px; padding: 4px; border-radius: var(--pu-radius-control); background: var(--pu-color-surface-tint); box-shadow: none }

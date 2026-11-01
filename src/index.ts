@@ -170,3 +170,5 @@ export * from './aging-table/AgingTable.tsx';
 export * from './tds-summary/TdsSummary.tsx';
 export * from './split-pane/SplitPane.tsx';
 export * from './use-hotkeys/useHotkeys.ts';
+// Themes, density and brand theming (pure).
+export * from './theme/theme.ts';

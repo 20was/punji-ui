@@ -1,9 +1,9 @@
 /* Punji UI styles.
    Styles for list-filter. Needs tokens.css and base.css (styles.css has everything). */
 @layer punji.components {
-  .kit-lf { display: flex; align-items: center; gap: 8px; min-width: 0; height: 36px; padding: 0 6px 0 10px; border-radius: 10px; background: var(--pu-color-surface-tint); border: 1px solid transparent; color: var(--pu-color-text-tertiary) }
+  .kit-lf { display: flex; align-items: center; gap: 8px; min-width: 0; height: 36px; padding-block: 0; padding-inline: 10px 6px; border-radius: 10px; background: var(--pu-color-surface-tint); border: 1px solid transparent; color: var(--pu-color-text-tertiary) }
   .kit-lf:focus-within { outline: 2px solid var(--pu-color-accent); outline-offset: -1px; border-color: transparent }
-  .kit-lf.lg { height: 44px; min-width: min(100%, 17rem); padding: 0 8px 0 14px; border-radius: var(--pu-radius-control); border-color: var(--pu-color-border-control); background: var(--pu-color-surface); transition: border-color var(--pu-motion-fast) var(--pu-ease-out) }
+  .kit-lf.lg { height: 44px; min-width: min(100%, 17rem); padding-block: 0; padding-inline: 14px 8px; border-radius: var(--pu-radius-control); border-color: var(--pu-color-border-control); background: var(--pu-color-surface); transition: border-color var(--pu-motion-fast) var(--pu-ease-out) }
   .kit-lf.lg:hover:not(:focus-within) { border-color: var(--pu-color-text-tertiary) }
   .kit-lf.lg:focus-within { border-color: transparent }
   .kit-lf.lg input { font: 400 var(--pu-text-base) / 1 var(--pu-font-body) }

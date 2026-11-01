@@ -46,8 +46,9 @@ Other guards: `check-css.mjs` (no raw colours in component CSS; every `var(--pu-
 
 - Build: Lightning CSS (`scripts/build-css.mjs`) resolves `@import`, minifies and lowers syntax for Chrome/Edge 111, Firefox 113, Safari/iOS 16.4. No source maps.
 - Layers: `@layer punji.tokens, punji.components;`. Tokens are in `punji.tokens`, all component rules in `punji.components`, so an unlayered consumer rule always wins.
-- Tokens: 85 defined `--pu-*` custom properties (`check-css` count) (`src/styles/tokens.css`; table in [docs/tokens.md](docs/tokens.md)).
-- Themes: follow `prefers-color-scheme`; `data-theme="light"|"dark"` on any element forces one for its subtree.
+- Tokens: 90 defined `--pu-*` custom properties (`check-css` count) (`src/styles/tokens.css`; table in [docs/tokens.md](docs/tokens.md)).
+- Themes: follow `prefers-color-scheme` (and `prefers-contrast: more` for the high-contrast pair); `data-theme="light"|"dark"|"light-hc"|"dark-hc"` on any element forces one for its subtree. `src/styles/contrast.css` holds the `-hc` themes and the `forced-colors` rules; `scripts/check-contrast.mjs` (in `npm run lint`) gates the ratios (AA for light and dark, AAA for `-hc`).
+- Density: `data-pu-density="compact"|"comfortable"|"spacious"` sets the control, cell and row tokens. Direction: component CSS uses logical properties; `--pu-dir` follows `dir`. Brand theming: `createTheme` in the pure `@punji/ui/theme`. Details: [docs/THEMING.md](docs/THEMING.md).
 - Distribution: `styles.css` (everything), or `tokens.css` + `css/base.css` + `css/<name>.css`. CSS imports stay explicit; the package has no JS side effects.
 
 ## Numeric model
@@ -101,6 +102,8 @@ Sources: [docs/RESEARCH.md](docs/RESEARCH.md), [docs/research/](docs/research/),
 | Playwright in a digest-pinned Docker image for baselines | Host screenshots; hosted service | Deterministic fonts and anti-aliasing; no external service |
 | Trusted Publishing (OIDC) with provenance, no npm token | `NPM_TOKEN` secret | No long-lived secret; tarball linked to workflow run ([RELEASE.md](RELEASE.md)) |
 | One library theme (light/dark); host accents are scoped token overrides in the app | Separate public and account themes in the library | Keeps one token contract; apps own brand accents (docs/INTEGRATION.md §9) |
+| High contrast as two more `data-theme` values, density and direction as their own attributes | One `data-contrast` flag combined with light/dark; density inside the theme blocks | Themes stay flat token blocks the contrast gate can read; a nested `data-theme` cannot reset density |
+| Brands through `createTheme` (validated, contrast-checked CSS) with finance palettes kept apart | Free-form token overrides only | Banks get a typed contract; gain and loss can never take a brand colour; HC is never branded |
 | `src/styles/tokens.css` is the canonical UI token source | Generate from the app monorepo `tokens.json` | Single source of truth in the published package; app keeps app-only tokens |
 | `OrderBook` and `OrderBookDepth` stay separate | Fold into one component | A price ladder and a cumulative depth view are different jobs |
 | App-specific UI is shown as showcase patterns built from package exports, not exported components | Export app components (AppStrip etc.); drop their pages | More real-world examples and indexable pages without public API for product-specific pieces |

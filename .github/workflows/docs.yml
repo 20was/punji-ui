@@ -1,0 +1,49 @@
+# Deploys the docs site (site/) to Cloudflare static assets (wrangler.jsonc, Worker "punji-ui-docs",
+# custom domain design.punji.app) on every push to main. Runs only when the repository variable
+# DOCS_DEPLOY_ENABLED is 'true'; needs the secret CLOUDFLARE_API_TOKEN (Account > Workers Scripts: Edit)
+# and the variable CLOUDFLARE_ACCOUNT_ID.
+name: Docs
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: docs-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.repository == '20was/punji-ui' && vars.DOCS_DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    environment:
+      name: docs
+      url: https://design.punji.app
+    steps:
+      - uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install (no lifecycle scripts)
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm run build
+      - run: npm run site:build
+      - name: Every page has its title, canonical and links (the same gate as CI)
+        run: npm run check:seo
+      - name: Deploy
+        run: npx --yes wrangler@4.156.0 deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}

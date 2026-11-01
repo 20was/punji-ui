@@ -18,6 +18,10 @@ export interface PageData {
   api: Record<string, ApiEntry>;
   /** The related pages as cards, in registry order. */
   related: PageCard[];
+  /** Showcase screens whose "Built from" lists this page. */
+  usedIn: PageCard[];
+  /** When the page's own sources last changed (YYYY-MM-DD), for the JSON-LD dateModified. */
+  modified?: string;
 }
 
 export interface LoadedExample {

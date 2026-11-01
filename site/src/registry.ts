@@ -221,7 +221,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'currency-input',
     title: 'CurrencyInput',
-    description: "A money field that groups digits as you type, accepts Devanagari digits and refuses extra decimals instead of rounding. Exact decimal string and bigint value.",
+    description: "A React currency input for NPR, USD or any currency: groups digits as you type, accepts Devanagari digits and refuses extra decimals instead of rounding.",
     group: 'financial-primitives',
     kind: 'component',
     summary: 'A money field. Text is grouped in the currency locale as you type, Devanagari and Arabic-Indic digits are accepted, and more fraction digits than the currency allows (JPY 0, USD 2, KWD 3) are refused, never rounded. The value is an exact decimal string plus bigint minor units; it never passes through Number.',
@@ -268,7 +268,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'formatters',
     title: 'Formatters',
-    description: "Generic money formatting for any currency beside Nepal helpers for lakh/crore, Devanagari digits and BS dates. Exact inputs, never silent rounding.",
+    description: "Format money in JavaScript for any currency, plus Nepal helpers for lakh and crore grouping, Devanagari digits and BS dates. Exact inputs, no silent rounding.",
     group: 'financial-primitives',
     kind: 'utility',
     summary: 'Generic money formatting (any currency, from Intl) beside the Nepal helpers (lakh/crore, Devanagari, BS dates). All accept exact inputs and never round silently.',
@@ -326,7 +326,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['Not interactive.'],
     accessibility: ['Labels and values are real text; the meter is decorative so the figure is always printed.', '`MetricRow` takes a label that names the group for screen readers.'],
     responsive: ['Tiles use container queries: four across where there is room, two by two otherwise. A long exact figure shrinks as its row narrows (under 420px and again under 340px) and wraps as a last resort, so it never runs out of its cell on a phone.'],
-    related: ['money-display', 'price-change', 'column-chart'],
+    related: ['money-display', 'price-change', 'column-chart', 'stat-grid'],
   },
   {
     slug: 'holdings-table',
@@ -485,7 +485,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'data-table',
     title: 'DataTable and FinancialTable',
-    description: "FinancialTable takes typed rows and render callbacks with sticky heads, controlled sorting, and loading, error and empty states. DataTable is the base.",
+    description: "A React financial table: typed rows, render callbacks, a sticky header, controlled sorting, and loading, error and empty states, built on DataTable.",
     group: 'data',
     kind: 'component',
     summary: 'FinancialTable takes typed rows and render callbacks with a stable row key, semantic row headers, controlled sorting, and loading, error and empty states. DataTable is the lower-level table it is built on. The table never mutates or sorts your data.',
@@ -500,7 +500,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['Sort headers are buttons: Tab to one, Enter or Space to sort.', 'Search, pagination and selection controls are native controls in tab order.'],
     accessibility: ['A real <table> with a caption, scoped headers and `aria-sort` on the sorted column.', 'The first column can be a row header for screen-reader navigation.', 'Loading is announced with a status label; errors with `role="alert"`.'],
     responsive: ['Wide tables scroll horizontally inside their container; columns can fold away under set widths (`hideUnder`).'],
-    related: ['money-display', 'price-change', 'hooks', 'csv-export'],
+    related: ['virtual-table', 'money-display', 'price-change', 'hooks', 'csv-export'],
   },
   {
     slug: 'virtual-table',
@@ -638,7 +638,7 @@ export const PAGES: readonly PageDef[] = [
       title: 'Guarantees',
       points: ['`aggregateByPeriod` groups dated candles into calendar weeks (Sunday start by default), months, quarters or years; `rebaseOnto` continues a late-starting series from a reference level.', '`niceTicks` covers the domain (lo at or below min, hi at or above max) with steps of 1, 2, 2.5 or 5 times a power of ten.', '`downsampleIndices` always keeps the first, last, global minimum and maximum, and never picks a gap as an extreme.', 'sma needs a full window of real values; a gap blanks only the windows that contain it.'],
     },
-    related: ['candlestick-chart', 'performance-chart', 'depth-chart'],
+    related: ['candlestick-chart', 'performance-chart', 'depth-chart', 'chart-scale'],
   },
   {
     slug: 'csv-export',
@@ -673,7 +673,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'date-picker',
     title: 'DatePicker',
-    description: "A date field with a calendar popover for Gregorian (AD) and Bikram Sambat (BS), Nepali or English labels, strict input, bounds and keyboard navigation.",
+    description: "A Nepali date picker for React: Bikram Sambat (BS) and Gregorian (AD) calendars, Nepali or English labels, strict typed input, bounds and keyboard support.",
     group: 'forms',
     kind: 'component',
     summary: 'A date field with a calendar popover. Gregorian (AD) and Bikram Sambat (BS) with a switch between them, Nepali or English labels and digits, strict typed input, min and max bounds, unavailable days and keyboard navigation. Values are date-only ISO strings (YYYY-MM-DD), never instants.',
@@ -742,7 +742,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'stock-table',
     title: 'StockTable',
-    description: "A full quote board with symbol, LTP, change, volume, turnover and a trend line. The caller owns the data and sort; prices are exact bigint minor units.",
+    description: "A React stock table for NEPSE or any market: symbol, LTP, change, volume, turnover and a trend line. You own the data and sort; prices are exact bigint.",
     group: 'stock-market',
     kind: 'component',
     summary:
@@ -764,7 +764,7 @@ export const PAGES: readonly PageDef[] = [
       title: 'Data rules',
       points: ['`sortQuotes` is stable (ties keep input order in both directions), puts null last in both directions, compares symbols by upper-cased code units (not locale) and never mutates.', '`nextQuoteSort`(current, key) is the click rule: the symbol starts ascending, figures descending, a repeat click flips.', 'The change is derived from ltp and `previousClose`; a previous close of zero gives no percent.'],
     },
-    related: ['market-movers', 'watchlist', 'data-table', 'price-change', 'sparkline'],
+    related: ['market-movers', 'watchlist', 'data-table', 'virtual-table', 'price-change', 'sparkline'],
   },
   {
     slug: 'market-movers',
@@ -912,7 +912,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['The data table sits in a native details disclosure: Tab to its summary, Enter or Space opens it. The drawing itself is not interactive.'],
     accessibility: ['The drawing is an image named by label; the exact value at every label is in the data table behind the `dataLabel` disclosure, with `missingLabel` where there is none.', 'One line, no colour-only encoding. With no finite value at all the chart is replaced by an empty state.'],
     responsive: ['The SVG keeps its aspect ratio and scales to the container width.'],
-    related: ['sparkline', 'column-chart', 'order-book', 'candlestick-chart'],
+    related: ['sparkline', 'column-chart', 'order-book', 'candlestick-chart', 'chart-scale'],
   },
   {
     slug: 'sparkline',
@@ -1010,7 +1010,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['Not interactive.'],
     accessibility: ['Decorative (`aria-hidden`) by default. With label the bar is one image and the duplicate mark labels are hidden.', 'Without label the `RangeBar` mark labels are real text; a label near an end stays inside.'],
     responsive: ['Bars fill their container; `RangeBar` keeps each label under its mark and inside the track at both ends.'],
-    related: ['share-bars', 'split-bars', 'metric-tile'],
+    related: ['share-bars', 'split-bars', 'metric-tile', 'range-slider'],
   },
   {
     slug: 'headline-figure',
@@ -1049,7 +1049,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['Not interactive.'],
     accessibility: ['A <dl>: each label is read with its value. label names the list when it has no heading.', 'Loading sets `aria-busy`; the unknown-value words are real text.'],
     responsive: ['Cells wrap to more rows where the band is narrow; `FactList` values wrap under their label on a narrow panel, and stack puts every value under its label.'],
-    related: ['metric-tile', 'headline-figure', 'breakdown'],
+    related: ['metric-tile', 'headline-figure', 'breakdown', 'show-more', 'stat-grid'],
   },
   {
     slug: 'split-bars',
@@ -1270,7 +1270,7 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'ledger-table',
     title: 'LedgerTable',
-    description: "The general ledger of one account: date, reference, description, debit, credit and a running balance naming its side, with opening and closing rows.",
+    description: "An accounting ledger React component: date, reference, description, debit, credit and a running balance naming its side, with opening and closing rows.",
     group: 'accounting',
     kind: 'component',
     summary: 'The general ledger of one account: date, reference, description, debit, credit and a running balance that names its side, with an opening row, period totals and a closing row. A composition over DataTable, so the sticky head, caption and loading and empty rows are the table\'s own. It displays the postings it is given, oldest first; it does not sort, post or reconcile.',
@@ -1533,7 +1533,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['Not interactive.'],
     accessibility: ['An <ol> named by label. Each state is words (Done, In progress, Not started, Failed, Reversed) plus a different icon shape; colour is extra.', 'Times are <time> elements with the ISO instant.'],
     responsive: ['A single column that wraps its text.'],
-    related: ['payment-receipt', 'transaction-list'],
+    related: ['remittance-tracker', 'payment-receipt', 'transaction-list'],
   },
   {
     slug: 'beneficiary-selector',
@@ -1553,7 +1553,7 @@ export const PAGES: readonly PageDef[] = [
       title: 'Security boundary',
       points: ['The full account numbers are in your props, not in the markup. Searching does not match numbers.', 'No form is submitted here. Client-side selection never replaces server-side checks of the payee, the amount and the limits.'],
     },
-    related: ['account-number', 'bank-account-card'],
+    related: ['account-number', 'bank-account-card', 'avatar'],
   },
   {
     slug: 'banking-helpers',
@@ -1630,7 +1630,7 @@ export const PAGES: readonly PageDef[] = [
     accessibility: ['Results are a polite live region. Every field has a label and a hint where the rule is not obvious (TDS).', 'The credit table has a caption naming the currency and row headers for the month.'],
     responsive: ['Two columns from 720px, one below.'],
     notes: { title: 'Limits', points: ['Interest accrues monthly at rate / 12, is held exactly between credits and rounded once per credit; TDS is rounded with the same mode. Daily accrual at a bank differs by a little.'] },
-    related: ['loan-calculator', 'interest-rate-table', 'lending-helpers'],
+    related: ['insurance-premium-card', 'loan-calculator', 'interest-rate-table', 'lending-helpers'],
   },
   {
     slug: 'interest-rate-table',

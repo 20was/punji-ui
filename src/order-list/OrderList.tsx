@@ -19,8 +19,11 @@ export type OrderStatus = 'pending' | 'open' | 'partially-filled' | 'filled' | '
 export interface TradingOrder {
   /** Stable order id from your broker. */
   id: string;
+  /** The scrip. */
   symbol: string;
+  /** Buy or sell. */
   side: 'buy' | 'sell';
+  /** Units ordered. */
   quantity: bigint;
   /** Units filled so far. Default 0n. */
   filledQuantity?: bigint;
@@ -28,6 +31,7 @@ export interface TradingOrder {
   price: bigint;
   /** Average fill price, minor units, when anything filled. */
   averagePrice?: bigint | null;
+  /** Where the order stands; shown as a word in a pill. */
   status: OrderStatus;
   /** When it was placed, already formatted ("11:02:15" or a BS date). */
   time?: string;
@@ -38,8 +42,11 @@ export interface TradingOrder {
 export interface TradeFill {
   /** Contract or match number. */
   id: string;
+  /** The scrip. */
   symbol: string;
+  /** Buy or sell. */
   side: 'buy' | 'sell';
+  /** Units filled. */
   quantity: bigint;
   /** Fill price, minor units. */
   price: bigint;
@@ -230,15 +237,19 @@ const TRADE_EN: TradeListLabels = {
 };
 
 export interface TradeListProps {
+  /** Fills in the order you want them shown. */
   trades: readonly TradeFill[];
   /** Currency and locale. Default `nepalMoneyConfig()`. */
   money?: MoneyFormatConfig;
   /** Show a totals row (bought and sold amounts). Default true. */
   showTotals?: boolean;
+  /** Data is loading: headers stay, the body says so. */
   loading?: boolean;
+  /** Words in the reader's language. Partial overrides of the English defaults. */
   labels?: Partial<TradeListLabels>;
   /** Under 640px each trade becomes a block. Default true. */
   stack?: boolean;
+  /** data-testid on the table; rows are `${testId}-${id}`. */
   testId?: string;
 }
 

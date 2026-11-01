@@ -7,6 +7,8 @@ import {
 } from '../src/index.ts';
 import { NUM_RUNS } from './fc.ts';
 
+const bad = (slabs: NepseFeeSchedule['commission']['slabs']) => ({ ...nepseFeeSchedule, commission: { ...nepseFeeSchedule.commission, slabs } });
+
 describe('NEPSE fees', () => {
   it('applies one band rate to the whole amount, with the minimum', () => {
     expect(brokerCommission(5_123_000n)).toBe(16_906n); // Rs 51,230 at 0.33%, 16,905.9 paisa rounded half-up
@@ -26,7 +28,6 @@ describe('NEPSE fees', () => {
   });
 
   it('rejects malformed schedules and amounts', () => {
-    const bad = (slabs: NepseFeeSchedule['commission']['slabs']) => ({ ...nepseFeeSchedule, commission: { ...nepseFeeSchedule.commission, slabs } });
     expect(() => brokerCommission(1n, bad([]))).toThrow(RangeError);
     expect(() => brokerCommission(1n, bad([{ upTo: 10n, rate: '0.01' }]))).toThrow(/last/);
     expect(() => brokerCommission(1n, bad([{ upTo: 10n, rate: '0.01' }, { upTo: 5n, rate: '0.01' }, { upTo: null, rate: '0.01' }]))).toThrow(/ascend/);
@@ -119,6 +120,6 @@ describe('circuitBreakerStage', () => {
     expect(circuitBreakerStage(-6.5)?.haltMinutes).toBeNull();
     expect(circuitBreakerStage(-6.5)?.movePercent).toBe(6);
     expect(circuitBreakerStage(Number.NaN)).toBeNull();
-    expect(circuitBreakerStage(7, [...nepseCircuitTiers].reverse())?.movePercent).toBe(6);
+    expect(circuitBreakerStage(7, nepseCircuitTiers.toReversed())?.movePercent).toBe(6);
   });
 });

@@ -2,7 +2,7 @@ import { act, render, screen, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
-import { OrderList, OrderTicket, TradeList, TradingHaltBanner, nepalMoneyConfig, type TradingOrder } from '../src/index.ts';
+import { OrderList, OrderTicket, TradeList, TradingHaltBanner, nepalMoneyConfig, type OrderSide, type OrderTicketOrder, type TradingOrder } from '../src/index.ts';
 import { seriousViolations } from './axe.ts';
 
 const ticket = { symbol: 'NABIL', defaultQuantity: 100n, defaultPrice: 51_230n, previousClose: 51_230n, bandRate: '0.10', lotSize: 10n, ltp: 51_230n, testId: 't' };
@@ -10,7 +10,7 @@ const text = (el: Element | null) => (el?.textContent ?? '').replace(/\s/g, ' ')
 
 describe('OrderTicket', () => {
   it('shows the band, quick fills and an exact estimate', () => {
-    render(<OrderTicket {...ticket} onSubmit={vi.fn()} />);
+    render(<OrderTicket {...ticket} onSubmit={vi.fn<(order: OrderTicketOrder) => void>()} />);
     expect(screen.getByRole('form', { name: 'Buy NABIL' })).toBeTruthy();
     expect(screen.getByText('Band 461.07 to 563.53 · tick 0.10')).toBeTruthy();
     expect(screen.getByText('Lots of 10')).toBeTruthy();
@@ -25,7 +25,7 @@ describe('OrderTicket', () => {
 
   it('snaps an off-tick price when the field is left and announces it', async () => {
     const user = userEvent.setup();
-    render(<OrderTicket {...ticket} onSubmit={vi.fn()} />);
+    render(<OrderTicket {...ticket} onSubmit={vi.fn<(order: OrderTicketOrder) => void>()} />);
     const price = screen.getByTestId('t-price');
     await user.clear(price);
     await user.type(price, '512.34');
@@ -38,7 +38,7 @@ describe('OrderTicket', () => {
 
   it('refuses a price beyond the circuit and a quantity off the lot, focusing the first problem', async () => {
     const user = userEvent.setup();
-    const onSubmit = vi.fn();
+    const onSubmit = vi.fn<(order: OrderTicketOrder) => void>();
     render(<OrderTicket {...ticket} onSubmit={onSubmit} />);
     const quantity = screen.getByTestId('t-quantity');
     const price = screen.getByTestId('t-price');
@@ -55,7 +55,7 @@ describe('OrderTicket', () => {
 
   it('fills the price from the quick buttons', async () => {
     const user = userEvent.setup();
-    render(<OrderTicket {...ticket} onSubmit={vi.fn()} />);
+    render(<OrderTicket {...ticket} onSubmit={vi.fn<(order: OrderTicketOrder) => void>()} />);
     await user.click(screen.getByRole('button', { name: /Upper 563\.53/ }));
     expect((screen.getByTestId('t-price') as HTMLInputElement).value).toBe('563.50');
     await user.click(screen.getByRole('button', { name: /Lower 461\.07/ }));
@@ -64,7 +64,7 @@ describe('OrderTicket', () => {
 
   it('confirms before submitting, and can go back', async () => {
     const user = userEvent.setup();
-    const onSubmit = vi.fn();
+    const onSubmit = vi.fn<(order: OrderTicketOrder) => void>();
     render(<OrderTicket {...ticket} onSubmit={onSubmit} />);
     await user.click(screen.getByTestId('t-submit'));
     const dialog = screen.getByRole('alertdialog', { name: 'Buy 100 NABIL at 512.30?' });
@@ -80,7 +80,7 @@ describe('OrderTicket', () => {
 
   it('submits straight away without the confirm step', async () => {
     const user = userEvent.setup();
-    const onSubmit = vi.fn();
+    const onSubmit = vi.fn<(order: OrderTicketOrder) => void>();
     render(<OrderTicket {...ticket} confirm={false} onSubmit={onSubmit} />);
     await user.click(screen.getByTestId('t-submit'));
     expect(onSubmit).toHaveBeenCalledTimes(1);
@@ -88,8 +88,8 @@ describe('OrderTicket', () => {
 
   it('switches to sell with the DP charge and capital gains tax', async () => {
     const user = userEvent.setup();
-    const onSideChange = vi.fn();
-    render(<OrderTicket {...ticket} defaultPrice={60_000n} lowerLimit={50_000n} upperLimit={66_000n} costPerUnit={51_406n} holdingDays={100} onSideChange={onSideChange} onSubmit={vi.fn()} />);
+    const onSideChange = vi.fn<(side: OrderSide) => void>();
+    render(<OrderTicket {...ticket} defaultPrice={60_000n} lowerLimit={50_000n} upperLimit={66_000n} costPerUnit={51_406n} holdingDays={100} onSideChange={onSideChange} onSubmit={vi.fn<(order: OrderTicketOrder) => void>()} />);
     await user.click(screen.getByRole('button', { name: 'Sell' }));
     expect(onSideChange).toHaveBeenCalledWith('sell');
     const estimate = screen.getByRole('region', { name: 'Estimate' });
@@ -100,7 +100,7 @@ describe('OrderTicket', () => {
   });
 
   it('blocks orders with a reason, and shows Devanagari digits', () => {
-    render(<OrderTicket {...ticket} money={nepalMoneyConfig({ digits: 'deva' })} disabledReason="NEPSE is halted." onSubmit={vi.fn()} />);
+    render(<OrderTicket {...ticket} money={nepalMoneyConfig({ digits: 'deva' })} disabledReason="NEPSE is halted." onSubmit={vi.fn<(order: OrderTicketOrder) => void>()} />);
     expect((screen.getByTestId('t-submit') as HTMLButtonElement).disabled).toBe(true);
     expect(screen.getByText('NEPSE is halted.')).toBeTruthy();
     expect(text(screen.getByTestId('t-total'))).toContain('५१,४०६.७४');
@@ -108,7 +108,7 @@ describe('OrderTicket', () => {
   });
 
   it('has no serious axe violations', async () => {
-    const { container } = render(<OrderTicket {...ticket} onSubmit={vi.fn()} />);
+    const { container } = render(<OrderTicket {...ticket} onSubmit={vi.fn<(order: OrderTicketOrder) => void>()} />);
     expect(await seriousViolations(container)).toEqual([]);
   });
 });
@@ -122,7 +122,7 @@ const ORDERS: TradingOrder[] = [
 
 describe('OrderList', () => {
   it('shows status in words, the filled share and actions only for live orders', () => {
-    render(<OrderList orders={ORDERS} onCancel={vi.fn()} onModify={vi.fn()} testId="ol" />);
+    render(<OrderList orders={ORDERS} onCancel={vi.fn<(order: TradingOrder) => void>()} onModify={vi.fn<(order: TradingOrder) => void>()} testId="ol" />);
     const nabil = screen.getByTestId('ol-o1');
     expect(text(nabil)).toContain('60 of 100');
     expect(text(nabil)).toContain('avg 512.20');
@@ -134,8 +134,8 @@ describe('OrderList', () => {
 
   it('asks before cancelling and calls modify directly', async () => {
     const user = userEvent.setup();
-    const onCancel = vi.fn();
-    const onModify = vi.fn();
+    const onCancel = vi.fn<(order: TradingOrder) => void>();
+    const onModify = vi.fn<(order: TradingOrder) => void>();
     render(<OrderList orders={ORDERS} onCancel={onCancel} onModify={onModify} testId="ol" />);
     await user.click(screen.getByTestId('ol-o2-modify'));
     expect(onModify).toHaveBeenCalledWith(ORDERS[1]);
@@ -157,7 +157,7 @@ describe('OrderList', () => {
   });
 
   it('shows an empty state and has no serious axe violations', async () => {
-    const { container, rerender } = render(<OrderList orders={ORDERS} onCancel={vi.fn()} onModify={vi.fn()} />);
+    const { container, rerender } = render(<OrderList orders={ORDERS} onCancel={vi.fn<(order: TradingOrder) => void>()} onModify={vi.fn<(order: TradingOrder) => void>()} />);
     expect(await seriousViolations(container)).toEqual([]);
     rerender(<OrderList orders={[]} />);
     expect(screen.getByText('No orders today.')).toBeTruthy();
@@ -190,7 +190,7 @@ describe('TradingHaltBanner', () => {
 
   it('prefers the given resume time, closes for the day at the top tier, and reads resumed politely', async () => {
     const user = userEvent.setup();
-    const onDismiss = vi.fn();
+    const onDismiss = vi.fn<() => void>();
     const { rerender } = render(<TradingHaltBanner kind="halt" resumesAt="13:25" detail="Notice 2081/42" onDismiss={onDismiss} />);
     expect(text(screen.getByRole('alert'))).toContain('Trading resumes at 13:25.');
     await user.click(screen.getByRole('button', { name: 'Dismiss' }));
@@ -203,7 +203,7 @@ describe('TradingHaltBanner', () => {
   });
 
   it('has no serious axe violations', async () => {
-    const { container } = render(<TradingHaltBanner kind="halt" onDismiss={vi.fn()} />);
+    const { container } = render(<TradingHaltBanner kind="halt" onDismiss={vi.fn<() => void>()} />);
     expect(await seriousViolations(container)).toEqual([]);
   });
 });

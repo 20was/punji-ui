@@ -61,6 +61,7 @@ const EN: TradingHaltLabels = {
 };
 
 export interface TradingHaltBannerProps {
+  /** What happened: a circuit breaker, an exchange halt, or trading resumed. */
   kind: TradingHaltKind;
   /** Market name in the title. Default "NEPSE". */
   market?: string;
@@ -78,8 +79,11 @@ export interface TradingHaltBannerProps {
   onDismiss?: () => void;
   /** Digits for the move and minutes. Default 'latn'. */
   digits?: 'latn' | 'deva';
+  /** Words in the reader's language. Partial overrides of the English defaults. */
   labels?: Partial<TradingHaltLabels>;
+  /** Sets `data-testid` on the banner. */
   testId?: string;
+  /** Layout only (margin in its container). */
   className?: string;
 }
 

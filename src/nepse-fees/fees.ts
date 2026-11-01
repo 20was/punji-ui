@@ -39,6 +39,7 @@ export interface CapitalGainsRule {
 export interface NepseFeeSchedule {
   /** Where these figures come from and from when, shown nowhere by the library: keep it for your audit trail. */
   source: string;
+  /** Broker commission bands, minimum and method. */
   commission: CommissionRule;
   /** SEBON regulatory fee as a fraction of the amount. */
   sebonRate: string;
@@ -46,6 +47,7 @@ export interface NepseFeeSchedule {
   dpCharge: bigint;
   /** Which side pays the DP charge. Brokers commonly charge it on a sell; some charge both sides. */
   dpChargeOn: 'sell' | 'both' | 'none';
+  /** Capital gains tax rates by investor type and holding period. */
   capitalGains: CapitalGainsRule;
   /** Rounding for every fraction of a paisa (commission, SEBON fee, CGT). */
   rounding: RoundingMode;
@@ -166,13 +168,17 @@ export interface NepseTradeInput {
 }
 
 export interface NepseTradeEstimate {
+  /** The side estimated. */
   side: 'buy' | 'sell';
   /** quantity × price. */
   amount: bigint;
+  /** Broker commission, at least the schedule's minimum. */
   commission: bigint;
   /** The commission rate applied ('whole' method) or null ('marginal'). */
   commissionRate: string | null;
+  /** SEBON regulatory fee. */
   sebonFee: bigint;
+  /** CDSC DP charge, zero when this side does not pay it. */
   dpCharge: bigint;
   /** commission + SEBON fee + DP charge. */
   fees: bigint;

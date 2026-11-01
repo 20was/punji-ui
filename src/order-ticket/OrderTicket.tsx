@@ -30,11 +30,15 @@ export type OrderSide = 'buy' | 'sell';
 
 /** What `onSubmit` receives: a checked order and the estimate the person saw. */
 export interface OrderTicketOrder {
+  /** The scrip. */
   symbol: string;
+  /** Buy or sell. */
   side: OrderSide;
+  /** Units, a multiple of the lot size. */
   quantity: bigint;
   /** Minor units per unit, on the tick grid and inside the band. */
   price: bigint;
+  /** The fee estimate shown when the order was confirmed. */
   estimate: NepseTradeEstimate;
 }
 
@@ -143,6 +147,8 @@ export interface OrderTicketProps {
   disabledReason?: ReactNode;
   /** Words in the reader's language. Partial overrides of the English defaults. */
   labels?: Partial<Omit<OrderTicketLabels, 'issues'>> & { issues?: Partial<OrderTicketLabels['issues']> };
+  /** The heading level of the ticket's title, to fit the page outline. Default 3. */
+  headingLevel?: 2 | 3 | 4;
   /** Prefix for data-testid on the parts (`${testId}-quantity`, `-price`, `-submit`). */
   testId?: string;
   /** Layout only. */
@@ -159,7 +165,7 @@ function percentOf(rate: string): string {
 export function OrderTicket({
   symbol, side: sideProp, defaultSide = 'buy', onSideChange, defaultQuantity, defaultPrice, ltp, lowerLimit, upperLimit, previousClose, bandRate,
   tickSize = 10n, lotSize = 1n, minQuantity, maxQuantity, feeSchedule = nepseFeeSchedule, costPerUnit, holdingDays, investor,
-  money, confirm = true, onSubmit, busy, disabledReason, labels, testId, className,
+  money, confirm = true, onSubmit, busy, disabledReason, labels, headingLevel = 3, testId, className,
 }: OrderTicketProps) {
   const words: OrderTicketLabels = { ...EN, ...labels, issues: { ...EN.issues, ...labels?.issues } };
   const config = money ?? nepalMoneyConfig();
@@ -179,6 +185,7 @@ export function OrderTicket({
   const priceRef = useRef<HTMLDivElement>(null);
   const submitRef = useRef<HTMLButtonElement>(null);
   const headingId = useId();
+  const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
 
   const derived = lowerLimit == null && upperLimit == null && previousClose != null && bandRate ? circuitLimits(previousClose, bandRate) : null;
   const lower = lowerLimit ?? derived?.lower ?? null;
@@ -246,9 +253,9 @@ export function OrderTicket({
         else onSubmit(ready);
       }}
     >
-      <h3 className="pu-ticket-title" id={headingId}>
+      <Heading className="pu-ticket-title" id={headingId}>
         {words.title(side, symbol)}
-      </h3>
+      </Heading>
       <SegmentedControl<OrderSide>
         options={[{ value: 'buy', label: words.buy }, { value: 'sell', label: words.sell }]}
         value={side}

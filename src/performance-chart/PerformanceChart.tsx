@@ -33,7 +33,7 @@
  * date and series. The period selector (1M, 3M, 1Y, All) is yours: pass it in
  * `periods` and slice `dates` and `series` to match.
  */
-import { useId, useMemo, useState, type CSSProperties, type PointerEvent, type ReactNode } from 'react';
+import { memo, useId, useMemo, useState, type CSSProperties, type PointerEvent, type ReactNode } from 'react';
 
 import { downsampleIndices, niceTicks, rebase, rebaseOnto } from '../chart-math/chartMath.ts';
 import { ChartTooltip, clamp, isNum, shortDate, thinned, useChartCursor, useMeasuredWidth } from '../internal/chartFrame.tsx';
@@ -60,6 +60,8 @@ export interface PerformanceChartLabels {
   hint?: string;
   /** Name of the legend group. Default "Series". */
   legend?: string;
+  /** Said when the table is cut to the latest dates. Default "Showing the latest N of M dates". */
+  truncated?: (shown: number, total: number) => string;
 }
 
 export interface PerformanceChartProps {
@@ -85,6 +87,8 @@ export interface PerformanceChartProps {
   formatDate?: (date: string) => string;
   /** Your period selector (1M, 3M, 1Y, All), shown above the chart. */
   periods?: ReactNode;
+  /** The latest dates listed in the hidden table (the chart always uses all). Default 500, as CandlestickChart. */
+  tableLimit?: number;
   /** Overrides for the printed words. */
   labels?: PerformanceChartLabels;
   /** Test id on the figure. */
@@ -95,7 +99,9 @@ const TONES = ['var(--pu-color-text)', 'var(--pu-color-series-nepse)', 'var(--pu
 const DASH = [undefined, '6 3', '2 3', '8 3 2 3', '1 3'];
 const AXIS_H = 22;
 
-const defaultValue = (v: number) => new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v);
+// One formatter, built once: a new Intl.NumberFormat per table cell was most of a live update's cost.
+const VALUE = new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const defaultValue = (v: number) => VALUE.format(v);
 const defaultPercent = (p: number) => `${p > 0 ? '+' : p < 0 ? '−' : ''}${Math.abs(p).toFixed(2)}%`;
 
 export function PerformanceChart(props: PerformanceChartProps) {
@@ -112,7 +118,7 @@ export function PerformanceChart(props: PerformanceChartProps) {
   return <Plot {...props} />;
 }
 
-function Plot({ dates, series, label, normalize = true, area = true, convention = 'green-up', height = 260, formatValue = defaultValue, formatPercent = defaultPercent, formatDate = shortDate, periods, labels, testId }: PerformanceChartProps) {
+function Plot({ dates, series, label, normalize = true, area = true, convention = 'green-up', height = 260, formatValue = defaultValue, formatPercent = defaultPercent, formatDate = shortDate, periods, labels, testId, tableLimit = 500 }: PerformanceChartProps) {
   const { ref, width } = useMeasuredWidth(640);
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
   const hintId = `${uid}h`;
@@ -163,7 +169,8 @@ function Plot({ dates, series, label, normalize = true, area = true, convention 
     for (const i of keep) {
       const v = y[i];
       if (v === null || v === undefined) { if (run.length) runs.push(run); run = []; prev = -2; continue; }
-      const gapBetween = prev >= 0 && y.slice(prev + 1, i).some((u) => u === null);
+      let gapBetween = false;
+      if (prev >= 0) for (let j = prev + 1; j < i && !gapBetween; j += 1) gapBetween = y[j] === null;
       if (gapBetween && run.length) { runs.push(run); run = []; }
       run.push({ i, v });
       prev = i;
@@ -178,14 +185,16 @@ function Plot({ dates, series, label, normalize = true, area = true, convention 
   const upTone = convention === 'red-up' ? 'loss' : 'gain';
   const downTone = convention === 'red-up' ? 'gain' : 'loss';
   const baseY = yOf(baseLevel);
-  const valueText = (x: (typeof shown)[number], i: number) => {
+  const valueText = useMemo(() => (x: Shown, i: number) => {
     const v = x.y[i];
     const r = x.raw[i];
     if (v === null || v === undefined || r === null || r === undefined) return none;
     return normalize ? `${formatPercent(v)} (${(x.s.format ?? formatValue)(r)})` : (x.s.format ?? formatValue)(r);
-  };
+  }, [none, normalize, formatPercent, formatValue]);
+  // The hidden table lists the latest `tableLimit` dates: 100,000 rows of DOM would cost seconds on every update.
+  const firstRow = Math.max(0, n - Math.max(1, Math.floor(isNum(tableLimit) ? tableLimit : 500)));
   const spoken = (i: number) => `${formatDate(dates[i]!)}: ${drawn.map((x) => `${x.s.label} ${valueText(x, i)}`).join(', ')}`;
-  const latest = (x: (typeof shown)[number]) => {
+  const latest = (x: Shown) => {
     for (let i = n - 1; i >= 0; i -= 1) if (x.y[i] !== null) return normalize ? formatPercent(x.y[i] as number) : (x.s.format ?? formatValue)(x.raw[i] as number);
     return none;
   };
@@ -307,15 +316,38 @@ function Plot({ dates, series, label, normalize = true, area = true, convention 
             </tr>
           </thead>
           <tbody>
-            {dates.map((d, i) => (
-              <tr key={`${d}-${i}`}>
-                <th scope="row">{formatDate(d)}</th>
-                {shown.map((x) => <td key={x.s.key}>{valueText(x, i)}</td>)}
-              </tr>
-            ))}
+            {Array.from({ length: n - firstRow }, (_, j) => {
+              const i = firstRow + j;
+              return <TableRow key={`${dates[i]}-${i}`} i={i} date={dates[i]!} shown={shown} formatDate={formatDate} valueText={valueText} />;
+            })}
           </tbody>
         </table>
+        {firstRow > 0 && <p>{(labels?.truncated ?? ((s: number, t: number) => `Showing the latest ${s} of ${t} dates`))(n - firstRow, n)}</p>}
       </div>
     </figure>
   );
 }
+
+interface Shown { s: PerformanceSeries; raw: (number | null)[]; y: (number | null)[] }
+
+interface RowProps {
+  i: number;
+  date: string;
+  shown: Shown[];
+  formatDate: (date: string) => string;
+  valueText: (x: Shown, i: number) => string;
+}
+
+/** A table row re-renders only when one of its values (or a formatter) changed: a live tick on the latest date reformats one row. */
+const TableRow = memo(function TableRow({ i, date, shown, formatDate, valueText }: RowProps) {
+  return (
+    <tr>
+      <th scope="row">{formatDate(date)}</th>
+      {shown.map((x) => <td key={x.s.key}>{valueText(x, i)}</td>)}
+    </tr>
+  );
+}, (a, b) => a.i === b.i && a.date === b.date && a.formatDate === b.formatDate && a.valueText === b.valueText && a.shown.length === b.shown.length
+  && a.shown.every((x, k) => {
+    const y = b.shown[k]!;
+    return x.s.key === y.s.key && x.s.format === y.s.format && x.y[a.i] === y.y[a.i] && x.raw[a.i] === y.raw[a.i];
+  }));

@@ -810,7 +810,10 @@
     "check:seo": "node scripts/check-seo.mjs",
     "site:brand": "node scripts/site-brand.mjs",
     "check:consumer": "node scripts/check-consumer.mjs",
-    "dev": "node scripts/dev.mjs"
+    "check:nextjs": "node scripts/check-nextjs.mjs",
+    "dev": "node scripts/dev.mjs",
+    "bench:table": "node scripts/bench-table.mjs",
+    "bench:charts": "node scripts/bench-charts.mjs"
   },
   "peerDependencies": {
     "react": "^19.0.0",

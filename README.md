@@ -96,7 +96,7 @@ Nothing here fetches data. You pass quotes, rows and amounts in as props; for li
 
 ## Works with
 
-React 19 or later, as ESM with bundled declarations. The release check installs the packed tarball into a fresh project, type-checks it with strict TypeScript, renders it on the server and builds it with Vite. Because client modules keep their `'use client'` directive, they are meant to work in Next.js App Router without a wrapper, though a Next.js app is not yet part of that check. Browsers: Chrome and Edge 111+, Firefox 113+, Safari and iOS Safari 16.4+ (CSS cascade layers and `color-mix()`).
+React 19 or later, as ESM with bundled declarations. The release check installs the packed tarball into a fresh project, type-checks it with strict TypeScript, renders it on the server and builds it with Vite. Client modules keep their `'use client'` directive, so they work in the Next.js App Router without a wrapper: CI builds a fresh Next.js app against the packed tarball (`npm run check:nextjs`), with server components calling the pure modules, and checks that the built pages hydrate cleanly. Browsers: Chrome and Edge 111+, Firefox 113+, Safari and iOS Safari 16.4+ (CSS cascade layers and `color-mix()`).
 
 ## Theming in 5 lines
 

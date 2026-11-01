@@ -85,6 +85,6 @@ Budgets have been raised with each batch of modules ([AUDIT.md](AUDIT.md)); ther
 Not yet profiled or implemented:
 
 - Large tables: `VirtualFinancialTable` draws only the rows in view; initial render, scroll frame pacing and 1,000 updates a second at 10,000 rows are measured by `node scripts/bench-table.mjs` (manual, not in CI) and published in [docs/PERFORMANCE.md](docs/PERFORMANCE.md). Memory, other browsers and real devices are not measured. `FinancialTable` and `DataTable` still draw every row.
-- Live-update rendering (`Live`, `LiveFigure`, tween and tint): no measurement of re-render cost under high-frequency ticks.
-- Runtime metrics (INP, CLS, memory), SSR hydration cost, Lighthouse: none collected.
+- Live charts and tweening: `CandlestickChart`, `PerformanceChart`, `DepthChart`, `Sparkline`, `Live` and `LiveFigure` at 10, 100 and 1,000 ticks a second, and the charts at 1k to 100k points, are measured by `npm run bench:charts` (manual, not in CI) and published in [docs/PERFORMANCE.md](docs/PERFORMANCE.md). CI guards the work per tick by count, not time (`test/chart-performance.test.tsx`: formatter calls and React commits per tick).
+- Runtime metrics (INP, CLS), SSR hydration cost, Lighthouse: none collected. JS heap is measured for the chart benchmark only.
 - Current gzip numbers were not re-measured for this page; run `npm run build && npm run size`.

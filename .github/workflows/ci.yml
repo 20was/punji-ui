@@ -1,4 +1,5 @@
 # CI: one fast job for the package, a sharded browser check of the docs site, one visual regression and browser a11y job,
+# a Next.js App Router consumer build,
 # one for workflow files, and a single required check ("CI OK") that passes when
 # the jobs that had to run passed.
 # Free: standard GitHub-hosted runners cost nothing on a public repository.
@@ -185,6 +186,36 @@ jobs:
           retention-days: 7
           if-no-files-found: ignore
 
+  # A real Next.js App Router consumer: the packed tarball installed into a fresh app, `next build`,
+  # then the built pages loaded in Chromium (server components on pure modules, 'use client'
+  # boundaries, CSS imports, no hydration errors). Next is installed in the temporary app only.
+  nextjs:
+    name: Next.js App Router consumer build
+    needs: changes
+    if: needs.changes.outputs.package == 'true' || github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install (no lifecycle scripts)
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm run build
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Pack, install into a Next.js app, next build, load the pages
+        run: npm run check:nextjs
+
   workflows:
     name: Workflow lint (actionlint, zizmor)
     needs: changes
@@ -214,7 +245,7 @@ jobs:
 
   ci-ok:
     name: CI OK
-    needs: [changes, verify, site, visual, workflows]
+    needs: [changes, verify, site, visual, nextjs, workflows]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 2

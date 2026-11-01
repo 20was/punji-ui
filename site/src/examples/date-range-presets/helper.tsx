@@ -1,5 +1,6 @@
 import { nepalDateRangePresets } from '@punji/ui/date-range-presets/nepal';
 import { formatBSDate, gregorianToBS, parseCalendarDate } from '@punji/ui/nepal';
+import { Stack } from '@punji/ui/stack';
 
 const TODAY = '2026-11-01';
 
@@ -12,7 +13,7 @@ function bs(iso: string): string {
 export default function Example() {
   const rows = nepalDateRangePresets({ today: TODAY, ids: ['today', 'this-week', 'this-month', 'last-month', 'last-30-days', 'fiscal-year-to-date', 'last-fiscal-year'] });
   return (
-    <div className="ex-stack">
+    <Stack>
       <p className="doc-muted">Today is <code>{TODAY}</code> ({bs(TODAY)}).</p>
       <div className="doc-table-wrap"><table className="doc-table">
         <thead>
@@ -29,6 +30,6 @@ export default function Example() {
           ))}
         </tbody>
       </table></div>
-    </div>
+    </Stack>
   );
 }

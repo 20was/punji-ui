@@ -2,6 +2,7 @@
 // adds) may ship. No source maps, no sources, no images or brand assets, no
 // dotfiles, and an upper bound on the unpacked size.
 import { execFileSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 
 // Calendar/date pickers and the expanded financial table API add JS,
 // declarations and dedicated CSS. Keep a bounded allowance above the current
@@ -27,7 +28,8 @@ import { execFileSync } from 'node:child_process';
 // The financial charts (chart-math, CandlestickChart, PerformanceChart, DepthChart: JS, declarations with prop docs, CSS) add ~75 kB, measured 1,024,197 B.
 // Banking and charts merged together: measured 1,120,613 B; ~3% headroom.
 // Banking, charts and portfolio merged: measured 1,232,502 B; ~3% headroom.
-const MAX_UNPACKED = 1350 * 1024;
+// Wave 3 table scale (VirtualFinancialTable, TableExport: JS, declarations, CSS): measured 1,386,061 B; ~3% headroom.
+const MAX_UNPACKED = 1410 * 1024;
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
 const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md']);
 const allowed = (p) => always.has(p) || /^dist\/.+\.(js|d\.ts|css)$/.test(p);
@@ -40,6 +42,25 @@ console.log(`pack: ${info.files.length} files, ${info.size} B packed, ${info.unp
 
 if (bad.length) {
   console.error(`pack: files that must not ship:\n  ${bad.join('\n  ')}`);
+  process.exit(1);
+}
+// Content scan of what ships: no source-map references and nothing shaped like a credential (npm, GitHub,
+// Cloudflare-style bearer, AWS, Slack tokens, private keys). A secret in dist would be published to npm for good.
+const SECRETS = [
+  [/sourceMappingURL=/, 'a source-map reference'],
+  [/\bnpm_[A-Za-z0-9]{36}\b/, 'an npm token'],
+  [/\b(?:ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{36}\b|\bgithub_pat_[A-Za-z0-9_]{60,}/, 'a GitHub token'],
+  [/\bAKIA[0-9A-Z]{16}\b/, 'an AWS access key id'],
+  [/\bxox[abposr]-[A-Za-z0-9-]{10,}/, 'a Slack token'],
+  [/-----BEGIN [A-Z ]*PRIVATE KEY-----/, 'a private key'],
+];
+const leaks = [];
+for (const { path } of info.files) {
+  const text = readFileSync(path, 'utf8');
+  for (const [pattern, what] of SECRETS) if (pattern.test(text)) leaks.push(`${path}: ${what}`);
+}
+if (leaks.length) {
+  console.error(`pack: content that must not ship:\n  ${leaks.join('\n  ')}`);
   process.exit(1);
 }
 if (info.unpackedSize > MAX_UNPACKED) {

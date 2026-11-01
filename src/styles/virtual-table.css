@@ -1,0 +1,39 @@
+/* Punji UI styles.
+   Styles for VirtualFinancialTable and TableExport. Needs tokens.css, base.css and table.css (styles.css has everything). */
+@layer punji.components {
+  .kit-tablebox.pu-vt-box { overflow: auto; overscroll-behavior: contain }
+  /* Exactly the sum of the column widths (never stretched), so the sticky offsets of pinned columns hold. */
+  .kit-table.pu-vt { table-layout: fixed; border-collapse: separate; border-spacing: 0 }
+  .kit-table.pu-vt :is(th, td) { overflow: hidden; text-overflow: ellipsis; box-sizing: border-box; padding-block: 0 }
+  .kit-table.pu-vt thead th { z-index: 2; height: 40px; padding-right: 16px }
+  .kit-table.pu-vt .kit-table-selection-cell { padding: 0; text-overflow: clip }
+  .kit-table.pu-vt thead th button { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+  .pu-vt-box.measured .kit-table.pu-vt tbody :is(th, td) { padding-block: 8px; white-space: normal; text-overflow: clip }
+  .kit-table.pu-vt tbody tr.pu-vt-spacer > td { padding: 0; border: 0; background: transparent }
+  .kit-table.pu-vt tbody tr.pu-vt-spacer:hover { background: transparent }
+  /* Pinned cells need an opaque fill so the cells scrolling under them do not show through. */
+  .kit-table.pu-vt :is(.pin-l, .pin-r) { position: sticky; z-index: 1; background-color: var(--pu-color-surface-solid) }
+  .kit-table.pu-vt thead :is(.pin-l, .pin-r) { z-index: 3 }
+  .kit-table.pu-vt .pin-l.pin-edge { box-shadow: inset -1px 0 0 var(--pu-color-border-control) }
+  .kit-table.pu-vt .pin-r.pin-edge { box-shadow: inset 1px 0 0 var(--pu-color-border-control) }
+  .kit-table.pu-vt tbody tr:hover > :is(.pin-l, .pin-r) { background-image: linear-gradient(var(--pu-color-surface-subtle), var(--pu-color-surface-subtle)) }
+  .kit-table.pu-vt tbody tr[aria-selected="true"], .kit-table.pu-vt tbody tr[aria-selected="true"] > :is(.pin-l, .pin-r) { background-color: var(--pu-color-surface-tint) }
+  .kit-table.pu-vt tbody tr:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: -2px }
+  .pu-vt-rank { display: inline-grid; min-width: 14px; height: 14px; margin-left: 2px; place-items: center; border-radius: 7px; background: var(--pu-color-surface-tint); color: var(--pu-color-text); font-size: 10px; line-height: 1; vertical-align: 1px }
+  .pu-vt-resize { position: absolute; top: 0; right: 0; bottom: 0; width: 12px; cursor: col-resize; touch-action: none; user-select: none }
+  .pu-vt-resize::after { content: ''; position: absolute; top: 25%; bottom: 25%; left: 5px; width: 2px; border-radius: 1px; background: var(--pu-color-border-control); opacity: 0; transition: opacity var(--pu-motion-fast) var(--pu-ease-out) }
+  .kit-table.pu-vt thead th:hover .pu-vt-resize::after { opacity: 1 }
+  .pu-vt-resize:hover::after, .resizing .pu-vt-resize::after, .pu-vt-resize:focus-visible::after { opacity: 1; background: var(--pu-color-accent) }
+  .pu-vt-resize:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: -2px }
+  @media (pointer: coarse) {
+    .pu-vt-resize { width: 24px }
+    .pu-vt-resize::after { left: 11px }
+  }
+  /* Never wider than its container, even as a grid or flex item: the box scrolls instead. */
+  .pu-vt-wrap { min-width: 0; max-width: 100% }
+  .pu-vt-wrap .kit-table-tools { flex-wrap: wrap }
+  .pu-vt-summary { margin-bottom: 8px; border: 1px solid var(--pu-color-border); border-radius: var(--pu-radius-control) }
+  .pu-table-export { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px }
+  .pu-table-export-label { color: var(--pu-color-text-muted); font-size: var(--pu-text-sm); font-weight: 600 }
+  @media (prefers-reduced-motion: reduce) { .pu-vt-resize::after { transition: none } }
+}

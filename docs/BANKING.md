@@ -36,7 +36,7 @@ Currency is any ISO 4217 code (default NPR with lakh/crore grouping via `nepalMo
    leave the app.
 6. **Untrusted text stays text.** Counterparty, reference, category and notes are escaped by React. References also
    lose control, zero-width and bidirectional characters (`formatTransactionReference`). `transactionsToCsv` goes
-   through `toCsv`, so a cell starting with `=`, `+`, `-`, `@`, tab or CR gets a leading apostrophe (formula
+   through `toCsv`, so a cell starting with `=`, `+`, `-`, `@`, tab, CR, LF or a full-width `＝ ＋ － ＠` gets a leading apostrophe (formula
    neutralisation stays on). That reduces spreadsheet risk; it does not replace validating stored data on the server.
 7. **Time is an instant in a named zone.** `PaymentReceipt` and `PaymentTimeline` print timestamps in the zone you
    give (`Asia/Kathmandu` by default) and include the zone name. An ISO string with no offset is refused (shown as a

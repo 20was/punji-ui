@@ -6,7 +6,7 @@ import { symbols } from '../../sample.ts';
 export default function Example() {
   const [symbol, setSymbol] = useState('N');
   return (
-    <div className="ex-narrow">
+    <div style={{ width: 'min(100%, 440px)', marginInline: 'auto' }}>
       <SymbolField label="Symbol" value={symbol} onChange={setSymbol} options={symbols} placeholder="Type NABIL, NTC or a company name" hint="Arrow keys choose, Enter picks, Esc closes" />
     </div>
   );

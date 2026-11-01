@@ -24,12 +24,12 @@ export default function Example() {
   const tax = taxOnGain(position.realisedPnL, { rate: '0.05', rounding: 'half-up' });
   const money = (minor: bigint | null) => <MoneyDisplay value={minor} preset={npr} />;
   return (
-    <div className="ex-narrow">
+    <div style={{ width: 'min(100%, 440px)', marginInline: 'auto' }}>
       <Card title="NABIL position" description={`${position.quantity} shares at Rs 610.00`} headingLevel={3}>
         <Stack>
           <div>
-            <p className="ex-label">Market value</p>
-            <p className="ex-big">{money(value.marketValue)}</p>
+            <p style={{ margin: 0, fontSize: 'var(--pu-text-sm)', color: 'var(--pu-color-text-muted)' }}>Market value</p>
+            <p style={{ margin: 0, fontSize: 32, fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.1 }}>{money(value.marketValue)}</p>
             <PriceChange current={value.marketValue} previous={position.costBasis} preset={npr} />
           </div>
           <KeyStats

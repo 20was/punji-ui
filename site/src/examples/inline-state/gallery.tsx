@@ -5,7 +5,7 @@ import { Card } from '@punji/ui/card';
 // Stack layout: the actions sit under the words. The icon is decorative; the title and body say the state.
 export default function Example() {
   return (
-    <div className="ex-grid">
+    <div style={{ display: 'grid', gap: '16px 20px', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 13rem), 1fr))' }}>
       <Card title="Locked" headingLevel={3}>
         <InlineState bare icon="lock" title="Not included on this account" body="Ask your administrator to enable fundamentals." />
       </Card>

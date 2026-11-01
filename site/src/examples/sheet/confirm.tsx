@@ -14,7 +14,7 @@ export default function Example() {
           Sell 40 NTC
         </Button>
       </Cluster>
-      <p role="status" className="ex-label">
+      <p role="status" style={{ margin: 0, fontSize: 'var(--pu-text-sm)', color: 'var(--pu-color-text-muted)' }}>
         {done ? 'Order sent: sell 40 NTC at NPR 842.00.' : 'The order is sent only when you confirm.'}
       </p>
       <Sheet open={open} title="Sell 40 NTC?" body="At NPR 842.00 a share, about NPR 33,680 before fees." onClose={() => setOpen(false)}>

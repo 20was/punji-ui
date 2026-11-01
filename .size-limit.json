@@ -73,7 +73,7 @@
     "name": "fields (import from '@punji/ui/fields')",
     "path": "dist/fields/Fields.js",
     "import": "*",
-    "limit": "4.2 kB",
+    "limit": "4.4 kB",
     "gzip": true
   },
   {
@@ -245,6 +245,27 @@
     "gzip": true
   },
   {
+    "name": "virtual-table (import from '@punji/ui/virtual-table')",
+    "path": "dist/virtual-table/VirtualFinancialTable.js",
+    "import": "*",
+    "limit": "5.3 kB",
+    "gzip": true
+  },
+  {
+    "name": "table-export (import from '@punji/ui/table-export')",
+    "path": "dist/table-export/TableExport.js",
+    "import": "*",
+    "limit": "1.81 kB",
+    "gzip": true
+  },
+  {
+    "name": "Virtual table CSS",
+    "path": "dist/css/virtual-table.css",
+    "limit": "1.03 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
     "name": "tabs (import from '@punji/ui/tabs')",
     "path": "dist/tabs/Tabs.js",
     "import": "*",
@@ -297,13 +318,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "93.26 kB",
+    "limit": "98.25 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "27.71 kB",
+    "limit": "28.59 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -325,7 +346,7 @@
     "name": "Financial compositions",
     "path": "dist/financial/financial.js",
     "import": "*",
-    "limit": "4.8 kB",
+    "limit": "4.85 kB",
     "gzip": true
   },
   {
@@ -437,7 +458,7 @@
     "name": "otp-input (import from '@punji/ui/otp-input')",
     "path": "dist/otp-input/OtpInput.js",
     "import": "*",
-    "limit": "1.85 kB",
+    "limit": "1.9 kB",
     "gzip": true
   },
   {
@@ -471,7 +492,7 @@
   {
     "name": "OTP input CSS",
     "path": "dist/css/otp-input.css",
-    "limit": "0.6 kB",
+    "limit": "0.68 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -584,14 +605,14 @@
     "name": "CSV export without React or DOM",
     "path": "dist/export/export.js",
     "import": "*",
-    "limit": "960 B",
+    "limit": "1000 B",
     "gzip": true
   },
   {
     "name": "Browser text download",
     "path": "dist/download/downloadText.js",
     "import": "*",
-    "limit": "620 B",
+    "limit": "660 B",
     "gzip": true
   },
   {

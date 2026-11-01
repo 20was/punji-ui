@@ -84,7 +84,7 @@ Budgets have been raised with each batch of modules ([AUDIT.md](AUDIT.md)); ther
 
 Not yet profiled or implemented:
 
-- Large tables: no virtualisation (documented as a deliberate first iteration); render time and memory at thousands of rows are unmeasured. `DataTable` pagination and overflow containment are the only mitigations.
+- Large tables: `VirtualFinancialTable` draws only the rows in view; initial render, scroll frame pacing and 1,000 updates a second at 10,000 rows are measured by `node scripts/bench-table.mjs` (manual, not in CI) and published in [docs/PERFORMANCE.md](docs/PERFORMANCE.md). Memory, other browsers and real devices are not measured. `FinancialTable` and `DataTable` still draw every row.
 - Live-update rendering (`Live`, `LiveFigure`, tween and tint): no measurement of re-render cost under high-frequency ticks.
 - Runtime metrics (INP, CLS, memory), SSR hydration cost, Lighthouse: none collected.
 - Current gzip numbers were not re-measured for this page; run `npm run build && npm run size`.

@@ -19,7 +19,7 @@ export default function Example() {
   const [price, setPrice] = useState('487.50');
   const paisa = toPaisa(price);
   return (
-    <Stack className="ex-narrow">
+    <Stack style={{ width: 'min(100%, 440px)', marginInline: 'auto' }}>
       <NumberField
         integer
         label="Units"

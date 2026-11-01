@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import {
-  Button, Card, FinancialSummary, JournalEntryView, LedgerTable, MetricRow, MetricTile, PageHeader, PortfolioAllocation, StatGrid, StatTile, StateGlyph, Tile, TrialBalance,
+  Button, Card, FinancialSummary, FinancialTable, JournalEntryView, LedgerTable, MetricRow, MetricTile, PageHeader, PortfolioAllocation, StatGrid, StatTile, StateGlyph, Tile, TrialBalance,
   holdingsSummary, positionsFromTransactions,
 } from '@punji/ui';
 import { cashEntries, cashOpening, journals, saleJournal } from '../../fixtures/accounting-data.ts';
@@ -42,6 +42,13 @@ function ContainerFitFixture() {
     </Block>
     <Block title="Button stacked">
       <div className="vr-row">{(['chart', 'clock', 'bell', 'info'] as const).map((icon, i) => <Button key={icon} variant="secondary" stacked icon={<StateGlyph name={icon} size={18} />}>{['Send', 'Pay bills', 'Alerts', 'Statements'][i]}</Button>)}</div>
+    </Block>
+    <Block title="FinancialTable stacks into cards in a 320px column">
+      <Narrow><div data-testid="vr-fit-fintable"><FinancialTable caption="Holdings (NPR)" rows={holdings.slice(0, 3)} rowKey={(h) => h.symbol} emptyTitle="None" sort={{ key: 'symbol', dir: 'asc' }} onSort={() => {}} columns={[
+        { key: 'symbol', label: 'Symbol', rowHeader: true, sortable: true, render: (h) => h.symbol },
+        { key: 'units', label: 'Units', num: true, render: (h) => String(h.quantity) },
+        { key: 'value', label: 'Cost', num: true, render: (h) => String(h.costBasis) },
+      ]} /></div></Narrow>
     </Block>
     <Block title="TrialBalance in 320px"><Narrow><TrialBalance caption="Trial balance (NPR)" data={journals} testId="vr-fit-trial" /></Narrow></Block>
     <Block title="JournalEntryView in 320px"><Narrow><JournalEntryView journal={saleJournal} testId="vr-fit-journal" /></Narrow></Block>

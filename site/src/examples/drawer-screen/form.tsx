@@ -18,7 +18,7 @@ export default function Example() {
           Add transaction
         </Button>
       </Cluster>
-      <p role="status" className="ex-label">
+      <p role="status" style={{ margin: 0, fontSize: 'var(--pu-text-sm)', color: 'var(--pu-color-text-muted)' }}>
         {saved || 'Nothing saved yet.'}
       </p>
       <Drawer open={open} label="Add transaction" onClose={() => setOpen(false)}>

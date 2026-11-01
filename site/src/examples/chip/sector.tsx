@@ -18,7 +18,7 @@ export default function Example() {
     <Stack>
       <ChipRow label="Sector" prefix="sector" options={options} value={sector} onChange={setSector} wrap />
       <Card title={`${sector}: ${shown.length} listed`} headingLevel={3}>
-        <p className="ex-label">{shown.map((q) => q.symbol).join(', ')}</p>
+        <p style={{ margin: 0, fontSize: 'var(--pu-text-sm)', color: 'var(--pu-color-text-muted)' }}>{shown.map((q) => q.symbol).join(', ')}</p>
       </Card>
     </Stack>
   );

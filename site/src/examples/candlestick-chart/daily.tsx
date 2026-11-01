@@ -18,7 +18,7 @@ export default function Example() {
       title="NABIL · Nabil Bank Limited"
       description="Daily candles, last 60 sessions"
       action={
-        <span className="ex-end">
+        <span style={{ display: 'grid', justifyItems: 'end', gap: 2 }}>
           <b>
             <MoneyDisplay value={paisa(last.close)} preset={npr} />
           </b>

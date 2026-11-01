@@ -16,7 +16,7 @@ const Panel = ({ theme }: { theme: 'light' | 'dark' }) => (
 
 export default function Example() {
   return (
-    <div className="ex-grid">
+    <div style={{ display: 'grid', gap: '16px 20px', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 13rem), 1fr))' }}>
       <Panel theme="light" />
       <Panel theme="dark" />
     </div>

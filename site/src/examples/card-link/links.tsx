@@ -5,7 +5,7 @@ import { CardLink } from '@punji/ui/card-link';
 // (arrow, new tab, rel="noopener noreferrer", and the new-tab words spoken after the label).
 export default function Example() {
   return (
-    <div className="ex-grid">
+    <div style={{ display: 'grid', gap: '16px 20px', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 13rem), 1fr))' }}>
       <Card title="Holdings" action={<CardLink href="#/card-link">Open portfolio</CardLink>}>
         <p>Stays in the app.</p>
       </Card>

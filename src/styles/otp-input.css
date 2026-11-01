@@ -1,11 +1,15 @@
 /* Punji UI styles.
    Styles for OtpInput. Needs tokens.css and base.css (styles.css has everything). */
 @layer punji.components {
-  .pu-otp { --cell: var(--pu-control-lg); display: grid; gap: 6px; min-width: 0 }
+  .pu-otp { --cell: var(--pu-control-lg); display: grid; gap: 6px; min-width: 0; container: pu-otp / inline-size }
   .pu-otp.md { --cell: var(--pu-control-md) }
   .pu-otp-label { font: 500 13px / 16px var(--pu-font-body); color: var(--pu-color-text-muted) }
   .pu-otp[data-invalid='true'] .pu-otp-label { color: var(--pu-color-loss) }
   .pu-otp-cells { display: grid; grid-template-columns: repeat(var(--otp-length), minmax(0, var(--cell))); gap: var(--pu-space-2); justify-content: start }
+  /* 7 or more boxes that cannot sit in one row at full size wrap into two balanced rows; the boxes keep their tap size (44px for lg). Row widths: boxes x (cell + gap). */
+  @container pu-otp (max-width: 415px) { .pu-otp-cells[data-fit='m'] { grid-template-columns: repeat(var(--otp-cols), minmax(0, var(--cell))) } }
+  @container pu-otp (max-width: 519px) { .pu-otp-cells[data-fit='l'] { grid-template-columns: repeat(var(--otp-cols), minmax(0, var(--cell))) } }
+  @container pu-otp (max-width: 623px) { .pu-otp-cells[data-fit='xl'] { grid-template-columns: repeat(var(--otp-cols), minmax(0, var(--cell))) } }
   .pu-otp-cell { width: 100%; min-width: 0; height: calc(var(--cell) + 8px); margin: 0; padding: 0; text-align: center; border: 1px solid var(--pu-color-border-control); border-radius: var(--pu-radius-control); background: var(--pu-color-surface-tint); color: var(--pu-color-text); font: 600 20px / 1 var(--pu-font-body); font-variant-numeric: tabular-nums; caret-color: var(--pu-color-accent); transition: border-color var(--pu-motion-fast) var(--pu-ease-out) }
   .pu-otp-cell:hover:not(:disabled) { border-color: var(--pu-color-text-tertiary) }
   .pu-otp-cell:is(:focus, :focus-visible) { outline: 2px solid var(--pu-color-accent); outline-offset: -1px; border-color: transparent }

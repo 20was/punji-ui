@@ -9,20 +9,20 @@ const nepali = nepalMoneyConfig({ language: 'ne', digits: 'deva' });
 
 export default function Example() {
   return (
-    <div className="ex-cols">
+    <div style={{ display: 'grid', gap: 16, gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 15rem), 1fr))' }}>
       <Card title="Savings account" description="NIC Asia Bank · Available balance">
-        <p className="ex-big">
+        <p style={{ margin: 0, fontSize: 32, fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.1 }}>
           <MoneyDisplay value={123456789n} preset={npr} />
         </p>
-        <p className="ex-label" lang="ne">
+        <p style={{ margin: 0, fontSize: 'var(--pu-text-sm)', color: 'var(--pu-color-text-muted)' }} lang="ne">
           <MoneyDisplay value={123456789n} preset={nepali} />
         </p>
       </Card>
       <Card title="Market capitalisation" description="Compact, display-rounded">
-        <p className="ex-big">
+        <p style={{ margin: 0, fontSize: 32, fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.1 }}>
           <MoneyDisplay value={12345678900n} preset={npr} compact />
         </p>
-        <p className="ex-label">
+        <p style={{ margin: 0, fontSize: 'var(--pu-text-sm)', color: 'var(--pu-color-text-muted)' }}>
           Exact: <MoneyDisplay value={12345678900n} preset={npr} />
         </p>
       </Card>

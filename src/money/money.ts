@@ -203,7 +203,7 @@ export function createMoneyFormatter(config: MoneyFormatConfig): MoneyFormatter 
   }
 
   function formatDecimalInput(typed: string): string {
-    const match = /^(-?)(\d*)(\.?)(\d*)$/.exec(typed);
+    const match = /^(-?)(\d*)(?:(\.)(\d*))?$/.exec(typed);
     if (!match) return typed;
     const [, sign = '', whole = '', dot = '', fraction = ''] = match;
     const integer = whole === '' && !dot && !fraction ? '' : integers.format(BigInt(whole || '0'));

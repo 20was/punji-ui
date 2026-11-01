@@ -4,7 +4,7 @@ import { MoneyDisplay } from '@punji/ui/money-display';
 import { nepalMoneyConfig } from '@punji/ui/money';
 import { PriceChange } from '@punji/ui/price-change';
 import { quotes } from '../../sample.ts';
-import { Stack } from '@punji/ui/stack';
+import { Cluster, Stack } from '@punji/ui/stack';
 
 const npr = nepalMoneyConfig();
 const items = heatmapItemsFromQuotes(quotes, 'turnover');
@@ -16,12 +16,12 @@ export default function Example() {
   return (
     <Stack>
       <MarketHeatmap items={items} label="NEPSE turnover heatmap" sizeLabel="Turnover" onSelect={setPicked} />
-      <p className="ex-quote" aria-live="polite">
+      <Cluster align="baseline" gap={2} aria-live="polite" style={{ fontVariantNumeric: 'tabular-nums' }}>
         <b>{quote.symbol}</b>
-        <span>{quote.name}</span>
+        <span style={{ fontSize: 'var(--pu-text-sm)', color: 'var(--pu-color-text-muted)' }}>{quote.name}</span>
         <MoneyDisplay value={quote.ltp} preset={npr} />
         <PriceChange size="sm" current={quote.ltp} previous={quote.previousClose} preset={npr} />
-      </p>
+      </Cluster>
     </Stack>
   );
 }

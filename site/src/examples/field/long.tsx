@@ -7,7 +7,7 @@ export default function Example() {
   const [date, setDate] = useState('2082-07-14');
   const [note, setNote] = useState('');
   return (
-    <Stack className="ex-narrow">
+    <Stack style={{ width: 'min(100%, 440px)', marginInline: 'auto' }}>
       <SelectField
         label="Transaction type"
         value={type}

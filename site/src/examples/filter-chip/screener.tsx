@@ -29,7 +29,7 @@ export default function Example() {
         {dividend && <FilterChip label="Pays dividend" removeLabel="Remove Pays dividend" onRemove={() => setDividend(false)} testId="f-div" />}
         <FilterChip label="EPS" value="above 40" error openPrefix="Edit" removeLabel="Remove EPS" onOpen={() => toggle('eps')} onRemove={() => {}} expanded={editing === 'eps'} testId="f-eps" />
       </Cluster>
-      <p className="ex-label" role="status">
+      <p style={{ margin: 0, fontSize: 'var(--pu-text-sm)', color: 'var(--pu-color-text-muted)' }} role="status">
         {editing === 'eps' ? 'EPS is a ratio, not a percent: enter 40, not 40%.' : editing ? `Editing ${editing}.` : 'Press a chip to edit it, or its x to remove it.'}
       </p>
       {(!pb || !dividend) && (

@@ -1,0 +1,127 @@
+/* Punji UI styles.
+   Styles for IssueCard, IssueList, ApplyIssueForm, BoidInput, AllotmentChecker, DematAccountCard, CorporateActionTimeline and EdisConfirmation.
+   Needs tokens.css, base.css, card.css, fields.css, checkbox.css, controls.css, button.css, money.css, otp-input.css, select.css, status-pill.css and states.css (styles.css has everything). */
+@layer punji.components {
+  /* A day in BS with AD beside it */
+  .pu-dual-date { display: inline-grid; gap: 1px; min-width: 0; font-variant-numeric: tabular-nums }
+  .pu-dual-date-a { font-weight: 500; color: var(--pu-color-text) }
+  .pu-dual-date-b { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+
+  /* IssueCard and IssueList */
+  .pu-issue { max-width: 30rem }
+  .pu-issue-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--pu-space-3); min-width: 0 }
+  .pu-issue-id { display: grid; gap: 6px; min-width: 0 }
+  .pu-issue-kind { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 0; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-issue .pu-issue-name { margin: 0; font: 600 var(--pu-text-base) / 1.3 var(--pu-font-display); overflow-wrap: anywhere }
+  .pu-issue-sym { font-weight: 500; color: var(--pu-color-text-muted) }
+  .pu-issue-status { flex: none }
+  .pu-issue-dates { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--pu-space-3); margin: 0; padding: var(--pu-space-3); border-radius: var(--pu-radius-md); background: var(--pu-color-surface-tint) }
+  .pu-issue-dates dt, .pu-issue-facts dt { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-issue-dates dd { margin: 2px 0 0; font-size: var(--pu-text-sm); min-width: 0 }
+  .pu-issue-countdown { margin: 0; font: 500 var(--pu-text-sm) / 1.4 var(--pu-font-body) }
+  .pu-issue[data-status='closing-today'] .pu-issue-countdown { color: var(--pu-color-warn) }
+  .pu-issue[data-status='closed'] .pu-issue-countdown { color: var(--pu-color-text-muted) }
+  .pu-issue-facts { display: grid; gap: var(--pu-space-2); margin: 0 }
+  .pu-issue-facts > div { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px var(--pu-space-3); min-width: 0 }
+  .pu-issue-facts dd { margin: 0; font-size: var(--pu-text-sm); font-variant-numeric: tabular-nums; text-align: end; overflow-wrap: anywhere }
+  .pu-issue-actions { display: flex; flex-wrap: wrap; gap: var(--pu-space-2) }
+  .pu-issue-list { display: grid; gap: var(--pu-space-3); min-width: 0 }
+  .pu-issue-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--pu-space-3); grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)) }
+  .pu-issue-grid > li { display: grid; min-width: 0 }
+  .pu-issue-grid .pu-issue { max-width: none }
+
+  /* BoidInput */
+  .pu-boid-input { font-variant-numeric: tabular-nums; letter-spacing: 0.06em }
+
+  /* DematAccountCard */
+  .pu-demat { max-width: 28rem }
+  .pu-demat-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--pu-space-3); min-width: 0 }
+  .pu-demat-id { min-width: 0 }
+  .pu-demat .pu-demat-name { margin: 0; font: 600 var(--pu-text-base) / 1.3 var(--pu-font-display); overflow-wrap: anywhere }
+  .pu-demat-dp { margin: 2px 0 0; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-demat-boid { display: grid; gap: 2px; padding: var(--pu-space-3); border-radius: var(--pu-radius-md); background: var(--pu-color-surface-tint); min-width: 0 }
+  .pu-demat-k { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-demat-boid-v { font: 600 var(--pu-text-lg) / 1.3 var(--pu-font-display); font-variant-numeric: tabular-nums; letter-spacing: 0.04em; overflow-wrap: anywhere }
+  .pu-demat-dpid { color: var(--pu-color-text-muted) }
+  .pu-demat-split { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums }
+  .pu-demat-facts { display: grid; gap: var(--pu-space-2); margin: 0 }
+  .pu-demat-facts > div { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px var(--pu-space-3); min-width: 0 }
+  .pu-demat-facts dt { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-demat-facts dd { margin: 0; font-size: var(--pu-text-sm); text-align: end; overflow-wrap: anywhere }
+  .pu-demat-expiry { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 4px 8px }
+  .pu-demat-actions { display: flex; flex-wrap: wrap; gap: var(--pu-space-2) }
+
+  /* CorporateActionTimeline */
+  .pu-ca-timeline { list-style: none; margin: 0; padding: 0; display: grid; min-width: 0 }
+  .pu-ca-event { position: relative; display: flex; gap: var(--pu-space-3); padding-bottom: var(--pu-space-4); min-width: 0 }
+  .pu-ca-event:last-child { padding-bottom: 0 }
+  .pu-ca-event:not(:last-child)::before { content: ''; position: absolute; left: 13px; top: 28px; bottom: 0; width: 2px; background: var(--pu-color-border-strong) }
+  .pu-ca-event[data-phase='past']:not(:last-child)::before { background: var(--pu-color-gain) }
+  .pu-ca-mark { flex: none; display: grid; place-items: center; width: 28px; height: 28px; box-sizing: border-box; border-radius: var(--pu-radius-full); border: 2px solid var(--pu-color-border-strong); background: var(--pu-color-surface); color: var(--pu-color-text-muted) }
+  .pu-ca-event[data-phase='past'] .pu-ca-mark { border-color: var(--pu-color-gain); color: var(--pu-color-gain) }
+  .pu-ca-event[data-phase='today'] .pu-ca-mark, .pu-ca-event[data-next='true'] .pu-ca-mark { border-color: var(--pu-color-series-nepse); color: var(--pu-color-series-nepse) }
+  .pu-ca-body { display: grid; gap: 2px; min-width: 0; padding-top: 3px }
+  .pu-ca-label { font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body); overflow-wrap: anywhere }
+  .pu-ca-body .pu-dual-date { font-size: var(--pu-text-sm) }
+  .pu-ca-phase { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-ca-event[data-next='true'] .pu-ca-phase { color: var(--pu-color-text); font-weight: 500 }
+  .pu-ca-detail { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); overflow-wrap: anywhere }
+
+  /* ApplyIssueForm (and the shared form parts EdisConfirmation uses) */
+  .pu-apply, .pu-edis { display: grid; gap: var(--pu-space-4); max-width: 32rem; min-width: 0 }
+  .pu-apply-head { display: grid; gap: 4px; min-width: 0 }
+  .pu-apply-step { margin: 0; font: 600 var(--pu-text-xs) / 1.4 var(--pu-font-body); letter-spacing: 0.04em; color: var(--pu-color-text-muted) }
+  .pu-apply .pu-apply-title, .pu-edis .pu-edis-title { margin: 0; font: 600 var(--pu-text-lg) / 1.3 var(--pu-font-display) }
+  .pu-apply-title:focus { outline: none }
+  .pu-apply-title:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px; border-radius: var(--pu-radius-sm) }
+  .pu-apply-issue { margin: 0; font-size: var(--pu-text-sm); color: var(--pu-color-text-muted); overflow-wrap: anywhere }
+  .pu-apply-issue b { color: var(--pu-color-text); font-weight: 600 }
+  .pu-apply-amount { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px var(--pu-space-3); padding: var(--pu-space-3); border-radius: var(--pu-radius-md); background: var(--pu-color-surface-tint); font-size: var(--pu-text-sm); color: var(--pu-color-text-muted) }
+  .pu-apply-amount output { font: 600 var(--pu-text-lg) / 1.2 var(--pu-font-display); font-variant-numeric: tabular-nums; color: var(--pu-color-text) }
+  .pu-apply-accounts, .pu-allot-saved, .pu-edis-rows { display: grid; gap: var(--pu-space-2); margin: 0; padding: 0; border: 0; min-width: 0 }
+  .pu-apply-accounts legend, .pu-allot-saved legend, .pu-edis-rows legend { padding: 0; margin-bottom: 6px; font: 500 13px / 16px var(--pu-font-body); color: var(--pu-color-text-muted) }
+  .pu-apply-account { position: relative; display: flex; align-items: center; gap: var(--pu-space-3); min-height: var(--pu-tap-min); padding: 10px 14px; box-sizing: border-box; border: 1px solid var(--pu-color-border-control); border-radius: var(--pu-radius-control); background: var(--pu-color-surface); cursor: pointer }
+  .pu-apply-account:hover { border-color: var(--pu-color-text-tertiary) }
+  .pu-apply-account[data-checked='true'] { border-color: var(--pu-color-accent); background: var(--pu-color-surface-tint) }
+  .pu-apply-account:has(:focus-visible) { outline: 2px solid var(--pu-color-accent); outline-offset: 1px }
+  .pu-apply-account input { flex: none; width: 18px; height: 18px; margin: 0; accent-color: var(--pu-color-accent) }
+  .pu-apply-account-t { display: grid; gap: 2px; min-width: 0; font: 600 var(--pu-text-sm) / 1.35 var(--pu-font-body); cursor: pointer }
+  .pu-apply-account-t::after { content: ''; position: absolute; inset: 0; border-radius: inherit }
+  .pu-apply-account-t > span { font-weight: 400; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums }
+  .pu-apply-accounts:disabled .pu-apply-account { cursor: default; opacity: 0.6 }
+  .pu-apply-declare { display: grid; gap: 4px }
+  .pu-apply-err, .pu-apply-error { font-size: var(--pu-text-xs); color: var(--pu-color-loss) }
+  .pu-apply-error { margin: 0; font-size: var(--pu-text-sm) }
+  .pu-apply-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--pu-space-2) }
+  .pu-apply-review { display: grid; gap: var(--pu-space-2); margin: 0; padding: var(--pu-space-3); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-card) }
+  .pu-apply-review > div { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px var(--pu-space-3); min-width: 0 }
+  .pu-apply-review dt { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-apply-review dd { margin: 0; font-size: var(--pu-text-sm); text-align: end; font-variant-numeric: tabular-nums; overflow-wrap: anywhere }
+  .pu-apply-review .pu-apply-total { padding-top: var(--pu-space-2); border-top: 1px solid var(--pu-color-card-border) }
+  .pu-apply-review .pu-apply-total dd { font: 600 var(--pu-text-base) / 1.3 var(--pu-font-display) }
+
+  /* AllotmentChecker */
+  .pu-allot { display: grid; gap: var(--pu-space-4); max-width: 36rem; min-width: 0 }
+  .pu-allot-boid { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums; white-space: nowrap }
+  .pu-allot-actions { display: flex; justify-content: flex-start }
+  .pu-allot-summary { margin: 0; font: 500 var(--pu-text-sm) / 1.4 var(--pu-font-body) }
+  .pu-allot-summary:empty { display: none }
+  .pu-allot-results { display: grid; gap: var(--pu-space-2); min-width: 0 }
+  .pu-allot .pu-allot-h { margin: 0; font: 600 var(--pu-text-sm) / 1.4 var(--pu-font-body) }
+  .pu-allot-rows { list-style: none; margin: 0; padding: 0; border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-card); background: var(--pu-color-surface) }
+  .pu-allot-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--pu-space-2) var(--pu-space-3); min-height: 56px; padding: 10px 14px; box-sizing: border-box; min-width: 0 }
+  .pu-allot-row + .pu-allot-row { border-top: 1px solid var(--pu-color-card-border) }
+  .pu-allot-who { display: grid; gap: 2px; min-width: 0; font-size: var(--pu-text-sm) }
+  .pu-allot-msg { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); overflow-wrap: anywhere }
+  .pu-allot-out { display: flex; flex-wrap: wrap; align-items: center; gap: 6px }
+  .pu-allot-units { font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body); font-variant-numeric: tabular-nums }
+
+  /* EdisConfirmation */
+  .pu-edis-row { display: grid; gap: 2px; padding: 4px 0; min-width: 0 }
+  .pu-edis-row + .pu-edis-row { border-top: 1px solid var(--pu-color-card-border) }
+  .pu-edis-units { font-variant-numeric: tabular-nums; white-space: nowrap }
+  .pu-edis-meta { display: flex; flex-wrap: wrap; gap: 4px var(--pu-space-4); margin: 0 0 4px; padding-inline-start: 30px; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-edis-meta > div { display: flex; gap: 4px; align-items: baseline }
+  .pu-edis-meta dd { margin: 0; color: var(--pu-color-text) }
+  .pu-edis-meta .pu-dual-date { display: inline-flex; gap: 6px }
+}

@@ -1,0 +1,70 @@
+/* Punji UI styles.
+   Styles for the wallet and payment components: QrCode, PaymentQrCard, AmountKeypad, PinPad and MobileNumberInput.
+   Needs tokens.css and base.css (styles.css has everything). The button classes come from button.css. */
+@layer punji.components {
+  /* QrCode: colours are SVG attributes (dark on light in both themes); only layout here. */
+  .pu-qr { display: block; max-width: 100%; height: auto; border-radius: var(--pu-radius-sm) }
+
+  /* Keypad grid shared by AmountKeypad and PinPad. */
+  .pu-keypad { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--pu-space-2); min-width: 0 }
+  .pu-keypad-key { display: inline-flex; align-items: center; justify-content: center; min-height: max(var(--pu-tap-min), 56px); margin: 0; padding: 0; border: 0; border-radius: var(--pu-radius-control); background: var(--pu-color-surface-tint); color: var(--pu-color-text); font: 600 24px / 1 var(--pu-font-body); font-variant-numeric: tabular-nums; cursor: pointer; touch-action: manipulation; user-select: none; -webkit-tap-highlight-color: transparent; transition: background-color var(--pu-motion-fast) var(--pu-ease-out) }
+  .pu-keypad-key.action { background: transparent; color: var(--pu-color-text-muted) }
+  .pu-keypad-key:hover:not(:disabled) { background: var(--pu-color-surface-solid) }
+  .pu-keypad-key:active:not(:disabled) { background: var(--pu-color-track) }
+  .pu-keypad-key:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+  .pu-keypad-key:disabled { opacity: 0.4; cursor: not-allowed }
+  .pu-keypad-gap { min-height: max(var(--pu-tap-min), 56px) }
+
+  /* AmountKeypad */
+  .pu-amount-keypad { display: grid; gap: var(--pu-space-4); max-width: 22rem; min-width: 0 }
+  .pu-amount-keypad-display { display: grid; justify-items: center; gap: var(--pu-space-1); text-align: center; min-width: 0 }
+  .pu-amount-keypad-label { font: 500 13px / 16px var(--pu-font-body); color: var(--pu-color-text-muted) }
+  .pu-amount-keypad-figure { display: flex; align-items: baseline; justify-content: center; gap: var(--pu-space-2); max-width: 100%; font: 700 clamp(28px, 8vw, 40px) / 1.15 var(--pu-font-display); font-variant-numeric: tabular-nums; color: var(--pu-color-text); overflow-wrap: anywhere }
+  .pu-amount-keypad-figure[data-empty='true'] { color: var(--pu-color-text-tertiary) }
+  .pu-amount-keypad-currency { font-size: 0.5em; font-weight: 600; color: var(--pu-color-text-muted) }
+  .pu-amount-keypad-note, .pu-pin-pad-note { font: 400 12px / 16px var(--pu-font-body); color: var(--pu-color-text-tertiary) }
+  .pu-amount-keypad-note.err, .pu-pin-pad-note.err { font-weight: 600; color: var(--pu-color-loss) }
+  .pu-amount-keypad[data-invalid='true'] .pu-amount-keypad-figure { color: var(--pu-color-loss) }
+  .pu-amount-keypad-quick { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--pu-space-2) }
+  .pu-amount-keypad-chip { min-height: 36px; padding: 0 var(--pu-space-3); border: 1px solid var(--pu-color-border-control); border-radius: var(--pu-radius-full); background: transparent; color: var(--pu-color-text); font: 600 var(--pu-text-sm) / 1 var(--pu-font-body); font-variant-numeric: tabular-nums; cursor: pointer }
+  .pu-amount-keypad-chip[aria-pressed='true'] { border-color: var(--pu-color-accent); background: var(--pu-color-gain-soft) }
+  .pu-amount-keypad-chip:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+  .pu-amount-keypad-chip:disabled { opacity: 0.4; cursor: not-allowed }
+  @media (pointer: coarse) { .pu-amount-keypad-chip { min-height: var(--pu-tap-min) } }
+
+  /* PinPad */
+  .pu-pin-pad { display: grid; justify-items: center; gap: var(--pu-space-4); max-width: 20rem; min-width: 0; text-align: center }
+  .pu-pin-pad-label { font: 600 var(--pu-text-base) / 1.3 var(--pu-font-display); color: var(--pu-color-text) }
+  .pu-pin-pad-dots { display: flex; gap: var(--pu-space-3) }
+  .pu-pin-pad-dot { width: 14px; height: 14px; border: 2px solid var(--pu-color-border-control); border-radius: var(--pu-radius-full); box-sizing: border-box; transition: background-color var(--pu-motion-fast) var(--pu-ease-out), border-color var(--pu-motion-fast) var(--pu-ease-out) }
+  .pu-pin-pad-dot[data-filled='true'] { border-color: var(--pu-color-text); background: var(--pu-color-text) }
+  .pu-pin-pad[data-invalid='true'] .pu-pin-pad-dot { border-color: var(--pu-color-loss) }
+  .pu-pin-pad-keys { position: relative; width: 100%; min-width: 0 }
+  .pu-pin-pad-extra { position: absolute; inset-inline-start: 0; inset-block-end: 0; width: calc((100% - 2 * var(--pu-space-2)) / 3); min-height: max(var(--pu-tap-min), 56px); display: grid }
+  .pu-pin-pad-extra > * { width: 100%; height: 100% }
+
+  /* MobileNumberInput: a kit-field with a fixed +977 and an operator badge. */
+  .pu-mobile-input-control { position: relative; display: flex; align-items: center; min-width: 0 }
+  .pu-mobile-input-cc { position: absolute; inset-inline-start: 12px; font: 500 15px / 1 var(--pu-font-body); color: var(--pu-color-text-muted); pointer-events: none }
+  .kit-field .pu-mobile-input-control input { padding-inline-start: 56px; padding-inline-end: 96px; font-variant-numeric: tabular-nums; letter-spacing: 0.02em }
+  .pu-mobile-input-operator { position: absolute; inset-inline-end: 8px; max-width: 84px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 4px 8px; border-radius: var(--pu-radius-full); background: var(--pu-color-surface-subtle); color: var(--pu-color-text-muted); font: 600 12px / 1 var(--pu-font-body); pointer-events: none }
+
+  /* PaymentQrCard */
+  .pu-payqr { display: grid; justify-items: center; gap: var(--pu-space-4); max-width: 22rem; padding: var(--pu-space-4); box-sizing: border-box; background: var(--pu-color-surface); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-card); text-align: center; min-width: 0 }
+  .pu-payqr-head { display: grid; gap: 2px; min-width: 0 }
+  .pu-payqr-title { margin: 0; font: 500 var(--pu-text-sm) / 1.3 var(--pu-font-body); color: var(--pu-color-text-muted) }
+  .pu-payqr-merchant { margin: 0; font: 700 var(--pu-text-lg) / 1.25 var(--pu-font-display); color: var(--pu-color-text); overflow-wrap: anywhere }
+  .pu-payqr-detail { margin: 0; font-size: var(--pu-text-sm); color: var(--pu-color-text-muted) }
+  .pu-payqr-code { margin: 0; padding: var(--pu-space-2); border-radius: var(--pu-radius-lg); background: var(--pu-color-surface-solid); border: 1px solid var(--pu-color-card-border); max-width: 100%; box-sizing: border-box }
+  .pu-payqr-placeholder { max-width: 100%; border-radius: var(--pu-radius-lg); background: linear-gradient(90deg, var(--pu-color-shimmer-base), var(--pu-color-shimmer-highlight), var(--pu-color-shimmer-base)) }
+  .pu-payqr-blocked { display: grid; place-content: center; justify-items: center; gap: var(--pu-space-3); width: 100%; padding: var(--pu-space-4); box-sizing: border-box; border: 1px dashed var(--pu-color-border-control); border-radius: var(--pu-radius-lg); color: var(--pu-color-text-muted) }
+  .pu-payqr-blocked p { margin: 0; font-weight: 600 }
+  .pu-payqr-amount { display: grid; justify-items: center; gap: var(--pu-space-2); width: 100%; min-width: 0 }
+  .pu-payqr-figure { margin: 0; font: 700 28px / 1.2 var(--pu-font-display); font-variant-numeric: tabular-nums }
+  .pu-payqr-noamount { margin: 0; color: var(--pu-color-text-muted); font-size: var(--pu-text-sm) }
+  .pu-payqr-amount-actions, .pu-payqr-form-actions, .pu-payqr-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--pu-space-2) }
+  .pu-payqr-form { display: grid; gap: var(--pu-space-3); width: 100%; text-align: start }
+  .pu-payqr-footer { margin: 0; font-size: var(--pu-text-xs); color: var(--pu-color-text-tertiary) }
+  @media (prefers-reduced-motion: reduce) { .pu-keypad-key, .pu-pin-pad-dot { transition: none } }
+  @media print { .pu-payqr-amount-actions, .pu-payqr-actions { display: none } .pu-payqr { border: 1px solid currentColor; background: none } }
+}

@@ -1,0 +1,27 @@
+/* Punji UI styles.
+   Styles for OrderTicket. Needs tokens.css, base.css, controls.css, fields.css, button.css, inline-confirm.css and states.css (styles.css has everything). */
+@layer punji.components {
+  .pu-ticket { display: grid; gap: var(--pu-space-4); min-width: 0; padding: var(--pu-space-4); background: var(--pu-color-surface); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-card) }
+  .pu-ticket-title { margin: 0; font: 600 var(--pu-text-lg) / 1.3 var(--pu-font-display); color: var(--pu-color-text) }
+  .pu-ticket[data-side='buy'] .pu-ticket-title { color: var(--pu-color-gain) }
+  .pu-ticket[data-side='sell'] .pu-ticket-title { color: var(--pu-color-loss) }
+  .pu-ticket-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr)); gap: var(--pu-space-3) }
+  .pu-ticket-fields input { text-align: end; font-variant-numeric: tabular-nums }
+  .pu-ticket-fill { display: flex; flex-wrap: wrap; gap: var(--pu-space-2) }
+  .pu-ticket-fill button { display: inline-flex; align-items: baseline; gap: 6px; min-height: var(--pu-control-sm); padding: 0 12px; border: 1px solid var(--pu-color-border-control); border-radius: var(--pu-radius-full); background: var(--pu-color-surface); color: var(--pu-color-text-muted); font: 500 var(--pu-text-xs) / 1 var(--pu-font-body); cursor: pointer }
+  .pu-ticket-fill button b { font-weight: 600; color: var(--pu-color-text); font-variant-numeric: tabular-nums }
+  .pu-ticket-fill button:hover { background: var(--pu-color-surface-tint) }
+  .pu-ticket-fill button:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+  .pu-ticket-estimate { display: grid; gap: var(--pu-space-2); padding: var(--pu-space-3); border-radius: var(--pu-radius-lg); background: var(--pu-color-surface-tint) }
+  .pu-ticket-estimate dl { display: grid; gap: 6px; margin: 0 }
+  .pu-ticket-estimate dl > div { display: flex; justify-content: space-between; align-items: baseline; gap: var(--pu-space-3); font-size: var(--pu-text-sm); color: var(--pu-color-text-muted) }
+  .pu-ticket-estimate dd { margin: 0; color: var(--pu-color-text); font-variant-numeric: tabular-nums; white-space: nowrap }
+  .pu-ticket-rate { color: var(--pu-color-text-tertiary) }
+  .pu-ticket-estimate .pu-ticket-total { padding-top: 8px; border-top: 1px solid var(--pu-color-border); font-weight: 600; color: var(--pu-color-text) }
+  .pu-ticket-total dd { font-size: var(--pu-text-base) }
+  .pu-ticket-note { margin: 0; font-size: var(--pu-text-xs); line-height: 1.5; color: var(--pu-color-text-tertiary) }
+  .pu-ticket-confirm { padding: 0 }
+  @media (pointer: coarse) {
+    .pu-ticket-fill button { min-height: var(--pu-tap-min) }
+  }
+}

@@ -106,6 +106,34 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'payment-timeline', title: 'PaymentTimeline', layout: true },
   { id: 'beneficiary-selector', title: 'BeneficiarySelector with a payee chosen' },
   { id: 'beneficiary-selector-open', title: 'BeneficiarySelector open list' },
+  // Share issues and corporate actions.
+  { id: 'issue-card', title: 'IssueCard open, closing today, upcoming and closed', layout: true },
+  { id: 'issue-list', title: 'IssueList with kind filter', layout: true },
+  { id: 'apply-issue-form', title: 'ApplyIssueForm details step' },
+  { id: 'apply-issue-form-errors', title: 'ApplyIssueForm with every error shown' },
+  { id: 'boid-input', title: 'BoidInput complete, short and Devanagari' },
+  { id: 'allotment-checker', title: 'AllotmentChecker with results' },
+  { id: 'demat-account-card', title: 'DematAccountCard states', layout: true },
+  { id: 'corporate-action-timeline', title: 'CorporateActionTimeline', layout: true },
+  { id: 'edis-confirmation', title: 'EdisConfirmation' },
+  // Lending, deposits, KYC onboarding and remittance.
+  { id: 'loan-calculator', title: 'LoanCalculator', layout: true },
+  { id: 'amortisation-table', title: 'AmortisationTable monthly and yearly', layout: true },
+  { id: 'deposit-calculator', title: 'DepositCalculator fixed and recurring', layout: true },
+  { id: 'interest-rate-table', title: 'InterestRateTable AD and BS', layout: true },
+  { id: 'kyc-fields', title: 'NepalAddressPicker and IdNumberInput', layout: true },
+  { id: 'document-upload', title: 'DocumentUpload with a file and an error' },
+  { id: 'onboarding-wizard', title: 'OnboardingWizard on step 2', layout: true },
+  { id: 'remittance-tracker', title: 'RemittanceTracker found and empty', layout: true },
+  { id: 'insurance-premium-card', title: 'InsurancePremiumCard states', layout: true },
+  // Tax, invoicing and payroll.
+  { id: 'tax-invoice', title: 'TaxInvoice with discount, exempt line, copy mark and an invalid bill', layout: true },
+  { id: 'line-item-editor', title: 'LineItemEditor with an unfinished line', layout: true },
+  { id: 'pan-input', title: 'PanInput' },
+  { id: 'income-tax-calculator', title: 'IncomeTaxCalculator with example slabs', layout: true },
+  { id: 'payslip', title: 'Payslip', layout: true },
+  { id: 'aging-table', title: 'AgingTable ready, loading and empty', layout: true },
+  { id: 'tds-summary', title: 'TdsSummary by category and by entry', layout: true },
   { id: 'shell', title: 'AppShell and page layout', layout: true, page: true },
   { id: 'drawer-screen', title: 'DrawerScreen', page: true },
   { id: 'drawer', title: 'Drawer', page: true },
@@ -113,6 +141,16 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'popover', title: 'Popover', page: true },
   { id: 'command-palette', title: 'CommandPalette', page: true },
   { id: 'toast', title: 'Toasts', page: true },
+  // Trading
+  { id: 'order-ticket', title: 'OrderTicket buy, sell with tax and halted' },
+  { id: 'order-list', title: 'OrderList and TradeList', layout: true },
+  { id: 'trading-halt', title: 'TradingHaltBanner states' },
+  // Wallets and payments.
+  { id: 'qr-code', title: 'QrCode at levels M and H' },
+  { id: 'payment-qr-card', title: 'PaymentQrCard dynamic, static, expired, damaged, loading', layout: true },
+  { id: 'amount-keypad', title: 'AmountKeypad empty, grouped, error, Devanagari', layout: true },
+  { id: 'pin-pad', title: 'PinPad empty, partial, error, shuffled', layout: true },
+  { id: 'mobile-number-input', title: 'MobileNumberInput operators and states' },
 ];
 
 export const themes = ['light', 'dark'] as const;

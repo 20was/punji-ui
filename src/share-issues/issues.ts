@@ -18,6 +18,7 @@ export interface ShareIssue {
   company: string;
   /** Trading symbol, when it has one. */
   symbol?: string;
+  /** 'ipo', 'fpo', 'right', 'mutual-fund' or 'debenture'. */
   kind: ShareIssueKind;
   /** Who the tranche is for ("Ordinary", "Local people", "Foreign employment"). Display text. */
   shareGroup?: string;

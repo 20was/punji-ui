@@ -106,6 +106,7 @@ export interface AllotmentCheckerProps {
   labels?: Partial<AllotmentCheckerLabels>;
   /** Heading level of the results heading. Default 3. */
   headingLevel?: 2 | 3 | 4;
+  /** Extra class for layout. */
   className?: string;
   /** Sets `data-testid` on the form; parts get `<id>-check`, `<id>-extra`, `<id>-result-<boid>`, ... */
   testId?: string;

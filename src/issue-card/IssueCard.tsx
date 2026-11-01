@@ -50,6 +50,7 @@ export const DEFAULT_ISSUE_CARD_LABELS: IssueCardLabels = {
 };
 
 export interface IssueCardProps {
+  /** The issue to show or apply for. */
   issue: ShareIssue;
   /** Today as Gregorian `YYYY-MM-DD`, from your server's business day. Needed for the status and days left unless `status` is given. */
   today?: string;
@@ -142,6 +143,7 @@ export const DEFAULT_ISSUE_LIST_LABELS: IssueListLabels = {
 };
 
 export interface IssueListProps extends Omit<IssueCardProps, 'issue' | 'status' | 'action' | 'testId' | 'className'> {
+  /** The issues, any order. */
   issues: readonly ShareIssue[];
   /** Today as Gregorian `YYYY-MM-DD`. Required: it sets each status and the order. */
   today: string;
@@ -161,6 +163,7 @@ export interface IssueListProps extends Omit<IssueCardProps, 'issue' | 'status' 
   listLabels?: Partial<IssueListLabels>;
   /** Names the list for screen readers. Default 'Share issues'. */
   label?: string;
+  /** Extra class for layout. */
   className?: string;
   /** Sets `data-testid` on the root; cards get `<id>-<issue id>`. */
   testId?: string;

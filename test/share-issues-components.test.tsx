@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 import {
   AllotmentChecker, ApplyIssueForm, BoidInput, CorporateActionTimeline, DematAccountCard, EdisConfirmation, IssueCard, IssueList,
-  type AllotmentRequest, type ApplyIssueSubmission, type BoidInputChange,
+  type AllotmentRequest, type AllotmentResult, type ApplyIssueSubmission, type BoidInputChange,
 } from '../src/index.ts';
 import {
   applyAccounts, corporateEvents, dematAccounts, edisTransfers, fakeAllotment, issuesToday, savedBoids, shareIssues,
@@ -51,7 +51,7 @@ describe('IssueCard', () => {
 describe('IssueList', () => {
   it('orders by status, filters by kind with counts and announces the count', async () => {
     const user = userEvent.setup();
-    const onKindChange = vi.fn();
+    const onKindChange = vi.fn<(kind: string) => void>();
     const { container } = render(<IssueList issues={shareIssues} today={issuesToday} onKindChange={onKindChange} renderAction={(i, s) => (s === 'open' || s === 'closing-today' ? <button type="button">Apply {i.symbol ?? i.company}</button> : null)} testId="il" />);
     const names = screen.getAllByRole('article').map((a) => a.querySelector('.pu-issue-name')?.firstChild?.textContent);
     expect(names).toEqual(['Annapurna Finance', 'Tamakoshi Valley Hydropower', 'Sagarmatha Growth Fund', 'Lumbini Cement Industries', 'Koshi Bank 9% Debenture 2090', 'Mechi Laghubitta']);
@@ -112,7 +112,7 @@ describe('BoidInput', () => {
 describe('ApplyIssueForm', () => {
   it('reports every problem on Continue and focuses the first', async () => {
     const user = userEvent.setup();
-    const { container } = render(<ApplyIssueForm issue={ipo} accounts={applyAccounts} defaultKitta="15" onSubmit={vi.fn()} testId="ap" />);
+    const { container } = render(<ApplyIssueForm issue={ipo} accounts={applyAccounts} defaultKitta="15" onSubmit={vi.fn<() => void>()} testId="ap" />);
     await user.click(screen.getByTestId('ap-continue'));
     const alerts = screen.getAllByRole('alert').map((a) => a.textContent);
     expect(alerts).toEqual(['Units must be a multiple of 10.', 'Choose the bank account to block the amount in.', 'Enter the CRN your bank gave you.', 'Confirm the declaration to continue.']);
@@ -146,8 +146,8 @@ describe('ApplyIssueForm', () => {
   it('goes back keeping the details, stays busy while a promise is pending and shows a server error', async () => {
     const user = userEvent.setup();
     let resolve!: () => void;
-    const onSubmit = vi.fn(() => new Promise<void>((r) => { resolve = r; }));
-    const { rerender } = render(<ApplyIssueForm issue={ipo} accounts={applyAccounts.slice(0, 1)} verification="otp" onResend={vi.fn()} onSubmit={onSubmit} testId="ap" />);
+    const onSubmit = vi.fn<() => Promise<void>>(() => new Promise<void>((r) => { resolve = r; }));
+    const { rerender } = render(<ApplyIssueForm issue={ipo} accounts={applyAccounts.slice(0, 1)} verification="otp" onResend={vi.fn<() => void>()} onSubmit={onSubmit} testId="ap" />);
     await user.click(screen.getByTestId('ap-declaration'));
     await user.click(screen.getByTestId('ap-continue'));
     await user.click(screen.getByTestId('ap-back'));
@@ -167,7 +167,7 @@ describe('ApplyIssueForm', () => {
 describe('AllotmentChecker', () => {
   it('checks saved and pasted BOIDs together, dropping duplicates, and summarises', async () => {
     const user = userEvent.setup();
-    const onCheck = vi.fn(async (r: AllotmentRequest) => fakeAllotment(r.boids));
+    const onCheck = vi.fn<(r: AllotmentRequest) => Promise<AllotmentResult[]>>(async (r) => fakeAllotment(r.boids));
     const { container } = render(<AllotmentChecker issues={[{ value: 'iss-ipo-open', label: 'Tamakoshi Valley Hydropower' }]} savedAccounts={savedBoids} onCheck={onCheck} testId="al" />);
     await user.click(screen.getByTestId('al-saved-1301520000654320'));
     await user.type(screen.getByTestId('al-extra'), '1301 3700 0001 2345{enter}1301-4400-0000-9990');
@@ -182,7 +182,7 @@ describe('AllotmentChecker', () => {
   });
   it('names the bad line before sending anything', async () => {
     const user = userEvent.setup();
-    const onCheck = vi.fn(async () => []);
+    const onCheck = vi.fn<() => Promise<AllotmentResult[]>>(async () => []);
     render(<AllotmentChecker onCheck={onCheck} testId="al" />);
     await user.click(screen.getByTestId('al-check'));
     expect(screen.getByRole('alert').textContent).toBe('Choose an account or enter a BOID to check.');
@@ -194,7 +194,7 @@ describe('AllotmentChecker', () => {
   });
   it('offers a retry when the check fails', async () => {
     const user = userEvent.setup();
-    const onCheck = vi.fn().mockRejectedValueOnce(new Error('down')).mockResolvedValueOnce([{ boid: '1301370000012345', outcome: 'allotted', units: 10n }]);
+    const onCheck = vi.fn<() => Promise<AllotmentResult[]>>().mockRejectedValueOnce(new Error('down')).mockResolvedValueOnce([{ boid: '1301370000012345', outcome: 'allotted', units: 10n }]);
     render(<AllotmentChecker savedAccounts={savedBoids.slice(0, 1)} onCheck={onCheck} testId="al" />);
     await user.click(screen.getByTestId('al-check'));
     expect((await screen.findByTestId('al-error')).textContent).toContain('Could not check the results.');
@@ -219,7 +219,7 @@ describe('DematAccountCard', () => {
   });
   it('says Expired, masks the BOID on request, and has loading and error states', async () => {
     const user = userEvent.setup();
-    const onRetry = vi.fn();
+    const onRetry = vi.fn<() => void>();
     const { rerender } = render(<DematAccountCard {...dematAccounts.dormant} today={issuesToday} maskBoid testId="dm" />);
     expect(screen.getByTestId('dm-demat-expiry').textContent).toBe('Expired');
     expect(screen.getByTestId('dm-boid').textContent).toBe('•••••••• ••••4320');
@@ -247,7 +247,7 @@ describe('CorporateActionTimeline', () => {
 describe('EdisConfirmation', () => {
   it('counts the units chosen, requires the declaration and PIN, and sends the ids', async () => {
     const user = userEvent.setup();
-    const onConfirm = vi.fn();
+    const onConfirm = vi.fn<(c: { ids: string[]; units: bigint; pin: string }) => void>();
     const { container } = render(<EdisConfirmation transfers={edisTransfers} onConfirm={onConfirm} testId="ed" />);
     expect(screen.getByTestId('ed-confirm').textContent).toBe('Transfer 150 units');
     await user.click(screen.getByTestId('ed-pick-ed-2'));
@@ -262,7 +262,7 @@ describe('EdisConfirmation', () => {
   });
   it('refuses to confirm with nothing chosen', async () => {
     const user = userEvent.setup();
-    render(<EdisConfirmation transfers={edisTransfers.slice(0, 1)} onConfirm={vi.fn()} testId="ed" />);
+    render(<EdisConfirmation transfers={edisTransfers.slice(0, 1)} onConfirm={vi.fn<() => void>()} testId="ed" />);
     await user.click(screen.getByTestId('ed-pick-ed-1'));
     await user.click(screen.getByTestId('ed-confirm'));
     expect(screen.getAllByRole('alert')[0]!.textContent).toBe('Choose at least one sale to transfer.');

@@ -101,6 +101,7 @@ export interface DematAccountCardProps {
   statusLabels?: Partial<Record<DematAccountStatus, string>>;
   /** Replace the words. */
   labels?: Partial<DematAccountCardLabels>;
+  /** Extra class for layout. */
   className?: string;
   /** Sets `data-testid` on the card. */
   testId?: string;

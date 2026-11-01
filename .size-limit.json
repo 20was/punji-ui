@@ -297,13 +297,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "93.26 kB",
+    "limit": "103.5 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "27.71 kB",
+    "limit": "28.9 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -980,6 +980,69 @@
     "path": "dist/transaction-history/TransactionHistory.js",
     "import": "*",
     "limit": "22.94 kB",
+    "gzip": true
+  },
+  {
+    "name": "share-issues (import from '@punji/ui/share-issues')",
+    "path": "dist/share-issues/share-issues.js",
+    "import": "*",
+    "limit": "3.3 kB",
+    "gzip": true
+  },
+  {
+    "name": "issue-card (import from '@punji/ui/issue-card')",
+    "path": "dist/issue-card/IssueCard.js",
+    "import": "*",
+    "limit": "8.65 kB",
+    "gzip": true
+  },
+  {
+    "name": "apply-issue-form (import from '@punji/ui/apply-issue-form')",
+    "path": "dist/apply-issue-form/ApplyIssueForm.js",
+    "import": "*",
+    "limit": "10.43 kB",
+    "gzip": true
+  },
+  {
+    "name": "boid-input (import from '@punji/ui/boid-input')",
+    "path": "dist/boid-input/BoidInput.js",
+    "import": "*",
+    "limit": "1.52 kB",
+    "gzip": true
+  },
+  {
+    "name": "allotment-checker (import from '@punji/ui/allotment-checker')",
+    "path": "dist/allotment-checker/AllotmentChecker.js",
+    "import": "*",
+    "limit": "4.95 kB",
+    "gzip": true
+  },
+  {
+    "name": "demat-account-card (import from '@punji/ui/demat-account-card')",
+    "path": "dist/demat-account-card/DematAccountCard.js",
+    "import": "*",
+    "limit": "5.7 kB",
+    "gzip": true
+  },
+  {
+    "name": "corporate-action-timeline (import from '@punji/ui/corporate-action-timeline')",
+    "path": "dist/corporate-action-timeline/CorporateActionTimeline.js",
+    "import": "*",
+    "limit": "3.77 kB",
+    "gzip": true
+  },
+  {
+    "name": "edis-confirmation (import from '@punji/ui/edis-confirmation')",
+    "path": "dist/edis-confirmation/EdisConfirmation.js",
+    "import": "*",
+    "limit": "5.86 kB",
+    "gzip": true
+  },
+  {
+    "name": "Share issues CSS",
+    "path": "dist/css/share-issues.css",
+    "limit": "2.01 kB",
+    "rolldown": false,
     "gzip": true
   }
 ]

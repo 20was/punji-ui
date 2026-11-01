@@ -78,7 +78,7 @@ describe('kitta rules', () => {
       const c = checkKitta(k, r);
       expect(c.ok).toBe(k >= r.min && k <= r.max && k % step === 0n);
       const near = nearestValidKitta(k, r);
-      if (near !== null) expect(checkKitta(near, r).ok).toBe(true);
+      expect(near === null || checkKitta(near, r).ok).toBe(true);
     }), { numRuns: NUM_RUNS });
   });
 });
@@ -183,7 +183,7 @@ describe('cost basis through corporate actions', () => {
 
 describe('corporate timeline', () => {
   it('orders events, gives each a phase and marks the next one', () => {
-    const rows = corporateTimeline([...corporateEvents].reverse(), issuesToday);
+    const rows = corporateTimeline(corporateEvents.toReversed(), issuesToday);
     expect(rows.map((r) => [r.id, r.phase, r.days, r.next])).toEqual([
       ['ev-ann', 'past', -25, false],
       ['ev-bc', 'upcoming', 7, true],

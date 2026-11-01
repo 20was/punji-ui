@@ -73,6 +73,7 @@ export interface EdisConfirmationProps {
   submitting?: boolean;
   /** Which calendar leads in dates. Default 'bs'. */
   primaryCalendar?: 'bs' | 'ad';
+  /** Month names in dates: 'en' (default) or 'ne'. */
   language?: NepalLanguage;
   /** Digits for units and dates. Default 'latn'. */
   digits?: 'latn' | 'deva';
@@ -80,6 +81,7 @@ export interface EdisConfirmationProps {
   headingLevel?: 2 | 3 | 4;
   /** Replace the words. */
   labels?: Partial<EdisConfirmationLabels>;
+  /** Extra class for layout. */
   className?: string;
   /** Sets `data-testid` on the form; rows get `<id>-row-<id>`, the button `<id>-confirm`. */
   testId?: string;

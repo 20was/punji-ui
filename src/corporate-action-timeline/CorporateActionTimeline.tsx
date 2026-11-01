@@ -45,6 +45,7 @@ export interface CorporateActionTimelineProps {
   kindLabels?: Partial<Record<CorporateEventKind, string>>;
   /** Replace the phase and relative words. */
   labels?: Partial<CorporateActionTimelineLabels>;
+  /** Extra class for layout. */
   className?: string;
   /** Sets `data-testid` on the list; items get `<id>-<event id>`. */
   testId?: string;

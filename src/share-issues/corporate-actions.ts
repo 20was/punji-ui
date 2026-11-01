@@ -150,6 +150,7 @@ export const CORPORATE_EVENT_LABELS: Readonly<Record<CorporateEventKind, string>
 export interface CorporateEvent {
   /** Stable unique id (the row key). */
   id: string;
+  /** What happens on the date: 'announcement', 'agm', 'book-close', 'right-open', 'right-close', 'listing', 'distribution' or 'other'. */
   kind: CorporateEventKind;
   /** Gregorian `YYYY-MM-DD`. */
   date: string;

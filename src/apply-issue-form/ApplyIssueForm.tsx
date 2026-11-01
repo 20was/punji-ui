@@ -106,6 +106,7 @@ export const DEFAULT_APPLY_ISSUE_FORM_LABELS: ApplyIssueFormLabels = {
 };
 
 export interface ApplyIssueFormProps {
+  /** The issue to show or apply for. */
   issue: ShareIssue;
   /** Bank accounts the amount can be blocked in. With one, it is chosen for the reader. */
   accounts: readonly ApplyIssueAccount[];
@@ -143,6 +144,7 @@ export interface ApplyIssueFormProps {
   headingLevel?: 2 | 3 | 4;
   /** Replace the words. */
   labels?: Partial<ApplyIssueFormLabels>;
+  /** Extra class for layout. */
   className?: string;
   /** Sets `data-testid` on the form; parts get `<id>-kitta`, `<id>-crn`, `<id>-continue`, `<id>-submit`, ... */
   testId?: string;

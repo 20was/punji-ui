@@ -297,13 +297,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "93.26 kB",
+    "limit": "103.49 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "27.71 kB",
+    "limit": "28.76 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -980,6 +980,69 @@
     "path": "dist/transaction-history/TransactionHistory.js",
     "import": "*",
     "limit": "22.94 kB",
+    "gzip": true
+  },
+  {
+    "name": "emvco-qr (import from '@punji/ui/emvco-qr')",
+    "path": "dist/emvco-qr/emvco.js",
+    "import": "*",
+    "limit": "3.32 kB",
+    "gzip": true
+  },
+  {
+    "name": "qr-code (import from '@punji/ui/qr-code')",
+    "path": "dist/qr-code/QrCode.js",
+    "import": "*",
+    "limit": "3.03 kB",
+    "gzip": true
+  },
+  {
+    "name": "qr-code/matrix (import from '@punji/ui/qr-code/matrix')",
+    "path": "dist/qr-code/matrix.js",
+    "import": "*",
+    "limit": "2.65 kB",
+    "gzip": true
+  },
+  {
+    "name": "payment-qr-card (import from '@punji/ui/payment-qr-card')",
+    "path": "dist/payment-qr-card/PaymentQrCard.js",
+    "import": "*",
+    "limit": "10.79 kB",
+    "gzip": true
+  },
+  {
+    "name": "amount-keypad (import from '@punji/ui/amount-keypad')",
+    "path": "dist/amount-keypad/AmountKeypad.js",
+    "import": "*",
+    "limit": "5.50 kB",
+    "gzip": true
+  },
+  {
+    "name": "pin-pad (import from '@punji/ui/pin-pad')",
+    "path": "dist/pin-pad/PinPad.js",
+    "import": "*",
+    "limit": "2.31 kB",
+    "gzip": true
+  },
+  {
+    "name": "nepal/mobile (import from '@punji/ui/nepal/mobile')",
+    "path": "dist/nepal/mobile.js",
+    "import": "*",
+    "limit": "991 B",
+    "gzip": true
+  },
+  {
+    "name": "mobile-number-input (import from '@punji/ui/mobile-number-input')",
+    "path": "dist/mobile-number-input/MobileNumberInput.js",
+    "import": "*",
+    "limit": "1.94 kB",
+    "gzip": true
+  },
+  {
+    "name": "Wallet and payments CSS",
+    "path": "dist/css/wallet.css",
+    "limit": "1.70 kB",
+    "rolldown": false,
     "gzip": true
   }
 ]

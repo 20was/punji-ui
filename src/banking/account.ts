@@ -9,7 +9,7 @@
 const SEPARATORS = /[\s\-_.]/g;
 // Control characters and bidirectional/zero-width controls: they can reorder or hide text in a reference.
 function invisible(code: number): boolean {
-  return code <= 0x1f || (code >= 0x7f && code <= 0x9f) || code === 0xad || (code >= 0x200b && code <= 0x200f) || (code >= 0x202a && code <= 0x202e) || (code >= 0x2060 && code <= 0x2069) || code === 0xfeff;
+  return code <= 0x1f || (code >= 0x7f && code <= 0x9f) || code === 0xad || code === 0x061c || code === 0x180e || (code >= 0x200b && code <= 0x200f) || (code >= 0x202a && code <= 0x202e) || (code >= 0x2060 && code <= 0x2069) || code === 0xfeff;
 }
 const stripInvisible = (text: string, replacement: string) => Array.from(text, (char) => (invisible(char.codePointAt(0)!) ? replacement : char)).join('');
 

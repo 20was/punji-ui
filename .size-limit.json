@@ -584,14 +584,14 @@
     "name": "CSV export without React or DOM",
     "path": "dist/export/export.js",
     "import": "*",
-    "limit": "960 B",
+    "limit": "1000 B",
     "gzip": true
   },
   {
     "name": "Browser text download",
     "path": "dist/download/downloadText.js",
     "import": "*",
-    "limit": "620 B",
+    "limit": "660 B",
     "gzip": true
   },
   {

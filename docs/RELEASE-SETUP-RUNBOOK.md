@@ -250,13 +250,13 @@ All must be true. If any is false, stop and report.
 4. Go to **Actions → Release**. The new run on `main` waits for the `npm` environment: **Review
    deployments → `npm` → Approve and deploy**.
 5. The run re-runs the gates, then publishes `@punji/ui@0.1.0` with provenance, creates the git tag
-   `@punji/ui@0.1.0` and a GitHub release with the changelog, and attaches the SBOM file
+   `v0.1.0` and a GitHub release with the changelog, and attaches the SBOM file
    `punji-ui-0.1.0.cdx.json` to that release.
 6. Verify, and record the output of each check:
    - `npm view @punji/ui dist-tags` shows `latest: '0.1.0'`.
    - **npmjs.com/package/@punji/ui** shows version 0.1.0 with a **Provenance** section linking to the
      `release.yml` run on `20was/punji-ui`.
-   - **github.com/20was/punji-ui/releases** has `@punji/ui@0.1.0` with the `.cdx.json` file attached.
+   - **github.com/20was/punji-ui/releases** has `v0.1.0` with the `.cdx.json` file attached. (On the first run the SBOM step looked for the wrong tag name and failed after publishing; the file was attached by hand. Fixed in release.yml.)
    - In an empty temporary folder: `npm init -y`, then `npm install @punji/ui@0.1.0 react react-dom`, then
      `npm audit signatures`. It must report verified registry signatures and attestations, with no errors.
 

@@ -6,7 +6,7 @@ How an npm release works as implemented at the current `main`.
 
 ## Flow
 
-1. A PR that changes what ships adds a changeset (`npm run changeset`, files in `.changeset/`). 31 are pending now.
+1. A PR that changes what ships adds a changeset (`npm run changeset`, files in `.changeset/`). `npx changeset status` lists the pending ones.
 2. The PR merges to `main` after `CI OK`.
 3. On every push to `main`, `.github/workflows/release.yml` runs (only when `github.repository == '20was/punji-ui'` **and** repository variable `UI_NPM_RELEASE_ENABLED == 'true'`; otherwise the job is skipped, which is the current state).
 4. If changesets are pending, the Changesets action opens or updates the PR `chore(release): version packages` (runs `npm run version-packages`: `changeset version`, then refreshes `package-lock.json` without scripts). Merging it triggers step 3 again.
@@ -60,17 +60,16 @@ From `0.0.0`, the pending minor changesets produce `0.1.0`. Only the latest `0.x
 
 ## First-publish owner steps
 
-Required before the workflow can do anything; none has been done or verified here.
+Required before the workflow can do anything. The exact click-by-click procedure, including the placeholder bootstrap npm needs because a trusted publisher can only be added to an existing package, is [docs/RELEASE-SETUP-RUNBOOK.md](docs/RELEASE-SETUP-RUNBOOK.md). State on 2026-11-01: the `punji` npm org exists with no packages; the `npm` environment and `PUNJI_UI_PR_TOKEN` exist; the environment has no protection rules yet; `UI_NPM_RELEASE_ENABLED` is not set.
 
 1. Confirm the `@punji` npm scope/organisation exists and the owner can publish `@punji/ui` publicly.
-2. Configure the npm Trusted Publisher for `@punji/ui`: repository `20was/punji-ui`, workflow file `release.yml`, environment `npm`. (Unverified: whether npm lets you configure this before the package exists; if not, the very first publish needs a different bootstrap, decided by the owner.)
+2. Create the package with a code-free placeholder (`0.0.0-bootstrap.0`, dist-tag `bootstrap`), then configure the npm Trusted Publisher for `@punji/ui`: repository `20was/punji-ui`, workflow file `release.yml`, environment `npm`, `npm publish` allowed. npm requires the package to exist first, and the first OIDC publish must follow within 2 days.
 3. Create the GitHub environment `npm` with the required reviewers/branch rules the owner wants.
 4. Create secret `PUNJI_UI_PR_TOKEN` (fine-grained, this repository only; contents and pull requests).
 5. Make sure `main` is protected with `CI OK` required.
 6. Set repository variable `UI_NPM_RELEASE_ENABLED=true`. This is the last step; the next push to `main` opens the first version PR.
 7. Merge the version PR only after the checklist above, with explicit approval.
 
-`release.yml` mentions "the plan, What the owner must do"; that document is not in this repository.
 
 ## First release and punji-web
 

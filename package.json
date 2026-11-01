@@ -427,6 +427,38 @@
       "types": "./dist/trading-halt/TradingHaltBanner.d.ts",
       "default": "./dist/trading-halt/TradingHaltBanner.js"
     },
+    "./emvco-qr": {
+      "types": "./dist/emvco-qr/emvco.d.ts",
+      "default": "./dist/emvco-qr/emvco.js"
+    },
+    "./qr-code": {
+      "types": "./dist/qr-code/QrCode.d.ts",
+      "default": "./dist/qr-code/QrCode.js"
+    },
+    "./qr-code/matrix": {
+      "types": "./dist/qr-code/matrix.d.ts",
+      "default": "./dist/qr-code/matrix.js"
+    },
+    "./payment-qr-card": {
+      "types": "./dist/payment-qr-card/PaymentQrCard.d.ts",
+      "default": "./dist/payment-qr-card/PaymentQrCard.js"
+    },
+    "./amount-keypad": {
+      "types": "./dist/amount-keypad/AmountKeypad.d.ts",
+      "default": "./dist/amount-keypad/AmountKeypad.js"
+    },
+    "./pin-pad": {
+      "types": "./dist/pin-pad/PinPad.d.ts",
+      "default": "./dist/pin-pad/PinPad.js"
+    },
+    "./nepal/mobile": {
+      "types": "./dist/nepal/mobile.d.ts",
+      "default": "./dist/nepal/mobile.js"
+    },
+    "./mobile-number-input": {
+      "types": "./dist/mobile-number-input/MobileNumberInput.d.ts",
+      "default": "./dist/mobile-number-input/MobileNumberInput.js"
+    },
     "./styles.css": {
       "types": "./dist/styles.css.d.ts",
       "default": "./dist/styles.css"

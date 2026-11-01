@@ -127,6 +127,12 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'order-ticket', title: 'OrderTicket buy, sell with tax and halted' },
   { id: 'order-list', title: 'OrderList and TradeList', layout: true },
   { id: 'trading-halt', title: 'TradingHaltBanner states' },
+  // Wallets and payments.
+  { id: 'qr-code', title: 'QrCode at levels M and H' },
+  { id: 'payment-qr-card', title: 'PaymentQrCard dynamic, static, expired, damaged, loading', layout: true },
+  { id: 'amount-keypad', title: 'AmountKeypad empty, grouped, error, Devanagari', layout: true },
+  { id: 'pin-pad', title: 'PinPad empty, partial, error, shuffled', layout: true },
+  { id: 'mobile-number-input', title: 'MobileNumberInput operators and states' },
 ];
 
 export const themes = ['light', 'dark'] as const;

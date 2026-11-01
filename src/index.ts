@@ -137,3 +137,11 @@ export * from './allotment-checker/AllotmentChecker.tsx';
 export * from './demat-account-card/DematAccountCard.tsx';
 export * from './corporate-action-timeline/CorporateActionTimeline.tsx';
 export * from './edis-confirmation/EdisConfirmation.tsx';
+// Wallets and payments: EMVCo merchant QR, QR rendering, pay screen, keypads and Nepal mobile numbers.
+export * from './emvco-qr/emvco.ts';
+export * from './qr-code/QrCode.tsx';
+export * from './payment-qr-card/PaymentQrCard.tsx';
+export * from './amount-keypad/AmountKeypad.tsx';
+export * from './pin-pad/PinPad.tsx';
+export * from './nepal/mobile.ts';
+export * from './mobile-number-input/MobileNumberInput.tsx';

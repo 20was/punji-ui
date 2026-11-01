@@ -10,6 +10,7 @@ import { GENERIC_PAGES } from './registry-generic.ts';
 import { FORMS_PAGES } from './registry-forms.ts';
 import { SHOWCASE_PAGES } from './registry-showcase.ts';
 import { TRADING_PAGES } from './registry-trading.ts';
+import { WALLET_PAGES } from './registry-wallet.ts';
 import { LEADS, NAV_TITLES } from './registry-leads.ts';
 import { SHARE_ISSUE_PAGES } from './registry-share-issues.ts';
 
@@ -1577,6 +1578,7 @@ export const PAGES: readonly PageDef[] = [
   ...SHOWCASE_PAGES,
   ...TRADING_PAGES,
   ...SHARE_ISSUE_PAGES,
+  ...WALLET_PAGES,
 ];
 
 /** The page's one-line lead: its own `lead`, else LEADS[slug], else the first sentence of `description`. */

@@ -204,9 +204,10 @@ export function TaxInvoice({
         <div role="alert" data-testid={testId ? `${testId}-invalid` : undefined}><Note tone="error">{words.invalid}</Note></div>
       ) : (
         <>
-          <div className="pu-inv-tablebox">
+          {/* Scrolls sideways on a narrow screen, so it takes focus and is named by the caption. */}
+          <div className="pu-inv-tablebox" role="region" aria-labelledby={`${uid}-lines`} tabIndex={0}>
             <table className="pu-inv-table">
-              <caption className="kit-sr">{words.lines}</caption>
+              <caption className="kit-sr" id={`${uid}-lines`}>{words.lines}</caption>
               <thead>
                 <tr>
                   <th scope="col" className="pu-inv-sn">{words.serial}</th>

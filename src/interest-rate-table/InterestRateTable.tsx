@@ -1,10 +1,12 @@
+'use client';
+
 /**
  * InterestRateTable: a bank's published rates, one row per product: the product, an optional group ("Savings",
  * "Fixed deposit", "Home loan"), the annual rate, the change from the previous rate (an arrow and words, never colour
  * alone) and the date it took effect, in AD or Bikram Sambat. Rates are exact decimal strings in percent units; the
  * change is compared exactly and shown in percentage points. It publishes what you pass and decides no rate.
  */
-import type { ReactNode } from 'react';
+import { useId, type ReactNode } from 'react';
 
 import { formatBSDate, gregorianToBS } from '../nepal/calendar.ts';
 import { formatCalendarDate, parseCalendarDate } from '../nepal/date-only.ts';
@@ -96,6 +98,7 @@ function dateText(value: string, calendar: 'ad' | 'bs', language: 'en' | 'ne', d
 const ARROWS = { up: 'M8 13V3m0 0L4 7m4-4 4 4', down: 'M8 3v10m0 0-4-4m4 4 4-4', same: 'M3 8h10' };
 
 export function InterestRateTable({ rates, caption, description, calendar = 'ad', language = 'en', digits = 'latn', showChange = true, labels, className, testId }: InterestRateTableProps) {
+  const captionId = useId();
   const words = { ...interestRateTableLabels, ...labels };
   const changes = showChange && rates.some((r) => r.previousRatePercent !== undefined);
   const columns = changes ? 4 : 3;
@@ -128,9 +131,10 @@ export function InterestRateTable({ rates, caption, description, calendar = 'ad'
     );
   }
   return (
-    <div className={`pu-rates${className ? ` ${className}` : ''}`} data-testid={testId}>
+    // The box scrolls sideways on a narrow screen, so it takes focus (arrow keys scroll it) and is named by the caption.
+    <div className={`pu-rates${className ? ` ${className}` : ''}`} data-testid={testId} role="region" aria-labelledby={captionId} tabIndex={0}>
       <table className="pu-rates-table">
-        <caption>{caption}{description && <span className="pu-rates-desc">{description}</span>}</caption>
+        <caption id={captionId}>{caption}{description && <span className="pu-rates-desc">{description}</span>}</caption>
         <thead>
           <tr>
             <th scope="col">{words.product}</th>

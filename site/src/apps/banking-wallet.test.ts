@@ -1,11 +1,11 @@
 // The retail banking and digital wallet apps' account logic (site/src/apps): statements whose running balances add
 // up, transfers that move the balance, fee and limit together, and wallet payments, cashback, settlement and PINs.
 import { describe, expect, it } from 'vitest';
-import { LOAN, LOAN_EMI, LOAN_SCHEDULE, derive, initialState, reducer, transferFee, transferProblem, type BankState, type TransferInput } from '../site/src/apps/retail-banking/store.ts';
-import { compareNames } from '../site/src/apps/retail-banking/payee.ts';
-import { lookupBill } from '../site/src/apps/digital-wallet/bills.ts';
-import { cashbackFor, initialState as walletState, makeLoad, makePayment, paymentProblem, reducer as walletReducer, type WalletState } from '../site/src/apps/digital-wallet/store.ts';
-import { billTotal } from '../src/bill-summary/BillSummary.tsx';
+import { LOAN, LOAN_EMI, LOAN_SCHEDULE, derive, initialState, reducer, transferFee, transferProblem, type BankState, type TransferInput } from './retail-banking/store.ts';
+import { compareNames } from './retail-banking/payee.ts';
+import { lookupBill } from './digital-wallet/bills.ts';
+import { cashbackFor, initialState as walletState, makeLoad, makePayment, paymentProblem, reducer as walletReducer, type WalletState } from './digital-wallet/store.ts';
+import { billTotal } from '@punji/ui/bill-summary';
 
 const consistent = (s: BankState) => {
   for (const id of ['savings', 'current', 'remit'] as const) {

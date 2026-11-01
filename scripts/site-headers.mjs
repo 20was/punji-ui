@@ -10,8 +10,10 @@ const dist = fileURLToPath(new URL('../site/dist/', import.meta.url));
 const pages = readdirSync(dist, { recursive: true }).filter((f) => String(f).endsWith('.html'));
 const hashes = new Set();
 for (const file of pages) {
-  // Only classic inline scripts run; JSON-LD (`type="application/ld+json"`) is data and needs no hash.
-  for (const [, body] of readFileSync(join(dist, String(file)), 'utf8').matchAll(/<script>([\s\S]*?)<\/script>/g)) {
+  // Every inline script that runs needs its hash. External scripts (`src`) are allowed by 'self', and JSON-LD
+  // (`type="application/ld+json"`) is data, not code.
+  for (const [, attrs, body] of readFileSync(join(dist, String(file)), 'utf8').matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi)) {
+    if (/\bsrc\s*=/i.test(attrs) || /\btype\s*=\s*["']?application\/(?:ld\+)?json/i.test(attrs)) continue;
     hashes.add(`'sha256-${createHash('sha256').update(body).digest('base64')}'`);
   }
 }

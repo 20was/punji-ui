@@ -1,0 +1,156 @@
+/* Punji UI styles.
+   Styles for TaxInvoice, LineItemEditor, PanInput, IncomeTaxCalculator, IncomeTaxBreakdown, Payslip, AgingTable and TdsSummary.
+   Needs tokens.css, base.css, fields.css, table.css, money.css, button.css, checkbox.css, choice-group.css and states.css (styles.css has everything). */
+@layer punji.components {
+  /* PanInput */
+  .kit-field input.pu-pan-input { font-variant-numeric: tabular-nums; letter-spacing: 0.08em }
+
+  /* Shared document shell: TaxInvoice and Payslip */
+  .pu-inv, .pu-slip { container: pu-doc / inline-size; display: grid; gap: var(--pu-space-4); min-width: 0; padding: var(--pu-space-4); background: var(--pu-color-surface); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-card); color: var(--pu-color-text); font: 400 var(--pu-text-sm) / 1.45 var(--pu-font-body) }
+  .pu-inv p, .pu-slip p { margin: 0 }
+  .pu-inv-sub, .pu-slip-sub { color: var(--pu-color-text-muted); font-size: var(--pu-text-xs) }
+  .pu-inv-label { font: 600 var(--pu-text-xs) / 1.3 var(--pu-font-body); letter-spacing: 0.04em; text-transform: uppercase; color: var(--pu-color-text-muted) }
+  .pu-inv-head, .pu-slip-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: var(--pu-space-3); padding-bottom: var(--pu-space-3); border-bottom: 2px solid var(--pu-color-border-strong) }
+  .pu-inv-seller { display: flex; gap: var(--pu-space-3); align-items: flex-start; min-width: 0 }
+  .pu-inv-logo { flex: none }
+  .pu-inv-logo :is(img, svg) { display: block; max-width: 64px; max-height: 64px }
+  .pu-inv-seller-name, .pu-slip-name { font: 700 var(--pu-text-base) / 1.3 var(--pu-font-display); overflow-wrap: anywhere }
+  .pu-inv-titlebox, .pu-slip-titlebox { display: grid; justify-items: end; gap: 2px; text-align: right }
+  .pu-inv-title, .pu-slip-title { margin: 0; font: 700 var(--pu-text-lg) / 1.2 var(--pu-font-display); letter-spacing: 0.02em }
+  .pu-inv-copy { font-size: var(--pu-text-xs); font-weight: 600; padding: 1px 6px; border: 1px solid var(--pu-color-border-strong); border-radius: var(--pu-radius-sm) }
+  .pu-inv-pan { font-size: var(--pu-text-xs) }
+  .pu-inv-pan > span:first-child { color: var(--pu-color-text-muted) }
+  .pu-inv-pan-no, .pu-inv-no, .pu-slip-num { font-variant-numeric: tabular-nums; font-weight: 600; letter-spacing: 0.04em }
+  .pu-inv-meta { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--pu-space-4); align-items: start }
+  .pu-inv-party { display: grid; gap: 2px; min-width: 0 }
+  .pu-inv-name { font-weight: 600; overflow-wrap: anywhere }
+  .pu-inv-facts, .pu-slip-facts { display: grid; gap: var(--pu-space-1); margin: 0 }
+  .pu-inv-facts > div, .pu-slip-facts > div { display: flex; justify-content: space-between; gap: var(--pu-space-3) }
+  .pu-inv-facts dt, .pu-slip-facts dt { color: var(--pu-color-text-muted); font-size: var(--pu-text-xs); padding-top: 1px }
+  .pu-inv-facts dd, .pu-slip-facts dd { margin: 0; display: grid; justify-items: end; text-align: right }
+  .pu-inv-date { font-variant-numeric: tabular-nums; white-space: nowrap }
+  .pu-inv-cal { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); text-decoration: none }
+
+  /* The items table: a plain document table, not a data grid. */
+  .pu-inv-tablebox, .pu-lie-tablebox { overflow-x: auto; min-width: 0 }
+  .pu-inv-table, .pu-slip-table, .pu-itax-table, .pu-lie-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums }
+  .pu-inv-table th, .pu-inv-table td { padding: var(--pu-space-2) var(--pu-space-2); text-align: left; vertical-align: top; border-bottom: 1px solid var(--pu-color-border) }
+  .pu-inv-table thead th { font: 600 var(--pu-text-xs) / 1.3 var(--pu-font-body); color: var(--pu-color-text-muted); border-bottom: 1px solid var(--pu-color-border-strong); white-space: nowrap }
+  .pu-inv-table .num, .pu-slip-table .num, .pu-itax-table .num, .pu-lie-table .num { text-align: right; white-space: nowrap }
+  .pu-inv-table tbody th { font-weight: 400 }
+  .pu-inv-desc { display: grid; gap: 1px; min-width: 10em }
+  .pu-inv-desc small, .pu-slip-table small { display: block; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-inv-exempt, .pu-inv-unit { color: var(--pu-color-text-muted); font-size: var(--pu-text-xs) }
+  .pu-inv-sn { width: 2.5em; color: var(--pu-color-text-muted) }
+  .pu-inv-foot { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, auto); gap: var(--pu-space-4); align-items: start }
+  .pu-inv-left { display: grid; gap: var(--pu-space-2); min-width: 0 }
+  .pu-inv-currency { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-inv-words { display: grid; gap: 2px; font-weight: 600; overflow-wrap: anywhere }
+  .pu-inv-notes { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-inv-sum, .pu-lie-sum { display: grid; gap: var(--pu-space-1); margin: 0; font-variant-numeric: tabular-nums }
+  .pu-inv-sum > div, .pu-lie-sum > div { display: flex; justify-content: space-between; gap: var(--pu-space-4) }
+  .pu-inv-sum dt, .pu-lie-sum dt { color: var(--pu-color-text-muted) }
+  .pu-inv-sum dd, .pu-lie-sum dd { margin: 0; text-align: right }
+  .pu-inv-total, .pu-lie-total { margin-top: var(--pu-space-1); padding-top: var(--pu-space-2); border-top: 2px solid var(--pu-color-border-strong) }
+  .pu-inv-total :is(dt, dd), .pu-lie-total :is(dt, dd) { font-weight: 700; font-size: var(--pu-text-base); color: var(--pu-color-text) }
+  .pu-inv-end { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: var(--pu-space-3) }
+  .pu-inv-sign { min-width: 180px; margin-left: auto; padding-top: var(--pu-space-16); border-bottom: 0; text-align: center; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); background: linear-gradient(currentColor, currentColor) top 40px left 0 / 100% 1px no-repeat }
+  .pu-inv-noprint { order: -1 }
+  @container pu-doc (max-width: 520px) {
+    .pu-inv-meta, .pu-inv-foot { grid-template-columns: minmax(0, 1fr) }
+    .pu-inv-titlebox, .pu-slip-titlebox { justify-items: start; text-align: left }
+    .pu-inv-code { display: none }
+  }
+
+  /* LineItemEditor */
+  .pu-lie { display: grid; gap: var(--pu-space-3); min-width: 0 }
+  .pu-lie-table th, .pu-lie-table td { padding: var(--pu-space-1) var(--pu-space-1); vertical-align: middle; text-align: left }
+  .pu-lie-table thead th { font: 600 var(--pu-text-xs) / 1.3 var(--pu-font-body); color: var(--pu-color-text-muted); padding-bottom: var(--pu-space-2); border-bottom: 1px solid var(--pu-color-border-strong); white-space: nowrap }
+  .pu-lie-table tbody tr { border-bottom: 1px solid var(--pu-color-border) }
+  .pu-lie-table .kit-field { gap: 0 }
+  .pu-lie-desc { min-width: 12em }
+  .pu-lie-qty { width: 6em }
+  .pu-lie-qty input { text-align: end }
+  .pu-lie-rate { width: 9em }
+  .pu-lie-vat { width: 3em; text-align: center }
+  .pu-lie-check { width: 20px; height: 20px; accent-color: var(--pu-color-accent) }
+  .pu-lie-amount { min-width: 7em }
+  .pu-lie-remove { width: var(--pu-control-sm) }
+  .pu-lie-pending { color: var(--pu-color-text-tertiary) }
+  .pu-lie tr[data-incomplete] .pu-lie-amount { color: var(--pu-color-text-tertiary) }
+  .pu-lie-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: var(--pu-space-4) }
+  .pu-lie-actions { display: grid; gap: var(--pu-space-2); justify-items: start }
+  .pu-lie-currency { margin: 0; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-lie-sum { min-width: min(100%, 260px) }
+  @media (max-width: 639px) {
+    /* A phone: each line is a small card, description on its own row, then the figures. */
+    .pu-lie-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%) }
+    .pu-lie-table tbody tr { display: grid; grid-template-columns: 1fr 1fr auto; gap: var(--pu-space-1) var(--pu-space-2); padding: var(--pu-space-2) 0 }
+    .pu-lie-table tbody td { padding: 0; width: auto }
+    .pu-lie-table tbody td.pu-lie-desc { grid-column: 1 / -2 }
+    .pu-lie-table tbody td.pu-lie-amount { grid-column: 1 / -2; text-align: left }
+    .pu-lie-table tbody td.pu-lie-vat { text-align: left }
+  }
+
+  /* IncomeTaxCalculator */
+  /* Form and result side by side when there is room for both, stacked otherwise. */
+  .pu-itax { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--pu-space-4); min-width: 0 }
+  .pu-itax-form, .pu-itax-result { flex: 1 1 320px }
+  .pu-itax-form { display: grid; gap: var(--pu-space-3); align-content: start; min-width: 0 }
+  .pu-itax-fy { margin: 0; font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body) }
+  .pu-itax-group { display: grid; gap: var(--pu-space-2); margin: 0; padding: var(--pu-space-3); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-lg); min-width: 0 }
+  .pu-itax-group legend { padding: 0 var(--pu-space-1); font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body) }
+  .pu-itax-hint { margin: 0; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-itax-result { display: grid; gap: var(--pu-space-3); align-content: start; min-width: 0; padding: var(--pu-space-4); background: var(--pu-color-surface-subtle); border-radius: var(--pu-radius-card) }
+  .pu-itax-headline { margin: 0; display: grid; gap: 2px; font: 700 24px / 1.2 var(--pu-font-display); font-variant-numeric: tabular-nums }
+  .pu-itax-label { font: 400 var(--pu-text-xs) / 1.3 var(--pu-font-body); color: var(--pu-color-text-muted) }
+  .pu-itax-facts { display: grid; gap: var(--pu-space-1); margin: 0; font-variant-numeric: tabular-nums }
+  .pu-itax-facts > div { display: flex; justify-content: space-between; gap: var(--pu-space-3) }
+  .pu-itax-facts dt { color: var(--pu-color-text-muted) }
+  .pu-itax-facts dd { margin: 0; text-align: right }
+  .pu-itax-box { overflow-x: auto; min-width: 0 }
+  .pu-itax-table caption { text-align: left; font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body); padding-bottom: var(--pu-space-2) }
+  .pu-itax-table th, .pu-itax-table td { padding: var(--pu-space-1) var(--pu-space-2); text-align: left; border-bottom: 1px solid var(--pu-color-border); font-size: var(--pu-text-sm) }
+  .pu-itax-table thead th { font: 600 var(--pu-text-xs) / 1.3 var(--pu-font-body); color: var(--pu-color-text-muted) }
+  .pu-itax-table tbody th { font-weight: 400 }
+  .pu-itax-table tr[data-empty] :is(th, td) { color: var(--pu-color-text-tertiary) }
+  .pu-itax-table tfoot :is(th, td) { font-weight: 700; border-top: 1px solid var(--pu-color-border-strong); border-bottom: 0 }
+  .pu-itax-waived { font-size: var(--pu-text-xs) }
+
+  /* Payslip */
+  .pu-slip-person { display: grid; gap: 2px; min-width: 0 }
+  .pu-slip-parts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--pu-space-4) }
+  .pu-slip-part { display: grid; gap: var(--pu-space-2); min-width: 0; align-content: start }
+  .pu-slip-h { margin: 0; font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body); padding-bottom: var(--pu-space-1); border-bottom: 1px solid var(--pu-color-border-strong) }
+  .pu-slip-table th, .pu-slip-table td { padding: var(--pu-space-1) 0; text-align: left; vertical-align: top; border-bottom: 1px solid var(--pu-color-border) }
+  .pu-slip-table tbody th { font-weight: 400 }
+  .pu-slip-table tfoot :is(th, td) { font-weight: 700; border-bottom: 0 }
+  .pu-slip-none { color: var(--pu-color-text-muted) }
+  .pu-slip-net { display: grid; gap: var(--pu-space-1); padding: var(--pu-space-3); background: var(--pu-color-surface-subtle); border-radius: var(--pu-radius-lg) }
+  .pu-slip-net-row { display: flex; justify-content: space-between; align-items: baseline; gap: var(--pu-space-3); font: 700 var(--pu-text-lg) / 1.3 var(--pu-font-display); font-variant-numeric: tabular-nums }
+  .pu-slip-net[data-negative] .pu-slip-net-row { color: var(--pu-color-loss) }
+  .pu-slip-words { display: grid; gap: 2px; font-weight: 600; overflow-wrap: anywhere }
+  .pu-slip-notes { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-slip-noprint { display: flex; justify-content: flex-end }
+  @container pu-doc (max-width: 520px) {
+    .pu-slip-parts { grid-template-columns: minmax(0, 1fr) }
+  }
+
+  /* AgingTable and TdsSummary */
+  .pu-aging, .pu-tds { min-width: 0 }
+  .pu-aging .kit-table tbody th, .pu-tds .kit-table tbody th { font-weight: 400; text-align: left }
+  .pu-aging-zero { color: var(--pu-color-text-tertiary) }
+  .pu-aging-old { font-weight: 700 }
+  .pu-aging-rowtotal { font-weight: 600 }
+  .pu-aging .kit-table .pu-aging-total, .pu-tds .kit-table .pu-tds-total { font-weight: 700; border-top: 1px solid var(--pu-color-border-strong) }
+  .pu-aging .kit-table .pu-aging-share { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-tds-pan { font-variant-numeric: tabular-nums; letter-spacing: 0.04em }
+
+  @media print {
+    .pu-inv, .pu-slip { border: 1px solid currentColor; border-radius: 0; background: none; color: CanvasText; break-inside: avoid; page-break-inside: avoid }
+    .pu-inv-sub, .pu-inv-label, .pu-inv-cal, .pu-inv-currency, .pu-inv-notes, .pu-inv-sum dt, .pu-inv-table thead th, .pu-slip-sub, .pu-slip-facts dt { color: inherit }
+    .pu-inv-table tr, .pu-slip-table tr { break-inside: avoid; page-break-inside: avoid }
+    .pu-slip-net { background: none; border: 1px solid currentColor }
+    .pu-inv-noprint, .pu-slip-noprint { display: none !important }
+  }
+}

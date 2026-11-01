@@ -9,7 +9,7 @@ Seven display components and a pure module of arithmetic helpers for bookkeeping
 **What this is not.** These are display and arithmetic helpers. They are not an accounting system, a general
 ledger, a chart of accounts or a tax engine. There is no tax rate, no VAT logic, no jurisdiction rule, no currency
 conversion and no posting, closing or reconciliation. "VAT Payable" in the examples is an ordinary ledger account
-name. A browser can be edited by anyone: **the server that stores the books must validate every amount, journal and
+name. VAT invoices, income tax from caller-supplied slabs, payslips, aging and TDS are in [TAX.md](TAX.md). A browser can be edited by anyone: **the server that stores the books must validate every amount, journal and
 total again** (balanced journals, no negatives, period locks, permissions). A balanced trial balance does not prove
 the books are right.
 

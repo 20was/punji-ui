@@ -84,3 +84,5 @@
 @import './share-issues.css';
 @import './wallet.css';
 @import './lending.css';
+/* Tax, invoicing and payroll. */
+@import './tax.css';

@@ -411,6 +411,22 @@
       "types": "./dist/period-selector/FinancialPeriodSelector.d.ts",
       "default": "./dist/period-selector/FinancialPeriodSelector.js"
     },
+    "./nepse-fees": {
+      "types": "./dist/nepse-fees/fees.d.ts",
+      "default": "./dist/nepse-fees/fees.js"
+    },
+    "./order-ticket": {
+      "types": "./dist/order-ticket/OrderTicket.d.ts",
+      "default": "./dist/order-ticket/OrderTicket.js"
+    },
+    "./order-list": {
+      "types": "./dist/order-list/OrderList.d.ts",
+      "default": "./dist/order-list/OrderList.js"
+    },
+    "./trading-halt": {
+      "types": "./dist/trading-halt/TradingHaltBanner.d.ts",
+      "default": "./dist/trading-halt/TradingHaltBanner.js"
+    },
     "./styles.css": {
       "types": "./dist/styles.css.d.ts",
       "default": "./dist/styles.css"

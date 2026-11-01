@@ -868,7 +868,7 @@
     "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run size && npm run check:package && npm run build:examples && npm run typecheck:examples && npm run typecheck:portal && npm run typecheck:visual && npm run typecheck:site && npm run test:apps && npm run site:build && npm run check:seo && npm run check:examples",
     "verify:deep": "npm run verify && npm run test:deep",
     "changeset": "changeset",
-    "version-packages": "changeset version && npm install --package-lock-only --ignore-scripts",
+    "version-packages": "changeset version && node scripts/sync-template-versions.mjs && npm install --package-lock-only --ignore-scripts",
     "release": "echo \"Publishing runs only in .github/workflows/release.yml (publish job)\" && exit 1",
     "audit:web": "node scripts/audit-web.mjs",
     "examples": "vite examples --host 127.0.0.1",

@@ -13,9 +13,8 @@ const PACKS: Record<Lang, PunjiLocalePack | undefined> = { en: undefined, ne, hi
 const options: { value: Lang; label: string }[] = [
   { value: 'en', label: 'English' }, { value: 'ne', label: 'नेपाली' }, { value: 'hi', label: 'हिन्दी' }, { value: 'bn', label: 'বাংলা' },
 ];
-const MONEY: Record<Lang, { currency: string; locale: string }> = {
-  en: { currency: 'NPR', locale: 'en-IN' }, ne: { currency: 'NPR', locale: 'ne-NP' }, hi: { currency: 'INR', locale: 'hi-IN' }, bn: { currency: 'BDT', locale: 'bn-BD' },
-};
+// Figures use en-IN (lakh grouping, ASCII digits) in every language; the words come from the pack.
+const CURRENCY: Record<Lang, string> = { en: 'NPR', ne: 'NPR', hi: 'INR', bn: 'BDT' };
 
 // The packs are machine-drafted and need a native speaker's review before customers see them.
 export default function Example() {
@@ -28,7 +27,7 @@ export default function Example() {
         <PunjiLocaleProvider locale={PACKS[lang]}>
           <Stack>
             <TransferReview
-              amount={12345650n} currency={MONEY[lang].currency} money={{ locale: MONEY[lang].locale }} fee={1000n}
+              amount={12345650n} currency={CURRENCY[lang]} money={{ locale: 'en-IN' }} fee={1000n}
               recipient={{ name: 'Sita Sharma', account: '•••• 4821' }} onConfirm={() => {}} onEdit={() => {}}
             />
             <Pagination label="Pages" page={page} total={45} pageSize={10} onPageChange={setPage} />

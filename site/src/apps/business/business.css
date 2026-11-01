@@ -1,0 +1,23 @@
+/* Billing and payroll app layout. Colours and type from the package tokens; classes prefixed bz-. */
+.bz-company { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; min-width: 0; margin: 0; }
+.bz-company span, .bz-mini > span:first-child { color: var(--doc-ink-2); font-size: 12px; font-variant-numeric: tabular-nums; }
+.bz-mini { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 6px; margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.bz-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.bz-total { margin: 0; padding: 10px 16px; border-top: 1px solid var(--doc-rule); color: var(--doc-ink-2); font-size: 13px; font-variant-numeric: tabular-nums; }
+.bz-cell { display: grid; min-width: 0; overflow-wrap: anywhere; }
+.bz-pan { font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+.bz-form-grid { display: grid; gap: 12px; align-items: end; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 720px) { .bz-form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1200px) { .bz-form-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.bz-terms { margin: 0; font-size: 14px; }
+.bz-problems { margin: 0; padding-left: 18px; }
+.bz-paylist { margin: 12px 0 0; padding-left: 18px; font-size: 14px; font-variant-numeric: tabular-nums; }
+.bz-link { padding: 0; border: 0; background: none; color: var(--pu-color-link); font: inherit; text-decoration: underline; cursor: pointer; }
+.bz-link:focus-visible { outline: 2px solid var(--doc-ring); outline-offset: 2px; border-radius: 2px; }
+.bz-print { min-width: 0; }
+/* Print the bill or payslip alone, without the app around it. */
+@media print {
+  body * { visibility: hidden; }
+  .bz-print, .bz-print * { visibility: visible; }
+  .bz-print { position: absolute; inset: 0 auto auto 0; width: 100%; }
+}

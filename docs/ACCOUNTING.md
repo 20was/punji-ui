@@ -159,6 +159,26 @@ starts (three consecutive months per quarter). Years outside the converter's ran
 pass your own list (`{ id: 'fy-2024', kind: 'year', label: 'FY ending 31 Mar 2025' }`). The package ships no tax or
 filing calendar.
 
+## ReconciliationMatcher (`@punji/ui/reconciliation-matcher`)
+
+Bank statement lines beside the bank account's ledger entries. Both lists are `ReconcileItem`s with a signed bigint
+`amount` seen from the account holder (money in positive, money out negative). Tick lines on both sides and match
+them when their totals agree exactly: one-to-one, one-to-many (a rent paid net of TDS plus the TDS line) or
+many-to-one (a payroll paid as one transfer per employee). It is controlled: keep `matches` and pass
+`onMatchesChange`.
+
+```tsx
+<ReconciliationMatcher statement={lines} ledger={bankEntries} matches={matches} onMatchesChange={setMatches}
+  statementBalance={closingPerBank} ledgerBalance={closingPerBooks} onCreateEntry={postToBooks} />
+```
+
+Pure helpers on the same subpath: `suggestMatches(statement, ledger, { dateWindow, matched })` proposes one-to-one
+matches on equal amounts within the window (equal references first, then the nearest date); `reconciliationSummary`
+returns deposits in transit, outstanding payments, receipts and charges not yet in the books, both adjusted balances,
+the difference and `reconciled`; `matchDifference` and `sumAmounts` do the exact sums. An id used in two matches
+throws. "Match selected" stays focusable and says why when the totals differ; Ctrl+Enter or ⌘Enter matches from
+anywhere inside. Each list is a focusable scroll region. Styles in `css/reconciliation.css`.
+
 ## Testing
 
 `test/ledger.test.ts` has fast-check properties (balanced journals sum to zero; the last running balance equals

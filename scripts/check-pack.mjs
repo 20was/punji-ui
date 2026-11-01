@@ -31,8 +31,9 @@ import { readFileSync } from 'node:fs';
 // Wave 3 table scale (VirtualFinancialTable, TableExport: JS, declarations, CSS): measured 1,386,061 B; ~3% headroom.
 // All five domain branches (trading, share issues, wallets, lending, tax) merged onto Wave 3: measured 2,039,956 B; ~3% headroom.
 // Trust and safety kit, global money (digit scripts, grouping override, exact compact) and ISO 4217 data: measured 2,141,913 B; ~3% headroom.
-// Payment fields (pure checks, inputs, CSS) and the locale layer with ne, hi and bn packs: measured 2,347,076 B; ~3% headroom.
-const MAX_UNPACKED = 2361 * 1024;
+// ReconciliationMatcher (JS, declarations, CSS) on the merged main: measured 2,243,594 B; ~3% headroom.
+// Payment fields (pure checks, inputs, CSS) and the locale layer with ne, hi and bn packs, merged with main: measured 2,382,227 B; ~3% headroom.
+const MAX_UNPACKED = 2397 * 1024;
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
 const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md']);
 const allowed = (p) => always.has(p) || /^dist\/.+\.(js|d\.ts|css)$/.test(p);

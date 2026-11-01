@@ -117,4 +117,121 @@ export const APP_PAGES: readonly PageDef[] = [
         'The same seeded market as the trading terminal (`site/src/apps/shared/sim.ts`), ticking every two seconds after hydration, and a fixed three-year transaction history. Nothing is fetched; the registrar and the bank are simulated in the screens.',
     },
   },
+  {
+    slug: 'accounting',
+    title: 'Accounting',
+    description:
+      'A double-entry accounting app built from Punji UI: ledger, journals, trial balance, P&L and balance sheet by BS fiscal year, bank reconciliation, aging and TDS.',
+    lead: 'Books for a Nepali company in the browser: every report reads one set of balanced journals, so totals agree to the paisa.',
+    group: 'apps',
+    kind: 'app',
+    summary:
+      'The accountant\'s side of a Nepali services company, from the opening balances on 1 Shrawan 2082 to 15 Kartik 2083: invoices with 13% VAT, receipts net of the TDS customers withhold, contractor bills, rent with 10% TDS, monthly payroll with SSF and CIT, and the VAT, TDS and SSF deposits on the 25th. Every screen reads the same journals, so the dashboard, the general ledger, the trial balance, the statements, the aging and the TDS summary agree to the paisa; post a journal or book a bank charge and they all move. Periods are Bikram Sambat fiscal years, quarters and months.',
+    use: [
+      'Feed `journals` from your own books as `JournalEntry` objects (bigint paisa, date-only dates): the ledger, trial balance and statements are computed from them with `journalsToEntries`, `trialBalance` and `rollUp`.',
+      'Keep your chart of accounts in the shape of `site/src/apps/accounting/books.ts`: a code, a name, a type and a normal side. The statements group accounts by type, so a new account appears without code changes.',
+      'Replace the generated bank statement with your bank\'s file mapped to `ReconcileItem`, and send matches and booked entries to your server.',
+    ],
+    avoid: [
+      'Authentication, users and audit trails, period locking, and the year-end closing entry: the balance sheet shows this year\'s profit beside what was brought forward instead.',
+      'Filing: the VAT and TDS figures are the working for a return, not the return itself, and the server that keeps the books must validate every journal again.',
+    ],
+    api: [],
+    examples: [],
+    keyboard: [
+      '`1` to `9` open the screens. Plain keys never fire while you type in a field.',
+      'Journal entry: Tab moves through account, debit and credit, line by line; "Fill the difference" balances the last line; Ctrl+Enter or ⌘Enter posts, and so does Enter in a field.',
+      'Bank reconciliation: Space ticks a line and Ctrl+Enter or ⌘Enter matches the ticked lines; each list scrolls with the arrow keys once focused.',
+    ],
+    accessibility: [
+      'Each screen has its own `h2` and focus moves to it from the navigation. Posting, booking and matching are announced in a polite live region.',
+      'Tables have real headers and captions, and scrolling regions take focus. Out of balance is said in words with the amount, never colour alone.',
+      'The monthly chart has its figures in a data table beside it.',
+    ],
+    responsive: [
+      'Desktop first: a navigation rail, the chart of accounts beside the ledger, and the two reconciliation lists side by side.',
+      'Phones: a bottom tab bar with nine short labels, tables that stack into labelled rows or scroll inside their own region, and journal lines as small cards. Nothing scrolls the page sideways at 390 px.',
+    ],
+    notes: {
+      title: 'Limits',
+      points: [
+        'An invented company, customers and amounts. The session date is 15 Kartik 2083 (1 November 2026).',
+        'Tax rates and slabs are examples in the shape of FY 2083/84; check the current Finance Act. No income tax provision or year-end close is posted.',
+        'The bank statement is made from the books with known differences: one payroll paid as five transfers, a cheque not yet presented, a receipt in transit and two bank charges.',
+      ],
+    },
+    related: ['ledger-table', 'journal-entry', 'trial-balance', 'statement-table', 'period-selector', 'financial-summary', 'reconciliation-matcher', 'aging-table', 'tds-summary', 'debit-credit', 'metric-tile', 'column-chart', 'csv-export', 'tax-helpers', 'business'],
+    app: {
+      screens: [
+        { id: 'dashboard', title: 'Dashboard', summary: 'Cash, receivables, payables and profit (`MetricRow`), income and expenses by BS month, what is due to the IRD and the SSF on the 25th, and checks that the books agree with themselves.' },
+        { id: 'ledger', title: 'Accounts and ledger', summary: 'The chart of accounts with balances and search, one account\'s `LedgerTable` for the period with its opening and running balance, and the journal behind any posting (`JournalEntryView`).' },
+        { id: 'journal', title: 'Journal entry', summary: 'A keyboard-first journal: account, debit and credit per line, a live balance check, a preview, and posting only when debits equal credits.' },
+        { id: 'trial', title: 'Trial balance', summary: '`TrialBalance` at the end of any period, as balances or totals, in chart order.' },
+        { id: 'statements', title: 'P&L and balance sheet', summary: '`StatementTable` for profit and loss and the balance sheet by fiscal year, quarter or month (`FinancialPeriodSelector`), compared with last year or the previous period over the same days.' },
+        { id: 'bank', title: 'Bank reconciliation', summary: 'The Ashwin statement against the bank account with `ReconciliationMatcher`: match one-to-one or many-to-one, book the charges the books lack, and read the reconciliation statement.' },
+        { id: 'aging', title: 'Receivables and payables', summary: 'Open invoices and bills by party in `AgingTable`, each total tied to its ledger account.' },
+        { id: 'tds', title: 'TDS summary', summary: 'Withholding on rent, contract payments and salaries (`TdsSummary`) by category or payment, against the TDS payable account.' },
+        { id: 'exports', title: 'Exports', summary: 'Exact CSV of the general ledger, trial balance, statements, receivables, VAT by month and TDS, with a preview.' },
+      ],
+      data:
+        'A seeded generator (`site/src/apps/accounting/books.ts`) writes about 300 balanced journals over sixteen BS months; payroll comes from `site/src/apps/shared/books.ts`, the same module the billing and payroll app runs. The same seed gives the same books on the server and in the browser. Nothing is fetched.',
+    },
+  },
+  {
+    slug: 'business',
+    title: 'Billing and payroll',
+    description:
+      'A billing and payroll app built from Punji UI: VAT invoices with PAN and amount in words, customers, payments, a payroll run with SSF and TDS, and payslips.',
+    lead: 'Bill a customer, record the payment and pay the staff: IRD-style VAT invoices, exact balances and payslips from one store.',
+    group: 'apps',
+    kind: 'app',
+    summary:
+      'The front office of the same company as the accounting app. Write an invoice line by line (`LineItemEditor`), preview it as a printable VAT bill with both PANs, BS and AD dates, 13% VAT and the amount in words (`TaxInvoice`), and issue it. Record payments against invoices; the invoice list, the customer balances and payments received are computed from the same invoices and payments, so the outstanding totals agree to the paisa. The payroll run computes SSF (11% + 20%), CIT and monthly TDS from each employee\'s annual tax with the tax helpers, approves and pays it, and ends in printable payslips; the income tax calculator opens on any employee with their year\'s figures.',
+    use: [
+      'Send an issued invoice to your server with its lines in paisa; the totals here are `computeInvoice` with `vatRate: \'0.13\'` and half-up rounding, the same call your server should make.',
+      'Keep invoice numbers in your own sequence per fiscal year; the app numbers them from `INV-2083/84-0013` on.',
+      'Replace the employees and slabs in `site/src/apps/shared/books.ts` with your payroll data; payslip lines are plain `PayLine` objects.',
+    ],
+    avoid: [
+      'IRD electronic billing (CBMS) submission, cancellation with credit notes and fiscal-year rollover: the app only issues and records.',
+      'Leave, attendance, overtime and bonus. Tax slabs, caps and rebates are your data for the year.',
+    ],
+    api: [],
+    examples: [],
+    keyboard: [
+      '`1` to `6` open the screens; `N` starts a new invoice. Plain keys never fire while you type.',
+      'The line editor: Tab through description, quantity, rate and VAT; Add line focuses the new description. Preview and Back move between writing and the bill; Print prints the bill alone.',
+      'Payment and customer forms are ordinary forms: Tab, Space and Enter. The payroll run moves through Review, Approve and Pay with buttons, and each step says what it did.',
+    ],
+    accessibility: [
+      'Each screen has its own `h2` and focus moves to it from the navigation. Issuing, payments and payroll steps are announced in a polite live region.',
+      'Invoice status is a word (Paid, Part paid, Overdue, Due), not a colour. Form errors are tied to their fields and announced.',
+      'The invoice and payslips print on their own, without the app around them.',
+    ],
+    responsive: [
+      'Wide screens: a navigation rail, the invoice list with every column, the bill at full width.',
+      'Phones: a bottom tab bar, lists that stack into labelled rows, and the invoice and payslips fitted to the width, with no sideways page scroll at 390 px.',
+    ],
+    notes: {
+      title: 'Limits',
+      points: [
+        'An invented company, customers and staff; the session date is 15 Kartik 2083 (1 November 2026) and the payroll month is Kartik 2083.',
+        'Income tax uses example slabs in the shape of FY 2083/84, SSF contributors are exempt from the 1% band, and retirement contributions are capped at 5 lakh and one third of income. Check the current Finance Act.',
+        'TDS a customer withholds on a receipt is recorded on the payment and settles the invoice like cash.',
+      ],
+    },
+    related: ['tax-invoice', 'line-item-editor', 'pan-input', 'payslip', 'income-tax-calculator', 'tax-helpers', 'currency-input', 'data-table', 'financial-summary', 'metric-tile', 'csv-export', 'accounting'],
+    app: {
+      screens: [
+        { id: 'invoices', title: 'Invoices', summary: 'Every invoice with its total, what was received and what is outstanding, a status in words, search and filters, totals, and the bill itself on demand.' },
+        { id: 'create', title: 'New invoice', summary: 'Customer, date and terms, `LineItemEditor` with exact totals, then a `TaxInvoice` preview (PAN, 13% VAT, amount in words, BS and AD dates, print) and Issue.' },
+        { id: 'customers', title: 'Customers', summary: 'Customers with PAN, terms and outstanding balance, and a form to add one with `PanInput`.' },
+        { id: 'payments', title: 'Payments received', summary: 'Record a receipt against an open invoice (cash, cheque, bank transfer, QR) with any TDS the customer withheld, and the list of receipts with totals.' },
+        { id: 'payroll', title: 'Payroll', summary: 'Kartik 2083: gross, SSF, CIT, TDS and net per employee with totals; review, approve and pay; then a `Payslip` for each person.' },
+        { id: 'tax', title: 'Income tax', summary: 'The `IncomeTaxCalculator` opened on an employee\'s year, showing that one twelfth of the tax is the TDS on their payslip.' },
+      ],
+      data:
+        'Customers, staff and payroll come from `site/src/apps/shared/books.ts`, shared with the accounting app; a dozen earlier invoices and payments are seeded in `site/src/apps/business/store.ts`. Nothing is fetched.',
+    },
+  },
 ];

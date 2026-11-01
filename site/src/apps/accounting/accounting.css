@@ -1,0 +1,45 @@
+/* Accounting app layout. Colours and type from the package tokens; classes prefixed ac-. */
+.ac-company { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; min-width: 0; margin: 0; }
+.ac-company span { color: var(--doc-ink-2); font-size: 12px; font-variant-numeric: tabular-nums; }
+.ac-periodbar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 12px; min-width: 0; }
+.ac-facts { display: grid; gap: 6px; margin: 0 0 12px; }
+.ac-facts > div { display: flex; justify-content: space-between; gap: 12px; font-variant-numeric: tabular-nums; }
+.ac-facts dt { color: var(--doc-ink-2); }
+.ac-facts dd { margin: 0; text-align: right; }
+.ac-facts > .is-total { padding-top: 6px; border-top: 1px solid var(--pu-color-border-strong); font-weight: 600; }
+.ac-facts > .is-total dt { color: var(--pu-color-text); }
+.ac-links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 8px; }
+.ac-checks, .ac-recent { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.ac-checks li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; }
+.ac-recent li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-variant-numeric: tabular-nums; }
+.ac-recent li > span { min-width: 0; overflow-wrap: anywhere; }
+.ac-ledger-grid { align-items: start; }
+@media (min-width: 1200px) { .ac-ledger-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); } }
+.ac-journal-form { display: grid; gap: 12px; }
+.ac-journal-head { display: grid; gap: 12px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 720px) { .ac-journal-head { grid-template-columns: minmax(0, 200px) minmax(0, 1fr); } }
+.ac-journal-lines { display: grid; gap: 8px; }
+.ac-journal-row { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr) auto; align-items: center; gap: 8px; }
+.ac-journal-row.is-head { color: var(--doc-ink-2); font-size: 12px; font-weight: 600; }
+.ac-journal-row.is-head > span:nth-child(n + 2):nth-child(-n + 3), .ac-journal-row.is-total > span:nth-child(n + 2):nth-child(-n + 3) { text-align: right; }
+.ac-journal-row.is-total { padding-top: 8px; border-top: 1px solid var(--pu-color-border-strong); font-weight: 600; font-variant-numeric: tabular-nums; }
+.ac-journal-row .kit-field input { text-align: right; }
+.ac-balance { margin: 0; color: var(--pu-color-warn); font-weight: 600; }
+.ac-balance.is-ok { color: var(--pu-color-text); }
+.ac-problems { margin: 0; padding-left: 18px; }
+@media (max-width: 639px) {
+  /* A phone: each journal line is a small card, the account on its own row and Debit and Credit side by side. */
+  .ac-journal-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: 8px 0; border-bottom: 1px solid var(--doc-rule); }
+  .ac-journal-row > :first-child { grid-column: 1 / -1; }
+  .ac-journal-row > :last-child:not(:nth-child(2)) { grid-column: 1 / -1; justify-self: start; }
+  .ac-journal-row.is-head { display: none; }
+  .ac-journal-row.is-total > span:first-child { grid-column: 1 / -1; }
+  .ac-journal-row.is-total > span:last-child { display: none; }
+  .ac-checks li { grid-template-columns: minmax(0, 1fr) auto; }
+  .ac-checks li > :first-child { grid-column: 1 / -1; justify-self: start; }
+}
+/* Nine screens: a tighter tab bar on phones so every label fits. */
+@media (max-width: 479px) {
+  .ac-app .app-nav a { padding: 6px 0; font-size: 10px; }
+  .ac-app .app-nav-icon svg { width: 18px; height: 18px; }
+}

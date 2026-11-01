@@ -318,13 +318,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "178.87 kB",
+    "limit": "181.84 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "39.01 kB",
+    "limit": "39.56 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -1423,6 +1423,20 @@
     "name": "Payment fields CSS",
     "path": "dist/css/payment-fields.css",
     "limit": "0.45 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "reconciliation-matcher (import from '@punji/ui/reconciliation-matcher')",
+    "path": "dist/reconciliation-matcher/ReconciliationMatcher.js",
+    "import": "*",
+    "limit": "9.06 kB",
+    "gzip": true
+  },
+  {
+    "name": "css/reconciliation.css (ReconciliationMatcher)",
+    "path": "dist/css/reconciliation.css",
+    "limit": "1.02 kB",
     "rolldown": false,
     "gzip": true
   }

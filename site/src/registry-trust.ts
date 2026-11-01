@@ -45,7 +45,7 @@ export const TRUST_PAGES: readonly PageDef[] = [
         'Nothing here sends money. Re-check the amount, payee and limits on your server.',
       ],
     },
-    related: ['payee-verification', 'hold-to-confirm', 'spoofing-detection', 'global-money'],
+    related: ['payee-verification', 'hold-to-confirm', 'spoofing-detection', 'global-money', 'localisation'],
   },
   {
     slug: 'payee-verification',

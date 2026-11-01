@@ -93,4 +93,5 @@
 /* Layout: resizable split pane. */
 @import './split-pane.css';
 @import './trust.css';
+@import './payment-fields.css';
 @import './contrast.css';

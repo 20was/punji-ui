@@ -563,6 +563,30 @@
       "types": "./dist/secure-field/SecureField.d.ts",
       "default": "./dist/secure-field/SecureField.js"
     },
+    "./payments": {
+      "types": "./dist/payments/payments.d.ts",
+      "default": "./dist/payments/payments.js"
+    },
+    "./payment-fields": {
+      "types": "./dist/payment-fields/PaymentFields.d.ts",
+      "default": "./dist/payment-fields/PaymentFields.js"
+    },
+    "./locale": {
+      "types": "./dist/locale/locale.d.ts",
+      "default": "./dist/locale/locale.js"
+    },
+    "./locale/ne": {
+      "types": "./dist/locale/ne.d.ts",
+      "default": "./dist/locale/ne.js"
+    },
+    "./locale/hi": {
+      "types": "./dist/locale/hi.d.ts",
+      "default": "./dist/locale/hi.js"
+    },
+    "./locale/bn": {
+      "types": "./dist/locale/bn.d.ts",
+      "default": "./dist/locale/bn.js"
+    },
     "./styles.css": {
       "types": "./dist/styles.css.d.ts",
       "default": "./dist/styles.css"

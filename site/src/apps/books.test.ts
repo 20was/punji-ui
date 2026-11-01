@@ -24,7 +24,7 @@ describe('accounting books', () => {
   it('are deterministic and every journal balances', () => {
     expect(generateBooks()).toEqual(generateBooks());
     expect(BOOKS.journals.length).toBeGreaterThan(250);
-    for (const j of BOOKS.journals) expect(isBalanced(j), j.id).toBe(true);
+    for (const j of BOOKS.journals) expect(isBalanced(j) ? j.id : `unbalanced ${j.id}`).toBe(j.id);
     expect(trialBalance(BOOKS.journals).balanced).toBe(true);
     expect(BOOKS.journals.every((j) => j.date.year < 2026 || j.date.month < 11 || (j.date.month === 11 && j.date.day <= TODAY.day))).toBe(true);
   });
@@ -34,7 +34,7 @@ describe('accounting books', () => {
     for (const period of PERIODS) {
       const column = { key: 'cur', ...rangeOf(period) };
       const bs = rollUp(balanceSheetRows(ledger, [column]));
-      expect(subtotal(bs, 'assets'), period.id).toBe(subtotal(bs, 'le'));
+      expect([period.id, subtotal(bs, 'assets')]).toEqual([period.id, subtotal(bs, 'le')]);
       const pl = rollUp(profitAndLossRows(ledger, [column]));
       expect(subtotal(pl, 'pl')).toBe(profitOf(netByAccount(ledger, column.from, column.to)).profit);
     }

@@ -297,13 +297,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "93.26 kB",
+    "limit": "105.10 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "27.71 kB",
+    "limit": "29.34 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -980,6 +980,69 @@
     "path": "dist/transaction-history/TransactionHistory.js",
     "import": "*",
     "limit": "22.94 kB",
+    "gzip": true
+  },
+  {
+    "name": "tax (import from '@punji/ui/tax')",
+    "path": "dist/tax/tax.js",
+    "import": "*",
+    "limit": "5.24 kB",
+    "gzip": true
+  },
+  {
+    "name": "pan-input (import from '@punji/ui/pan-input')",
+    "path": "dist/pan-input/PanInput.js",
+    "import": "*",
+    "limit": "1.24 kB",
+    "gzip": true
+  },
+  {
+    "name": "tax-invoice (import from '@punji/ui/tax-invoice')",
+    "path": "dist/tax-invoice/TaxInvoice.js",
+    "import": "*",
+    "limit": "10.52 kB",
+    "gzip": true
+  },
+  {
+    "name": "line-item-editor (import from '@punji/ui/line-item-editor')",
+    "path": "dist/line-item-editor/LineItemEditor.js",
+    "import": "*",
+    "limit": "8.23 kB",
+    "gzip": true
+  },
+  {
+    "name": "income-tax-calculator (import from '@punji/ui/income-tax-calculator')",
+    "path": "dist/income-tax-calculator/IncomeTaxCalculator.js",
+    "import": "*",
+    "limit": "8.36 kB",
+    "gzip": true
+  },
+  {
+    "name": "payslip (import from '@punji/ui/payslip')",
+    "path": "dist/payslip/Payslip.js",
+    "import": "*",
+    "limit": "7.02 kB",
+    "gzip": true
+  },
+  {
+    "name": "aging-table (import from '@punji/ui/aging-table')",
+    "path": "dist/aging-table/AgingTable.js",
+    "import": "*",
+    "limit": "8.34 kB",
+    "gzip": true
+  },
+  {
+    "name": "tds-summary (import from '@punji/ui/tds-summary')",
+    "path": "dist/tds-summary/TdsSummary.js",
+    "import": "*",
+    "limit": "8.38 kB",
+    "gzip": true
+  },
+  {
+    "name": "css/tax.css (TaxInvoice, LineItemEditor, PanInput, IncomeTaxCalculator, Payslip, AgingTable, TdsSummary)",
+    "path": "dist/css/tax.css",
+    "limit": "2.38 kB",
+    "rolldown": false,
     "gzip": true
   }
 ]

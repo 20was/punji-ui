@@ -167,6 +167,18 @@ If step 6 fails because npm requires staged publishing for new packages:
 
 For any other error: stop and report the exact message.
 
+**What happened on the first run (2026-11-01).** The package was created through the staged route. Read
+these points before you treat a difference as an error:
+- `0.0.0-stage` appeared first, and the website briefly showed only `latest → 0.0.0-stage`.
+- The anonymous registry (`curl -s https://registry.npmjs.org/@punji%2fui`) returned `{"error":"Not found"}`
+  for several minutes after the website already showed the package as Public. It then returned
+  `latest` and `bootstrap` both pointing to `0.0.0-bootstrap.0`, with versions `0.0.0-stage` and
+  `0.0.0-bootstrap.0`.
+
+So a fresh package can take a few minutes to reach the registry. Wait and re-check before reporting a
+404. Part D only needs the package page and its Settings tab to exist. Part H deprecates both
+placeholder versions.
+
 ## Part D. Add the trusted publisher on npm
 
 1. Go to **npmjs.com/package/@punji/ui → Settings** (you must be logged in as an owner).

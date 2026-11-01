@@ -8,6 +8,7 @@ import { toCsv, type CsvColumn, type CsvOptions } from '../export/csv.ts';
 import { minorUnitsToDecimal } from '../nepal/money.ts';
 
 export interface TdsEntryInput {
+  /** Stable id (a voucher or payment number). */
   id: string;
   /** Who was paid. */
   party: string;

@@ -21,6 +21,7 @@ export interface AgingBucket {
   key: string;
   /** First and last day past the date in this bucket; `to` is null for the open last bucket, `from` is -Infinity for not-due. */
   from: number;
+  /** Last day in the bucket, or null for the open last bucket. */
   to: number | null;
 }
 

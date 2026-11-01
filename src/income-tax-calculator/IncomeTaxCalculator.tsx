@@ -35,10 +35,13 @@ export interface IncomeTaxBreakdownProps {
   result: IncomeTaxResult;
   /** Names the table. */
   caption: string;
+  /** Currency and locale. Default NPR, en-IN grouping, no currency mark. */
   money?: MoneyFormatConfig;
   /** Leave out bands no income reached. Default false: every band is listed, so the person sees the whole table. */
   hideEmpty?: boolean;
+  /** Column words, in the reader's language. */
   labels?: Partial<IncomeTaxBreakdownLabels>;
+  /** Sets `data-testid` on the table. */
   testId?: string;
 }
 
@@ -78,10 +81,13 @@ export function IncomeTaxBreakdown({ result, caption, money = nepalLedgerMoney, 
 }
 
 export interface TaxDeductionField {
+  /** Stable id; also the key in `defaultValues.amounts`. */
   id: string;
+  /** The field's label. */
   label: string;
   /** Most that may be deducted for it. */
   cap?: bigint;
+  /** Help under the field. Default: "Up to <cap>" when there is a cap. */
   hint?: ReactNode;
 }
 
@@ -99,8 +105,11 @@ export const DEFAULT_INCOME_TAX_CALCULATOR_LABELS: IncomeTaxCalculatorLabels = {
 };
 
 export interface IncomeTaxCalculatorResult {
+  /** The filing status chosen. */
   status: 'single' | 'couple';
+  /** Income, allowed deductions and taxable income (`taxableIncome`). */
   deductions: TaxableIncomeResult;
+  /** Bands, rebates and tax (`computeIncomeTax`). */
   tax: IncomeTaxResult;
 }
 
@@ -121,12 +130,17 @@ export interface IncomeTaxCalculatorProps {
   fiscalYear?: ReactNode;
   /** Starting values (decimal strings in major units). */
   defaultValues?: { income?: string; status?: 'single' | 'couple'; ssf?: boolean; amounts?: Record<string, string>; rebates?: readonly string[] };
+  /** Rounding of each band, a fraction cap and the monthly figure. Default 'half-up'. */
   rounding?: RoundingMode;
+  /** Currency and locale. Default NPR, en-IN grouping, no currency mark. */
   money?: MoneyFormatConfig;
   /** Called with the result whenever it changes. */
   onResult?: (result: IncomeTaxCalculatorResult) => void;
+  /** Field and result words, in the reader's language. */
   labels?: Partial<IncomeTaxCalculatorLabels>;
+  /** Words of the band table. */
   breakdownLabels?: Partial<IncomeTaxBreakdownLabels>;
+  /** Sets `data-testid` on the root; fields get `${testId}-income`, `${testId}-<field id>` and so on. */
   testId?: string;
 }
 

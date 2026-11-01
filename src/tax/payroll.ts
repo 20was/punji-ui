@@ -4,7 +4,9 @@
  */
 
 export interface PayLine {
+  /** Stable id of the line. */
   id: string;
+  /** What it is: 'Basic salary', 'SSF'. */
   label: string;
   /** Amount in minor units, never negative. */
   amount: bigint;

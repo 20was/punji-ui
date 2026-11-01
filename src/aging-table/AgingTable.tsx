@@ -43,15 +43,23 @@ export interface AgingTableProps {
   money?: MoneyFormatConfig;
   /** Column words; `bucketLabel` replaces a bucket heading entirely. */
   labels?: Partial<AgingTableLabels>;
+  /** Name a bucket yourself, for example in Nepali. Replaces the built-in heading. */
   bucketLabel?: (bucket: AgingBucket) => string;
+  /** No box of its own: the table sits in a card or a panel. */
   bare?: boolean;
-  /** ready (default), loading or error. */
+  /** ready (default), loading (headers stay, rows replaced by a status line) or error. */
   state?: 'ready' | 'loading' | 'error';
+  /** Shown in place of rows when there is nothing to show. */
   emptyLabel?: ReactNode;
+  /** The status line while loading. */
   loadingLabel?: string;
+  /** What failed, shown with the retry button when `state` is `error`. */
   errorLabel?: ReactNode;
+  /** The retry button's words. Default 'Try again'. */
   retryLabel?: string;
+  /** Called when the retry button is pressed; the button is drawn only when this is given. */
   onRetry?: () => void;
+  /** Sets `data-testid` on the root. */
   testId?: string;
 }
 

@@ -18,6 +18,7 @@ import { formatPan } from '../tax/pan.ts';
 import { amountInWords, type AmountInWordsOptions } from '../tax/words.ts';
 
 export interface PayslipPerson {
+  /** Name of the employer or employee. */
   name: string;
   /** Employee code, or the employer's address. */
   detail?: string;
@@ -38,13 +39,17 @@ export const DEFAULT_PAYSLIP_LABELS: PayslipLabels = {
 };
 
 export interface PayslipProps {
+  /** The employer: name, address (as `detail`) and PAN. */
   employer: PayslipPerson;
+  /** The employee: name, code (as `detail`), PAN and facts. */
   employee: PayslipPerson;
   /** The period, as you name it: 'Shrawan 2082', 'July 2025'. */
   period: ReactNode;
   /** When it was paid, already formatted (BS, AD or both). */
   payDate?: ReactNode;
+  /** Earnings lines: basic salary, allowances, employer contributions. */
   earnings: readonly PayLine[];
+  /** Deduction lines: SSF, CIT, TDS, advances. */
   deductions: readonly PayLine[];
   /** Currency and locale. Default NPR, en-IN grouping, no currency mark (named by `currencyNote`). */
   money?: MoneyFormatConfig;
@@ -56,10 +61,13 @@ export interface PayslipProps {
   notes?: ReactNode;
   /** Show a Print button. Default false. */
   printable?: boolean;
+  /** Words, in the reader's language. */
   labels?: Partial<PayslipLabels>;
   /** Heading level of the title. Default 2. */
   headingLevel?: 2 | 3;
+  /** Extra class on the article, for layout. */
   className?: string;
+  /** Sets `data-testid` on the payslip; amounts get `${testId}-gross`, `-deductions`, `-net`. */
   testId?: string;
 }
 

@@ -24,7 +24,9 @@ import { parseMinorUnits } from '../nepal/money.ts';
 import { computeInvoice, ratePercent, type InvoiceDiscount, type InvoiceLineInput, type InvoiceTotals } from '../tax/invoice.ts';
 
 export interface LineItemDraft {
+  /** Stable id of the line. */
   id: string;
+  /** What is sold, as typed. */
   description: string;
   /** Quantity as typed ('2', '2.5', '२'). */
   quantity: string;

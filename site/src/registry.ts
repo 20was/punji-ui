@@ -9,6 +9,8 @@ import { GUIDES } from './registry-guides.ts';
 import { GENERIC_PAGES } from './registry-generic.ts';
 import { FORMS_PAGES } from './registry-forms.ts';
 import { SHOWCASE_PAGES } from './registry-showcase.ts';
+// Tax, invoicing and payroll pages.
+import { TAX_PAGES } from './registry-tax.ts';
 import { LEADS, NAV_TITLES } from './registry-leads.ts';
 
 export type GroupId =
@@ -1539,6 +1541,8 @@ export const PAGES: readonly PageDef[] = [
   ...GENERIC_PAGES,
   ...FORMS_PAGES,
   ...SHOWCASE_PAGES,
+  // Tax, invoicing and payroll.
+  ...TAX_PAGES,
 ];
 
 /** The page's one-line lead: its own `lead`, else LEADS[slug], else the first sentence of `description`. */

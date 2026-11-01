@@ -31,6 +31,7 @@ export const DEFAULT_TDS_SUMMARY_LABELS: TdsSummaryLabels = {
 export interface TdsSummaryProps {
   /** Names the table: "TDS, Kartik 2082 (NPR)". */
   caption: string;
+  /** Payments with their category, gross and rate. */
   entries: readonly TdsEntryInput[];
   /** 'category' (default): one row per category. 'entries': one row per payment. */
   view?: 'category' | 'entries';
@@ -38,14 +39,23 @@ export interface TdsSummaryProps {
   rounding?: RoundingMode;
   /** Currency and locale. Default NPR, en-IN, no currency mark (name it in the caption). */
   money?: MoneyFormatConfig;
+  /** Column words, in the reader's language. */
   labels?: Partial<TdsSummaryLabels>;
+  /** No box of its own: the table sits in a card or a panel. */
   bare?: boolean;
+  /** ready (default), loading (headers stay, rows replaced by a status line) or error. */
   state?: 'ready' | 'loading' | 'error';
+  /** Shown in place of rows when there is nothing to show. */
   emptyLabel?: ReactNode;
+  /** The status line while loading. */
   loadingLabel?: string;
+  /** What failed, shown with the retry button when `state` is `error`. */
   errorLabel?: ReactNode;
+  /** The retry button's words. Default 'Try again'. */
   retryLabel?: string;
+  /** Called when the retry button is pressed; the button is drawn only when this is given. */
   onRetry?: () => void;
+  /** Sets `data-testid` on the root. */
   testId?: string;
 }
 

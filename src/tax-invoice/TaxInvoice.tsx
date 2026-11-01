@@ -36,6 +36,7 @@ export interface InvoiceParty {
 }
 
 export interface TaxInvoiceLine {
+  /** Stable id of the line. */
   id: string;
   /** What was sold. */
   description: string;
@@ -71,7 +72,9 @@ export const DEFAULT_TAX_INVOICE_LABELS: TaxInvoiceLabels = {
 };
 
 export interface TaxInvoiceProps {
+  /** The business issuing the bill: name, address, contact and PAN/VAT number. */
   seller: InvoiceParty;
+  /** Who is billed: name, address and PAN/VAT number (required on a VAT invoice above the threshold your law sets). */
   buyer: InvoiceParty;
   /** The invoice number from your sequence, printed as given. */
   invoiceNumber: string;
@@ -81,6 +84,7 @@ export interface TaxInvoiceProps {
   dueDate?: CalendarDate;
   /** How it is paid: 'Cash', 'Credit', 'Bank transfer'. */
   paymentMode?: string;
+  /** The items, in the order to print. Amounts in minor units. */
   lines: readonly TaxInvoiceLine[];
   /** A discount on the whole invoice: `{ amount }` in minor units or `{ rate: '0.05' }`. */
   discount?: InvoiceDiscount;
@@ -116,6 +120,7 @@ export interface TaxInvoiceProps {
   labels?: Partial<TaxInvoiceLabels>;
   /** Heading level of the title. Default 2. */
   headingLevel?: 2 | 3;
+  /** Extra class on the article, for layout. */
   className?: string;
   /** Sets `data-testid` on the invoice. */
   testId?: string;

@@ -8,10 +8,32 @@
 export const PAN_LENGTH = 9;
 
 export type PanCheck =
-  | { state: 'empty'; value: '' }
-  | { state: 'partial'; value: string }
-  | { state: 'valid'; value: string }
-  | { state: 'invalid'; value: string; reason: 'characters' | 'length' };
+  | {
+      /** Nothing typed. */
+      state: 'empty';
+      /** Always ''. */
+      value: '';
+    }
+  | {
+      /** Fewer than nine digits: still typing. */
+      state: 'partial';
+      /** The digits so far, ASCII. */
+      value: string;
+    }
+  | {
+      /** Exactly nine digits. */
+      state: 'valid';
+      /** The nine digits, ASCII. */
+      value: string;
+    }
+  | {
+      /** A character that is not a digit, or more than nine digits. */
+      state: 'invalid';
+      /** The normalised text, ASCII digits and any other characters kept. */
+      value: string;
+      /** 'characters' for a letter or symbol, 'length' for more than nine digits. */
+      reason: 'characters' | 'length';
+    };
 
 const DEVANAGARI = '०१२३४५६७८९';
 

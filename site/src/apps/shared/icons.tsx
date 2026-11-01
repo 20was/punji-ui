@@ -45,6 +45,7 @@ export const PeopleIcon = () => <Svg d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21a
 export const ReceiptIcon = () => <Svg d="M3 7h18v10H3zM7 12h.01M17 12h.01M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />;
 export const PayrollIcon = () => <Svg d="M4 6h16v12H4zM4 10h16M8 15h3" />;
 export const CalculatorIcon = () => <Svg d="M6 3h12v18H6zM9 7h6M9 12h.01M12 12h.01M15 12h.01M9 16h.01M12 16h.01M15 16h.01" />;
+export const ShieldIcon = () => <Svg d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6zM9 12l2 2 4-4" />;
 export const FilterIcon = () => <Svg d="M3 5h18l-7 8v6l-4 2v-8z" />;
 export const CalendarIcon = () => <Svg d="M4 6h16v15H4zM4 10h16M8 3v4M16 3v4M8 14h2M14 14h2M8 17h2" />;
 export const StarIcon = () => <Svg d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1 6.2-5.5-2.9-5.5 2.9 1-6.2L3 9.6l6.2-.9z" />;

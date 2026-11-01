@@ -318,13 +318,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "182.74 kB",
+    "limit": "187 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "40.01 kB",
+    "limit": "40.62 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -1175,6 +1175,27 @@
     "name": "Wallet and payments CSS",
     "path": "dist/css/wallet.css",
     "limit": "1.70 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "invest (import from '@punji/ui/invest')",
+    "path": "dist/invest/invest.js",
+    "import": "*",
+    "limit": "3.03 kB",
+    "gzip": true
+  },
+  {
+    "name": "risk-meter (import from '@punji/ui/risk-meter')",
+    "path": "dist/risk-meter/RiskMeter.js",
+    "import": "*",
+    "limit": "0.99 kB",
+    "gzip": true
+  },
+  {
+    "name": "Risk meter CSS",
+    "path": "dist/css/risk-meter.css",
+    "limit": "0.74 kB",
     "rolldown": false,
     "gzip": true
   },

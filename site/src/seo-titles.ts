@@ -14,6 +14,9 @@ export const SEO_TITLES: Readonly<Record<string, string>> = {
   'bill-summary': 'Utility bill summary in React: BillSummary card | Punji UI',
   accounting: 'Accounting app in React: ledger, P&L, bank rec | Punji UI',
   business: 'Invoicing and payroll app in React: VAT bills | Punji UI',
+  'invest-insure': 'Mutual fund, SIP and insurance app in React | Punji UI',
+  'risk-meter': 'Mutual fund riskometer in React: RiskMeter | Punji UI',
+  'invest-helpers': 'XIRR, SIP and lump sum calculators in TypeScript | Punji UI',
   // Get started
   using: 'Install Punji UI: React finance components quick start',
   nextjs: 'Punji UI with the Next.js App Router: setup guide',

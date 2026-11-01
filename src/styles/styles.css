@@ -86,6 +86,7 @@
 @import './wallet.css';
 @import './bill-summary.css';
 @import './lending.css';
+@import './risk-meter.css';
 /* Tax, invoicing and payroll. */
 @import './tax.css';
 /* Bank reconciliation. */

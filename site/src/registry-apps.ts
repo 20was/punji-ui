@@ -407,4 +407,60 @@ export const APP_PAGES: readonly PageDef[] = [
         'A seeded generator (`site/src/apps/market-portal/market.ts`) adds 80 companies to the shared sim\'s 16 scrips with fundamentals, a year of daily candles, dividends and corporate events, and writes every trade to the floorsheet. The same seed gives the same market on the server and in the browser, so the page prerenders the 11:20 state and the clock starts after hydration. Nothing is fetched.',
     },
   },
+  {
+    slug: 'invest-insure',
+    title: 'Invest and insure',
+    description:
+      'A mutual fund and insurance app built from Punji UI: fund explorer with riskometers, SIP planner and orders, portfolio XIRR, policies, claims and tax saving.',
+    lead: 'Funds, SIPs and insurance of the Groww, Kuvera and PolicyBazaar class, with every rupee and unit exact.',
+    group: 'apps',
+    kind: 'app',
+    summary:
+      'An investor\'s app for mutual funds and insurance, phone first. Explore eight funds by category with a riskometer, 1, 3 and 5-year returns, the expense ratio and the NAV history; plan a SIP with a step-up and a goal and see the exact projection against a lump sum; order it, follow the order to an allotment of units at NAV, and see the units, value and XIRR in the portfolio. On the insurance side: policy cards with premiums and due reminders, a term-cover gap from income and loans, claim filing with documents and a status timeline, and nominees whose shares must total 100%. The tax view adds up what reduces taxable income (retirement fund SIPs and CIT, life and health premiums) against example caps. One reducer holds the folio and the policies, so an allotment moves the portfolio, the savings in the cover gap and the retirement contribution in the tax view together.',
+    use: [
+      'Replace `data.ts` with your fund house\'s or aggregator\'s feed: the screens read NAVs as decimal strings and amounts as bigint paisa, the shape `allotUnits` and `unitsValue` take.',
+      'Send `order` to your order API (ConnectIPS or a bank mandate for the debit) and map its statuses to the order timeline; allot with the NAV the registrar applied, not the latest one.',
+      'Feed policies, premiums and claim statuses from the insurer\'s API; keep `termCoverNeeded` for the gap and `taxableIncome` with the caps for the year you show.',
+    ],
+    avoid: [
+      'Authentication, KYC, the bank mandate and the registrar: orders here settle on a timer.',
+      'Advice: projections are illustrations at a return you choose, the cover gap is a starting point and the tax caps are examples, not current law.',
+    ],
+    api: [],
+    examples: [],
+    keyboard: [
+      '`1` to `5` open the screens. Plain keys never fire while you type in a field.',
+      'Funds are buttons (Enter opens one; "All funds" returns focus to it); categories are toggle chips; period, view and calendar switches are segmented controls that move with the arrow keys.',
+      'Order, claim and nominee forms are ordinary forms: Tab, Space and Enter; each step moves focus to its heading. Wide tables scroll in focusable regions with the arrow keys.',
+    ],
+    accessibility: [
+      'Each screen has its own `h2` and focus moves to it from the navigation. Orders, allotments, premiums, claims and nominee changes are announced in a polite live region.',
+      'Risk is printed in words beside the riskometer ("Moderately high, 4 of 6"); returns and gains carry a sign, never colour alone; the NAV chart has a data table.',
+      'Statuses (order steps, claim steps, policy status, SIP paused) are words with icons.',
+    ],
+    responsive: [
+      'Designed at 390 px: fund cards in one column, stacked forms and a bottom tab bar. Wider screens get a navigation rail, fund cards in a grid and the projection beside the plan.',
+      'Tables become labelled rows on phones; the SIP calendar scrolls inside a focusable region.',
+    ],
+    notes: {
+      title: 'Limits',
+      points: [
+        'Every fund house, insurer, fund and person is invented. NAVs are a seeded weekly series to 1 November 2026 (15 Kartik 2083); orders allot at that NAV.',
+        'Projections compound the expected return monthly with each instalment at the start of the month; the balance is carried exactly and each figure is rounded once (half-even). XIRR is solved by bisection on bigint fixed-point to 0.01% here (8 places in the package).',
+        'Tax caps and slabs are examples in the shape of FY 2081/82 (retirement 5 lakh or a third of income, life premium Rs 40,000, health premium Rs 20,000). "Fail the next request" makes orders, premiums and claims fail so the error states can be seen.',
+      ],
+    },
+    related: ['risk-meter', 'invest-helpers', 'insurance-premium-card', 'performance-chart', 'payment-timeline', 'document-upload', 'income-tax-calculator', 'tax-helpers', 'currency-input', 'meter-range', 'financial-summary'],
+    app: {
+      screens: [
+        { id: 'funds', title: 'Mutual funds', summary: 'Eight funds with a `RiskMeter`, 1, 3 and 5-year returns, the expense ratio and NAV; filter by category and sort. A fund opens with its NAV history (`PerformanceChart`), returns against its category, facts and your holding.' },
+        { id: 'sip', title: 'SIP planner', summary: 'Monthly amount, years, return, step-up and a goal; the exact projection (`projectSip`) against a lump sum (`projectLumpSum`), the SIP needed for the goal (`sipForGoal`), a SIP calendar in BS or AD, then review, order and allotment at NAV (`allotUnits`).' },
+        { id: 'portfolio', title: 'Portfolio', summary: 'Current value, invested, gain and XIRR (`xirr`) in total and per fund, allocation by category, SIPs you can pause, orders in progress and every allotment.' },
+        { id: 'insurance', title: 'Insurance', summary: '`InsurancePremiumCard` for each policy with pay and premium reminders, the cover gap (`termCoverNeeded`), claims with `DocumentUpload` and a `PaymentTimeline`, and nominees.' },
+        { id: 'tax', title: 'Tax saving', summary: 'Retirement fund SIPs and CIT, life and health premiums against example caps (`taxableIncome`), the tax by band (`IncomeTaxBreakdown`), the tax saved and the room left this year.' },
+      ],
+      data:
+        'Eight synthetic funds with five years of seeded weekly NAVs (`site/src/apps/invest-insure/data.ts`), three SIPs and a lump sum paid since 2023 and allotted at those NAVs, three policies, a settled claim and nominees. Orders and claims move on a timer after hydration. Nothing is fetched.',
+    },
+  },
 ];

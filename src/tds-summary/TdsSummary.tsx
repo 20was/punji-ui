@@ -16,7 +16,7 @@ import { RetryNote } from '../retry-note/RetryNote.tsx';
 import { Note } from '../states/States.tsx';
 import { Cell, DataListRow, DataTable, type Column } from '../table/Table.tsx';
 import { ratePercent } from '../tax/invoice.ts';
-import { formatPan } from '../tax/pan.ts';
+import { formatPanNumber } from '../tax/pan.ts';
 import { summariseTds, type TdsEntryInput } from '../tax/tds.ts';
 
 export interface TdsSummaryLabels {
@@ -88,7 +88,7 @@ export function TdsSummary({
             ...result.entries.map((entry) => (
               <DataListRow key={entry.id} testId={testId ? `${testId}-entry-${entry.id}` : undefined}>
                 <Cell header>{entry.party}</Cell>
-                <Cell wide label={words.pan}><span className="pu-tds-pan">{entry.pan ? formatPan(entry.pan) : '—'}</span></Cell>
+                <Cell wide label={words.pan}><span className="pu-tds-pan">{entry.pan ? formatPanNumber(entry.pan) : '—'}</span></Cell>
                 <Cell wide label={words.category}>{entry.category}</Cell>
                 <Cell num label={words.gross}>{amount(entry.gross)}</Cell>
                 <Cell num label={words.rate}>{pct(entry.rate)}</Cell>

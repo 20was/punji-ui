@@ -21,7 +21,7 @@ import type { CalendarDate } from '../nepal/date-only.ts';
 import { Note } from '../states/States.tsx';
 import type { RoundingMode } from '../calculations/rounding.ts';
 import { computeInvoice, ratePercent, type InvoiceDiscount, type InvoiceTotals } from '../tax/invoice.ts';
-import { formatPan } from '../tax/pan.ts';
+import { formatPanNumber } from '../tax/pan.ts';
 import { amountInWords, type AmountInWordsOptions } from '../tax/words.ts';
 
 export interface InvoiceParty {
@@ -136,7 +136,7 @@ function Party({ heading, party, words }: { heading: string; party: InvoiceParty
       <p className="pu-inv-name">{party.name}</p>
       {party.address && <p className="pu-inv-sub">{party.address}</p>}
       {party.contact && <p className="pu-inv-sub">{party.contact}</p>}
-      {party.pan && <p className="pu-inv-pan"><span>{words.pan}</span> <span className="pu-inv-pan-no">{formatPan(party.pan)}</span></p>}
+      {party.pan && <p className="pu-inv-pan"><span>{words.pan}</span> <span className="pu-inv-pan-no">{formatPanNumber(party.pan)}</span></p>}
     </section>
   );
 }
@@ -181,7 +181,7 @@ export function TaxInvoice({
             <p className="pu-inv-seller-name">{seller.name}</p>
             {seller.address && <p className="pu-inv-sub">{seller.address}</p>}
             {seller.contact && <p className="pu-inv-sub">{seller.contact}</p>}
-            {seller.pan && <p className="pu-inv-pan"><span>{words.pan}</span> <span className="pu-inv-pan-no" data-testid={testId ? `${testId}-seller-pan` : undefined}>{formatPan(seller.pan)}</span></p>}
+            {seller.pan && <p className="pu-inv-pan"><span>{words.pan}</span> <span className="pu-inv-pan-no" data-testid={testId ? `${testId}-seller-pan` : undefined}>{formatPanNumber(seller.pan)}</span></p>}
           </div>
         </div>
         <div className="pu-inv-titlebox">

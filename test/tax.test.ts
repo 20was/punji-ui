@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import * as fc from 'fast-check';
 
 import {
-  NEPALI_NUMBER_WORDS, ageItems, amountInWords, checkPan, computeIncomeTax, computeInvoice, daysBetween, formatPan, integerInWords, isValidPan,
+  NEPALI_NUMBER_WORDS, ageItems, amountInWords, checkPan, computeIncomeTax, computeInvoice, calendarDaysBetween, formatPanNumber, integerInWords, isValidPan,
   payslipTotals, ratePercent, summariseTds, taxableIncome, tdsToCsv, type TaxSlab,
 } from '../src/tax/tax.ts';
 import { NUM_RUNS } from './fc.ts';
@@ -69,7 +69,7 @@ describe('PAN', () => {
     expect(checkPan('12345678a')).toEqual({ state: 'invalid', value: '12345678a', reason: 'characters' });
     expect(checkPan('1234567890')).toEqual({ state: 'invalid', value: '1234567890', reason: 'length' });
     expect(isValidPan('301234567')).toBe(true);
-    expect(formatPan('301234567', { digits: 'deva' })).toBe('३०१२३४५६७');
+    expect(formatPanNumber('301234567', { digits: 'deva' })).toBe('३०१२३४५६७');
   });
 });
 
@@ -199,8 +199,8 @@ describe('aging', () => {
   ];
 
   it('counts whole days across months and leap years', () => {
-    expect(daysBetween({ year: 2024, month: 2, day: 28 }, { year: 2024, month: 3, day: 1 })).toBe(2);
-    expect(daysBetween({ year: 2025, month: 11, day: 20 }, asOf)).toBe(-5);
+    expect(calendarDaysBetween({ year: 2024, month: 2, day: 28 }, { year: 2024, month: 3, day: 1 })).toBe(2);
+    expect(calendarDaysBetween({ year: 2025, month: 11, day: 20 }, asOf)).toBe(-5);
   });
 
   it('groups by party and bucket with exact totals', () => {

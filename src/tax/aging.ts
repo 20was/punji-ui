@@ -47,7 +47,7 @@ export interface AgingResult {
 const dayNumber = (d: CalendarDate) => Math.floor(Date.UTC(d.year, d.month - 1, d.day) / 86_400_000);
 
 /** Whole days from `date` to `asOf` (positive when `date` is earlier). */
-export function daysBetween(date: CalendarDate, asOf: CalendarDate): number {
+export function calendarDaysBetween(date: CalendarDate, asOf: CalendarDate): number {
   return dayNumber(asOf) - dayNumber(date);
 }
 
@@ -79,7 +79,7 @@ export function ageItems(items: readonly AgingItem[], asOf: CalendarDate, option
   const totals = buckets.map(() => 0n);
   for (const item of items) {
     if (typeof item.amount !== 'bigint') throw new TypeError(`Item ${item.id}: amount must be bigint minor units`);
-    const days = daysBetween(item.date, asOf);
+    const days = calendarDaysBetween(item.date, asOf);
     const index = indexOf(days);
     let row = rows.get(item.party);
     if (!row) {

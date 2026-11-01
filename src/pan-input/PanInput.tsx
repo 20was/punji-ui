@@ -9,7 +9,7 @@
 import { useState, type FocusEvent, type InputHTMLAttributes, type ReactNode } from 'react';
 
 import { Field } from '../fields/Fields.tsx';
-import { PAN_LENGTH, checkPan, formatPan, type PanCheck } from '../tax/pan.ts';
+import { PAN_LENGTH, checkPan, formatPanNumber, type PanCheck } from '../tax/pan.ts';
 
 export interface PanInputLabels {
   /** Fewer than nine digits, shown after the field is left. */
@@ -72,7 +72,7 @@ export function PanInput({ label, hint = '9 digits', error, value, onValueChange
         autoComplete="off"
         spellCheck={false}
         maxLength={PAN_LENGTH + 4}
-        value={formatPan(value, { digits })}
+        value={formatPanNumber(value, { digits })}
         onChange={(raw) => onValueChange(checkPan(raw))}
         onBlur={(event: FocusEvent<HTMLInputElement>) => {
           setLeft(true);

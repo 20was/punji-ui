@@ -3,7 +3,7 @@
     "name": "avatar (import from '@punji/ui/avatar')",
     "path": "dist/avatar/Avatar.js",
     "import": "*",
-    "limit": "800 B",
+    "limit": "510 B",
     "gzip": true
   },
   {
@@ -24,91 +24,91 @@
     "name": "checkbox (import from '@punji/ui/checkbox')",
     "path": "dist/checkbox/Checkbox.js",
     "import": "*",
-    "limit": "400 B",
+    "limit": "370 B",
     "gzip": true
   },
   {
     "name": "choice-group (import from '@punji/ui/choice-group')",
     "path": "dist/choice-group/ChoiceGroup.js",
     "import": "*",
-    "limit": "430 B",
+    "limit": "400 B",
     "gzip": true
   },
   {
     "name": "command-palette (import from '@punji/ui/command-palette')",
     "path": "dist/command-palette/CommandPalette.js",
     "import": "*",
-    "limit": "2.45 kB",
+    "limit": "2.30 kB",
     "gzip": true
   },
   {
     "name": "company-search (import from '@punji/ui/company-search')",
     "path": "dist/company-search/CompanySearch.js",
     "import": "*",
-    "limit": "3.05 kB",
+    "limit": "3.02 kB",
     "gzip": true
   },
   {
     "name": "controls (import from '@punji/ui/controls')",
     "path": "dist/controls/Controls.js",
     "import": "*",
-    "limit": "1.2 kB",
+    "limit": "1.11 kB",
     "gzip": true
   },
   {
     "name": "drawer (import from '@punji/ui/drawer')",
     "path": "dist/drawer/Drawer.js",
     "import": "*",
-    "limit": "900 B",
+    "limit": "840 B",
     "gzip": true
   },
   {
     "name": "drawer-screen (import from '@punji/ui/drawer-screen')",
     "path": "dist/drawer-screen/DrawerScreen.js",
     "import": "*",
-    "limit": "1 kB",
+    "limit": "0.76 kB",
     "gzip": true
   },
   {
     "name": "fields (import from '@punji/ui/fields')",
     "path": "dist/fields/Fields.js",
     "import": "*",
-    "limit": "4.4 kB",
+    "limit": "4.38 kB",
     "gzip": true
   },
   {
     "name": "figures (import from '@punji/ui/figures')",
     "path": "dist/figures/Figures.js",
     "import": "*",
-    "limit": "880 B",
+    "limit": "840 B",
     "gzip": true
   },
   {
     "name": "filter-chip (import from '@punji/ui/filter-chip')",
     "path": "dist/filter-chip/FilterChip.js",
     "import": "*",
-    "limit": "1 kB",
+    "limit": "0.70 kB",
     "gzip": true
   },
   {
     "name": "floating-tooltip (import from '@punji/ui/floating-tooltip')",
     "path": "dist/floating-tooltip/FloatingTooltip.js",
     "import": "*",
-    "limit": "980 B",
+    "limit": "920 B",
     "gzip": true
   },
   {
     "name": "info-tip (import from '@punji/ui/info-tip')",
     "path": "dist/info-tip/InfoTip.js",
     "import": "*",
-    "limit": "1.6 kB",
+    "limit": "1.51 kB",
     "gzip": true
   },
   {
     "name": "inline-confirm (import from '@punji/ui/inline-confirm')",
     "path": "dist/inline-confirm/InlineConfirm.js",
     "import": "*",
-    "limit": "1.1 kB",
+    "limit": "1.10 kB",
     "gzip": true
   },
   {
@@ -122,14 +122,14 @@
     "name": "list-filter (import from '@punji/ui/list-filter')",
     "path": "dist/list-filter/ListFilter.js",
     "import": "*",
-    "limit": "1.1 kB",
+    "limit": "1.07 kB",
     "gzip": true
   },
   {
     "name": "live-figure (import from '@punji/ui/live-figure')",
     "path": "dist/live-figure/LiveFigure.js",
     "import": "*",
-    "limit": "1.35 kB",
+    "limit": "1.26 kB",
     "gzip": true
   },
   {
@@ -143,42 +143,42 @@
     "name": "code-block (import from '@punji/ui/code-block')",
     "path": "dist/code-block/CodeBlock.js",
     "import": "*",
-    "limit": "1.5 kB",
+    "limit": "1.46 kB",
     "gzip": true
   },
   {
     "name": "locked-note (import from '@punji/ui/locked-note')",
     "path": "dist/locked-note/LockedNote.js",
     "import": "*",
-    "limit": "500 B",
+    "limit": "470 B",
     "gzip": true
   },
   {
     "name": "order-book (import from '@punji/ui/order-book')",
     "path": "dist/order-book/OrderBookDepth.js",
     "import": "*",
-    "limit": "1.1 kB",
+    "limit": "1.05 kB",
     "gzip": true
   },
   {
     "name": "overlay (import from '@punji/ui/overlay')",
     "path": "dist/overlay/Overlay.js",
     "import": "*",
-    "limit": "1.6 kB",
+    "limit": "1.48 kB",
     "gzip": true
   },
   {
     "name": "popover (import from '@punji/ui/popover')",
     "path": "dist/popover/Popover.js",
     "import": "*",
-    "limit": "2 kB",
+    "limit": "1.96 kB",
     "gzip": true
   },
   {
     "name": "range-slider (import from '@punji/ui/range-slider')",
     "path": "dist/range-slider/RangeSlider.js",
     "import": "*",
-    "limit": "550 B",
+    "limit": "510 B",
     "gzip": true
   },
   {
@@ -192,14 +192,14 @@
     "name": "select (import from '@punji/ui/select')",
     "path": "dist/select/Select.js",
     "import": "*",
-    "limit": "1.3 kB",
+    "limit": "1.23 kB",
     "gzip": true
   },
   {
     "name": "show-more (import from '@punji/ui/show-more')",
     "path": "dist/show-more/ShowMore.js",
     "import": "*",
-    "limit": "460 B",
+    "limit": "430 B",
     "gzip": true
   },
   {
@@ -213,42 +213,42 @@
     "name": "stats (import from '@punji/ui/stats')",
     "path": "dist/stats/Stats.js",
     "import": "*",
-    "limit": "400 B",
+    "limit": "380 B",
     "gzip": true
   },
   {
     "name": "status-pill (import from '@punji/ui/status-pill')",
     "path": "dist/status-pill/StatusPill.js",
     "import": "*",
-    "limit": "530 B",
+    "limit": "520 B",
     "gzip": true
   },
   {
     "name": "status-tag (import from '@punji/ui/status-tag')",
     "path": "dist/status-tag/StatusTag.js",
     "import": "*",
-    "limit": "650 B",
+    "limit": "630 B",
     "gzip": true
   },
   {
     "name": "switch (import from '@punji/ui/switch')",
     "path": "dist/switch/Switch.js",
     "import": "*",
-    "limit": "400 B",
+    "limit": "380 B",
     "gzip": true
   },
   {
     "name": "table (import from '@punji/ui/table')",
     "path": "dist/table/Table.js",
     "import": "*",
-    "limit": "2.46 kB",
+    "limit": "2.45 kB",
     "gzip": true
   },
   {
     "name": "virtual-table (import from '@punji/ui/virtual-table')",
     "path": "dist/virtual-table/VirtualFinancialTable.js",
     "import": "*",
-    "limit": "5.3 kB",
+    "limit": "5.28 kB",
     "gzip": true
   },
   {
@@ -269,62 +269,62 @@
     "name": "tabs (import from '@punji/ui/tabs')",
     "path": "dist/tabs/Tabs.js",
     "import": "*",
-    "limit": "820 B",
+    "limit": "800 B",
     "gzip": true
   },
   {
     "name": "chart-scale (import from '@punji/ui/chart-scale')",
     "path": "dist/chart-scale/chartScale.js",
     "import": "*",
-    "limit": "900 B",
+    "limit": "640 B",
     "gzip": true
   },
   {
     "name": "combo-step (import from '@punji/ui/combo-step')",
     "path": "dist/combo-step/comboStep.js",
     "import": "*",
-    "limit": "950 B",
+    "limit": "580 B",
     "gzip": true
   },
   {
     "name": "command-keys (import from '@punji/ui/command-keys')",
     "path": "dist/command-keys/commandKeys.js",
     "import": "*",
-    "limit": "240 B",
+    "limit": "220 B",
     "gzip": true
   },
   {
     "name": "compact (import from '@punji/ui/compact')",
     "path": "dist/compact/compact.js",
     "import": "*",
-    "limit": "540 B",
+    "limit": "510 B",
     "gzip": true
   },
   {
     "name": "format (import from '@punji/ui/format')",
     "path": "dist/format/format.js",
     "import": "*",
-    "limit": "1 kB",
+    "limit": "1.00 kB",
     "gzip": true
   },
   {
     "name": "live (import from '@punji/ui/live')",
     "path": "dist/live/live.js",
     "import": "*",
-    "limit": "900 B",
+    "limit": "860 B",
     "gzip": true
   },
   {
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "98.25 kB",
+    "limit": "154.87 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "28.59 kB",
+    "limit": "34.92 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -346,104 +346,104 @@
     "name": "Financial compositions",
     "path": "dist/financial/financial.js",
     "import": "*",
-    "limit": "4.85 kB",
+    "limit": "4.82 kB",
     "gzip": true
   },
   {
     "name": "Button from root (tree-shaking regression)",
     "path": "dist/index.js",
     "import": "{ Button }",
-    "limit": "640 B",
+    "limit": "610 B",
     "gzip": true
   },
   {
     "name": "Nepal formatting without calendar or React",
     "path": "dist/nepal/format.js",
     "import": "*",
-    "limit": "1.3 kB",
+    "limit": "0.89 kB",
     "gzip": true
   },
   {
     "name": "Exact minor-unit calculations without calendar or React",
     "path": "dist/nepal/money.js",
     "import": "*",
-    "limit": "700 B",
+    "limit": "510 B",
     "gzip": true
   },
   {
     "name": "Exact financial display factory",
     "path": "dist/nepal/financial-format.js",
     "import": "*",
-    "limit": "1 kB",
+    "limit": "0.54 kB",
     "gzip": true
   },
   {
     "name": "Localized decimal parser",
     "path": "dist/nepal/decimal.js",
     "import": "*",
-    "limit": "1.07 kB",
+    "limit": "1.06 kB",
     "gzip": true
   },
   {
     "name": "Media query hook",
     "path": "dist/use-media-query/useMediaQuery.js",
     "import": "*",
-    "limit": "500 B",
+    "limit": "350 B",
     "gzip": true
   },
   {
     "name": "Hydration hook",
     "path": "dist/use-hydrated/useHydrated.js",
     "import": "*",
-    "limit": "250 B",
+    "limit": "220 B",
     "gzip": true
   },
   {
     "name": "Stable ordering hook",
     "path": "dist/stable-order/useStableOrder.js",
     "import": "*",
-    "limit": "650 B",
+    "limit": "420 B",
     "gzip": true
   },
   {
     "name": "Pure key ordering",
     "path": "dist/stable-order/keepOrder.js",
     "import": "*",
-    "limit": "300 B",
+    "limit": "260 B",
     "gzip": true
   },
   {
     "name": "Gregorian date-only utilities without converter or React",
     "path": "dist/nepal/date-only.js",
     "import": "*",
-    "limit": "1 kB",
+    "limit": "0.72 kB",
     "gzip": true
   },
   {
     "name": "Market display formatters without converter or React",
     "path": "dist/nepal/market-format.js",
     "import": "*",
-    "limit": "750 B",
+    "limit": "570 B",
     "gzip": true
   },
   {
     "name": "Calendar including BS conversion and shared controls",
     "path": "dist/calendar/Calendar.js",
     "import": "*",
-    "limit": "8.6 kB",
+    "limit": "8.59 kB",
     "gzip": true
   },
   {
     "name": "Date pickers including Calendar",
     "path": "dist/date-picker/DatePicker.js",
     "import": "*",
-    "limit": "13.4 kB",
+    "limit": "13.35 kB",
     "gzip": true
   },
   {
     "name": "Calendar and date picker CSS",
     "path": "dist/css/calendar.css",
-    "limit": "1.45 kB",
+    "limit": "1.44 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -458,28 +458,28 @@
     "name": "otp-input (import from '@punji/ui/otp-input')",
     "path": "dist/otp-input/OtpInput.js",
     "import": "*",
-    "limit": "1.9 kB",
+    "limit": "1.88 kB",
     "gzip": true
   },
   {
     "name": "statement-upload (import from '@punji/ui/statement-upload')",
     "path": "dist/statement-upload/StatementUpload.js",
     "import": "*",
-    "limit": "2.5 kB",
+    "limit": "2.50 kB",
     "gzip": true
   },
   {
     "name": "date-range-presets (import from '@punji/ui/date-range-presets')",
     "path": "dist/date-range-presets/presets.js",
     "import": "*",
-    "limit": "1.6 kB",
+    "limit": "1.59 kB",
     "gzip": true
   },
   {
     "name": "date-range-presets Nepal (import from '@punji/ui/date-range-presets/nepal')",
     "path": "dist/date-range-presets/nepal.js",
     "import": "*",
-    "limit": "3.3 kB",
+    "limit": "3.29 kB",
     "gzip": true
   },
   {
@@ -499,14 +499,14 @@
   {
     "name": "Statement upload CSS",
     "path": "dist/css/statement-upload.css",
-    "limit": "0.8 kB",
+    "limit": "0.80 kB",
     "rolldown": false,
     "gzip": true
   },
   {
     "name": "Select CSS including desktop picker enhancement",
     "path": "dist/css/select.css",
-    "limit": "1.5 kB",
+    "limit": "1.35 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -514,139 +514,139 @@
     "name": "Financial calculations without React or formatters (import from '@punji/ui/calculations')",
     "path": "dist/calculations/calculations.js",
     "import": "*",
-    "limit": "2.2 kB",
+    "limit": "1.98 kB",
     "gzip": true
   },
   {
     "name": "Debounce hooks",
     "path": "dist/use-debounce/useDebounce.js",
     "import": "*",
-    "limit": "480 B",
+    "limit": "450 B",
     "gzip": true
   },
   {
     "name": "Throttle hook",
     "path": "dist/use-throttle/useThrottle.js",
     "import": "*",
-    "limit": "340 B",
+    "limit": "310 B",
     "gzip": true
   },
   {
     "name": "Controllable state hook",
     "path": "dist/use-controllable-state/useControllableState.js",
     "import": "*",
-    "limit": "530 B",
+    "limit": "500 B",
     "gzip": true
   },
   {
     "name": "Previous value hook",
     "path": "dist/use-previous/usePrevious.js",
     "import": "*",
-    "limit": "240 B",
+    "limit": "220 B",
     "gzip": true
   },
   {
     "name": "Toggle hook",
     "path": "dist/use-toggle/useToggle.js",
     "import": "*",
-    "limit": "250 B",
+    "limit": "230 B",
     "gzip": true
   },
   {
     "name": "Clipboard hook",
     "path": "dist/use-clipboard/useClipboard.js",
     "import": "*",
-    "limit": "620 B",
+    "limit": "590 B",
     "gzip": true
   },
   {
     "name": "Local and session storage hooks",
     "path": "dist/use-storage/useStorage.js",
     "import": "*",
-    "limit": "1 kB",
+    "limit": "0.95 kB",
     "gzip": true
   },
   {
     "name": "Click outside hook",
     "path": "dist/use-click-outside/useClickOutside.js",
     "import": "*",
-    "limit": "400 B",
+    "limit": "380 B",
     "gzip": true
   },
   {
     "name": "Pagination hook and arithmetic",
     "path": "dist/use-pagination/usePagination.js",
     "import": "*",
-    "limit": "1 kB",
+    "limit": "0.98 kB",
     "gzip": true
   },
   {
     "name": "Table selection hook",
     "path": "dist/use-table-selection/useTableSelection.js",
     "import": "*",
-    "limit": "930 B",
+    "limit": "890 B",
     "gzip": true
   },
   {
     "name": "Column visibility hook",
     "path": "dist/use-column-visibility/useColumnVisibility.js",
     "import": "*",
-    "limit": "840 B",
+    "limit": "810 B",
     "gzip": true
   },
   {
     "name": "All hooks (import from @punji/ui/hooks)",
     "path": "dist/hooks/hooks.js",
     "import": "*",
-    "limit": "4.2 kB",
+    "limit": "4.02 kB",
     "gzip": true
   },
   {
     "name": "CSV export without React or DOM",
     "path": "dist/export/export.js",
     "import": "*",
-    "limit": "960 B",
+    "limit": "910 B",
     "gzip": true
   },
   {
     "name": "Browser text download",
     "path": "dist/download/downloadText.js",
     "import": "*",
-    "limit": "620 B",
+    "limit": "580 B",
     "gzip": true
   },
   {
     "name": "Money formatter and parser without React (import from '@punji/ui/money')",
     "path": "dist/money/money.js",
     "import": "*",
-    "limit": "3.6 kB",
+    "limit": "3.55 kB",
     "gzip": true
   },
   {
     "name": "MoneyDisplay (import from '@punji/ui/money-display')",
     "path": "dist/money-display/MoneyDisplay.js",
     "import": "*",
-    "limit": "4 kB",
+    "limit": "3.92 kB",
     "gzip": true
   },
   {
     "name": "PriceChange (import from '@punji/ui/price-change')",
     "path": "dist/price-change/PriceChange.js",
     "import": "*",
-    "limit": "4.4 kB",
+    "limit": "4.39 kB",
     "gzip": true
   },
   {
     "name": "CurrencyInput (import from '@punji/ui/currency-input')",
     "path": "dist/currency-input/CurrencyInput.js",
     "import": "*",
-    "limit": "4.7 kB",
+    "limit": "4.70 kB",
     "gzip": true
   },
   {
     "name": "Money CSS",
     "path": "dist/css/money.css",
-    "limit": "450 B",
+    "limit": "400 B",
     "rolldown": false,
     "gzip": true
   },
@@ -661,84 +661,84 @@
     "name": "meter (import from '@punji/ui/meter')",
     "path": "dist/meter/Meter.js",
     "import": "*",
-    "limit": "2.2 kB",
+    "limit": "2.15 kB",
     "gzip": true
   },
   {
     "name": "summary-figure (import from '@punji/ui/summary-figure')",
     "path": "dist/summary-figure/SummaryFigure.js",
     "import": "*",
-    "limit": "700 B",
+    "limit": "610 B",
     "gzip": true
   },
   {
     "name": "check-row (import from '@punji/ui/check-row')",
     "path": "dist/check-row/CheckRow.js",
     "import": "*",
-    "limit": "1.65 kB",
+    "limit": "1.60 kB",
     "gzip": true
   },
   {
     "name": "inline-state (import from '@punji/ui/inline-state')",
     "path": "dist/inline-state/InlineState.js",
     "import": "*",
-    "limit": "1 kB",
+    "limit": "0.93 kB",
     "gzip": true
   },
   {
     "name": "key-stats (import from '@punji/ui/key-stats')",
     "path": "dist/key-stats/KeyStats.js",
     "import": "*",
-    "limit": "620 B",
+    "limit": "580 B",
     "gzip": true
   },
   {
     "name": "fact-list (import from '@punji/ui/fact-list')",
     "path": "dist/fact-list/FactList.js",
     "import": "*",
-    "limit": "380 B",
+    "limit": "350 B",
     "gzip": true
   },
   {
     "name": "step-list (import from '@punji/ui/step-list')",
     "path": "dist/step-list/StepList.js",
     "import": "*",
-    "limit": "800 B",
+    "limit": "740 B",
     "gzip": true
   },
   {
     "name": "card-link (import from '@punji/ui/card-link')",
     "path": "dist/card-link/CardLink.js",
     "import": "*",
-    "limit": "680 B",
+    "limit": "630 B",
     "gzip": true
   },
   {
     "name": "link-table (import from '@punji/ui/link-table')",
     "path": "dist/link-table/LinkTable.js",
     "import": "*",
-    "limit": "1.05 kB",
+    "limit": "0.99 kB",
     "gzip": true
   },
   {
     "name": "bars (import from '@punji/ui/bars')",
     "path": "dist/bars/Bars.js",
     "import": "*",
-    "limit": "1.6 kB",
+    "limit": "1.56 kB",
     "gzip": true
   },
   {
     "name": "sparkline (import from '@punji/ui/sparkline')",
     "path": "dist/sparkline/Sparkline.js",
     "import": "*",
-    "limit": "900 B",
+    "limit": "890 B",
     "gzip": true
   },
   {
     "name": "column-chart (import from '@punji/ui/column-chart')",
     "path": "dist/column-chart/ColumnChart.js",
     "import": "*",
-    "limit": "2.4 kB",
+    "limit": "2.13 kB",
     "gzip": true
   },
   {
@@ -752,21 +752,21 @@
     "name": "candlestick-chart (import from '@punji/ui/candlestick-chart')",
     "path": "dist/candlestick-chart/CandlestickChart.js",
     "import": "*",
-    "limit": "5.4 kB",
+    "limit": "5.33 kB",
     "gzip": true
   },
   {
     "name": "performance-chart (import from '@punji/ui/performance-chart')",
     "path": "dist/performance-chart/PerformanceChart.js",
     "import": "*",
-    "limit": "4.3 kB",
+    "limit": "4.28 kB",
     "gzip": true
   },
   {
     "name": "depth-chart (import from '@punji/ui/depth-chart')",
     "path": "dist/depth-chart/DepthChart.js",
     "import": "*",
-    "limit": "3.2 kB",
+    "limit": "3.17 kB",
     "gzip": true
   },
   {
@@ -794,28 +794,28 @@
     "name": "stock-table (import from '@punji/ui/stock-table')",
     "path": "dist/stock-table/StockTable.js",
     "import": "*",
-    "limit": "10.3 kB",
+    "limit": "10.24 kB",
     "gzip": true
   },
   {
     "name": "market-movers (import from '@punji/ui/market-movers')",
     "path": "dist/market-movers/MarketMovers.js",
     "import": "*",
-    "limit": "11.4 kB",
+    "limit": "11.40 kB",
     "gzip": true
   },
   {
     "name": "market-indices (import from '@punji/ui/market-indices')",
     "path": "dist/market-indices/MarketIndices.js",
     "import": "*",
-    "limit": "6.4 kB",
+    "limit": "6.38 kB",
     "gzip": true
   },
   {
     "name": "market-status (import from '@punji/ui/market-status')",
     "path": "dist/market-status/MarketStatus.js",
     "import": "*",
-    "limit": "2.4 kB",
+    "limit": "2.34 kB",
     "gzip": true
   },
   {
@@ -843,7 +843,7 @@
     "name": "ledger (import from '@punji/ui/ledger')",
     "path": "dist/ledger/ledger.js",
     "import": "*",
-    "limit": "2.5 kB",
+    "limit": "2.46 kB",
     "gzip": true
   },
   {
@@ -857,21 +857,21 @@
     "name": "ledger-table (import from '@punji/ui/ledger-table')",
     "path": "dist/ledger-table/LedgerTable.js",
     "import": "*",
-    "limit": "8.9 kB",
+    "limit": "8.85 kB",
     "gzip": true
   },
   {
     "name": "journal-entry (import from '@punji/ui/journal-entry')",
     "path": "dist/journal-entry/JournalEntryView.js",
     "import": "*",
-    "limit": "8.3 kB",
+    "limit": "8.15 kB",
     "gzip": true
   },
   {
     "name": "trial-balance (import from '@punji/ui/trial-balance')",
     "path": "dist/trial-balance/TrialBalance.js",
     "import": "*",
-    "limit": "8.7 kB",
+    "limit": "8.65 kB",
     "gzip": true
   },
   {
@@ -885,98 +885,98 @@
     "name": "payment-status (import from '@punji/ui/payment-status')",
     "path": "dist/payment-status/PaymentStatus.js",
     "import": "*",
-    "limit": "900 B",
+    "limit": "870 B",
     "gzip": true
   },
   {
     "name": "period-selector (import from '@punji/ui/period-selector')",
     "path": "dist/period-selector/FinancialPeriodSelector.js",
     "import": "*",
-    "limit": "4.7 kB",
+    "limit": "4.67 kB",
     "gzip": true
   },
   {
     "name": "banking (import from '@punji/ui/banking')",
     "path": "dist/banking/banking.js",
     "import": "*",
-    "limit": "2.4 kB",
+    "limit": "2.34 kB",
     "gzip": true
   },
   {
     "name": "account-number (import from '@punji/ui/account-number')",
     "path": "dist/account-number/AccountNumber.js",
     "import": "*",
-    "limit": "2.2 kB",
+    "limit": "2.13 kB",
     "gzip": true
   },
   {
     "name": "bank-account-card (import from '@punji/ui/bank-account-card')",
     "path": "dist/bank-account-card/BankAccountCard.js",
     "import": "*",
-    "limit": "7.6 kB",
+    "limit": "7.59 kB",
     "gzip": true
   },
   {
     "name": "transaction-list (import from '@punji/ui/transaction-list')",
     "path": "dist/transaction-list/TransactionList.js",
     "import": "*",
-    "limit": "9.5 kB",
+    "limit": "9.50 kB",
     "gzip": true
   },
   {
     "name": "transaction-status (import from '@punji/ui/transaction-status')",
     "path": "dist/transaction-status/TransactionStatus.js",
     "import": "*",
-    "limit": "850 B",
+    "limit": "830 B",
     "gzip": true
   },
   {
     "name": "payment-receipt (import from '@punji/ui/payment-receipt')",
     "path": "dist/payment-receipt/PaymentReceipt.js",
     "import": "*",
-    "limit": "7 kB",
+    "limit": "6.99 kB",
     "gzip": true
   },
   {
     "name": "payment-timeline (import from '@punji/ui/payment-timeline')",
     "path": "dist/payment-timeline/PaymentTimeline.js",
     "import": "*",
-    "limit": "1.15 kB",
+    "limit": "1.14 kB",
     "gzip": true
   },
   {
     "name": "beneficiary-selector (import from '@punji/ui/beneficiary-selector')",
     "path": "dist/beneficiary-selector/BeneficiarySelector.js",
     "import": "*",
-    "limit": "2.35 kB",
+    "limit": "2.33 kB",
     "gzip": true
   },
   {
     "name": "portfolio (import from '@punji/ui/portfolio')",
     "path": "dist/portfolio/portfolio.js",
     "import": "*",
-    "limit": "6.6 kB",
+    "limit": "6.57 kB",
     "gzip": true
   },
   {
     "name": "holdings-table (import from '@punji/ui/holdings-table')",
     "path": "dist/holdings-table/HoldingsTable.js",
     "import": "*",
-    "limit": "10.5 kB",
+    "limit": "10.41 kB",
     "gzip": true
   },
   {
     "name": "portfolio-allocation (import from '@punji/ui/portfolio-allocation')",
     "path": "dist/portfolio-allocation/PortfolioAllocation.js",
     "import": "*",
-    "limit": "6.5 kB",
+    "limit": "6.45 kB",
     "gzip": true
   },
   {
     "name": "portfolio-overview (import from '@punji/ui/portfolio-overview')",
     "path": "dist/portfolio-overview/PortfolioOverview.js",
     "import": "*",
-    "limit": "6.85 kB",
+    "limit": "6.79 kB",
     "gzip": true
   },
   {
@@ -1014,7 +1014,7 @@
     "name": "order-ticket (import from '@punji/ui/order-ticket')",
     "path": "dist/order-ticket/OrderTicket.js",
     "import": "*",
-    "limit": "10.95 kB",
+    "limit": "11.18 kB",
     "gzip": true
   },
   {
@@ -1041,7 +1041,7 @@
   {
     "name": "Order list CSS",
     "path": "dist/css/order-list.css",
-    "limit": "0.4 kB",
+    "limit": "0.40 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -1077,7 +1077,7 @@
     "name": "payment-qr-card (import from '@punji/ui/payment-qr-card')",
     "path": "dist/payment-qr-card/PaymentQrCard.js",
     "import": "*",
-    "limit": "10.79 kB",
+    "limit": "10.78 kB",
     "gzip": true
   },
   {
@@ -1098,7 +1098,7 @@
     "name": "nepal/mobile (import from '@punji/ui/nepal/mobile')",
     "path": "dist/nepal/mobile.js",
     "import": "*",
-    "limit": "991 B",
+    "limit": "1000 B",
     "gzip": true
   },
   {
@@ -1147,14 +1147,14 @@
     "name": "loan-calculator (import from '@punji/ui/loan-calculator')",
     "path": "dist/loan-calculator/LoanCalculator.js",
     "import": "*",
-    "limit": "11.30 kB",
+    "limit": "11.49 kB",
     "gzip": true
   },
   {
     "name": "deposit-calculator (import from '@punji/ui/deposit-calculator')",
     "path": "dist/deposit-calculator/DepositCalculator.js",
     "import": "*",
-    "limit": "11.04 kB",
+    "limit": "11.26 kB",
     "gzip": true
   },
   {
@@ -1227,7 +1227,7 @@
     "name": "tax (import from '@punji/ui/tax')",
     "path": "dist/tax/tax.js",
     "import": "*",
-    "limit": "5.24 kB",
+    "limit": "5.25 kB",
     "gzip": true
   },
   {

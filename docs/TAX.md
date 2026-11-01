@@ -47,7 +47,7 @@ South Asian scales: hundred, thousand, lakh, crore, arab, kharab (past 99 kharab
 `checkPan(input)` returns `{ state: 'empty' | 'partial' | 'valid' | 'invalid', value, reason? }` after converting
 Devanagari digits and removing spaces, hyphens and dots. Nine digits is `valid`. There is no published checksum, so
 this checks the shape only; whether the number was issued (and is VAT-registered) is a lookup with the Inland Revenue
-Department. `isValidPan`, `normalizePan`, `formatPan(value, { digits: 'deva' })`.
+Department. `isValidPan`, `normalizePan`, `formatPanNumber(value, { digits: 'deva' })`.
 
 ### Invoice and VAT
 
@@ -101,7 +101,7 @@ computeIncomeTax(12n * LAKH, single, { rounding: 'half-up' }).tax; // 14_500_000
 ### Aging, TDS, payslips
 
 - `ageItems(items, asOf, { limits = [30, 60, 90], notDue = true })` groups `{ id, party, date, amount }` into
-  not-due, 0–30, 31–60, 61–90 and 90+ by whole days between date-only values (`daysBetween`). Rows keep first-seen
+  not-due, 0–30, 31–60, 61–90 and 90+ by whole days between date-only values (`calendarDaysBetween`). Rows keep first-seen
   order; every row and column sums exactly.
 - `summariseTds(entries, { rounding })` withholds `gross × rate` per entry (or the `withheld` you pass), and totals by
   category (`rate` is null when a category mixes rates). `tdsToCsv(entries, { rounding })` writes exact,

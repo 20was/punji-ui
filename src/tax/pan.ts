@@ -61,7 +61,7 @@ export function isValidPan(input: string): boolean {
 }
 
 /** A PAN for display: the nine digits, optionally in Devanagari. A value that is not a valid PAN is returned normalised but unchanged otherwise. */
-export function formatPan(input: string, options: { digits?: 'latn' | 'deva' } = {}): string {
+export function formatPanNumber(input: string, options: { digits?: 'latn' | 'deva' } = {}): string {
   const value = normalizePan(input);
   return options.digits === 'deva' ? value.replace(/\d/g, (d) => DEVANAGARI[Number(d)]!) : value;
 }

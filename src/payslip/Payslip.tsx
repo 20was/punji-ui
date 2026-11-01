@@ -14,7 +14,7 @@ import { nepalLedgerMoney } from '../debit-credit/DebitCredit.tsx';
 import { MoneyDisplay } from '../money-display/MoneyDisplay.tsx';
 import { currencyExponent, type MoneyFormatConfig } from '../money/money.ts';
 import { payslipTotals, type PayLine } from '../tax/payroll.ts';
-import { formatPan } from '../tax/pan.ts';
+import { formatPanNumber } from '../tax/pan.ts';
 import { amountInWords, type AmountInWordsOptions } from '../tax/words.ts';
 
 export interface PayslipPerson {
@@ -78,7 +78,7 @@ function Person({ person, words, testId }: { person: PayslipPerson; words: Paysl
       {person.detail && <p className="pu-slip-sub">{person.detail}</p>}
       {(person.pan || person.facts?.length) ? (
         <dl className="pu-slip-facts">
-          {person.pan && <div><dt>{words.pan}</dt><dd className="pu-slip-num">{formatPan(person.pan)}</dd></div>}
+          {person.pan && <div><dt>{words.pan}</dt><dd className="pu-slip-num">{formatPanNumber(person.pan)}</dd></div>}
           {person.facts?.map((fact) => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}
         </dl>
       ) : null}

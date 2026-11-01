@@ -15,7 +15,7 @@ import { useHydrated } from '@punji/ui/use-hydrated';
 import type { GroupId } from '../registry.ts';
 import home from '../generated/home.json';
 import { GROUPS, NAV as PAGES, type PageCard } from './nav.ts';
-import { pagePath, REPO } from '../seo.ts';
+import { NPM_URL, pagePath, REPO } from '../paths.ts';
 import sizes from '../generated/sizes.json';
 import { quotes, sectorShares } from '../sample.ts';
 import { Link } from './router.tsx';
@@ -244,7 +244,7 @@ function DomainCard({ id, flagship, blurb, featured, preview }: (typeof DOMAINS)
   const target = PAGES.find((p) => p.slug === flagship) ?? pages[0];
   if (!target) return null;
   return (
-    <li className={`home-domain${featured ? ' is-featured' : ''}`}>
+    <li className={`home-domain${featured ? ' is-featured' : ''}`} id={`domain-${id}`}>
       <div className="home-domain-pv" inert>
         {preview()}
       </div>
@@ -263,6 +263,24 @@ function DomainCard({ id, flagship, blurb, featured, preview }: (typeof DOMAINS)
     </li>
   );
 }
+
+// Who it is for: each audience links to the pages that serve it (descriptive anchors, no orphan pages).
+const AUDIENCE: readonly (readonly [string, string, readonly (readonly [string, string])[]])[] = [
+  ['Stock market and trading apps', 'Quote boards, movers, indices, watchlists, price limits and order book depth, with exact prices and accessible direction.', [['stock-table', 'NEPSE stock table'], ['candlestick-chart', 'Candlestick chart'], ['market-board', 'Live market board']]],
+  ['Portfolio and wealth trackers', 'Holdings with cost basis and P&L, allocation, dividends and performance against a benchmark.', [['holdings-table', 'Holdings table'], ['financial-calculations', 'Position maths'], ['portfolio-tracker', 'Portfolio tracker']]],
+  ['Accounting and bookkeeping', 'Ledgers with running balances, journal entries, trial balances, statements and payment status.', [['ledger-table', 'Accounting ledger'], ['trial-balance', 'Trial balance'], ['accounting-dashboard', 'Accounting dashboard']]],
+  ['Banking, payments and fintech', 'Money input that never rounds, masked account numbers, transactions, receipts and payment timelines.', [['currency-input', 'Currency input'], ['transaction-list', 'Transaction list'], ['payment-flow', 'Payment flow']]],
+  ['Apps for Nepal', 'NPR with lakh and crore grouping, Devanagari digits, Bikram Sambat dates, the Nepal fiscal year and NEPSE market hours.', [['formatters', 'Lakh and crore formatting'], ['date-picker', 'Nepali date picker'], ['market-status', 'NEPSE market status']]],
+];
+
+// Facts about this package only; the left column describes what a kit without finance types has to leave to the app.
+const COMPARE: readonly (readonly [string, string, string])[] = [
+  ['Amounts', 'A JavaScript number, so 0.1 + 0.2 drifts', 'bigint minor units end to end; division asks how to round'],
+  ['Number grouping', 'Whatever the locale gives you', 'Lakh and crore (12,34,567) or Western grouping, Devanagari or Latin digits'],
+  ['Dates', 'Gregorian only; a Nepali calendar is another library', 'Gregorian and Bikram Sambat in one date picker, date-only ISO values'],
+  ['Gain and loss', 'Often colour alone', 'A sign, an arrow and spoken words as well as colour'],
+  ['Finance screens', 'Generic tables and cards to assemble', 'Quote boards, ledgers, trial balances, statements and receipts ready to use'],
+];
 
 // Proof points: each figure is computed here from the package or the build, never typed in.
 const commission = applyRate(12345678n, '0.004', 'half-even');
@@ -306,7 +324,7 @@ export function Home() {
           <div className="home-hero-copy">
         <p className="home-kicker">
           <span className="home-kicker-dot" aria-hidden="true" />
-          Pre-release · React components for finance
+          v{PKG_VERSION} on npm · MIT · React 19
         </p>
         <h1 tabIndex={-1} id="page-title">
           React components for money, markets and ledgers.
@@ -331,10 +349,40 @@ export function Home() {
           </code>
           <CopyButton text={INSTALL} label="the install command" />
         </div>
-        <p className="home-install-note">The package goes on npm with the first release. Until then, follow along on GitHub.</p>
+        <p className="home-install-note">
+          Published on{' '}
+          <a href={NPM_URL} target="_blank" rel="noopener noreferrer">
+            npm<span className="kit-sr"> (opens in a new tab)</span>
+          </a>{' '}
+          with provenance. React 19 and React DOM 19 are peer dependencies; TypeScript types are included.
+        </p>
           </div>
           <HeroDemo />
         </div>
+      </section>
+
+      <section className="home-section" aria-labelledby="for-h">
+        <div className="home-section-head">
+          <p className="home-eyebrow">Who it is for</p>
+          <h2 id="for-h">For teams building screens where a wrong digit costs money</h2>
+          <p>Punji UI is a React component library for financial products. It starts from Nepal (NPR, lakh and crore, Devanagari digits, the Bikram Sambat calendar, NEPSE) and works in any currency and locale.</p>
+        </div>
+        <ul className="home-audience">
+          {AUDIENCE.map(([title, text, links]) => (
+            <li key={title}>
+              <h3>{title}</h3>
+              <p>{text}</p>
+              <p className="home-audience-links">
+                {links.map(([slug, label], i) => (
+                  <span key={slug}>
+                    {i > 0 && ' · '}
+                    <Link to={slugPath(slug)}>{label}</Link>
+                  </span>
+                ))}
+              </p>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="home-section" aria-labelledby="built">
@@ -441,6 +489,30 @@ export function Home() {
             <p>Every colour, size and radius is a CSS variable in cascade layers, so your styles win without !important. Light and dark follow the system or a data-theme attribute on any element.</p>
           </Proof>
         </ul>
+        <div className="home-compare">
+          <h3 id="compare">What a general-purpose kit leaves to you</h3>
+          <div className="doc-table-wrap">
+            <table className="doc-table">
+              <caption className="kit-sr">How Punji UI handles finance details that general-purpose React UI kits leave to the app</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Detail</th>
+                  <th scope="col">General-purpose kit</th>
+                  <th scope="col">Punji UI</th>
+                </tr>
+              </thead>
+              <tbody>
+                {COMPARE.map(([detail, generic, punji]) => (
+                  <tr key={detail}>
+                    <th scope="row">{detail}</th>
+                    <td>{generic}</td>
+                    <td>{punji}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </section>
 
       <section className="home-cta" aria-labelledby="cta" data-theme="dark">

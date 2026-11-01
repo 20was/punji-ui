@@ -1,6 +1,6 @@
 import { Fragment, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { ExampleDef, GuideSection } from '../registry.ts';
-import { pagePath } from '../paths.ts';
+import { groupAnchor, pagePath, SITE_NAME } from '../paths.ts';
 import sizes from '../generated/sizes.json';
 import { Link } from './router.tsx';
 import { apiEntryIn, type ApiEntry } from './api.ts';
@@ -130,12 +130,12 @@ function PrevNext({ page }: { page: NavPage }) {
   );
 }
 
-function RelatedCards({ others, id = 'related', level = 3 }: { others: readonly PageCard[]; id?: string; level?: 2 | 3 }) {
+function RelatedCards({ others, id = 'related', level = 3, title = 'Related' }: { others: readonly PageCard[]; id?: string; level?: 2 | 3; title?: string }) {
   if (others.length === 0) return null;
   const H = level === 2 ? 'h2' : 'h3';
   return (
     <section aria-labelledby={id} className="doc-section">
-      <H id={id}>Related</H>
+      <H id={id}>{title}</H>
       <ul className="doc-related">
         {others.map((other) => (
           <li key={other.slug}>
@@ -151,10 +151,26 @@ function RelatedCards({ others, id = 'related', level = 3 }: { others: readonly 
   );
 }
 
+/** The visible trail, the same as the page's JSON-LD BreadcrumbList (headFor in paths.ts). */
+function Breadcrumb({ page }: { page: Page }) {
+  const anchor = groupAnchor(page);
+  const group = groupTitleOf(page.group);
+  return (
+    <nav aria-label="Breadcrumb" className="doc-crumbs">
+      <ol>
+        <li>
+          <Link to="/">{SITE_NAME}</Link>
+        </li>
+        <li className="doc-eyebrow">{anchor ? <Link to={`/#${anchor}`}>{group}</Link> : group}</li>
+      </ol>
+    </nav>
+  );
+}
+
 function PageHeader({ page, children }: { page: Page; children?: ReactNode }) {
   return (
     <header className="doc-head">
-      <p className="doc-eyebrow">{groupTitleOf(page.group)}</p>
+      <Breadcrumb page={page} />
       <h1 tabIndex={-1} id="page-title">
         {page.title}
       </h1>
@@ -454,15 +470,15 @@ function ComponentPage({ data }: { data: PageData }) {
     code: [...(imports ? [{ id: 'import', label: 'Import' }] : []), ...page.examples.map((e) => ({ id: `src-${e.id}`, label: e.title }))],
     api: entries.map((e) => ({ id: `api-${e.name}`, label: e.name })),
     usage: [
-      { id: 'overview', label: 'Overview' },
       { id: 'when', label: 'When to use' },
       ...(page.keyboard.length ? [{ id: 'keyboard', label: 'Keyboard' }] : []),
       ...(page.accessibility.length ? [{ id: 'a11y', label: 'Accessibility' }] : []),
       ...(page.responsive.length ? [{ id: 'responsive', label: 'Responsive' }] : []),
       ...(page.notes ? [{ id: 'notes', label: page.notes.title }] : []),
       ...(page.related.length ? [{ id: 'related', label: 'Related' }] : []),
+      ...(data.usedIn.length ? [{ id: 'used-in', label: 'Seen in' }] : []),
     ],
-  }), [page, imports, entries]);
+  }), [page, imports, entries, data.usedIn.length]);
 
   return (
     // The Examples tab has no rail (its chips already list the variants), so wide tables get the full column.
@@ -471,6 +487,9 @@ function ComponentPage({ data }: { data: PageData }) {
         <PageHeader page={page}>
           <Badges page={page} />
         </PageHeader>
+        <p className="doc-intro doc-intro-tight" id="overview">
+          <Rich text={page.summary} />
+        </p>
 
         <nav id="page-tabs" className="doc-tabs" aria-label="Page sections">
           {tabs.map((t) => (
@@ -544,12 +563,6 @@ function ComponentPage({ data }: { data: PageData }) {
           <h2 id="usage-h" className="doc-panel-h">
             Usage
           </h2>
-          <section aria-labelledby="overview" className="doc-section">
-            <h3 id="overview">Overview</h3>
-            <p className="doc-p">
-              <Rich text={page.summary} />
-            </p>
-          </section>
           <section aria-labelledby="when" className="doc-section">
             <h3 id="when">When to use</h3>
             <div className="doc-dodont">
@@ -584,6 +597,7 @@ function ComponentPage({ data }: { data: PageData }) {
           <Bullets id="responsive" title="Responsive behaviour" items={page.responsive} />
           {page.notes && <Bullets id="notes" title={page.notes.title} items={page.notes.points} />}
           <RelatedCards others={data.related} />
+          <RelatedCards others={data.usedIn} id="used-in" title="Seen in these screens" />
         </section>
 
         <PrevNext page={page} />

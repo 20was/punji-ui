@@ -3,7 +3,9 @@
 //   nav.json            groups and one slim entry per page: what the shell (sidebar, router) needs on every page
 //   home.json           the few extra fields the overview reads
 //   search.json         the search index (loaded when the search opens)
-//   pages/<slug>.json   one page's full entry, its API entries and its related-page cards
+//   pages/<slug>.json   one page's full entry, its API entries, its related-page cards, `usedIn` (the showcase screens
+//                       built from the page) and `modified` (the date its sources last changed)
+//   dates.json          slug to that date, for the prerender's sitemap and JSON-LD (scripts/site-dates.mjs)
 //   routes/<slug>.ts    the page's route module: that data plus its examples and guide files (one chunk per page)
 // Run by site-gen after api.json is written (`node scripts/site-pages.mjs`), and by the dev server (site/vite.config.ts)
 // through writePageData when a registry file changes.
@@ -11,6 +13,7 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { pageDates } from './site-dates.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const out = resolve(root, 'site/src/generated');
@@ -34,10 +37,14 @@ export function writePageData({ PAGES, GROUPS, leadOf, navTitleOf }) {
   write(resolve(out, 'nav.json'), { groups: GROUPS.map(({ id, title }) => ({ id, title })), pages: PAGES.map(nav) });
   write(resolve(out, 'home.json'), { showcase: PAGES.filter((p) => p.kind === 'showcase').map(card) });
   write(resolve(out, 'search.json'), PAGES.map((p) => ({ ...card(p), description: p.description, api: [...new Set(p.api.map((a) => a.name))] })));
+  const dates = pageDates(PAGES, root);
+  write(resolve(out, 'dates.json'), dates);
   for (const p of PAGES) {
     const entries = Object.fromEntries([...new Set(p.api.map((a) => a.name))].filter((name) => api[name]).map((name) => [name, api[name]]));
     const related = p.related.map((slug) => PAGES.find((o) => o.slug === slug)).filter(Boolean).map(card);
-    write(resolve(out, 'pages', `${p.slug}.json`), { page: { ...p, lead: leadOf(p) }, api: entries, related });
+    // The reverse of a showcase's "Built from": every pattern that uses this page, so components link to real screens.
+    const usedIn = p.kind === 'showcase' ? [] : PAGES.filter((o) => o.kind === 'showcase' && o.related.includes(p.slug)).map(card);
+    write(resolve(out, 'pages', `${p.slug}.json`), { page: { ...p, lead: leadOf(p) }, api: entries, related, usedIn, modified: dates[p.slug] });
     writeText(resolve(out, 'routes', `${p.slug}.ts`), routeModule(p));
   }
   // A page that was removed or renamed must not leave its old files behind (the client would still bundle them).

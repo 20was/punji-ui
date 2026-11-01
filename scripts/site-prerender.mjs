@@ -7,8 +7,8 @@ import { dirname, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { PAGES, GROUPS, pageBySlug } from '../site/src/registry.ts';
 import {
-  HOME_DESCRIPTION, PORTAL_RENAMES, PORTAL_TO_HOME, REPO, ROUTES, SITE_NAME,
-  headFor, normaliseBase, pagePath, sectionOf,
+  HOME_DESCRIPTION, NPM_URL, PACKAGE_NAME, PORTAL_RENAMES, PORTAL_TO_HOME, REPO, ROUTES, SITE_NAME,
+  headExtraFor, headFor, normaliseBase, pagePath, sectionOf,
 } from '../site/src/seo.ts';
 
 const dist = resolve('site/dist');
@@ -25,12 +25,13 @@ function headHtml(head) {
     `<title>${escapeHtml(head.title)}</title>`,
     `<meta name="description" content="${escapeHtml(head.description)}" />`,
     `<meta name="robots" content="${head.robots}" />`,
-    `<link rel="canonical" href="${escapeHtml(head.canonical)}" />`,
+    // The 404 page names no canonical URL and no og:url: it is noindex and has no address of its own.
+    ...(head.canonical ? [`<link rel="canonical" href="${escapeHtml(head.canonical)}" />`] : []),
     `<meta property="og:site_name" content="${SITE_NAME}" />`,
     `<meta property="og:type" content="${head.ogType}" />`,
     `<meta property="og:title" content="${escapeHtml(head.title)}" />`,
     `<meta property="og:description" content="${escapeHtml(head.description)}" />`,
-    `<meta property="og:url" content="${escapeHtml(head.canonical)}" />`,
+    ...(head.canonical ? [`<meta property="og:url" content="${escapeHtml(head.canonical)}" />`] : []),
     `<meta property="og:image" content="${escapeHtml(head.ogImage)}" />`,
     `<meta property="og:image:width" content="1200" />`,
     `<meta property="og:image:height" content="630" />`,
@@ -83,9 +84,11 @@ const write = (rel, content) => {
   writeFileSync(file, content);
 };
 
-// Pages.
+// Pages. headExtraFor adds the group title (breadcrumb) and the date the page's sources last changed (dates.json).
+const dates = JSON.parse(readFileSync(resolve('site/src/generated/dates.json'), 'utf8'));
+const headOf = (route) => headFor(route, siteUrl, base, headExtraFor(route, dates));
 for (const route of ROUTES) {
-  const head = headFor(route, siteUrl, base);
+  const head = headOf(route);
   write(`${head.path.replace(/^\//, '')}index.html`, await page(head.path, head));
 }
 // 404: rendered for a path that matches nothing, so the client renders the same thing on hydration.
@@ -94,16 +97,27 @@ for (const route of ROUTES) {
   write('404.html', await page('/page-not-found/', head));
 }
 
-// sitemap.xml
-const urls = ROUTES.map((route) => headFor(route, siteUrl, base).canonical);
-write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((u) => `  <url><loc>${escapeHtml(u)}</loc></url>`).join('\n')}\n</urlset>\n`);
+// sitemap.xml, with <lastmod> from git (the overview takes the newest page date). No changefreq or priority: Google
+// ignores both.
+const newest = Object.values(dates).toSorted().at(-1);
+const entries = ROUTES.map((route) => [headOf(route).canonical, route.kind === 'page' ? dates[route.page.slug] : newest]);
+write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries.map(([u, d]) => `  <url><loc>${escapeHtml(u)}</loc>${d ? `<lastmod>${d}</lastmod>` : ''}</url>`).join('\n')}\n</urlset>\n`);
 
 // robots.txt: robots.txt is only honoured at a host root, so under a subpath it is informational.
 write('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}${withBase('/sitemap.xml')}\n`);
 
 // llms.txt (short index) and llms-full.txt (the page text).
-const intro = `${HOME_DESCRIPTION}\n\nPackage: @punji/ui (React, TypeScript, CSS variables). Source: ${REPO}`;
-const lines = [`# ${SITE_NAME}`, '', `> ${HOME_DESCRIPTION}`, '', `Package: @punji/ui. Source: ${REPO}`, '', `- [Overview](${absolute('/')}): every page, by domain`, ''];
+const version = JSON.parse(readFileSync(resolve('package.json'), 'utf8')).version;
+const facts = [
+  `- Package: ${PACKAGE_NAME} ${version} on npm (${NPM_URL}), published from CI with provenance. MIT licence.`,
+  `- Install: \`npm install ${PACKAGE_NAME}\`. Peer dependencies: react@^19 and react-dom@^19. ESM only, TypeScript declarations included.`,
+  `- Styles: import \`${PACKAGE_NAME}/styles.css\` once at the app root. Every module also has its own subpath (\`${PACKAGE_NAME}/stock-table\`) and stylesheet (\`${PACKAGE_NAME}/css/stock-table.css\`).`,
+  '- Money is bigint minor units (paisa, cents) or exact decimal strings, never floating point; anything that divides takes an explicit rounding mode.',
+  '- Nepal first, any currency: NPR, lakh and crore grouping, Devanagari digits, Bikram Sambat (BS) dates, the Nepal fiscal year and the NEPSE session calendar are built in; other currencies and locales are configuration.',
+  `- Source: ${REPO}`,
+];
+const intro = `${HOME_DESCRIPTION}\n\n${facts.join('\n')}`;
+const lines = [`# ${SITE_NAME}`, '', `> ${HOME_DESCRIPTION}`, '', ...facts, '', `- [Overview](${absolute('/')}): every page, by domain`, ''];
 for (const group of GROUPS) {
   const pages = PAGES.filter((p) => p.group === group.id);
   if (!pages.length) continue;

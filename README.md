@@ -5,13 +5,13 @@
   </picture>
 </a>
 
-> [!WARNING]
-> Work in progress, and nothing is published to npm yet. APIs and styles will change without notice. Follow along or open an issue, but please don't depend on it in production.
+> [!NOTE]
+> `@punji/ui` 0.1.0 is on npm, published from CI with provenance. It is pre-1.0: a minor version can change APIs and styles, so pin an exact version and read the [changelog](./CHANGELOG.md) before you upgrade.
 
 <p align="center">
   <a href="https://github.com/20was/punji-ui/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/20was/punji-ui/actions/workflows/ci.yml/badge.svg?branch=main"></a>
   <a href="https://scorecard.dev/viewer/?uri=github.com/20was/punji-ui"><img alt="OpenSSF Scorecard" src="https://api.scorecard.dev/projects/github.com/20was/punji-ui/badge"></a>
-  <img alt="npm: not published yet" src="https://img.shields.io/badge/npm-not%20published%20yet-lightgrey">
+  <a href="https://www.npmjs.com/package/@punji/ui"><img alt="npm version" src="https://img.shields.io/npm/v/@punji/ui"></a>
   <a href="./LICENSE"><img alt="MIT licence" src="https://img.shields.io/badge/licence-MIT-blue"></a>
 </p>
 
@@ -35,10 +35,8 @@ Built for the screens where a wrong digit costs someone money:
 
 ## Quick start
 
-> The package is not on npm yet. These steps work from the first release.
-
 ```sh
-npm install @punji/ui   # after the first release; React 19 is a peer dependency
+npm install @punji/ui   # React 19 and React DOM 19 are peer dependencies
 ```
 
 Import the CSS once at your app's root, then use the components. Prices are `bigint` minor units (paisa, cents), so `51230n` is Rs 512.30:

@@ -29,11 +29,14 @@ export interface CsvOptions {
   neutralizeFormulas?: boolean;
 }
 
-const TRIGGER = /^[=+\-@\t\r]/;
+// OWASP CSV injection list: = + - @, tab, CR, LF, and the full-width ＝ ＋ － ＠ (U+FF1D, U+FF0B, U+FF0D, U+FF20) that
+// some locales (Japanese Excel) read as formula starts.
+const TRIGGER = /^[=+\-@\t\r\n＝＋－＠]/;
 const PLAIN_NUMBER = /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/;
 
-/** Prefix text a spreadsheet could read as a formula (leading = + - @ tab or CR) with an
- * apostrophe, per OWASP CSV-injection guidance. Idempotent only for non-triggering text.
+/** Prefix text a spreadsheet could read as a formula (leading = + - @, tab, CR, LF or a
+ * full-width = + - @) with an apostrophe, per OWASP CSV-injection guidance. Idempotent
+ * only for non-triggering text.
  */
 export function neutralizeFormula(text: string): string {
   return TRIGGER.test(text) ? `'${text}` : text;
@@ -55,7 +58,8 @@ function quote(text: string, delimiter: string): string {
 
 /** Serialise rows to RFC 4180 CSV.
  *
- * Formula safety: text cells starting with = + - @ tab or CR get a leading apostrophe.
+ * Formula safety: text cells starting with = + - @, tab, CR, LF or a full-width = + - @
+ * get a leading apostrophe.
  * Values that are typed `number` are exempt (a finite number prints only digits, "-", ".",
  * "e", "+", so negatives stay numeric); numeric-looking strings are not, unless the
  * column sets keepNumericText. Date, bigint and object values throw unless the column has

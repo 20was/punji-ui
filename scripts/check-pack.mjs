@@ -2,6 +2,7 @@
 // adds) may ship. No source maps, no sources, no images or brand assets, no
 // dotfiles, and an upper bound on the unpacked size.
 import { execFileSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 
 // Calendar/date pickers and the expanded financial table API add JS,
 // declarations and dedicated CSS. Keep a bounded allowance above the current
@@ -40,6 +41,25 @@ console.log(`pack: ${info.files.length} files, ${info.size} B packed, ${info.unp
 
 if (bad.length) {
   console.error(`pack: files that must not ship:\n  ${bad.join('\n  ')}`);
+  process.exit(1);
+}
+// Content scan of what ships: no source-map references and nothing shaped like a credential (npm, GitHub,
+// Cloudflare-style bearer, AWS, Slack tokens, private keys). A secret in dist would be published to npm for good.
+const SECRETS = [
+  [/sourceMappingURL=/, 'a source-map reference'],
+  [/\bnpm_[A-Za-z0-9]{36}\b/, 'an npm token'],
+  [/\b(?:ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{36}\b|\bgithub_pat_[A-Za-z0-9_]{60,}/, 'a GitHub token'],
+  [/\bAKIA[0-9A-Z]{16}\b/, 'an AWS access key id'],
+  [/\bxox[abposr]-[A-Za-z0-9-]{10,}/, 'a Slack token'],
+  [/-----BEGIN [A-Z ]*PRIVATE KEY-----/, 'a private key'],
+];
+const leaks = [];
+for (const { path } of info.files) {
+  const text = readFileSync(path, 'utf8');
+  for (const [pattern, what] of SECRETS) if (pattern.test(text)) leaks.push(`${path}: ${what}`);
+}
+if (leaks.length) {
+  console.error(`pack: content that must not ship:\n  ${leaks.join('\n  ')}`);
   process.exit(1);
 }
 if (info.unpackedSize > MAX_UNPACKED) {

@@ -123,6 +123,13 @@ describe('round trip', () => {
     const f = getMoneyFormatter({ currency: 'USD', locale: 'en-US' });
     expect(['', '-', '.', '12.', '1234567.5', '-0.05', '007'].map(v => f.formatDecimalInput(v))).toEqual(['', '-', '0.', '12.', '1,234,567.5', '-0.05', '7']);
   });
+  it('formatDecimalInput rejects a long non-decimal string in linear time (no ReDoS)', () => {
+    const f = getMoneyFormatter({ currency: 'USD', locale: 'en-US' });
+    const hostile = `${'1'.repeat(100_000)}x`;
+    const start = performance.now();
+    expect(f.formatDecimalInput(hostile)).toBe(hostile);
+    expect(performance.now() - start).toBeLessThan(500);
+  });
 });
 
 describe('formatSpoken', () => {

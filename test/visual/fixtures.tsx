@@ -21,6 +21,7 @@ import { tableScaleRegistry } from './fixtures-table-scale.tsx';
 import { tradingRegistry } from './fixtures-trading.tsx';
 import { shareIssuesRegistry } from './fixtures-share-issues.tsx';
 import { walletRegistry } from './fixtures-wallet.tsx';
+import { lendingRegistry } from './fixtures-lending.tsx';
 
 const money = (v: number | null) => formatNPR(v);
 const Group = ({ title, children }: { title: string; children: ReactNode }) => <section aria-label={title}><h2 className="vr-h">{title}</h2><div className="vr-row" style={{ marginTop: 8 }}>{children}</div></section>;
@@ -335,6 +336,7 @@ export const registry: Record<string, () => ReactNode> = {
   ...tradingRegistry,
   ...shareIssuesRegistry,
   ...walletRegistry,
+  ...lendingRegistry,
 };
 // Fixtures that draw their own full-width stage (shell, overlays).
 export const ownStage = new Set(['shell', 'drawer', 'sheet', 'popover', 'command-palette', 'toast']);

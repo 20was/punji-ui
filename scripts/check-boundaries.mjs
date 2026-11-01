@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const problems = [];
 // Pure directories and the one external dependency each may use per file.
-const PURE = { nepal: { 'calendar.ts': '@remotemerge/nepali-date-converter' }, calculations: {}, money: {}, export: {}, ledger: {}, banking: {}, 'chart-math': {}, 'date-range-presets': {}, 'nepse-fees': {}, 'share-issues': {}, 'emvco-qr': {} };
+const PURE = { nepal: { 'calendar.ts': '@remotemerge/nepali-date-converter' }, calculations: {}, money: {}, export: {}, ledger: {}, banking: {}, 'chart-math': {}, 'date-range-presets': {}, 'nepse-fees': {}, 'share-issues': {}, 'emvco-qr': {}, lending: {}, kyc: {}, 'nepal-address-data': {} };
 // Pure modules may reuse these other pure modules (never components): the exact decimal parser, minor-unit helpers and rounding.
 // The ledger helpers also reuse the calendar-date type, currency exponent and the CSV writer (all pure).
 const SHARED = {
@@ -17,6 +17,8 @@ const SHARED = {
   // Share issues and corporate actions: exact rounding only.
   'share-issues': new Set(['../calculations/rounding.ts']),
   'emvco-qr': new Set(['../nepal/money.ts']),
+  // Loan and deposit maths reuse the exact rounding.
+  lending: new Set(['../calculations/rounding.ts']),
 };
 for (const [dir, allowed] of Object.entries(PURE)) {
   for (const name of readdirSync(resolve(root, 'src', dir))) {

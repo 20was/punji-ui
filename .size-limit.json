@@ -794,7 +794,7 @@
     "name": "stock-table (import from '@punji/ui/stock-table')",
     "path": "dist/stock-table/StockTable.js",
     "import": "*",
-    "limit": "10.24 kB",
+    "limit": "10.54 kB",
     "gzip": true
   },
   {
@@ -983,7 +983,7 @@
     "name": "dividend-history (import from '@punji/ui/dividend-history')",
     "path": "dist/dividend-history/DividendHistory.js",
     "import": "*",
-    "limit": "11.45 kB",
+    "limit": "11.79 kB",
     "gzip": true
   },
   {

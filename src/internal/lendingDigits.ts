@@ -1,12 +1,7 @@
-// Digit helpers shared by the lending, deposit and KYC components: typed Devanagari digits to ASCII and back.
-const DEVA = '०१२३४५६७८९';
+// Number helpers shared by the lending, deposit and KYC components. The digit mapping lives in ./digits.ts.
+import { fromDevanagari as asciiDigits, showDigits } from './digits.ts';
 
-/** Devanagari digits to ASCII; everything else unchanged. */
-export const asciiDigits = (text: string): string => text.replace(/[०-९]/g, (d) => String(DEVA.indexOf(d)));
-
-/** ASCII digits to Devanagari when `digits` is 'deva'. */
-export const showDigits = (text: string | number, digits: 'latn' | 'deva' = 'latn'): string =>
-  digits === 'deva' ? String(text).replace(/\d/g, (d) => DEVA[Number(d)]!) : String(text);
+export { asciiDigits, showDigits };
 
 /** A whole number from typed text (ASCII or Devanagari digits only), or null. */
 export const wholeNumber = (text: string): number | null => {

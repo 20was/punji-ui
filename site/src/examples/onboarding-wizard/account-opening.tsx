@@ -27,7 +27,7 @@ export default function Example() {
       {step === 0 && (
         <>
           <Field label="Full name" value={name} onChange={(v) => { setName(v); setNameError(undefined); }} error={nameError} autoComplete="name" />
-          <IdNumberInput kind="citizenship" label="Citizenship certificate number" value={citizenship} onValueChange={(text) => setCitizenship(text)} />
+          <IdNumberInput kind="citizenship" label="Citizenship certificate number" value={citizenship} onValueChange={({ value }) => setCitizenship(value)} />
         </>
       )}
       {step === 1 && <NepalAddressPicker value={address} onChange={setAddress} labels={{ legend: 'Permanent address' }} />}

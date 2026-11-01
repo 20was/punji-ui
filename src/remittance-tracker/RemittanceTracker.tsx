@@ -63,7 +63,7 @@ export interface RemittanceTrackerLabels {
   resultTitle: (masked: string) => string;
 }
 
-export const remittanceTrackerLabels: RemittanceTrackerLabels = {
+export const DEFAULT_REMITTANCE_TRACKER_LABELS: RemittanceTrackerLabels = {
   controlNumber: 'Control number', hint: (min, max) => (min === max ? `${min} digits, from the sender's receipt` : `${min} to ${max} digits, from the sender's receipt`), track: 'Track',
   invalid: (min, max) => (min === max ? `Enter the ${min}-digit control number.` : `Enter the control number: ${min} to ${max} digits.`),
   notFound: 'No remittance matches this control number. Check the digits with the sender.', failed: 'The lookup did not finish. Try again.', searching: 'Looking up the remittance',
@@ -115,7 +115,7 @@ export function maskControlNumber(value: string): string {
 type State = { kind: 'idle' } | { kind: 'loading' } | { kind: 'found'; number: string; details: RemittanceDetails } | { kind: 'not-found' } | { kind: 'error' };
 
 export function RemittanceTracker({ onLookup, defaultControlNumber = '', lookupOnMount = false, minLength = 8, maxLength = 16, payoutMoney = { currency: 'NPR', locale: 'en-IN', display: 'code' }, sentLocale = 'en', timeZone, labels, headingLevel = 3, footer, className, testId }: RemittanceTrackerProps) {
-  const words = { ...remittanceTrackerLabels, ...labels, methods: { ...remittanceTrackerLabels.methods, ...labels?.methods } };
+  const words = { ...DEFAULT_REMITTANCE_TRACKER_LABELS, ...labels, methods: { ...DEFAULT_REMITTANCE_TRACKER_LABELS.methods, ...labels?.methods } };
   const uid = useId();
   const [text, setText] = useState(() => (normalizeControlNumber(defaultControlNumber) ?? '').slice(0, maxLength));
   const [problem, setProblem] = useState<string | null>(null);

@@ -5,7 +5,7 @@
  */
 import type { CalendarLabels } from '../calendar/labels.ts';
 import type { HoldToConfirmLabels } from '../hold-to-confirm/HoldToConfirm.tsx';
-import type { IdNumberInputMessages } from '../id-number-input/IdNumberInput.tsx';
+import type { IdNumberInputLabels } from '../id-number-input/IdNumberInput.tsx';
 import type { PanInputLabels } from '../pan-input/PanInput.tsx';
 import type { PayeeVerificationLabels } from '../payee-verification/PayeeVerification.tsx';
 import type { PaymentFieldKind, PaymentFieldMessages } from '../payment-fields/messages.ts';
@@ -97,7 +97,7 @@ export interface PunjiMessages {
   pagination?: PaginationMessages;
   table?: TableMessages;
   calendar?: Partial<CalendarLabels>;
-  idNumberInput?: Partial<IdNumberInputMessages>;
+  idNumberInput?: Partial<IdNumberInputLabels>;
   panInput?: Partial<PanInputLabels>;
   paymentFields?: { messages?: Partial<PaymentFieldMessages>; fieldNames?: Partial<Record<PaymentFieldKind, string>> };
   amountWords?: AmountWordsPack;

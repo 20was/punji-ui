@@ -46,7 +46,7 @@ export interface InterestRateTableLabels {
   unknownDate: string;
 }
 
-export const interestRateTableLabels: InterestRateTableLabels = {
+export const DEFAULT_INTEREST_RATE_TABLE_LABELS: InterestRateTableLabels = {
   product: 'Product', rate: 'Rate (yearly)', change: 'Change', effective: 'Effective from', up: 'Up', down: 'Down', same: 'No change', points: 'points', unknownDate: '—',
 };
 
@@ -99,7 +99,7 @@ const ARROWS = { up: 'M8 13V3m0 0L4 7m4-4 4 4', down: 'M8 3v10m0 0-4-4m4 4 4-4',
 
 export function InterestRateTable({ rates, caption, description, calendar = 'ad', language = 'en', digits = 'latn', showChange = true, labels, className, testId }: InterestRateTableProps) {
   const captionId = useId();
-  const words = { ...interestRateTableLabels, ...labels };
+  const words = { ...DEFAULT_INTEREST_RATE_TABLE_LABELS, ...labels };
   const changes = showChange && rates.some((r) => r.previousRatePercent !== undefined);
   const columns = changes ? 4 : 3;
   const rows: ReactNode[] = [];

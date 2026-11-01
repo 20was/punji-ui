@@ -46,6 +46,8 @@ export interface HoldToConfirmProps {
   block?: boolean;
   /** Words, in the reader's language. */
   labels?: HoldToConfirmLabels;
+  /** Extra class on the root element (layout only). */
+  className?: string;
   /** Becomes data-testid on the button. */
   testId?: string;
 }
@@ -53,7 +55,7 @@ export interface HoldToConfirmProps {
 const KEYS = new Set([' ', 'Enter']);
 
 export function HoldToConfirm({
-  children, onConfirm, mode = 'hold', holdMs = 1500, delaySeconds = 5, tone = 'danger', disabled = false, block, labels = {}, testId,
+  children, onConfirm, mode = 'hold', holdMs = 1500, delaySeconds = 5, tone = 'danger', disabled = false, block, labels = {}, className, testId,
 }: HoldToConfirmProps) {
   if (!Number.isFinite(holdMs) || holdMs < 500 || holdMs > 10000) throw new RangeError('holdMs must be 500 to 10000');
   if (!Number.isInteger(delaySeconds) || delaySeconds < 1 || delaySeconds > 120) throw new RangeError('delaySeconds must be a whole number from 1 to 120');
@@ -129,7 +131,7 @@ export function HoldToConfirm({
   const describe = mode === 'hold' ? holdHint : undefined;
 
   return (
-    <span className={`pu-hold${block ? ' block' : ''}`}>
+    <span className={`pu-hold${block ? ' block' : ''}${className ? ` ${className}` : ''}`}>
       <button
         type="button"
         className={`kit-btn lg pu-hold-btn ${tone === 'primary' ? 'primary' : 'danger'}${block ? ' block' : ''}`}

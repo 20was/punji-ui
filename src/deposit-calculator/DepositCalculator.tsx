@@ -17,6 +17,7 @@ import { NumberField, SelectField } from '../fields/Fields.tsx';
 import { minorOf, rateWithin, showDigits, wholeNumber } from '../internal/lendingDigits.ts';
 import { simulateDeposit, type CompoundingFrequency, type DepositResult } from '../lending/deposit.ts';
 import { MoneyDisplay } from '../money-display/MoneyDisplay.tsx';
+import { useDebounce } from '../use-debounce/useDebounce.ts';
 import { currencyExponent, getMoneyFormatter, nepalMoneyPreset, type MoneyFormatConfig } from '../money/money.ts';
 import { compareDecimals } from '../nepal/decimal.ts';
 import { PercentageInput } from '../percentage-input/PercentageInput.tsx';
@@ -62,7 +63,7 @@ export interface DepositCalculatorLabels {
   disclaimer: string;
 }
 
-export const depositCalculatorLabels: DepositCalculatorLabels = {
+export const DEFAULT_DEPOSIT_CALCULATOR_LABELS: DepositCalculatorLabels = {
   kind: 'Deposit type', fixed: 'Fixed deposit', recurring: 'Recurring deposit', amountFixed: 'Deposit amount', amountRecurring: 'Monthly instalment',
   rate: 'Interest rate (yearly)', term: 'Term in months', compounding: 'Interest credited',
   frequency: { monthly: 'Monthly', quarterly: 'Quarterly', 'half-yearly': 'Half-yearly', yearly: 'Yearly', 'at-maturity': 'At maturity' },
@@ -115,11 +116,14 @@ export interface DepositCalculatorProps {
 
 const ALL: readonly CompoundingFrequency[] = ['monthly', 'quarterly', 'half-yearly', 'yearly', 'at-maturity'];
 
+/** How long typing must pause before the new maturity amount is announced. */
+const ANNOUNCE_DELAY_MS = 700;
+
 export function DepositCalculator({
   defaultKind = 'fixed', defaultAmount = '', defaultRatePercent = '', defaultMonths = 12, defaultCompounding = 'quarterly', defaultTdsPercent = '6',
   maxMonths = 120, maxRatePercent = '20', frequencies = ALL, rounding = 'half-up', money = nepalMoneyPreset, digits = 'latn', onResultChange, labels, title, headingLevel = 2, className, testId,
 }: DepositCalculatorProps) {
-  const words = { ...depositCalculatorLabels, ...labels, frequency: { ...depositCalculatorLabels.frequency, ...labels?.frequency } };
+  const words = { ...DEFAULT_DEPOSIT_CALCULATOR_LABELS, ...labels, frequency: { ...DEFAULT_DEPOSIT_CALCULATOR_LABELS.frequency, ...labels?.frequency } };
   const uid = useId();
   const exponent = currencyExponent(money.currency);
   const [kind, setKind] = useState<DepositKind>(defaultKind);
@@ -149,6 +153,10 @@ export function DepositCalculator({
   useEffect(() => { report.current = onResultChange; }, [onResultChange]);
   useEffect(() => { report.current?.(result); }, [result]);
 
+  // One short sentence, once typing settles, instead of re-reading every figure on each keystroke.
+  const spoken = result ? `${words.maturity}: ${getMoneyFormatter(money).formatSpoken(result.maturity)}` : '';
+  const announcement = useDebounce(spoken, ANNOUNCE_DELAY_MS);
+
   const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
   const fmt = getMoneyFormatter({ ...money, display: 'none' });
   const deva = digits === 'deva' ? 'deva' : money.numberingSystem;
@@ -168,7 +176,7 @@ export function DepositCalculator({
               options={[{ value: 'compound', label: words.compound }, { value: 'pay-out', label: words.payOut }]} />
           )}
         </div>
-        <div className="pu-lcalc-result" aria-live="polite" aria-atomic="true">
+        <div className="pu-lcalc-result">
           {result ? (
             <>
               <dl className="pu-lcalc-figures">
@@ -183,6 +191,7 @@ export function DepositCalculator({
             </>
           ) : <p className="pu-lcalc-empty">{words.incomplete}</p>}
         </div>
+        <p className="kit-sr" role="status" data-testid={testId && `${testId}-status`}>{announcement}</p>
       </div>
       {result && (
         <div className="pu-lcalc-schedule">

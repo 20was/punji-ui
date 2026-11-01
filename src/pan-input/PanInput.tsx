@@ -6,7 +6,7 @@
  * few digits, a letter, too many), never while the person is still typing. It checks the shape only: whether the
  * number was issued, and to whom, is a lookup your server makes.
  */
-import { useState, type FocusEvent, type InputHTMLAttributes, type ReactNode } from 'react';
+import { useState, type FocusEvent, type InputHTMLAttributes, type ReactNode, type Ref } from 'react';
 
 import { Field } from '../fields/Fields.tsx';
 import { useLocaleMessages } from '../locale/context.tsx';
@@ -51,6 +51,8 @@ export interface PanInputProps extends Omit<InputHTMLAttributes<HTMLInputElement
   digits?: 'latn' | 'deva';
   /** Message words, in the reader's language. */
   labels?: Partial<PanInputLabels>;
+  /** Ref to the input element. */
+  ref?: Ref<HTMLInputElement>;
 }
 
 export function PanInput({ label, hint = '9 digits', error, value, onValueChange, digits = 'latn', labels, onBlur, className, ...rest }: PanInputProps) {

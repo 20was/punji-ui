@@ -20,13 +20,14 @@ import { getMoneyFormatter, type MoneyFormatConfig } from '../money/money.ts';
 import { currencyAmountInWords } from '../tax/words.ts';
 import { detectSpoofing, type SpoofCheck } from '../trust/spoofing.ts';
 
-type MoneyOptions = Omit<MoneyFormatConfig, 'currency'>;
+/** A money config whose currency may come from the separate `currency` prop instead. */
+type MoneyOptions = Omit<MoneyFormatConfig, 'currency'> & { currency?: string };
 
 export interface ConfirmAmountProps {
   /** The amount, bigint minor units. */
   amount: bigint;
-  /** ISO 4217 code. */
-  currency: string;
+  /** ISO 4217 code. Default `money.currency`, else 'NPR'. */
+  currency?: string;
   /** Locale, digits, grouping and exponent for the figure. Default locale 'en'. */
   money?: MoneyOptions;
   /** The words line. Default: the locale pack's words when a `PunjiLocaleProvider` pack has `amountWords`, else English words for the currency (`currencyAmountInWords`) when the locale is English; none otherwise. A string replaces it; false hides it. */
@@ -37,6 +38,10 @@ export interface ConfirmAmountProps {
   previous?: bigint;
   /** Words. */
   labels?: { inWords?: string; changedFrom?: string };
+  /** Extra class on the root element (layout only). */
+  className?: string;
+  /** Becomes data-testid on the root. */
+  testId?: string;
 }
 
 function defaultWords(amount: bigint, currency: string, money: MoneyOptions | undefined, pack: AmountWordsPack | undefined, scale: number): string | null {
@@ -51,14 +56,15 @@ function defaultWords(amount: bigint, currency: string, money: MoneyOptions | un
 }
 
 /** The amount in figures and in words, large, for a confirm step. */
-export function ConfirmAmount({ amount, currency, money, words, label, previous, labels = {} }: ConfirmAmountProps) {
+export function ConfirmAmount({ amount, currency: currencyProp, money, words, label, previous, labels = {}, className, testId }: ConfirmAmountProps) {
   const pack = useLocaleMessages().messages;
   const { inWords = 'In words', changedFrom = 'Changed from' } = { ...pack.confirmAmount, ...labels };
+  const currency = currencyProp ?? money?.currency ?? 'NPR';
   const formatter = getMoneyFormatter({ ...money, currency });
   const text = words === false ? null : words ?? defaultWords(amount, currency, money, pack.amountWords, formatter.exponent);
   const changed = previous !== undefined && previous !== amount;
   return (
-    <div className="pu-confirm-amount" data-changed={changed ? 'true' : undefined}>
+    <div className={`pu-confirm-amount${className ? ` ${className}` : ''}`} data-changed={changed ? 'true' : undefined} data-testid={testId}>
       <span className="pu-confirm-amount-label">{label ?? pack.confirmAmount?.label ?? 'Amount'}</span>
       <span className="pu-confirm-amount-figure">
         <span aria-hidden="true">{formatter.format(amount)}</span>
@@ -126,9 +132,9 @@ export interface TransferReviewLabels {
 export interface TransferReviewProps {
   /** The amount to send, bigint minor units. */
   amount: bigint;
-  /** ISO 4217 code. */
-  currency: string;
-  /** Formatting options for every figure (locale, digits, grouping, exponent). */
+  /** ISO 4217 code. Default `money.currency`, else 'NPR'. */
+  currency?: string;
+  /** The money config for every figure (`MoneyFormatConfig`, as elsewhere in the kit: currency, locale, digits, exponent). */
   money?: MoneyOptions;
   /** Who receives the money. */
   recipient: TransferRecipient;
@@ -154,6 +160,8 @@ export interface TransferReviewProps {
   busy?: boolean;
   /** Words, in the reader's language. */
   labels?: TransferReviewLabels;
+  /** Extra class on the root element (layout only). */
+  className?: string;
   /** Becomes data-testid on the root. */
   testId?: string;
 }
@@ -175,11 +183,12 @@ function ChangedNote({ previous, words }: { previous?: ReactNode; words: Require
 
 /** The transfer confirm screen: amount in figures and words, a spoofing-checked recipient, changed fields marked. */
 export function TransferReview({
-  amount, currency, money, recipient, knownPayees, fee, previousAmount, words, details = [], verification, onConfirm, confirm, onEdit, busy, labels = {}, testId,
+  amount, currency: currencyProp, money, recipient, knownPayees, fee, previousAmount, words, details = [], verification, onConfirm, confirm, onEdit, busy, labels = {}, className, testId,
 }: TransferReviewProps) {
   const pack = useLocaleMessages().messages;
   const text = { ...DEFAULT_LABELS, ...pack.transferReview, ...labels };
   const id = useId();
+  const currency = currencyProp ?? money?.currency ?? 'NPR';
   const formatter = getMoneyFormatter({ ...money, currency });
   const check: SpoofCheck = detectSpoofing(recipient.name, knownPayees ? { known: knownPayees } : {});
   const risky = check.risk === 'high';
@@ -188,7 +197,7 @@ export function TransferReview({
   const blocked = risky && !acknowledged;
 
   return (
-    <section className="pu-review" aria-labelledby={`${id}-t`} data-testid={testId}>
+    <section className={`pu-review${className ? ` ${className}` : ''}`} aria-labelledby={`${id}-t`} data-testid={testId}>
       <h2 className="pu-review-title" id={`${id}-t`}>{text.title}</h2>
       <ConfirmAmount amount={amount} currency={currency} money={money} words={words} label={text.amount} {...(previousAmount === undefined ? {} : { previous: previousAmount })} />
       <dl className="pu-review-rows">

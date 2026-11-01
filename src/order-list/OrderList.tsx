@@ -13,6 +13,7 @@ import { getMoneyFormatter, nepalMoneyConfig, type MoneyFormatConfig } from '../
 import { InlineConfirm } from '../inline-confirm/InlineConfirm.tsx';
 import { StatusPill } from '../status-pill/StatusPill.tsx';
 import { Cell, DataListRow, DataTable, type Column } from '../table/Table.tsx';
+import { toDevanagari } from '../internal/digits.ts';
 
 export type OrderStatus = 'pending' | 'open' | 'partially-filled' | 'filled' | 'cancelled' | 'rejected' | 'expired';
 
@@ -129,7 +130,7 @@ export interface OrderListProps {
   testId?: string;
 }
 
-const deva = (on: boolean) => (on ? (text: string) => text.replace(/\d/g, (d) => '०१२३४५६७८९'[Number(d)]!) : (text: string) => text);
+const deva = (on: boolean) => (on ? toDevanagari : (text: string) => text);
 
 function SidePill({ side, words }: { side: 'buy' | 'sell'; words: { buy: string; sell: string } }) {
   return <StatusPill size="sm" tone={side === 'buy' ? 'gain' : 'loss'} className="pu-orders-side">{side === 'buy' ? words.buy : words.sell}</StatusPill>;

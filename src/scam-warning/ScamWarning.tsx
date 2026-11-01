@@ -81,11 +81,13 @@ export interface ScamWarningProps {
   help?: ReactNode;
   /** Words, in the reader's language. */
   labels?: ScamWarningLabels;
+  /** Extra class on the root element (layout only). */
+  className?: string;
   /** Becomes data-testid on the root. */
   testId?: string;
 }
 
-export function ScamWarning({ scenario, copy, onCancel, onProceed, coolingOffSeconds = 0, help, labels = {}, testId }: ScamWarningProps) {
+export function ScamWarning({ scenario, copy, onCancel, onProceed, coolingOffSeconds = 0, help, labels = {}, className, testId }: ScamWarningProps) {
   if (!Number.isInteger(coolingOffSeconds) || coolingOffSeconds < 0 || coolingOffSeconds > 120) throw new RangeError('coolingOffSeconds must be a whole number from 0 to 120');
   const {
     title = 'Stop. This could be a scam.', questionsTitle = 'Ask yourself:', cancel = 'Cancel this payment',
@@ -99,7 +101,7 @@ export function ScamWarning({ scenario, copy, onCancel, onProceed, coolingOffSec
   useEffect(() => { heading.current?.focus(); }, []);
 
   return (
-    <section className="pu-scam" aria-labelledby={`${id}-t`} data-scenario={scenario} data-testid={testId}>
+    <section className={`pu-scam${className ? ` ${className}` : ''}`} aria-labelledby={`${id}-t`} data-scenario={scenario} data-testid={testId}>
       <div className="pu-scam-head">
         <svg className="pu-scam-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <path d="M12 3 2 21h20L12 3Z" />

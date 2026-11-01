@@ -11,6 +11,7 @@ import { useState, type FocusEvent, type InputHTMLAttributes, type ReactNode, ty
 
 import { Field } from '../fields/Fields.tsx';
 import { boidMessage, checkBoid, normalizeBoid, type BoidCheck, type BoidOptions, type BoidParts, type BoidProblem } from '../share-issues/boid.ts';
+import { showDigits } from '../internal/digits.ts';
 
 export interface BoidInputChange {
   /** ASCII digits only ('' when cleared). */
@@ -48,7 +49,6 @@ export interface BoidInputProps extends Omit<InputHTMLAttributes<HTMLInputElemen
   ref?: Ref<HTMLInputElement>;
 }
 
-const DEVANAGARI = '०१२३४५६७८९';
 
 const defaultParts = (p: BoidParts) => `DP ID ${p.dpId} · Client ID ${p.clientId}`;
 
@@ -60,8 +60,8 @@ export function BoidInput({
   const options: BoidOptions = { prefix };
   const check = checkBoid(value, options);
   const builtIn = left && !check.ok && check.problem !== 'empty' ? (message ? message(check.problem, check.digits) : boidMessage(check.problem, check.digits, options)) : undefined;
-  const shown = digits === 'deva' ? value.replace(/\d/g, (d) => DEVANAGARI[Number(d)]!) : value;
-  const toDeva = (text: string) => (digits === 'deva' ? text.replace(/\d/g, (d) => DEVANAGARI[Number(d)]!) : text);
+  const shown = showDigits(value, digits);
+  const toDeva = (text: string) => showDigits(text, digits);
   const help = check.ok && partsHint ? (() => { const h = partsHint(check.parts); return typeof h === 'string' ? toDeva(h) : h; })() : hint;
   return (
     <Field

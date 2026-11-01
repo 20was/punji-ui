@@ -1,5 +1,0 @@
----
-'@punji/ui': minor
----
-
-Share issues and corporate actions. The pure `@punji/ui/share-issues` module: `issueStatus`, `sortIssues`, `checkKitta`, `parseKitta`, `nearestValidKitta` and `issueAmount` for IPO, FPO, right, mutual fund and debenture issues; `checkBoid`, `boidParts`, `formatBoid` and `spokenBoid` for 16-digit BOIDs; `entitledUnits`, `adjustedPrice` (the price after a book close for bonus and right shares, exact until one final rounding), `costBasisSteps`, `costBasisAfter` and `wacc` (average cost through buys, bonus, right and sales) and `corporateTimeline`, all in bigint paisa with an explicit `RoundingMode`. Components, each on its own subpath: `IssueCard` and `IssueList` (status in words, days left, BS and AD dates, kitta rules, kind filter), `ApplyIssueForm` (kitta with min, max and multiple, exact amount, bank account and CRN, declaration, then a PIN or one-time code), `BoidInput`, `AllotmentChecker` (many BOIDs in one check, bad lines named before sending), `DematAccountCard` (renewal warnings), `CorporateActionTimeline` and `EdisConfirmation`. Styles in `css/share-issues.css`; see docs/SHARE-ISSUES.md.

@@ -12,6 +12,8 @@
  */
 import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 
+import { useLocaleMessages } from '../locale/context.tsx';
+
 export interface HoldToConfirmLabels {
   /** Added to the accessible name in hold mode. Default "Press and hold to confirm". */
   holdHint?: string;
@@ -60,7 +62,7 @@ export function HoldToConfirm({
   const {
     holdHint = 'Press and hold to confirm', holding = 'Keep holding', done = 'Confirmed', cancelled = 'Released too early. Not confirmed.',
     wait = (s: number) => `available in ${s} s`,
-  } = labels;
+  } = { ...useLocaleMessages().messages.holdToConfirm, ...labels };
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState('');
   const [active, setActive] = useState(false);

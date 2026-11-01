@@ -99,6 +99,7 @@ export * from './market-status/MarketStatus.tsx';
 export * from './price-limit/PriceLimitIndicator.tsx';
 export * from './watchlist/Watchlist.tsx';
 export * from './market-heatmap/MarketHeatmap.tsx';
+export * from './market-breadth/MarketBreadth.tsx';
 export * from './portfolio/portfolio.ts';
 export * from './holdings-table/HoldingsTable.tsx';
 export * from './portfolio-allocation/PortfolioAllocation.tsx';
@@ -180,6 +181,11 @@ export * from './hold-to-confirm/HoldToConfirm.tsx';
 export * from './session-timeout/SessionTimeoutWarning.tsx';
 export * from './scam-warning/ScamWarning.tsx';
 export * from './secure-field/SecureField.tsx';
+// Payment fields: pure IBAN, card, BIC, IFSC, UPI, sort code, ABA and Nepal account checks, and their inputs.
+export * from './payments/payments.ts';
+export * from './payment-fields/PaymentFields.tsx';
+// Locale layer: provider, words helper and types. The ne, hi and bn packs are separate subpaths, not on the root.
+export * from './locale/locale.ts';
 // ISO 4217 data (also on its own subpath for lazy loading).
 export * from './money/iso4217.ts';
 // Themes, density and brand theming (pure).

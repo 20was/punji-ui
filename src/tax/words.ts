@@ -51,6 +51,8 @@ export interface IntegerWordsOptions {
   numberWords?: readonly string[];
   /** Your own words for the scale names, largest first: kharab, arab, crore, lakh, thousand, hundred. */
   scaleWords?: readonly [string, string, string, string, string, string];
+  /** The word before a negative amount. Default 'minus' (English) or 'ऋण' (Nepali). */
+  minusWord?: string;
 }
 
 function below100(n: number, options: IntegerWordsOptions): string {
@@ -91,7 +93,7 @@ export function integerInWords(value: bigint, options: IntegerWordsOptions = {})
   if (options.system === 'international' && options.language === 'ne') throw new RangeError("system 'international' is English only");
   if (value === 0n) return below100(0, options);
   const words = positive(value < 0n ? -value : value, options).join(' ');
-  return value < 0n ? `${options.language === 'ne' ? 'ऋण' : 'minus'} ${words}` : words;
+  return value < 0n ? `${options.minusWord ?? (options.language === 'ne' ? 'ऋण' : 'minus')} ${words}` : words;
 }
 
 export interface AmountInWordsOptions extends IntegerWordsOptions {
@@ -135,7 +137,7 @@ export function amountInWords(minorUnits: bigint, options: AmountInWordsOptions 
   const position = options.unitPosition ?? (ne ? 'after' : 'before');
   const wholeWords = integerInWords(whole, options);
   const parts: string[] = [];
-  if (negative) parts.push(ne ? 'ऋण' : 'minus');
+  if (negative) parts.push(options.minusWord ?? (ne ? 'ऋण' : 'minus'));
   if (position === 'before') parts.push(major, wholeWords);
   else parts.push(wholeWords, major);
   if (fraction > 0n && options.fractionAsDigits) parts.push(ne ? '' : 'and', `${fraction.toString().padStart(scale, '0')}/${unit}`);

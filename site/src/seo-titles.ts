@@ -8,6 +8,7 @@ export const SEO_TITLES: Readonly<Record<string, string>> = {
   // Apps
   'trading-terminal': 'NEPSE trading terminal demo in React: live orders | Punji UI',
   'wealth-dashboard': 'Wealth dashboard in React: portfolio, IPO and goals | Punji UI',
+  'market-portal': 'NEPSE market portal in React: screener, floorsheet | Punji UI',
   'retail-banking': 'Retail banking app in React: transfers, cards, KYC | Punji UI',
   'digital-wallet': 'Digital wallet app in React: QR pay, bills, top-up | Punji UI',
   'bill-summary': 'Utility bill summary in React: BillSummary card | Punji UI',
@@ -24,6 +25,7 @@ export const SEO_TITLES: Readonly<Record<string, string>> = {
   security: 'Security in Punji UI: CSV formula injection, masking',
   roadmap: 'Punji UI roadmap: shipped, in progress and planned',
   agents: 'Contributing to Punji UI: checks and component bar',
+  localisation: 'Localise Punji UI: Nepali, Hindi and Bengali copy packs',
   'copy-a-pattern': 'Copy a finance screen into React with shadcn | Punji UI',
   // Money, Nepal formatting and calendars
   'money-display': 'React money display for NPR, USD and any currency | Punji UI',
@@ -32,6 +34,9 @@ export const SEO_TITLES: Readonly<Record<string, string>> = {
   'financial-calculations': 'Exact financial calculations in TypeScript | Punji UI',
   'date-picker': 'Nepali date picker for React (Bikram Sambat) | Punji UI',
   'period-selector': 'Fiscal year and period selector for React | Punji UI',
+  // Payments
+  'payment-fields': 'IBAN, card, UPI and IFSC inputs for React | Punji UI',
+  'payment-validation': 'IBAN, Luhn and ABA validation in TypeScript | Punji UI',
   // Stock market
   'stock-table': 'NEPSE stock table: React quote board component | Punji UI',
   'candlestick-chart': 'React candlestick chart with volume and averages | Punji UI',

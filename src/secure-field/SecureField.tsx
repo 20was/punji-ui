@@ -10,6 +10,8 @@
  */
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode, type Ref } from 'react';
 
+import { useLocaleMessages } from '../locale/context.tsx';
+
 export type SecureFieldKind =
   | 'current-password'
   | 'new-password'
@@ -120,7 +122,7 @@ export function SecureField({
   const id = useId();
   const attrs = secureFieldAttributes(kind);
   const [revealed, setRevealed] = useState(false);
-  const { show = 'Show', hide = 'Hide' } = labels;
+  const { show = 'Show', hide = 'Hide' } = { ...useLocaleMessages().messages.secureField, ...labels };
   useEffect(() => {
     if (!revealed) return;
     const timeout = setTimeout(() => setRevealed(false), revealSeconds * 1000);

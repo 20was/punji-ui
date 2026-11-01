@@ -1,0 +1,10 @@
+/* Punji UI styles.
+   Styles for the payment fields (IbanInput, CardNumberInput, CardExpiryInput, CardCvcInput, BicInput, IfscInput,
+   UpiInput, SortCodeInput, UkAccountNumberInput, AbaRoutingInput, NepalBankAccountInput). Needs tokens.css, base.css
+   and fields.css (styles.css has everything). */
+@layer punji.components {
+  .pu-pay-field input { font-variant-numeric: tabular-nums; letter-spacing: 0.02em }
+  .kit-field .kit-field-control input.pu-pay-has-badge { padding-inline-end: 132px }
+  .pu-pay-badge { position: absolute; inset-block: 0; inset-inline-end: 8px; margin-block: auto; height: fit-content; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 4px 8px; border-radius: var(--pu-radius-full); background: var(--pu-color-surface-subtle); color: var(--pu-color-text-muted); font: 600 12px / 1 var(--pu-font-body); pointer-events: none }
+  .pu-pay-warning { display: block; padding: var(--pu-space-2) var(--pu-space-3); border: 1px solid var(--pu-color-loss); border-inline-start-width: 4px; border-radius: var(--pu-radius-sm); background: var(--pu-color-loss-soft); color: var(--pu-color-text); font: 500 var(--pu-text-sm) / 1.45 var(--pu-font-body) }
+}

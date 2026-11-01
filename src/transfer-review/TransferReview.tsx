@@ -13,6 +13,9 @@
 import { useId, useState, type ReactNode } from 'react';
 
 import { Checkbox } from '../checkbox/Checkbox.tsx';
+import { useLocaleMessages } from '../locale/context.tsx';
+import type { AmountWordsPack } from '../locale/types.ts';
+import { localAmountInWords } from '../locale/words.ts';
 import { getMoneyFormatter, type MoneyFormatConfig } from '../money/money.ts';
 import { currencyAmountInWords } from '../tax/words.ts';
 import { detectSpoofing, type SpoofCheck } from '../trust/spoofing.ts';
@@ -27,7 +30,7 @@ export interface ConfirmAmountProps {
   currency?: string;
   /** Locale, digits, grouping and exponent for the figure. Default locale 'en'. */
   money?: MoneyOptions;
-  /** The words line. Default: English words for the currency (`currencyAmountInWords`) when the locale is English; none otherwise. A string replaces it; false hides it. */
+  /** The words line. Default: the locale pack's words when a `PunjiLocaleProvider` pack has `amountWords`, else English words for the currency (`currencyAmountInWords`) when the locale is English; none otherwise. A string replaces it; false hides it. */
   words?: string | false;
   /** The label above the figure. Default "Amount". */
   label?: ReactNode;
@@ -41,8 +44,9 @@ export interface ConfirmAmountProps {
   testId?: string;
 }
 
-function defaultWords(amount: bigint, currency: string, money: MoneyOptions | undefined): string | null {
+function defaultWords(amount: bigint, currency: string, money: MoneyOptions | undefined, pack: AmountWordsPack | undefined, scale: number): string | null {
   const locale = money?.locale ?? 'en';
+  if (pack) return localAmountInWords(amount, currency, pack, { scale });
   if (!/^en\b/i.test(locale)) return null;
   try {
     return currencyAmountInWords(amount, currency, money?.exponent === undefined ? {} : { scale: money.exponent });
@@ -52,15 +56,16 @@ function defaultWords(amount: bigint, currency: string, money: MoneyOptions | un
 }
 
 /** The amount in figures and in words, large, for a confirm step. */
-export function ConfirmAmount({ amount, currency: currencyProp, money, words, label = 'Amount', previous, labels = {}, className, testId }: ConfirmAmountProps) {
-  const { inWords = 'In words', changedFrom = 'Changed from' } = labels;
+export function ConfirmAmount({ amount, currency: currencyProp, money, words, label, previous, labels = {}, className, testId }: ConfirmAmountProps) {
+  const pack = useLocaleMessages().messages;
+  const { inWords = 'In words', changedFrom = 'Changed from' } = { ...pack.confirmAmount, ...labels };
   const currency = currencyProp ?? money?.currency ?? 'NPR';
   const formatter = getMoneyFormatter({ ...money, currency });
-  const text = words === false ? null : words ?? defaultWords(amount, currency, money);
+  const text = words === false ? null : words ?? defaultWords(amount, currency, money, pack.amountWords, formatter.exponent);
   const changed = previous !== undefined && previous !== amount;
   return (
     <div className={`pu-confirm-amount${className ? ` ${className}` : ''}`} data-changed={changed ? 'true' : undefined} data-testid={testId}>
-      <span className="pu-confirm-amount-label">{label}</span>
+      <span className="pu-confirm-amount-label">{label ?? pack.confirmAmount?.label ?? 'Amount'}</span>
       <span className="pu-confirm-amount-figure">
         <span aria-hidden="true">{formatter.format(amount)}</span>
         <span className="kit-sr">{formatter.formatSpoken(amount)}</span>
@@ -139,7 +144,7 @@ export interface TransferReviewProps {
   fee?: bigint;
   /** The amount before an edit, to mark it changed. */
   previousAmount?: bigint;
-  /** The amount in words: see `ConfirmAmount`. */
+  /** The amount in words: see `ConfirmAmount`. With a locale pack that has `amountWords`, words in that language. */
   words?: string | false;
   /** More rows: reference, date, purpose, source account. */
   details?: readonly TransferReviewField[];
@@ -180,7 +185,8 @@ function ChangedNote({ previous, words }: { previous?: ReactNode; words: Require
 export function TransferReview({
   amount, currency: currencyProp, money, recipient, knownPayees, fee, previousAmount, words, details = [], verification, onConfirm, confirm, onEdit, busy, labels = {}, className, testId,
 }: TransferReviewProps) {
-  const text = { ...DEFAULT_LABELS, ...labels };
+  const pack = useLocaleMessages().messages;
+  const text = { ...DEFAULT_LABELS, ...pack.transferReview, ...labels };
   const id = useId();
   const currency = currencyProp ?? money?.currency ?? 'NPR';
   const formatter = getMoneyFormatter({ ...money, currency });
@@ -217,7 +223,10 @@ export function TransferReview({
         <div className="pu-review-warning" data-risk={check.risk} role={risky ? 'alert' : undefined}>
           <p className="pu-review-warning-title">{text.nameWarning}</p>
           <ul>
-            {check.issues.map((issue) => <li key={issue.kind}>{issue.message}</li>)}
+            {check.issues.map((issue) => {
+              const own = issue.kind === 'lookalike' ? check.lookalikeOf !== undefined && pack.spoofing?.lookalike?.(check.lookalikeOf) : pack.spoofing?.[issue.kind];
+              return <li key={issue.kind}>{own || issue.message}</li>;
+            })}
             {cleanedForDisplay && <li>{text.nameCleaned}</li>}
           </ul>
           {risky && <Checkbox checked={acknowledged} onChange={setAcknowledged}>{text.nameAcknowledge}</Checkbox>}

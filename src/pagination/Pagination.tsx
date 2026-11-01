@@ -22,6 +22,7 @@
 import type { ReactNode } from 'react';
 
 import { Button } from '../button/Button.tsx';
+import { useLocaleMessages } from '../locale/context.tsx';
 import { formatFigure } from '../format/format.ts';
 import { paginate } from '../use-pagination/usePagination.ts';
 
@@ -64,13 +65,18 @@ export function Pagination({
   pageSize,
   onPageChange,
   label,
-  previousLabel = 'Previous page',
-  nextLabel = 'Next page',
-  pageLabel = (n) => `Page ${n}`,
-  rangeLabel = (r, t) => `${r} of ${t}`,
+  previousLabel,
+  nextLabel,
+  pageLabel,
+  rangeLabel,
   maxNumbers = 4,
   testId,
 }: PaginationProps) {
+  const pack = useLocaleMessages().messages.pagination;
+  previousLabel ??= pack?.previous ?? 'Previous page';
+  nextLabel ??= pack?.next ?? 'Next page';
+  pageLabel ??= pack?.page ?? ((n) => `Page ${n}`);
+  rangeLabel ??= pack?.range ?? ((r, t) => `${r} of ${t}`);
   const p = paginate(total, page, pageSize);
   const from = p.total === 0 ? 0 : p.startIndex + 1;
   const range = p.total === 0 ? rangeLabel('0', '0') : rangeLabel(`${formatFigure(from, 'int')}–${formatFigure(p.endIndex, 'int')}`, formatFigure(p.total, 'int'));

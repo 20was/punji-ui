@@ -14,6 +14,7 @@ import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 
 import { Checkbox } from '../checkbox/Checkbox.tsx';
 import { HoldToConfirm } from '../hold-to-confirm/HoldToConfirm.tsx';
+import { useLocaleMessages } from '../locale/context.tsx';
 
 export type ScamScenario = 'safe-account' | 'investment' | 'impersonation' | 'purchase' | 'romance' | 'urgent-request';
 
@@ -90,9 +91,9 @@ export function ScamWarning({ scenario, copy, onCancel, onProceed, coolingOffSec
   if (!Number.isInteger(coolingOffSeconds) || coolingOffSeconds < 0 || coolingOffSeconds > 120) throw new RangeError('coolingOffSeconds must be a whole number from 0 to 120');
   const {
     title = 'Stop. This could be a scam.', questionsTitle = 'Ask yourself:', cancel = 'Cancel this payment',
-    acknowledge = 'I have read this warning and want to continue', proceed = 'Continue to payment',
-  } = labels;
-  const text = copy ?? SCAM_SCENARIOS[scenario];
+    acknowledge = 'I have read this warning and want to continue', proceed = 'Continue to payment', scenarios,
+  } = { ...useLocaleMessages().messages.scamWarning, ...labels };
+  const text = copy ?? scenarios?.[scenario] ?? SCAM_SCENARIOS[scenario];
   if (!text) throw new RangeError(`Unknown scam scenario: ${scenario}`);
   const id = useId();
   const heading = useRef<HTMLHeadingElement>(null);

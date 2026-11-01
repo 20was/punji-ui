@@ -12,6 +12,8 @@
  */
 import { useEffect, useId, useRef, useState } from 'react';
 
+import { useLocaleMessages } from '../locale/context.tsx';
+
 export interface SessionTimeoutLabels {
   /** Dialog heading. Default "Your session is about to end". */
   title?: string;
@@ -60,7 +62,7 @@ export function SessionTimeoutWarning({
   const {
     title = 'Your session is about to end', body = (t: string) => `For your security, you will be signed out in ${t}.`, extend = 'Stay signed in',
     signOut = 'Sign out now', spokenTime = defaultSpoken, expired = 'You have been signed out.',
-  } = labels;
+  } = { ...useLocaleMessages().messages.sessionTimeout, ...labels };
   const id = useId();
   const [time, setTime] = useState(() => now());
   const [announcement, setAnnouncement] = useState('');

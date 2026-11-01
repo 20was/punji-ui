@@ -13,6 +13,7 @@
 import { useId, useState, type ReactNode } from 'react';
 
 import { Checkbox } from '../checkbox/Checkbox.tsx';
+import { useLocaleMessages } from '../locale/context.tsx';
 import { detectSpoofing } from '../trust/spoofing.ts';
 
 export type PayeeVerificationResult = 'checking' | 'match' | 'close-match' | 'no-match' | 'unavailable';
@@ -101,7 +102,7 @@ function Name({ name }: { name: string }) {
 }
 
 export function PayeeVerification({ result, enteredName, accountName, onUseAccountName, onEdit, onProceed, labels = {}, className, testId }: PayeeVerificationProps) {
-  const words = { ...DEFAULTS, ...labels };
+  const words = { ...DEFAULTS, ...useLocaleMessages().messages.payeeVerification, ...labels };
   const id = useId();
   const [acknowledged, setAcknowledged] = useState(false);
   const shown = accountName ? detectSpoofing(accountName) : null;

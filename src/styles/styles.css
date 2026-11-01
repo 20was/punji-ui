@@ -42,6 +42,7 @@
 @import './status-tag.css';
 @import './switch.css';
 @import './table.css';
+@import './virtual-table.css';
 @import './tabs.css';
 
 @import './financial.css';

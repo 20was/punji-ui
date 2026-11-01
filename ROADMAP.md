@@ -43,9 +43,9 @@ visual baselines and size budgets.
 
 ### Wave 3: scale and trust
 
-- Virtualised data table for 10k+ rows; column pinning, resizing and multi-sort; export controls.
+- Virtualised data table for 10k+ rows; column pinning, resizing and multi-sort; export controls. Done: `VirtualFinancialTable` and `TableExport`, no new dependency ([docs/TABLES.md](docs/TABLES.md)).
 - High-contrast theme, density setting, RTL verification.
-- Performance profiling of live-updating tables and charts with published numbers.
+- Performance profiling of live-updating tables and charts with published numbers. Tables done ([docs/PERFORMANCE.md](docs/PERFORMANCE.md), `scripts/bench-table.mjs`); charts and `Live` tweening still open.
 - Manual VoiceOver/NVDA pass; automated Next.js App Router consumer build.
 
 ### Wave 4: adoption

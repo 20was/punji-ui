@@ -245,6 +245,27 @@
     "gzip": true
   },
   {
+    "name": "virtual-table (import from '@punji/ui/virtual-table')",
+    "path": "dist/virtual-table/VirtualFinancialTable.js",
+    "import": "*",
+    "limit": "5.3 kB",
+    "gzip": true
+  },
+  {
+    "name": "table-export (import from '@punji/ui/table-export')",
+    "path": "dist/table-export/TableExport.js",
+    "import": "*",
+    "limit": "1.81 kB",
+    "gzip": true
+  },
+  {
+    "name": "Virtual table CSS",
+    "path": "dist/css/virtual-table.css",
+    "limit": "1.03 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
     "name": "tabs (import from '@punji/ui/tabs')",
     "path": "dist/tabs/Tabs.js",
     "import": "*",
@@ -297,13 +318,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "93.7 kB",
+    "limit": "98.1 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "28.15 kB",
+    "limit": "28.25 kB",
     "rolldown": false,
     "gzip": true
   },

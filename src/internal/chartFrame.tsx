@@ -79,9 +79,10 @@ export function nprPrice(v: number): string {
   return Number.isFinite(v) ? NPR.format(v) : String(v);
 }
 
-/** Whole-number quantity grouped by the same lakh rules. */
+const QTY = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 });
+/** Whole-number quantity grouped by the same lakh rules (one shared formatter: building one per call cost more than the chart). */
 export function quantity(v: number): string {
-  return Number.isFinite(v) ? new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 }).format(v) : String(v);
+  return Number.isFinite(v) ? QTY.format(v) : String(v);
 }
 
 /** The axis labels: thin to about one per `minPx`, always including the last. */

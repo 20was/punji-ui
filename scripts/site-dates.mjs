@@ -6,7 +6,8 @@
 // date, then to today.
 import { execFileSync } from 'node:child_process';
 
-const day = (iso) => iso.slice(0, 10);
+// The UTC day, so a commit made before midnight UTC in Nepal (UTC+5:45) is not dated tomorrow by check:seo's UTC clock.
+const day = (iso) => new Date(iso).toISOString().slice(0, 10);
 
 /** File path to its newest commit date (YYYY-MM-DD), from one `git log` over the docs and the library source. */
 function fileDates(root) {

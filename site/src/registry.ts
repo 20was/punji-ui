@@ -1533,7 +1533,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['Not interactive.'],
     accessibility: ['An <ol> named by label. Each state is words (Done, In progress, Not started, Failed, Reversed) plus a different icon shape; colour is extra.', 'Times are <time> elements with the ISO instant.'],
     responsive: ['A single column that wraps its text.'],
-    related: ['payment-receipt', 'transaction-list'],
+    related: ['remittance-tracker', 'payment-receipt', 'transaction-list'],
   },
   {
     slug: 'beneficiary-selector',
@@ -1630,7 +1630,7 @@ export const PAGES: readonly PageDef[] = [
     accessibility: ['Results are a polite live region. Every field has a label and a hint where the rule is not obvious (TDS).', 'The credit table has a caption naming the currency and row headers for the month.'],
     responsive: ['Two columns from 720px, one below.'],
     notes: { title: 'Limits', points: ['Interest accrues monthly at rate / 12, is held exactly between credits and rounded once per credit; TDS is rounded with the same mode. Daily accrual at a bank differs by a little.'] },
-    related: ['loan-calculator', 'interest-rate-table', 'lending-helpers'],
+    related: ['insurance-premium-card', 'loan-calculator', 'interest-rate-table', 'lending-helpers'],
   },
   {
     slug: 'interest-rate-table',

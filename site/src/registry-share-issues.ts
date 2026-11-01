@@ -122,7 +122,7 @@ export const SHARE_ISSUE_PAGES: readonly PageDef[] = [
     accessibility: ['An article named by the holder heading. The BOID is read digit by digit in blocks; the bank number as "account ending in ...".', 'Status and expiry are words, not colour alone.'],
     responsive: ['Up to 28rem; facts wrap under their labels on a narrow phone.'],
     notes: { title: 'Security boundary', points: ['The full bank account number never reaches the page. A BOID is usually shared to check results; `maskBoid` hides all but the last four digits when it should not show.'] },
-    related: ['boid-input', 'bank-account-card', 'allotment-checker'],
+    related: ['edis-confirmation', 'boid-input', 'bank-account-card', 'allotment-checker'],
   },
   {
     slug: 'corporate-action-timeline',

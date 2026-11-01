@@ -9,7 +9,7 @@ import { quotes } from '../../sample.ts';
 // stretch + footer: in a grid the cards share a height and the footer sits at the bottom.
 export default function Example() {
   return (
-    <div className="ex-grid">
+    <div style={{ display: 'grid', gap: '16px 20px', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 13rem), 1fr))' }}>
       <Card
         title="Quotes"
         icon={

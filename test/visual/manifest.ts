@@ -29,6 +29,7 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'financial-table-loading', title: 'FinancialTable loading', layout: true },
   { id: 'financial-table-error', title: 'FinancialTable error', layout: true },
   { id: 'financial-table-empty', title: 'FinancialTable empty', layout: true },
+  { id: 'virtual-table', title: 'VirtualFinancialTable with pins, multi-sort, selection and export', layout: true },
   { id: 'calendar', title: 'Calendar' },
   { id: 'date-picker', title: 'DatePicker' },
   { id: 'company-search', title: 'CompanySearch and SymbolField' },

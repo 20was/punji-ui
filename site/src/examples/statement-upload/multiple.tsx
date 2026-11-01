@@ -7,7 +7,7 @@ function monthlyStatement(name: string): File {
 
 export default function Example() {
   return (
-    <div className="ex-narrow">
+    <div style={{ width: 'min(100%, 440px)', marginInline: 'auto' }}>
       <StatementUpload
         label="Monthly bank statements"
         multiple

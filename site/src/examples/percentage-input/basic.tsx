@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { divideRounded } from '@punji/ui/calculations';
 import { formatMoney, nepalMoneyConfig } from '@punji/ui/money';
 import { PercentageInput, type PercentageInputChange } from '@punji/ui/percentage-input';
+import { Stack } from '@punji/ui/stack';
 
 // Order value Rs 4,87,500.00 in paisa. The fee is value x basis points / 10,000, rounded half-up to the paisa:
 // the field never rounds, you choose the mode.
@@ -12,7 +13,7 @@ export default function Example() {
   const [change, setChange] = useState<PercentageInputChange | null>({ value: '0.4', state: 'valid', basisPoints: 40n, outOfRange: null });
   const fee = change?.basisPoints != null ? divideRounded(ORDER_VALUE * change.basisPoints, 10_000n, 'half-up') : null;
   return (
-    <div className="ex-stack ex-narrow">
+    <Stack style={{ width: 'min(100%, 440px)', marginInline: 'auto' }}>
       <PercentageInput
         label="Brokerage rate"
         hint="Per trade, on the order value"
@@ -27,6 +28,6 @@ export default function Example() {
       <p className="doc-muted">
         On {formatMoney(ORDER_VALUE, nepalMoneyConfig())}: fee {fee === null ? 'n/a' : formatMoney(fee, nepalMoneyConfig())} · <code>{change?.basisPoints == null ? 'null' : `${change.basisPoints}n`}</code> basis points
       </p>
-    </div>
+    </Stack>
   );
 }

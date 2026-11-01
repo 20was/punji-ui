@@ -1,5 +1,6 @@
 import { Card } from '@punji/ui/card';
 import { MoneyDisplay } from '@punji/ui/money-display';
+import { RowList, ValueRow } from '@punji/ui/rows';
 
 // One component, five currencies: each row is configuration (currency and locale), not code.
 // Amounts are bigint minor units: cents, yen (no minor unit) or fils (three decimals).
@@ -12,26 +13,14 @@ const wallets = [
 
 export default function Example() {
   return (
-    <div className="ex-narrow">
+    <div style={{ width: 'min(100%, 440px)', marginInline: 'auto' }}>
       <Card title="Wallet balances" description="Synced 2 minutes ago" meta="4">
-        <ul className="ex-rows">
+        <RowList>
           {wallets.map((w) => (
-            <li key={w.currency}>
-              <span>
-                <b>{w.name}</b>
-                <small>{w.detail}</small>
-              </span>
-              <MoneyDisplay value={w.value} currency={w.currency} locale={w.locale} />
-            </li>
+            <ValueRow key={w.currency} title={w.name} line={w.detail} figure={<MoneyDisplay value={w.value} currency={w.currency} locale={w.locale} />} />
           ))}
-          <li>
-            <span>
-              <b>Australian dollar</b>
-              <small>From an exact decimal string</small>
-            </span>
-            <MoneyDisplay value="1234.50" currency="AUD" locale="en-US" />
-          </li>
-        </ul>
+          <ValueRow title="Australian dollar" line="From an exact decimal string" figure={<MoneyDisplay value="1234.50" currency="AUD" locale="en-US" />} />
+        </RowList>
       </Card>
     </div>
   );

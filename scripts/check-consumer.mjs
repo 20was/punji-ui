@@ -61,6 +61,9 @@ import * as ui from '@punji/ui';
 import { toCsv } from '@punji/ui/export';
 const html = renderToString(h('div', null, h(ui.Button, null, 'Buy'), h(ui.MoneyDisplay, { value: 123456n, currency: 'NPR' }), h(ui.PriceChange, { current: 10500n, previous: 10000n, currency: 'USD' })));
 if (!html.includes('Buy')) throw new Error('SSR output missing content');
+const rows = Array.from({ length: 10000 }, (_, i) => ({ id: 'T' + i }));
+const virtual = renderToString(h(ui.VirtualFinancialTable, { caption: 'Trades', rows, rowKey: (r) => r.id, emptyTitle: 'None', height: 400, rowHeight: 40, overscan: 2, columns: [{ key: 'id', label: 'Id', render: (r) => r.id }] }));
+if (!virtual.includes('aria-rowcount="10001"') || (virtual.match(/data-index=/g) ?? []).length !== 11) throw new Error('VirtualFinancialTable SSR should draw only the first screenful');
 if (toCsv([{ s: '=1+1' }], [{ header: 'S', accessor: 's' }]) !== "S\\r\\n'=1+1") throw new Error('CSV formula neutralisation changed');
 console.log(String(Object.keys(ui).length));
 `);
@@ -70,7 +73,7 @@ console.log(String(Object.keys(ui).length));
   run('npx', ['tsc', '-p', '.']);
   const exports = run('node', ['ssr.mjs']).trim();
   run('npx', ['vite', 'build', '--logLevel', 'error']);
-  console.log(`consumer: ${tarball} installs cleanly; strict tsc, SSR (${exports} root exports), CSV safety and Vite build pass`);
+  console.log(`consumer: ${tarball} installs cleanly; strict tsc, SSR (${exports} root exports, virtual table first screenful), CSV safety and Vite build pass`);
 } catch (error) {
   console.error(`consumer check failed in ${dir}\n${error.stdout ?? ''}${error.stderr ?? error.message}`);
   process.exitCode = 1;

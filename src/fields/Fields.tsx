@@ -7,7 +7,7 @@
  * DateField is the native date input; SymbolField is a
  * combobox over a list the page hands it (no request per keystroke).
  */
-import { useId, useMemo, useState, type InputHTMLAttributes, type KeyboardEvent, type ReactNode, type Ref, type TextareaHTMLAttributes } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, useState, type InputHTMLAttributes, type KeyboardEvent, type ReactNode, type Ref, type TextareaHTMLAttributes } from 'react';
 
 import { Select } from '../select/Select.tsx';
 import { searchSymbols, type SymbolOption } from '../format/format.ts';
@@ -105,6 +105,10 @@ const times10 = (step: string) => {
   const rest = fraction.slice(1);
   return rest ? `${integer}.${rest}` : integer;
 };
+// Hold a stepper button: one step at once, then after HOLD_DELAY it repeats, quickening from REPEAT_START to REPEAT_MIN ms.
+const HOLD_DELAY = 400;
+const REPEAT_START = 160;
+const REPEAT_MIN = 40;
 const MinusIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M5 12h14" /></svg>;
 const PlusIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M5 12h14M12 5v14" /></svg>;
 
@@ -128,10 +132,30 @@ export function NumberField({ integer, maxFractionDigits, grouping, onValueChang
     if (current.state === 'partial' || current.state === 'invalid') return;
     report(stepDecimal(current.state === 'valid' ? current.value : '', amount, direction, { min, max }));
   };
+  const moveRef = useRef(move);
+  useEffect(() => { moveRef.current = move; });
+  const hold = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const stopHold = useCallback(() => { clearTimeout(hold.current); hold.current = undefined; }, []);
+  useEffect(() => stopHold, [stopHold]);
+  const holding = useRef<1 | -1 | 0>(0);
+  const startHold = (direction: 1 | -1) => {
+    stopHold();
+    holding.current = direction;
+    moveRef.current(direction);
+    const tick = (wait: number, next: number) => {
+      hold.current = setTimeout(() => {
+        moveRef.current(direction);
+        tick(next, Math.max(REPEAT_MIN, Math.round(next * 0.85)));
+      }, wait);
+    };
+    tick(HOLD_DELAY, REPEAT_START);
+  };
   const labels = stepperLabels ?? { decrease: 'Decrease', increase: 'Increase' };
   const atMin = current.state === 'valid' && min !== undefined && compareDecimals(current.value, min) <= 0;
   const atMax = current.state === 'valid' && max !== undefined && compareDecimals(current.value, max) >= 0;
   // Decimal strings stay strings: aria-valuenow is a JS number in the types, so the exact text goes in aria-valuetext.
+  // Reaching a limit (the button turns disabled and sends no pointerup) ends the hold.
+  useEffect(() => { if ((holding.current === -1 && atMin) || (holding.current === 1 && atMax)) stopHold(); });
   const spinAria: Record<string, string | undefined> = { 'aria-valuetext': current.state === 'valid' ? current.value : undefined, 'aria-valuemin': min, 'aria-valuemax': max };
   const button = (direction: 1 | -1, atLimit: boolean) => (
     <button
@@ -140,8 +164,13 @@ export function NumberField({ integer, maxFractionDigits, grouping, onValueChang
       tabIndex={-1}
       aria-label={direction === 1 ? labels.increase : labels.decrease}
       disabled={props.disabled || props.readOnly || atLimit}
-      onPointerDown={(e) => e.preventDefault()}
-      onClick={() => move(direction)}
+      onPointerDown={(e) => { e.preventDefault(); if (e.button === 0) startHold(direction); }}
+      onPointerUp={stopHold}
+      onPointerLeave={stopHold}
+      onPointerCancel={stopHold}
+      onBlur={stopHold}
+      // A pointer press already stepped on pointerdown (detail > 0); a keyboard or assistive-technology activation arrives with detail 0.
+      onClick={(e) => { if (e.detail === 0) move(direction); }}
     >
       {direction === 1 ? <PlusIcon /> : <MinusIcon />}
     </button>

@@ -12,7 +12,7 @@ const facts = [
 // Title, description, meta, one action. Rows inside a card are separated by hairlines, never by another card.
 export default function Example() {
   return (
-    <div className="ex-grid">
+    <div style={{ display: 'grid', gap: '16px 20px', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 13rem), 1fr))' }}>
       <Card title="Holdings" description="As of the 14 Nov close" meta="14" action={<CardLink href="#/card">Open portfolio</CardLink>}>
         <FactList facts={facts} />
       </Card>

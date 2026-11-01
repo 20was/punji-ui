@@ -94,15 +94,17 @@ export interface FinancialTableProps<T> {
   pagination?: DataTablePagination;
   /** Optional controlled row selection; selected IDs use `rowKey` and persist across pages in caller state. */
   selection?: DataTableSelection;
+  /** Stack each row into a card on a phone or in a table narrower than 640px (the first column is the card's title, the next its headline figure, the rest are labelled). Default on when the first column is a row header; the sorting heads stay in the accessibility tree. */
+  stack?: boolean;
 }
 /** Holdings, invoices, transactions and ledgers share semantic table behavior, not a business schema. */
-export function FinancialTable<T>({ caption, columns, rows, rowKey, state = 'ready', emptyTitle, emptyBody, emptyAction, loadingLabel = 'Loading records', errorTitle = 'Records unavailable', errorAction, sort, onSort, search, pagination, selection }: FinancialTableProps<T>) {
+export function FinancialTable<T>({ caption, columns, rows, rowKey, state = 'ready', emptyTitle, emptyBody, emptyAction, loadingLabel = 'Loading records', errorTitle = 'Records unavailable', errorAction, sort, onSort, search, pagination, selection, stack }: FinancialTableProps<T>) {
   if (state === 'loading') return <div aria-busy="true"><Skeleton label={loadingLabel} height={160} /></div>;
   if (state === 'error') return <EmptyState title={errorTitle} action={errorAction} role="alert" />;
   if (!rows.length && !search && !pagination) return <EmptyState title={emptyTitle} body={emptyBody} action={emptyAction} />;
-  return <DataTable caption={caption} columns={[...columns]} sort={sort} onSort={onSort} search={search} pagination={pagination} selection={selection} empty={emptyBody || emptyAction ? <EmptyState title={emptyTitle} body={emptyBody} action={emptyAction} headingLevel={3} bare /> : emptyTitle}>
+  return <div className="pu-fin"><DataTable stack={stack ?? Boolean(columns[0]?.rowHeader)} caption={caption} columns={[...columns]} sort={sort} onSort={onSort} search={search} pagination={pagination} selection={selection} empty={emptyBody || emptyAction ? <EmptyState title={emptyTitle} body={emptyBody} action={emptyAction} headingLevel={3} bare /> : emptyTitle}>
     {rows.map(row => <DataListRow key={rowKey(row)} rowId={rowKey(row)}>{columns.map(column => <Cell key={column.key} num={column.num} wide={column.wide} hideUnder={column.hideUnder} header={column.rowHeader} label={typeof column.label === 'string' ? column.label : undefined}>{column.render(row)}</Cell>)}</DataListRow>)}
-  </DataTable>;
+  </DataTable></div>;
 }
 
 export interface PricePoint {

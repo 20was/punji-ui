@@ -49,6 +49,8 @@ function OtpInputFixture() {
     <OtpCase label="Verification code (error)" defaultValue="482913" error="That code has expired. Request a new one." />
     <OtpCase label="Recovery code (alphanumeric, compact)" length={8} type="alphanumeric" size="md" defaultValue="K7QX" />
     <OtpCase label="Verification code (disabled)" defaultValue="4829" disabled />
+    <OtpCase label="Backup code (8 boxes, wraps to two rows on a phone)" length={8} type="alphanumeric" defaultValue="K7QX92" testId="vr-otp-8" />
+    <OtpCase label="Backup code (12 boxes)" length={12} type="alphanumeric" defaultValue="K7QX92MD" testId="vr-otp-12" />
   </div>;
 }
 

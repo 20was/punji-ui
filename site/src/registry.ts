@@ -11,6 +11,7 @@ import { FORMS_PAGES } from './registry-forms.ts';
 import { SHOWCASE_PAGES } from './registry-showcase.ts';
 import { TRADING_PAGES } from './registry-trading.ts';
 import { WALLET_PAGES } from './registry-wallet.ts';
+import { TRUST_PAGES } from './registry-trust.ts';
 // Tax, invoicing and payroll pages.
 import { TAX_PAGES } from './registry-tax.ts';
 import { LEADS, NAV_TITLES } from './registry-leads.ts';
@@ -27,6 +28,7 @@ export type GroupId =
   | 'portfolio'
   | 'accounting'
   | 'banking'
+  | 'trust'
   | 'share-issues'
   | 'data'
   | 'forms'
@@ -52,6 +54,7 @@ export const GROUPS: readonly Group[] = [
   { id: 'portfolio', title: 'Portfolio', planned: [] },
   { id: 'accounting', title: 'Accounting', planned: [] },
   { id: 'banking', title: 'Banking', planned: [] },
+  { id: 'trust', title: 'Trust and safety', planned: [] },
   { id: 'share-issues', title: 'Share issues', planned: [] },
   { id: 'data', title: 'Data', planned: [] },
   { id: 'forms', title: 'Forms', planned: ['Calendar'] },
@@ -1851,6 +1854,8 @@ export const PAGES: readonly PageDef[] = [
   ...TRADING_PAGES,
   ...SHARE_ISSUE_PAGES,
   ...WALLET_PAGES,
+  // Trust and safety kit and global money.
+  ...TRUST_PAGES,
   // Tax, invoicing and payroll.
   ...TAX_PAGES,
   ...APP_PAGES,

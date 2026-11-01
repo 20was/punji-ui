@@ -4,14 +4,18 @@
  * split with bigint, the surrounding sign, symbol and spacing come from
  * Intl.NumberFormat#formatToParts so they follow the locale. The currency
  * exponent (JPY 0, USD 2, KWD 3) is read from Intl, not assumed. Nepal is a
- * preset (`nepalMoneyConfig`), not a special case. No React, no browser globals.
+ * preset (`nepalMoneyConfig`), not a special case. Grouping follows the locale (CLDR) unless `grouping` overrides
+ * it, so a Bangladeshi or Pakistani app can force lakh/crore on an English locale. Input accepts the digits of
+ * every script in `DIGIT_SCRIPTS`. No React, no browser globals.
  */
 import { divideRounded } from '../calculations/rounding.ts';
-import { parseLocalizedDecimal } from '../nepal/decimal.ts';
+import { DIGIT_SCRIPTS, parseLocalizedDecimal } from '../nepal/decimal.ts';
 import { minorUnitsToDecimal, parseMinorUnits } from '../nepal/money.ts';
 
 export type CurrencyDisplay = 'symbol' | 'code' | 'name' | 'narrowSymbol' | 'none';
 export type MoneySignDisplay = 'auto' | 'always' | 'exceptZero' | 'negative' | 'never';
+/** Digit grouping: 'locale' (CLDR, the default), 'south-asian' (12,34,567: lakh and crore) or 'western' (1,234,567). */
+export type MoneyGrouping = 'locale' | 'south-asian' | 'western';
 
 export interface MoneyFormatConfig {
   /** ISO 4217 code, for example 'USD', 'JPY', 'NPR'. */
@@ -26,6 +30,10 @@ export interface MoneyFormatConfig {
   signDisplay?: MoneySignDisplay;
   /** Intl numbering system, for example 'deva' for Devanagari digits. Default: the locale's. */
   numberingSystem?: string;
+  /** Override the locale's digit grouping. 'south-asian' also switches compact notation to lakh/crore. Default 'locale'. */
+  grouping?: MoneyGrouping;
+  /** Minor-unit digits, 0–9, when they differ from Intl's (ISO 4217 says IQD 3 where CLDR says 0). Default: `currencyExponent(currency)`. */
+  exponent?: number;
 }
 
 export interface MoneyPart { type: string; value: string }
@@ -57,7 +65,7 @@ export interface MoneyFormatter {
   formatToParts(minor: bigint): MoneyPart[];
   /** Exact, but with the full currency name where the symbol is shared ($, ¥, kr) and no accounting parentheses. For screen readers. */
   formatSpoken(minor: bigint): string;
-  /** DISPLAY-ROUNDED shortening: lakh/crore for South Asian locales, K/M/B/T otherwise. Never use it for a value that will be stored or summed. Below one lakh (or 1,000) it is exact. */
+  /** DISPLAY-ROUNDED shortening: lakh/crore for South Asian grouping, the locale's compact words (K/M/B/T) otherwise. Rounded once, half-up, from the exact amount (never via Number). Never use it for a value that will be stored or summed. Below one lakh (or 1,000) it is exact. */
   formatCompact(minor: bigint, options?: MoneyCompactOptions): string;
   /** Re-group an ASCII decimal being typed ('1234.5', '12.', '-') for live display. Not a validator. */
   formatDecimalInput(canonical: string): string;
@@ -83,17 +91,32 @@ export function currencyExponent(currency: string): number {
 }
 
 const UNAMBIGUOUS_SYMBOLS = new Set(['€', '₹', '₪', '₩', '₫', '₴', '₦', '₺', '₽', '฿', '₸', '₼', '₾', '₭', '₮', '₲', '₡', '₵']);
-const FOREIGN_DIGITS: readonly string[] = ['०१२३४५६७८९', '٠١٢٣٤٥٦٧٨٩', '۰۱۲۳۴۵۶۷۸۹', '０１２３４５６７８９'];
+const FOREIGN_DIGITS: readonly string[] = Object.values(DIGIT_SCRIPTS);
 const BIDI_MARKS = /[؜‎‏‪-‮⁦-⁩]/g;
 const SPACE_GROUP = /[\s   ]/;
 const TIERS = [{ power: 5, key: 'lakh' }, { power: 7, key: 'crore' }, { power: 9, key: 'arba' }, { power: 11, key: 'kharba' }] as const;
 const LATIN_UNITS: MoneyCompactUnits = { lakh: 'L', crore: 'Cr', arba: 'Arba', kharba: 'Kharba' };
 const DEVANAGARI_UNITS: MoneyCompactUnits = { lakh: 'लाख', crore: 'करोड', arba: 'अर्ब', kharba: 'खर्ब' };
 
-function isSouthAsian(locale: string): boolean {
+// Nepal and India group in lakh and crore whatever the language (en-NP, ur-IN), even where CLDR prints thousands.
+function nepalOrIndia(locale: string): boolean {
   const tag = new Intl.Locale(locale);
   const region = tag.region ?? tag.maximize().region;
   return tag.language === 'ne' || tag.language === 'hi' || region === 'IN' || region === 'NP';
+}
+// The locale groups in lakh and crore when Intl prints 1234567 as 12,34,567 (en-IN, ne, hi, bn, ta-LK...).
+function groupsSouthAsian(integers: Intl.NumberFormat): boolean {
+  const lengths = integers.formatToParts(1234567).filter(part => part.type === 'integer').map(part => part.value.length);
+  return lengths.length === 3 && lengths[1] === 2;
+}
+// ASCII digits grouped by hand when `grouping` overrides the locale.
+function groupAscii(digits: string, southAsian: boolean, separator: string): string {
+  if (digits.length <= 3) return digits;
+  const head = digits.slice(0, -3);
+  const size = southAsian ? 2 : 3;
+  const groups: string[] = [];
+  for (let end = head.length; end > 0; end -= size) groups.unshift(head.slice(Math.max(0, end - size), end));
+  return `${groups.join(separator)}${separator}${digits.slice(-3)}`;
 }
 
 const join = (parts: MoneyPart[]) => parts.map(part => part.value).join('');
@@ -102,13 +125,14 @@ function pow10(n: number): bigint { return 10n ** BigInt(n); }
 /** Creates a formatter. Intl instances are built once here; reuse it for a table's rows. See `getMoneyFormatter` for a cached lookup. */
 export function createMoneyFormatter(config: MoneyFormatConfig): MoneyFormatter {
   const currency = config.currency.toUpperCase();
-  const exponent = currencyExponent(currency);
+  const exponent = config.exponent ?? currencyExponent(currency);
+  if (!Number.isInteger(exponent) || exponent < 0 || exponent > 9) throw new RangeError('exponent must be an integer from 0 to 9');
   const locale = config.locale ?? 'en';
+  const grouping = config.grouping ?? 'locale';
   const display = config.display ?? 'symbol';
   const accounting = config.accounting ?? false;
   const signDisplay = config.signDisplay ?? 'auto';
   const system = config.numberingSystem === undefined ? {} : { numberingSystem: config.numberingSystem };
-  const southAsian = isSouthAsian(locale);
   const make = (options: Record<string, unknown>) => new Intl.NumberFormat(locale, { ...system, ...options } as Intl.NumberFormatOptions);
 
   const decimalOptions = { style: 'decimal', minimumFractionDigits: exponent, maximumFractionDigits: exponent };
@@ -120,6 +144,10 @@ export function createMoneyFormatter(config: MoneyFormatConfig): MoneyFormatter 
   const wrapNone = display === 'none' && accounting && signDisplay !== 'never';
   const magnitudeTemplate = wrapNone ? make(templateOptions('never', true)) : template;
   const integers = make({ style: 'decimal', maximumFractionDigits: 0 });
+  const intlSouthAsian = groupsSouthAsian(integers);
+  const southAsian = grouping === 'locale' ? intlSouthAsian || nepalOrIndia(locale) : grouping === 'south-asian';
+  // Group by hand when the choice differs from what Intl prints (an override, or en-NP where CLDR prints thousands).
+  const manualGrouping = southAsian !== intlSouthAsian;
   const digitFormat = make({ style: 'decimal', useGrouping: false, maximumFractionDigits: 0 });
   const digits = Array.from({ length: 10 }, (_, d) => digitFormat.format(d));
   const sample = make({ style: 'decimal', minimumFractionDigits: 1 }).formatToParts(1234567.5);
@@ -127,6 +155,7 @@ export function createMoneyFormatter(config: MoneyFormatConfig): MoneyFormatter 
   const groupSeparator = sample.find(part => part.type === 'group')?.value ?? ',';
   const base = pow10(exponent);
   const localDigits = (ascii: string) => ascii.replace(/\d/g, d => digits[Number(d)]!);
+  const groupInteger = (integer: bigint): string => manualGrouping ? localDigits(groupAscii(integer.toString(), southAsian, groupSeparator)) : integers.format(integer);
 
   function assemble(parts: Intl.NumberFormatPart[], integer: string, fraction: string, suffix = ''): MoneyPart[] {
     const out: MoneyPart[] = [];
@@ -148,7 +177,7 @@ export function createMoneyFormatter(config: MoneyFormatConfig): MoneyFormatter 
     const negative = minor < 0n;
     const probe = negative ? -2n : minor > 0n ? 2n : 0n;
     const fraction = fractionAscii ? localDigits(fractionAscii) : '';
-    const text = integers.format(integer);
+    const text = groupInteger(integer);
     if (wrapNone && negative) return [{ type: 'literal', value: '(' }, ...assemble(magnitudeTemplate.formatToParts(2n), text, fraction, suffix), { type: 'literal', value: ')' }];
     return assemble(template.formatToParts(probe), text, fraction, suffix);
   }
@@ -179,8 +208,6 @@ export function createMoneyFormatter(config: MoneyFormatConfig): MoneyFormatter 
     const major = magnitude / base;
     if (!southAsian) {
       if (major < 1000n) return format(minor);
-      const approx = Number(major) + Number(magnitude % base) / Number(base);
-      if (!Number.isFinite(approx)) return format(minor);
       westernCompact ??= new Map();
       let formatter = westernCompact.get(fd);
       if (!formatter) {
@@ -188,7 +215,8 @@ export function createMoneyFormatter(config: MoneyFormatConfig): MoneyFormatter 
         formatter = make(display === 'none' ? { style: 'decimal', ...shared } : { style: 'currency', currency, currencyDisplay: display, currencySign: accounting ? 'accounting' : 'standard', ...shared });
         westernCompact.set(fd, formatter);
       }
-      return formatter.format(minor < 0n ? -approx : approx);
+      // Intl formats a decimal string exactly (no binary rounding first), so the one rounding step is Intl's half-expand.
+      return formatter.format(minorUnitsToDecimal(minor, exponent) as `${number}`);
     }
     if (major < 100000n) return format(minor);
     const units = options.units ?? (/^(?:ne|hi)\b/.test(locale) ? DEVANAGARI_UNITS : LATIN_UNITS);
@@ -206,7 +234,7 @@ export function createMoneyFormatter(config: MoneyFormatConfig): MoneyFormatter 
     const match = /^(-?)(\d*)(?:(\.)(\d*))?$/.exec(typed);
     if (!match) return typed;
     const [, sign = '', whole = '', dot = '', fraction = ''] = match;
-    const integer = whole === '' && !dot && !fraction ? '' : integers.format(BigInt(whole || '0'));
+    const integer = whole === '' && !dot && !fraction ? '' : groupInteger(BigInt(whole || '0'));
     return `${sign}${integer}${dot ? decimalSeparator : ''}${localDigits(fraction)}`;
   }
 
@@ -254,7 +282,7 @@ export function createMoneyFormatter(config: MoneyFormatConfig): MoneyFormatter 
 const cache = new Map<string, MoneyFormatter>();
 /** Cached `createMoneyFormatter` (at most 64 configurations; the cache empties when full). Safe to call per render. */
 export function getMoneyFormatter(config: MoneyFormatConfig): MoneyFormatter {
-  const key = [config.currency, config.locale, config.display, config.accounting, config.signDisplay, config.numberingSystem].join('|');
+  const key = [config.currency, config.locale, config.display, config.accounting, config.signDisplay, config.numberingSystem, config.grouping, config.exponent].join('|');
   let formatter = cache.get(key);
   if (!formatter) {
     if (cache.size >= 64) cache.clear();

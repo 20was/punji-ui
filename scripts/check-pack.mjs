@@ -32,9 +32,9 @@ import { readFileSync } from 'node:fs';
 // All five domain branches (trading, share issues, wallets, lending, tax) merged onto Wave 3: measured 2,039,956 B; ~3% headroom.
 // Trust and safety kit, global money (digit scripts, grouping override, exact compact) and ISO 4217 data: measured 2,141,913 B; ~3% headroom.
 // ReconciliationMatcher (JS, declarations, CSS) on the merged main: measured 2,243,594 B; ~3% headroom.
-// MarketBreadth (JS, declarations, CSS) for the market portal, merged with Wave 4 and the banking apps: measured 2,272,722 B; ~3% headroom.
-// RiskMeter and the invest helpers (XIRR, SIP, units, cover: JS, declarations, CSS): merged with the market portal, measured 2,309,025 B; ~3% headroom.
-const MAX_UNPACKED = 2323 * 1024;
+// Payment fields (pure checks, inputs, CSS) and the locale layer with ne, hi and bn packs, merged with main through #47: measured 2,399,225 B; ~3% headroom.
+// RiskMeter and the invest helpers (XIRR, SIP, units, cover: JS, declarations, CSS) on top: measured 2,448,406 B; ~3% headroom.
+const MAX_UNPACKED = 2463 * 1024;
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
 const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md']);
 const allowed = (p) => always.has(p) || /^dist\/.+\.(js|d\.ts|css)$/.test(p);

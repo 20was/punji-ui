@@ -4,7 +4,8 @@ const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
 const root = await import(pkg.name);
 let checked = 0;
 // Data-only subpaths kept off the root on purpose, so the root import does not carry them (loaded on demand).
-const ROOT_EXEMPT = new Set(['./nepal-address-data']);
+// The language packs are kept off the root too, so an app ships only the languages it imports.
+const ROOT_EXEMPT = new Set(['./nepal-address-data', './locale/ne', './locale/hi', './locale/bn']);
 for (const [name, target] of Object.entries(pkg.exports)) {
   if (name === '.' || typeof target === 'string' || name.endsWith('.css') || ROOT_EXEMPT.has(name)) continue;
   if (!existsSync(resolve(target.types))) throw new Error(`${name}: missing declaration ${target.types}`);

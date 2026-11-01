@@ -9,6 +9,7 @@
 import { useState, type FocusEvent, type InputHTMLAttributes, type ReactNode, type Ref } from 'react';
 
 import { Field } from '../fields/Fields.tsx';
+import { useLocaleMessages } from '../locale/context.tsx';
 import { idNumberToDevanagari, toAsciiIdText, validateIdNumber, type IdNumberKind, type IdNumberResult } from '../kyc/kyc.ts';
 
 export interface IdNumberInputMessages {
@@ -60,7 +61,7 @@ const HINTS: Record<IdNumberKind, string> = { pan: '9 digits, for example 301234
 
 export function IdNumberInput({ kind, label, hint, error, value, onValueChange, digits = 'latn', messages, onBlur, testId, ...rest }: IdNumberInputProps) {
   const [left, setLeft] = useState(false);
-  const words = { ...idNumberInputMessages, ...messages };
+  const words = { ...idNumberInputMessages, ...useLocaleMessages().messages.idNumberInput, ...messages };
   const result = validateIdNumber(kind, value);
   let message: string | undefined;
   if (left && result.state === 'invalid') {

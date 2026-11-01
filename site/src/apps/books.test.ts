@@ -2,13 +2,13 @@
 // reports agree with each other to the paisa, the bank statement reconciles, payroll and the salary journal match,
 // and the billing store's balances agree across screens.
 import { describe, expect, it } from 'vitest';
-import { ACCOUNTS, MONTHS, PERIODS, balanceSheetRows, generateBooks, ledgerOf, netByAccount, onNormal, profitAndLossRows, profitOf, rangeOf } from '../site/src/apps/accounting/books.ts';
-import { BOOKS, comparisonOf, derive, initialState, reducer } from '../site/src/apps/accounting/store.ts';
-import { derive as deriveBiz, initialState as bizState, reducer as bizReducer, totalsOf } from '../site/src/apps/business/store.ts';
-import { PAYROLL, PAYROLL_TOTALS, SLABS, TODAY } from '../site/src/apps/shared/books.ts';
-import { isBalanced, rollUp, trialBalance, type StatementRow } from '../src/ledger/ledger.ts';
-import { reconciliationSummary, suggestMatches } from '../src/reconciliation-matcher/reconcile.ts';
-import { computeIncomeTax, summariseTds, taxableIncome } from '../src/tax/tax.ts';
+import { ACCOUNTS, MONTHS, PERIODS, balanceSheetRows, generateBooks, ledgerOf, netByAccount, onNormal, profitAndLossRows, profitOf, rangeOf } from './accounting/books.ts';
+import { BOOKS, comparisonOf, derive, initialState, reducer } from './accounting/store.ts';
+import { derive as deriveBiz, initialState as bizState, reducer as bizReducer, totalsOf } from './business/store.ts';
+import { PAYROLL, PAYROLL_TOTALS, SLABS, TODAY } from './shared/books.ts';
+import { isBalanced, rollUp, trialBalance, type StatementRow } from '@punji/ui/ledger';
+import { reconciliationSummary, suggestMatches } from '@punji/ui/reconciliation-matcher';
+import { computeIncomeTax, summariseTds, taxableIncome } from '@punji/ui/tax';
 
 const subtotal = (rows: readonly StatementRow[], id: string, key = 'cur'): bigint => {
   for (const row of rows) {

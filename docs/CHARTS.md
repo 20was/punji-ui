@@ -10,7 +10,7 @@ Shared behaviour:
 - **Bad numbers are "no value", never zero.** Missing, `null`, `NaN` and infinities are gaps; the table says `none`.
 - **One focus stop.** The plot is a named group (`aria-roledescription`, hint text). Left and Right step, Home and End jump,
   Escape clears. The focused point is announced in a polite live region and shown in a readout with a crosshair; the pointer
-  does the same. A visually hidden `<table>` lists every value.
+  does the same. A visually hidden `<table>` lists the values (the latest 500 candles or dates by default, `tableLimit`).
 - **Colour is never the only cue.** Direction and series are also spelled out in words, dashes or shapes.
 - **Responsive.** The SVG is as wide as its container (measured, `ResizeObserver`); heights are clamped.
 - **Words are overridable** through `labels`; numbers through the `format*` props.
@@ -58,7 +58,8 @@ The first series is the portfolio (thickest line, with a gain and loss area agai
 points share a scale; `normalize={false}` plots raw values (`formatValue`, per-series `format`). `periods` is a slot for your
 1M, 3M, 1Y, All control: slice `dates` and every series together. The legend is a row of toggle buttons (`aria-pressed`, Enter
 or Space); the last visible series cannot be hidden. A line with more points than 2px each is reduced to each bucket's extremes.
-A series whose first value is zero cannot be normalised and is not drawn.
+A series whose first value is zero cannot be normalised and is not drawn. The hidden table lists the latest `tableLimit` dates
+(default 500, as `CandlestickChart`; `labels.truncated` says how many are shown).
 
 ## DepthChart (`depth-chart`)
 
@@ -86,3 +87,7 @@ independent of input order.
 Rendering 1,500 candles (jsdom, one render, including the aggregation and the hidden table's latest 500 rows) is measured in
 `test/financial-charts.test.tsx` ("renders 1,500 and 2,000 candles quickly"). SVG output is bounded by the width: at most one
 candle per 3px, so a 1,440px screen draws at most about 450 candles whatever the input length.
+
+Under live ticks (one candle, date or level changing at a time) only the changed candle mark and table row re-render;
+measured at 10, 100 and 1,000 ticks a second and at 1k to 100k points in [PERFORMANCE.md](PERFORMANCE.md#charts-and-live-tweening).
+Feed a chart a new array with only the changed objects replaced (the forming candle), not a fresh copy of every object.

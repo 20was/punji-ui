@@ -731,7 +731,7 @@
     "name": "sparkline (import from '@punji/ui/sparkline')",
     "path": "dist/sparkline/Sparkline.js",
     "import": "*",
-    "limit": "890 B",
+    "limit": "920 B",
     "gzip": true
   },
   {
@@ -752,14 +752,14 @@
     "name": "candlestick-chart (import from '@punji/ui/candlestick-chart')",
     "path": "dist/candlestick-chart/CandlestickChart.js",
     "import": "*",
-    "limit": "5.33 kB",
+    "limit": "5.6 kB",
     "gzip": true
   },
   {
     "name": "performance-chart (import from '@punji/ui/performance-chart')",
     "path": "dist/performance-chart/PerformanceChart.js",
     "import": "*",
-    "limit": "4.28 kB",
+    "limit": "4.5 kB",
     "gzip": true
   },
   {

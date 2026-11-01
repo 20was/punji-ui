@@ -32,8 +32,13 @@ export function samePrinted(a: number, b: number, dp: number): boolean {
   return a.toFixed(dp) === b.toFixed(dp);
 }
 
+/* One media query list for the page: a feed of 1,000 ticks a second asks on every tick, and matches is live. */
+let reduced: { from: unknown; list: MediaQueryList } | null = null;
 export function prefersReducedMotion(): boolean {
-  return typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (typeof matchMedia !== 'function') return false;
+  // Asked again only if matchMedia itself was replaced (tests, polyfills).
+  if (reduced?.from !== matchMedia) reduced = { from: matchMedia, list: matchMedia('(prefers-reduced-motion: reduce)') };
+  return reduced.list.matches;
 }
 
 /* One frame loop for the page: each subscriber says whether it wants the next frame. */
@@ -41,7 +46,8 @@ const frames = new Set<(t: number) => boolean>();
 let raf = 0;
 function loop(t: number) {
   raf = 0;
-  for (const f of [...frames]) if (!f(t)) frames.delete(f);
+  // Deleting the current entry while iterating a Set is safe; no copy per frame.
+  for (const f of frames) if (!f(t)) frames.delete(f);
   if (frames.size) raf = requestAnimationFrame(loop);
 }
 function onFrame(f: (t: number) => boolean): () => void {

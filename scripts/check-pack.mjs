@@ -28,7 +28,7 @@ import { execFileSync } from 'node:child_process';
 // Banking and charts merged together: measured 1,120,613 B; ~3% headroom.
 // Banking, charts and portfolio merged: measured 1,232,502 B; ~3% headroom.
 // Tax, invoicing and payroll (pure tax helpers, TaxInvoice, LineItemEditor, PanInput, IncomeTaxCalculator, Payslip,
-// AgingTable, TdsSummary: JS, declarations with prop docs, CSS) add ~138 kB; measured 1,510,745 B; ~3% headroom.
+// AgingTable, TdsSummary: JS, declarations with prop docs, CSS) add ~140 kB; measured 1,514,429 B; ~3% headroom.
 const MAX_UNPACKED = 1520 * 1024;
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
 const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md']);

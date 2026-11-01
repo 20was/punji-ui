@@ -8,7 +8,7 @@ How an npm release works as implemented at the current `main`.
 
 1. A PR that changes what ships adds a changeset (`npm run changeset`, files in `.changeset/`). `npx changeset status` lists the pending ones.
 2. The PR merges to `main` after `CI OK`.
-3. On every push to `main`, `.github/workflows/release.yml` runs (only when `github.repository == '20was/punji-ui'` **and** repository variable `UI_NPM_RELEASE_ENABLED == 'true'`; otherwise the job is skipped, which is the current state).
+3. On every push to `main`, `.github/workflows/release.yml` runs (only when `github.repository == '20was/punji-ui'` **and** repository variable `UI_NPM_RELEASE_ENABLED == 'true'`; otherwise the job is skipped).
 4. If changesets are pending, the Changesets action opens or updates the PR `chore(release): version packages` (runs `npm run version-packages`: `changeset version`, then refreshes `package-lock.json` without scripts). Merging it triggers step 3 again.
 5. With no pending changesets, the action runs `npm run release` (`npm run build && changeset publish`), tags, and creates a GitHub release with the changelog.
 6. A CycloneDX SBOM (`npm sbom --omit dev --omit peer`) is attached to that release.
@@ -60,7 +60,7 @@ From `0.0.0`, the pending minor changesets produce `0.1.0`. Only the latest `0.x
 
 ## First-publish owner steps
 
-Required before the workflow can do anything. The exact click-by-click procedure, including the placeholder bootstrap npm needs because a trusted publisher can only be added to an existing package, is [docs/RELEASE-SETUP-RUNBOOK.md](docs/RELEASE-SETUP-RUNBOOK.md). State after the first release (2026-11-01): `0.1.0` is `latest`; the placeholders `0.0.0-bootstrap.0` and `0.0.0-stage` remain (to be deprecated); the trusted publisher, the protected `npm` environment and `UI_NPM_RELEASE_ENABLED=true` stay in place.
+Required before the workflow can do anything. The exact click-by-click procedure, including the placeholder bootstrap npm needs because a trusted publisher can only be added to an existing package, is [docs/RELEASE-SETUP-RUNBOOK.md](docs/RELEASE-SETUP-RUNBOOK.md). State after the first release (2026-11-01): `0.1.0` is `latest`; the placeholders `0.0.0-bootstrap.0` and `0.0.0-stage` are deprecated ("Placeholder. Install 0.1.0 or later."); publishing access is "Require two-factor authentication and disallow tokens" (`npm access set mfa=publish`), so only the trusted publisher can publish; the trusted publisher, the protected `npm` environment and `UI_NPM_RELEASE_ENABLED=true` stay in place.
 
 1. Confirm the `@punji` npm scope/organisation exists and the owner can publish `@punji/ui` publicly.
 2. Create the package with a code-free placeholder (`0.0.0-bootstrap.0`, dist-tag `bootstrap`), then configure the npm Trusted Publisher for `@punji/ui`: repository `20was/punji-ui`, workflow file `release.yml`, environment `npm`, `npm publish` allowed. npm requires the package to exist first, and the first OIDC publish must follow within 2 days.

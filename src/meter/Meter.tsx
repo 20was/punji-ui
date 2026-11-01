@@ -55,7 +55,7 @@ export function MeterBar({ parts, max, marker, label, testId }: {
       {parts.map((p, i) => (
         <i key={i} className={`kit-tone-${p.tone}`} style={{ width: `${pct(p.value)}%` }} />
       ))}
-      {marked && <b style={{ left: `${pct(marker)}%` }} />}
+      {marked && <b style={{ insetInlineStart: `${pct(marker)}%` }} />}
     </span>
   );
 }
@@ -103,9 +103,9 @@ export function RangeBar({ head, fill, span, marks = [], domain, label, legend, 
       <div className="kit-range-track" aria-hidden="true">
         {finite(fill) && <i style={{ width: `${at(fill)}%` }} />}
         {spanOk && (
-          <i className="span" style={{ left: `${at(Math.min(span[0], span[1]))}%`, width: `${Math.max(at(Math.max(span[0], span[1])) - at(Math.min(span[0], span[1])), 1)}%` }} />
+          <i className="span" style={{ insetInlineStart: `${at(Math.min(span[0], span[1]))}%`, width: `${Math.max(at(Math.max(span[0], span[1])) - at(Math.min(span[0], span[1])), 1)}%` }} />
         )}
-        {marks.map((m, i) => (m.kind === 'edge' || !finite(m.value) ? null : <b key={i} className={m.kind} style={{ left: `${at(m.value)}%` }} />))}
+        {marks.map((m, i) => (m.kind === 'edge' || !finite(m.value) ? null : <b key={i} className={m.kind} style={{ insetInlineStart: `${at(m.value)}%` }} />))}
       </div>
       {legend && (
         <div className="kit-range-legend" aria-hidden={label ? true : undefined}>
@@ -120,7 +120,7 @@ export function RangeBar({ head, fill, span, marks = [], domain, label, legend, 
             const x = at(m.value);
             // Under its mark; near an end the label slides inward so it never leaves the track.
             return (
-              <span key={i} className={m.kind} style={{ left: `${x}%`, transform: `translateX(-${x}%)`, '--r': labelRows[i] } as CSSProperties}>
+              <span key={i} className={m.kind} style={{ insetInlineStart: `${x}%`, transform: `translateX(calc(-${x}% * var(--pu-dir, 1)))`, '--r': labelRows[i] } as CSSProperties}>
                 {m.label}
               </span>
             );

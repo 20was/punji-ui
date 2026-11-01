@@ -13,7 +13,7 @@
   .kit-pill.link:hover { background: color-mix(in srgb, var(--pu-color-text) 10%, var(--pu-color-surface-tint)) }
   .kit-pill.link:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
   .kit-pill.dot::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor }
-  .kit-pill.marker { min-height: 28px; padding: 0 12px 0 10px; border: 1px solid var(--pu-color-card-border); background: transparent; font-weight: 400; font-size: 13px; color: var(--pu-color-text) }
+  .kit-pill.marker { min-height: 28px; padding-block: 0; padding-inline: 10px 12px; border: 1px solid var(--pu-color-card-border); background: transparent; font-weight: 400; font-size: 13px; color: var(--pu-color-text) }
   .kit-pill.marker::before { content: ''; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--pu-color-text-tertiary) }
   .kit-pill.marker.live::before { background: var(--pu-color-gain); box-shadow: 0 0 0 3px var(--pu-color-gain-soft) }
   .kit-pill.marker.warn::before { background: var(--pu-color-warn) }

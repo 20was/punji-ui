@@ -3,20 +3,20 @@
 @layer punji.components {
   .kit-cs-w { position: relative; display: grid; gap: 6px }
   .kit-cs-l { font-size: var(--pu-text-xs); font-weight: 600; color: var(--pu-color-text-muted) }
-  .kit-cs { display: flex; align-items: center; gap: 12px; height: 52px; padding: 0 14px 0 16px; border-radius: var(--pu-radius-control); background: var(--pu-color-surface-tint); border: 1px solid var(--pu-color-border-strong); color: var(--pu-color-text-tertiary) }
+  .kit-cs { display: flex; align-items: center; gap: 12px; height: 52px; padding-block: 0; padding-inline: 16px 14px; border-radius: var(--pu-radius-control); background: var(--pu-color-surface-tint); border: 1px solid var(--pu-color-border-strong); color: var(--pu-color-text-tertiary) }
   .kit-cs:focus-within { border-color: var(--pu-color-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--pu-color-accent) 22%, transparent) }
   .kit-cs input { flex: 1; min-width: 0; height: 100%; border: 0; background: transparent; outline: none; color: var(--pu-color-text); font: 500 16px / 1 var(--pu-font-body) }
   .kit-cs input::placeholder { color: var(--pu-color-text-tertiary) }
   .kit-cs kbd { flex: none }
-  .kit-cs-w.md .kit-cs { height: 40px; gap: 10px; padding: 0 12px 0 14px; background: var(--pu-color-surface) }
+  .kit-cs-w.md .kit-cs { height: 40px; gap: 10px; padding-block: 0; padding-inline: 14px 12px; background: var(--pu-color-surface) }
   .kit-cs-w.md .kit-cs input { font-size: 14px; font-weight: 400 }
   @media (pointer: coarse) { .kit-cs-w.md .kit-cs { height: var(--pu-control-lg) } }
   @media (pointer: coarse) { .kit-cs-w.md .kit-cs input { font-size: 16px } }
-  .kit-cs-w.sm .kit-cs { height: var(--pu-control-md); gap: 8px; padding: 0 10px 0 12px; background: var(--pu-color-surface) }
+  .kit-cs-w.sm .kit-cs { height: var(--pu-control-md); gap: 8px; padding-block: 0; padding-inline: 12px 10px; background: var(--pu-color-surface) }
   .kit-cs-w.sm .kit-cs input { font-size: 13px; font-weight: 400 }
   @media (max-width: 599px) { .kit-cs-w.sm .kit-cs { height: var(--pu-control-lg) } }
   @media (max-width: 599px) { .kit-cs-w.sm .kit-cs input { font-size: 16px } }
-  .kit-cs-sugg { position: absolute; z-index: 20; left: 0; right: 0; top: 100%; margin-top: 6px; padding: 6px; max-height: min(420px, 60vh); overflow-y: auto; border-radius: var(--pu-radius-card); background: var(--pu-color-surface-solid); border: 1px solid var(--pu-color-card-border); box-shadow: var(--pu-shadow-lg) }
+  .kit-cs-sugg { position: absolute; z-index: 20; inset-inline-start: 0; inset-inline-end: 0; top: 100%; margin-top: 6px; padding: 6px; max-height: min(420px, 60vh); overflow-y: auto; border-radius: var(--pu-radius-card); background: var(--pu-color-surface-solid); border: 1px solid var(--pu-color-card-border); box-shadow: var(--pu-shadow-lg) }
   .kit-cs-opt { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 4px 10px; border-radius: 8px; cursor: pointer }
   .kit-cs-opt.on, .kit-cs-opt:hover { background: color-mix(in srgb, var(--pu-color-text) 6.5%, transparent) }
   .kit-cs-id { flex: 1; min-width: 0; display: flex; flex-direction: column }
@@ -37,7 +37,7 @@
   .kit-cs-v { flex: 1; display: flex; align-items: baseline; gap: 8px; min-width: 0; color: var(--pu-color-text) }
   .kit-cs-v b { flex: none; font-size: 15px; font-weight: 700; white-space: nowrap }
   .kit-cs-v span { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; color: var(--pu-color-text-muted) }
-  .kit-cs-v span.m { flex: none; margin-left: auto; padding-left: 8px; color: var(--pu-color-text); font-variant-numeric: tabular-nums }
+  .kit-cs-v span.m { flex: none; margin-inline-start: auto; padding-inline-start: 8px; color: var(--pu-color-text); font-variant-numeric: tabular-nums }
   .kit-cs-w.sm .kit-cs-v b { font-size: 14px }
   .kit-cs-w.sm .kit-cs-v span { font-size: 12px }
   .kit-cs-w.ro .kit-cs, .kit-cs-w.ro .kit-cs input { cursor: default }
@@ -46,7 +46,7 @@
   .kit-cs-err { font: 600 12px / 16px var(--pu-font-body); color: var(--pu-color-loss) }
   .kit-cs-sk { height: 40px; margin: 4px }
   .kit-cs-sheet { position: fixed; inset: 0; z-index: 70; display: flex; flex-direction: column; background: var(--pu-color-bg); color: var(--pu-color-text) }
-  .kit-cs-sheet-h { flex: none; display: flex; align-items: center; gap: 4px; padding: 10px 16px 10px 4px; border-bottom: 1px solid var(--pu-color-border) }
+  .kit-cs-sheet-h { flex: none; display: flex; align-items: center; gap: 4px; padding-block: 10px; padding-inline: 4px 16px; border-bottom: 1px solid var(--pu-color-border) }
   .kit-cs-sheet .kit-cs { flex: 1; min-width: 0; height: var(--pu-control-lg); gap: 10px; padding: 0 12px; background: var(--pu-color-surface) }
   .kit-cs-sheet .kit-cs input { font-size: 16px; font-weight: 400 }
   .kit-cs-back { appearance: none; flex: none; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: var(--pu-radius-lg); background: none; color: var(--pu-color-text); cursor: pointer }

@@ -14,7 +14,7 @@
   .kit-metrics.dense .kit-metric-n { min-height: 0; margin-top: 2px }
 
   .kit-metric { position: relative; display: grid; grid-template-rows: auto auto auto 1fr; align-content: start; min-width: 0; padding: 16px 0 12px; border-top: 1px solid var(--pu-color-card-border); color: var(--pu-color-text) }
-  .kit-metric::before { content: ''; position: absolute; top: 16px; bottom: 12px; left: calc(var(--kit-metric-gap) / -2); width: 1px; background: var(--pu-color-card-border) }
+  .kit-metric::before { content: ''; position: absolute; top: 16px; bottom: 12px; inset-inline-start: calc(var(--kit-metric-gap) / -2); width: 1px; background: var(--pu-color-card-border) }
   .kit-metrics > .kit-metric:nth-child(2n + 1)::before { display: none }
   @container (min-width: 480px) { .kit-metrics.n3 > .kit-metric:nth-child(n)::before { display: block } .kit-metrics.n3 > .kit-metric:nth-child(3n + 1)::before { display: none } }
   @container (min-width: 640px) { .kit-metrics.n4 > .kit-metric:nth-child(n)::before { display: block } .kit-metrics.n4 > .kit-metric:nth-child(4n + 1)::before { display: none } }

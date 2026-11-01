@@ -9,9 +9,9 @@
   .kit-sel.sm { --sel-h: var(--pu-control-sm) }
   .kit-sel.lg { --sel-h: var(--pu-control-lg) }
   .kit-sel-f.block .kit-sel, .kit-sel-f:not(.inline) .kit-sel { width: 100% }
-  .kit-sel > select { appearance: none; -webkit-appearance: none; display: block; width: 100%; min-width: 0; height: var(--sel-h); margin: 0; padding: 0 38px 0 12px; border: 1px solid var(--pu-color-border-control); border-radius: var(--pu-radius-control); background: var(--pu-color-surface); color: var(--pu-color-text); font: 500 var(--pu-text-sm) / 1.2 var(--pu-font-body); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; transition: border-color var(--pu-motion-fast) var(--pu-ease-out) }
-  .kit-sel.sm > select { padding: 0 36px 0 10px; font-size: 13px }
-  .kit-sel.lg > select { padding: 0 42px 0 14px; font-size: var(--pu-text-base) }
+  .kit-sel > select { appearance: none; -webkit-appearance: none; display: block; width: 100%; min-width: 0; height: var(--sel-h); margin: 0; padding-block: 0; padding-inline: 12px 38px; border: 1px solid var(--pu-color-border-control); border-radius: var(--pu-radius-control); background: var(--pu-color-surface); color: var(--pu-color-text); font: 500 var(--pu-text-sm) / 1.2 var(--pu-font-body); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; transition: border-color var(--pu-motion-fast) var(--pu-ease-out) }
+  .kit-sel.sm > select { padding-block: 0; padding-inline: 10px 36px; font-size: 13px }
+  .kit-sel.lg > select { padding-block: 0; padding-inline: 14px 42px; font-size: var(--pu-text-base) }
   .kit-sel > select:hover:not(:disabled) { border-color: var(--pu-color-text-tertiary) }
   .kit-sel > select:focus { outline: none }
   .kit-sel > select:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
@@ -19,12 +19,12 @@
   .kit-sel > select:is([aria-invalid='true'], :user-invalid) { border-color: var(--pu-color-loss); }
   .kit-sel > select:is([aria-invalid='true'], :user-invalid):focus-visible { outline-color: var(--pu-color-loss); }
   .kit-sel > select option { color: var(--pu-color-text); background: var(--pu-color-surface-solid) }
-  .kit-sel-ico { position: absolute; right: 12px; top: 50%; width: 16px; height: 16px; margin-top: -8px; pointer-events: none }
-  .kit-sel.lg .kit-sel-ico { right: 14px }
+  .kit-sel-ico { position: absolute; inset-inline-end: 12px; top: 50%; width: 16px; height: 16px; margin-top: -8px; pointer-events: none }
+  .kit-sel.lg .kit-sel-ico { inset-inline-end: 14px }
   .kit-sel > .kit-spin.kit-sel-ico { width: 14px; height: 14px; margin-top: -7px }
   .kit-sel-f.bare { flex: 1 1 auto; align-self: stretch; width: 100% }
   .kit-sel.bare { --sel-h: auto; flex: 1 1 auto; align-items: stretch }
-  .kit-sel.bare > select { height: auto; min-height: 32px; align-self: stretch; padding-left: 0; border: 0; border-radius: 0; background: transparent; font-size: var(--pu-text-base) }
+  .kit-sel.bare > select { height: auto; min-height: 32px; align-self: stretch; padding-inline-start: 0; border: 0; border-radius: 0; background: transparent; font-size: var(--pu-text-base) }
   .kit-sel.bare > select:focus-visible { outline: none }
 }
 

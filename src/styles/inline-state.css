@@ -2,7 +2,7 @@
    Styles for inline-state. Needs tokens.css and base.css (styles.css has everything). */
 @layer punji.components {
   .kit-istate { display: grid; grid-template-columns: 40px minmax(0, 1fr); align-items: start; gap: 14px; min-width: 0; padding: 14px; border-radius: var(--pu-radius-xl); background: var(--pu-color-surface-tint); color: var(--pu-color-text) }
-  .kit-istate.row { grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; padding: 10px 10px 10px 12px }
+  .kit-istate.row { grid-template-columns: 32px minmax(0, 1fr) auto; align-items: center; padding-block: 10px; padding-inline: 12px 10px}
   .kit-istate.bare { padding: 0; background: none }
   .kit-istate.bare .kit-istate-ic { background: var(--pu-color-surface-tint) }
   .kit-istate-ic { display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--pu-radius-lg); background: var(--pu-color-surface); color: var(--pu-color-text-muted) }

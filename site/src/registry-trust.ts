@@ -139,7 +139,7 @@ export const TRUST_PAGES: readonly PageDef[] = [
       'A field for secrets with the browser attributes set per `kind`: `current-password`, `new-password`, `one-time-code` (SMS autofill), `pin`, `cc-number`, `cc-csc`, `cc-exp`, `account-number` and `secret-answer`. Spellcheck, autocorrect and autocapitalise are off, so the text is not sent to a cloud dictionary. The value is pushed into the input\'s property, never its `value` attribute (React writes that for controlled inputs, and CSS attribute selectors can read it out), nor into a data attribute, title or label. The reveal toggle hides again on blur and after 30 seconds. Paste is allowed. `secureFieldAttributes` gives the same attributes for your own inputs.',
     use: ['Sign-in, password change, OTP entry, card forms and account number fields.', '`secureFieldAttributes(kind)` when you render the input yourself.'],
     avoid: ['Blocking paste: it breaks password managers and WCAG 3.3.8 Accessible Authentication.', 'Logging the value from `onChange`, or echoing it in an error message.'],
-    api: [...ui('secure-field', 'SecureField', 'secureFieldAttributes', 'SecureFieldKind', 'SecureFieldAttributes', 'SecureFieldLabels')],
+    api: [...ui('secure-field', 'SecureField', 'secureFieldAttributes', 'SecureFieldKind', 'SecureInputAttributes', 'SecureFieldLabels')],
     examples: [{ id: 'kinds', title: 'Each kind', note: 'Inspect the inputs: the typed value is not in the markup.' }],
     keyboard: ['Tab to the field and its Show button. Leaving the field hides a revealed value.'],
     accessibility: ['A real label, hint and error linked with `aria-describedby`; errors are alerts.', 'The Show button names its action and controls the input.'],

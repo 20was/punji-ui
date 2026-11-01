@@ -8,7 +8,7 @@
   .pu-confirm-amount-label { font: 500 13px / 16px var(--pu-font-body); color: var(--pu-color-text-muted) }
   .pu-confirm-amount-figure { font: 700 clamp(28px, 7vw, 40px) / 1.15 var(--pu-font-display); font-variant-numeric: tabular-nums; color: var(--pu-color-text); overflow-wrap: anywhere }
   .pu-confirm-amount-words { font: 500 var(--pu-text-sm) / 1.45 var(--pu-font-body); color: var(--pu-color-text-muted) }
-  .pu-review-changed { display: inline-flex; flex-wrap: wrap; gap: 0 4px; padding: 1px 8px; border-radius: var(--pu-radius-full); background: var(--pu-color-tag-bg); color: var(--pu-color-warn); font: 600 12px / 18px var(--pu-font-body) }
+  .pu-review-changed { display: inline-flex; flex-wrap: wrap; gap: 0 4px; padding: 1px 8px; border-radius: var(--pu-radius-full); background: var(--pu-color-tag-bg); color: var(--pu-color-tag-text); font: 600 12px / 18px var(--pu-font-body) }
   .pu-review-was { font-weight: 500; text-decoration: line-through }
   [data-changed='true'].pu-confirm-amount .pu-confirm-amount-figure { text-decoration: underline 2px var(--pu-color-warn-accent); text-underline-offset: 6px }
 

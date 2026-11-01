@@ -21,7 +21,7 @@ export type SecureFieldKind =
   | 'account-number'
   | 'secret-answer';
 
-export interface SecureFieldAttributes {
+export interface SecureInputAttributes {
   /** The input type: 'password' for masked kinds. */
   type: 'password' | 'text';
   /** The HTML autofill token, or 'off'. */
@@ -46,7 +46,7 @@ export interface SecureFieldAttributes {
  * 'cc-csc', 'cc-exp'; an account number and a secret answer get 'off' (no autofill token exists, and saving them in
  * form history is unwanted).
  */
-export function secureFieldAttributes(kind: SecureFieldKind): SecureFieldAttributes {
+export function secureFieldAttributes(kind: SecureFieldKind): SecureInputAttributes {
   const base = { spellCheck: false as const, autoCorrect: 'off' as const, autoCapitalize: 'none' as const };
   switch (kind) {
     case 'current-password':

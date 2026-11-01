@@ -167,6 +167,18 @@ If step 6 fails because npm requires staged publishing for new packages:
 
 For any other error: stop and report the exact message.
 
+**What happened on the first run (2026-11-01).** The package was created through the staged route. Read
+these points before you treat a difference as an error:
+- `0.0.0-stage` appeared first, and the website briefly showed only `latest → 0.0.0-stage`.
+- The anonymous registry (`curl -s https://registry.npmjs.org/@punji%2fui`) returned `{"error":"Not found"}`
+  for several minutes after the website already showed the package as Public. It then returned
+  `latest` and `bootstrap` both pointing to `0.0.0-bootstrap.0`, with versions `0.0.0-stage` and
+  `0.0.0-bootstrap.0`.
+
+So a fresh package can take a few minutes to reach the registry. Wait and re-check before reporting a
+404. Part D only needs the package page and its Settings tab to exist. Part H deprecates both
+placeholder versions.
+
 ## Part D. Add the trusted publisher on npm
 
 1. Go to **npmjs.com/package/@punji/ui → Settings** (you must be logged in as an owner).
@@ -238,13 +250,13 @@ All must be true. If any is false, stop and report.
 4. Go to **Actions → Release**. The new run on `main` waits for the `npm` environment: **Review
    deployments → `npm` → Approve and deploy**.
 5. The run re-runs the gates, then publishes `@punji/ui@0.1.0` with provenance, creates the git tag
-   `@punji/ui@0.1.0` and a GitHub release with the changelog, and attaches the SBOM file
+   `v0.1.0` and a GitHub release with the changelog, and attaches the SBOM file
    `punji-ui-0.1.0.cdx.json` to that release.
 6. Verify, and record the output of each check:
    - `npm view @punji/ui dist-tags` shows `latest: '0.1.0'`.
    - **npmjs.com/package/@punji/ui** shows version 0.1.0 with a **Provenance** section linking to the
      `release.yml` run on `20was/punji-ui`.
-   - **github.com/20was/punji-ui/releases** has `@punji/ui@0.1.0` with the `.cdx.json` file attached.
+   - **github.com/20was/punji-ui/releases** has `v0.1.0` with the `.cdx.json` file attached. (On the first run the SBOM step looked for the wrong tag name and failed after publishing; the file was attached by hand. Fixed in release.yml.)
    - In an empty temporary folder: `npm init -y`, then `npm install @punji/ui@0.1.0 react react-dom`, then
      `npm audit signatures`. It must report verified registry signatures and attestations, with no errors.
 

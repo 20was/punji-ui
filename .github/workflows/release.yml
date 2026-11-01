@@ -51,6 +51,9 @@ jobs:
       - name: Install (no lifecycle scripts)
         run: npm ci --ignore-scripts --no-audit --no-fund
       - run: npm audit signatures
+      # `npm run verify` includes check:examples, which drives Chromium.
+      - name: Install Chromium for the example checks
+        run: npx playwright install --with-deps chromium
       # The version PR is opened with the workflow token, which does not
       # trigger CI on that PR, so every gate runs again here before publishing.
       - name: Every gate, again, before anything is published
@@ -73,8 +76,9 @@ jobs:
           github-token: ${{ secrets.PUNJI_UI_PR_TOKEN }}
         env:
           NPM_CONFIG_PROVENANCE: 'true'
-      # A CycloneDX SBOM of what the published package depends on (peer React
-      # only today), attached to the GitHub release Changesets just created.
+      # Changesets tags a single-package repository "v<version>" (not "<name>@<version>").
+      # A CycloneDX SBOM of what the published package depends on at runtime (peer
+      # React excluded), attached to the GitHub release Changesets just created.
       - name: Attach SBOM to the GitHub release
         if: steps.changesets.outputs.published == 'true'
         env:
@@ -83,4 +87,4 @@ jobs:
         run: |
           VERSION="$(jq -r '.[] | select(.name == "@punji/ui") | .version' <<< "${PUBLISHED}")"
           npm sbom --sbom-format cyclonedx --omit dev --omit peer > "punji-ui-${VERSION}.cdx.json"
-          gh release upload "@punji/ui@${VERSION}" "punji-ui-${VERSION}.cdx.json" --repo "${GITHUB_REPOSITORY}"
+          gh release upload "v${VERSION}" "punji-ui-${VERSION}.cdx.json" --repo "${GITHUB_REPOSITORY}"

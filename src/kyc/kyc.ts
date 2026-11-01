@@ -8,6 +8,9 @@
  * Pure: no React, no browser globals.
  */
 
+import { fromDevanagari, toDevanagari } from '../internal/digits.ts';
+import { checkPan } from '../tax/pan.ts';
+
 export type IdNumberKind = 'pan' | 'citizenship';
 
 export type IdNumberResult =
@@ -15,25 +18,26 @@ export type IdNumberResult =
   | { state: 'invalid'; value: string; reason: 'characters' | 'length' | 'format' }
   | { state: 'valid'; value: string };
 
-const DEVANAGARI = '०१२३४५६७८९';
-
 /** Devanagari digits to ASCII, Unicode dashes to "-", whitespace trimmed. Other characters are kept for the check to refuse. */
 export function toAsciiIdText(text: string): string {
-  return text.replace(/[०-९]/g, (d) => String(DEVANAGARI.indexOf(d))).replace(/[‐-―−]/g, '-').trim();
+  return fromDevanagari(text).replace(/[‐-―−]/g, '-').trim();
 }
 
 /** ASCII digits to Devanagari, for display. Separators are kept. */
 export function idNumberToDevanagari(text: string): string {
-  return text.replace(/\d/g, (d) => DEVANAGARI[Number(d)]!);
+  return toDevanagari(text);
 }
 
-/** Check a PAN: exactly nine digits once spaces and dashes are dropped. The canonical value is the nine digits. */
+/**
+ * Check a PAN: exactly nine digits once spaces, dashes and dots are dropped. The canonical value is the nine digits.
+ * The same rules as `checkPan` in `@punji/ui/tax` (one implementation); here a short number is `invalid` with reason
+ * 'length' rather than `partial`, because a KYC form checks a finished value.
+ */
 export function validatePan(text: string): IdNumberResult {
-  const ascii = toAsciiIdText(String(text ?? '')).replace(/[\s-]/g, '');
-  if (ascii === '') return { state: 'empty', value: '' };
-  if (!/^\d+$/.test(ascii)) return { state: 'invalid', value: ascii, reason: 'characters' };
-  if (ascii.length !== 9) return { state: 'invalid', value: ascii, reason: 'length' };
-  return { state: 'valid', value: ascii };
+  const check = checkPan(String(text ?? '').replace(/[‐-―−]/g, '-'));
+  if (check.state === 'empty' || check.state === 'valid') return check;
+  if (check.state === 'partial') return { state: 'invalid', value: check.value, reason: 'length' };
+  return { state: 'invalid', value: check.value, reason: check.reason };
 }
 
 /** "123 456 789" for reading a PAN aloud or on a card; the stored value stays nine digits. */

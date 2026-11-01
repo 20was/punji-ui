@@ -5,6 +5,8 @@
  * for the depository to say.
  */
 
+import { fromDevanagari } from '../internal/digits.ts';
+
 export interface BoidParts {
   /** The 16 ASCII digits. */
   boid: string;
@@ -25,13 +27,11 @@ export interface BoidOptions {
   prefix?: string | null;
 }
 
-const DEVANAGARI = '०१२३४५६७८९';
 const ARABIC_INDIC = '٠١٢٣٤٥٦٧٨٩';
 
 /** Typed or pasted text to ASCII: Devanagari and Arabic-Indic digits converted, spaces, hyphens and dots dropped. Other characters stay so a check can refuse them. */
 export function normalizeBoid(text: string): string {
-  return text
-    .replace(/[०-९]/g, (d) => String(DEVANAGARI.indexOf(d)))
+  return fromDevanagari(text)
     .replace(/[٠-٩]/g, (d) => String(ARABIC_INDIC.indexOf(d)))
     .replace(/[\s\-–.‎‏]/g, '');
 }

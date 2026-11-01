@@ -12,6 +12,7 @@ import { ChoiceGroup } from '../choice-group/ChoiceGroup.tsx';
 import type { AmortisationRow, AmortisationSchedule } from '../lending/loan.ts';
 import { getMoneyFormatter, nepalMoneyPreset, type MoneyFormatConfig } from '../money/money.ts';
 import { useControllableState } from '../use-controllable-state/useControllableState.ts';
+import { showDigits } from '../internal/digits.ts';
 
 export type AmortisationView = 'monthly' | 'yearly';
 
@@ -38,7 +39,7 @@ export interface AmortisationTableLabels {
   amountsIn: (currency: string) => string;
 }
 
-export const amortisationTableLabels: AmortisationTableLabels = {
+export const DEFAULT_AMORTISATION_TABLE_LABELS: AmortisationTableLabels = {
   caption: 'Repayment schedule', view: 'Show by', monthly: 'Month', yearly: 'Year', month: 'Month', year: 'Year', opening: 'Opening balance',
   payment: 'Instalment', interest: 'Interest', principal: 'Principal', prepayment: 'Prepayment', closing: 'Closing balance', total: 'Total',
   amountsIn: (currency) => `Amounts in ${currency}`,
@@ -83,15 +84,14 @@ function byYear(rows: readonly AmortisationRow[]): Line[] {
   return out;
 }
 
-const DEVA = '०१२३४५६७८९';
 
 export function AmortisationTable({ schedule, money = nepalMoneyPreset, view, defaultView, onViewChange, hideViewSwitch, labels, digits = 'latn', footnote, className, testId }: AmortisationTableProps) {
-  const words = { ...amortisationTableLabels, ...labels };
+  const words = { ...DEFAULT_AMORTISATION_TABLE_LABELS, ...labels };
   const uid = useId();
   const [current, setCurrent] = useControllableState<AmortisationView>({ value: view, defaultValue: defaultView ?? (schedule.rows.length > 60 ? 'yearly' : 'monthly'), onChange: onViewChange, name: 'AmortisationTable view' });
   const formatter = getMoneyFormatter({ ...money, display: 'none' });
   const fmt = (value: bigint) => formatter.format(value);
-  const num = (value: number) => (digits === 'deva' ? String(value).replace(/\d/g, (d) => DEVA[Number(d)]!) : String(value));
+  const num = (value: number) => showDigits(value, digits);
   const lines: Line[] = current === 'yearly' ? byYear(schedule.rows) : schedule.rows.map((r) => ({ key: `m${r.period}`, label: r.period, ...r }));
   const showPrepay = schedule.totalPrepaid > 0n;
   const totalPayments = schedule.rows.reduce((sum, r) => sum + r.payment, 0n);

@@ -35,7 +35,7 @@ export interface OnboardingWizardLabels {
   upcoming: string;
 }
 
-export const onboardingWizardLabels: OnboardingWizardLabels = {
+export const DEFAULT_ONBOARDING_WIZARD_LABELS: OnboardingWizardLabels = {
   progress: (step, total) => `Step ${step} of ${total}`, back: 'Back', next: 'Continue', submit: 'Submit', steps: 'Steps',
   done: 'Done', current: 'Current step', upcoming: 'Not started',
 };
@@ -70,7 +70,7 @@ export interface OnboardingWizardProps {
 }
 
 export function OnboardingWizard({ steps, current, onNext, onBack, onStepSelect, children, busy, nextDisabled, digits = 'latn', headingLevel = 2, labels, className, testId }: OnboardingWizardProps) {
-  const words = { ...onboardingWizardLabels, ...labels };
+  const words = { ...DEFAULT_ONBOARDING_WIZARD_LABELS, ...labels };
   const uid = useId();
   const heading = useRef<HTMLHeadingElement>(null);
   const index = Math.min(Math.max(current, 0), Math.max(steps.length - 1, 0));

@@ -45,13 +45,15 @@ export interface TableExportProps<T> {
   onExport?: (scope: ExportScope, count: number) => void;
   /** Test id prefix: buttons are `${prefix}-${scope}`. */
   testIdPrefix?: string;
+  /** Extra class on the root element (layout only). */
+  className?: string;
 }
 
 const count = (n: number) => n.toLocaleString('en-IN');
 const SCOPE_WORDS: Record<ExportScope, string> = { visible: 'Visible', all: 'All', selected: 'Selected' };
 
 /** Export buttons for visible, all and selected rows. Each makes a CSV file from the rows you pass. */
-export function TableExport<T>({ columns, filename, visibleRows, allRows, selectedRows, label = 'Export CSV', scopeLabel, doneLabel, errorLabel = 'The file could not be saved', csv, onExport, testIdPrefix }: TableExportProps<T>) {
+export function TableExport<T>({ columns, filename, visibleRows, allRows, selectedRows, label = 'Export CSV', scopeLabel, doneLabel, errorLabel = 'The file could not be saved', csv, onExport, testIdPrefix, className }: TableExportProps<T>) {
   const [message, setMessage] = useState('');
   const scopes: [ExportScope, readonly T[] | undefined][] = [['visible', visibleRows], ['all', allRows], ['selected', selectedRows]];
   const run = (scope: ExportScope, rows: readonly T[]) => {
@@ -67,7 +69,7 @@ export function TableExport<T>({ columns, filename, visibleRows, allRows, select
     onExport?.(scope, rows.length);
   };
   return (
-    <div className="pu-table-export" role="group" aria-label={label}>
+    <div className={`pu-table-export${className ? ` ${className}` : ''}`} role="group" aria-label={label}>
       <span className="pu-table-export-label" aria-hidden="true">{label}</span>
       {scopes.map(([scope, rows]) => rows && (
         <button key={scope} type="button" className={buttonClass({ variant: 'secondary', size: 'sm' })} disabled={rows.length === 0} onClick={() => run(scope, rows)}

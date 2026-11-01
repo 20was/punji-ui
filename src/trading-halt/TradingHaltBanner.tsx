@@ -7,6 +7,7 @@
 import type { ReactNode } from 'react';
 
 import { ToneIcon } from '../states/States.tsx';
+import { showDigits } from '../internal/digits.ts';
 
 export interface CircuitTier {
   /** The absolute index move, in percent units (4 means ±4%), that triggers this stage. */
@@ -89,7 +90,7 @@ export interface TradingHaltBannerProps {
 
 export function TradingHaltBanner({ kind, market = 'NEPSE', changePercent, tiers = nepseCircuitTiers, resumesAt, detail, action, onDismiss, digits = 'latn', labels, testId, className }: TradingHaltBannerProps) {
   const words = { ...EN, ...labels };
-  const num = (text: string) => (digits === 'deva' ? text.replace(/\d/g, (d) => '०१२३४५६७८९'[Number(d)]!) : text);
+  const num = (text: string) => showDigits(text, digits);
   const known = changePercent !== undefined && Number.isFinite(changePercent);
   const direction = known && changePercent !== 0 ? (changePercent > 0 ? 'up' : 'down') : null;
   const stage = kind === 'circuit-breaker' && known ? circuitBreakerStage(changePercent, tiers) : null;

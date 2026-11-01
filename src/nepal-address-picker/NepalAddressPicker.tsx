@@ -46,7 +46,7 @@ export interface NepalAddressPickerLabels {
   wardError: string;
 }
 
-export const nepalAddressPickerLabels: NepalAddressPickerLabels = {
+export const DEFAULT_NEPAL_ADDRESS_PICKER_LABELS: NepalAddressPickerLabels = {
   legend: 'Address', province: 'Province', district: 'District', localLevel: 'Municipality or rural municipality', ward: 'Ward number', choose: 'Choose',
   types: { metropolitan: 'Metropolitan City', 'sub-metropolitan': 'Sub-Metropolitan City', municipality: 'Municipality', 'rural-municipality': 'Rural Municipality' },
   loading: 'Loading the list of places', loadError: 'The list of places could not load. Check your connection and reload the page.', wardError: 'Enter a ward number from 1 to 33.',
@@ -87,7 +87,7 @@ export function loadNepalAddressData(): Promise<NepalAddressData> {
 }
 
 export function NepalAddressPicker({ value, onChange, data, language = 'en', digits = 'latn', hideWard, errors, labels, size, className, testId }: NepalAddressPickerProps) {
-  const words = { ...nepalAddressPickerLabels, ...labels, types: { ...nepalAddressPickerLabels.types, ...labels?.types } };
+  const words = { ...DEFAULT_NEPAL_ADDRESS_PICKER_LABELS, ...labels, types: { ...DEFAULT_NEPAL_ADDRESS_PICKER_LABELS.types, ...labels?.types } };
   const uid = useId();
   const [loaded, setLoaded] = useState<NepalAddressData | null>(data ?? cached);
   const [failed, setFailed] = useState(false);

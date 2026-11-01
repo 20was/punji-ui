@@ -107,12 +107,14 @@ export interface SecureFieldProps {
   labels?: SecureFieldLabels;
   /** The input element. */
   ref?: Ref<HTMLInputElement>;
+  /** Extra class on the root element (layout only). */
+  className?: string;
   /** Becomes data-testid on the input. */
   testId?: string;
 }
 
 export function SecureField({
-  label, kind, value, onChange, name, hint, error, maxLength, required, disabled, revealable = true, revealSeconds = 30, labels = {}, ref, testId,
+  label, kind, value, onChange, name, hint, error, maxLength, required, disabled, revealable = true, revealSeconds = 30, labels = {}, ref, className, testId,
 }: SecureFieldProps) {
   if (!Number.isFinite(revealSeconds) || revealSeconds < 5 || revealSeconds > 300) throw new RangeError('revealSeconds must be 5 to 300');
   const id = useId();
@@ -139,7 +141,7 @@ export function SecureField({
   const describedBy = error ? `${id}-err` : hint ? `${id}-hint` : undefined;
 
   return (
-    <div className="kit-field pu-secure-field" data-invalid={error ? 'true' : undefined}>
+    <div className={`kit-field pu-secure-field${className ? ` ${className}` : ''}`} data-invalid={error ? 'true' : undefined}>
       <label htmlFor={id}>{label}</label>
       <div className="kit-field-control">
         <input

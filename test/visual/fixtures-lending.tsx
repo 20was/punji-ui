@@ -46,8 +46,8 @@ function KycFieldsFixture() {
     <NepalAddressPicker value={address} onChange={setAddress} data={nepalAddressData} testId="vr-addr" />
     <Block title="Nepali names"><NepalAddressPicker value={address} onChange={setAddress} data={nepalAddressData} language="ne" digits="deva" hideWard /></Block>
     <Block title="Identity numbers">
-      <IdNumberInput kind="pan" label="PAN" value={pan} onValueChange={setPan} testId="vr-pan" />
-      <IdNumberInput kind="citizenship" label="Citizenship certificate number" value={citizenship} onValueChange={setCitizenship} digits="deva" />
+      <IdNumberInput kind="pan" label="PAN" value={pan} onValueChange={({ value }) => setPan(value)} testId="vr-pan" />
+      <IdNumberInput kind="citizenship" label="Citizenship certificate number" value={citizenship} onValueChange={({ value }) => setCitizenship(value)} digits="deva" />
       <IdNumberInput kind="pan" label="PAN (with a server error)" value="301234567" onValueChange={noop} error="This PAN is already linked to another account." />
     </Block>
   </Stack>;

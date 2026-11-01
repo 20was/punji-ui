@@ -22,6 +22,7 @@ import { circuitLimits } from '../price-limit/limits.ts';
 import { Note } from '../states/States.tsx';
 import { useControllableState } from '../use-controllable-state/useControllableState.ts';
 import { isOnTick, snapToTick, validateOrder, type OrderIssue } from './ticket.ts';
+import { toDevanagari } from '../internal/digits.ts';
 
 export { isOnTick, snapToTick, validateOrder } from './ticket.ts';
 export type { OrderDraft, OrderIssue, OrderRules } from './ticket.ts';
@@ -172,7 +173,7 @@ export function OrderTicket({
   const amounts = getMoneyFormatter(config);
   const prices = getMoneyFormatter({ ...config, display: 'none' });
   const scale = prices.exponent;
-  const digits = config.numberingSystem === 'deva' ? (text: string) => text.replace(/\d/g, (d) => '०१२३४५६७८९'[Number(d)]!) : (text: string) => text;
+  const digits = config.numberingSystem === 'deva' ? toDevanagari : (text: string) => text;
   const count = (value: bigint) => digits(value.toString());
 
   const [side, setSide] = useControllableState<OrderSide>({ value: sideProp, defaultValue: defaultSide, onChange: onSideChange, name: 'OrderTicket side' });

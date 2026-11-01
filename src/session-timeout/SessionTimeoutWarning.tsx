@@ -42,6 +42,8 @@ export interface SessionTimeoutWarningProps {
   now?: () => number;
   /** Words, in the reader's language. */
   labels?: SessionTimeoutLabels;
+  /** Extra class on the root element (layout only). */
+  className?: string;
   /** Becomes data-testid on the dialog. */
   testId?: string;
 }
@@ -52,7 +54,7 @@ const defaultSpoken = (m: number, s: number) =>
   [m ? `${m} minute${m === 1 ? '' : 's'}` : '', s || !m ? `${s} second${s === 1 ? '' : 's'}` : ''].filter(Boolean).join(' ');
 
 export function SessionTimeoutWarning({
-  expiresAt, warnBefore = 120_000, onExtend, onSignOut, onExpire, now = Date.now, labels = {}, testId,
+  expiresAt, warnBefore = 120_000, onExtend, onSignOut, onExpire, now = Date.now, labels = {}, className, testId,
 }: SessionTimeoutWarningProps) {
   const warnMs = Math.max(20_000, warnBefore);
   const {
@@ -126,7 +128,7 @@ export function SessionTimeoutWarning({
       <span className="kit-sr" aria-live="assertive" aria-atomic="true">{announcement}</span>
       {open && (
         <div className="kit-sheet-back pu-session-back">
-          <div className="kit-sheet pu-session" role="alertdialog" aria-modal="true" aria-labelledby={`${id}-t`} aria-describedby={`${id}-d`} ref={dialogRef} data-testid={testId}>
+          <div className={`kit-sheet pu-session${className ? ` ${className}` : ''}`} role="alertdialog" aria-modal="true" aria-labelledby={`${id}-t`} aria-describedby={`${id}-d`} ref={dialogRef} data-testid={testId}>
             <h2 id={`${id}-t`}>{title}</h2>
             <p className="pu-session-clock" aria-hidden="true">
               <time dateTime={`PT${minutes}M${rest}S`}>{clock}</time>

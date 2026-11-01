@@ -85,6 +85,8 @@ export interface ReconciliationMatcherProps {
   retryLabel?: string;
   /** Called when the retry button is pressed. */
   onRetry?: () => void;
+  /** Extra class on the root element (layout only). */
+  className?: string;
   /** Sets `data-testid` on the root; parts get `${testId}-match`, `-auto`, `-difference`, `-s-<id>`, `-l-<id>` and so on. */
   testId?: string;
 }
@@ -98,7 +100,7 @@ const byId = (items: readonly ReconcileItem[], ids: readonly string[]) => items.
 export function ReconciliationMatcher({
   statement, ledger, matches, onMatchesChange, statementBalance, ledgerBalance, onCreateEntry, dateWindow = 5, newMatchId,
   money = nepalLedgerMoney, formatDate = formatCalendarDate, headingLevel = 3, maxHeight = 360, labels, state = 'ready',
-  loadingLabel = 'Loading the statement…', errorLabel = 'The statement could not be loaded.', retryLabel = 'Try again', onRetry, testId,
+  loadingLabel = 'Loading the statement…', errorLabel = 'The statement could not be loaded.', retryLabel = 'Try again', onRetry, className, testId,
 }: ReconciliationMatcherProps) {
   const words = { ...DEFAULT_RECONCILIATION_LABELS, ...labels };
   const id = useId();
@@ -118,7 +120,7 @@ export function ReconciliationMatcher({
   }, [statement, ledger, matches, statementBalance, ledgerBalance, dateWindow]);
 
   if (state === 'error') return <RetryNote retryLabel={retryLabel} onRetry={onRetry} testId={testId}>{errorLabel}</RetryNote>;
-  if (state === 'loading') return <div className="pu-recon" data-testid={testId} aria-busy="true"><Note>{<span role="status">{loadingLabel}</span>}</Note></div>;
+  if (state === 'loading') return <div className={`pu-recon${className ? ` ${className}` : ''}`} data-testid={testId} aria-busy="true"><Note>{<span role="status">{loadingLabel}</span>}</Note></div>;
   if (!computed) return <div role="alert" data-testid={testId}><Note tone="error">{words.invalid}</Note></div>;
   const { summary, suggestions } = computed;
 
@@ -204,7 +206,7 @@ export function ReconciliationMatcher({
 
   return (
     // oxlint-disable-next-line jsx-a11y/no-static-element-interactions -- Ctrl+Enter from any line or button inside matches the ticked lines
-    <div className="pu-recon" data-testid={testId} onKeyDown={onKeyDown}>
+    <div className={`pu-recon${className ? ` ${className}` : ''}`} data-testid={testId} onKeyDown={onKeyDown}>
       <div className="pu-recon-panels">
         {panel('statement', summary.unmatchedStatement, selS, totalS)}
         {panel('ledger', summary.unmatchedLedger, selL, totalL)}

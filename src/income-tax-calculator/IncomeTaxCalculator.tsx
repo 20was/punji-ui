@@ -142,6 +142,8 @@ export interface IncomeTaxCalculatorProps {
   labels?: Partial<IncomeTaxCalculatorLabels>;
   /** Words of the band table. */
   breakdownLabels?: Partial<IncomeTaxBreakdownLabels>;
+  /** Extra class on the root element (layout only). */
+  className?: string;
   /** Sets `data-testid` on the root; fields get `${testId}-income`, `${testId}-<field id>` and so on. */
   testId?: string;
 }
@@ -154,7 +156,7 @@ const DEFAULT_RETIREMENT: readonly TaxDeductionField[] = [
 
 export function IncomeTaxCalculator({
   slabs, retirement = DEFAULT_RETIREMENT, retirementRule, deductions = [], rebates = [], ssfOption, fiscalYear, defaultValues = {}, rounding = 'half-up',
-  money = nepalLedgerMoney, onResult, labels, breakdownLabels, testId,
+  money = nepalLedgerMoney, onResult, labels, breakdownLabels, className, testId,
 }: IncomeTaxCalculatorProps) {
   const words = { ...DEFAULT_INCOME_TAX_CALCULATOR_LABELS, ...labels };
   const uid = useId();
@@ -188,7 +190,7 @@ export function IncomeTaxCalculator({
       onValueChange={(change) => setAmounts((prev) => ({ ...prev, [f.id]: change.value }))} onBlur={announce} testId={testId ? `${testId}-${f.id}` : undefined} />
   );
   return (
-    <div className="pu-itax" data-testid={testId}>
+    <div className={`pu-itax${className ? ` ${className}` : ''}`} data-testid={testId}>
       <form className="pu-itax-form" onSubmit={(event) => { event.preventDefault(); announce(); }} aria-labelledby={fiscalYear ? `${uid}-fy` : undefined}>
         {fiscalYear && <p className="pu-itax-fy" id={`${uid}-fy`}>{fiscalYear}</p>}
         <CurrencyInput label={words.income} hint={words.incomeHint} preset={money} value={income} onValueChange={(change) => setIncome(change.value)} onBlur={announce} testId={testId ? `${testId}-income` : undefined} />

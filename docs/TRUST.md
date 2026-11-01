@@ -70,9 +70,10 @@ read as "m"); `areConfusable(a, b)` is true when two different names share a ske
 
 ### TransferReview and ConfirmAmount
 
-Props: `amount`, `currency`, `money` (locale, digits, grouping, exponent), `recipient` (`name`, `account`,
-`institution`), `knownPayees`, `fee` (adds a total), `previousAmount`, `words`, `details` (`{ id, label, value,
-previous?, changed? }`), `verification` (slot), `onConfirm` or `confirm` (slot), `onEdit`, `busy`, `labels`.
+Props: `amount`, `money` (a `MoneyFormatConfig`, as elsewhere in the kit: currency, locale, digits, exponent),
+`currency` (optional; overrides `money.currency`, default NPR), `recipient` (`name`, `account`, `institution`),
+`knownPayees`, `fee` (adds a total), `previousAmount`, `words`, `details` (`{ id, label, value, previous?, changed?
+}`), `verification` (slot), `onConfirm` or `confirm` (slot), `onEdit`, `busy`, `labels`, `className`, `testId`.
 Changed rows say "Changed (was …)" in text. The confirm button is `aria-disabled` while blocked, so it stays
 focusable.
 

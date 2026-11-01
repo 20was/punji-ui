@@ -42,7 +42,7 @@ function Sample({ dir, lang, t }: { dir: 'rtl' | 'ltr'; lang: string; t: Record<
       <Block title={t.rows!}>
         <Card flush><RowList label={t.rows!}>{holdings.slice(0, 2).map((h) => <ValueRow key={h.symbol} symbol={h.symbol} name={h.name} line={`${h.qty}`} figure={String(h.ltp)} chevron onClick={noop} />)}</RowList></Card>
         <DataRows label={t.rows!} flush><DataRow label={t.cost!} value="Rs 10,50,000" /><DataRow label={t.value!} value="Rs 12,48,350" /></DataRows>
-        <CheckRow icon={<Glyph />} tone="gain" title={t.check!} line="7" figure="7" onClick={noop} />
+        <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}><CheckRow icon={<Glyph />} tone="gain" title={t.check!} line="7" figure="7" onClick={noop} /></ul>
         <CardLink href="#open">{t.open}</CardLink>
       </Block>
       <Block title={t.table!}>

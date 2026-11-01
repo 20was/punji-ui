@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import * as fc from 'fast-check';
 
@@ -28,7 +29,7 @@ describe('maskAccountNumber', () => {
   it('property: output length equals the cleaned length and the revealed suffix is at most visible and half', () => {
     fc.assert(fc.property(fc.string(), fc.integer({ min: -2, max: 12 }), (input, visible) => {
       const raw = input.replaceAll('•', 'x');
-      const clean = Array.from(raw.replace(/[\s\-_.]/g, '')).filter((c) => { const n = c.codePointAt(0)!; return !(n <= 0x1f || (n >= 0x7f && n <= 0x9f) || n === 0xad || (n >= 0x200b && n <= 0x200f) || (n >= 0x202a && n <= 0x202e) || (n >= 0x2060 && n <= 0x2069) || n === 0xfeff); });
+      const clean = Array.from(raw.replace(/[\s\-_.]/g, '')).filter((c) => { const n = c.codePointAt(0)!; return !(n <= 0x1f || (n >= 0x7f && n <= 0x9f) || n === 0xad || n === 0x061c || n === 0x180e || (n >= 0x200b && n <= 0x200f) || (n >= 0x202a && n <= 0x202e) || (n >= 0x2060 && n <= 0x2069) || n === 0xfeff); });
       const out = Array.from(maskAccountNumber(raw, { visible }));
       expect(out.length).toBe(clean.length);
       const shown = out.filter((c) => c !== '•').length;
@@ -71,6 +72,7 @@ describe('IBAN', () => {
 describe('formatTransactionReference', () => {
   it('removes control and bidi characters and collapses whitespace', () => {
     expect(formatTransactionReference('  FT25‮314  \n XK ')).toBe('FT25 314 XK');
+    expect(formatTransactionReference('FT25\u061C314\u180EXK')).toBe('FT25 314 XK');
     expect(formatTransactionReference('A​B')).toBe('A B');
     expect(formatTransactionReference(5)).toBe('');
   });
@@ -110,5 +112,14 @@ describe('transactionsToCsv', () => {
   it('can turn neutralisation off and respects zero-decimal currencies', () => {
     const csv = transactionsToCsv([{ id: 'x', date: '2025-01-01', counterparty: '=1+1', amount: -500n, status: 'completed' }], { currency: 'JPY', neutralizeFormulas: false, crlf: false });
     expect(csv.split('\n')[1]).toBe('2025-01-01,=1+1,,,debit,-500,completed');
+  });
+});
+
+describe('party names are bidi-isolated', () => {
+  it('isolates counterparty, receipt and beneficiary names so an override in a name cannot reorder the amount or account next to it', () => {
+    const css = readFileSync('src/styles/banking.css', 'utf8');
+    for (const cls of ['pu-tx-name', 'pu-receipt-name', 'pu-bene-name', 'pu-bene-nick']) {
+      expect(css).toMatch(new RegExp(`\\.${cls} \\{[^}]*unicode-bidi: isolate`));
+    }
   });
 });

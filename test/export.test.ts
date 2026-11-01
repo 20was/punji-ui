@@ -60,6 +60,11 @@ describe('toCsv', () => {
     ['@SUM(1+1)*cmd|\' /C calc\'!A0'],
     ['\t=1+1'],
     ['\r=1+1'],
+    ['\n=1+1'],
+    ['＝HYPERLINK("http://evil","click")'],
+    ['＋1+1'],
+    ['－1+1'],
+    ['＠SUM(1+1)'],
   ])('neutralises the payload %j', (payload) => {
     const parsed = parseCsv(toCsv([{ name: payload, amount: 1 }], cols));
     expect(parsed[1]![0]).toBe(`'${payload}`);
@@ -127,6 +132,22 @@ describe('safeFilename', () => {
     ['CON.csv', '_CON.csv'],
     ['line\nbreak\u0000.csv', 'line_break_.csv'],
   ])('%j', (input, expected) => expect(safeFilename(input)).toBe(expected));
+  it('removes bidirectional and zero-width controls that could disguise the extension', () => {
+    expect(safeFilename('invoice‮fdp.exe')).toBe('invoice_fdp.exe');
+    expect(safeFilename('a⁦b⁩c​d؜e﻿.csv')).toBe('a_b_c_d_e_.csv');
+    expect(Array.from(safeFilename('‪d‫‬‭‎‏⁧⁨'), (ch) => ch.codePointAt(0)!).every((c) => c < 0x200b || c > 0x2069)).toBe(true);
+  });
+  it('trims long runs of dots and spaces in linear time', () => {
+    const start = performance.now();
+    expect(safeFilename(`a${' '.repeat(200_000)}b`)).toBe('a');
+    expect(safeFilename(`${'. '.repeat(100_000)}x`)).toBe('x');
+    expect(performance.now() - start).toBeLessThan(1000);
+  });
+  it('never splits a surrogate pair at the length limit', () => {
+    const out = safeFilename('😀'.repeat(100));
+    expect(out.length).toBe(150);
+    expect(out).toBe('😀'.repeat(75));
+  });
   it('limits length and has no separators (property)', () => {
     fc.assert(fc.property(fc.string({ maxLength: 400 }), (s) => {
       const out = safeFilename(s);

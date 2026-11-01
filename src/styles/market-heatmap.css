@@ -6,7 +6,7 @@
   .pu-heat-title { font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body); color: var(--pu-color-text) }
   .pu-heat-map { position: relative; width: 100%; margin: 0; padding: 0; list-style: none; overflow: hidden; border-radius: var(--pu-radius-sm); background: var(--pu-color-surface-tint) }
   .pu-heat-tile { position: absolute; box-sizing: border-box; border: 1px solid var(--pu-color-surface); overflow: hidden; background: var(--pu-color-surface-tint); color: var(--pu-color-text) }
-  .pu-heat-tile > :is(button, div) { appearance: none; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 2px; width: 100%; height: 100%; margin: 0; padding: 4px 6px; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; overflow: hidden }
+  .pu-heat-tile > :is(button, div) { appearance: none; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 2px; width: 100%; height: 100%; margin: 0; padding: 4px 6px; border: 0; background: transparent; color: inherit; font: inherit; text-align: start; overflow: hidden }
   .pu-heat-tile > button { cursor: pointer }
   .pu-heat-tile > button:hover { background: color-mix(in srgb, var(--pu-color-text) 8%, transparent) }
   .pu-heat-tile > button:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: -3px }

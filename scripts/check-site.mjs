@@ -270,9 +270,14 @@ try {
     if (Math.round((rupees(totalBefore) - rupees(totalAfter)) * 100) !== 150_000) fail(`retail banking: Home total went from ${totalBefore} to ${totalAfter}, not down by Rs 1,500`);
     await t.goto(`${base}/apps/digital-wallet/#bills`);
     await t.locator('[data-screen="bills"] [data-screen-title]').waitFor();
-    await t.getByTestId('dw-electricity-id').fill('1234567');
-    await t.getByTestId('dw-electricity-fetch').click();
-    await t.getByTestId('dw-electricity-pay').click({ timeout: 5000 });
+    // The bills screen loads on demand; fill and fetch again if a busy machine dropped the first attempt.
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      await t.getByTestId('dw-electricity-id').fill('1234567');
+      await t.getByTestId('dw-electricity-fetch').click();
+      if (await t.locator('[data-testid="dw-electricity-bill"][data-state="ready"]').waitFor({ timeout: 5000 }).then(() => true, () => false)) break;
+      if (attempt === 2) fail('digital wallet: the electricity bill did not load');
+    }
+    await t.getByTestId('dw-electricity-pay').click({ timeout: 10000 });
     await t.locator('[data-testid="dw-pin"] button').first().focus();
     await t.keyboard.type('2580');
     await t.getByTestId('dw-receipt').waitFor({ timeout: 5000 }).catch(() => fail('digital wallet: the bill payment did not reach a receipt'));

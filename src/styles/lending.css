@@ -31,12 +31,12 @@
   .pu-amort-scroll { overflow: auto; max-height: 28rem; border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-card); background: var(--pu-color-surface) }
   .pu-amort-scroll:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
   .pu-amort-table { width: 100%; border-collapse: collapse; font-size: var(--pu-text-sm); font-variant-numeric: tabular-nums }
-  .pu-amort-table caption { padding: 10px 12px; text-align: left; font-weight: 600; caption-side: top }
+  .pu-amort-table caption { padding: 10px 12px; text-align: start; font-weight: 600; caption-side: top }
   .pu-amort-unit { font-weight: 400; color: var(--pu-color-text-muted) }
-  .pu-amort-table th, .pu-amort-table td { padding: 8px 12px; text-align: right; white-space: nowrap; border-top: 1px solid var(--pu-color-card-border) }
+  .pu-amort-table th, .pu-amort-table td { padding: calc(var(--pu-cell-y) - 2px) var(--pu-cell-x); text-align: end; white-space: nowrap; border-top: 1px solid var(--pu-color-card-border) }
   .pu-amort-table thead th { position: sticky; top: 0; z-index: 1; background: var(--pu-color-surface-solid); font-size: var(--pu-text-xs); font-weight: 600; color: var(--pu-color-text-muted) }
   .pu-amort-table tbody th { font-weight: 500; color: var(--pu-color-text-muted) }
-  .pu-amort-table th:first-child { text-align: left }
+  .pu-amort-table th:first-child { text-align: start }
   .pu-amort-table tr[data-prepaid] td, .pu-amort-table tr[data-prepaid] th { background: var(--pu-color-surface-tint) }
   .pu-amort-table tfoot th, .pu-amort-table tfoot td { position: sticky; bottom: 0; background: var(--pu-color-surface-solid); font-weight: 600; border-top: 1px solid var(--pu-color-border-strong) }
   .pu-amort-note { margin: 0; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
@@ -44,9 +44,9 @@
   /* InterestRateTable */
   .pu-rates { overflow-x: auto; min-width: 0; border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-card); background: var(--pu-color-surface) }
   .pu-rates-table { width: 100%; border-collapse: collapse; font-size: var(--pu-text-sm) }
-  .pu-rates-table caption { padding: 12px 14px 8px; text-align: left; font: 600 var(--pu-text-base) / 1.3 var(--pu-font-display) }
+  .pu-rates-table caption { padding: 12px 14px 8px; text-align: start; font: 600 var(--pu-text-base) / 1.3 var(--pu-font-display) }
   .pu-rates-desc { display: block; margin-top: 2px; font: 400 var(--pu-text-xs) / 1.4 var(--pu-font-body); color: var(--pu-color-text-muted) }
-  .pu-rates-table th, .pu-rates-table td { padding: 10px 14px; text-align: left; vertical-align: top; border-top: 1px solid var(--pu-color-card-border) }
+  .pu-rates-table th, .pu-rates-table td { padding: var(--pu-cell-y) calc(var(--pu-cell-x) + 2px); text-align: start; vertical-align: top; border-top: 1px solid var(--pu-color-card-border) }
   .pu-rates-table thead th { font-size: var(--pu-text-xs); font-weight: 600; color: var(--pu-color-text-muted) }
   .pu-rates-table tbody th { font-weight: 500 }
   .pu-rates-group th { padding-top: 14px; font-size: var(--pu-text-xs); font-weight: 600; letter-spacing: 0.04em; color: var(--pu-color-text-muted); background: var(--pu-color-surface-subtle) }
@@ -89,7 +89,7 @@
   .pu-wizard { display: grid; gap: var(--pu-space-4); min-width: 0 }
   .pu-wizard-nav { display: grid; gap: var(--pu-space-2) }
   .pu-wizard-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--pu-space-2) var(--pu-space-4) }
-  .pu-wizard-jump { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; padding: 0; border: 0; background: none; font: inherit; font-size: var(--pu-text-sm); color: var(--pu-color-text-muted); text-align: left }
+  .pu-wizard-jump { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; padding: 0; border: 0; background: none; font: inherit; font-size: var(--pu-text-sm); color: var(--pu-color-text-muted); text-align: start }
   button.pu-wizard-jump { cursor: pointer; border-radius: var(--pu-radius-sm) }
   button.pu-wizard-jump:hover .pu-wizard-name { text-decoration: underline }
   button.pu-wizard-jump:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
@@ -124,7 +124,7 @@
   .pu-remit-facts { display: grid; gap: var(--pu-space-2); margin: 0 }
   .pu-remit-facts > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px var(--pu-space-3); min-width: 0 }
   .pu-remit-facts dt { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
-  .pu-remit-facts dd { margin: 0; font-size: var(--pu-text-sm); text-align: right; overflow-wrap: anywhere }
+  .pu-remit-facts dd { margin: 0; font-size: var(--pu-text-sm); text-align: end; overflow-wrap: anywhere }
   .pu-remit-facts dd.pu-remit-payout { font: 600 var(--pu-text-lg) / 1.2 var(--pu-font-display) }
   .pu-remit-sub { display: block; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
   @media (max-width: 479px) { .pu-remit-form { grid-template-columns: minmax(0, 1fr) } .pu-remit-form > .kit-btn { margin-top: 0 } }

@@ -4,7 +4,7 @@
 @layer punji.components {
   .pu-holdings { min-width: 0 }
   .pu-holdings .kit-tablebox { max-height: var(--holdings-max-h, none) }
-  .pu-holdings .kit-table tbody th { font-weight: 400; text-align: left }
+  .pu-holdings .kit-table tbody th { font-weight: 400; text-align: start }
   .pu-holdings .kit-table tbody th b { display: block; letter-spacing: 0.01em }
   .pu-holdings .kit-table tbody th .sub { max-width: 16rem }
   .pu-holdings[data-density='compact'] .kit-table { font-size: 13px }

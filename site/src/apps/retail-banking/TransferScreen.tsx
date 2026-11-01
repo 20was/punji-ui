@@ -4,11 +4,10 @@ import { Button } from '@punji/ui/button';
 import { Card } from '@punji/ui/card';
 import { SegmentedControl } from '@punji/ui/controls';
 import { CurrencyInput } from '@punji/ui/currency-input';
-import { FactList } from '@punji/ui/fact-list';
 import { Field } from '@punji/ui/fields';
-import { MoneyDisplay } from '@punji/ui/money-display';
 import { OtpInput } from '@punji/ui/otp-input';
-import { PayeeCheck, comparePayeeNames, payeeCheckAllowsProceed, type PayeeCheckResult } from '@punji/ui/payee-check';
+import { PayeeVerification, type PayeeVerificationResult } from '@punji/ui/payee-verification';
+import { TransferReview } from '@punji/ui/transfer-review';
 import { PaymentReceipt } from '@punji/ui/payment-receipt';
 import { PaymentTimeline } from '@punji/ui/payment-timeline';
 import { Select } from '@punji/ui/select';
@@ -19,6 +18,7 @@ import {
   ACCOUNTS, BANK, BANKS, DAILY_LIMIT, DEMO_OTP, DIRECTORY, HOLDER, MOBILE_MASKED, PAYEES, accountById, instantAt, npr, referenceFor, rs, transferFee, transferProblem, useBank,
   type AccountId, type TransferInput,
 } from './store.ts';
+import { compareNames } from './payee.ts';
 
 type Step = 'details' | 'review' | 'otp' | 'done';
 const STEPS: { id: Step; label: string }[] = [
@@ -56,7 +56,7 @@ export default function TransferScreen() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [cancelled, setCancelled] = useState<string | null>(null);
   const [target, setTarget] = useState<Target | null>(null);
-  const [check, setCheck] = useState<PayeeCheckResult>('checking');
+  const [check, setCheck] = useState<PayeeVerificationResult | 'error'>('checking');
   const [ack, setAck] = useState(false);
   const [otp, setOtp] = useState('');
   const [otpError, setOtpError] = useState<string | null>(null);
@@ -75,7 +75,7 @@ export default function TransferScreen() {
   useEffect(() => {
     if (shownStep.current === step) return;
     shownStep.current = step;
-    const heading = headingRef.current?.querySelector<HTMLElement>('h3');
+    const heading = headingRef.current?.querySelector<HTMLElement>('h2, h3');
     if (!heading) return;
     heading.setAttribute('tabindex', '-1');
     heading.focus({ preventScroll: false });
@@ -91,7 +91,7 @@ export default function TransferScreen() {
     checkTimer.current = setTimeout(() => {
       if (state.offline) setCheck('error');
       else if (!t.registered) setCheck('unavailable');
-      else setCheck(comparePayeeNames(t.name, t.registered));
+      else setCheck(compareNames(t.name, t.registered));
     }, 700);
   };
 
@@ -283,55 +283,61 @@ export default function TransferScreen() {
         )}
 
         {step === 'review' && target && amount !== null && (
-          <Card title="Check before you send" headingLevel={3}>
-            <div className="app-stack">
-              <PayeeCheck
-                result={check}
-                enteredName={target.name}
-                registeredName={target.registered || undefined}
-                institution={target.institution}
-                accountNumber={target.accountNumber}
-                onUseRegisteredName={() => {
-                  const next = { ...target, name: target.registered };
-                  setTarget(next);
-                  runCheck(next);
-                }}
-                onEdit={() => setStep('details')}
-                onRetry={() => runCheck(target)}
-                acknowledged={ack}
-                onAcknowledgedChange={setAck}
-                headingLevel={4}
-                testId="rb-payee-check"
-              />
-              <p className="rb-review-amount">
-                <MoneyDisplay value={amount} preset={npr} testId="rb-review-amount" />
-              </p>
-              <p className="rb-words" data-testid="rb-words">
-                {amountInWords(amount)}
-              </p>
-              <FactList
-                facts={[
-                  { label: 'From', value: `${account.name} ··${account.number.slice(-4)}` },
-                  { label: 'To', value: `${target.name}, ${target.institution} ··${target.accountNumber.slice(-4)}` },
-                  { label: 'Fee', value: <MoneyDisplay value={fee} preset={npr} /> },
-                  { label: 'Total from your account', value: <MoneyDisplay value={amount + fee} preset={npr} testId="rb-review-total" /> },
-                  { label: 'Balance after', value: state.hideBalances ? 'Hidden' : <MoneyDisplay value={state.balances[from] - amount - fee} preset={npr} /> },
-                  { label: 'Purpose', value: purpose },
-                  ...(remark.trim() ? [{ label: 'Remark', value: remark.trim() }] : []),
-                ]}
-                testId="rb-review-facts"
-              />
-              <Note>Nothing leaves your account until you enter the code we send to {MOBILE_MASKED}.</Note>
-              <div className="rb-buttons">
-                <Button variant="secondary" onClick={() => setStep('details')}>
-                  Back
-                </Button>
-                <Button onClick={toOtp} disabled={!payeeCheckAllowsProceed(check, ack)} testId="rb-confirm">
+          <div className="app-stack">
+            <TransferReview
+              amount={amount}
+              currency="NPR"
+              money={npr}
+              words={amountInWords(amount)}
+              recipient={{ name: target.name, account: `··${target.accountNumber.slice(-4)}`, institution: target.institution }}
+              knownPayees={PAYEES.map((p) => p.name)}
+              fee={fee}
+              details={[
+                { id: 'from', label: 'From', value: `${account.name} ··${account.number.slice(-4)}` },
+                { id: 'after', label: 'Balance after', value: state.hideBalances ? 'Hidden' : rs(state.balances[from] - amount - fee) },
+                { id: 'purpose', label: 'Purpose', value: purpose },
+                ...(remark.trim() ? [{ id: 'remark', label: 'Remark', value: remark.trim() }] : []),
+              ]}
+              verification={
+                check === 'error' ? (
+                  <div className="rb-check-error" data-testid="rb-payee-check" data-result="error">
+                    <Note tone="error">Could not check the name on the account: you are offline. Try again before you pay.</Note>
+                    <Button size="sm" variant="secondary" onClick={() => runCheck(target)}>
+                      Try again
+                    </Button>
+                  </div>
+                ) : (
+                  <PayeeVerification
+                    result={check}
+                    enteredName={target.name}
+                    accountName={target.registered || undefined}
+                    onUseAccountName={(name) => {
+                      const next = { ...target, name };
+                      setTarget(next);
+                      runCheck(next);
+                    }}
+                    onEdit={() => setStep('details')}
+                    onProceed={() => setAck(true)}
+                    testId="rb-payee-check"
+                  />
+                )
+              }
+              confirm={
+                <Button size="lg" onClick={toOtp} disabled={!(check === 'match' || (ack && (check === 'no-match' || check === 'unavailable')))} testId="rb-confirm">
                   Confirm and send {rs(amount + fee)}
                 </Button>
-              </div>
-            </div>
-          </Card>
+              }
+              onEdit={() => setStep('details')}
+              testId="rb-review"
+            />
+            <Note>
+              {check === 'close-match'
+                ? 'Use the name on the account, or change the details, before you send.'
+                : ack
+                  ? 'You chose to continue without a matching name.'
+                  : `Nothing leaves your account until you enter the code we send to ${MOBILE_MASKED}.`}
+            </Note>
+          </div>
         )}
 
         {step === 'otp' && target && amount !== null && (

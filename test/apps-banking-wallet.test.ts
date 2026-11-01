@@ -2,6 +2,7 @@
 // up, transfers that move the balance, fee and limit together, and wallet payments, cashback, settlement and PINs.
 import { describe, expect, it } from 'vitest';
 import { LOAN, LOAN_EMI, LOAN_SCHEDULE, derive, initialState, reducer, transferFee, transferProblem, type BankState, type TransferInput } from '../site/src/apps/retail-banking/store.ts';
+import { compareNames } from '../site/src/apps/retail-banking/payee.ts';
 import { lookupBill } from '../site/src/apps/digital-wallet/bills.ts';
 import { cashbackFor, initialState as walletState, makeLoad, makePayment, paymentProblem, reducer as walletReducer, type WalletState } from '../site/src/apps/digital-wallet/store.ts';
 import { billTotal } from '../src/bill-summary/BillSummary.tsx';
@@ -73,6 +74,13 @@ describe('retail banking', () => {
     consistent(s);
   });
 
+  it('checks payee names like a receiving bank: order, initials, a slip, a stranger', () => {
+    expect(compareNames('SHARMA, Mrs Gita', 'Gita Sharma')).toBe('match');
+    expect(compareNames('H. B. Khatri', 'Hari Bahadur Khatri')).toBe('close-match');
+    expect(compareNames('Ramesh Adhikary', 'Ramesh Adhikari')).toBe('close-match');
+    expect(compareNames('Sunil Rai', 'Gopal Thapa')).toBe('no-match');
+  });
+
   it('verifies KYC a few ticks after it is submitted', () => {
     let s = reducer(initialState(), { type: 'kyc-submit' });
     expect(s.kyc).toBe('under-review');
@@ -81,8 +89,9 @@ describe('retail banking', () => {
   });
 });
 
+const pay = (s: WalletState, kind: 'bill' | 'qr' | 'send' | 'topup', amount: bigint, billKey?: string) => walletReducer(s, { type: 'pay', tx: makePayment(s, { kind, title: 'Biller', amount, billKey }) });
+
 describe('digital wallet', () => {
-  const pay = (s: WalletState, kind: 'bill' | 'qr' | 'send' | 'topup', amount: bigint, billKey?: string) => walletReducer(s, { type: 'pay', tx: makePayment(s, { kind, title: 'Biller', amount, billKey }) });
 
   it('pays a bill, adds its cashback as its own entry and marks the bill paid', () => {
     const s0 = walletState();

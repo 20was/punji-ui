@@ -129,7 +129,7 @@ export const APP_PAGES: readonly PageDef[] = [
       'A retail bank\'s app, phone first, on a simulated customer. Three accounts with three months of statements; a transfer that checks the payee\'s name with the receiving bank, says the amount in words, asks for a one-time code and prints a receipt; cards you can freeze, limit, block and replace; a home loan with its exact schedule and an early EMI; fixed deposits; a KYC update with the Nepal address picker and document upload; and notifications. One reducer holds the money, so the balance on Home, the statement\'s running balance, the receipt and the notification agree to the paisa.',
     use: [
       'Replace the reducer\'s actions with your core banking API: `transfer`, `card-status`, `pay-emi`, `open-fd` and `kyc-submit` are the calls a bank makes; keep the screens.',
-      'Feed `PayeeCheck` the answer from your Confirmation of Payee or ConnectIPS name lookup, and record the acknowledgement with the payment.',
+      'Feed `PayeeVerification` the answer from your Confirmation of Payee or ConnectIPS name lookup, and record the acknowledgement with the payment.',
       'Send the OTP from your server and check it there; the demo accepts 246810 so the flow can be tried.',
     ],
     avoid: [
@@ -160,12 +160,12 @@ export const APP_PAGES: readonly PageDef[] = [
         'The OTP is shown on screen for the demo. A real bank never shows it, and limits tries on its server.',
       ],
     },
-    related: ['bank-account-card', 'transaction-list', 'statement-table', 'beneficiary-selector', 'payee-check', 'currency-input', 'otp-input', 'payment-receipt', 'payment-timeline', 'account-number', 'loan-calculator', 'amortisation-table', 'deposit-calculator', 'interest-rate-table', 'onboarding-wizard', 'nepal-address-picker', 'id-number-input', 'document-upload'],
+    related: ['bank-account-card', 'transaction-list', 'statement-table', 'beneficiary-selector', 'transfer-review', 'payee-verification', 'currency-input', 'otp-input', 'payment-receipt', 'payment-timeline', 'account-number', 'loan-calculator', 'amortisation-table', 'deposit-calculator', 'interest-rate-table', 'onboarding-wizard', 'nepal-address-picker', 'id-number-input', 'document-upload'],
     app: {
       screens: [
         { id: 'home', title: 'Home', summary: 'The total and each account (`BankAccountCard`) with hide-balance, six quick actions, the latest entries and what is coming up: the EMI, a deposit maturing, KYC.' },
         { id: 'accounts', title: 'Accounts', summary: 'A statement per account: search, money in or out, period, BS or AD dates (`TransactionList`), a monthly summary by category (`StatementTable`), CSV and a printable view.' },
-        { id: 'transfer', title: 'Transfer', summary: 'A saved payee (`BeneficiarySelector`) or a new account, `CurrencyInput` with fee and limits, a review with `PayeeCheck` and the amount in words, an `OtpInput` step, then `PaymentReceipt` and `PaymentTimeline`.' },
+        { id: 'transfer', title: 'Transfer', summary: 'A saved payee (`BeneficiarySelector`) or a new account, `CurrencyInput` with fee and limits, a `TransferReview` with `PayeeVerification` and the amount in words, an `OtpInput` step, then `PaymentReceipt` and `PaymentTimeline`.' },
         { id: 'cards', title: 'Cards', summary: 'Debit and virtual cards with a masked `AccountNumber`: freeze, block and replace, online, international and contactless switches, and daily limits.' },
         { id: 'loans', title: 'Loans and deposits', summary: 'The home loan with its `AmortisationTable` and an early EMI, a `LoanCalculator`, fixed deposits with `DepositCalculator`, and the `InterestRateTable`.' },
         { id: 'profile', title: 'Profile and KYC', summary: 'The KYC update in an `OnboardingWizard`: `IdNumberInput` for citizenship and PAN, `NepalAddressPicker`, `DocumentUpload`, review and consent.' },
@@ -218,7 +218,7 @@ export const APP_PAGES: readonly PageDef[] = [
         'A load from the bank settles a few seconds later, and one pending internet payment fails and is refunded, so the timeline shows each outcome.',
       ],
     },
-    related: ['payment-qr-card', 'qr-code', 'emvco-qr', 'mobile-number-input', 'amount-keypad', 'pin-pad', 'bill-summary', 'payment-timeline', 'payment-receipt', 'payment-status', 'currency-input', 'payee-check'],
+    related: ['payment-qr-card', 'qr-code', 'emvco-qr', 'mobile-number-input', 'amount-keypad', 'pin-pad', 'bill-summary', 'payment-timeline', 'payment-receipt', 'payment-status', 'currency-input', 'payee-verification'],
     app: {
       screens: [
         { id: 'home', title: 'Home', summary: 'The balance with hide, Load money from a linked bank (`AmountKeypad`, then `PinPad`), quick actions, limits used this month and recent activity.' },

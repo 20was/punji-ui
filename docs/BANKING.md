@@ -134,17 +134,6 @@ Tab moves on. A11y: `role="combobox"` with `aria-expanded`, `aria-controls`, `ar
 `aria-activedescendant`; groups are `role="group"`; masked numbers are `aria-hidden` and read as "account ending in".
 It reuses the package's combobox conventions but not `CompanySearch` itself, which is tied to stock symbols.
 
-## PayeeCheck
-
-**Use** on the review step of a transfer, above Confirm (`@punji/ui/payee-check`). Props: `result` (`match`, `close`,
-`no-match`, `unavailable`, `checking`, `error`, from your server's Confirmation of Payee or name lookup),
-`enteredName`, `registeredName` (shown only for a close match, so a no-match cannot be used to fish for names),
-`institution`, `accountNumber` (last four shown), `onUseRegisteredName`, `onEdit`, `onRetry`, `acknowledged`,
-`onAcknowledgedChange`, `headingLevel`, `labels`. Gate Confirm with `payeeCheckAllowsProceed(result, acknowledged)`:
-a match goes straight on; a close match, no match or no answer needs the risk box ticked; checking and errors never
-proceed. `comparePayeeNames` is a reference matcher for demos and tests (case, punctuation, honorifics, word order,
-initials, one slip in five letters), not the bank's check. The title sits in a polite live region.
-
 ## BillSummary
 
 **Use** after a biller lookup and before the payer pays (`@punji/ui/bill-summary`). Props: `biller`, `service`,
@@ -158,5 +147,5 @@ initials, one slip in five letters), not the bank's check. The title sits in a p
 `test/banking.test.ts` covers the pure helpers (including property tests that masking never reveals more than asked).
 `test/banking-components.test.tsx` asserts on `container.innerHTML` that the full number never appears while masked,
 that the clipboard is touched only on the button press, keyboard behaviour, states and axe. The visual gate has nine
-fixtures (`test/visual/fixtures-banking.tsx`) and two browser interaction tests. `test/payee-bill.test.tsx` covers
-`PayeeCheck`, the name matcher, `BillSummary` and their states with axe.
+fixtures (`test/visual/fixtures-banking.tsx`) and two browser interaction tests. `test/bill-summary.test.tsx` covers
+`BillSummary` and its states with axe.

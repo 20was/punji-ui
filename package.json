@@ -403,10 +403,6 @@
       "types": "./dist/payment-timeline/PaymentTimeline.d.ts",
       "default": "./dist/payment-timeline/PaymentTimeline.js"
     },
-    "./payee-check": {
-      "types": "./dist/payee-check/PayeeCheck.d.ts",
-      "default": "./dist/payee-check/PayeeCheck.js"
-    },
     "./bill-summary": {
       "types": "./dist/bill-summary/BillSummary.d.ts",
       "default": "./dist/bill-summary/BillSummary.js"
@@ -442,6 +438,10 @@
     "./use-hotkeys": {
       "types": "./dist/use-hotkeys/useHotkeys.d.ts",
       "default": "./dist/use-hotkeys/useHotkeys.js"
+    },
+    "./theme": {
+      "types": "./dist/theme/theme.d.ts",
+      "default": "./dist/theme/theme.js"
     },
     "./emvco-qr": {
       "types": "./dist/emvco-qr/emvco.d.ts",
@@ -526,6 +526,38 @@
     "./insurance-premium-card": {
       "types": "./dist/insurance-premium-card/InsurancePremiumCard.d.ts",
       "default": "./dist/insurance-premium-card/InsurancePremiumCard.js"
+    },
+    "./trust": {
+      "types": "./dist/trust/spoofing.d.ts",
+      "default": "./dist/trust/spoofing.js"
+    },
+    "./money/iso4217": {
+      "types": "./dist/money/iso4217.d.ts",
+      "default": "./dist/money/iso4217.js"
+    },
+    "./transfer-review": {
+      "types": "./dist/transfer-review/TransferReview.d.ts",
+      "default": "./dist/transfer-review/TransferReview.js"
+    },
+    "./payee-verification": {
+      "types": "./dist/payee-verification/PayeeVerification.d.ts",
+      "default": "./dist/payee-verification/PayeeVerification.js"
+    },
+    "./hold-to-confirm": {
+      "types": "./dist/hold-to-confirm/HoldToConfirm.d.ts",
+      "default": "./dist/hold-to-confirm/HoldToConfirm.js"
+    },
+    "./session-timeout": {
+      "types": "./dist/session-timeout/SessionTimeoutWarning.d.ts",
+      "default": "./dist/session-timeout/SessionTimeoutWarning.js"
+    },
+    "./scam-warning": {
+      "types": "./dist/scam-warning/ScamWarning.d.ts",
+      "default": "./dist/scam-warning/ScamWarning.js"
+    },
+    "./secure-field": {
+      "types": "./dist/secure-field/SecureField.d.ts",
+      "default": "./dist/secure-field/SecureField.js"
     },
     "./styles.css": {
       "types": "./dist/styles.css.d.ts",
@@ -783,7 +815,7 @@
   },
   "scripts": {
     "build": "node scripts/clean.mjs && tsc -p tsconfig.build.json && node scripts/build-css.mjs",
-    "lint": "oxlint --max-warnings 0 --deny-warnings src test scripts examples portal site fixtures playwright.config.ts && node scripts/check-css.mjs && node scripts/check-source.mjs && node scripts/check-boundaries.mjs && node scripts/check-changesets.mjs",
+    "lint": "oxlint --max-warnings 0 --deny-warnings src test scripts examples portal site fixtures playwright.config.ts && node scripts/check-css.mjs && node scripts/check-contrast.mjs && node scripts/check-source.mjs && node scripts/check-boundaries.mjs && node scripts/check-changesets.mjs",
     "sync": "node scripts/sync-from-web.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
@@ -803,6 +835,7 @@
     "build:examples": "vite build examples",
     "prepack": "npm run build",
     "check:exports": "node scripts/check-exports.mjs",
+    "check:contrast": "node scripts/check-contrast.mjs",
     "typecheck:examples": "tsc -p examples/tsconfig.json --noEmit",
     "check:examples": "node scripts/check-examples.mjs",
     "portal": "npm run build && node scripts/portal.mjs",

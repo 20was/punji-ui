@@ -186,30 +186,6 @@ export const WALLET_PAGES: readonly PageDef[] = [
     related: ['otp-input', 'amount-keypad', 'field'],
   },
   {
-    slug: 'payee-check',
-    title: 'PayeeCheck',
-    group: 'banking',
-    kind: 'component',
-    description: 'Confirmation of Payee for React: the name on the account matches, nearly matches or does not, shown before a transfer, with a required risk acknowledgement.',
-    lead: 'Tell the payer whether the name on the receiving account matches before any money moves, and make them stop and think when it does not.',
-    summary:
-      'The answer to "is this who I mean to pay?" on a transfer\'s review step, in the manner of the UK\'s Confirmation of Payee and the name lookup a ConnectIPS or wallet transfer runs. Give it the result your server got from the receiving bank: a match, a close match (it then shows the name the bank holds and offers to use it), no match, unavailable, checking or an error with a retry. For anything but a match the payer ticks "I understand the risk" before `payeeCheckAllowsProceed` lets them continue. `comparePayeeNames` is a reference matcher (case, punctuation, honorifics, word order, initials, one slip in five letters) for demos and tests.',
-    use: ['The review step of a bank transfer, a wallet send or a new payee form, above the Confirm button.', 'Gate Confirm with `payeeCheckAllowsProceed(result, acknowledged)`.', '`comparePayeeNames` in a prototype or a test fixture before your bank\'s API is wired.'],
-    avoid: ['Deciding on the client: the receiving bank\'s answer is the only real check.', 'Showing the registered name for a no-match: that would let anyone fish for account holders\' names. The component shows it only for a close match.'],
-    api: [...ui('payee-check', 'PayeeCheck', 'PayeeCheckResult', 'PayeeCheckLabels', 'comparePayeeNames', 'payeeNameWords', 'payeeCheckAllowsProceed')],
-    examples: [
-      { id: 'results', title: 'Every answer', note: 'Choose a result. A close match offers the registered name; the risky ones need the box ticked before Continue works.' },
-    ],
-    keyboard: ['Tab reaches the actions and the acknowledgement; Space ticks it. Nothing else is interactive.'],
-    accessibility: ['The title sits in a polite live region, so the answer is heard when it replaces "Checking". Each answer has its own icon shape and words; the coloured edge is extra.', 'Only the last four characters of the account number are shown, and they are spoken as "account ending in 9 0 1 2".'],
-    responsive: ['Fills its column; the payee line and the actions wrap on a phone.'],
-    notes: {
-      title: 'Security boundary',
-      points: ['The result comes from your server. A client that could choose its own result could skip the warning.', 'Record the acknowledgement with the payment on your server, as UK banks do for reimbursement decisions.'],
-    },
-    related: ['beneficiary-selector', 'payment-receipt', 'otp-input', 'retail-banking'],
-  },
-  {
     slug: 'bill-summary',
     title: 'BillSummary',
     group: 'banking',

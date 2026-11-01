@@ -16,7 +16,7 @@
   .pu-upload-hint { font: 400 12px / 16px var(--pu-font-body); color: var(--pu-color-text-tertiary) }
   .pu-upload-error { margin: 0; padding: 0; list-style: none; font: 600 12px / 16px var(--pu-font-body); color: var(--pu-color-loss) }
   .pu-upload-files { display: grid; gap: var(--pu-space-2); margin: 0; padding: 0; list-style: none }
-  .pu-upload-file { display: flex; align-items: center; gap: var(--pu-space-3); min-width: 0; min-height: var(--pu-tap-min); padding: 0 var(--pu-space-1) 0 var(--pu-space-3); border: 1px solid var(--pu-color-border-default); border-radius: var(--pu-radius-control); background: var(--pu-color-surface-solid) }
+  .pu-upload-file { display: flex; align-items: center; gap: var(--pu-space-3); min-width: 0; min-height: var(--pu-tap-min); padding-block: 0; padding-inline: var(--pu-space-3) var(--pu-space-1); border: 1px solid var(--pu-color-border-default); border-radius: var(--pu-radius-control); background: var(--pu-color-surface-solid) }
   .pu-upload-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 500 14px / 1.2 var(--pu-font-body); color: var(--pu-color-text) }
   .pu-upload-size { flex: none; font: 400 12px / 16px var(--pu-font-body); font-variant-numeric: tabular-nums; color: var(--pu-color-text-muted) }
   .pu-upload-remove { display: inline-flex; align-items: center; justify-content: center; flex: none; width: var(--pu-tap-min); height: var(--pu-tap-min); padding: 0; border: 0; border-radius: var(--pu-radius-control); background: transparent; color: var(--pu-color-text); cursor: pointer }

@@ -3,7 +3,8 @@
 @layer punji.components {
   .kit-col { position: relative; margin: 0; display: grid; gap: 8px; min-width: 0; max-width: 100% }
   .kit-col-empty { margin: 0; padding: 24px 0; text-align: center; font-size: 13px; line-height: 20px; color: var(--pu-color-text-muted) }
-  .kit-col-frame { display: grid; column-gap: 8px; min-width: 0 }
+  /* Time runs left to right in every direction: the plot keeps LTR. */
+  .kit-col-frame { display: grid; column-gap: 8px; min-width: 0; direction: ltr }
   .kit-col-y { position: relative; grid-column: 1; grid-row: 1; padding-top: 22px; font: 500 11px / 14px var(--pu-font-body); color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums; text-align: right }
   .kit-col-y-in { position: relative; height: 100%; min-width: 1.5ch }
   .kit-col-y-w { display: block; height: 0; overflow: hidden; visibility: hidden; white-space: nowrap }

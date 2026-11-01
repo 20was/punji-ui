@@ -1,4 +1,33 @@
 /** Strict input normalization; never passes monetary text through Number. */
+
+/**
+ * The decimal digit sets accepted on input and available on output, keyed by Intl numbering-system id:
+ * Devanagari (Nepali, Hindi, Marathi), Bengali (Bangla, Assamese), Arabic-Indic, Extended Arabic-Indic (Persian, Urdu),
+ * Thai, Gujarati, Gurmukhi, Tamil, Telugu, Kannada, Malayalam, Odia, Myanmar, Khmer, Lao, Tibetan and full-width.
+ */
+// Each Unicode decimal digit set is ten consecutive code points: store the zero only.
+const ZEROS: Readonly<Record<string, number>> = {
+  latn: 0x30, deva: 0x966, beng: 0x9E6, arab: 0x660, arabext: 0x6F0, thai: 0xE50, gujr: 0xAE6, guru: 0xA66, tamldec: 0xBE6, telu: 0xC66,
+  knda: 0xCE6, mlym: 0xD66, orya: 0xB66, mymr: 0x1040, khmr: 0x17E0, laoo: 0xED0, tibt: 0xF20, fullwide: 0xFF10,
+};
+export const DIGIT_SCRIPTS: Readonly<Record<string, string>> = /* @__PURE__ */ Object.freeze(Object.fromEntries(
+  Object.entries(ZEROS).map(([id, zero]) => [id, String.fromCodePoint(...Array.from({ length: 10 }, (_, d) => zero + d))]),
+));
+const ZERO_LIST = /* @__PURE__ */ Object.values(ZEROS);
+/** Every digit of a supported script (see `DIGIT_SCRIPTS`) to ASCII: '१२३' and '১২৩' and '١٢٣' are all '123'. Other characters pass through. */
+export function toAsciiDigits(text: string): string {
+  return text.replace(/\p{Nd}/gu, (ch) => {
+    const cp = ch.codePointAt(0)!;
+    const zero = ZERO_LIST.find((z) => cp >= z && cp < z + 10);
+    return zero === undefined ? ch : String(cp - zero);
+  });
+}
+/** ASCII digits to a script's digits ('deva', 'beng', 'arab', 'thai', ...). Other characters pass through. Throws on an unknown script. */
+export function toScriptDigits(text: string, script: string): string {
+  const zero = ZEROS[script];
+  if (zero === undefined) throw new RangeError(`Unknown digit script: ${script}`);
+  return text.replace(/[0-9]/g, (d) => String.fromCodePoint(zero + Number(d)));
+}
 export type DecimalParseResult =
   | { state: 'empty' | 'partial' }
   | { state: 'invalid'; reason: 'syntax' | 'grouping' | 'precision' | 'length' }
@@ -7,7 +36,7 @@ export function parseLocalizedDecimal(input: string, options: { maxFractionDigit
   const max = options.maxFractionDigits ?? 2;
   if (!Number.isInteger(max) || max < 0 || max > 9) throw new RangeError('maxFractionDigits must be 0–9');
   if (input.length > 100) return { state: 'invalid', reason: 'length' };
-  const text = input.trim().replace(/[०-९]/g, digit => String('०१२३४५६७८९'.indexOf(digit)));
+  const text = toAsciiDigits(input.trim());
   if (!text) return { state: 'empty' };
   if (['-', '.', '-.'].includes(text)) return { state: 'partial' };
   if (!/^-?[\d,]*(?:\.\d*)?$/.test(text)) return { state: 'invalid', reason: 'syntax' };

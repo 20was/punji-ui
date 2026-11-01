@@ -35,7 +35,7 @@ describe('MeterBar, RangeBar, ShareBar, DistributionBar, ShareDonut', () => {
     expect(bar.getAttribute('aria-hidden')).toBe('true');
     expect(bar.className).toContain('marked');
     expect([...bar.querySelectorAll('i')].map((i) => (i as HTMLElement).style.width)).toEqual(['60%', '20%']);
-    expect((bar.querySelector('b') as HTMLElement).style.left).toBe('75%');
+    expect((bar.querySelector('b') as HTMLElement).style.insetInlineStart).toBe('75%');
     rerender(<MeterBar parts={[{ value: 1, tone: 'gain' }]} label="Fees take 1 percent" />);
     expect(screen.getByRole('img', { name: 'Fees take 1 percent' })).toBeTruthy();
   });
@@ -49,7 +49,7 @@ describe('MeterBar, RangeBar, ShareBar, DistributionBar, ShareDonut', () => {
     const { container } = render(
       <RangeBar head={<span>52-week range</span>} domain={[400, 600]} span={[450, 550]} marks={[{ value: 537, kind: 'strong', label: '537' }, { value: 480, kind: 'accent', label: 'Alert at 480' }, { value: 400, kind: 'edge', label: 'Low 400' }]} />,
     );
-    expect((container.querySelector('.kit-range-track > b.strong') as HTMLElement).style.left).toBe('68.5%');
+    expect((container.querySelector('.kit-range-track > b.strong') as HTMLElement).style.insetInlineStart).toBe('68.5%');
     expect(container.querySelector('.kit-range-track > b.edge')).toBeNull();
     expect(container.querySelector('.kit-range-track > i.span')).toBeTruthy();
     const labels = container.querySelector('.kit-range-labels') as HTMLElement;
@@ -65,7 +65,7 @@ describe('MeterBar, RangeBar, ShareBar, DistributionBar, ShareDonut', () => {
 
   it('RangeBar with a single value or no values does not produce NaN positions', () => {
     const { container } = render(<RangeBar marks={[{ value: 10, kind: 'dot' }]} fill={null} />);
-    expect((container.querySelector('b.dot') as HTMLElement).style.left).toBe('50%');
+    expect((container.querySelector('b.dot') as HTMLElement).style.insetInlineStart).toBe('50%');
   });
 
   it('ShareBar is an img named by its label, legend lists name and value, buttons toggle', async () => {

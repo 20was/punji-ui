@@ -602,7 +602,8 @@
     },
     "./table-export": {
       "types": "./dist/table-export/TableExport.d.ts",
-      "default": "./dist/table-export/TableExport.js",
+      "default": "./dist/table-export/TableExport.js"
+    },
     "./share-issues": {
       "types": "./dist/share-issues/share-issues.d.ts",
       "default": "./dist/share-issues/share-issues.js"

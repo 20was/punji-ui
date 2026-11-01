@@ -99,6 +99,7 @@ export * from './market-status/MarketStatus.tsx';
 export * from './price-limit/PriceLimitIndicator.tsx';
 export * from './watchlist/Watchlist.tsx';
 export * from './market-heatmap/MarketHeatmap.tsx';
+export * from './market-breadth/MarketBreadth.tsx';
 export * from './portfolio/portfolio.ts';
 export * from './holdings-table/HoldingsTable.tsx';
 export * from './portfolio-allocation/PortfolioAllocation.tsx';

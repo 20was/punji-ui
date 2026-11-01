@@ -1,0 +1,32 @@
+/* Punji UI styles.
+   Styles for MarketBreadth. Needs tokens.css, base.css and states.css (styles.css has everything). */
+@layer punji.components {
+  .pu-breadth { --breadth-up: var(--pu-color-gain); --breadth-down: var(--pu-color-loss); display: grid; gap: 8px; min-width: 0; margin: 0 }
+  .pu-breadth[data-convention='red-up'] { --breadth-up: var(--pu-color-loss); --breadth-down: var(--pu-color-gain) }
+  .pu-breadth-title { font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body); color: var(--pu-color-text) }
+  .pu-breadth-body { display: grid; gap: 10px; min-width: 0 }
+  .pu-breadth-empty { margin: 0; font-size: var(--pu-text-sm); color: var(--pu-color-text-muted) }
+  .pu-breadth-bar { display: flex; gap: 2px; height: 12px; overflow: hidden; border-radius: 999px; background: var(--pu-color-surface-subtle) }
+  .pu-breadth[data-size='sm'] .pu-breadth-bar { height: 8px }
+  .pu-breadth-bar i { display: block; min-width: 3px; height: 100% }
+  .pu-breadth-bar i[data-part='advances'] { background: var(--breadth-up) }
+  .pu-breadth-bar i[data-part='declines'] { background: var(--breadth-down) }
+  .pu-breadth-bar i[data-part='unchanged'] { background: var(--pu-color-border-strong) }
+  .pu-breadth-counts, .pu-breadth-extra { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0 }
+  .pu-breadth-counts > div, .pu-breadth-extra > div { display: flex; align-items: baseline; gap: 6px; min-width: 0 }
+  .pu-breadth dt { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-breadth dd { margin: 0; font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body); font-variant-numeric: tabular-nums; white-space: nowrap }
+  .pu-breadth[data-size='sm'] dd { font-size: var(--pu-text-xs) }
+  .pu-breadth-pct { font-weight: 400; color: var(--pu-color-text-muted) }
+  .pu-breadth-counts [data-part='advances'] .pu-breadth-arrow { color: var(--breadth-up) }
+  .pu-breadth-counts [data-part='declines'] .pu-breadth-arrow { color: var(--breadth-down) }
+  .pu-breadth-extra { padding-top: 8px; border-top: 1px solid var(--pu-color-border) }
+  .pu-breadth-extra [data-tone='up'] dd { color: var(--breadth-up) }
+  .pu-breadth-extra [data-tone='down'] dd { color: var(--breadth-down) }
+  @media (forced-colors: active) {
+    .pu-breadth-bar { forced-color-adjust: none; gap: 2px; background: Canvas; box-shadow: inset 0 0 0 1px CanvasText }
+    .pu-breadth-bar i[data-part='advances'] { background: CanvasText }
+    .pu-breadth-bar i[data-part='declines'] { background: repeating-linear-gradient(45deg, CanvasText 0 2px, Canvas 2px 5px) }
+    .pu-breadth-bar i[data-part='unchanged'] { background: Canvas }
+  }
+}

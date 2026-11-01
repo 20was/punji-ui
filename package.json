@@ -323,6 +323,10 @@
       "types": "./dist/market-heatmap/MarketHeatmap.d.ts",
       "default": "./dist/market-heatmap/MarketHeatmap.js"
     },
+    "./market-breadth": {
+      "types": "./dist/market-breadth/MarketBreadth.d.ts",
+      "default": "./dist/market-breadth/MarketBreadth.js"
+    },
     "./portfolio": {
       "types": "./dist/portfolio/portfolio.d.ts",
       "default": "./dist/portfolio/portfolio.js"

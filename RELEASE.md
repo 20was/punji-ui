@@ -10,8 +10,8 @@ How an npm release works as implemented at the current `main`.
 2. The PR merges to `main` after `CI OK`.
 3. On every push to `main`, `.github/workflows/release.yml` runs (only when `github.repository == '20was/punji-ui'` **and** repository variable `UI_NPM_RELEASE_ENABLED == 'true'`; otherwise the job is skipped).
 4. If changesets are pending, the Changesets action opens or updates the PR `chore(release): version packages` (runs `npm run version-packages`: `changeset version`, then refreshes `package-lock.json` without scripts). Merging it triggers step 3 again.
-5. With no pending changesets, the action runs `npm run release` (`npm run build && changeset publish`), tags, and creates a GitHub release with the changelog.
-6. A CycloneDX SBOM (`npm sbom --omit dev --omit peer`) is attached to that release.
+5. With no pending changesets and a version that is not on npm yet, the **build** job (read-only, no secrets, no OIDC) installs dev dependencies, runs `npm run verify` and `check:consumer`, and packs the tarball, the CycloneDX SBOM (`npm sbom --omit dev --omit peer`) and this version's CHANGELOG section as an artifact.
+6. The **publish** job (environment `npm`, OIDC) checks out nothing and installs nothing: it verifies the tarball's SHA-256 against the build job's, runs `npm publish <tarball> --provenance`, then creates tag `v<version>` and the GitHub release with the notes and the SBOM. The credential that can publish never meets a dev dependency ([docs/SECURITY-AUDIT-2026.md](docs/SECURITY-AUDIT-2026.md)).
 
 ## What the workflow enforces
 

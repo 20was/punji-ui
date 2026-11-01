@@ -32,7 +32,7 @@ server code never imports it.
 
 ## Formula-injection neutralisation
 
-A spreadsheet treats a cell starting with `=`, `+`, `-`, `@`, tab or CR as a formula
+A spreadsheet treats a cell starting with `=`, `+`, `-`, `@`, tab, CR or LF as a formula
 (`=HYPERLINK(...)`, `+cmd|' /C calc'!A0`, `@SUM(...)`). By default every **text** cell
 and header that starts with one of those characters gets a leading apostrophe
 (`'=1+1`), following OWASP's CSV-injection guidance. The apostrophe is visible when the
@@ -46,8 +46,9 @@ is prefixed and becomes text. If a `format` emits plain machine numbers such as
 `[+-]digits[.digits][e[+-]digits]` text is then left alone (`-5+cmd` is still prefixed).
 Do not set it for grouped or currency text such as `-1,234.50` or `-Rs 5`.
 
-Unicode look-alikes of these characters are not formulas in spreadsheets and are not
-altered. Leading spaces are not stripped or prefixed.
+The full-width forms `＝` `＋` `－` `＠` (U+FF1D, U+FF0B, U+FF0D, U+FF20) are prefixed too:
+OWASP lists them because some locales (Japanese Excel) read them as formula starts. Other
+look-alikes are not altered. Leading spaces are not stripped or prefixed.
 
 ## Security boundary
 
@@ -58,5 +59,6 @@ server generates or emails. Exports contain whatever the caller passes; mask or 
 sensitive columns before calling `toCsv`. `downloadText` creates an object URL, clicks
 a hidden link, removes it and revokes the URL after one second; nothing leaves the
 browser. File names are passed through `safeFilename` (no path parts, reserved or
-control characters, at most 150 characters, never empty). `neutralizeFormulas: false`
+control characters, no bidirectional or zero-width controls that could disguise the
+extension, at most 150 characters, never empty). `neutralizeFormulas: false`
 is for trusted, machine-generated data only.

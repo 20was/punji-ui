@@ -1,0 +1,14 @@
+// The docs site (site/, built by `npm run site:build`) served as Cloudflare static assets on design.punji.app.
+// No Worker script: every response is a file from site/dist, with site/dist/_redirects (old portal paths, 301)
+// and site/dist/_headers (CSP and security headers). Deployed by .github/workflows/docs.yml on pushes to main.
+{
+  "name": "punji-ui-docs",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./site/dist",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  "workers_dev": true,
+  "preview_urls": false
+}

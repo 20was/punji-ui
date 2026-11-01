@@ -1,12 +1,21 @@
 # Release: on every push to main, Changesets either opens/updates the
-# "Version packages" pull request, or (when that PR has just been merged)
-# publishes to npm. Publishing uses npm Trusted Publishing (OIDC): there is no
-# NPM_TOKEN secret anywhere, and npm attaches a provenance attestation that
-# links the tarball to this workflow run and commit.
+# "Version packages" pull request, or (when that PR has just been merged and the
+# version is not on npm yet) the package is built, checked and published.
+# Publishing uses npm Trusted Publishing (OIDC): there is no NPM_TOKEN secret
+# anywhere, and npm attaches a provenance attestation that links the tarball to
+# this workflow run and commit.
 #
-# Owner setup before the first publish: docs/RELEASE-SETUP-RUNBOOK.md.
-# The npm Trusted Publisher must name this repository, the workflow file
-# "release.yml" and the environment "npm".
+# Three jobs, so the credential that can publish never meets the dev toolchain
+# (docs/SECURITY-AUDIT-2026.md, the release-job finding):
+#   version  installs dev dependencies to run `changeset version`; it holds the
+#            PR token but no npm rights.
+#   build    installs dev dependencies, runs every gate and packs the tarball;
+#            read-only, no secrets, no OIDC.
+#   publish  has the `npm` environment and OIDC, but installs nothing and runs
+#            no repository code: it checks the tarball's digest and publishes it.
+#
+# Owner setup: docs/RELEASE-SETUP-RUNBOOK.md. The npm Trusted Publisher names
+# this repository, the workflow file "release.yml" and the environment "npm".
 name: Release
 
 on:
@@ -20,16 +29,15 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  release:
-    name: Version PR or publish
+  version:
+    name: Version PR
     if: github.repository == '20was/punji-ui' && vars.UI_NPM_RELEASE_ENABLED == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    environment: npm
+    timeout-minutes: 10
     permissions:
-      contents: write # version commit, git tag, GitHub release
-      pull-requests: write # open and update the "Version packages" PR
-      id-token: write # npm Trusted Publishing (OIDC) and provenance
+      contents: read
+    outputs:
+      pending: ${{ steps.changesets.outputs.hasChangesets }}
     steps:
       - uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
         with:
@@ -41,50 +49,139 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Install (no lifecycle scripts)
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Open or update the version PR (no publish here)
+        id: changesets
+        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+        with:
+          version-script: npm run version-packages
+          commit-message: 'chore(release): version packages'
+          pr-title: 'chore(release): version packages'
+          # The version PR is opened with the single-repo PR token (punji-ui only,
+          # contents + pull requests): a PR pushed with the workflow's own token
+          # never starts CI, so the required "CI OK" check would never run on it.
+          github-token: ${{ secrets.PUNJI_UI_PR_TOKEN }}
+
+  build:
+    name: Gates and tarball
+    needs: version
+    if: needs.version.outputs.pending == 'false'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    outputs:
+      publish: ${{ steps.meta.outputs.publish }}
+      version: ${{ steps.meta.outputs.version }}
+      sha256: ${{ steps.pack.outputs.sha256 }}
+    steps:
+      - uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          # No dependency cache on the release path (cache poisoning).
+          package-manager-cache: false
+      - name: Is this version already on npm?
+        id: meta
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          if npm view "@punji/ui@${VERSION}" version >/dev/null 2>&1; then
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+            echo "@punji/ui@${VERSION} is already published; nothing to do."
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Install (no lifecycle scripts)
+        if: steps.meta.outputs.publish == 'true'
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - if: steps.meta.outputs.publish == 'true'
+        run: npm audit signatures
+      # `npm run verify` includes check:examples, which drives Chromium.
+      - name: Install Chromium for the example checks
+        if: steps.meta.outputs.publish == 'true'
+        run: npx playwright install --with-deps chromium
+      # The version PR is opened with a token whose pushes do start CI, but every
+      # gate runs again here on the exact commit that is published.
+      - name: Every gate, again, before anything is published
+        if: steps.meta.outputs.publish == 'true'
+        run: npm run verify
+      - name: Install the packed tarball into a fresh consumer app
+        if: steps.meta.outputs.publish == 'true'
+        run: npm run check:consumer
+      - name: Pack the tarball, SBOM and release notes
+        id: pack
+        if: steps.meta.outputs.publish == 'true'
+        env:
+          VERSION: ${{ steps.meta.outputs.version }}
+        run: |
+          mkdir release
+          npm pack --pack-destination release --ignore-scripts
+          test -f "release/punji-ui-${VERSION}.tgz"
+          echo "sha256=$(sha256sum "release/punji-ui-${VERSION}.tgz" | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+          # A CycloneDX SBOM of what the package depends on at runtime (peer React excluded).
+          npm sbom --sbom-format cyclonedx --omit dev --omit peer > "release/punji-ui-${VERSION}.cdx.json"
+          # This version's section of CHANGELOG.md, for the GitHub release.
+          awk -v v="## ${VERSION}" '$0 == v { on = 1; next } on && /^## / { exit } on' CHANGELOG.md > release/notes.md
+          test -s release/notes.md
+      - if: steps.meta.outputs.publish == 'true'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release
+          path: release/
+          retention-days: 7
+          if-no-files-found: error
+
+  publish:
+    name: Publish to npm
+    needs: build
+    if: needs.build.outputs.publish == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: npm
+    permissions:
+      contents: write # git tag and GitHub release
+      id-token: write # npm Trusted Publishing (OIDC) and provenance
+    steps:
+      - uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
+        with:
+          egress-policy: audit
+      # No checkout and no install: nothing from the repository or its
+      # dependencies runs while the OIDC credential exists.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
           registry-url: https://registry.npmjs.org
-          # No dependency cache on the publish path (cache poisoning).
           package-manager-cache: false
       - name: npm supports Trusted Publishing (needs 11.5.1 or later)
         run: |
           npm --version
           node -e "const [a,b,c]=process.argv[1].split('.').map(Number); if (a<11||(a===11&&(b<5||(b===5&&c<1)))) { console.error('npm too old for OIDC'); process.exit(1) }" "$(npm --version)"
-      - name: Install (no lifecycle scripts)
-        run: npm ci --ignore-scripts --no-audit --no-fund
-      - run: npm audit signatures
-      # `npm run verify` includes check:examples, which drives Chromium.
-      - name: Install Chromium for the example checks
-        run: npx playwright install --with-deps chromium
-      # The version PR is opened with the workflow token, which does not
-      # trigger CI on that PR, so every gate runs again here before publishing.
-      - name: Every gate, again, before anything is published
-        run: npm run verify
-      - name: Install the packed tarball into a fresh consumer app
-        run: npm run check:consumer
-      - name: Version PR or publish
-        id: changesets
-        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
-          version-script: npm run version-packages
-          publish-script: npm run release
-          commit-message: 'chore(release): version packages'
-          pr-title: 'chore(release): version packages'
-          create-github-releases: true
-          # The version PR is opened with the single-repo PR token (punji-ui only,
-          # contents + pull requests): a PR pushed with the workflow's own token
-          # never starts CI, so the required "CI OK" check would never run on it.
-          # The action takes it as an input; a GITHUB_TOKEN env that differs fails.
-          github-token: ${{ secrets.PUNJI_UI_PR_TOKEN }}
+          name: release
+          path: release
+      - name: The tarball is the one the build job checked
         env:
-          NPM_CONFIG_PROVENANCE: 'true'
-      # Changesets tags a single-package repository "v<version>" (not "<name>@<version>").
-      # A CycloneDX SBOM of what the published package depends on at runtime (peer
-      # React excluded), attached to the GitHub release Changesets just created.
-      - name: Attach SBOM to the GitHub release
-        if: steps.changesets.outputs.published == 'true'
+          VERSION: ${{ needs.build.outputs.version }}
+          SHA256: ${{ needs.build.outputs.sha256 }}
+        run: echo "${SHA256}  release/punji-ui-${VERSION}.tgz" | sha256sum --check --strict
+      - name: Publish with provenance
+        env:
+          VERSION: ${{ needs.build.outputs.version }}
+        run: npm publish "release/punji-ui-${VERSION}.tgz" --provenance --access public --ignore-scripts
+      # Changesets tagged a single-package repository "v<version>"; keep that scheme.
+      - name: Tag and GitHub release, with the SBOM attached
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISHED: ${{ steps.changesets.outputs.published-packages }}
+          VERSION: ${{ needs.build.outputs.version }}
         run: |
-          VERSION="$(jq -r '.[] | select(.name == "@punji/ui") | .version' <<< "${PUBLISHED}")"
-          npm sbom --sbom-format cyclonedx --omit dev --omit peer > "punji-ui-${VERSION}.cdx.json"
-          gh release upload "v${VERSION}" "punji-ui-${VERSION}.cdx.json" --repo "${GITHUB_REPOSITORY}"
+          gh release create "v${VERSION}" --repo "${GITHUB_REPOSITORY}" --target "${GITHUB_SHA}" \
+            --title "v${VERSION}" --notes-file release/notes.md "release/punji-ui-${VERSION}.cdx.json"

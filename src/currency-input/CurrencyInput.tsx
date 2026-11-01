@@ -54,7 +54,8 @@ export interface CurrencyInputOptions extends Partial<Pick<MoneyFormatConfig, 'l
 /** Requires a `currency` or a `preset` that carries one. */
 export type CurrencyInputProps = CurrencyInputOptions & MoneySource;
 
-const SHAPE = /^-?\d*\.?\d*$/;
+// Unambiguous (no `\d*\.?\d*`, which backtracks quadratically on a long paste with no dot).
+const SHAPE = /^-?\d*(?:\.\d*)?$/;
 
 function resultOf(canonical: string, formatter: MoneyFormatter): CurrencyInputChange {
   const parsed = parseLocalizedDecimal(canonical, { maxFractionDigits: formatter.exponent, grouping: 'none' });
@@ -86,7 +87,7 @@ export function CurrencyInput({
   const shown = formatter.formatDecimalInput(value);
 
   const accepts = (canonical: string): boolean => {
-    if (!SHAPE.test(canonical) || canonical.length > 40) return false;
+    if (canonical.length > 40 || !SHAPE.test(canonical)) return false;
     if (!allowNegative && canonical.startsWith('-')) return false;
     const dot = canonical.indexOf('.');
     return dot < 0 || (formatter.exponent > 0 && canonical.length - dot - 1 <= formatter.exponent);

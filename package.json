@@ -781,7 +781,7 @@
     "verify:deep": "npm run verify && npm run test:deep",
     "changeset": "changeset",
     "version-packages": "changeset version && npm install --package-lock-only --ignore-scripts",
-    "release": "npm run build && changeset publish",
+    "release": "echo \"Publishing runs only in .github/workflows/release.yml (publish job)\" && exit 1",
     "audit:web": "node scripts/audit-web.mjs",
     "examples": "vite examples --host 127.0.0.1",
     "build:examples": "vite build examples",

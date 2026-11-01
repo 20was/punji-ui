@@ -39,7 +39,7 @@
   .pu-tx { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--pu-space-3); min-width: 0; min-height: 56px; padding: 10px 14px; box-sizing: border-box }
   .pu-tx + .pu-tx { border-top: 1px solid var(--pu-color-card-border) }
   .pu-tx-main { display: grid; gap: 3px; min-width: 0 }
-  .pu-tx-name { font: 500 var(--pu-text-sm) / 1.35 var(--pu-font-body); overflow-wrap: anywhere }
+  .pu-tx-name { font: 500 var(--pu-text-sm) / 1.35 var(--pu-font-body); overflow-wrap: anywhere; unicode-bidi: isolate }
   .pu-tx-sub { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
   .pu-tx-ref { font-variant-numeric: tabular-nums; overflow-wrap: anywhere }
   .pu-tx-money { display: grid; justify-items: end; gap: 3px; flex: none; text-align: right }
@@ -65,7 +65,7 @@
   .pu-receipt dd { margin: 0; display: grid; justify-items: end; text-align: right; font-size: var(--pu-text-sm); min-width: 0; overflow-wrap: anywhere }
   .pu-receipt dd.pu-receipt-ref { display: flex; align-items: center; justify-content: flex-end; gap: 4px }
   .pu-receipt-refval { font-variant-numeric: tabular-nums; overflow-wrap: anywhere }
-  .pu-receipt-name { font-weight: 600 }
+  .pu-receipt-name { font-weight: 600; unicode-bidi: isolate }
   .pu-receipt-sub, .pu-receipt-note { color: var(--pu-color-text-muted); font-size: var(--pu-text-xs) }
   .pu-receipt-sum { padding-top: var(--pu-space-3); border-top: 1px solid var(--pu-color-card-border); font-variant-numeric: tabular-nums }
   .pu-receipt-total { padding-top: var(--pu-space-2); border-top: 1px solid var(--pu-color-border-strong) }
@@ -111,7 +111,7 @@
   .pu-bene-opt { display: grid; gap: 2px; padding: 8px; min-height: 44px; box-sizing: border-box; border-radius: var(--pu-radius-md); cursor: pointer }
   .pu-bene-opt:hover, .pu-bene-opt.on { background: var(--pu-color-surface-tint) }
   .pu-bene-opt[aria-selected='true'] .pu-bene-name { font-weight: 700 }
-  .pu-bene-name { font: 500 var(--pu-text-sm) / 1.3 var(--pu-font-body); overflow-wrap: anywhere }
-  .pu-bene-nick { color: var(--pu-color-text-muted); font-weight: 400 }
+  .pu-bene-name { font: 500 var(--pu-text-sm) / 1.3 var(--pu-font-body); overflow-wrap: anywhere; unicode-bidi: isolate }
+  .pu-bene-nick { color: var(--pu-color-text-muted); font-weight: 400; unicode-bidi: isolate }
   .pu-bene-meta { display: flex; flex-wrap: wrap; gap: 2px 8px; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums }
 }

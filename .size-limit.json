@@ -255,7 +255,7 @@
     "name": "table-export (import from '@punji/ui/table-export')",
     "path": "dist/table-export/TableExport.js",
     "import": "*",
-    "limit": "1.81 kB",
+    "limit": "1.92 kB",
     "gzip": true
   },
   {
@@ -605,14 +605,14 @@
     "name": "CSV export without React or DOM",
     "path": "dist/export/export.js",
     "import": "*",
-    "limit": "910 B",
+    "limit": "1020 B",
     "gzip": true
   },
   {
     "name": "Browser text download",
     "path": "dist/download/downloadText.js",
     "import": "*",
-    "limit": "580 B",
+    "limit": "670 B",
     "gzip": true
   },
   {

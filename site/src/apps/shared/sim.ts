@@ -254,10 +254,11 @@ export function indexOf(quotes: readonly LiveQuote[]): IndexSnapshot {
 /** The simulated wall clock at a tick. */
 export const clockAt = (tick: number): Date => new Date(SESSION_START + tick * TICK_SECONDS * 1000);
 
+const pad = (n: number) => String(n).padStart(2, '0');
+
 /** "12:04:35" on the Kathmandu clock, without reading the host time zone (UTC + 5:45). */
 export function timeAt(tick: number): string {
   const d = new Date(clockAt(tick).getTime() + (5 * 60 + 45) * 60_000);
-  const pad = (n: number) => String(n).padStart(2, '0');
   return `${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())}`;
 }
 

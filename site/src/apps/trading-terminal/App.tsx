@@ -8,7 +8,9 @@ import { ChartIcon, CommandIcon, OrdersIcon, PauseIcon, PlayIcon, PositionsIcon,
 import { timeAt } from '../shared/sim.ts';
 import { MarketWatch } from './MarketWatch.tsx';
 import { TerminalContext, derive, initialState, reducer, type Screen } from './store.ts';
+// oxlint-disable-next-line import/no-unassigned-import -- the app's layout styles
 import '../shared/app.css';
+// oxlint-disable-next-line import/no-unassigned-import -- the app's layout styles
 import './terminal.css';
 
 // A TMS-class trading terminal on a simulated NEPSE session: market watch, a symbol with its chart, depth and book,

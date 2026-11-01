@@ -63,6 +63,19 @@ A showcase page (`kind: 'showcase'`, group `showcase`, URL `/showcase/<slug>/`) 
 
 The page shows the live screen in the demo frame (light/dark and phone-width toggles, the TSX with copy), then the layout CSS, the summary, "Built from" cards and the notes. `llms-full.txt` carries the TSX and the CSS.
 
+## Add an app
+
+An app (`kind: 'app'`, group `apps`, URL `/apps/<slug>/`) is a complete, full-viewport, multi-screen dashboard built only from `@punji/ui` exports on simulated data. The page frame (`src/app/AppView.tsx`) gives it a slim bar (the page's `h1`, the way back to the docs, a "Source" link to `site/src/apps/<slug>/`, the theme switch) and, under the app, "About this app": the summary, the screens, the data, "Built from" cards and the notes, all from the registry. The docs header, sidebar and footer are not rendered on app pages.
+
+1. Add an entry to `APP_PAGES` in `src/registry-apps.ts`: `title` such that "`<title> — Punji UI`" is 40 to 62 characters, `description` 120 to 160, a short `navTitle` (the bar's `h1`), `summary`, `use` ("Adapting it"), `avoid` ("What stays yours"), `keyboard`, `accessibility`, `responsive`, `notes`, `related` (the component pages it is built from), `api: []`, `examples: []`, and `app: { screens: [{ id, title, summary }], data }`. `site-gen` and `check:seo` fail on the title and description lengths.
+2. Write `src/apps/<slug>/App.tsx` with a default export. `scripts/site-pages.mjs` imports it into the route module. Use the shared kit in `src/apps/shared/`:
+   - `kit.tsx`: `AppFrame` (navigation rail on wide screens, a bottom tab bar under 900 px; nav items are `#<screen>` links with `data-testid="screen-<id>"`; a click moves focus to the new screen's heading), `ScreenTitle` (each screen's `h2`), `useScreen(ids, initial)` (the screen in the URL hash, read after hydration), `useTicker(fn, { intervalMs, running })` (runs only in the browser, pauses in a hidden tab), `lazyScreen(() => import('./Screen.tsx'), title)` (a screen in its own chunk with loading and error states and `.preload()` for hover), `useReducedMotion()`.
+   - `sim.ts`: the seeded market (`createMarket`, `stepMarket`, `indexOf`, `bookFor`, `dailyCandles`, `shockMarket`, `timeAt`): same seed, same prices on the server and in the browser, so the page hydrates without a mismatch. Never read the clock or `Math.random` during render.
+   - `icons.tsx` and `app.css` (`app-` classes: `app-stack`, `app-grid is-split | is-halves`, `app-toolbar-end`, `app-sym`, `app-kbd`). Prefix the app's own classes (`tt-`, `wd-`).
+3. Render the first screen statically (it is prerendered); load the others with `lazyScreen`. `check:seo` holds every page to 150 kB of gzipped JavaScript up front; the two apps load about 131 kB.
+4. Screens start at `h2` (`ScreenTitle`), cards at `h3`. Keep one reducer for the app's state so figures agree across screens, and announce what the app does in a polite live region.
+5. `npm run site:build`, `npm run check:seo`, then `npm run check:site`: it opens every screen of every app (through `screen-<id>`) at 390, 768 and 1440 px in light and dark, and fails on axe violations, horizontal overflow and console errors.
+
 ## Loading
 
 Each page loads only its own code. `src/app/load.ts` is the one place that knows how:
@@ -87,6 +100,7 @@ Clean paths, no hash. The section comes from the page kind (`src/paths.ts`, `pag
 | `utility`, `hooks` | `/utilities/<slug>/` |
 | `guide` | `/get-started/<slug>/` |
 | `showcase` | `/showcase/<slug>/` |
+| `app` | `/apps/<slug>/` |
 
 The section names match the current design.punji.app portal so its URLs and rankings survive the cutover. Canonical URLs carry a trailing slash because every page is a `<path>/index.html`. Links are real `<a href>` (middle-click, copy, no-JS crawlers work); a plain click is intercepted and uses `history.pushState`, then the title, meta description, canonical, Open Graph and JSON-LD are updated and focus moves to the new `h1`. An unknown path renders the 404 view.
 

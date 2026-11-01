@@ -43,8 +43,8 @@ describe('parseHotkey / matchHotkey / formatHotkey', () => {
 
 describe('useHotkeys', () => {
   it('fires a plain key outside fields only, and a modified key everywhere', () => {
-    const buy = vi.fn();
-    const palette = vi.fn();
+    const buy = vi.fn<(event: KeyboardEvent) => void>();
+    const palette = vi.fn<(event: KeyboardEvent) => void>();
     renderHook(() => useHotkeys([{ keys: 'b', handler: buy }, { keys: 'ctrl+k, meta+k', handler: palette }]));
     const input = document.createElement('input');
     document.body.append(input);
@@ -59,7 +59,7 @@ describe('useHotkeys', () => {
   });
 
   it('prevents the default unless told not to, skips composition, and stops when disabled', () => {
-    const handler = vi.fn();
+    const handler = vi.fn<(event: KeyboardEvent) => void>();
     const { rerender } = renderHook(({ enabled }) => useHotkeys([{ keys: '/', handler }], { enabled }), { initialProps: { enabled: true } });
     const event = new KeyboardEvent('keydown', { key: '/', bubbles: true, cancelable: true });
     document.body.dispatchEvent(event);
@@ -80,16 +80,21 @@ describe('useHotkeys', () => {
   });
 });
 
+function Controlled() {
+  const [size, setSize] = useState(40);
+  return <SplitPane label="Resize" orientation="vertical" start="A" end="B" size={size} onSizeChange={setSize} />;
+}
+
 describe('SplitPane', () => {
   it('renders both panes and a window-splitter separator on the server', () => {
     const html = renderToString(<SplitPane label="Resize chart and ticket" start={<p>Chart</p>} end={<p>Ticket</p>} defaultSize={60} />);
     expect(html).toContain('role="separator"');
     expect(html).toContain('aria-valuenow="60"');
-    expect(html).toContain('--pu-split:60%');
+    expect(html).toContain('--kit-split:60%');
   });
 
   it('moves with the arrow keys, Shift, Home and End inside min and max, and Enter collapses and restores', () => {
-    const onSizeChange = vi.fn();
+    const onSizeChange = vi.fn<(size: number) => void>();
     render(<SplitPane label="Resize" start="A" end="B" defaultSize={50} min={25} max={75} step={5} onSizeChange={onSizeChange} />);
     const handle = screen.getByRole('separator', { name: 'Resize' });
     expect(handle.getAttribute('aria-orientation')).toBe('vertical');
@@ -111,10 +116,6 @@ describe('SplitPane', () => {
   });
 
   it('uses the up and down arrows when vertical, and can be controlled', () => {
-    function Controlled() {
-      const [size, setSize] = useState(40);
-      return <SplitPane label="Resize" orientation="vertical" start="A" end="B" size={size} onSizeChange={setSize} />;
-    }
     render(<Controlled />);
     const handle = screen.getByRole('separator');
     expect(handle.getAttribute('aria-orientation')).toBe('horizontal');
@@ -129,7 +130,7 @@ describe('SplitPane', () => {
     const handle = screen.getByTestId('sp-separator');
     const inner = handle.parentElement!;
     inner.getBoundingClientRect = () => ({ left: 0, top: 0, width: 1000, height: 400, right: 1000, bottom: 400, x: 0, y: 0, toJSON: () => ({}) });
-    handle.setPointerCapture = vi.fn();
+    handle.setPointerCapture = vi.fn<(id: number) => void>();
     handle.hasPointerCapture = () => true;
     fireEvent.pointerDown(handle, { button: 0, pointerId: 1, clientX: 500 });
     fireEvent.pointerMove(handle, { pointerId: 1, clientX: 333 });

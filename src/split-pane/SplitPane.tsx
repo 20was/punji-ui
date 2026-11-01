@@ -39,6 +39,14 @@ export interface SplitPaneProps {
   className?: string;
 }
 
+/** Start a drag: capture the pointer so moves outside the handle still count, and focus the handle. */
+function onPointerDown(event: PointerEvent<HTMLDivElement>) {
+  if (event.button !== 0) return;
+  event.preventDefault();
+  event.currentTarget.setPointerCapture?.(event.pointerId);
+  event.currentTarget.focus();
+}
+
 const clamp = (value: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, value));
 const round1 = (value: number) => Math.round(value * 10) / 10;
 
@@ -99,18 +107,11 @@ export function SplitPane({
     set(((horizontal ? event.clientX - box.left : event.clientY - box.top) / span) * 100);
   };
 
-  const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
-    if (event.button !== 0) return;
-    event.preventDefault();
-    event.currentTarget.setPointerCapture?.(event.pointerId);
-    event.currentTarget.focus();
-  };
-
   const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
     if (event.currentTarget.hasPointerCapture?.(event.pointerId)) fromPointer(event);
   };
 
-  const style = { '--pu-split': `${size}%` } as CSSProperties;
+  const style = { '--kit-split': `${size}%` } as CSSProperties;
   return (
     <div className={['pu-split', className].filter(Boolean).join(' ')} data-testid={testId}>
       <div ref={root} className="pu-split-in" data-orientation={orientation} data-stack={stack ? '' : undefined} style={style}>

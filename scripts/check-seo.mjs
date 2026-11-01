@@ -86,11 +86,14 @@ for (const { route, file } of targets) {
   else {
     if (unescape(title) !== expected.title) fail(`${where}: title "${unescape(title)}" is not "${expected.title}"`);
     unique('title', unescape(title), where);
+    // An app is a landing page of its own: a full search-result title.
+    if (route.kind === 'page' && route.page.kind === 'app' && (unescape(title).length < 40 || unescape(title).length > 62)) fail(`${where}: an app title is ${unescape(title).length} chars (want 40 to 62)`);
   }
   const description = metaContent(html, 'name', 'description');
   if (!description) fail(`${where}: no meta description`);
   else {
     if (description.length < 40 || description.length > 160) fail(`${where}: meta description is ${description.length} chars (want 40 to 160)`);
+    if (route.kind === 'page' && route.page.kind === 'app' && description.length < 120) fail(`${where}: an app description is ${description.length} chars (want 120 to 160)`);
     unique('description', description, where);
   }
   const canonical = /<link rel="canonical" href="([^"]*)"/.exec(html)?.[1];

@@ -94,9 +94,8 @@ export function lazyScreen<P extends object>(load: () => Promise<{ default: Comp
   function Screen(props: P) {
     const [Component, setComponent] = useState<ComponentType<P> | null>(() => loaded);
     const [failed, setFailed] = useState(false);
-    const [attempt, setAttempt] = useState(0);
     useEffect(() => {
-      if (Component) return;
+      if (Component || failed) return;
       let live = true;
       preload().then(
         (c) => live && setComponent(() => c),
@@ -105,7 +104,7 @@ export function lazyScreen<P extends object>(load: () => Promise<{ default: Comp
       return () => {
         live = false;
       };
-    }, [Component, attempt]);
+    }, [Component, failed]);
     if (Component) return <Component {...props} />;
     if (failed)
       return (
@@ -116,10 +115,7 @@ export function lazyScreen<P extends object>(load: () => Promise<{ default: Comp
           action={
             <Button
               size="sm"
-              onClick={() => {
-                setFailed(false);
-                setAttempt((n) => n + 1);
-              }}
+              onClick={() => setFailed(false)}
             >
               Try again
             </Button>

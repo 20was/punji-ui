@@ -598,7 +598,7 @@
     "name": "All hooks (import from @punji/ui/hooks)",
     "path": "dist/hooks/hooks.js",
     "import": "*",
-    "limit": "4.02 kB",
+    "limit": "5.1 kB",
     "gzip": true
   },
   {
@@ -1050,6 +1050,27 @@
     "path": "dist/css/trading-halt.css",
     "limit": "0.51 kB",
     "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "split-pane (import from '@punji/ui/split-pane')",
+    "path": "dist/split-pane/SplitPane.js",
+    "import": "*",
+    "limit": "1.4 kB",
+    "gzip": true
+  },
+  {
+    "name": "Split pane CSS",
+    "path": "dist/css/split-pane.css",
+    "limit": "0.65 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "use-hotkeys (import from '@punji/ui/use-hotkeys')",
+    "path": "dist/use-hotkeys/useHotkeys.js",
+    "import": "*",
+    "limit": "1.45 kB",
     "gzip": true
   },
   {

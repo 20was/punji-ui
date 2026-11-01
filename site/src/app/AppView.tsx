@@ -5,6 +5,7 @@ import { groupTitleOf } from './nav.ts';
 import { Link } from './router.tsx';
 import { ThemeSwitch } from './ThemeSwitch.tsx';
 import { CodeIcon, ExternalIcon, Wordmark } from './icons.tsx';
+// oxlint-disable-next-line import/no-unassigned-import -- the app's layout styles
 import '../apps/shared/app.css';
 
 // The frame of an app page (/apps/<slug>/): a slim bar with the app's name (the page's h1), the way back to the docs,

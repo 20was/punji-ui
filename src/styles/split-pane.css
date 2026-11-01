@@ -2,8 +2,8 @@
    Styles for SplitPane. Needs tokens.css and base.css (styles.css has everything). */
 @layer punji.components {
   .pu-split { container-type: inline-size; min-width: 0; min-height: 0 }
-  .pu-split-in { --pu-split-handle: 12px; display: grid; grid-template-columns: minmax(0, var(--pu-split, 50%)) var(--pu-split-handle) minmax(0, 1fr); height: 100%; min-height: 0 }
-  .pu-split-in[data-orientation='vertical'] { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, var(--pu-split, 50%)) var(--pu-split-handle) minmax(0, 1fr) }
+  .pu-split-in { --kit-split-handle: 12px; display: grid; grid-template-columns: minmax(0, var(--kit-split, 50%)) var(--kit-split-handle) minmax(0, 1fr); height: 100%; min-height: 0 }
+  .pu-split-in[data-orientation='vertical'] { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, var(--kit-split, 50%)) var(--kit-split-handle) minmax(0, 1fr) }
   .pu-split-pane { min-width: 0; min-height: 0; overflow: auto }
   .pu-split-handle { position: relative; display: block; cursor: col-resize; touch-action: none; outline: none }
   .pu-split-in[data-orientation='vertical'] > .pu-split-handle { cursor: row-resize }

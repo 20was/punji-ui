@@ -8,7 +8,9 @@ import { DividendIcon, GoalIcon, HoldingsIcon, HomeIcon, IssueIcon, PauseIcon, P
 import { timeAt } from '../shared/sim.ts';
 import { Overview } from './Overview.tsx';
 import { WealthContext, derive, initialState, npr, reducer, type Screen } from './store.ts';
+// oxlint-disable-next-line import/no-unassigned-import -- the app's layout styles
 import '../shared/app.css';
+// oxlint-disable-next-line import/no-unassigned-import -- the app's layout styles
 import './wealth.css';
 
 // A personal wealth dashboard on the same simulated market as the terminal: net worth and allocation, holdings at

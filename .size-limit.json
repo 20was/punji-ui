@@ -318,7 +318,7 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "166.11 kB",
+    "limit": "166.21 kB",
     "gzip": true
   },
   {
@@ -619,28 +619,28 @@
     "name": "Money formatter and parser without React (import from '@punji/ui/money')",
     "path": "dist/money/money.js",
     "import": "*",
-    "limit": "3.80 kB",
+    "limit": "3.88 kB",
     "gzip": true
   },
   {
     "name": "MoneyDisplay (import from '@punji/ui/money-display')",
     "path": "dist/money-display/MoneyDisplay.js",
     "import": "*",
-    "limit": "4.16 kB",
+    "limit": "4.24 kB",
     "gzip": true
   },
   {
     "name": "PriceChange (import from '@punji/ui/price-change')",
     "path": "dist/price-change/PriceChange.js",
     "import": "*",
-    "limit": "4.63 kB",
+    "limit": "4.70 kB",
     "gzip": true
   },
   {
     "name": "CurrencyInput (import from '@punji/ui/currency-input')",
     "path": "dist/currency-input/CurrencyInput.js",
     "import": "*",
-    "limit": "4.92 kB",
+    "limit": "5.00 kB",
     "gzip": true
   },
   {
@@ -808,7 +808,7 @@
     "name": "market-indices (import from '@punji/ui/market-indices')",
     "path": "dist/market-indices/MarketIndices.js",
     "import": "*",
-    "limit": "6.59 kB",
+    "limit": "6.67 kB",
     "gzip": true
   },
   {
@@ -822,14 +822,14 @@
     "name": "price-limit (import from '@punji/ui/price-limit')",
     "path": "dist/price-limit/PriceLimitIndicator.js",
     "import": "*",
-    "limit": "5.76 kB",
+    "limit": "5.84 kB",
     "gzip": true
   },
   {
     "name": "watchlist (import from '@punji/ui/watchlist')",
     "path": "dist/watchlist/Watchlist.js",
     "import": "*",
-    "limit": "7.32 kB",
+    "limit": "7.62 kB",
     "gzip": true
   },
   {
@@ -850,35 +850,35 @@
     "name": "debit-credit (import from '@punji/ui/debit-credit')",
     "path": "dist/debit-credit/DebitCredit.js",
     "import": "*",
-    "limit": "4.57 kB",
+    "limit": "4.64 kB",
     "gzip": true
   },
   {
     "name": "ledger-table (import from '@punji/ui/ledger-table')",
     "path": "dist/ledger-table/LedgerTable.js",
     "import": "*",
-    "limit": "8.85 kB",
+    "limit": "9.14 kB",
     "gzip": true
   },
   {
     "name": "journal-entry (import from '@punji/ui/journal-entry')",
     "path": "dist/journal-entry/JournalEntryView.js",
     "import": "*",
-    "limit": "8.15 kB",
+    "limit": "8.46 kB",
     "gzip": true
   },
   {
     "name": "trial-balance (import from '@punji/ui/trial-balance')",
     "path": "dist/trial-balance/TrialBalance.js",
     "import": "*",
-    "limit": "8.65 kB",
+    "limit": "8.95 kB",
     "gzip": true
   },
   {
     "name": "statement-table (import from '@punji/ui/statement-table')",
     "path": "dist/statement-table/StatementTable.js",
     "import": "*",
-    "limit": "8.32 kB",
+    "limit": "8.62 kB",
     "gzip": true
   },
   {
@@ -913,14 +913,14 @@
     "name": "bank-account-card (import from '@punji/ui/bank-account-card')",
     "path": "dist/bank-account-card/BankAccountCard.js",
     "import": "*",
-    "limit": "7.59 kB",
+    "limit": "7.89 kB",
     "gzip": true
   },
   {
     "name": "transaction-list (import from '@punji/ui/transaction-list')",
     "path": "dist/transaction-list/TransactionList.js",
     "import": "*",
-    "limit": "9.79 kB",
+    "limit": "9.86 kB",
     "gzip": true
   },
   {
@@ -934,7 +934,7 @@
     "name": "payment-receipt (import from '@punji/ui/payment-receipt')",
     "path": "dist/payment-receipt/PaymentReceipt.js",
     "import": "*",
-    "limit": "7.22 kB",
+    "limit": "7.29 kB",
     "gzip": true
   },
   {
@@ -962,21 +962,21 @@
     "name": "holdings-table (import from '@punji/ui/holdings-table')",
     "path": "dist/holdings-table/HoldingsTable.js",
     "import": "*",
-    "limit": "10.74 kB",
+    "limit": "10.81 kB",
     "gzip": true
   },
   {
     "name": "portfolio-allocation (import from '@punji/ui/portfolio-allocation')",
     "path": "dist/portfolio-allocation/PortfolioAllocation.js",
     "import": "*",
-    "limit": "6.67 kB",
+    "limit": "6.76 kB",
     "gzip": true
   },
   {
     "name": "portfolio-overview (import from '@punji/ui/portfolio-overview')",
     "path": "dist/portfolio-overview/PortfolioOverview.js",
     "import": "*",
-    "limit": "7.02 kB",
+    "limit": "7.10 kB",
     "gzip": true
   },
   {
@@ -1014,14 +1014,14 @@
     "name": "order-ticket (import from '@punji/ui/order-ticket')",
     "path": "dist/order-ticket/OrderTicket.js",
     "import": "*",
-    "limit": "11.18 kB",
+    "limit": "11.53 kB",
     "gzip": true
   },
   {
     "name": "order-list (import from '@punji/ui/order-list')",
     "path": "dist/order-list/OrderList.js",
     "import": "*",
-    "limit": "8.66 kB",
+    "limit": "8.74 kB",
     "gzip": true
   },
   {
@@ -1084,7 +1084,7 @@
     "name": "amount-keypad (import from '@punji/ui/amount-keypad')",
     "path": "dist/amount-keypad/AmountKeypad.js",
     "import": "*",
-    "limit": "5.78 kB",
+    "limit": "5.86 kB",
     "gzip": true
   },
   {
@@ -1140,21 +1140,21 @@
     "name": "amortisation-table (import from '@punji/ui/amortisation-table')",
     "path": "dist/amortisation-table/AmortisationTable.js",
     "import": "*",
-    "limit": "5.24 kB",
+    "limit": "5.31 kB",
     "gzip": true
   },
   {
     "name": "loan-calculator (import from '@punji/ui/loan-calculator')",
     "path": "dist/loan-calculator/LoanCalculator.js",
     "import": "*",
-    "limit": "11.49 kB",
+    "limit": "11.84 kB",
     "gzip": true
   },
   {
     "name": "deposit-calculator (import from '@punji/ui/deposit-calculator')",
     "path": "dist/deposit-calculator/DepositCalculator.js",
     "import": "*",
-    "limit": "11.26 kB",
+    "limit": "11.62 kB",
     "gzip": true
   },
   {
@@ -1199,14 +1199,14 @@
     "name": "remittance-tracker (import from '@punji/ui/remittance-tracker')",
     "path": "dist/remittance-tracker/RemittanceTracker.js",
     "import": "*",
-    "limit": "7.35 kB",
+    "limit": "7.43 kB",
     "gzip": true
   },
   {
     "name": "insurance-premium-card (import from '@punji/ui/insurance-premium-card')",
     "path": "dist/insurance-premium-card/InsurancePremiumCard.js",
     "import": "*",
-    "limit": "5.60 kB",
+    "limit": "5.67 kB",
     "gzip": true
   },
   {
@@ -1241,42 +1241,42 @@
     "name": "tax-invoice (import from '@punji/ui/tax-invoice')",
     "path": "dist/tax-invoice/TaxInvoice.js",
     "import": "*",
-    "limit": "10.95 kB",
+    "limit": "11.02 kB",
     "gzip": true
   },
   {
     "name": "line-item-editor (import from '@punji/ui/line-item-editor')",
     "path": "dist/line-item-editor/LineItemEditor.js",
     "import": "*",
-    "limit": "8.23 kB",
+    "limit": "8.54 kB",
     "gzip": true
   },
   {
     "name": "income-tax-calculator (import from '@punji/ui/income-tax-calculator')",
     "path": "dist/income-tax-calculator/IncomeTaxCalculator.js",
     "import": "*",
-    "limit": "8.36 kB",
+    "limit": "8.70 kB",
     "gzip": true
   },
   {
     "name": "payslip (import from '@punji/ui/payslip')",
     "path": "dist/payslip/Payslip.js",
     "import": "*",
-    "limit": "7.43 kB",
+    "limit": "7.50 kB",
     "gzip": true
   },
   {
     "name": "aging-table (import from '@punji/ui/aging-table')",
     "path": "dist/aging-table/AgingTable.js",
     "import": "*",
-    "limit": "8.34 kB",
+    "limit": "8.65 kB",
     "gzip": true
   },
   {
     "name": "tds-summary (import from '@punji/ui/tds-summary')",
     "path": "dist/tds-summary/TdsSummary.js",
     "import": "*",
-    "limit": "8.67 kB",
+    "limit": "8.75 kB",
     "gzip": true
   },
   {
@@ -1304,7 +1304,7 @@
     "name": "transfer-review (import from '@punji/ui/transfer-review')",
     "path": "dist/transfer-review/TransferReview.js",
     "import": "*",
-    "limit": "9.45 kB",
+    "limit": "9.53 kB",
     "gzip": true
   },
   {

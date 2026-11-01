@@ -24,26 +24,49 @@ export const GUIDES: readonly PageDef[] = [
     slug: 'using',
     navTitle: 'Introduction',
     title: 'Introduction and installation',
-    description: 'What @punji/ui is, its status (not published yet), how to install it after the first release, load the styles once and import by subpath.',
+    description: 'Install @punji/ui from npm, load the stylesheet once and render an exact NPR or USD amount in React. Who Punji UI is for, and how it differs from a generic kit.',
     summary:
-      'Punji UI is a finance-first React component library: exact money, stock-market tables, ledgers and a Nepal-first locale layer that works for any currency. Nothing is published to npm yet, so the install command below is for after the first release.',
+      'Punji UI is a finance-first React component library: exact money, stock-market tables, ledgers and a Nepal-first locale layer (NPR, lakh and crore, Devanagari digits, Bikram Sambat dates, NEPSE) that works for any currency. Install it from npm, import one stylesheet and show your first exact amount in a few lines.',
     related: ['nextjs', 'vite', 'theming', 'money-display'],
     guide: [
+      {
+        id: 'who',
+        title: 'Who it is for',
+        paragraphs: ['Teams building screens where a wrong digit costs someone money, in Nepal or anywhere else.'],
+        points: [
+          'Stock market and trading apps: a [NEPSE stock table](/components/stock-table/), [market movers](/components/market-movers/), [candlestick charts](/components/candlestick-chart/) and [order book depth](/components/order-book/).',
+          'Portfolio and wealth trackers: [holdings with P&L](/components/holdings-table/), [allocation](/components/portfolio-allocation/) and [exact position maths](/utilities/financial-calculations/).',
+          'Accounting and bookkeeping: an [accounting ledger](/components/ledger-table/) with a running balance, [journal entries](/components/journal-entry/) and a [trial balance](/components/trial-balance/).',
+          'Banking and payments: a [currency input](/components/currency-input/) that never rounds, [transaction lists](/components/transaction-list/) and [payment receipts](/components/payment-receipt/).',
+          'Apps for Nepal: [lakh and crore formatting](/utilities/formatters/), Devanagari digits and a [Nepali date picker](/components/date-picker/) with Bikram Sambat dates.',
+        ],
+      },
+      {
+        id: 'why',
+        title: 'How it differs from a general-purpose kit',
+        paragraphs: ['A general-purpose React kit gives you buttons, inputs and tables; the finance rules stay in your app. Punji UI builds them in.'],
+        points: [
+          'Exact money: amounts are `bigint` minor units or exact decimal strings, never floating point, and anything that divides asks for a rounding mode.',
+          'Nepal first, any currency: lakh and crore grouping, Devanagari digits, Bikram Sambat dates, the Nepal fiscal year and the NEPSE session calendar are built in; other currencies and locales are configuration.',
+          'Accessible by default: direction is never colour alone (sign, arrow and spoken words), widgets follow WAI-ARIA patterns, and every page of this site is checked with axe in light and dark at phone and desktop widths.',
+          'Small: every module has its own import path and stylesheet, and gzip sizes are budgeted on every build (shown on each component page).',
+        ],
+      },
       {
         id: 'status',
         title: 'Status',
         paragraphs: [
-          '@punji/ui is not on npm yet: `package.json` says `0.0.0` and no tag or release exists. The first release will be `0.1.0`, published by the owner through the gated release workflow described in [RELEASE.md](' + REPO + '/RELEASE.md). Until then, APIs and styles can change without notice, so do not depend on it in production.',
-          'Everything on this site imports the built package through its export map, exactly as a consumer would, so the examples show the API that will ship.',
+          '`@punji/ui` 0.1.0 is on [npm](https://www.npmjs.com/package/@punji/ui), published from CI with a provenance attestation through the release workflow in [RELEASE.md](' + REPO + '/RELEASE.md). It is pre-1.0: a minor version can change APIs and styles, so pin an exact version and read the [changelog](' + REPO + '/blob/main/CHANGELOG.md) before you upgrade.',
+          'Everything on this site imports the built package through its export map, exactly as a consumer would, so the examples show the published API.',
         ],
       },
       {
         id: 'install',
         title: 'Install',
         paragraphs: [
-          'After the first release, install the package. React 19 and React DOM 19 are peer dependencies. The package is ESM only and ships its own TypeScript declarations; the one runtime dependency (the Bikram Sambat date converter) is loaded only by the calendar module.',
+          'Install the package. React 19 and React DOM 19 are peer dependencies. The package is ESM only and ships its own TypeScript declarations; the one runtime dependency (the Bikram Sambat date converter) is loaded only by the calendar module.',
         ],
-        code: [{ label: 'Install (after the first release)', text: 'npm install @punji/ui react@19 react-dom@19' }],
+        code: [{ label: 'Install', text: 'npm install @punji/ui react@19 react-dom@19' }],
       },
       {
         id: 'first-screen',
@@ -136,11 +159,11 @@ export const GUIDES: readonly PageDef[] = [
       {
         id: 'create',
         title: 'Create the project',
-        paragraphs: ['Start from the React and TypeScript template, then install the package (after the first release).'],
+        paragraphs: ['Start from the React and TypeScript template, then install the package.'],
         code: [
           {
             label: 'Create and install',
-            text: 'npm create vite@latest my-app -- --template react-ts\ncd my-app\nnpm install\nnpm install @punji/ui   # after the first release',
+            text: 'npm create vite@latest my-app -- --template react-ts\ncd my-app\nnpm install\nnpm install @punji/ui',
           },
         ],
       },
@@ -411,7 +434,7 @@ export const GUIDES: readonly PageDef[] = [
         points: [
           'No HTML from data: no `dangerouslySetInnerHTML`, no `eval`, no inline event-handler strings. Components render text as text. `scripts/check-source.mjs` fails the build if one appears.',
           'One reviewed runtime dependency. React is a peer; the only bundled dependency is `@remotemerge/nepali-date-converter` (MIT, pinned exactly, no transitive dependencies), loaded only by the Bikram Sambat calendar.',
-          'Releases you can verify: npm Trusted Publishing (OIDC, no stored token) with a provenance attestation and a CycloneDX SBOM per GitHub release. Check with `npm audit signatures`. Nothing is published yet.',
+          'Releases you can verify: npm Trusted Publishing (OIDC, no stored token) with a provenance attestation and a CycloneDX SBOM per GitHub release. Check with `npm audit signatures` after you install.',
           'Hardened CI: pinned actions, least-privilege permissions, installs with `npm ci --ignore-scripts`, a registry-only lockfile, CodeQL, zizmor and dependency review.',
         ],
       },
@@ -466,7 +489,7 @@ export const GUIDES: readonly PageDef[] = [
       {
         id: 'done',
         title: 'Shipped on main',
-        paragraphs: ['Merged, not yet published to npm.'],
+        paragraphs: ['Merged on main. Version 0.1.0 is published on npm; later merges ship in the next release.'],
         points: [
           'Financial utilities: exact calculations, generic money formatting and parsing, ledger maths, CSV export with formula neutralisation, hooks.',
           'Components: money primitives, stock market (tables, movers, indices, status, price limits, watchlist, heatmap, order books), accounting (ledger, journal, trial balance, statements, payment status, period selector), forms, layout and feedback modules.',
@@ -503,7 +526,7 @@ export const GUIDES: readonly PageDef[] = [
         points: [
           'Wave 3, scale and trust: a virtualised data table for 10k+ rows with column pinning, resizing and multi-sort; a high-contrast theme, density setting and RTL verification; performance numbers for live tables; a manual VoiceOver and NVDA pass; an automated Next.js consumer build.',
           'Wave 4, adoption: full example apps (trading dashboard, portfolio tracker, invoicing), StackBlitz starters, good first issues, a component contribution template.',
-          'After the first release: punji-web adopts the published package, and these docs replace the old portal at design.punji.app with its URLs preserved.',
+          'Since the 0.1.0 release: these docs replaced the old portal at design.punji.app with its URLs preserved, and punji-web adopts the published package next.',
         ],
       },
       {

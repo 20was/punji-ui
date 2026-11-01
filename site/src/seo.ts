@@ -1,8 +1,8 @@
 // Routes and per-page head data. Pure data and functions with no JSX, so the browser app, the prerender
 // script and the SEO check all use the same answer. The registry-free half lives in paths.ts (the browser shell
 // imports that one); this file adds the routes backed by the full page registry, for the build scripts.
-import { PAGES, pageBySlug, type PageDef } from './registry.ts';
-import { parseRouteWith, type Route } from './paths.ts';
+import { GROUPS, PAGES, pageBySlug, type PageDef } from './registry.ts';
+import { parseRouteWith, type HeadExtra, type Route } from './paths.ts';
 
 export * from './paths.ts';
 
@@ -11,6 +11,12 @@ export const parseRoute = (relative: string): Route => parseRouteWith<PageDef>(r
 
 /** Every page route (home first). The 404 page is not a route; it is emitted separately. */
 export const ROUTES: Route[] = [{ kind: 'home' }, ...PAGES.map((page): Route => ({ kind: 'page', page }))];
+
+/** The head facts a route needs beyond its registry entry: the group title and the date from generated/dates.json. */
+export function headExtraFor(route: Route, dates: Readonly<Record<string, string>>): HeadExtra {
+  if (route.kind !== 'page') return {};
+  return { groupTitle: GROUPS.find((g) => g.id === route.page.group)?.title, modified: dates[route.page.slug] };
+}
 
 /**
  * design.punji.app is replaced by this site. Where the old portal had the same component under another

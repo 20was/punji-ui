@@ -17,10 +17,12 @@ export function applyHead(head: HeadData): void {
   document.title = head.title;
   meta('name', 'description', head.description);
   meta('name', 'robots', head.robots);
-  upsert('link[rel="canonical"]', 'link', { rel: 'canonical' }, 'href', head.canonical);
+  // The 404 view names no canonical URL (it is noindex and has no address of its own).
+  if (head.canonical) upsert('link[rel="canonical"]', 'link', { rel: 'canonical' }, 'href', head.canonical);
+  else document.head.querySelector('link[rel="canonical"]')?.remove();
   meta('property', 'og:title', head.title);
   meta('property', 'og:description', head.description);
-  meta('property', 'og:url', head.canonical);
+  if (head.canonical) meta('property', 'og:url', head.canonical);
   meta('property', 'og:type', head.ogType);
   meta('name', 'twitter:title', head.title);
   meta('name', 'twitter:description', head.description);

@@ -12,8 +12,10 @@ import { chromium } from 'playwright';
 import { preview } from 'vite';
 import { readFileSync, mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { PAGES, GROUPS } from '../site/src/registry.ts';
-import { normaliseBase, pagePath } from '../site/src/seo.ts';
+import { PAGES, GROUPS, pageBySlug } from '../site/src/registry.ts';
+import { HOME_TITLE, headTitleOf, normaliseBase, pagePath } from '../site/src/seo.ts';
+
+const titleOf = (slug) => headTitleOf(pageBySlug(slug));
 
 const out = resolve('test-results/site');
 mkdirSync(out, { recursive: true });
@@ -334,15 +336,15 @@ try {
   await n.getByRole('heading', { level: 1, name: 'Order book' }).waitFor();
   if (new URL(n.url()).pathname !== `${basePath}/components/order-book/`) fail(`routing: link click went to ${n.url()}`);
   if (!(await n.evaluate(() => window.noReload))) fail('routing: a link click reloaded the page');
-  if ((await n.title()) !== 'Order book — Punji UI') fail(`routing: title after navigation is "${await n.title()}"`);
+  if ((await n.title()) !== titleOf('order-book')) fail(`routing: title after navigation is "${await n.title()}"`);
   if (!(await n.locator('link[rel=canonical]').getAttribute('href'))?.endsWith('/components/order-book/')) fail('routing: canonical not updated after navigation');
   if (!(await n.locator('meta[name=description]').getAttribute('content'))?.startsWith('OrderBookDepth')) fail('routing: meta description not updated after navigation');
   await n.goBack();
   await n.getByRole('heading', { level: 1, name: 'MoneyDisplay' }).waitFor();
-  if ((await n.title()) !== 'MoneyDisplay — Punji UI') fail(`routing: title after back is "${await n.title()}"`);
+  if ((await n.title()) !== titleOf('money-display')) fail(`routing: title after back is "${await n.title()}"`);
   await n.goBack();
   await n.getByRole('heading', { level: 1, name: HOME_H1 }).waitFor();
-  if ((await n.title()) !== 'Punji UI: finance-first React components') fail(`routing: title after back to home is "${await n.title()}"`);
+  if ((await n.title()) !== HOME_TITLE) fail(`routing: title after back to home is "${await n.title()}"`);
   await n.goForward();
   await n.goForward();
   await n.getByRole('heading', { level: 1, name: 'Order book' }).waitFor();
@@ -351,7 +353,7 @@ try {
   await n.goto(`${base}/#/money-display`);
   await n.getByRole('heading', { level: 1, name: 'MoneyDisplay' }).waitFor();
   if (new URL(n.url()).pathname !== `${basePath}/components/money-display/` || new URL(n.url()).hash) fail(`routing: #/money-display ended at ${n.url()}`);
-  if ((await n.title()) !== 'MoneyDisplay — Punji UI') fail(`routing: title after hash redirect is "${await n.title()}"`);
+  if ((await n.title()) !== titleOf('money-display')) fail(`routing: title after hash redirect is "${await n.title()}"`);
   await n.goto(`${base}/#/`);
   await n.getByRole('heading', { level: 1, name: HOME_H1 }).waitFor();
   if (new URL(n.url()).pathname !== `${basePath}/`) fail(`routing: #/ ended at ${n.url()}`);

@@ -30,7 +30,7 @@ import { readFileSync } from 'node:fs';
 // Banking, charts and portfolio merged: measured 1,232,502 B; ~3% headroom.
 // Wave 3 table scale (VirtualFinancialTable, TableExport: JS, declarations, CSS): measured 1,386,061 B; ~3% headroom.
 // All five domain branches (trading, share issues, wallets, lending, tax) merged onto Wave 3: measured 2,039,956 B; ~3% headroom.
-// Trust and safety kit, global money (digit scripts, grouping override, exact compact) and ISO 4217 data: measured 2,139,718 B; ~3% headroom.
+// Trust and safety kit, global money (digit scripts, grouping override, exact compact) and ISO 4217 data: measured 2,141,913 B; ~3% headroom.
 const MAX_UNPACKED = 2152 * 1024;
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
 const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md']);

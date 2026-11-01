@@ -16,8 +16,10 @@ export default function Example() {
       <DataRows label="Results">
         <DataRow label="EMI: 10 lakh, 10%, 10 years" value={npr(emi)} />
         <DataRow label="Interest: 20 lakh, 12%, 10 years" value={npr(base.totalInterest)} />
-        <DataRow label="Same, 5 lakh prepaid after a year" value={`${npr(prepaid.totalInterest)} in ${prepaid.periods} instalments`} />
-        <DataRow label="FD 1 lakh, 10% quarterly, 6% TDS" value={`${npr(fd.maturity)} (TDS ${npr(fd.totalTds)})`} />
+        <DataRow label="Same, 5 lakh prepaid after a year" value={npr(prepaid.totalInterest)} />
+        <DataRow label="Instalments after the prepayment" value={String(prepaid.periods)} />
+        <DataRow label="FD 1 lakh, 10% quarterly, at maturity" value={npr(fd.maturity)} />
+        <DataRow label="TDS at 6%" value={npr(fd.totalTds)} />
       </DataRows>
     </Card>
   );

@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { Field } from '@punji/ui/fields';
 import { DataRow, DataRows } from '@punji/ui/rows';
 import { Stack } from '@punji/ui/stack';
+import type * as IsoModule from '@punji/ui/money/iso4217';
 
-type Iso = typeof import('@punji/ui/money/iso4217');
+type Iso = typeof IsoModule;
 
 export default function Example() {
   const [iso, setIso] = useState<Iso | null>(null);

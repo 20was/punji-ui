@@ -76,6 +76,8 @@
 .app-sym span { color: var(--doc-ink-2); font-size: 12px; }
 .app-sym:hover strong { text-decoration: underline; }
 .app-sym:focus-visible { outline: 2px solid var(--doc-ring); outline-offset: 2px; border-radius: 4px; }
+/* Headline money figures (FinancialSummary) need room: four across only from 800px of the grid's own width. */
+@container pu-stats (max-width: 799px) { .app-summary .kit-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1100px) {
   .app-grid.is-split { grid-template-columns: minmax(0, 1fr) 360px; }
   .app-grid.is-halves { grid-template-columns: repeat(2, minmax(0, 1fr)); }

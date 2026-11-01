@@ -17,6 +17,7 @@ import { LEADS, NAV_TITLES } from './registry-leads.ts';
 import { SHARE_ISSUE_PAGES } from './registry-share-issues.ts';
 // Apps: full-viewport interactive dashboards at /apps/<slug>/ (site/src/apps/<slug>/).
 import { APP_PAGES } from './registry-apps.ts';
+import { RECONCILIATION_PAGES } from './registry-reconciliation.ts';
 
 export type GroupId =
   | 'get-started'
@@ -1826,6 +1827,8 @@ export const PAGES: readonly PageDef[] = [
   ...WALLET_PAGES,
   // Tax, invoicing and payroll.
   ...TAX_PAGES,
+  // Bank reconciliation.
+  ...RECONCILIATION_PAGES,
   ...APP_PAGES,
 ];
 

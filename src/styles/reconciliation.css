@@ -1,0 +1,53 @@
+/* Punji UI styles.
+   Styles for ReconciliationMatcher.
+   Needs tokens.css, base.css, button.css, checkbox.css, money.css and states.css (styles.css has everything). */
+@layer punji.components {
+  .pu-recon { container: pu-recon / inline-size; display: grid; gap: var(--pu-space-4); min-width: 0; color: var(--pu-color-text); font: 400 var(--pu-text-sm) / 1.45 var(--pu-font-body) }
+  .pu-recon p { margin: 0 }
+  .pu-recon-title { margin: 0; font: 600 var(--pu-text-base) / 1.3 var(--pu-font-display) }
+  .pu-recon-panels { display: grid; gap: var(--pu-space-4); grid-template-columns: minmax(0, 1fr) }
+  @container pu-recon (min-width: 720px) {
+    .pu-recon-panels { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+    .pu-recon-columns { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  }
+  .pu-recon-panel, .pu-recon-matched, .pu-recon-summary { display: grid; gap: var(--pu-space-2); align-content: start; min-width: 0; padding: var(--pu-space-3); background: var(--pu-color-surface); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-card) }
+  .pu-recon-panel-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--pu-space-1) var(--pu-space-3) }
+  .pu-recon-count, .pu-recon-meta { color: var(--pu-color-text-muted); font-size: var(--pu-text-xs); font-variant-numeric: tabular-nums }
+  .pu-recon-list { overflow-y: auto; overscroll-behavior: contain; border-top: 1px solid var(--pu-color-border); border-bottom: 1px solid var(--pu-color-border) }
+  .pu-recon-list:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+  .pu-recon ul { display: grid; margin: 0; padding: 0; list-style: none }
+  .pu-recon-list li { display: flex; align-items: center; gap: var(--pu-space-2); min-width: 0; border-bottom: 1px solid var(--pu-color-border) }
+  .pu-recon-list li:last-child { border-bottom: 0 }
+  .pu-recon-list li.is-on { background: var(--pu-color-surface-tint) }
+  .pu-recon-list li > .kit-check { flex: 1 1 auto; min-width: 0 }
+  .pu-recon-list .kit-check-t { display: grid; min-width: 0 }
+  .pu-recon-desc { overflow-wrap: anywhere }
+  .pu-recon-amt { font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 600 }
+  .pu-recon-amt.is-out { color: var(--pu-color-text) }
+  .pu-recon-sel { display: flex; justify-content: space-between; gap: var(--pu-space-2); font-variant-numeric: tabular-nums }
+  .pu-recon-sel > span:first-child, .pu-recon-diff > span:first-child { color: var(--pu-color-text-muted) }
+  .pu-recon-empty { color: var(--pu-color-text-muted) }
+  .pu-recon-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--pu-space-2) var(--pu-space-3); padding: var(--pu-space-3); background: var(--pu-color-surface-subtle); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-card) }
+  .pu-recon-diff { display: flex; align-items: baseline; gap: var(--pu-space-2); font-weight: 600; font-variant-numeric: tabular-nums }
+  .pu-recon-diff.is-off { color: var(--pu-color-warn) }
+  .pu-recon-actions { display: flex; flex-wrap: wrap; gap: var(--pu-space-2) }
+  .pu-recon-matched li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: var(--pu-space-2); padding: var(--pu-space-2) 0; border-bottom: 1px solid var(--pu-color-border) }
+  .pu-recon-matched li:last-child { border-bottom: 0 }
+  .pu-recon-matched li.is-off .pu-recon-amt { color: var(--pu-color-loss) }
+  .pu-recon-pair { display: grid; min-width: 0; overflow-wrap: anywhere }
+  .pu-recon-columns { display: grid; gap: var(--pu-space-4); grid-template-columns: minmax(0, 1fr) }
+  .pu-recon-summary dl { display: grid; gap: var(--pu-space-1); margin: 0 }
+  .pu-recon-summary dl > div { display: flex; justify-content: space-between; gap: var(--pu-space-3); font-variant-numeric: tabular-nums }
+  .pu-recon-summary dt { color: var(--pu-color-text-muted) }
+  .pu-recon-summary dd { margin: 0; text-align: right; white-space: nowrap }
+  .pu-recon-summary dl > div.is-total { padding-top: var(--pu-space-1); border-top: 1px solid var(--pu-color-border-strong); font-weight: 600 }
+  .pu-recon-summary dl > div.is-total dt { color: var(--pu-color-text) }
+  .pu-recon-status { font-weight: 600 }
+  .pu-recon-status.is-ok { color: var(--pu-color-gain) }
+  .pu-recon-status.is-off { color: var(--pu-color-warn) }
+  @container pu-recon (max-width: 479px) {
+    .pu-recon-matched li { grid-template-columns: minmax(0, 1fr) auto }
+    .pu-recon-matched li > .pu-recon-amt { grid-column: 2; grid-row: 1 }
+    .pu-recon-matched li > :last-child { grid-column: 1 / -1; justify-self: start }
+  }
+}

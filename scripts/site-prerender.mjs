@@ -143,7 +143,7 @@ write('index.md', lines.join('\n'));
 
 const api = JSON.parse(readFileSync(resolve('site/src/generated/api.json'), 'utf8'));
 const bullets = (items) => items.map((i) => `- ${i}`);
-const cell = (text) => String(text ?? '').replace(/\|/g, '\\|').replace(/\s*\n\s*/g, ' ');
+const cell = (text) => String(text ?? '').replace(/\\/g, '\\\\').replace(/\|/g, '\\|').replace(/\s*\n\s*/g, ' ');
 const fence = (lang, text) => [`\`\`\`${lang}`, text.replace(/\n+$/, ''), '```', ''];
 const exampleSource = (p, id) => readFileSync(resolve('site/src/examples', p.slug, `${id}.tsx`), 'utf8');
 

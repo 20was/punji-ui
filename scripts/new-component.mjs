@@ -33,7 +33,7 @@ const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
 if (existsSync(join(root, 'src', name))) die(`src/${name} already exists`);
 if (pkg.exports[`./${name}`]) die(`package.json already exports ./${name}`);
 if (PAGES.some((p) => p.slug === name)) die(`a docs page with the slug ${name} already exists`);
-if (new RegExp(`\\b${Name}\\b`).test(readFileSync(join(root, 'src/index.ts'), 'utf8'))) die(`${Name} is already exported from src/index.ts`);
+if (new Set(readFileSync(join(root, 'src/index.ts'), 'utf8').match(/\w+/g)).has(Name)) die(`${Name} is already exported from src/index.ts`);
 
 const description = `${Name}: a React component for finance apps. TODO replace this with what it shows, when to use it and the words people search with.`;
 if (description.length < 120 || description.length > 160) die(`the placeholder description is ${description.length} characters; pick a shorter name or edit the generator`);

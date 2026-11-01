@@ -72,3 +72,45 @@ import '@punji/ui/styles.css';
 
 The individual table stylesheet is `@punji/ui/css/table.css`; it needs `tokens.css` and `base.css` as described in [Using Punji UI](../README.md#using-the-library).
 
+
+## Large tables: VirtualFinancialTable
+
+For thousands of rows (a floorsheet, a trade blotter, statement lines), `VirtualFinancialTable` from `@punji/ui/virtual-table` takes the same typed columns as `FinancialTable` but draws only the rows in view. It has no pagination: pass every filtered, sorted row.
+
+```tsx
+import { VirtualFinancialTable, compareByRules, type SortRule } from '@punji/ui/virtual-table';
+import { TableExport, rowsWithIds } from '@punji/ui/table-export';
+import '@punji/ui/css/table.css';
+import '@punji/ui/css/virtual-table.css';
+
+const rowKey = (t: Trade) => t.id; // stable: keys are recomputed when it changes
+const [sort, setSort] = useState<SortRule[]>([{ key: 'time', dir: 'desc' }]);
+const rows = useMemo(() => trades.filter(matches).toSorted(compareByRules(sort, accessors)), [trades, sort, query]);
+
+<VirtualFinancialTable
+  caption="Floorsheet · NPR"
+  columns={columns}            // { key, label, render, num?, rowHeader?, sortable?, width?, minWidth?, maxWidth?, pin?: 'left' | 'right', resizable? }
+  rows={rows}
+  rowKey={rowKey}
+  emptyTitle="No trades match"
+  height={480}                 // the scroll box's maximum height
+  rowHeight={40}               // fixed; `measureRows` measures drawn rows instead
+  sort={sort}
+  onSortChange={setSort}       // Shift-click or Shift+Enter adds a column
+  columnWidths={widths}        // controlled widths, e.g. from useLocalStorage
+  onColumnResize={(key, width) => setWidths((w) => ({ ...w, [key]: width }))}
+  selection={{ selectedRowIds, onChange: setSelectedRowIds, rowLabel: (id) => `Select trade ${id}` }}
+  toolbar={<TableExport columns={csvColumns} filename="floorsheet" visibleRows={rows} allRows={trades} selectedRows={rowsWithIds(rows, selectedRowIds, rowKey)} />}
+/>
+```
+
+- **Virtualisation**: the window plus `overscan` rows (default 8) are drawn; spacer rows hold the height. `aria-rowcount` on the table and `aria-rowindex` on each row give screen readers the true size and position. The focused row stays drawn when it scrolls away, so focus is never lost. Server rendering draws the first screenful from `height` and `rowHeight`, so hydration matches.
+- **Keyboard**: one row is in the tab order; Up and Down move between rows, Page Up and Page Down jump a screen, Home and End go to the first and last row; Space toggles selection. Sort heads are buttons; resize handles are focusable separators (Left/Right 10 px, Shift 40 px, Home/End to the bounds).
+- **Pinning**: `pin: 'left'` columns come first and `pin: 'right'` last, both sticky while the table scrolls sideways. The selection column is always pinned left.
+- **Resizing**: pointer drag on a head's right edge or the keyboard; widths are clamped to `minWidth` (default 64) and `maxWidth` (default 560). `onColumnResize` fires when a drag ends and on every key, so persisting there is cheap. Without `columnWidths` the table keeps widths itself.
+- **Multi-sort**: `nextSortRules` is the transition the heads use (plain press: only this column, flipping when it already was; Shift: add ascending, then descending, then remove). The primary column carries `aria-sort`; with more than one rule each sorted head shows its priority number and reads its direction and priority, and every change is announced. `compareByRules` sorts with missing values last.
+- **Live rows**: pass a new `rows` array per batch, ideally once per animation frame, replacing only the changed row objects. Rows inserted or removed above the view keep the reader's rows in place; a re-sort keeps the scroll offset.
+- **Export**: `TableExport` writes CSV through `toCsv` with formula neutralisation always on (it cannot be turned off here) and a UTF-8 BOM by default, from the rows you pass for each scope. It runs in the browser only; nothing is sent anywhere. `allRows` should hold only data the user may download.
+- **Limits**: columns are not virtualised (all columns render for drawn rows); `wide` and `hideUnder` do not apply (use pinning and horizontal scroll); there is no stacked phone layout; browsers cap element height (about 33 million px in Chromium), so at 40 px rows the practical ceiling is about 800,000 rows.
+
+Measured numbers and the benchmark: [PERFORMANCE.md](PERFORMANCE.md).

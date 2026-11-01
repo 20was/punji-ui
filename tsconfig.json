@@ -18,5 +18,5 @@
     "types": []
   },
   "include": ["src", "test", "vitest.config.ts", "vitest.setup.ts"],
-  "exclude": ["test/visual"]
+  "exclude": ["test/visual", "test/bench"]
 }

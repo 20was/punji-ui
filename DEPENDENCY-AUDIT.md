@@ -29,7 +29,8 @@ Rules enforced in CI, not just written down:
 Deliberately not added: date libraries (Intl and the converter cover formatting and BS), icon packs
 (inline SVG), a decimal library (bigint minor units cover exact money; see
 [FINANCIAL.md](docs/FINANCIAL.md)), table engines and chart libraries (current needs are met by small
-owned components; revisit TanStack Table/Virtual only for measured large-data needs), xlsx/pdf writers
+owned components; the 10k-row need was met by the owned `VirtualFinancialTable`, about 5 kB gzip, measured in
+[PERFORMANCE.md](docs/PERFORMANCE.md), so TanStack Table/Virtual stay out), xlsx/pdf writers
 (CSV with BOM covers Excel; PDF out of scope).
 
 ## Development dependencies

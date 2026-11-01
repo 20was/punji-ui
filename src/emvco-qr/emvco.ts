@@ -245,7 +245,7 @@ export function buildMerchantQr(input: MerchantQrInput): string {
   for (const [key, sub] of ADDITIONAL) {
     const value = data[key];
     if (value === undefined || value === '') continue;
-    if (key === 'consumerDataRequest' && !/^(?!.*(.).*\1)[AME]{1,3}$/.test(value)) throw new RangeError('EMV QR consumer data request must use A, M and E at most once each');
+    if (key === 'consumerDataRequest' && !(value.length <= 3 && /^[AME]+$/.test(value) && new Set(value).size === value.length)) throw new RangeError('EMV QR consumer data request must use A, M and E at most once each');
     additional += bounded(sub, value, 25, key);
   }
   if (additional) out += encodeTlv('62', additional);

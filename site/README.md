@@ -11,7 +11,7 @@ npm run site:build   # gen, client build, SSR build, prerender into site/dist (g
 npm run site:preview # serve site/dist on :4174
 npm run typecheck:site
 npm run check:site   # Playwright: needs site:build first; screenshots in test-results/site/
-npm run check:seo    # offline: reads site/dist (titles, descriptions, canonicals, links, sitemap, JSON-LD, JS budget)
+npm run check:seo    # offline: reads site/dist (titles, descriptions, canonicals, breadcrumbs, links, sitemap, JSON-LD, stale copy, JS and HTML budgets)
 npm run site:brand   # regenerates site/public/favicon.svg, og.svg, og.png from .github/assets
 ```
 
@@ -25,7 +25,7 @@ npm run site:brand   # regenerates site/public/favicon.svg, og.svg, og.png from 
 | `src/app/PageView.tsx` | The page template. A header (group eyebrow, title, one-line `lead`, badges: kind, subpath import with copy, gzip size), then four tabs: **Examples** (variant chips over one framed demo: title bar with per-example light/dark and phone-width toggles, the live stage, a collapsible code panel with copy), **Code** (import lines, every example's full source), **API** (props tables generated from `api`: prop, type, default, description, required marker; inherited attributes collapsed), **Usage** (overview `summary`, when to use and not, keyboard, accessibility, responsive, notes, related). An "On this page" rail on wide screens, previous/next links at the bottom. Guides get an article layout with the same rail. |
 | Tabs and no-JS | The tabs are in-page links (`#examples`, `#code`, `#api`, `#usage`). Every panel is in the prerendered HTML; JavaScript shows one at a time (`hidden`) and keeps the hash in step, and a deep link to any section id (`#keyboard`, `#ex-nepal`) opens the tab that holds it. Without JavaScript, a `<noscript>` style in `index.html` shows every panel under its own heading. |
 | `src/app/Home.tsx`, `HomeDashboard.tsx` | The overview: hero, a portfolio screen built only from package exports and shared fixtures, a live preview card per domain, and proof points whose figures are computed from the package (rounding, formatting) and the build (gzip sizes). |
-| `src/app/App.tsx` | The shell: sticky header (wordmark, version from `package.json` with a pre-release badge, search, GitHub, light/dark/system theme icons), the sidebar (`Sidebar.tsx`: collapsible groups persisted with the library's `useLocalStorage`, short `navTitle` labels), the library's `Drawer` as the mobile menu, and the footer. Search (`Search.tsx`) is the library's `CommandPalette` over titles, leads, descriptions and export names, opened with Command-K, Ctrl-K or `/`. Path routing (History API) through `src/app/router.tsx`; `entry-server.tsx` renders the same `App` for the prerender. |
+| `src/app/App.tsx` | The shell: sticky header (wordmark, version from `package.json` linking to npm, search, GitHub, light/dark/system theme icons), the sidebar (`Sidebar.tsx`: collapsible groups persisted with the library's `useLocalStorage`, short `navTitle` labels), the library's `Drawer` as the mobile menu, and the footer. Search (`Search.tsx`) is the library's `CommandPalette` over titles, leads, descriptions and export names, opened with Command-K, Ctrl-K or `/`. Path routing (History API) through `src/app/router.tsx`; `entry-server.tsx` renders the same `App` for the prerender. |
 | `scripts/site-pages.mjs` | Run by `site-gen` (and by the dev server when a registry file changes): splits the registry and `api.json` into what the browser loads, `src/generated/nav.json` (groups and a slim entry per page, for the shell), `home.json`, `search.json` (the search index), `pages/<slug>.json` and `routes/<slug>.ts` (one route module per page: its data, examples and their source text). See "Loading". |
 | `src/app/PhoneFrame.tsx`, `preview-frame/index.html`, `src/frame.tsx` | The phone-width preview: the example runs in a same-origin iframe with its own 375 px viewport (390 px for showcase screens), so the package's viewport media queries, `matchMedia` and body portals behave as on a phone. Same stylesheet as the page, the preview theme passed in and kept in step, height follows the content (at least 320 px, room for a menu or listbox). |
 | `src/generated/sizes.json` | Written by `site-gen` from `size-limit --json` (the repository's own budget, about two seconds): gzip bytes per subpath for the size badges and the homepage. Gitignored like `api.json`. |
@@ -34,7 +34,7 @@ Sample data comes from `fixtures/market-data.ts` through `src/sample.ts` (shared
 
 ## Add a page
 
-1. Add an entry to `PAGES` in `src/registry.ts`, including a `description` (40 to 160 characters: the search-result and social text) and a `lead` (at most 140 characters, plain words for someone evaluating the library; it is the line under the title). Existing pages keep their leads in `src/registry-leads.ts`; an entry's own `lead` wins, and without either the first sentence of `description` is used. Add `navTitle` when the title is too long for the sidebar. Pick the `group` by domain (the sidebar order is `GROUPS`). List every export the page documents in `api` as `{ name, module }` where `module` is the published subpath (`'money-display'`, `'nepal/format'`); the import lines and props tables come from it.
+1. Add an entry to `PAGES` in `src/registry.ts`, including a `description` (120 to 160 characters, unique: the search-result and social text; say what it is in the words people search with, for example "A React currency input for NPR...") and a `lead` (at most 140 characters, plain words for someone evaluating the library; it is the line under the title). Existing pages keep their leads in `src/registry-leads.ts`; an entry's own `lead` wins, and without either the first sentence of `description` is used. Add `navTitle` when the title is too long for the sidebar. Pick the `group` by domain (the sidebar order is `GROUPS`). List every export the page documents in `api` as `{ name, module }` where `module` is the published subpath (`'money-display'`, `'nepal/format'`); the import lines and props tables come from it.
 2. Add `src/examples/<slug>/<id>.tsx` for each entry of `examples`; each has `export default function Example()` and imports from `@punji/ui/...` only (plus `../../sample.ts` for data).
 3. Fill `use`, `avoid`, `keyboard`, `accessibility`, `responsive` and `related` from the source and its docs; do not write behaviour you have not checked.
 4. `npm run site:build` (fails with a precise message if anything is missing), `npm run typecheck:site`, then `npm run check:site` and look at the PNGs in `test-results/site/`.
@@ -46,7 +46,7 @@ Foundations pages have `api: []` and read their data from the shipped CSS.
 
 ## Add a guide
 
-A guide (`kind: 'guide'`, group `get-started`, URL `/get-started/<slug>/`) is prose and code instead of the component template. Add it to `GUIDES` in `src/registry-guides.ts` (kept apart from `registry.ts` so it merges cleanly): a `description` (40 to 160 characters, unique), a `summary`, `related`, and `guide`, a list of sections `{ id, title, paragraphs, points?, code? }`. Paragraphs support `` `code` `` and `[text](/path/ or https://…)` links.
+A guide (`kind: 'guide'`, group `get-started`, URL `/get-started/<slug>/`) is prose and code instead of the component template. Add it to `GUIDES` in `src/registry-guides.ts` (kept apart from `registry.ts` so it merges cleanly): a `description` (120 to 160 characters, unique), a `summary`, `related`, and `guide`, a list of sections `{ id, title, paragraphs, points?, code? }`. Paragraphs support `` `code` `` and `[text](/path/ or https://…)` links.
 
 Each `code` block is either `file`, a real TSX file in `src/guides/<slug>/<file>.tsx` that the site typechecks (`typecheck:site`) and shows as text (it is never imported or run, so a file may do what an app's entry file does, such as `createRoot(...)`), or `text`, for shell commands and config that is not TSX (CSS, `vite.config.ts`, `next.config`). Prefer a file. `site-gen` fails on a missing file, on a code block with both or neither, and on a file no guide uses.
 
@@ -109,18 +109,21 @@ The script also writes `sitemap.xml`, `robots.txt` (allow all, points at the sit
 
 ## SEO fields
 
-Each page's head comes from the registry (`headFor` in `src/seo.ts`):
+Each page's head comes from the registry (`headFor` in `src/paths.ts`, shared by the browser, the prerender and the check):
 
 | Tag | Source |
 | --- | --- |
-| `<title>` | `"<title> — Punji UI"`; overview: `Punji UI: finance-first React components` |
-| meta description, `og:description`, `twitter:description` | `PageDef.description`: required, 40 to 160 characters, unique. Written for a search result; `summary` stays the longer on-page lead. `site-gen` fails the build otherwise. |
-| canonical, `og:url` | `SITE_URL` + `BASE_PATH` + page path |
-| `og:*`, `twitter:card=summary_large_image` | `og.png` |
-| JSON-LD | overview: `SoftwareSourceCode`; pages: `TechArticle` with a `BreadcrumbList` |
-| `lang`, `theme-color` (light and dark), `robots` | fixed (`noindex` on 404) |
+| `<title>`, `og:title`, `twitter:title` | `headTitleOf`: a hand-written title from `src/seo-titles.ts` for pages that answer a common search ("React currency input for NPR and any currency \| Punji UI"), else generated as `"<title>: React component for <domain> \| Punji UI"`, shortened to fit 62 characters. Overview: `HOME_TITLE`. 40 to 62 characters, unique. |
+| meta description, `og:description`, `twitter:description` | `PageDef.description`: 120 to 160 characters, unique. Written for a search result; `summary` is the longer intro shown under the page header. |
+| canonical, `og:url` | `SITE_URL` + `BASE_PATH` + page path. The 404 page has neither (it is `noindex`). |
+| `og:*`, `twitter:card=summary_large_image` | `og.png` (one brand card for every page; the title and description change per page) |
+| JSON-LD | overview: one `@graph` with `WebSite`, `Organization` (Punji) and `SoftwareSourceCode` (`codeRepository`, `sameAs` npm and GitHub, licence, version-free). Pages: `TechArticle` with `dateModified`, `articleSection`, `publisher`, `about` (the package) and a `BreadcrumbList`: Punji UI, then the page's group (a link to its section on the overview, `/#domain-<group>` or `/#showcase`, when it has one), then the page. The visible breadcrumb above each `h1` is the same trail. |
+| `lang`, `theme-color` (light and dark), `robots` | fixed: `index,follow,max-image-preview:large` (`noindex` on 404) |
+| sitemap `<lastmod>`, `dateModified` | `scripts/site-dates.mjs`: the newest commit touching the page's examples, guide files or documented `src/<module>` (registry files are left out, they hold every page). Needs full git history; `docs.yml` checks out with `fetch-depth: 0`. |
 
-`npm run check:seo` (in `verify` and CI) reads `site/dist` and fails when a route lacks a unique title, description or canonical, an Open Graph or Twitter tag, valid JSON-LD, exactly one `h1` and unskipped heading levels; when a link has no text, or any internal link or asset is missing from the build; when `sitemap.xml` and the routes differ; or when robots, llms or `_redirects` point at something that is not built.
+Each component page shows its `summary` as a visible intro under the header, then the tabs; the Usage tab has when to use it and when not, keyboard, accessibility, responsive notes, related pages and "Seen in these screens" (the showcase patterns whose "Built from" lists it).
+
+`npm run check:seo` (in `verify` and CI) reads `site/dist` and fails when a route lacks a unique title (40 to 62 characters), description (120 to 160) or canonical, an Open Graph or Twitter tag, valid JSON-LD (the overview's graph nodes, a page's `TechArticle` with a real `dateModified`, a `BreadcrumbList` from the overview to the page with positions in order, every item a built URL), a visible breadcrumb matching it, exactly one `h1` and unskipped heading levels; when an `<img>` has no `alt`, a link has no text, or any internal link or asset is missing from the build; when the build, `llms.txt` or `README.md` carries pre-release copy ("not published yet", "after the first release", "pre-release"); when a page is linked only from the sidebar (no related card, guide link or "Built from" points at it); when the 404 page names a canonical; when `sitemap.xml` and the routes differ or a URL lacks `<lastmod>`; when a page's HTML is over 50 kB gzipped; or when robots, llms or `_redirects` point at something that is not built.
 
 ## Hosting
 

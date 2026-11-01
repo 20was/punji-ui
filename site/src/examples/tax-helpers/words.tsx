@@ -16,7 +16,7 @@ export default function Example() {
       <div><dt>VAT on {invoice.taxable.toString()}n taxable</dt><dd><code>{invoice.vat.toString()}n</code></dd></div>
       <div><dt>In words</dt><dd>{amountInWords(invoice.total)}</dd></div>
       <div><dt>In Nepali</dt><dd lang="ne">{amountInWords(invoice.total, { language: 'ne' })}</dd></div>
-      <div><dt>checkPan('३०१ २३४ ५६७')</dt><dd><code>{JSON.stringify(checkPan('३०१ २३४ ५६७'))}</code></dd></div>
+      <div><dt>checkPan('३०१ २३४ ५६७')</dt><dd><code style={{ overflowWrap: 'anywhere' }}>{JSON.stringify(checkPan('३०१ २३४ ५६७'))}</code></dd></div>
       <div><dt>Tax on 9 lakh (example slabs)</dt><dd><code>{tax.tax.toString()}n</code></dd></div>
     </dl>
   );

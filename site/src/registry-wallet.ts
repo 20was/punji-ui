@@ -123,7 +123,7 @@ export const WALLET_PAGES: readonly PageDef[] = [
       'Keys are at least 56px tall, wider than the 44px minimum target.',
     ],
     responsive: ['Up to 22rem wide; the figure shrinks from 40px on narrow phones.'],
-    related: ['currency-input', 'pin-pad', 'payment-qr-card'],
+    related: ['mobile-number-input', 'currency-input', 'pin-pad', 'payment-qr-card'],
   },
   {
     slug: 'pin-pad',

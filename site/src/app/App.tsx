@@ -1,9 +1,9 @@
 import { createElement, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { Drawer } from '@punji/ui/drawer';
-import { headFor, pagePath, REPO } from '../paths.ts';
+import { headFor, NPM_URL, pagePath, REPO } from '../paths.ts';
 import { applyHead } from './head.ts';
 import { homeView, loadRoute, pageData, pageView, routeReady } from './load.ts';
-import type { ClientRoute } from './nav.ts';
+import { groupTitleOf, type ClientRoute } from './nav.ts';
 import { BASE, Link, useRoute } from './router.tsx';
 import { NotFound } from './NotFound.tsx';
 import { Sidebar } from './Sidebar.tsx';
@@ -74,7 +74,9 @@ function Footer() {
 function headOf(route: ClientRoute) {
   if (route.kind !== 'page') return headFor(route, SITE_ORIGIN, BASE);
   const data = pageData(route.page.slug);
-  return headFor(data ? { kind: 'page', page: data.page } : { kind: 'notfound' }, SITE_ORIGIN, BASE);
+  return data
+    ? headFor({ kind: 'page', page: data.page }, SITE_ORIGIN, BASE, { groupTitle: groupTitleOf(data.page.group), modified: data.modified })
+    : headFor({ kind: 'notfound' }, SITE_ORIGIN, BASE);
 }
 
 /** `path` is the pathname the HTML was rendered for; it keeps the server render and hydration identical. */
@@ -109,7 +111,11 @@ export function App({ path }: { path: string }) {
       return;
     }
     applyHead(headOf(route));
-    window.scrollTo(0, 0);
+    // A link to a section of a page (the breadcrumb's "/#domain-banking") lands on that section; any other at the top.
+    const hash = window.location.hash.slice(1);
+    const target = hash && !hash.startsWith('/') ? document.getElementById(decodeURIComponent(hash)) : null;
+    if (target) target.scrollIntoView({ block: 'start' });
+    else window.scrollTo(0, 0);
     document.getElementById('page-title')?.focus({ preventScroll: true });
   }, [route]);
 
@@ -131,9 +137,10 @@ export function App({ path }: { path: string }) {
             <MenuIcon />
           </button>
           <Brand />
-          <span className="doc-version" title="Not published to npm yet">
-            {PKG_VERSION} <span>pre-release</span>
-          </span>
+          <a className="doc-version" href={NPM_URL} target="_blank" rel="noopener noreferrer" title={`@punji/ui ${PKG_VERSION} on npm`}>
+            v{PKG_VERSION} <span>npm</span>
+            <span className="kit-sr"> (opens in a new tab)</span>
+          </a>
           <Search />
           <div className="doc-header-end">
             <a className="doc-github" href={REPO} target="_blank" rel="noopener noreferrer">

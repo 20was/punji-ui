@@ -6,7 +6,7 @@ import './styles.css';
 import { App } from './app/App.tsx';
 import { applyHead } from './app/head.ts';
 import { loadRoute, pageData } from './app/load.ts';
-import { navBySlug, parseClientRoute } from './app/nav.ts';
+import { groupTitleOf, navBySlug, parseClientRoute } from './app/nav.ts';
 import { BASE, hrefFor, legacyHashSlug, relativePath } from './app/router.tsx';
 import { headFor, pagePath } from './paths.ts';
 
@@ -19,7 +19,7 @@ if (legacy !== null) {
   window.history.replaceState(null, '', hrefFor(path));
   await loadRoute(parseClientRoute(path));
   const data = page && pageData(page.slug);
-  applyHead(headFor(data ? { kind: 'page', page: data.page } : { kind: 'home' }, SITE_ORIGIN, BASE));
+  applyHead(data ? headFor({ kind: 'page', page: data.page }, SITE_ORIGIN, BASE, { groupTitle: groupTitleOf(data.page.group), modified: data.modified }) : headFor({ kind: 'home' }, SITE_ORIGIN, BASE));
   redirected = true;
 }
 

@@ -1,7 +1,9 @@
 /* Punji UI styles.
    Design tokens, mapped from Punji's theme to --pu-* (docs/tokens.md).
    Light and dark follow the system; force one with data-theme="light" | "dark"
-   on any element. Override any token on :root or a subtree; everything is in
+   (or "light-hc" | "dark-hc" with contrast.css) on any element. Density:
+   data-pu-density="compact" | "comfortable" (default) | "spacious" on any
+   element resizes controls, fields, table cells and rows below it. Override any token on :root or a subtree; everything is in
    cascade layers, so your own unlayered CSS wins without !important. */
 @layer punji.tokens {
   :root,
@@ -61,9 +63,6 @@
     --pu-color-track: #dde0d6;
     --pu-color-warn: #7e5200;
     --pu-color-warn-accent: #d08a10;
-    --pu-control-lg: 44px;
-    --pu-control-md: 36px;
-    --pu-control-sm: 32px;
     --pu-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     --pu-font-body: 'Geist', 'Mukta', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --pu-font-display: 'Geist', 'Mukta', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -92,6 +91,58 @@
     --pu-text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
     --pu-text-sm: clamp(0.8125rem, 0.77rem + 0.22vw, 0.9375rem);
     --pu-text-xs: clamp(0.6875rem, 0.65rem + 0.16vw, 0.75rem);
+  }
+
+  /* Density. Kept apart from the colour themes, so a nested data-theme does not reset it.
+     Visual sizes only: hit areas stay at least 24px (WCAG 2.5.8) and grow to
+     --pu-tap-min (44px) on coarse pointers. */
+  :root,
+  [data-pu-density='comfortable'] {
+    --pu-cell-x: 12px;
+    --pu-cell-y: 10px;
+    --pu-control-lg: 44px;
+    --pu-control-md: 36px;
+    --pu-control-sm: 32px;
+    --pu-row-lg: 72px;
+    --pu-row-min: 48px;
+  }
+
+  /* Writing direction as a number, for transforms that move along the line (1 or -1). */
+  :root,
+  [dir='ltr'] {
+    --pu-dir: 1;
+  }
+
+  [dir='rtl'] {
+    --pu-dir: -1;
+  }
+
+  [data-pu-density='compact'] {
+    --pu-cell-x: 8px;
+    --pu-cell-y: 5px;
+    --pu-control-lg: 36px;
+    --pu-control-md: 32px;
+    --pu-control-sm: 28px;
+    --pu-row-lg: 56px;
+    --pu-row-min: 36px;
+  }
+
+  [data-pu-density='spacious'] {
+    --pu-cell-x: 16px;
+    --pu-cell-y: 14px;
+    --pu-control-lg: 52px;
+    --pu-control-md: 44px;
+    --pu-control-sm: 36px;
+    --pu-row-lg: 80px;
+    --pu-row-min: 56px;
+  }
+
+  /* A finger needs the room: on touch screens compact fields keep the comfortable heights. */
+  @media (pointer: coarse) {
+    [data-pu-density='compact'] {
+      --pu-control-lg: 44px;
+      --pu-control-md: 36px;
+    }
   }
 
   [data-theme='dark'] {

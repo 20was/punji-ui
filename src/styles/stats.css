@@ -9,5 +9,5 @@
   .kit-stat dd { margin: 0 }
   .kit-stat .v { display: block; font: 700 clamp(1.125rem, 1rem + 0.5vw, 1.375rem) / 1.2 var(--pu-font-display); letter-spacing: -0.015em; font-variant-numeric: tabular-nums; overflow-wrap: anywhere }
   .kit-stat .n { display: block; font-size: var(--pu-text-xs); line-height: 1.4; color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums }
-  button.kit-stat { text-align: left; font: inherit; color: inherit; cursor: pointer }
+  button.kit-stat { text-align: start; font: inherit; color: inherit; cursor: pointer }
 }

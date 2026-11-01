@@ -168,3 +168,5 @@ export * from './income-tax-calculator/IncomeTaxCalculator.tsx';
 export * from './payslip/Payslip.tsx';
 export * from './aging-table/AgingTable.tsx';
 export * from './tds-summary/TdsSummary.tsx';
+// Themes, density and brand theming (pure).
+export * from './theme/theme.ts';

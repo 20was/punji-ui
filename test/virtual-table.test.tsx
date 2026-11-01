@@ -176,9 +176,9 @@ describe('VirtualFinancialTable', () => {
     expect(screen.getByRole('separator', { name: 'Resize Symbol column' }).getAttribute('aria-valuenow')).toBe('150');
     const heads = screen.getAllByRole('columnheader');
     expect(heads[0]!.className).toContain('pin-l');
-    expect(heads[0]!.style.left).toBe('0px');
+    expect(heads[0]!.style.insetInlineStart).toBe('0px');
     expect(heads.at(-1)!.className).toContain('pin-r');
-    expect(heads.at(-1)!.style.right).toBe('0px');
+    expect(heads.at(-1)!.style.insetInlineEnd).toBe('0px');
     expect(container.querySelector('table')!.style.width).toBe(`${130 + 150 + 120 + 120 + 90}px`);
   });
 

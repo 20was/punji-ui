@@ -2,7 +2,7 @@
    Styles for range-slider. Needs tokens.css and base.css (styles.css has everything). */
 @layer punji.components {
   .kit-rs { position: relative; height: 32px }
-  .kit-rs-track { position: absolute; left: 10px; right: 10px; top: 50%; height: 6px; margin-top: -3px; border-radius: 3px; background: var(--pu-color-surface-tint); box-shadow: inset 0 0 0 1px var(--pu-color-border) }
+  .kit-rs-track { position: absolute; inset-inline-start: 10px; inset-inline-end: 10px; top: 50%; height: 6px; margin-top: -3px; border-radius: 3px; background: var(--pu-color-surface-tint); box-shadow: inset 0 0 0 1px var(--pu-color-border) }
   .kit-rs-fill { position: absolute; top: 0; bottom: 0; border-radius: 3px; background: var(--pu-color-accent) }
   .kit-rs input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; background: none; pointer-events: none; appearance: none; -webkit-appearance: none }
   .kit-rs input::-webkit-slider-runnable-track { background: none; border: 0; height: 32px }

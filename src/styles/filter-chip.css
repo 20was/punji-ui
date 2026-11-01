@@ -6,12 +6,12 @@
   .kit-fchip-t { appearance: none; display: inline-flex; align-items: center; gap: 6px; height: 100%; padding: 0 12px; border: 0; border-radius: inherit; background: transparent; color: inherit; font: inherit; white-space: nowrap }
   button.kit-fchip-t { cursor: pointer }
   button.kit-fchip-t:hover { background: var(--pu-color-surface-subtle) }
-  .kit-fchip.has-x .kit-fchip-t { padding-right: 4px; border-radius: var(--pu-radius-lg) 0 0 var(--pu-radius-lg) }
+  .kit-fchip.has-x .kit-fchip-t { padding-inline-end: 4px; border-start-start-radius: var(--pu-radius-lg); border-start-end-radius: 0; border-end-end-radius: 0; border-end-start-radius: var(--pu-radius-lg)}
   .kit-fchip-t b { font-weight: 600 }
   .kit-fchip-t .v { font-weight: 600; font-variant-numeric: tabular-nums }
-  .kit-fchip-t b + .v { margin-left: -1px }
+  .kit-fchip-t b + .v { margin-inline-start: -1px }
   .kit-fchip-t .caret { flex: none; color: var(--pu-color-text-muted) }
-  .kit-fchip-x { appearance: none; position: relative; flex: none; display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; margin: 0 4px 0 2px; padding: 0; border: 0; border-radius: var(--pu-radius-md); background: transparent; color: var(--pu-color-text-muted); cursor: pointer }
+  .kit-fchip-x { appearance: none; position: relative; flex: none; display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; margin-block: 0; margin-inline: 2px 4px; padding: 0; border: 0; border-radius: var(--pu-radius-md); background: transparent; color: var(--pu-color-text-muted); cursor: pointer }
   .kit-fchip-x:hover { background: var(--pu-color-surface-subtle); color: var(--pu-color-text) }
   .kit-fchip-t:focus-visible, .kit-fchip-x:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
   @media (pointer: coarse) { .kit-fchip-x::after, button.kit-fchip-t::after { content: ''; position: absolute; inset: -4px } }

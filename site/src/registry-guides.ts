@@ -6,7 +6,7 @@ import type { PageDef } from './registry.ts';
 const REPO = 'https://github.com/20was/punji-ui/blob/main';
 
 /** A guide page: the component-template fields are empty, the content is in `guide`. */
-const guide = (page: Pick<PageDef, 'slug' | 'title' | 'description' | 'summary' | 'related'> & Partial<Pick<PageDef, 'navTitle' | 'lead'>> & { guide: NonNullable<PageDef['guide']> }): PageDef => ({
+const guide = (page: Pick<PageDef, 'slug' | 'title' | 'description' | 'summary' | 'related'> & Partial<Pick<PageDef, 'navTitle' | 'lead' | 'examples'>> & { guide: NonNullable<PageDef['guide']> }): PageDef => ({
   group: 'get-started',
   kind: 'guide',
   use: [],
@@ -179,10 +179,11 @@ export const GUIDES: readonly PageDef[] = [
     slug: 'theming',
     navTitle: 'Theming',
     title: 'Theming and custom tokens',
-    description: 'Every colour, size and radius is a --pu-* CSS variable in cascade layers. Switch light and dark, override tokens, and scope an accent to one section.',
+    description: 'Every token is a --pu-* CSS variable in cascade layers. Switch theme, contrast and density, apply a bank brand with createTheme, and support RTL.',
     summary:
-      'Components read --pu-* CSS variables, never literals, and all of them are in cascade layers. Light and dark follow the system; data-theme forces one for any subtree; any token can be overridden globally or for one section with an ordinary unlayered rule.',
-    related: ['colour-tokens', 'typography', 'spacing', 'tailwind'],
+      'Components read --pu-* CSS variables, never literals, and all of them are in cascade layers. Four colour themes (light, dark and a high-contrast pair), three densities and right-to-left layout are attributes on any element; a brand is a typed `createTheme` call whose contrast is checked when it is generated. Try every mode below.',
+    related: ['accessibility-modes', 'colour-tokens', 'spacing', 'tailwind'],
+    examples: [{ id: 'switcher', title: 'Theme, contrast, density and direction', note: 'One panel, four attributes. Everything inside follows them.' }],
     guide: [
       {
         id: 'tokens',
@@ -206,6 +207,39 @@ export const GUIDES: readonly PageDef[] = [
           'With no attribute, the theme follows `prefers-color-scheme`. `data-theme="light"` or `data-theme="dark"` on any element forces that theme for the element and everything inside it, so a page can be dark while one panel is light. For a user setting, set the attribute on `<html>` and remove it for "system".',
         ],
         code: [{ label: 'A light, dark and system switch', file: 'theme-switch' }],
+      },
+      {
+        id: 'contrast',
+        title: 'High contrast',
+        paragraphs: [
+          'Import `@punji/ui/styles.css` (or add `@punji/ui/css/contrast.css` to the granular files) and set `data-theme="light-hc"` or `data-theme="dark-hc"`. Both meet WCAG 2.2 AAA: 7 to 1 for every text token on every surface, and 4.5 to 1 for control borders and chart colours. With no `data-theme`, the page switches to them by itself when the system asks for more contrast (`prefers-contrast: more`).',
+          'Windows High Contrast (`forced-colors: active`) replaces the palette with system colours. The components redraw what would vanish: selected tabs, chips and options use `Highlight`, focus is an outline, checkboxes and switches are redrawn, loss bars are hatched and gain bars solid, up candles are hollow and down candles filled, and extra chart series are dashed. Gain and loss always carry a sign and an arrow, so nothing depends on colour. The ratios are gated by `scripts/check-contrast.mjs` in `npm run lint`; the details are on [Accessibility modes](/foundations/accessibility-modes/).',
+        ],
+      },
+      {
+        id: 'density',
+        title: 'Density',
+        paragraphs: [
+          '`data-pu-density="compact"`, `"comfortable"` (the default) or `"spacious"` on any element resizes control and field heights (`--pu-control-*`), table cell padding (`--pu-cell-x`, `--pu-cell-y`) and row heights (`--pu-row-min`, `--pu-row-lg`) below it. Use compact for trading screens and dense blotters, comfortable for mobile banking, spacious for touch kiosks and low-vision users.',
+          'Density changes what you see, not what you can hit. Compact controls stay at 28 px or more (WCAG 2.5.8 asks for 24), buttons grow their hit area to 44 px on touch screens, and on a coarse pointer compact fields keep the comfortable heights.',
+        ],
+        code: [{ label: 'Pick theme, contrast and density together', file: 'modes' }],
+      },
+      {
+        id: 'brand',
+        title: 'Brand theming with createTheme',
+        paragraphs: [
+          '`createTheme` from `@punji/ui/theme` turns a brand into CSS for the `punji.tokens` layer: accent, accent fill and its hover, the text on the fill, link and chart colours for light and dark, plus control and card radii and fonts. Missing values are derived (the text on the fill is black or white, whichever contrasts more). Every colour is checked against the library surfaces when the CSS is generated, and misses come back as `issues` (or a thrown error with `strict: true`). Values must be hex colours, lengths, font lists and a plain selector, so untrusted input cannot break out of a declaration.',
+          'Gain, loss, debit and credit are not brand colours. They come from the library defaults or from a vetted `finance` palette: `green-up`, `red-up` for markets that show a rise in red, or `blue-orange`, which stays distinct for red-green colour blindness. The high-contrast themes ignore the brand, so they keep their ratios. Generate the CSS at build time and load it after the package stylesheet.',
+        ],
+        code: [{ label: 'theme.ts: a bank brand, generated at build time', file: 'brand' }],
+      },
+      {
+        id: 'rtl',
+        title: 'Right to left',
+        paragraphs: [
+          'Set `dir="rtl"` on `<html>` or a section. Component CSS uses logical properties (`padding-inline-start`, `inset-inline-end`, `text-align: end`), so layout, borders, popovers, pinned table columns and progress fills mirror. Chevrons and arrows that point along the line flip; the switch thumb, sliders, meters and column resizing follow the direction. Amounts, prices and changes stay an isolated left-to-right run, so the sign and currency keep their place. Charts keep time running left to right.',
+        ],
       },
       {
         id: 'override',
@@ -240,7 +274,7 @@ export const GUIDES: readonly PageDef[] = [
           'Override tokens, not component classes. Class names are internal and can change; tokens are the contract.',
           'Do not copy hex values into your own CSS: read `var(--pu-color-text)` so your screens follow the theme.',
           'Gain and loss colours are never the only signal in components; keep that when you build your own.',
-          'Text tokens are checked for contrast against their surfaces in both themes by the package\'s visual gate. Your overrides are not.',
+          'Text tokens are checked for contrast against their surfaces in all four themes by `scripts/check-contrast.mjs`. Hand-written overrides are not; `createTheme` checks the colours it writes.',
         ],
       },
     ],

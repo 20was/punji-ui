@@ -7,6 +7,8 @@ export interface FixtureMeta {
   title: string;
   layout?: boolean;
   page?: boolean;
+  /** Fixture code is in, the baseline is not yet recorded: the screenshot test skips it, axe still runs. */
+  pending?: boolean;
 }
 
 export const fixtures: readonly FixtureMeta[] = [
@@ -90,6 +92,8 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'dividend-history', title: 'DividendHistory with yields', layout: true },
   { id: 'transaction-history', title: 'TransactionHistory', layout: true },
   { id: 'transaction-history-filtered', title: 'TransactionHistory filtered', layout: true },
+  { id: 'rtl', title: 'Right to left beside left to right: amounts, controls, meters, rows, table, pagination', layout: true, pending: true },
+  { id: 'theme-modes', title: 'Densities and high-contrast themes', pending: true },
   { id: 'container-fit', title: 'Container fit: allocation, header, stats, metrics, tiles, ledgers in a 320px column', layout: true },
   { id: 'journal-entry', title: 'JournalEntryView balanced and out of balance', layout: true },
   { id: 'ledger-table', title: 'LedgerTable', layout: true },

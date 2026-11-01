@@ -4,10 +4,10 @@
   .kit-meter { position: relative; display: flex; height: 6px; border-radius: 3px; background: var(--pu-color-track); overflow: hidden }
   .kit-meter.marked { overflow: visible }
   .kit-meter > i { display: block; height: 100% }
-  .kit-meter > i:first-child { border-radius: 3px 0 0 3px }
-  .kit-meter > i:last-of-type { border-radius: 0 3px 3px 0 }
+  .kit-meter > i:first-child { border-start-start-radius: 3px; border-start-end-radius: 0; border-end-end-radius: 0; border-end-start-radius: 3px}
+  .kit-meter > i:last-of-type { border-start-start-radius: 0; border-start-end-radius: 3px; border-end-end-radius: 3px; border-end-start-radius: 0}
   .kit-meter > i:only-of-type { border-radius: 3px }
-  .kit-meter > b { position: absolute; top: -3px; width: 2px; height: 12px; margin-left: -1px; border-radius: 1px; background: var(--pu-color-series-nepse) }
+  .kit-meter > b { position: absolute; top: -3px; width: 2px; height: 12px; margin-inline-start: -1px; border-radius: 1px; background: var(--pu-color-series-nepse) }
   .kit-tone-neutral { background: color-mix(in srgb, var(--pu-color-text) 30%, transparent) }
   .kit-tone-gain { background: var(--pu-color-gain) }
   .kit-tone-loss { background: var(--pu-color-loss) }
@@ -37,14 +37,14 @@
   .kit-range-head b.up { color: var(--pu-color-gain) }
   .kit-range-head b.down { color: var(--pu-color-loss) }
   .kit-range-track { position: relative; height: 8px; border-radius: 4px; background: var(--pu-color-track) }
-  .kit-range-track > i { position: absolute; left: 0; top: 0; height: 8px; border-radius: 4px; background: var(--pu-color-chart); opacity: 0.6 }
+  .kit-range-track > i { position: absolute; inset-inline-start: 0; top: 0; height: 8px; border-radius: 4px; background: var(--pu-color-chart); opacity: 0.6 }
   .kit-range-track > i.span { opacity: 0.45 }
   .kit-range-track:has(> i.span) > b.tick { background: var(--pu-color-text-muted) }
   .kit-range-track > b { position: absolute; top: -4px; height: 16px }
-  .kit-range-track > b.strong { width: 4px; margin-left: -2px; border-radius: 2px; background: var(--pu-color-text) }
-  .kit-range-track > b.accent { width: 2px; margin-left: -1px; background: var(--pu-color-series-nepse) }
-  .kit-range-track > b.dot { top: -5px; width: 18px; height: 18px; margin-left: -9px; border-radius: 50%; background: var(--pu-color-chart); box-shadow: 0 0 0 3px var(--pu-color-surface) }
-  .kit-range-track > b.tick { width: 2px; margin-left: -1px; border-radius: 1px; background: var(--pu-color-border-strong) }
+  .kit-range-track > b.strong { width: 4px; margin-inline-start: -2px; border-radius: 2px; background: var(--pu-color-text) }
+  .kit-range-track > b.accent { width: 2px; margin-inline-start: -1px; background: var(--pu-color-series-nepse) }
+  .kit-range-track > b.dot { top: -5px; width: 18px; height: 18px; margin-inline-start: -9px; border-radius: 50%; background: var(--pu-color-chart); box-shadow: 0 0 0 3px var(--pu-color-surface) }
+  .kit-range-track > b.tick { width: 2px; margin-inline-start: -1px; border-radius: 1px; background: var(--pu-color-border-strong) }
   .kit-range-track:has(> b.dot) { height: 4px; margin: 7px 0; border-radius: 2px }
   .kit-range-track:has(> b.dot) > b.tick { top: -6px }
   .kit-range-labels { --rh: 16px; position: relative; height: calc(var(--rows, 1) * var(--rh)); font-size: 11px; line-height: 16px; color: var(--pu-color-text-tertiary); font-variant-numeric: tabular-nums }
@@ -55,7 +55,7 @@
   .kit-range-labels > span b { font-size: 12px; font-weight: 500; color: var(--pu-color-text) }
   .kit-range-legend { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; font-size: 12px; line-height: 16px; color: var(--pu-color-text-tertiary); font-variant-numeric: tabular-nums }
   .kit-range-legend > span:nth-child(2) { text-align: center }
-  .kit-range-legend > span:nth-child(3) { text-align: right }
+  .kit-range-legend > span:nth-child(3) { text-align: end }
   .kit-range-legend :is(span, b) > :is(span, b) { display: block }
   .kit-range-legend b { font-weight: 500; color: var(--pu-color-text) }
 
@@ -71,7 +71,7 @@
   .kit-share-foot { margin: 0; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }
   .kit-dist { display: grid; gap: 12px; min-width: 0; container-type: inline-size }
   @container (min-width: 560px) { .kit-dist .kit-share-legend.list { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px } }
-  .kit-share-item { appearance: none; width: 100%; box-sizing: border-box; display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; align-items: center; gap: 8px; min-height: 36px; padding: 0; border: 0; background: none; color: var(--pu-color-text); font: 400 13px / 1.2 var(--pu-font-body); text-align: left }
+  .kit-share-item { appearance: none; width: 100%; box-sizing: border-box; display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; align-items: center; gap: 8px; min-height: 36px; padding: 0; border: 0; background: none; color: var(--pu-color-text); font: 400 13px / 1.2 var(--pu-font-body); text-align: start }
   button.kit-share-item { cursor: pointer; border-radius: 6px }
   button.kit-share-item:hover .nm, button.kit-share-item[aria-pressed='true'] .nm { text-decoration: underline; text-underline-offset: 3px }
   button.kit-share-item:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }

@@ -1,9 +1,15 @@
 /* Punji UI styles.
-   Shared by every component: the visually hidden text and the spinner. */
+   Shared by every component: the visually hidden text, the spinner and the
+   right-to-left rules. */
 @layer punji.components {
   .kit-spin { width: 18px; height: 18px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; animation: kit-rot 0.8s linear infinite }
   @keyframes kit-rot { to { transform: rotate(360deg); } }
   /* The inverse tone: the surface flips (dark in light mode, light in dark mode). The text and signal tokens are redefined inside it so a figure never vanishes. */
   .kit-inv { --pu-color-text: var(--pu-color-text-inverse); --pu-color-text-muted: var(--pu-color-inverse-muted); --pu-color-text-tertiary: var(--pu-color-inverse-muted); --pu-color-gain: var(--pu-color-inverse-gain); --pu-color-loss: var(--pu-color-inverse-loss); --pu-color-border: var(--pu-color-inverse-line); --pu-color-border-strong: var(--pu-color-inverse-line); --pu-color-card-border: var(--pu-color-inverse-line); --pu-color-track: var(--pu-color-inverse-line); --pu-color-surface-tint: var(--pu-color-inverse-row); --pu-color-surface-subtle: var(--pu-color-inverse-row); --pu-color-series-nepse: var(--pu-color-inverse-nepse); --pu-color-warn: var(--pu-color-inverse-warn); --pu-color-warn-accent: var(--pu-color-inverse-warn); --pu-color-link: var(--pu-color-inverse-gain); --pu-color-accent: var(--pu-color-inverse-gain); background: var(--pu-color-surface-inverse); color: var(--pu-color-text) }
+  /* Right to left: arrows and chevrons that point along the line mirror; amounts and changes
+     keep left-to-right digits, sign and currency order as one isolated run. */
+  [dir='rtl'] .pu-flip { transform: scaleX(-1) }
+  [dir='rtl'] span.pu-flip { display: inline-block }
+  [dir='rtl'] :is(.pu-money, .pu-change, .kit-fig, .kit-figchip) { direction: ltr; unicode-bidi: isolate }
   .kit-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0 }
 }

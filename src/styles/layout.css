@@ -34,6 +34,6 @@
   .kit-section-h.caption :is(h2, h3) { font: 600 11px / 14px var(--pu-font-body); letter-spacing: 0.1em; text-transform: uppercase; color: var(--pu-color-text-tertiary) }
   .kit-section-h a:not(.kit-cardlink), .kit-section-h button.link { font-size: var(--pu-text-sm); font-weight: 600; color: var(--pu-color-link); background: none; border: 0; cursor: pointer; min-height: 44px; display: inline-flex; align-items: center }
   .kit-chev { width: 16px; height: 16px; color: var(--pu-color-text-tertiary) }
-  .kit-skip { position: absolute; left: 8px; top: -60px; z-index: 100; padding: 10px 16px; border-radius: var(--pu-radius-control); background: var(--pu-color-surface-inverse); color: var(--pu-color-text-inverse) }
+  .kit-skip { position: absolute; inset-inline-start: 8px; top: -60px; z-index: 100; padding: 10px 16px; border-radius: var(--pu-radius-control); background: var(--pu-color-surface-inverse); color: var(--pu-color-text-inverse) }
   .kit-skip:focus { top: 8px }
 }

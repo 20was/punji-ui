@@ -21,7 +21,7 @@
   .kit-field > label { font: 500 13px / 16px var(--pu-font-body); color: var(--pu-color-text-muted) }
   .kit-field input, .kit-field textarea, .kit-field .kit-sel > select { width: 100%; height: var(--h); margin: 0; padding: 0 12px; border: 1px solid var(--pu-color-border-control); border-radius: var(--pu-radius-control); background: var(--pu-color-surface-tint); color: var(--pu-color-text); font: 500 15px / 1.2 var(--pu-font-body); transition: border-color var(--pu-motion-fast) var(--pu-ease-out) }
   .kit-field textarea { height: auto; min-height: calc(var(--h) * 2); padding: 10px 12px; line-height: 1.45; resize: vertical }
-  .kit-field .kit-sel > select { padding-right: 38px }
+  .kit-field .kit-sel > select { padding-inline-end: 38px }
   .kit-field input::placeholder, .kit-field textarea::placeholder { color: var(--pu-color-text-tertiary) }
   .kit-field input { text-overflow: ellipsis }
   .kit-field input:hover:not(:disabled), .kit-field textarea:hover:not(:disabled), .kit-field .kit-sel > select:hover:not(:disabled) { border-color: var(--pu-color-text-tertiary) }
@@ -33,7 +33,7 @@
   .kit-field[data-invalid='true'] > label { color: var(--pu-color-loss) }
   .kit-field[data-invalid='true'] input, .kit-field[data-invalid='true'] textarea, .kit-field[data-invalid='true'] .kit-sel > select { border-color: var(--pu-color-loss) }
   .kit-field[data-invalid='true'] :is(input, textarea, .kit-sel > select):is(:focus, :focus-visible) { outline-color: var(--pu-color-loss) }
-  .kit-options { position: absolute; left: 0; right: 0; top: 100%; z-index: 20; margin: 4px 0 0; padding: 4px; list-style: none; max-height: 18rem; overflow-y: auto; background: var(--pu-color-surface-solid); border-radius: var(--pu-radius-lg); box-shadow: var(--pu-shadow-lg) }
+  .kit-options { position: absolute; inset-inline-start: 0; inset-inline-end: 0; top: 100%; z-index: 20; margin: 4px 0 0; padding: 4px; list-style: none; max-height: 18rem; overflow-y: auto; background: var(--pu-color-surface-solid); border-radius: var(--pu-radius-lg); box-shadow: var(--pu-shadow-lg) }
   .kit-options li { display: flex; gap: 10px; align-items: baseline; padding: 10px 12px; border-radius: var(--pu-radius-card); cursor: pointer; min-height: 44px }
   .kit-options li[aria-selected='true'] { background: var(--pu-color-surface-tint) }
   .kit-options b { flex-shrink: 0 }

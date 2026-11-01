@@ -630,7 +630,7 @@ function GuideBlock({ slug, section }: { slug: string; section: GuideSection }) 
 function GuidePage({ data }: { data: PageData }) {
   const { page } = data;
   const sections = useMemo(() => page.guide ?? [], [page]);
-  const rail = useMemo((): RailItem[] => [...sections.map((s) => ({ id: s.id, label: s.title })), ...(page.related.length ? [{ id: 'related', label: 'Related' }] : [])], [sections, page]);
+  const rail = useMemo((): RailItem[] => [...(page.examples[0] ? [{ id: 'try-it', label: 'Try it' }] : []), ...sections.map((s) => ({ id: s.id, label: s.title })), ...(page.related.length ? [{ id: 'related', label: 'Related' }] : [])], [sections, page]);
   return (
     <div className="doc-page has-rail" data-testid={`page-${page.slug}`}>
       <article className="doc-article doc-guide">
@@ -638,6 +638,13 @@ function GuidePage({ data }: { data: PageData }) {
         <p className="doc-intro">
           <Rich text={page.summary} />
         </p>
+        {/* A guide may open with one live example (Theming: the mode switcher). */}
+        {page.examples[0] && (
+          <section aria-labelledby="try-it" className="doc-section doc-guide-section">
+            <h2 id="try-it">Try it</h2>
+            <Demo page={page} def={page.examples[0]} onPick={() => undefined} />
+          </section>
+        )}
         {sections.map((section) => (
           <GuideBlock key={section.id} slug={page.slug} section={section} />
         ))}

@@ -159,6 +159,38 @@ Props: `plan`, `insurer`, `policyNumber`, `status` ('active' | 'grace' | 'lapsed
 `termYears`, `money`, `language`, `digits`, `actions`, `headingLevel`, `labels`. Status is words and an icon. A
 missing premium is a dash with a spoken "No value".
 
+### RiskMeter
+
+`@punji/ui/risk-meter`. Props: `level` (1 to the number of levels), `levels` (3 to 8 names, lowest first; default
+`riskLevelLabels`, the six-level fund scale Low to Very high), `variant` ('gauge', a half-dial with a needle, or 'bar', a
+compact row of steps), `label` ('Risk'), `position` ("4 of 6"), `caption`. The level is always text; the drawing is
+`aria-hidden`. A level off the scale throws a RangeError. Styles in `css/risk-meter.css` (forced colours supported).
+
+## Mutual funds and life cover (`@punji/ui/invest`)
+
+Pure, no React. Amounts are bigint minor units.
+
+- `xirr(flows, { digits = 8 })`: the annual rate of dated cash flows `{ date: 'YYYY-MM-DD' | CalendarDate, amount }`
+  (money in negative, money out or today's value positive), day count actual/365 from the first flow, as Excel's XIRR.
+  Discount factors are 36-place bigint fixed point (exp and ln by series); the root is bracketed (from -99.9999% up,
+  doubling the top from 100%) and bisected until the bracket is under 10^-(digits+2), then rounded half-even. The
+  result `{ rate, percent, numerator, denominator, iterations }` is within one unit in the last place of the true root.
+  No sign change gives null; with several sign changes, the root in the first bracket found is returned.
+  `xnpv(flows, rate)` is the net present value at a rate, in minor units (zero at the XIRR).
+- `projectSip({ monthly, months, annualReturnPercent, stepUpPercent, stepUpEvery = 12, roundTo, rounding })`: each
+  instalment at the start of its month, growth at annual / 12 a month. The balance is an exact fraction; each reported
+  figure (`value`, every year's row) is rounded once. A stepped-up instalment is a real debit: rounded to `roundTo`, and
+  the next step-up builds on it. `projectLumpSum` grows one payment the same way; `sipForGoal` returns the smallest first
+  instalment (a multiple of `roundTo`) whose projection reaches the goal.
+- `allotUnits(amount, nav, { unitDecimals = 3, exponent = 2, rounding = 'floor' })`: units at a decimal NAV
+  ('12.3456'), the cost rounded up to the minor unit (never more than the amount) and the remainder.
+  `unitsValue(units, nav)` values units; `parseNav` and `formatUnits` are the parsers and printers.
+- `termCoverNeeded({ annualIncome, years, incomeSharePercent, liabilities, goals, savings, existingCover, roundTo })`:
+  the income-replacement cover gap, rounded up to `roundTo`; a starting point, not underwriting.
+
+Tested in `test/invest.test.ts`: the Excel XIRR example to eight places, closed-form SIP and lump-sum values, the goal
+search at its boundary, and fast-check properties (a SIP's XIRR puts its NPV at zero; units never cost more than paid).
+
 ## Testing
 
 `test/lending.test.ts` covers the pure modules (textbook EMI and FD figures, prepayment strategies, property tests for

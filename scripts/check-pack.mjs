@@ -32,7 +32,8 @@ import { readFileSync } from 'node:fs';
 // All five domain branches (trading, share issues, wallets, lending, tax) merged onto Wave 3: measured 2,039,956 B; ~3% headroom.
 // Trust and safety kit, global money (digit scripts, grouping override, exact compact) and ISO 4217 data: measured 2,141,913 B; ~3% headroom.
 // ReconciliationMatcher (JS, declarations, CSS) on the merged main: measured 2,243,594 B; ~3% headroom.
-const MAX_UNPACKED = 2257 * 1024;
+// RiskMeter and the invest helpers (XIRR, SIP, units, cover: JS, declarations, CSS): measured 2,296,801 B; ~3% headroom.
+const MAX_UNPACKED = 2311 * 1024;
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
 const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md']);
 const allowed = (p) => always.has(p) || /^dist\/.+\.(js|d\.ts|css)$/.test(p);

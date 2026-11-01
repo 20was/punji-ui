@@ -1,0 +1,43 @@
+/* Punji UI styles.
+   Styles for RiskMeter (a fund's risk level as a half-dial or a row of steps). Needs tokens.css and base.css
+   (styles.css has everything). Tones run from the gain colour (lowest) through the warning colour to the loss colour
+   (highest); the level is always printed in words beside them. */
+@layer punji.components {
+  .pu-risk { --risk-t0: var(--pu-color-gain); --risk-t1: color-mix(in srgb, var(--pu-color-gain) 55%, var(--pu-color-warn-accent)); --risk-t2: var(--pu-color-warn-accent); --risk-t3: color-mix(in srgb, var(--pu-color-warn-accent) 50%, var(--pu-color-loss)); --risk-t4: color-mix(in srgb, var(--pu-color-warn-accent) 20%, var(--pu-color-loss)); --risk-t5: var(--pu-color-loss) }
+  .pu-risk[data-variant='gauge'] { display: grid; justify-items: center; gap: var(--pu-space-1); width: 100%; max-width: 220px; min-width: 0 }
+  .pu-risk-dial { display: block; width: 100%; height: auto; overflow: visible }
+  .pu-risk-seg { fill: none; stroke-width: 11; opacity: 0.38 }
+  .pu-risk-seg[data-current] { opacity: 1; stroke-width: 14 }
+  .pu-risk-seg[data-tone='0'] { stroke: var(--risk-t0) }
+  .pu-risk-seg[data-tone='1'] { stroke: var(--risk-t1) }
+  .pu-risk-seg[data-tone='2'] { stroke: var(--risk-t2) }
+  .pu-risk-seg[data-tone='3'] { stroke: var(--risk-t3) }
+  .pu-risk-seg[data-tone='4'] { stroke: var(--risk-t4) }
+  .pu-risk-seg[data-tone='5'] { stroke: var(--risk-t5) }
+  .pu-risk-needle, .pu-risk-hub { fill: var(--pu-color-text) }
+  .pu-risk-text { display: grid; justify-items: center; gap: 0; margin: 0; text-align: center; line-height: 1.3 }
+  .pu-risk-label, .pu-risk-where { color: var(--pu-color-text-muted); font-size: var(--pu-text-xs) }
+  .pu-risk-text .pu-risk-name { font: 600 var(--pu-text-base) / 1.3 var(--pu-font-display) }
+  .pu-risk-caption { margin: 0; color: var(--pu-color-text-muted); font-size: var(--pu-text-xs); text-align: center }
+
+  .pu-risk[data-variant='bar'] { display: inline-flex; align-items: center; gap: var(--pu-space-2); min-width: 0; font-size: var(--pu-text-sm); line-height: 1.3 }
+  .pu-risk-steps { display: inline-flex; flex: none; gap: 2px }
+  .pu-risk-steps > i { display: block; width: 7px; height: 12px; border-radius: 2px; background: var(--pu-color-track) }
+  .pu-risk-steps > i[data-on][data-tone='0'] { background: var(--risk-t0) }
+  .pu-risk-steps > i[data-on][data-tone='1'] { background: var(--risk-t1) }
+  .pu-risk-steps > i[data-on][data-tone='2'] { background: var(--risk-t2) }
+  .pu-risk-steps > i[data-on][data-tone='3'] { background: var(--risk-t3) }
+  .pu-risk-steps > i[data-on][data-tone='4'] { background: var(--risk-t4) }
+  .pu-risk-steps > i[data-on][data-tone='5'] { background: var(--risk-t5) }
+  .pu-risk-steps > i[data-current] { height: 16px }
+  .pu-risk-words { min-width: 0; overflow-wrap: anywhere }
+
+  @media (forced-colors: active) {
+    .pu-risk-seg { stroke: CanvasText; opacity: 1 }
+    .pu-risk-seg[data-current] { stroke: Highlight }
+    .pu-risk-needle, .pu-risk-hub { fill: CanvasText }
+    .pu-risk-steps > i { background: Canvas; border: 1px solid CanvasText }
+    .pu-risk-steps > i[data-on] { background: CanvasText }
+    .pu-risk-steps > i[data-current] { background: Highlight }
+  }
+}

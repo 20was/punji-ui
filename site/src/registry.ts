@@ -20,6 +20,7 @@ import { SHARE_ISSUE_PAGES } from './registry-share-issues.ts';
 // Apps: full-viewport interactive dashboards at /apps/<slug>/ (site/src/apps/<slug>/).
 import { APP_PAGES } from './registry-apps.ts';
 import { RECONCILIATION_PAGES } from './registry-reconciliation.ts';
+import { INVEST_PAGES } from './registry-invest.ts';
 
 export type GroupId =
   | 'get-started'
@@ -1862,6 +1863,8 @@ export const PAGES: readonly PageDef[] = [
   ...TAX_PAGES,
   // Bank reconciliation.
   ...RECONCILIATION_PAGES,
+  // Mutual funds: RiskMeter and the invest helpers.
+  ...INVEST_PAGES,
   ...APP_PAGES,
   // Scaffolded with npm run new:component, waiting to move into a domain file.
   ...COMMUNITY_PAGES,

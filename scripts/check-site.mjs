@@ -284,6 +284,22 @@ try {
     await t.getByTestId('dw-receipt').waitFor({ timeout: 5000 }).catch(() => fail('digital wallet: the bill payment did not reach a receipt'));
     await t.getByTestId('screen-home').click();
     if (!(await t.getByTestId('dw-balance').textContent())?.includes('10,540.49')) fail(`digital wallet: balance after the bill is ${await t.getByTestId('dw-balance').textContent()}, expected Rs 10,540.49 (12,480.50 - 1,979.60 + 39.59 cashback)`);
+    // Invest and insure: open a fund, invest once, follow the order to an allotment of units at NAV, and the
+    // portfolio's invested total rises by exactly the amount.
+    await t.goto(`${base}/apps/invest-insure/#portfolio`);
+    await t.getByTestId('ii-pf-invested').waitFor({ timeout: 10000 });
+    const investedBefore = await t.getByTestId('ii-pf-invested').textContent();
+    await t.getByTestId('screen-funds').click();
+    await t.getByTestId('ii-fund-trishuli-index').click();
+    await t.getByTestId('ii-lumpsum').click({ timeout: 10000 });
+    await t.locator('[data-screen="sip"] [data-screen-title]').waitFor();
+    await t.getByTestId('ii-review').click({ timeout: 10000 });
+    await t.getByTestId('ii-confirm').click();
+    await t.getByTestId('ii-allotment').waitFor({ timeout: 15000 }).catch(() => fail('invest and insure: the order did not reach an allotment'));
+    await t.getByTestId('ii-view-portfolio').click();
+    await t.getByTestId('ii-pf-invested').waitFor({ timeout: 10000 });
+    const investedAfter = await t.getByTestId('ii-pf-invested').textContent();
+    if (Math.round((rupees(investedAfter) - rupees(investedBefore)) * 100) !== 5_000_000) fail(`invest and insure: invested went from ${investedBefore} to ${investedAfter}, not up by Rs 50,000`);
     // Accounting: a balanced journal posts and reaches the posted list; the reconciliation accepts suggestions.
     await t.goto(`${base}/apps/accounting/#journal`);
     await t.locator('[data-screen="journal"] [data-screen-title]').waitFor();

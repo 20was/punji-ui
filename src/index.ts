@@ -160,6 +160,8 @@ export * from './document-upload/DocumentUpload.tsx';
 export * from './onboarding-wizard/OnboardingWizard.tsx';
 export * from './remittance-tracker/RemittanceTracker.tsx';
 export * from './insurance-premium-card/InsurancePremiumCard.tsx';
+export * from './invest/invest.ts';
+export * from './risk-meter/RiskMeter.tsx';
 // Tax, invoicing and payroll.
 export * from './tax/tax.ts';
 export * from './pan-input/PanInput.tsx';

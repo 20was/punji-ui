@@ -479,6 +479,14 @@
       "types": "./dist/lending/lending.d.ts",
       "default": "./dist/lending/lending.js"
     },
+    "./invest": {
+      "types": "./dist/invest/invest.d.ts",
+      "default": "./dist/invest/invest.js"
+    },
+    "./risk-meter": {
+      "types": "./dist/risk-meter/RiskMeter.d.ts",
+      "default": "./dist/risk-meter/RiskMeter.js"
+    },
     "./kyc": {
       "types": "./dist/kyc/kyc.d.ts",
       "default": "./dist/kyc/kyc.js"

@@ -53,7 +53,7 @@ From `0.0.0`, the pending minor changesets produce `0.1.0`. Only the latest `0.x
 | 8 | Workflow lint and security | actionlint, zizmor, CodeQL, dependency review | CI |
 | 9 | Review the changesets and version PR diff (version, changelog text, lockfile) | Version PR | Manual |
 | 10 | Dry-run the tarball | `npm pack --dry-run --json --ignore-scripts` (also done by `check-pack`) | Manual spot check |
-| 11 | Clean-consumer install test: packed tarball into a fresh app outside the repo; strict `tsc` (root, subpaths, CSS imports, a required-prop negative test), server render, pure utilities in Node, Vite production build | `npm run check:consumer` (also run by `release.yml` before publishing) | Automated. A Next.js App Router build is still manual |
+| 11 | Clean-consumer install test: packed tarball into a fresh app outside the repo; strict `tsc` (root, subpaths, CSS imports, a required-prop negative test), server render, pure utilities in Node, Vite production build | `npm run check:consumer` (also run by `release.yml` before publishing) | Automated. A Next.js App Router build (`next build`, then the built pages loaded in Chromium with no hydration errors) is `npm run check:nextjs`, a separate CI job |
 | 12 | Verify docs examples (README quick start, [docs/INTEGRATION.md](docs/INTEGRATION.md)) against the packed tarball | Copy the snippets into the scratch app | **Manual; no automation exists** |
 | 13 | Owner visual review, native Nepali copy review, VoiceOver/NVDA checks | See [QUALITY.md](QUALITY.md) | **Manual** |
 | 14 | Owner approval to publish | | **Manual** |

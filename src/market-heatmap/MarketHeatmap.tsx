@@ -82,7 +82,8 @@ export interface MarketHeatmapProps {
 }
 
 const signed = (c: number) => `${c > 0 ? '+' : c < 0 ? '−' : ''}${Math.abs(c).toFixed(2)}%`;
-const defaultSize = (n: number) => new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 }).format(n);
+const SIZE = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 });
+const defaultSize = (n: number) => SIZE.format(n);
 const trim = (n: number) => String(Math.round(n * 10) / 10);
 
 export function MarketHeatmap({ items, label, sizeLabel = 'Size', formatSize = defaultSize, scaleMax = 3, aspect = 1.5, convention = 'green-up', onSelect, labels, testId }: MarketHeatmapProps) {

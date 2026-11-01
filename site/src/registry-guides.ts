@@ -142,7 +142,7 @@ export const GUIDES: readonly PageDef[] = [
         points: [
           'The peer range is `react@^19`. Use a Next.js release that ships React 19 for the App Router.',
           'Import by subpath (`@punji/ui/stock-table`) to keep client bundles small.',
-          'An automated Next.js App Router consumer build is not in the release checks yet; [RELEASE.md](' + REPO + '/RELEASE.md) lists it as manual. The packed package is checked by a clean Vite consumer and a server render in Node.',
+          'Every pull request builds a real Next.js App Router app against the packed package (`npm run check:nextjs`): server components call the pure modules and render client components directly, the CSS imports go through Next, and the built pages hydrate with no errors or warnings. A clean Vite consumer and a server render in Node are checked too.',
           'Dark mode and theme switching are covered in [Theming](/get-started/theming/); avoiding a flash of the wrong theme is in [Server rendering](/get-started/ssr/).',
         ],
       },

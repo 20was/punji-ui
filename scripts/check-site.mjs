@@ -223,7 +223,8 @@ try {
     }
 
     // App behaviour: the trading terminal places an order that reaches the order list, and opens the command palette
-    // from the keyboard; the wealth dashboard applies for an issue and an allotment changes the holdings.
+    // from the keyboard; the wealth dashboard applies for an issue and an allotment changes the holdings; the accounting
+    // app posts a journal and reconciles; the billing app issues an invoice.
     const appCtx = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: 'light' });
     const t = await appCtx.newPage();
     const appErrors = [];
@@ -283,6 +284,24 @@ try {
     await t.getByTestId('dw-receipt').waitFor({ timeout: 5000 }).catch(() => fail('digital wallet: the bill payment did not reach a receipt'));
     await t.getByTestId('screen-home').click();
     if (!(await t.getByTestId('dw-balance').textContent())?.includes('10,540.49')) fail(`digital wallet: balance after the bill is ${await t.getByTestId('dw-balance').textContent()}, expected Rs 10,540.49 (12,480.50 - 1,979.60 + 39.59 cashback)`);
+    // Accounting: a balanced journal posts and reaches the posted list; the reconciliation accepts suggestions.
+    await t.goto(`${base}/apps/accounting/#journal`);
+    await t.locator('[data-screen="journal"] [data-screen-title]').waitFor();
+    await t.getByTestId('ac-journal-memo').fill('Tea and snacks for the office');
+    await t.getByTestId('ac-journal-debit-0').fill('1234.50');
+    await t.getByTestId('ac-journal-fill').click();
+    await t.getByTestId('ac-journal-post').click();
+    await t.getByTestId('ac-posted').getByText('JV-0001', { exact: false }).first().waitFor({ timeout: 5000 }).catch(() => fail('accounting: a balanced journal did not post'));
+    await t.getByTestId('screen-bank').click();
+    await t.getByTestId('ac-recon-auto').click();
+    if (!(await t.getByTestId('ac-recon-matches').textContent().catch(() => ''))) fail('accounting: accepting the reconciliation suggestions matched nothing');
+    // Billing: preview and issue the drafted invoice; it reaches the invoice list.
+    await t.goto(`${base}/apps/business/#create`);
+    await t.locator('[data-screen="create"] [data-screen-title]').waitFor();
+    await t.getByTestId('bz-create-preview').click();
+    await t.getByTestId('bz-preview').waitFor({ timeout: 5000 }).catch(() => fail('billing: the invoice preview did not open'));
+    await t.getByTestId('bz-create-issue').click();
+    await t.getByTestId('bz-inv-INV-2083/84-0013').waitFor({ timeout: 5000 }).catch(() => fail('billing: the issued invoice did not reach the list'));
     for (const e of appErrors) fail(`apps behaviour: console ${e}`);
     await appCtx.close();
   }
@@ -499,4 +518,5 @@ if (failures.length) {
 }
 console.log(`layout flags: edge ${flagCounts.edge} (+${flagCounts.edgeAllowed} allowlisted), clip ${flagCounts.clip}, dup ${flagCounts.dup}, icon ${flagCounts.icon}`);
 console.log(`apps: every screen of ${PAGES.filter((p) => p.kind === 'app').length} apps at 390, 768 and 1440 px, light and dark, plus order entry, the command palette, the allotment flow, a bank transfer and a wallet bill payment`);
+console.log(`apps: every screen of ${PAGES.filter((p) => p.kind === 'app').length} apps at 390, 768 and 1440 px, light and dark, plus order entry, the command palette, the allotment flow, posting a journal, reconciling and issuing an invoice`);
 console.log(`site check${shardCount > 1 ? ` (shard ${shardIndex}/${shardCount})` : ''}: ${routes.length} routes x 2 widths x 2 themes, ${checked.variants} example variants and ${checked.tabs} page tabs (axe, overflow, console, layout) and the copy, variant, preview theme, phone-width frame, tabs, theme, search, sidebar, drawer, path routing, hash redirect, 404 and no-JS behaviours passed`);

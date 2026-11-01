@@ -32,3 +32,16 @@ export const BillIcon = () => <Svg d="M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6M
 export const GiftIcon = () => <Svg d="M4 11h16v10H4zM3 7h18v4H3zM12 7v14M12 7c-1.5-3-5-3-5-1s3 1 5 1c2 0 5 1 5-1s-3.5-2-5 1" />;
 export const HistoryIcon = () => <Svg d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l3 2" />;
 export const EyeOffIcon = () => <Svg d="M3 3l18 18M10.6 6.1A9.8 9.8 0 0 1 12 6c5 0 9 6 9 6a17 17 0 0 1-3 3.5M6.6 6.6C4.3 8.1 3 12 3 12s4 6 9 6c1.4 0 2.7-.4 3.9-1M9.9 9.9a3 3 0 0 0 4.2 4.2" />;
+export const LedgerIcon = () => <Svg d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM5 17a3 3 0 0 1 3-3h11M9 8h6" />;
+export const JournalIcon = () => <Svg d="M12 5v14M5 12h14" />;
+export const ScaleIcon = () => <Svg d="M12 4v16M7 20h10M5 8h14M5 8l-3 6a3 3 0 0 0 6 0zM19 8l-3 6a3 3 0 0 0 6 0z" />;
+export const StatementIcon = () => <Svg d="M6 3h12v18H6zM9 8h6M9 12h6M9 16h3" />;
+export const BankIcon = () => <Svg d="M3 10l9-6 9 6M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18" />;
+export const ClockIcon = () => <Svg d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2" />;
+export const TaxIcon = () => <Svg d="M5 19L19 5M7.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM16.5 18a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />;
+export const ExportIcon = () => <Svg d="M12 3v12M7 10l5 5 5-5M5 21h14" />;
+export const InvoiceIcon = () => <Svg d="M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6" />;
+export const PeopleIcon = () => <Svg d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21a7 7 0 0 1 14 0M17 11a3 3 0 1 0 0-6M22 21a6 6 0 0 0-4-5.6" />;
+export const ReceiptIcon = () => <Svg d="M3 7h18v10H3zM7 12h.01M17 12h.01M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />;
+export const PayrollIcon = () => <Svg d="M4 6h16v12H4zM4 10h16M8 15h3" />;
+export const CalculatorIcon = () => <Svg d="M6 3h12v18H6zM9 7h6M9 12h.01M12 12h.01M15 12h.01M9 16h.01M12 16h.01M15 16h.01" />;

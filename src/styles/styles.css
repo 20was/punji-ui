@@ -87,6 +87,8 @@
 @import './lending.css';
 /* Tax, invoicing and payroll. */
 @import './tax.css';
+/* Bank reconciliation. */
+@import './reconciliation.css';
 /* Layout: resizable split pane. */
 @import './split-pane.css';
 @import './trust.css';

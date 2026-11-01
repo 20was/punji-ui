@@ -15,7 +15,7 @@
  * takes from the chart module's one the downsampling of very long series
  * (here by extremes, so a spike survives).
  */
-import type { CSSProperties } from 'react';
+import { memo, type CSSProperties } from 'react';
 
 export type SparklineTone = 'gain' | 'loss' | 'flat' | 'chart';
 
@@ -45,7 +45,15 @@ export function reduceSeries(values: readonly number[], maxPoints: number): numb
   const cap = Math.max(8, Math.floor(maxPoints) || 8);
   if (values.length <= cap) return [...values];
   const buckets = Math.floor((cap - 2) / 2);
-  const keep = new Set<number>([0, values.length - 1]);
+  // Buckets are in order and disjoint, so the kept indices come out ascending: no set, no sort.
+  const out: number[] = [values[0]!];
+  let last = 0;
+  const keep = (i: number) => {
+    if (i > last) {
+      out.push(values[i]!);
+      last = i;
+    }
+  };
   for (let b = 0; b < buckets; b += 1) {
     const from = Math.floor((b * values.length) / buckets);
     const to = Math.max(from + 1, Math.floor(((b + 1) * values.length) / buckets));
@@ -55,14 +63,16 @@ export function reduceSeries(values: readonly number[], maxPoints: number): numb
       if (values[i]! < values[lo]!) lo = i;
       if (values[i]! > values[hi]!) hi = i;
     }
-    keep.add(lo);
-    keep.add(hi);
+    keep(Math.min(lo, hi));
+    keep(Math.max(lo, hi));
   }
-  return [...keep].toSorted((a, b) => a - b).map((i) => values[i]!);
+  keep(values.length - 1);
+  return out;
 }
 
-export function Sparkline({ values, width = 88, height = 28, tone, fluid = false, maxPoints = 120, label, testId }: SparklineProps) {
-  const clean = (values ?? []).filter((x): x is number => typeof x === 'number' && Number.isFinite(x));
+function SparklineBase({ values, width = 88, height = 28, tone, fluid = false, maxPoints = 120, label, testId }: SparklineProps) {
+  const clean: number[] = [];
+  for (const x of values ?? []) if (typeof x === 'number' && Number.isFinite(x)) clean.push(x);
   const w = Number.isFinite(width) && width > 8 ? width : 88;
   const h = Number.isFinite(height) && height > 8 ? height : 28;
   const aria = label ? { role: 'img' as const, 'aria-label': label } : { 'aria-hidden': true as const };
@@ -72,8 +82,12 @@ export function Sparkline({ values, width = 88, height = 28, tone, fluid = false
   const first = clean[0]!;
   const last = clean[clean.length - 1]!;
   const drawn = reduceSeries(clean, maxPoints);
-  const lo = Math.min(...drawn);
-  const hi = Math.max(...drawn);
+  let lo = Infinity;
+  let hi = -Infinity;
+  for (const v of drawn) {
+    if (v < lo) lo = v;
+    if (v > hi) hi = v;
+  }
   // Halve before subtracting so opposite finite extremes cannot overflow to Infinity.
   const span = hi / 2 - lo / 2;
   const y = (v: number) => (span > 0 ? PAD + (1 - (v / 2 - lo / 2) / span) * (h - PAD * 2) : h / 2);
@@ -95,3 +109,10 @@ export function Sparkline({ values, width = 88, height = 28, tone, fluid = false
     </svg>
   );
 }
+
+/**
+ * Memoised: a watchlist row that re-renders with a new price but the same
+ * closes array skips the line (no reduce, no path). Safe in a Server
+ * Component (memo is part of React's server build); no hooks, no client code.
+ */
+export const Sparkline = memo(SparklineBase);

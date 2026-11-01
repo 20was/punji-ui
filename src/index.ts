@@ -168,6 +168,8 @@ export * from './income-tax-calculator/IncomeTaxCalculator.tsx';
 export * from './payslip/Payslip.tsx';
 export * from './aging-table/AgingTable.tsx';
 export * from './tds-summary/TdsSummary.tsx';
+export * from './split-pane/SplitPane.tsx';
+export * from './use-hotkeys/useHotkeys.ts';
 // Trust and safety: money-movement confirmation, payee checks, friction and spoofing detection.
 export * from './trust/spoofing.ts';
 export * from './transfer-review/TransferReview.tsx';

@@ -427,6 +427,14 @@
       "types": "./dist/trading-halt/TradingHaltBanner.d.ts",
       "default": "./dist/trading-halt/TradingHaltBanner.js"
     },
+    "./split-pane": {
+      "types": "./dist/split-pane/SplitPane.d.ts",
+      "default": "./dist/split-pane/SplitPane.js"
+    },
+    "./use-hotkeys": {
+      "types": "./dist/use-hotkeys/useHotkeys.d.ts",
+      "default": "./dist/use-hotkeys/useHotkeys.js"
+    },
     "./theme": {
       "types": "./dist/theme/theme.d.ts",
       "default": "./dist/theme/theme.js"
@@ -813,7 +821,7 @@
     "check:types": "attw --pack . --profile esm-only --exclude-entrypoints styles.css tokens.css \"css/*.css\" package.json",
     "check:package": "npm run check:publint && npm run check:types && node scripts/check-pack.mjs && npm run check:exports",
     "check:lockfile": "lockfile-lint --path package-lock.json --type npm --allowed-hosts npm --validate-https --validate-integrity",
-    "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run size && npm run check:package && npm run build:examples && npm run typecheck:examples && npm run typecheck:portal && npm run typecheck:visual && npm run typecheck:site && npm run site:build && npm run check:seo && npm run check:examples",
+    "verify": "npm run lint && npm run typecheck && npm run test && npm run build && npm run size && npm run check:package && npm run build:examples && npm run typecheck:examples && npm run typecheck:portal && npm run typecheck:visual && npm run typecheck:site && npm run test:apps && npm run site:build && npm run check:seo && npm run check:examples",
     "verify:deep": "npm run verify && npm run test:deep",
     "changeset": "changeset",
     "version-packages": "changeset version && npm install --package-lock-only --ignore-scripts",
@@ -850,7 +858,8 @@
     "check:nextjs": "node scripts/check-nextjs.mjs",
     "dev": "node scripts/dev.mjs",
     "bench:table": "node scripts/bench-table.mjs",
-    "bench:charts": "node scripts/bench-charts.mjs"
+    "bench:charts": "node scripts/bench-charts.mjs",
+    "test:apps": "vitest run --config vitest.apps.config.ts"
   },
   "peerDependencies": {
     "react": "^19.0.0",

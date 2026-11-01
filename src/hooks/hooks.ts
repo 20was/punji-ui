@@ -23,3 +23,5 @@ export { useTableSelection } from '../use-table-selection/useTableSelection.ts';
 export type { CheckState, TableSelectionOptions, TableSelectionState } from '../use-table-selection/useTableSelection.ts';
 export { useColumnVisibility } from '../use-column-visibility/useColumnVisibility.ts';
 export type { ColumnVisibilityOptions, ColumnVisibilityState } from '../use-column-visibility/useColumnVisibility.ts';
+export { useHotkeys, matchHotkey, parseHotkey, formatHotkey, isApplePlatform } from '../use-hotkeys/useHotkeys.ts';
+export type { Hotkey, HotkeysOptions } from '../use-hotkeys/useHotkeys.ts';

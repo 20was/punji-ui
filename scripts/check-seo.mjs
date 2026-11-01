@@ -303,9 +303,9 @@ if (PORTAL_TO_HOME.length === 0) fail('PORTAL_TO_HOME is empty');
 }
 
 // No orphans: every page is linked from another page's content (a related card, a guide link or a showcase's
-// "Built from"), or, for showcase patterns, from the overview. The sidebar alone does not count.
+// "Built from"), or, for showcase patterns and apps, from the overview. The sidebar alone does not count.
 {
-  const inbound = new Set(PAGES.filter((p) => p.kind === 'showcase').map((p) => p.slug));
+  const inbound = new Set(PAGES.filter((p) => p.kind === 'showcase' || p.kind === 'app').map((p) => p.slug));
   for (const p of PAGES) {
     for (const slug of p.related) if (slug !== p.slug) inbound.add(slug);
     for (const section of p.guide ?? []) for (const text of [...section.paragraphs, ...(section.points ?? [])]) for (const m of text.matchAll(/\]\(\/[a-z-]+\/([a-z0-9-]+)\/\)/g)) if (m[1] !== p.slug) inbound.add(m[1]);

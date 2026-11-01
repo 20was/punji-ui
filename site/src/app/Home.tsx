@@ -414,6 +414,27 @@ export function Home() {
         <HomeDashboard />
       </section>
 
+      <section className="home-section" id="apps" aria-labelledby="apps-h">
+        <div className="home-section-head">
+          <p className="home-eyebrow">Apps</p>
+          <h2 id="apps-h">Complete dashboards, live</h2>
+          <p>
+            Full-screen, multi-screen apps on a simulated market: state, live prices, keyboard shortcuts, empty, loading and error states. Built only from
+            package components, with their source.
+          </p>
+        </div>
+        <ul className="home-showcase">
+          {(home.apps as PageCard[]).map((p) => (
+            <li key={p.slug}>
+              <Link to={pagePath(p)}>
+                <strong>{p.navTitle ?? p.title}</strong>
+                <span>{p.lead}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       <section className="home-section" id="showcase" aria-labelledby="showcase-h">
         <div className="home-section-head">
           <p className="home-eyebrow">Showcase</p>

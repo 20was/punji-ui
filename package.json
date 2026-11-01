@@ -403,6 +403,10 @@
       "types": "./dist/payment-timeline/PaymentTimeline.d.ts",
       "default": "./dist/payment-timeline/PaymentTimeline.js"
     },
+    "./bill-summary": {
+      "types": "./dist/bill-summary/BillSummary.d.ts",
+      "default": "./dist/bill-summary/BillSummary.js"
+    },
     "./beneficiary-selector": {
       "types": "./dist/beneficiary-selector/BeneficiarySelector.d.ts",
       "default": "./dist/beneficiary-selector/BeneficiarySelector.js"

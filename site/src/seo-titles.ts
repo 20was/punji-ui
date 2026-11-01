@@ -8,6 +8,9 @@ export const SEO_TITLES: Readonly<Record<string, string>> = {
   // Apps
   'trading-terminal': 'NEPSE trading terminal demo in React: live orders | Punji UI',
   'wealth-dashboard': 'Wealth dashboard in React: portfolio, IPO and goals | Punji UI',
+  'retail-banking': 'Retail banking app in React: transfers, cards, KYC | Punji UI',
+  'digital-wallet': 'Digital wallet app in React: QR pay, bills, top-up | Punji UI',
+  'bill-summary': 'Utility bill summary in React: BillSummary card | Punji UI',
   accounting: 'Accounting app in React: ledger, P&L, bank rec | Punji UI',
   business: 'Invoicing and payroll app in React: VAT bills | Punji UI',
   // Get started

@@ -19,11 +19,12 @@ for (const file of pages) {
 }
 const csp = [
   "default-src 'self'",
-  `script-src 'self' ${[...hashes].toSorted().join(' ')}`.trim(),
+  // Cloudflare Web Analytics is injected into every page by the zone (design.punji.app), not by this build.
+  `script-src 'self' ${[...hashes].toSorted().join(' ')} https://static.cloudflareinsights.com`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self'",
-  "connect-src 'self'",
+  "connect-src 'self' https://cloudflareinsights.com",
   // The phone-width preview is this site's own page in an iframe.
   "frame-src 'self'",
   "frame-ancestors 'self'",

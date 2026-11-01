@@ -579,6 +579,38 @@
     "./use-column-visibility": {
       "types": "./dist/use-column-visibility/useColumnVisibility.d.ts",
       "default": "./dist/use-column-visibility/useColumnVisibility.js"
+    },
+    "./tax": {
+      "types": "./dist/tax/tax.d.ts",
+      "default": "./dist/tax/tax.js"
+    },
+    "./pan-input": {
+      "types": "./dist/pan-input/PanInput.d.ts",
+      "default": "./dist/pan-input/PanInput.js"
+    },
+    "./tax-invoice": {
+      "types": "./dist/tax-invoice/TaxInvoice.d.ts",
+      "default": "./dist/tax-invoice/TaxInvoice.js"
+    },
+    "./line-item-editor": {
+      "types": "./dist/line-item-editor/LineItemEditor.d.ts",
+      "default": "./dist/line-item-editor/LineItemEditor.js"
+    },
+    "./income-tax-calculator": {
+      "types": "./dist/income-tax-calculator/IncomeTaxCalculator.d.ts",
+      "default": "./dist/income-tax-calculator/IncomeTaxCalculator.js"
+    },
+    "./payslip": {
+      "types": "./dist/payslip/Payslip.d.ts",
+      "default": "./dist/payslip/Payslip.js"
+    },
+    "./aging-table": {
+      "types": "./dist/aging-table/AgingTable.d.ts",
+      "default": "./dist/aging-table/AgingTable.js"
+    },
+    "./tds-summary": {
+      "types": "./dist/tds-summary/TdsSummary.d.ts",
+      "default": "./dist/tds-summary/TdsSummary.js"
     }
   },
   "files": [

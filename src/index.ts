@@ -121,3 +121,12 @@ export * from './transaction-status/TransactionStatus.tsx';
 export * from './payment-receipt/PaymentReceipt.tsx';
 export * from './payment-timeline/PaymentTimeline.tsx';
 export * from './beneficiary-selector/BeneficiarySelector.tsx';
+// Tax, invoicing and payroll.
+export * from './tax/tax.ts';
+export * from './pan-input/PanInput.tsx';
+export * from './tax-invoice/TaxInvoice.tsx';
+export * from './line-item-editor/LineItemEditor.tsx';
+export * from './income-tax-calculator/IncomeTaxCalculator.tsx';
+export * from './payslip/Payslip.tsx';
+export * from './aging-table/AgingTable.tsx';
+export * from './tds-summary/TdsSummary.tsx';

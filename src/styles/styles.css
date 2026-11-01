@@ -76,3 +76,5 @@
 @import './portfolio.css';
 @import './accounting.css';
 @import './banking.css';
+/* Tax, invoicing and payroll. */
+@import './tax.css';

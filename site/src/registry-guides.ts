@@ -4,6 +4,9 @@
 import type { PageDef } from './registry.ts';
 
 const REPO = 'https://github.com/20was/punji-ui/blob/main';
+/** The starter templates: StackBlitz imports a GitHub folder at this URL; TREE is the same folder on GitHub. */
+const STACKBLITZ = 'https://stackblitz.com/github/20was/punji-ui/tree/main/templates';
+const TREE = 'https://github.com/20was/punji-ui/tree/main/templates';
 
 /** A guide page: the component-template fields are empty, the content is in `guide`. */
 const guide = (page: Pick<PageDef, 'slug' | 'title' | 'description' | 'summary' | 'related'> & Partial<Pick<PageDef, 'navTitle' | 'lead' | 'examples'>> & { guide: NonNullable<PageDef['guide']> }): PageDef => ({
@@ -69,6 +72,18 @@ export const GUIDES: readonly PageDef[] = [
         code: [{ label: 'Install', text: 'npm install @punji/ui react@19 react-dom@19' }],
       },
       {
+        id: 'templates',
+        title: 'Start from a template',
+        paragraphs: [
+          'Two small starters install `@punji/ui` from npm and show the parts most finance apps need first: light and dark theme, density, exact money and a table. Each builds in CI against the package as it is about to be published.',
+        ],
+        points: [
+          `A banking app on Vite and React: [open the Vite starter in StackBlitz](${STACKBLITZ}/vite-react) or read [templates/vite-react](${TREE}/vite-react).`,
+          `A portfolio dashboard on the Next.js App Router: [open the Next.js starter in StackBlitz](${STACKBLITZ}/nextjs-app-router) or read [templates/nextjs-app-router](${TREE}/nextjs-app-router).`,
+        ],
+        code: [{ label: 'Copy a starter to your machine', text: 'npx degit 20was/punji-ui/templates/vite-react my-bank\ncd my-bank\nnpm install\nnpm run dev' }],
+      },
+      {
         id: 'first-screen',
         title: 'Your first screen',
         paragraphs: [
@@ -93,6 +108,7 @@ export const GUIDES: readonly PageDef[] = [
           '[Next.js App Router](/get-started/nextjs/) and [Vite](/get-started/vite/) setup.',
           '[Theming and custom tokens](/get-started/theming/), [server rendering and hydration](/get-started/ssr/) and [Tailwind interop](/get-started/tailwind/).',
           '[Live data adapters](/get-started/live-data/) and [Security](/get-started/security/).',
+          'Take a whole screen with [Copy a pattern](/get-started/copy-a-pattern/): one command writes a Showcase pattern into your app.',
           'The [Roadmap](/get-started/roadmap/) and how to [contribute](/get-started/agents/).',
         ],
       },
@@ -107,6 +123,14 @@ export const GUIDES: readonly PageDef[] = [
       'In the App Router, import the stylesheet once in the root layout, render the hook-free components straight from server components, and put interactive ones behind a small "use client" file of your own. No next.config change is needed.',
     related: ['using', 'ssr', 'theming', 'tailwind'],
     guide: [
+      {
+        id: 'starter',
+        title: 'Start from the Next.js starter',
+        paragraphs: [
+          `The [Next.js starter in StackBlitz](${STACKBLITZ}/nextjs-app-router) is a portfolio dashboard on the App Router: the stylesheet in the root layout, a server page that computes exact totals, and one small client component that switches theme and density. Its source is in [templates/nextjs-app-router](${TREE}/nextjs-app-router), and CI builds it against the packed package.`,
+        ],
+        code: [{ label: 'Copy the starter to your machine', text: 'npx degit 20was/punji-ui/templates/nextjs-app-router my-dashboard\ncd my-dashboard\nnpm install\nnpm run dev' }],
+      },
       {
         id: 'layout',
         title: 'Import the CSS in the root layout',
@@ -143,6 +167,7 @@ export const GUIDES: readonly PageDef[] = [
           'The peer range is `react@^19`. Use a Next.js release that ships React 19 for the App Router.',
           'Import by subpath (`@punji/ui/stock-table`) to keep client bundles small.',
           'Every pull request builds a real Next.js App Router app against the packed package (`npm run check:nextjs`): server components call the pure modules and render client components directly, the CSS imports go through Next, and the built pages hydrate with no errors or warnings. A clean Vite consumer and a server render in Node are checked too.',
+          'CI also builds the [Next.js starter](' + TREE + '/nextjs-app-router) against the packed package on every change (`npm run check:templates`).',
           'Dark mode and theme switching are covered in [Theming](/get-started/theming/); avoiding a flash of the wrong theme is in [Server rendering](/get-started/ssr/).',
         ],
       },
@@ -159,7 +184,9 @@ export const GUIDES: readonly PageDef[] = [
       {
         id: 'create',
         title: 'Create the project',
-        paragraphs: ['Start from the React and TypeScript template, then install the package.'],
+        paragraphs: [
+          `Start from the React and TypeScript template, then install the package. Or begin with the banking starter: [open the Vite starter in StackBlitz](${STACKBLITZ}/vite-react).`,
+        ],
         code: [
           {
             label: 'Create and install',
@@ -559,7 +586,7 @@ export const GUIDES: readonly PageDef[] = [
         paragraphs: ['Later work.'],
         points: [
           'Wave 3, scale and trust: a virtualised data table for 10k+ rows with column pinning, resizing and multi-sort; a high-contrast theme, density setting and RTL verification; performance numbers for live tables; a manual VoiceOver and NVDA pass; an automated Next.js consumer build.',
-          'Wave 4, adoption: full example apps (trading dashboard, portfolio tracker, invoicing), StackBlitz starters, good first issues, a component contribution template.',
+          'Wave 4, adoption: full example apps (trading dashboard, portfolio tracker, invoicing). Done: StackBlitz starters (see [Introduction](/get-started/using/)), [copy-in patterns](/get-started/copy-a-pattern/), Markdown for every page, good first issues and a component contribution template.',
           'Since the 0.1.0 release: these docs replaced the old portal at design.punji.app with its URLs preserved, and punji-web adopts the published package next.',
         ],
       },
@@ -632,6 +659,66 @@ export const GUIDES: readonly PageDef[] = [
           '[ARCHITECTURE.md](' + REPO + '/ARCHITECTURE.md) and [QUALITY.md](' + REPO + '/QUALITY.md): structure, decisions and the definition of done.',
           '[RELEASE.md](' + REPO + '/RELEASE.md): the gated release flow. Never publish from a laptop.',
           '[SECURITY.md](' + REPO + '/SECURITY.md) and the [Security](/get-started/security/) guide.',
+          '[docs/CONTRIBUTING-COMPONENT.md](' + REPO + '/docs/CONTRIBUTING-COMPONENT.md): add a component step by step. `npm run new:component <name>` scaffolds the source, test, CSS, docs page, example, size budget and visual fixture.',
+          'New here? Pick an issue labelled [good first issue](https://github.com/20was/punji-ui/labels/good%20first%20issue), or ask for a component with the component request form.',
+        ],
+      },
+    ],
+  }),
+  guide({
+    slug: 'copy-a-pattern',
+    navTitle: 'Copy a pattern',
+    title: 'Copy a pattern into your app',
+    lead: 'One shadcn command copies a whole finance screen into your app: the TSX, its layout CSS and sample data.',
+    description: 'Copy a Punji UI Showcase screen into your React app with one shadcn CLI command: the TSX, its layout CSS and sample data, with @punji/ui as the dependency.',
+    summary:
+      'Every Showcase pattern and every App is also a shadcn registry item at `/r/<name>.json`. One command writes the screen (or the whole app), its layout CSS and only the sample data it uses into your app and installs `@punji/ui`. The copied files are yours; the components inside them stay package code that you update with npm.',
+    related: ['using', 'nextjs', 'bank-statement', 'portfolio-tracker'],
+    guide: [
+      {
+        id: 'command',
+        title: 'Copy one pattern',
+        paragraphs: [
+          'Run the shadcn CLI with the item URL. The name is the pattern\'s slug, the last part of its address: [Bank statement](/showcase/bank-statement/) is `bank-statement`. Each pattern page shows its own command under the live screen.',
+          'If the project has no `components.json`, the CLI may ask to create one first. Punji items do not use its Tailwind or alias settings: every file names its own target folder.',
+        ],
+        code: [{ label: 'Copy the bank statement screen', text: 'npx shadcn@latest add https://design.punji.app/r/bank-statement.json' }],
+      },
+      {
+        id: 'files',
+        title: 'What you get',
+        paragraphs: ['Everything lands in one folder, `components/punji/<name>/`, so two patterns never overwrite each other.'],
+        points: [
+          '`<name>.tsx`: the screen, a default export named after the pattern (`BankStatement`), with `\'use client\'` at the top for the Next.js App Router.',
+          '`<name>.css`: the layout CSS. Grid and spacing only, sized with container queries, colours and type from the `--pu-*` tokens.',
+          '`sample.ts` and `data/`: only the synthetic sample data the screen imports. Replace it with your own data source.',
+          '`@punji/ui` in your dependencies. Import `@punji/ui/styles.css` once at your app root if you have not already.',
+        ],
+        code: [
+          {
+            label: 'app/statement/page.tsx (or any route or screen)',
+            text: "import BankStatement from '@/components/punji/bank-statement/bank-statement';\n\nexport default function Page() {\n  return <BankStatement />;\n}",
+          },
+        ],
+      },
+      {
+        id: 'without-cli',
+        title: 'Without the shadcn CLI',
+        paragraphs: [
+          'The items are static JSON in the [shadcn registry item schema](https://ui.shadcn.com/docs/registry/registry-item-json): each file has a `target` path and its `content`. Any tool, or you, can read them. The index of every item is [/r/registry.json](https://design.punji.app/r/registry.json).',
+          'You can also copy the TSX and CSS from a pattern page, or read the page as Markdown (the "View as Markdown" link under every page title) and paste it into a coding assistant.',
+        ],
+      },
+      {
+        id: 'agents',
+        title: 'For coding agents',
+        paragraphs: [
+          'Every page has an `index.md` beside it with the page text, props tables and example code, and [llms.txt](https://design.punji.app/llms.txt) links to all of them. An agent that needs a screen can fetch the registry item and write its files; one that needs a component can read the page Markdown first.',
+        ],
+        points: [
+          'Prefer the documented components inside a pattern over rebuilding them: the money, tables and inputs carry the exactness, keyboard and accessibility work.',
+          'Keep `@punji/ui` on the version range the item names, so the screen and the components it uses agree.',
+          'CI typechecks every item as app code against the built package before the site is published.',
         ],
       },
     ],

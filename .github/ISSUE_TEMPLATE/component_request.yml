@@ -1,0 +1,66 @@
+name: Component request
+description: Ask for a new finance component (a table, an input, a chart, a screen piece) that Punji UI does not have yet.
+labels: [enhancement, component-request]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Check the [docs](https://design.punji.app) and the [Showcase patterns](https://design.punji.app/#showcase) first: the piece may exist under another name, or be a pattern you can copy with `npx shadcn@latest add https://design.punji.app/r/<name>.json`.
+  - type: input
+    id: name
+    attributes:
+      label: Working name
+      description: What you would call it ("RateBadge", "Fixed deposit ladder").
+    validations:
+      required: true
+  - type: dropdown
+    id: domain
+    attributes:
+      label: Domain
+      options:
+        - Financial primitives (money, figures, inputs)
+        - Stock market and trading
+        - Portfolio
+        - Accounting and ledgers
+        - Banking, wallets and payments
+        - Lending, KYC and tax
+        - Share issues
+        - Data, forms, layout or feedback (general purpose)
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What you are building and what is missing
+      description: The screen or flow, who uses it, and what you do today without this component.
+    validations:
+      required: true
+  - type: textarea
+    id: data
+    attributes:
+      label: The data it shows or edits
+      description: |
+        The shape of one item, with invented values. Money as minor units (paisa, cents) or exact decimal strings, never floats.
+      render: ts
+    validations:
+      required: true
+  - type: textarea
+    id: behaviour
+    attributes:
+      label: Behaviour, states and keyboard
+      description: Loading, empty, error and missing values; what a keyboard and a screen reader user should be able to do; the WAI-ARIA pattern if you know it (https://www.w3.org/WAI/ARIA/apg/patterns/).
+  - type: textarea
+    id: locale
+    attributes:
+      label: Currency, locale and calendar
+      description: Currencies, number grouping (lakh/crore or thousands), Devanagari digits, Bikram Sambat dates, market rules (NEPSE or others) it must respect.
+  - type: checkboxes
+    id: bar
+    attributes:
+      label: Before you send
+      options:
+        - label: It is general purpose, useful beyond one product (product-specific pieces stay in the product).
+          required: true
+        - label: I have read "The bar for a new component" in CONTRIBUTING.md.
+          required: true
+        - label: I would like to build it myself (see docs/CONTRIBUTING-COMPONENT.md and `npm run new:component`).

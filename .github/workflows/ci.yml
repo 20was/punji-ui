@@ -44,6 +44,7 @@ jobs:
               - 'portal/**'
               - 'site/**'
               - 'fixtures/**'
+              - 'templates/**'
               - 'scripts/**'
               - 'package.json'
               - 'package-lock.json'
@@ -146,6 +147,33 @@ jobs:
           SITE_SHARD: ${{ matrix.shard }}/4
         run: npm run check:site
 
+  # The starter templates people open from the docs (StackBlitz): each installs the packed tarball in a fresh folder
+  # and runs its own build (tsc + Vite, next build). Separate so the Next.js install does not slow `verify`.
+  templates:
+    name: Starter templates build against the packed package
+    needs: changes
+    if: needs.changes.outputs.package == 'true' || github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install (no lifecycle scripts)
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm run build
+      - name: Each template installs the tarball and builds (vite-react, nextjs-app-router)
+        run: npm run check:templates
+
   visual:
     name: Visual regression and browser a11y
     needs: changes
@@ -245,7 +273,7 @@ jobs:
 
   ci-ok:
     name: CI OK
-    needs: [changes, verify, site, visual, nextjs, workflows]
+    needs: [changes, verify, site, templates, visual, nextjs, workflows]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 2

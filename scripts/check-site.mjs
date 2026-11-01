@@ -247,6 +247,43 @@ try {
     await t.getByTestId('wd-allot-check').click();
     await t.getByText('Added to your holdings.').or(t.getByText(/unblocked\./)).first().waitFor({ timeout: 5000 }).catch(() => fail('wealth dashboard: the allotment check did not settle the application'));
     if (!(await t.getByTestId('wd-applications').textContent())?.match(/Allotted|Not allotted/)) fail('wealth dashboard: the application status did not change after the allotment check');
+    // Retail banking: a transfer to a saved payee passes the payee check, the one-time code and lands on a receipt,
+    // and Home's total drops by exactly the amount. The wallet pays an electricity bill with the PIN, and the balance
+    // on Home is the old balance less the bill plus its cashback.
+    await t.goto(`${base}/apps/retail-banking/`);
+    await t.getByTestId('rb-total').waitFor();
+    const totalBefore = await t.getByTestId('rb-total').textContent();
+    await t.getByTestId('screen-transfer').click();
+    await t.locator('[data-screen="transfer"] [data-screen-title]').waitFor();
+    await t.getByTestId('rb-payee').click();
+    await t.getByTestId('rb-payee-option-p-mother').click();
+    await t.getByTestId('rb-amount').fill('1500');
+    await t.getByTestId('rb-purpose').selectOption('Family support');
+    await t.getByTestId('rb-continue').click();
+    await t.locator('[data-testid="rb-payee-check"][data-result="match"]').waitFor({ timeout: 5000 }).catch(() => fail('retail banking: the payee check did not answer'));
+    await t.getByTestId('rb-confirm').click();
+    await t.locator('[data-testid="rb-otp"] input').first().click();
+    await t.keyboard.type('246810');
+    await t.getByTestId('rb-receipt').waitFor({ timeout: 5000 }).catch(() => fail('retail banking: the transfer did not reach a receipt'));
+    await t.getByTestId('screen-home').click();
+    const totalAfter = await t.getByTestId('rb-total').textContent();
+    const rupees = (text) => Number(((text ?? '').match(/[\d,]+\.\d{2}/)?.[0] ?? '0').replace(/,/g, ''));
+    if (Math.round((rupees(totalBefore) - rupees(totalAfter)) * 100) !== 150_000) fail(`retail banking: Home total went from ${totalBefore} to ${totalAfter}, not down by Rs 1,500`);
+    await t.goto(`${base}/apps/digital-wallet/#bills`);
+    await t.locator('[data-screen="bills"] [data-screen-title]').waitFor();
+    // The bills screen loads on demand; fill and fetch again if a busy machine dropped the first attempt.
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      await t.getByTestId('dw-electricity-id').fill('1234567');
+      await t.getByTestId('dw-electricity-fetch').click();
+      if (await t.locator('[data-testid="dw-electricity-bill"][data-state="ready"]').waitFor({ timeout: 5000 }).then(() => true, () => false)) break;
+      if (attempt === 2) fail('digital wallet: the electricity bill did not load');
+    }
+    await t.getByTestId('dw-electricity-pay').click({ timeout: 10000 });
+    await t.locator('[data-testid="dw-pin"] button').first().focus();
+    await t.keyboard.type('2580');
+    await t.getByTestId('dw-receipt').waitFor({ timeout: 5000 }).catch(() => fail('digital wallet: the bill payment did not reach a receipt'));
+    await t.getByTestId('screen-home').click();
+    if (!(await t.getByTestId('dw-balance').textContent())?.includes('10,540.49')) fail(`digital wallet: balance after the bill is ${await t.getByTestId('dw-balance').textContent()}, expected Rs 10,540.49 (12,480.50 - 1,979.60 + 39.59 cashback)`);
     // Accounting: a balanced journal posts and reaches the posted list; the reconciliation accepts suggestions.
     await t.goto(`${base}/apps/accounting/#journal`);
     await t.locator('[data-screen="journal"] [data-screen-title]').waitFor();
@@ -499,5 +536,5 @@ if (failures.length) {
   process.exit(1);
 }
 console.log(`layout flags: edge ${flagCounts.edge} (+${flagCounts.edgeAllowed} allowlisted), clip ${flagCounts.clip}, dup ${flagCounts.dup}, icon ${flagCounts.icon}`);
-console.log(`apps: every screen of ${PAGES.filter((p) => p.kind === 'app').length} apps at 390, 768 and 1440 px, light and dark, plus order entry, the command palette, the allotment flow, posting a journal, reconciling, issuing an invoice and the market portal screener, floorsheet and alerts`);
+console.log(`apps: every screen of ${PAGES.filter((p) => p.kind === 'app').length} apps at 390, 768 and 1440 px, light and dark, plus order entry, the command palette, the allotment flow, posting a journal, reconciling, issuing an invoice, a bank transfer, a wallet bill payment and the market portal screener, floorsheet and alerts`);
 console.log(`site check${shardCount > 1 ? ` (shard ${shardIndex}/${shardCount})` : ''}: ${routes.length} routes x 2 widths x 2 themes, ${checked.variants} example variants and ${checked.tabs} page tabs (axe, overflow, console, layout) and the copy, variant, preview theme, phone-width frame, tabs, theme, search, sidebar, drawer, path routing, hash redirect, 404 and no-JS behaviours passed`);

@@ -129,7 +129,7 @@
     "name": "live-figure (import from '@punji/ui/live-figure')",
     "path": "dist/live-figure/LiveFigure.js",
     "import": "*",
-    "limit": "1.26 kB",
+    "limit": "1.29 kB",
     "gzip": true
   },
   {
@@ -311,20 +311,20 @@
     "name": "live (import from '@punji/ui/live')",
     "path": "dist/live/live.js",
     "import": "*",
-    "limit": "860 B",
+    "limit": "880 B",
     "gzip": true
   },
   {
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "175.2 kB",
+    "limit": "176.1 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "39.73 kB",
+    "limit": "40.01 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -752,7 +752,7 @@
     "name": "candlestick-chart (import from '@punji/ui/candlestick-chart')",
     "path": "dist/candlestick-chart/CandlestickChart.js",
     "import": "*",
-    "limit": "5.6 kB",
+    "limit": "5.72 kB",
     "gzip": true
   },
   {
@@ -959,6 +959,20 @@
     "gzip": true
   },
   {
+    "name": "bill-summary (import from '@punji/ui/bill-summary')",
+    "path": "dist/bill-summary/BillSummary.js",
+    "import": "*",
+    "limit": "8.9 kB",
+    "gzip": true
+  },
+  {
+    "name": "Bill summary CSS",
+    "path": "dist/css/bill-summary.css",
+    "limit": "0.8 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
     "name": "beneficiary-selector (import from '@punji/ui/beneficiary-selector')",
     "path": "dist/beneficiary-selector/BeneficiarySelector.js",
     "import": "*",
@@ -1071,6 +1085,13 @@
     "path": "dist/split-pane/SplitPane.js",
     "import": "*",
     "limit": "1.4 kB",
+    "gzip": true
+  },
+  {
+    "name": "Split pane CSS",
+    "path": "dist/css/split-pane.css",
+    "limit": "0.65 kB",
+    "rolldown": false,
     "gzip": true
   },
   {

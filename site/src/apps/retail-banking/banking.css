@@ -1,0 +1,98 @@
+/* Retail banking layout, phone first. Colours and type from the package tokens; classes prefixed rb-. */
+.rb-today { display: grid; gap: 0; margin: 0; font-size: 13px; line-height: 1.3; }
+.rb-today-bank { font: 600 15px/1.2 var(--pu-font-display); }
+.rb-switches { gap: 8px 16px; }
+.rb-offline { padding: 10px 14px; border: 1px solid var(--pu-color-warn-accent); border-radius: 10px; background: var(--pu-color-surface-tint); font-size: 14px; }
+
+.rb-hero { display: grid; gap: 4px; padding: 18px; border-radius: var(--pu-radius-card); background: var(--pu-color-surface-inverse); color: var(--pu-color-text-inverse); }
+.rb-hero-label, .rb-hero-sub { margin: 0; color: var(--pu-color-inverse-muted); font-size: 13px; }
+.rb-hero-value { margin: 0; font: 700 32px/1.15 var(--pu-font-display); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.rb-actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 14px 0 0; padding: 0; list-style: none; }
+.rb-action { position: relative; display: grid; justify-items: center; gap: 6px; width: 100%; min-height: 72px; padding: 10px 4px; border: 1px solid var(--pu-color-inverse-line); border-radius: 14px; background: transparent; color: inherit; font: 500 13px/1.2 var(--pu-font-body); text-align: center; cursor: pointer; }
+.rb-action:hover { background: rgba(255, 255, 255, 0.08); }
+.rb-action:focus-visible { outline: 2px solid var(--pu-color-text-inverse); outline-offset: 2px; }
+.rb-action-icon { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(255, 255, 255, 0.12); }
+.rb-action-badge { position: absolute; top: 6px; right: 8px; min-width: 18px; padding: 0 5px; border-radius: 999px; background: var(--pu-color-text-inverse); color: var(--pu-color-surface-inverse); font-size: 11px; font-weight: 700; line-height: 18px; }
+.rb-accounts { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+.rb-upcoming, .rb-deposit-list { display: grid; gap: 12px; margin: 0 0 14px; padding: 0; list-style: none; }
+.rb-upcoming li, .rb-deposit-list li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 12px; font-variant-numeric: tabular-nums; }
+.rb-upcoming li > span:first-child, .rb-deposit-list li > span:first-child { display: grid; gap: 2px; min-width: 0; }
+.rb-deposit-maturity { display: grid; justify-items: end; gap: 2px; font-weight: 600; }
+.rb-links, .rb-buttons, .rb-export { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.rb-buttons > * { flex: 1 1 auto; }
+.rb-gap { margin: 0 0 12px; }
+
+.rb-facts { display: grid; gap: 10px 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); margin: 0; }
+.rb-facts > div { display: grid; gap: 2px; min-width: 0; }
+.rb-facts dt { color: var(--doc-ink-2); font-size: 12px; }
+.rb-facts dd { margin: 0; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.rb-facts-big { font: 600 22px/1.2 var(--pu-font-display); }
+.rb-filters { display: grid; gap: 10px; margin: 0 0 12px; }
+.rb-filter-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.rb-totals { margin: 0 0 8px; color: var(--doc-ink-2); font-variant-numeric: tabular-nums; }
+.rb-print-head { display: none; }
+
+.rb-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin: 0; padding: 0; list-style: none; counter-reset: none; }
+.rb-steps li { display: flex; align-items: center; gap: 6px; min-width: 0; padding: 6px 0 0; border-top: 3px solid var(--pu-color-track); color: var(--doc-ink-2); font-size: 12px; }
+.rb-steps li[data-state='done'] { border-top-color: var(--pu-color-gain); }
+.rb-steps li[data-state='current'] { border-top-color: var(--pu-color-text); color: var(--pu-color-text); font-weight: 600; }
+.rb-steps-n { display: grid; flex: none; place-items: center; width: 18px; height: 18px; border: 1px solid currentColor; border-radius: 50%; font-size: 11px; }
+.rb-transfer-body { max-width: 640px; }
+.rb-transfer-body:has(.app-grid) { max-width: none; }
+.rb-transfer-body h3[tabindex='-1'] { outline: none; }
+.rb-form { display: grid; gap: 14px; }
+.rb-error { margin: -8px 0 0; color: var(--pu-color-loss); font-size: 13px; }
+.rb-review-amount { margin: 0; font: 700 32px/1.15 var(--pu-font-display); font-variant-numeric: tabular-nums; }
+.rb-words { margin: -10px 0 0; color: var(--doc-ink-2); font-size: 14px; font-style: italic; }
+
+.rb-cardface { position: relative; display: grid; grid-template-rows: auto 1fr auto auto; gap: 8px; width: 100%; max-width: 340px; aspect-ratio: 1.586; padding: 16px 18px; box-sizing: border-box; border-radius: 16px; background: linear-gradient(135deg, var(--pu-color-surface-inverse), color-mix(in srgb, var(--pu-color-surface-inverse) 70%, var(--pu-color-series-3))); color: var(--pu-color-text-inverse); font-variant-numeric: tabular-nums; }
+.rb-cardface[data-status='frozen'] { filter: grayscale(0.85); opacity: 0.8; }
+.rb-cardface[data-status='blocked'] { filter: grayscale(1); opacity: 0.55; }
+.rb-cardface-bank { font: 600 14px/1 var(--pu-font-display); }
+.rb-cardface-chip { width: 36px; height: 26px; border-radius: 5px; background: linear-gradient(135deg, #d9b45a, #a4812e); }
+.rb-cardface-number { font: 500 18px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.06em; }
+.rb-cardface-foot { display: flex; align-items: baseline; gap: 12px; font-size: 12px; }
+.rb-cardface-network { margin-left: auto; font: 700 italic 16px/1 var(--pu-font-display); }
+.rb-card-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
+.rb-fieldset { display: grid; gap: 10px; margin: 0; padding: 12px 14px; border: 1px solid var(--doc-rule); border-radius: 12px; }
+.rb-fieldset legend { padding: 0 4px; font-weight: 600; font-size: 14px; }
+.rb-switch-list { display: grid; gap: 10px; }
+.rb-limits { display: grid; gap: 14px; }
+.rb-subhead { margin: 0; font: 600 15px/1.3 var(--pu-font-display); }
+.rb-limit { display: grid; gap: 6px; }
+.rb-loan-figure { font-size: 28px; }
+
+.rb-alerts { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; border: 1px solid var(--doc-rule); border-radius: var(--pu-radius-card); }
+.rb-alerts li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; padding: 14px; border-top: 1px solid var(--doc-rule); }
+.rb-alerts li:first-child { border-top: 0; }
+.rb-alerts li > .kit-btn { grid-column: 2; justify-self: start; }
+.rb-alerts li[data-unread] { background: var(--pu-color-surface-tint); }
+.rb-alerts li[data-unread] .rb-alert-title::before { content: ''; display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; background: var(--pu-color-link); vertical-align: middle; }
+.rb-alert-kind { align-self: start; padding: 2px 8px; border: 1px solid var(--doc-rule); border-radius: 999px; color: var(--doc-ink-2); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+.rb-alert-main { display: grid; gap: 4px; min-width: 0; }
+.rb-alert-title { margin: 0; font: 600 15px/1.3 var(--pu-font-display); }
+.rb-alert-body { margin: 0; color: var(--doc-ink-2); font-size: 14px; overflow-wrap: anywhere; }
+.rb-alert-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin: 0; color: var(--doc-ink-3); font-size: 12px; }
+
+@media (min-width: 640px) {
+  .rb-actions { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .rb-hero { padding: 24px; }
+  .rb-buttons > * { flex: 0 0 auto; }
+}
+@media (max-width: 899px) {
+  .rb-switches { margin-left: 0; }
+}
+@media (max-width: 389px) {
+  .rb-hero-value, .rb-review-amount { font-size: 26px; }
+  .rb-steps li > span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
+
+/* Print or save as PDF: the statement only, every entry, no app chrome. */
+@media print {
+  .doc-app-bar, .doc-app-about, .app-nav, .app-toolbar, .app-banner, .app-screen-head, .rb-noprint, .pu-pagination, .kit-pagination { display: none !important; }
+  .app-frame { display: block; }
+  .app-body { padding: 0; }
+  .rb-print-head { display: block; margin: 0 0 12px; font-size: 12px; }
+  .rb-print-head p { margin: 0; }
+  .rb-statement .kit-card { break-inside: auto; box-shadow: none; }
+}

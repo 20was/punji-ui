@@ -11,3 +11,4 @@ test-results/
 playwright-report/
 site/src/generated/
 site/dist-server/
+site/.registry-check/

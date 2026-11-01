@@ -185,4 +185,28 @@ export const WALLET_PAGES: readonly PageDef[] = [
     },
     related: ['otp-input', 'amount-keypad', 'field'],
   },
+  {
+    slug: 'bill-summary',
+    title: 'BillSummary',
+    group: 'banking',
+    kind: 'component',
+    description: 'A utility bill fetched for a customer ID before it is paid: biller, customer, charges, rebates and fines, an exact total and a due date in AD or BS.',
+    lead: 'Show the electricity, water or internet bill a biller returned, so the payer sees whose bill and how much before paying it.',
+    summary:
+      'The card a wallet shows after you type an electricity SC number, a water customer ID or an internet username: the biller and service, the customer\'s name as the biller holds it, the period, each charge, rebates (negative) and late fines (positive), the total due and the due date in AD or Bikram Sambat, with a `PaymentStatus` you decide. The total is the one your biller returned, or the exact bigint sum of the lines. It has loading, error-with-retry and nothing-due states, and your Pay button goes in `action`.',
+    use: ['Bill payment flows: electricity, water, internet, TV, school fees, insurance premiums.', 'A "bill details" page after payment, with `status="paid"`.'],
+    avoid: ['Adding fines or rebates on the client: show what the biller returned.', 'A full tax invoice with VAT lines: use `TaxInvoice`.'],
+    api: [...ui('bill-summary', 'BillSummary', 'BillLine', 'BillSummaryLabels', 'billTotal')],
+    examples: [
+      { id: 'states', title: 'Bill, loading, error, nothing due', note: 'Switch states; the due date flips between AD and BS.' },
+    ],
+    keyboard: ['Only your action and the retry button are interactive.'],
+    accessibility: ['The biller is a heading that names the region. The loading state is a status with words; an error is an alert. A rebate is signed and labelled, never colour alone.'],
+    responsive: ['Fills its column; each line keeps its amount on the right and wraps its words.'],
+    notes: {
+      title: 'Exact money',
+      points: ['Amounts are bigint minor units. When `total` is given it is printed as given: compare it with `billTotal(lines, adjustments)` in a test if your biller itemises.'],
+    },
+    related: ['payment-status', 'payment-receipt', 'mobile-number-input', 'digital-wallet'],
+  },
 ];

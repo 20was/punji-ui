@@ -163,6 +163,11 @@ h1:focus, main:focus { outline: none; }
 .doc-badge-copy { display: inline-grid; grid-auto-flow: column; place-items: center; gap: 4px; height: 20px; padding: 0 6px; border: 0; border-radius: 999px; background: transparent; color: var(--doc-ink-3); cursor: pointer; font-size: 11px; }
 .doc-badge-copy:hover { background: var(--doc-hover); color: var(--pu-color-text); }
 .doc-badge-copy span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+/* The page as Markdown: copy, view, open in an assistant. Quiet text buttons under the lead. */
+.doc-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; margin: 10px 0 0; }
+.doc-action { display: inline-flex; align-items: center; min-height: 28px; padding: 0 10px; border: 1px solid var(--doc-rule); border-radius: 8px; background: transparent; color: var(--doc-ink-2); font: 500 12.5px/1 var(--pu-font-body); text-decoration: none; cursor: pointer; white-space: nowrap; }
+.doc-action:hover { background: var(--doc-hover); color: var(--pu-color-text); }
+@media (pointer: coarse) { .doc-action { min-height: 44px; } }
 
 /* tabs: in-page links; JavaScript turns them into a view switch, without it they jump to the sections */
 .doc-tabs { position: sticky; top: var(--doc-header); z-index: 20; display: flex; gap: 4px; margin: 4px 0 0; padding: 0; background: var(--pu-color-bg); border-bottom: 1px solid var(--doc-rule); overflow-x: auto; scrollbar-width: none; }

@@ -23,7 +23,7 @@ export default function Example() {
     return holdings.slice(0, 6).toSorted((a, b) => (a[sort.key] < b[sort.key] ? -sign : a[sort.key] > b[sort.key] ? sign : 0));
   }, [sort]);
   return (
-    <div className="ex-medium">
+    <div style={{ width: 'min(100%, 720px)', marginInline: 'auto' }}>
     <FinancialTable
       caption="Holdings, prices in NPR"
       columns={columns}

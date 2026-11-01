@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { DateRangePicker } from '@punji/ui/date-picker';
 import { dateRangePresets } from '@punji/ui/date-range-presets';
+import { Stack } from '@punji/ui/stack';
 
 const TODAY = '2026-11-04';
 
@@ -12,9 +13,9 @@ export default function Example() {
     [],
   );
   return (
-    <div className="ex-stack">
+    <Stack>
       <DateRangePicker label="Trade period" value={range} onChange={setRange} today={TODAY} weekStartsOn={1} presets={presets} />
       <p className="doc-muted">Value: <code>{range ? `${range.start} to ${range.end ?? '…'}` : 'null'}</code></p>
-    </div>
+    </Stack>
   );
 }

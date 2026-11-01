@@ -5,7 +5,8 @@
  * one label; each box also has its own name ("Digit 3 of 6"). Typing moves forward, Backspace moves back, the
  * arrow keys, Home and End move between boxes, and a paste or an SMS autofill spreads across the boxes. Devanagari and
  * Arabic-Indic digits are converted to ASCII. The boxes are always laid out left to right, even on a right-to-left
- * page, because a code is read in the order it was sent. The code is checked on your server, never here.
+ * page, because a code is read in the order it was sent. Long codes keep their tap size: a code of 7 or more boxes that cannot
+ * fit in one row at full size wraps into two balanced rows (reading order unchanged) instead of shrinking the boxes under 44px. The code is checked on your server, never here.
  */
 import { useEffect, useId, useRef, type ClipboardEvent, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react';
 
@@ -122,7 +123,7 @@ export function OtpInput({
   return (
     <div className={`pu-otp${size === 'md' ? ' md' : ''}`} data-invalid={error ? 'true' : undefined}>
       <span className="pu-otp-label" id={`${id}-label`}>{label}</span>
-      <div className="pu-otp-cells" role="group" aria-labelledby={`${id}-label`} aria-describedby={describedBy} dir="ltr" data-testid={testId} style={{ '--otp-length': length } as CSSProperties}>
+      <div className="pu-otp-cells" role="group" aria-labelledby={`${id}-label`} aria-describedby={describedBy} dir="ltr" data-testid={testId} data-fit={length > 10 ? 'xl' : length > 8 ? 'l' : length > 6 ? 'm' : undefined} style={{ '--otp-length': length, '--otp-cols': Math.ceil(length / 2) } as CSSProperties}>
         {Array.from({ length }, (_, index) => (
           <input
             key={index}

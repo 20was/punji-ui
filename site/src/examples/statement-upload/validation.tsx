@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { StatementUpload, type StatementRejection } from '@punji/ui/statement-upload';
+import { Stack } from '@punji/ui/stack';
 
 export default function Example() {
   const [refused, setRefused] = useState<StatementRejection[]>([]);
   return (
-    <div className="ex-stack ex-narrow">
+    <Stack style={{ width: 'min(100%, 440px)', marginInline: 'auto' }}>
       <StatementUpload
         label="NEPSE trade book"
         accept={['.csv']}
@@ -16,6 +17,6 @@ export default function Example() {
         }}
       />
       <p className="doc-muted">Refused on the last attempt: <code>{refused.length === 0 ? 'none' : refused.map((r) => r.reason).join(', ')}</code></p>
-    </div>
+    </Stack>
   );
 }

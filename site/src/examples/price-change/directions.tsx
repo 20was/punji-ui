@@ -1,3 +1,5 @@
+import { Card } from '@punji/ui/card';
+import { Stack } from '@punji/ui/stack';
 import { MoneyDisplay } from '@punji/ui/money-display';
 import { PriceChange } from '@punji/ui/price-change';
 import { nepalMoneyConfig } from '@punji/ui/money';
@@ -13,19 +15,16 @@ const quotes = [
 
 export default function Example() {
   return (
-    <div className="ex-cols">
+    <div style={{ display: 'grid', gap: 16, gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 15rem), 1fr))' }}>
       {quotes.map((q) => (
-        <div key={q.symbol} className="ex-panel">
-          <div className="ex-panel-head">
-            <p className="ex-panel-title">
-              <b>{q.symbol}</b> · {q.name}
+        <Card key={q.symbol} title={`${q.symbol} · ${q.name}`} headingLevel={3}>
+          <Stack gap={2}>
+            <p style={{ margin: 0, fontSize: 32, fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+              <MoneyDisplay value={q.current} preset={npr} />
             </p>
-          </div>
-          <p className="ex-big">
-            <MoneyDisplay value={q.current} preset={npr} />
-          </p>
-          <PriceChange current={q.current} previous={q.previous} preset={npr} />
-        </div>
+            <PriceChange current={q.current} previous={q.previous} preset={npr} />
+          </Stack>
+        </Card>
       ))}
     </div>
   );

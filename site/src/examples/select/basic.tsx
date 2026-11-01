@@ -22,14 +22,14 @@ const startOf: Record<Period, bigint> = { '1w': 93210000n, '1m': 95884000n, '1y'
 export default function Example() {
   const [period, setPeriod] = useState<Period>('1m');
   return (
-    <div className="ex-narrow">
+    <div style={{ width: 'min(100%, 440px)', marginInline: 'auto' }}>
       <Card
         title="Portfolio value"
         headingLevel={3}
         // The label's default placement is "hidden": it names the control for screen readers only.
         action={<Select<Period> label="Period" size="sm" value={period} onChange={setPeriod} options={periods} />}
       >
-        <p className="ex-big">
+        <p style={{ margin: 0, fontSize: 32, fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.1 }}>
           <MoneyDisplay value={now} preset={npr} />
         </p>
         <PriceChange current={now} previous={startOf[period]} preset={npr} />

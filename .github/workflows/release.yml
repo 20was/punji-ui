@@ -175,10 +175,11 @@ jobs:
           VERSION: ${{ needs.build.outputs.version }}
           SHA256: ${{ needs.build.outputs.sha256 }}
         run: echo "${SHA256}  release/punji-ui-${VERSION}.tgz" | sha256sum --check --strict
+      # The leading ./ matters: npm reads a bare "a/b.tgz" as GitHub shorthand and tries to clone it.
       - name: Publish with provenance
         env:
           VERSION: ${{ needs.build.outputs.version }}
-        run: npm publish "release/punji-ui-${VERSION}.tgz" --provenance --access public --ignore-scripts
+        run: npm publish "./release/punji-ui-${VERSION}.tgz" --provenance --access public --ignore-scripts
       # Changesets tagged a single-package repository "v<version>"; keep that scheme.
       - name: Tag and GitHub release, with the SBOM attached
         env:

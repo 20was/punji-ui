@@ -73,7 +73,7 @@
     "name": "fields (import from '@punji/ui/fields')",
     "path": "dist/fields/Fields.js",
     "import": "*",
-    "limit": "4.38 kB",
+    "limit": "4.60 kB",
     "gzip": true
   },
   {
@@ -304,7 +304,7 @@
     "name": "format (import from '@punji/ui/format')",
     "path": "dist/format/format.js",
     "import": "*",
-    "limit": "1.00 kB",
+    "limit": "1.24 kB",
     "gzip": true
   },
   {
@@ -318,13 +318,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "154.87 kB",
+    "limit": "166.11 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "34.92 kB",
+    "limit": "36.08 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -339,7 +339,7 @@
     "name": "Nepal utilities including calendar table",
     "path": "dist/nepal/nepal.js",
     "import": "*",
-    "limit": "4.59 kB",
+    "limit": "4.97 kB",
     "gzip": true
   },
   {
@@ -381,7 +381,7 @@
     "name": "Localized decimal parser",
     "path": "dist/nepal/decimal.js",
     "import": "*",
-    "limit": "1.06 kB",
+    "limit": "1.39 kB",
     "gzip": true
   },
   {
@@ -451,7 +451,7 @@
     "name": "percentage-input (import from '@punji/ui/percentage-input')",
     "path": "dist/percentage-input/PercentageInput.js",
     "import": "*",
-    "limit": "2.13 kB",
+    "limit": "2.42 kB",
     "gzip": true
   },
   {
@@ -619,28 +619,28 @@
     "name": "Money formatter and parser without React (import from '@punji/ui/money')",
     "path": "dist/money/money.js",
     "import": "*",
-    "limit": "3.55 kB",
+    "limit": "3.80 kB",
     "gzip": true
   },
   {
     "name": "MoneyDisplay (import from '@punji/ui/money-display')",
     "path": "dist/money-display/MoneyDisplay.js",
     "import": "*",
-    "limit": "3.92 kB",
+    "limit": "4.16 kB",
     "gzip": true
   },
   {
     "name": "PriceChange (import from '@punji/ui/price-change')",
     "path": "dist/price-change/PriceChange.js",
     "import": "*",
-    "limit": "4.39 kB",
+    "limit": "4.63 kB",
     "gzip": true
   },
   {
     "name": "CurrencyInput (import from '@punji/ui/currency-input')",
     "path": "dist/currency-input/CurrencyInput.js",
     "import": "*",
-    "limit": "4.70 kB",
+    "limit": "4.92 kB",
     "gzip": true
   },
   {
@@ -808,7 +808,7 @@
     "name": "market-indices (import from '@punji/ui/market-indices')",
     "path": "dist/market-indices/MarketIndices.js",
     "import": "*",
-    "limit": "6.38 kB",
+    "limit": "6.59 kB",
     "gzip": true
   },
   {
@@ -822,7 +822,7 @@
     "name": "price-limit (import from '@punji/ui/price-limit')",
     "path": "dist/price-limit/PriceLimitIndicator.js",
     "import": "*",
-    "limit": "5.54 kB",
+    "limit": "5.76 kB",
     "gzip": true
   },
   {
@@ -843,14 +843,14 @@
     "name": "ledger (import from '@punji/ui/ledger')",
     "path": "dist/ledger/ledger.js",
     "import": "*",
-    "limit": "2.46 kB",
+    "limit": "2.72 kB",
     "gzip": true
   },
   {
     "name": "debit-credit (import from '@punji/ui/debit-credit')",
     "path": "dist/debit-credit/DebitCredit.js",
     "import": "*",
-    "limit": "4.32 kB",
+    "limit": "4.57 kB",
     "gzip": true
   },
   {
@@ -899,7 +899,7 @@
     "name": "banking (import from '@punji/ui/banking')",
     "path": "dist/banking/banking.js",
     "import": "*",
-    "limit": "2.34 kB",
+    "limit": "2.59 kB",
     "gzip": true
   },
   {
@@ -920,7 +920,7 @@
     "name": "transaction-list (import from '@punji/ui/transaction-list')",
     "path": "dist/transaction-list/TransactionList.js",
     "import": "*",
-    "limit": "9.50 kB",
+    "limit": "9.79 kB",
     "gzip": true
   },
   {
@@ -934,7 +934,7 @@
     "name": "payment-receipt (import from '@punji/ui/payment-receipt')",
     "path": "dist/payment-receipt/PaymentReceipt.js",
     "import": "*",
-    "limit": "6.99 kB",
+    "limit": "7.22 kB",
     "gzip": true
   },
   {
@@ -962,21 +962,21 @@
     "name": "holdings-table (import from '@punji/ui/holdings-table')",
     "path": "dist/holdings-table/HoldingsTable.js",
     "import": "*",
-    "limit": "10.41 kB",
+    "limit": "10.74 kB",
     "gzip": true
   },
   {
     "name": "portfolio-allocation (import from '@punji/ui/portfolio-allocation')",
     "path": "dist/portfolio-allocation/PortfolioAllocation.js",
     "import": "*",
-    "limit": "6.45 kB",
+    "limit": "6.67 kB",
     "gzip": true
   },
   {
     "name": "portfolio-overview (import from '@punji/ui/portfolio-overview')",
     "path": "dist/portfolio-overview/PortfolioOverview.js",
     "import": "*",
-    "limit": "6.79 kB",
+    "limit": "7.02 kB",
     "gzip": true
   },
   {
@@ -1021,7 +1021,7 @@
     "name": "order-list (import from '@punji/ui/order-list')",
     "path": "dist/order-list/OrderList.js",
     "import": "*",
-    "limit": "8.37 kB",
+    "limit": "8.66 kB",
     "gzip": true
   },
   {
@@ -1084,7 +1084,7 @@
     "name": "amount-keypad (import from '@punji/ui/amount-keypad')",
     "path": "dist/amount-keypad/AmountKeypad.js",
     "import": "*",
-    "limit": "5.50 kB",
+    "limit": "5.78 kB",
     "gzip": true
   },
   {
@@ -1140,7 +1140,7 @@
     "name": "amortisation-table (import from '@punji/ui/amortisation-table')",
     "path": "dist/amortisation-table/AmortisationTable.js",
     "import": "*",
-    "limit": "4.97 kB",
+    "limit": "5.24 kB",
     "gzip": true
   },
   {
@@ -1161,7 +1161,7 @@
     "name": "interest-rate-table (import from '@punji/ui/interest-rate-table')",
     "path": "dist/interest-rate-table/InterestRateTable.js",
     "import": "*",
-    "limit": "3.64 kB",
+    "limit": "3.89 kB",
     "gzip": true
   },
   {
@@ -1199,14 +1199,14 @@
     "name": "remittance-tracker (import from '@punji/ui/remittance-tracker')",
     "path": "dist/remittance-tracker/RemittanceTracker.js",
     "import": "*",
-    "limit": "7.06 kB",
+    "limit": "7.35 kB",
     "gzip": true
   },
   {
     "name": "insurance-premium-card (import from '@punji/ui/insurance-premium-card')",
     "path": "dist/insurance-premium-card/InsurancePremiumCard.js",
     "import": "*",
-    "limit": "5.32 kB",
+    "limit": "5.60 kB",
     "gzip": true
   },
   {
@@ -1227,7 +1227,7 @@
     "name": "tax (import from '@punji/ui/tax')",
     "path": "dist/tax/tax.js",
     "import": "*",
-    "limit": "5.25 kB",
+    "limit": "5.92 kB",
     "gzip": true
   },
   {
@@ -1241,7 +1241,7 @@
     "name": "tax-invoice (import from '@punji/ui/tax-invoice')",
     "path": "dist/tax-invoice/TaxInvoice.js",
     "import": "*",
-    "limit": "10.52 kB",
+    "limit": "10.95 kB",
     "gzip": true
   },
   {
@@ -1262,7 +1262,7 @@
     "name": "payslip (import from '@punji/ui/payslip')",
     "path": "dist/payslip/Payslip.js",
     "import": "*",
-    "limit": "7.02 kB",
+    "limit": "7.43 kB",
     "gzip": true
   },
   {
@@ -1276,13 +1276,76 @@
     "name": "tds-summary (import from '@punji/ui/tds-summary')",
     "path": "dist/tds-summary/TdsSummary.js",
     "import": "*",
-    "limit": "8.38 kB",
+    "limit": "8.67 kB",
     "gzip": true
   },
   {
     "name": "css/tax.css (TaxInvoice, LineItemEditor, PanInput, IncomeTaxCalculator, Payslip, AgingTable, TdsSummary)",
     "path": "dist/css/tax.css",
     "limit": "2.38 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "trust (import from '@punji/ui/trust')",
+    "path": "dist/trust/spoofing.js",
+    "import": "*",
+    "limit": "2.71 kB",
+    "gzip": true
+  },
+  {
+    "name": "money/iso4217 (import from '@punji/ui/money/iso4217')",
+    "path": "dist/money/iso4217.js",
+    "import": "*",
+    "limit": "1.38 kB",
+    "gzip": true
+  },
+  {
+    "name": "transfer-review (import from '@punji/ui/transfer-review')",
+    "path": "dist/transfer-review/TransferReview.js",
+    "import": "*",
+    "limit": "9.45 kB",
+    "gzip": true
+  },
+  {
+    "name": "payee-verification (import from '@punji/ui/payee-verification')",
+    "path": "dist/payee-verification/PayeeVerification.js",
+    "import": "*",
+    "limit": "4.14 kB",
+    "gzip": true
+  },
+  {
+    "name": "hold-to-confirm (import from '@punji/ui/hold-to-confirm')",
+    "path": "dist/hold-to-confirm/HoldToConfirm.js",
+    "import": "*",
+    "limit": "1.33 kB",
+    "gzip": true
+  },
+  {
+    "name": "session-timeout (import from '@punji/ui/session-timeout')",
+    "path": "dist/session-timeout/SessionTimeoutWarning.js",
+    "import": "*",
+    "limit": "1.39 kB",
+    "gzip": true
+  },
+  {
+    "name": "scam-warning (import from '@punji/ui/scam-warning')",
+    "path": "dist/scam-warning/ScamWarning.js",
+    "import": "*",
+    "limit": "3.05 kB",
+    "gzip": true
+  },
+  {
+    "name": "secure-field (import from '@punji/ui/secure-field')",
+    "path": "dist/secure-field/SecureField.js",
+    "import": "*",
+    "limit": "1.25 kB",
+    "gzip": true
+  },
+  {
+    "name": "Trust and safety CSS",
+    "path": "dist/css/trust.css",
+    "limit": "1.74 kB",
     "rolldown": false,
     "gzip": true
   }

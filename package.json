@@ -511,6 +511,38 @@
       "types": "./dist/insurance-premium-card/InsurancePremiumCard.d.ts",
       "default": "./dist/insurance-premium-card/InsurancePremiumCard.js"
     },
+    "./trust": {
+      "types": "./dist/trust/spoofing.d.ts",
+      "default": "./dist/trust/spoofing.js"
+    },
+    "./money/iso4217": {
+      "types": "./dist/money/iso4217.d.ts",
+      "default": "./dist/money/iso4217.js"
+    },
+    "./transfer-review": {
+      "types": "./dist/transfer-review/TransferReview.d.ts",
+      "default": "./dist/transfer-review/TransferReview.js"
+    },
+    "./payee-verification": {
+      "types": "./dist/payee-verification/PayeeVerification.d.ts",
+      "default": "./dist/payee-verification/PayeeVerification.js"
+    },
+    "./hold-to-confirm": {
+      "types": "./dist/hold-to-confirm/HoldToConfirm.d.ts",
+      "default": "./dist/hold-to-confirm/HoldToConfirm.js"
+    },
+    "./session-timeout": {
+      "types": "./dist/session-timeout/SessionTimeoutWarning.d.ts",
+      "default": "./dist/session-timeout/SessionTimeoutWarning.js"
+    },
+    "./scam-warning": {
+      "types": "./dist/scam-warning/ScamWarning.d.ts",
+      "default": "./dist/scam-warning/ScamWarning.js"
+    },
+    "./secure-field": {
+      "types": "./dist/secure-field/SecureField.d.ts",
+      "default": "./dist/secure-field/SecureField.js"
+    },
     "./styles.css": {
       "types": "./dist/styles.css.d.ts",
       "default": "./dist/styles.css"

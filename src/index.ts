@@ -168,3 +168,13 @@ export * from './income-tax-calculator/IncomeTaxCalculator.tsx';
 export * from './payslip/Payslip.tsx';
 export * from './aging-table/AgingTable.tsx';
 export * from './tds-summary/TdsSummary.tsx';
+// Trust and safety: money-movement confirmation, payee checks, friction and spoofing detection.
+export * from './trust/spoofing.ts';
+export * from './transfer-review/TransferReview.tsx';
+export * from './payee-verification/PayeeVerification.tsx';
+export * from './hold-to-confirm/HoldToConfirm.tsx';
+export * from './session-timeout/SessionTimeoutWarning.tsx';
+export * from './scam-warning/ScamWarning.tsx';
+export * from './secure-field/SecureField.tsx';
+// ISO 4217 data (also on its own subpath for lazy loading).
+export * from './money/iso4217.ts';

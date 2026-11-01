@@ -3,20 +3,20 @@
 @layer punji.components {
   .kit-tablebox { overflow-x: auto; background: var(--pu-color-surface); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-2xl) }
   .kit-table { width: 100%; border-collapse: collapse; font-size: var(--pu-text-sm) }
-  .kit-table caption { text-align: left }
-  .kit-table th, .kit-table td { padding: 10px 12px; text-align: left; vertical-align: middle; border-bottom: 1px solid var(--pu-color-border); white-space: nowrap }
+  .kit-table caption { text-align: start }
+  .kit-table th, .kit-table td { padding: var(--pu-cell-y) var(--pu-cell-x); text-align: start; vertical-align: middle; border-bottom: 1px solid var(--pu-color-border); white-space: nowrap }
   .kit-table tbody tr:last-child > * { border-bottom: 0 }
   .kit-tablebox.dense { border: 0; border-radius: 0; background: transparent }
   .kit-tablebox.dense .kit-table { font-size: 13px }
   .kit-tablebox.dense .kit-table :is(th, td) { padding: 8px 6px }
-  .kit-tablebox.dense .kit-table :is(th, td):first-child { padding-left: 0 }
-  .kit-tablebox.dense .kit-table :is(th, td):last-child { padding-right: 0 }
+  .kit-tablebox.dense .kit-table :is(th, td):first-child { padding-inline-start: 0 }
+  .kit-tablebox.dense .kit-table :is(th, td):last-child { padding-inline-end: 0 }
   .kit-tablebox.dense .kit-table tbody th { white-space: normal; font-weight: 400; min-width: 8em }
   .kit-tablebox.dense .kit-table thead th { background: transparent }
   .kit-table thead th { position: sticky; top: 0; background: var(--pu-color-surface-solid); font: 600 var(--pu-text-xs) / 1.2 var(--pu-font-body); color: var(--pu-color-text-muted) }
   .kit-table thead th button { appearance: none; border: 0; background: none; padding: 0; font: inherit; color: inherit; cursor: pointer; min-height: 24px }
   .kit-table thead th[aria-sort] button { color: var(--pu-color-text) }
-  .kit-table .num { text-align: right; font-variant-numeric: tabular-nums }
+  .kit-table .num { text-align: end; font-variant-numeric: tabular-nums }
   .kit-table .sym { flex-shrink: 0 }
   .kit-table .sym a, .kit-table .sym b { font-weight: 700; color: var(--pu-color-text) }
   .kit-table .sym a:hover { color: var(--pu-color-link) }
@@ -25,7 +25,7 @@
   .kit-table tfoot :is(th, td) { border-top: 1px solid var(--pu-color-border-control); border-bottom: 0; background: var(--pu-color-surface-subtle); font-weight: 600 }
   .kit-tablebox.bare { border: 0; border-radius: 0; background: transparent }
   .kit-tablebox.bare .kit-table thead th { background: var(--pu-color-surface) }
-  .kit-sort-i { display: inline-block; width: 1ch; margin-left: 2px }
+  .kit-sort-i { display: inline-block; width: 1ch; margin-inline-start: 2px }
   .kit-tablebox.page-sticky { overflow: auto }
   @media (max-width: 759px) { .kit-table .wide { display: none } }
   @media (min-width: 760px) and (max-width: 1255px) { .kit-table .hide-1256 { display: none } }
@@ -71,17 +71,17 @@
     .kit-tablebox.stack:not(.bare, .dense) .kit-table tfoot tr { padding-inline: 12px; border-radius: 0 0 var(--pu-radius-2xl) var(--pu-radius-2xl) }
     .kit-tablebox.stack .kit-table tfoot tr > * { min-width: 0; padding: 0; border: 0; background: transparent; white-space: normal }
     .kit-tablebox.stack .kit-table tfoot tr > th { grid-column: 1 / 4 }
-    .kit-tablebox.stack .kit-table tfoot tr > th + td { grid-column: 4; text-align: right; white-space: nowrap }
-    .kit-tablebox.stack .kit-table tfoot tr > th + td ~ td { font-size: 13px; text-align: left }
+    .kit-tablebox.stack .kit-table tfoot tr > th + td { grid-column: 4; text-align: end; white-space: nowrap }
+    .kit-tablebox.stack .kit-table tfoot tr > th + td ~ td { font-size: 13px; text-align: start }
     .kit-tablebox.stack .kit-table tfoot tr > th + td ~ td::before { content: attr(data-label); display: block; margin-bottom: 2px; color: var(--pu-color-text-muted); font-size: 11px; font-weight: 400; line-height: 14px }
     /* A boxed table's stacked rows keep the box's edge off their text (a bare or dense table sits in a card that pads it). */
     .kit-tablebox.stack:not(.bare, .dense) .kit-table tbody tr { padding-inline: 12px }
-    .kit-tablebox.stack.selection:not(.bare, .dense) .kit-table tbody tr { padding-left: 40px }
-    .kit-tablebox.stack.selection:not(.bare, .dense) .kit-table tbody tr > .kit-table-selection-cell { left: 12px }
+    .kit-tablebox.stack.selection:not(.bare, .dense) .kit-table tbody tr { padding-inline-start: 40px }
+    .kit-tablebox.stack.selection:not(.bare, .dense) .kit-table tbody tr > .kit-table-selection-cell { inset-inline-start: 12px }
     .kit-tablebox.stack .kit-table tbody tr > * { min-width: 0; padding: 0; border: 0; white-space: normal }
     .kit-tablebox.stack .kit-table tbody tr > th { grid-column: 1 / 4 }
-    .kit-tablebox.stack .kit-table tbody tr > th + td { grid-column: 4; text-align: right; white-space: nowrap }
-    .kit-tablebox.stack .kit-table tbody tr > th + td ~ td { font-size: 13px; text-align: left }
+    .kit-tablebox.stack .kit-table tbody tr > th + td { grid-column: 4; text-align: end; white-space: nowrap }
+    .kit-tablebox.stack .kit-table tbody tr > th + td ~ td { font-size: 13px; text-align: start }
     .kit-tablebox.stack .kit-table tbody tr > th + td ~ td::before {
       content: attr(data-label);
       display: block;
@@ -95,18 +95,18 @@
     /* The loading and empty rows are one cell across the table, not a card of figures. */
     .kit-tablebox.stack .kit-table tbody tr:has(> .kit-table-empty) { display: block; padding: 0 }
     .kit-tablebox.stack .kit-table tbody tr > .kit-table-empty { display: block; height: auto; padding: 28px 12px }
-    .kit-tablebox.stack.selection .kit-table tbody tr { position: relative; padding-left: 28px }
-    .kit-tablebox.stack.selection .kit-table tbody tr > .kit-table-selection-cell { position: absolute; top: 12px; left: 0; width: 24px; min-width: 24px; padding: 0 }
+    .kit-tablebox.stack.selection .kit-table tbody tr { position: relative; padding-inline-start: 28px }
+    .kit-tablebox.stack.selection .kit-table tbody tr > .kit-table-selection-cell { position: absolute; top: 12px; inset-inline-start: 0; width: 24px; min-width: 24px; padding: 0 }
   }
   .kit-tablebox { position: relative }
   .kit-table-tools { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px }
   .kit-table-search { position: relative; width: min(100%, 360px) }
-  .kit-table-search > svg { position: absolute; top: 50%; left: 12px; width: 16px; height: 16px; transform: translateY(-50%); fill: none; stroke: var(--pu-color-text-muted); stroke-width: 1.6; pointer-events: none }
-  .kit-table-search > input { box-sizing: border-box; width: 100%; min-height: 40px; padding: 8px 40px 8px 36px; border: 1px solid var(--pu-color-border-control); border-radius: var(--pu-radius-control); background: var(--pu-color-surface); color: var(--pu-color-text); font: 500 var(--pu-text-sm) / 1.3 var(--pu-font-body) }
+  .kit-table-search > svg { position: absolute; top: 50%; inset-inline-start: 12px; width: 16px; height: 16px; transform: translateY(-50%); fill: none; stroke: var(--pu-color-text-muted); stroke-width: 1.6; pointer-events: none }
+  .kit-table-search > input { box-sizing: border-box; width: 100%; min-height: 40px; padding-block: 8px; padding-inline: 36px 40px; border: 1px solid var(--pu-color-border-control); border-radius: var(--pu-radius-control); background: var(--pu-color-surface); color: var(--pu-color-text); font: 500 var(--pu-text-sm) / 1.3 var(--pu-font-body) }
   .kit-table-search > input::placeholder { color: var(--pu-color-text-muted); opacity: 1 }
   .kit-table-search > input::-webkit-search-cancel-button { display: none }
   .kit-table-search > input:focus-visible, .kit-table-pages > button:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
-  .kit-table-search > button { position: absolute; top: 50%; right: 5px; display: grid; width: 30px; height: 30px; place-items: center; transform: translateY(-50%); border: 0; border-radius: var(--pu-radius-sm); background: transparent; color: var(--pu-color-text-muted); cursor: pointer; font: 500 20px / 1 var(--pu-font-body) }
+  .kit-table-search > button { position: absolute; top: 50%; inset-inline-end: 5px; display: grid; width: 30px; height: 30px; place-items: center; transform: translateY(-50%); border: 0; border-radius: var(--pu-radius-sm); background: transparent; color: var(--pu-color-text-muted); cursor: pointer; font: 500 20px / 1 var(--pu-font-body) }
   .kit-table-search > button:hover { background: var(--pu-color-surface-subtle); color: var(--pu-color-text) }
   .kit-table-empty { height: 88px; text-align: center !important; color: var(--pu-color-text-muted) }
   .kit-table-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; color: var(--pu-color-text-muted); font-size: var(--pu-text-sm) }

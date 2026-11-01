@@ -1,0 +1,80 @@
+/* Punji UI styles.
+   Styles for the trust and safety kit: TransferReview, ConfirmAmount, PayeeVerification, HoldToConfirm,
+   SessionTimeoutWarning, ScamWarning and SecureField. Needs tokens.css and base.css (styles.css has everything);
+   the button, checkbox, field and sheet classes come from button.css, checkbox.css, fields.css and overlay.css. */
+@layer punji.components {
+  /* ConfirmAmount */
+  .pu-confirm-amount { display: grid; gap: var(--pu-space-1); min-width: 0 }
+  .pu-confirm-amount-label { font: 500 13px / 16px var(--pu-font-body); color: var(--pu-color-text-muted) }
+  .pu-confirm-amount-figure { font: 700 clamp(28px, 7vw, 40px) / 1.15 var(--pu-font-display); font-variant-numeric: tabular-nums; color: var(--pu-color-text); overflow-wrap: anywhere }
+  .pu-confirm-amount-words { font: 500 var(--pu-text-sm) / 1.45 var(--pu-font-body); color: var(--pu-color-text-muted) }
+  .pu-review-changed { display: inline-flex; flex-wrap: wrap; gap: 0 4px; padding: 1px 8px; border-radius: var(--pu-radius-full); background: var(--pu-color-tag-bg); color: var(--pu-color-tag-text); font: 600 12px / 18px var(--pu-font-body) }
+  .pu-review-was { font-weight: 500; text-decoration: line-through }
+  [data-changed='true'].pu-confirm-amount .pu-confirm-amount-figure { text-decoration: underline 2px var(--pu-color-warn-accent); text-underline-offset: 6px }
+
+  /* TransferReview */
+  .pu-review { display: grid; gap: var(--pu-space-4); max-width: 34rem; min-width: 0 }
+  .pu-review-title { margin: 0; font: 600 var(--pu-text-lg) / 1.3 var(--pu-font-display); color: var(--pu-color-text) }
+  .pu-review-rows { display: grid; margin: 0; border-top: 1px solid var(--pu-color-border) }
+  .pu-review-row { display: grid; grid-template-columns: minmax(6rem, 35%) minmax(0, 1fr); gap: var(--pu-space-3); padding: var(--pu-space-3) 0; border-bottom: 1px solid var(--pu-color-border) }
+  .pu-review-row > dt { color: var(--pu-color-text-muted); font: 500 var(--pu-text-sm) / 1.4 var(--pu-font-body) }
+  .pu-review-row > dd { margin: 0; min-width: 0; color: var(--pu-color-text); font: 500 var(--pu-text-sm) / 1.4 var(--pu-font-body); overflow-wrap: anywhere }
+  .pu-review-row[data-changed='true'] { background: var(--pu-color-surface-tint) }
+  .pu-review-row.total > dd, .pu-review-row.total > dt { font-weight: 700; color: var(--pu-color-text) }
+  .pu-review-row[data-risk='high'] .pu-review-name { color: var(--pu-color-loss); text-decoration: underline wavy var(--pu-color-loss); text-underline-offset: 4px }
+  .pu-review-name { font-weight: 700 }
+  .pu-review-num, .pu-review-mono { font-variant-numeric: tabular-nums; text-align: end }
+  .pu-review-warning { display: grid; gap: var(--pu-space-2); padding: var(--pu-space-3) var(--pu-space-4); border: 1px solid var(--pu-color-warn-accent); border-inline-start-width: 4px; border-radius: var(--pu-radius-sm); background: var(--pu-color-surface-tint) }
+  .pu-review-warning[data-risk='high'] { border-color: var(--pu-color-loss); background: var(--pu-color-loss-soft) }
+  .pu-review-warning-title { margin: 0; font: 700 var(--pu-text-sm) / 1.4 var(--pu-font-body); color: var(--pu-color-text) }
+  .pu-review-warning ul { margin: 0; padding-inline-start: 1.2em; font: 400 var(--pu-text-sm) / 1.45 var(--pu-font-body); color: var(--pu-color-text) }
+  .pu-review-actions, .pu-payee-actions, .pu-scam-actions, .pu-session-actions { display: flex; flex-wrap: wrap; gap: var(--pu-space-2) }
+  .kit-btn[aria-disabled='true'] { opacity: 0.5; cursor: not-allowed }
+
+  /* PayeeVerification */
+  .pu-payee { display: grid; gap: var(--pu-space-2); padding: var(--pu-space-3) var(--pu-space-4); border: 1px solid var(--pu-color-border); border-inline-start-width: 4px; border-radius: var(--pu-radius-sm); background: var(--pu-color-surface); min-width: 0 }
+  .pu-payee[data-result='checking'] { display: flex; align-items: center; gap: var(--pu-space-2) }
+  .pu-payee[data-result='match'] { border-inline-start-color: var(--pu-color-gain) }
+  .pu-payee[data-result='close-match'], .pu-payee[data-result='unavailable'] { border-inline-start-color: var(--pu-color-warn-accent) }
+  .pu-payee[data-result='no-match'] { border-inline-start-color: var(--pu-color-loss); background: var(--pu-color-loss-soft) }
+  .pu-payee-head { display: flex; align-items: center; gap: var(--pu-space-2) }
+  .pu-payee-icon { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round }
+  .pu-payee[data-result='match'] .pu-payee-icon { color: var(--pu-color-gain) }
+  .pu-payee[data-result='close-match'] .pu-payee-icon, .pu-payee[data-result='unavailable'] .pu-payee-icon { color: var(--pu-color-warn) }
+  .pu-payee[data-result='no-match'] .pu-payee-icon { color: var(--pu-color-loss) }
+  .pu-payee-title { font: 700 var(--pu-text-sm) / 1.4 var(--pu-font-body); color: var(--pu-color-text) }
+  .pu-payee-body { margin: 0; font: 400 var(--pu-text-sm) / 1.45 var(--pu-font-body); color: var(--pu-color-text) }
+  .pu-payee-suspicious { font-weight: 600; color: var(--pu-color-loss) }
+  .pu-payee-names { display: grid; gap: var(--pu-space-1); margin: 0 }
+  .pu-payee-names > div { display: flex; flex-wrap: wrap; gap: 0 var(--pu-space-2) }
+  .pu-payee-names dt { color: var(--pu-color-text-muted); font: 500 13px / 1.4 var(--pu-font-body) }
+  .pu-payee-names dd { margin: 0; font: 700 13px / 1.4 var(--pu-font-body); color: var(--pu-color-text); overflow-wrap: anywhere }
+
+  /* HoldToConfirm */
+  .pu-hold { display: inline-flex; min-width: 0 }
+  .pu-hold.block { display: flex }
+  .pu-hold-btn { overflow: hidden; isolation: isolate; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none }
+  .pu-hold-fill { position: absolute; inset: 0; z-index: -1; background: var(--pu-color-text); opacity: 0.22; transform: scaleX(var(--hold-progress, 0)); transform-origin: left center; transition: transform 60ms linear }
+  .pu-hold-btn:dir(rtl) .pu-hold-fill { transform-origin: right center }
+  .pu-hold-btn[data-holding='true'] { box-shadow: 0 0 0 2px var(--pu-color-accent) }
+  .pu-hold-label { position: relative; display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 0 4px }
+  .pu-hold-wait { font-weight: 500; font-variant-numeric: tabular-nums }
+  @media (prefers-reduced-motion: reduce) { .pu-hold-fill { transition: none } }
+
+  /* SessionTimeoutWarning: on top of the sheet styles from overlay.css. */
+  .pu-session { text-align: start }
+  .pu-session-clock { margin: var(--pu-space-2) 0; font: 700 40px / 1 var(--pu-font-display); font-variant-numeric: tabular-nums; color: var(--pu-color-text) }
+
+  /* ScamWarning */
+  .pu-scam { display: grid; gap: var(--pu-space-3); max-width: 36rem; padding: calc(var(--pu-space-4) + var(--pu-space-1)); border: 2px solid var(--pu-color-loss); border-radius: var(--pu-radius-card); background: var(--pu-color-surface); min-width: 0 }
+  .pu-scam-head { display: flex; align-items: center; gap: var(--pu-space-3) }
+  .pu-scam-icon { flex: none; width: 32px; height: 32px; fill: none; stroke: var(--pu-color-loss); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round }
+  .pu-scam-title { margin: 0; font: 700 22px / 1.25 var(--pu-font-display); color: var(--pu-color-text) }
+  .pu-scam-title:focus { outline: none }
+  .pu-scam-title:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 4px }
+  .pu-scam-summary { margin: 0; font: 500 var(--pu-text-base) / 1.5 var(--pu-font-body); color: var(--pu-color-text) }
+  .pu-scam-qtitle { margin: 0; font: 700 var(--pu-text-sm) / 1.4 var(--pu-font-body); color: var(--pu-color-text) }
+  .pu-scam-questions { margin: 0; padding-inline-start: 1.2em; display: grid; gap: var(--pu-space-1); font: 400 var(--pu-text-sm) / 1.5 var(--pu-font-body); color: var(--pu-color-text) }
+  .pu-scam-help { font: 400 var(--pu-text-sm) / 1.5 var(--pu-font-body); color: var(--pu-color-text-muted) }
+  .pu-scam-continue { display: grid; gap: var(--pu-space-2); justify-items: start; padding-top: var(--pu-space-3); border-top: 1px solid var(--pu-color-border) }
+}

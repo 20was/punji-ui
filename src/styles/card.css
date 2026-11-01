@@ -15,7 +15,7 @@
   .kit-card.kit-card-lg .kit-card-t :is(h2, h3) { font: 600 24px / 1.2 var(--pu-font-display); letter-spacing: -0.02em }
   .kit-card-t :is(h2, h3):has(> .kit-card-meta) { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 6px; row-gap: 2px }
   .kit-card.kit-card-lg .kit-card-meta { font: 400 15px / 1.4 var(--pu-font-body); letter-spacing: 0 }
-  .kit-card-meta { margin-left: 0; font-weight: 400; color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums }
+  .kit-card-meta { margin-inline-start: 0; font-weight: 400; color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums }
   .kit-card-t p { margin: 2px 0 0; font: 400 13px / 18px var(--pu-font-body); color: var(--pu-color-text-muted) }
   .kit-card-t p.clip { white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
   .kit-card.stretch { align-self: stretch; height: 100%; box-sizing: border-box; grid-template-rows: auto 1fr auto }

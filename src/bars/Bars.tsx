@@ -159,10 +159,10 @@ export function NetBarHead({ left, right }: {
   return (
     <span className="kit-netbar-h">
       <span>
-        {left} <span aria-hidden="true">←</span>
+        {left} <span className="pu-flip" aria-hidden="true">←</span>
       </span>
       <span>
-        <span aria-hidden="true">→</span> {right}
+        <span className="pu-flip" aria-hidden="true">→</span> {right}
       </span>
     </span>
   );

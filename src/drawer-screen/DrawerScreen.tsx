@@ -37,8 +37,8 @@ export function DrawerScreen({ as = 'div', ground = 'panel', className, testId, 
   );
 }
 
-const Icon = ({ d }: { d: string }) => (
-  <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+const Icon = ({ d, flip }: { d: string; flip?: boolean }) => (
+  <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" className={flip ? 'pu-flip' : undefined}>
     <path d={d} />
   </svg>
 );
@@ -64,7 +64,7 @@ export function DrawerHeader({ title, onBack, onClose, backLabel, closeLabel, te
     <div className={`kit-drawer-head${onBack ? '' : ' noback'}`}>
       {onBack && (
         <button type="button" className="kit-drawer-x" onClick={onBack} aria-label={backLabel} data-testid={`${testId}-back`}>
-          <Icon d="M9 2.5L4.5 7 9 11.5" />
+          <Icon d="M9 2.5L4.5 7 9 11.5" flip />
         </button>
       )}
       <h2>{title}</h2>

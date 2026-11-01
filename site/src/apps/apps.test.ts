@@ -1,10 +1,10 @@
 // The docs apps' simulation and account logic (site/src/apps): determinism, the band, and that an order's fill, the
 // cash and the position move together to the paisa.
 import { describe, expect, it } from 'vitest';
-import { bandOf, createMarket, indexOf, shockMarket, stepMarket, TICK } from '../site/src/apps/shared/sim.ts';
-import { derive, initialState, reducer, type TerminalState } from '../site/src/apps/trading-terminal/store.ts';
-import { derive as deriveWealth, initialState as wealthState, reducer as wealthReducer } from '../site/src/apps/wealth-dashboard/store.ts';
-import { estimateNepseTrade } from '../src/nepse-fees/fees.ts';
+import { bandOf, createMarket, indexOf, shockMarket, stepMarket, TICK } from './shared/sim.ts';
+import { derive, initialState, reducer, type TerminalState } from './trading-terminal/store.ts';
+import { derive as deriveWealth, initialState as wealthState, reducer as wealthReducer } from './wealth-dashboard/store.ts';
+import { estimateNepseTrade } from '@punji/ui/nepse-fees';
 
 const run = (n: number) => {
   let m = createMarket();

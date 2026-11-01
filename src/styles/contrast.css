@@ -1,0 +1,256 @@
+/* Punji UI styles.
+   High contrast. Two themes that meet WCAG 2.2 AAA (7:1) for text and 4.5:1
+   for controls and charts: data-theme="light-hc" | "dark-hc" on any element,
+   or automatically on :root (no data-theme) when the system asks for more
+   contrast (prefers-contrast: more). The ratios are checked by
+   scripts/check-contrast.mjs. Then forced-colors (Windows High Contrast):
+   the system palette replaces ours, so selected states, focus rings, fills
+   and chart marks are redrawn with system colours, outlines and patterns,
+   never with colour alone. Needs tokens.css (styles.css has everything). */
+@layer punji.tokens {
+  /* :root is named too, so the theme beats the prefers-color-scheme block of tokens.css on <html>. */
+  :root[data-theme='light-hc'],
+  [data-theme='light-hc'] {
+    color-scheme: light;
+    --pu-color-accent: #1c3a00;
+    --pu-color-accent-fill: #1c3a00;
+    --pu-color-accent-fill-hover: #0f2400;
+    --pu-color-bg: #ffffff;
+    --pu-color-border: #6b6b6b;
+    --pu-color-border-control: #000000;
+    --pu-color-border-default: #4d4d4d;
+    --pu-color-border-strong: #000000;
+    --pu-color-card-border: #000000;
+    --pu-color-chart: #1d4d00;
+    --pu-color-gain: #1d4d00;
+    --pu-color-gain-soft: rgba(29, 77, 0, 0.08);
+    --pu-color-inverse-gain: #c8f23d;
+    --pu-color-inverse-line: #8a8a8a;
+    --pu-color-inverse-loss: #ffb3a6;
+    --pu-color-inverse-muted: #d6d6d6;
+    --pu-color-inverse-nepse: #c2d0ff;
+    --pu-color-inverse-row: #1a1a1a;
+    --pu-color-inverse-warn: #ffd27a;
+    --pu-color-link: #1c3a00;
+    --pu-color-loss: #8a1c0a;
+    --pu-color-loss-soft: rgba(138, 28, 10, 0.08);
+    --pu-color-on-accent-fill: #ffffff;
+    --pu-color-on-loss: #ffffff;
+    --pu-color-scrim: rgba(0, 0, 0, 0.7);
+    --pu-color-series-10: #5c3a18;
+    --pu-color-series-11: #6e1f80;
+    --pu-color-series-12: #4a4500;
+    --pu-color-series-3: #6b4100;
+    --pu-color-series-4: #4b2a99;
+    --pu-color-series-5: #00544c;
+    --pu-color-series-6: #8a1f52;
+    --pu-color-series-7: #004f80;
+    --pu-color-series-8: #8a3a00;
+    --pu-color-series-9: #1b5c30;
+    --pu-color-series-nepse: #1f3a99;
+    --pu-color-series-nepse-soft: rgba(31, 58, 153, 0.1);
+    --pu-color-shimmer-base: #e6e6e6;
+    --pu-color-shimmer-highlight: #f5f5f5;
+    --pu-color-surface: #ffffff;
+    --pu-color-surface-inverse: #000000;
+    --pu-color-surface-solid: #ffffff;
+    --pu-color-surface-subtle: rgba(0, 0, 0, 0.05);
+    --pu-color-surface-tint: #f0f0f0;
+    --pu-color-tag-bg: #3a2c00;
+    --pu-color-tag-text: #ffffff;
+    --pu-color-text: #000000;
+    --pu-color-text-inverse: #ffffff;
+    --pu-color-text-muted: #1f1f1f;
+    --pu-color-text-tertiary: #2e2e2e;
+    --pu-color-track: #8a8a8a;
+    --pu-color-warn: #5c3b00;
+    --pu-color-warn-accent: #6b4100;
+    --pu-seg-thumb: #ffffff;
+    --pu-seg-thumb-shadow: 0 0 0 1px #000000;
+    --pu-shadow-lg: 0 0 0 2px #000000;
+  }
+
+  :root[data-theme='dark-hc'],
+  [data-theme='dark-hc'] {
+    color-scheme: dark;
+    --pu-color-accent: #d6ff5a;
+    --pu-color-accent-fill: #d6ff5a;
+    --pu-color-accent-fill-hover: #e4ff8a;
+    --pu-color-bg: #000000;
+    --pu-color-border: #8f8f8f;
+    --pu-color-border-control: #ffffff;
+    --pu-color-border-default: #b3b3b3;
+    --pu-color-border-strong: #ffffff;
+    --pu-color-card-border: #ffffff;
+    --pu-color-chart: #d6ff5a;
+    --pu-color-gain: #d6ff5a;
+    --pu-color-gain-soft: rgba(214, 255, 90, 0.12);
+    --pu-color-inverse-gain: #1c3a00;
+    --pu-color-inverse-line: #6b6b6b;
+    --pu-color-inverse-loss: #8a1c0a;
+    --pu-color-inverse-muted: #2e2e2e;
+    --pu-color-inverse-nepse: #1f3a99;
+    --pu-color-inverse-row: #f0f0f0;
+    --pu-color-inverse-warn: #5c3b00;
+    --pu-color-link: #d6ff5a;
+    --pu-color-loss: #ffb3a6;
+    --pu-color-loss-soft: rgba(255, 179, 166, 0.14);
+    --pu-color-on-accent-fill: #000000;
+    --pu-color-on-loss: #000000;
+    --pu-color-scrim: rgba(0, 0, 0, 0.8);
+    --pu-color-series-10: #e6c29e;
+    --pu-color-series-11: #eda6f7;
+    --pu-color-series-12: #f0e68a;
+    --pu-color-series-3: #ffc766;
+    --pu-color-series-4: #d9c2ff;
+    --pu-color-series-5: #5ee6d6;
+    --pu-color-series-6: #ff9ccb;
+    --pu-color-series-7: #8ad8ff;
+    --pu-color-series-8: #ffb27a;
+    --pu-color-series-9: #9df0ac;
+    --pu-color-series-nepse: #b8c8ff;
+    --pu-color-series-nepse-soft: rgba(184, 200, 255, 0.16);
+    --pu-color-shimmer-base: #1f1f1f;
+    --pu-color-shimmer-highlight: #2e2e2e;
+    --pu-color-surface: #000000;
+    --pu-color-surface-inverse: #ffffff;
+    --pu-color-surface-solid: #000000;
+    --pu-color-surface-subtle: rgba(255, 255, 255, 0.08);
+    --pu-color-surface-tint: #1a1a1a;
+    --pu-color-tag-bg: #ffe8b8;
+    --pu-color-tag-text: #000000;
+    --pu-color-text: #ffffff;
+    --pu-color-text-inverse: #000000;
+    --pu-color-text-muted: #e6e6e6;
+    --pu-color-text-tertiary: #d6d6d6;
+    --pu-color-track: #6b6b6b;
+    --pu-color-warn: #ffd27a;
+    --pu-color-warn-accent: #ffd27a;
+    --pu-seg-thumb: #2e2e2e;
+    --pu-seg-thumb-shadow: 0 0 0 1px #ffffff;
+    --pu-shadow-lg: 0 0 0 2px #ffffff;
+  }
+}
+
+@layer punji.components {
+  /* Thicker focus rings and visible dividers wherever high contrast is on. */
+  :is([data-theme='light-hc'], [data-theme='dark-hc']) :focus-visible { outline-width: 3px }
+  @media (prefers-contrast: more) { :root:not([data-theme]) :focus-visible { outline-width: 3px } }
+
+  @media (forced-colors: active) {
+    /* Focus: box-shadow rings vanish in forced colours; outlines do not. */
+    :focus-visible { outline: 2px solid Highlight; outline-offset: 2px }
+    :is(.kit-cs, .kit-lf, .kit-cmd-in, .kit-sel, .kit-rs, .kit-field-control):focus-within { outline: 2px solid Highlight; outline-offset: 1px }
+    /* Controls and cards keep an edge: backgrounds become Canvas, so a border is the only boundary. */
+    :is(.kit-btn, .kit-chip, .kit-seg, .kit-card, .kit-group, .kit-pop, .kit-drawer, .kit-sheet, .kit-options, .kit-tip, .kit-ct-tip, .kit-toast) { border: 1px solid CanvasText }
+    .kit-btn:disabled, .kit-btn[aria-disabled='true'] { color: GrayText; border-color: GrayText; opacity: 1 }
+    /* Selected, pressed, current and checked: the system highlight pair, not our fill. */
+    :is(.kit-seg button, .kit-chip, .kit-crow, .kit-options li, .kit-tabs > button, .pu-acct-btn, .pu-amount-keypad-chip, .pu-date-preset, .pu-bene-opt, .pu-shell-nav a, button.kit-share-item):is([aria-selected='true'], [aria-pressed='true'], [aria-current='true'], [aria-current='page']) { forced-color-adjust: none; background: Highlight; color: HighlightText; border-color: Highlight }
+    :is(.kit-choice, .kit-choice-compact) label:has(input:checked) { outline: 2px solid Highlight; outline-offset: -2px }
+    :is(.kit-check, .kit-table-selection-cell, .kit-table-mobile-select) input { forced-color-adjust: none; border-color: CanvasText; background: Canvas }
+    :is(.kit-check, .kit-table-selection-cell, .kit-table-mobile-select) input:is(:checked, :indeterminate) { background: Highlight; border-color: Highlight }
+    :is(.kit-check, .kit-table-selection-cell, .kit-table-mobile-select) input::after { border-color: HighlightText }
+    .kit-switch { forced-color-adjust: none; border: 1px solid CanvasText; background: Canvas }
+    .kit-switch span { background: CanvasText }
+    .kit-switch[aria-checked='true'] { background: Highlight; border-color: Highlight }
+    .kit-switch[aria-checked='true'] span { background: HighlightText }
+    /* Fills that carry data: solid for gain, hatched for loss, so the two differ without colour. */
+    :is(.kit-bar-gain, .kit-tone-gain, .kit-col-t-gain, .kit-col-t-chart, .kit-col-t-neutral) { forced-color-adjust: none; background: CanvasText }
+    :is(.kit-bar-loss, .kit-col-t-loss) { forced-color-adjust: none; background: repeating-linear-gradient(45deg, CanvasText 0 2px, Canvas 2px 5px); box-shadow: inset 0 0 0 1px CanvasText }
+    :is(.kit-col-t-series2, .kit-col-t-series3, .kit-col-t-series4) { forced-color-adjust: none; background: repeating-linear-gradient(90deg, CanvasText 0 2px, Canvas 2px 4px); box-shadow: inset 0 0 0 1px CanvasText }
+    /* Charts: SVG paint is not forced, so draw marks in CanvasText. Up candles hollow, down candles filled. */
+    .kit-ct svg, .kit-spark { forced-color-adjust: none }
+    :is(.kit-ct-axis, .kit-ct-mid text) { fill: CanvasText }
+    :is(.kit-ct-grid, .kit-ct-mid line, .kit-ct-cross line) { stroke: GrayText }
+    .kit-ct-c line, .kit-ct-c rect { stroke: CanvasText }
+    .kit-ct-c.gain rect:not(.kit-ct-vol), .kit-ct-c.flat rect:not(.kit-ct-vol) { fill: Canvas }
+    .kit-ct-c.loss rect { fill: CanvasText }
+    .kit-ct-c.gain rect.kit-ct-vol { fill: Canvas; stroke: CanvasText }
+    .kit-ct-line, .kit-ct-ma, .kit-spark { color: CanvasText }
+    .kit-ct-line:nth-of-type(2) > path, .kit-ct-ma:nth-of-type(2n) { stroke-dasharray: 6 3 }
+    .kit-ct-line:nth-of-type(3) > path, .kit-ct-ma:nth-of-type(3n) { stroke-dasharray: 2 3 }
+    .kit-ct-line:nth-of-type(4) > path { stroke-dasharray: 8 3 2 3 }
+    .kit-spark polyline, .kit-stroke-gain, .kit-stroke-loss { stroke: CanvasText }
+    .kit-spark.loss polyline, .kit-stroke-loss { stroke-dasharray: 4 2 }
+    :is(.kit-ct-area-gain, .kit-ct-area-loss) { fill: none }
+    .kit-ct-depth.bid { fill: none; stroke: CanvasText }
+    .kit-ct-depth.ask { fill: none; stroke: CanvasText; stroke-dasharray: 5 3 }
+    .kit-ct-cross rect { fill: CanvasText }
+    .kit-ct-cross text { fill: Canvas }
+    .kit-ct-cross circle { fill: Canvas; stroke: CanvasText }
+    .kit-ct-legend i { forced-color-adjust: none; background: CanvasText }
+  }
+}
+
+@media (prefers-contrast: more) {
+  @layer punji.tokens {
+    :root:not([data-theme]) {
+      color-scheme: light;
+      --pu-color-accent: #1c3a00;
+      --pu-color-accent-fill: #1c3a00;
+      --pu-color-accent-fill-hover: #0f2400;
+      --pu-color-bg: #ffffff;
+      --pu-color-border: #6b6b6b;
+      --pu-color-border-control: #000000;
+      --pu-color-border-default: #4d4d4d;
+      --pu-color-border-strong: #000000;
+      --pu-color-card-border: #000000;
+      --pu-color-chart: #1d4d00;
+      --pu-color-gain: #1d4d00;
+      --pu-color-gain-soft: rgba(29, 77, 0, 0.08);
+      --pu-color-link: #1c3a00;
+      --pu-color-loss: #8a1c0a;
+      --pu-color-loss-soft: rgba(138, 28, 10, 0.08);
+      --pu-color-on-accent-fill: #ffffff;
+      --pu-color-on-loss: #ffffff;
+      --pu-color-surface: #ffffff;
+      --pu-color-surface-solid: #ffffff;
+      --pu-color-surface-subtle: rgba(0, 0, 0, 0.05);
+      --pu-color-surface-tint: #f0f0f0;
+      --pu-color-text: #000000;
+      --pu-color-text-muted: #1f1f1f;
+      --pu-color-text-tertiary: #2e2e2e;
+      --pu-color-track: #8a8a8a;
+      --pu-color-warn: #5c3b00;
+      --pu-color-warn-accent: #6b4100;
+      --pu-seg-thumb-shadow: 0 0 0 1px #000000;
+    }
+  }
+}
+
+@media (prefers-contrast: more) and (prefers-color-scheme: dark) {
+  @layer punji.tokens {
+    :root:not([data-theme]) {
+      color-scheme: dark;
+      --pu-color-accent: #d6ff5a;
+      --pu-color-accent-fill: #d6ff5a;
+      --pu-color-accent-fill-hover: #e4ff8a;
+      --pu-color-bg: #000000;
+      --pu-color-border: #8f8f8f;
+      --pu-color-border-control: #ffffff;
+      --pu-color-border-default: #b3b3b3;
+      --pu-color-border-strong: #ffffff;
+      --pu-color-card-border: #ffffff;
+      --pu-color-chart: #d6ff5a;
+      --pu-color-gain: #d6ff5a;
+      --pu-color-gain-soft: rgba(214, 255, 90, 0.12);
+      --pu-color-link: #d6ff5a;
+      --pu-color-loss: #ffb3a6;
+      --pu-color-loss-soft: rgba(255, 179, 166, 0.14);
+      --pu-color-on-accent-fill: #000000;
+      --pu-color-on-loss: #000000;
+      --pu-color-surface: #000000;
+      --pu-color-surface-solid: #000000;
+      --pu-color-surface-subtle: rgba(255, 255, 255, 0.08);
+      --pu-color-surface-tint: #1a1a1a;
+      --pu-color-text: #ffffff;
+      --pu-color-text-muted: #e6e6e6;
+      --pu-color-text-tertiary: #d6d6d6;
+      --pu-color-track: #6b6b6b;
+      --pu-color-warn: #ffd27a;
+      --pu-color-warn-accent: #ffd27a;
+      --pu-seg-thumb: #2e2e2e;
+      --pu-seg-thumb-shadow: 0 0 0 1px #ffffff;
+    }
+  }
+}

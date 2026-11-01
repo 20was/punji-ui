@@ -92,6 +92,8 @@ jobs:
       - run: npm run typecheck:examples
       - run: npm run typecheck:portal
       - run: npm run typecheck:site
+      - name: Docs app logic (imports the built package)
+        run: npm run test:apps
       - name: Build the documentation site
         run: npm run site:build
       - name: SEO check of the built site (titles, descriptions, canonicals, links, sitemap, JSON-LD)

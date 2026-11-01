@@ -90,3 +90,5 @@
 @import './reconciliation.css';
 /* Layout: resizable split pane. */
 @import './split-pane.css';
+@import './trust.css';
+@import './contrast.css';

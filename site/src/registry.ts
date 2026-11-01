@@ -11,6 +11,7 @@ import { FORMS_PAGES } from './registry-forms.ts';
 import { SHOWCASE_PAGES } from './registry-showcase.ts';
 import { TRADING_PAGES } from './registry-trading.ts';
 import { WALLET_PAGES } from './registry-wallet.ts';
+import { TRUST_PAGES } from './registry-trust.ts';
 // Tax, invoicing and payroll pages.
 import { TAX_PAGES } from './registry-tax.ts';
 import { LEADS, NAV_TITLES } from './registry-leads.ts';
@@ -28,6 +29,7 @@ export type GroupId =
   | 'portfolio'
   | 'accounting'
   | 'banking'
+  | 'trust'
   | 'share-issues'
   | 'data'
   | 'forms'
@@ -53,6 +55,7 @@ export const GROUPS: readonly Group[] = [
   { id: 'portfolio', title: 'Portfolio', planned: [] },
   { id: 'accounting', title: 'Accounting', planned: [] },
   { id: 'banking', title: 'Banking', planned: [] },
+  { id: 'trust', title: 'Trust and safety', planned: [] },
   { id: 'share-issues', title: 'Share issues', planned: [] },
   { id: 'data', title: 'Data', planned: [] },
   { id: 'forms', title: 'Forms', planned: ['Calendar'] },
@@ -199,6 +202,33 @@ export const PAGES: readonly PageDef[] = [
     accessibility: ['`--pu-tap-min` (44px) is the minimum touch target the controls hold on phones.'],
     responsive: ['Space tokens are fixed rem values; layouts reflow with container width, not with a different scale.'],
     related: ['colour-tokens', 'typography', 'button'],
+  },
+  {
+    slug: 'accessibility-modes',
+    title: 'Accessibility modes',
+    description: 'High-contrast themes at WCAG AAA, Windows forced colours, three densities with safe touch targets, and right-to-left layout. All are attributes.',
+    group: 'foundations',
+    kind: 'foundation',
+    summary:
+      'Four modes, each an attribute on any element: `data-theme="light-hc"` or `"dark-hc"` for 7:1 text, `data-pu-density` for compact, comfortable or spacious layouts, `dir="rtl"` for right-to-left, and Windows forced colours, which needs nothing. `themeAttributes` from `@punji/ui/theme` builds the attributes from a user setting.',
+    use: ['Offer high contrast as a user setting; with no `data-theme` it follows `prefers-contrast: more` by itself.', 'Use compact density for trading screens and comfortable for mobile banking.', 'Set `dir` on `<html>` from the locale, and lang with it.'],
+    avoid: ['Overriding colour tokens inside a -hc theme: the ratios are only guaranteed for the shipped values.', 'Shrinking controls below `--pu-control-sm` yourself: compact already stops at 28 px.', 'Mirroring charts: time runs left to right in every direction.'],
+    api: [{ name: 'themeAttributes', module: 'theme' }, { name: 'THEMES', module: 'theme' }, { name: 'DENSITIES', module: 'theme' }, { name: 'contrastRatio', module: 'theme' }],
+    examples: [
+      { id: 'contrast', title: 'Contrast themes', note: 'Light, dark, light-hc and dark-hc on the same content.' },
+      { id: 'density', title: 'Density', note: 'Compact, comfortable and spacious: fields, buttons and table cells.' },
+      { id: 'rtl', title: 'Right to left', note: 'dir="rtl": layout, chevrons, the switch and slider mirror; amounts stay left to right.' },
+    ],
+    keyboard: ['Modes do not change keyboard behaviour. In right to left, Left and Right in tabs and segmented controls follow the visual order of the browser.'],
+    accessibility: [
+      'The -hc themes meet WCAG 2.2 AAA (1.4.6): 7:1 for text tokens, 4.5:1 for control borders and chart colours. `scripts/check-contrast.mjs` checks 41 token pairs in all four themes on every lint.',
+      'Forced colours (Windows High Contrast): selected states use Highlight and HighlightText, focus is a 2 px Highlight outline, cards and controls keep a border, gain bars are solid and loss bars hatched, up candles hollow and down candles filled, extra series dashed.',
+      'Gain and loss always show a sign and an arrow, and a spoken word where it applies, so no mode depends on colour.',
+      'Touch targets: compact controls are 28 px or more (WCAG 2.5.8 asks for 24); buttons extend their hit area to 44 px on coarse pointers, where compact fields keep comfortable heights.',
+      'Right to left: amounts and changes are an isolated left-to-right run, so screen readers and eyes get the sign, digits and currency in order.',
+    ],
+    responsive: ['Density is independent of width: pick it by task. On a coarse pointer compact keeps 44 px fields.', 'High contrast and right to left work at every width.'],
+    related: ['theming', 'colour-tokens', 'spacing'],
   },
   {
     slug: 'money-display',
@@ -1825,6 +1855,8 @@ export const PAGES: readonly PageDef[] = [
   ...TRADING_PAGES,
   ...SHARE_ISSUE_PAGES,
   ...WALLET_PAGES,
+  // Trust and safety kit and global money.
+  ...TRUST_PAGES,
   // Tax, invoicing and payroll.
   ...TAX_PAGES,
   // Bank reconciliation.

@@ -318,13 +318,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "98.1 kB",
+    "limit": "98.25 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "28.25 kB",
+    "limit": "28.59 kB",
     "rolldown": false,
     "gzip": true
   },

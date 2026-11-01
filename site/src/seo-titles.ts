@@ -22,6 +22,7 @@ export const SEO_TITLES: Readonly<Record<string, string>> = {
   roadmap: 'Punji UI roadmap: shipped, in progress and planned',
   agents: 'Contributing to Punji UI: checks and component bar',
   localisation: 'Localise Punji UI: Nepali, Hindi and Bengali copy packs',
+  'copy-a-pattern': 'Copy a finance screen into React with shadcn | Punji UI',
   // Money, Nepal formatting and calendars
   'money-display': 'React money display for NPR, USD and any currency | Punji UI',
   'currency-input': 'React currency input for NPR and any currency | Punji UI',

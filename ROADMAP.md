@@ -52,7 +52,7 @@ visual baselines and size budgets.
 ### Wave 4: adoption
 
 - Full example apps: trading dashboard, portfolio tracker, invoicing.
-- StackBlitz starters, good-first-issues, component contribution template.
+- Done: StackBlitz starters (`templates/vite-react`, `templates/nextjs-app-router`, built in CI by `check:templates`), a copy-in shadcn registry of the Showcase patterns (`/r/<name>.json`), Markdown for every docs page (`index.md`, linked from llms.txt), a component contribution template (`docs/CONTRIBUTING-COMPONENT.md`, `npm run new:component`) and component-request and good-first-issue forms.
 
 ### After the first release
 

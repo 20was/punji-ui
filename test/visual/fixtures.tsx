@@ -20,6 +20,7 @@ import { kitRegistry } from './fixtures-kit.tsx';
 import { formsRegistry } from './fixtures-forms.tsx';
 import { tableScaleRegistry } from './fixtures-table-scale.tsx';
 import { tradingRegistry } from './fixtures-trading.tsx';
+import { communityRegistry } from './fixtures-community.tsx';
 import { shareIssuesRegistry } from './fixtures-share-issues.tsx';
 import { walletRegistry } from './fixtures-wallet.tsx';
 import { lendingRegistry } from './fixtures-lending.tsx';
@@ -343,6 +344,8 @@ export const registry: Record<string, () => ReactNode> = {
   ...lendingRegistry,
   // Tax, invoicing and payroll.
   ...taxRegistry,
+  // Scaffolded with npm run new:component.
+  ...communityRegistry,
 };
 // Fixtures that draw their own full-width stage (shell, overlays).
 export const ownStage = new Set(['shell', 'drawer', 'sheet', 'popover', 'command-palette', 'toast']);

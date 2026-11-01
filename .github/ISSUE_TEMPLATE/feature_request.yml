@@ -1,5 +1,5 @@
-name: Feature or component request
-description: A new component, prop or token.
+name: Feature request
+description: A new prop, token or behaviour on an existing component. For a new component, use "Component request".
 labels: [enhancement]
 body:
   - type: textarea

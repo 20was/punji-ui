@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Cluster, Stack } from '@punji/ui/stack';
 import { Button } from '@punji/ui/button';
 import { InlineConfirm } from '@punji/ui/inline-confirm';
 import { holdings } from '../../sample.ts';
@@ -9,8 +10,8 @@ export default function Example() {
   const [list, setList] = useState(holdings.slice(0, 3).map((h) => h.symbol));
   const [asking, setAsking] = useState<string | null>(null);
   return (
-    <div className="ex-narrow">
-      <ul className="ex-rows" aria-label="Watchlist">
+    <div style={{ width: 'min(100%, 440px)', marginInline: 'auto' }}>
+      <Stack as="ul" gap={2} aria-label="Watchlist">
         {list.map((symbol) =>
           asking === symbol ? (
             <InlineConfirm
@@ -28,16 +29,16 @@ export default function Example() {
               }}
             />
           ) : (
-            <li key={symbol}>
+            <Cluster as="li" justify="between" key={symbol}>
               <b>{symbol}</b>
               <Button variant="ghost" size="sm" onClick={() => setAsking(symbol)}>
                 Remove
               </Button>
-            </li>
+            </Cluster>
           ),
         )}
-      </ul>
-      {list.length === 0 && <p className="ex-label">Your watchlist is empty.</p>}
+      </Stack>
+      {list.length === 0 && <p style={{ margin: 0, fontSize: 'var(--pu-text-sm)', color: 'var(--pu-color-text-muted)' }}>Your watchlist is empty.</p>}
     </div>
   );
 }

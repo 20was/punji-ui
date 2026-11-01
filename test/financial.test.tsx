@@ -4,6 +4,23 @@ import { AppShell, FinancialSummary, FinancialTable, PriceChart, OrderBook } fro
 import { seriousViolations } from './axe.ts';
 const columns = [{ key: 'amount', label: 'Amount', sortable: true, num: true, render: (row: {id:string;amount:string}) => row.amount }];
 describe('financial compositions', () => {
+  it('stacks rows into cards when the first column is a row header, and keeps sortable heads named', async () => {
+    const cols = [{ key: 'name', label: 'Name', rowHeader: true, sortable: true, render: (r: {id:string;amount:string}) => r.id }, ...columns];
+    const rows = [{id:'NABIL',amount:'1'}];
+    const props = { caption: 'Holdings', rows, rowKey: (r: {id:string}) => r.id, emptyTitle: 'None', onSort: () => {} };
+    const {container, rerender} = render(<FinancialTable {...props} columns={cols} />);
+    expect(container.querySelector('.pu-fin > .kit-tablebox.stack')).not.toBeNull();
+    expect(container.querySelector('td[data-label="Amount"]')).not.toBeNull();
+    expect(screen.getByRole('button', { name: 'Name' })).toBeTruthy();
+    expect(screen.getByRole('rowheader', { name: 'NABIL' })).toBeTruthy();
+    expect(await seriousViolations(container)).toEqual([]);
+    rerender(<FinancialTable {...props} columns={columns} />);
+    expect(container.querySelector('.kit-tablebox.stack')).toBeNull();
+    rerender(<FinancialTable {...props} columns={columns} stack />);
+    expect(container.querySelector('.kit-tablebox.stack')).not.toBeNull();
+    rerender(<FinancialTable {...props} columns={cols} stack={false} />);
+    expect(container.querySelector('.kit-tablebox.stack')).toBeNull();
+  });
   it('sorts only through an explicit caller callback and escapes text', async () => {
     const onSort = vi.fn<(key: string) => void>();
     const {container} = render(<FinancialTable caption="Ledger" rows={[{id:'1',amount:'<script>private</script>'}]} columns={columns} rowKey={r=>r.id} emptyTitle="No records" sort={{key:'amount',dir:'desc'}} onSort={onSort} />);

@@ -7,6 +7,7 @@ import { Tabs } from '@punji/ui/tabs';
 import { TransactionList } from '@punji/ui/transaction-list';
 import { accounts, transactions } from '../../sample.ts';
 import { Stack } from '@punji/ui/stack';
+import { RowList, ValueRow } from '@punji/ui/rows';
 
 type Tab = 'summary' | 'activity' | 'statements';
 const npr = nepalMoneyConfig();
@@ -17,7 +18,7 @@ const statements = ['Kartik 2082', 'Ashwin 2082', 'Bhadra 2082'];
 export default function Example() {
   const [tab, setTab] = useState<Tab>('summary');
   return (
-    <div className="ex-narrow">
+    <div style={{ width: 'min(100%, 440px)', marginInline: 'auto' }}>
       <Card title={accounts.savings.institution} description={accounts.savings.accountType} headingLevel={3}>
         <Stack>
           <Tabs<Tab>
@@ -48,17 +49,11 @@ export default function Example() {
             )}
             {tab === 'activity' && <TransactionList transactions={transactions.slice(0, 3)} />}
             {tab === 'statements' && (
-              <ul className="ex-rows">
+              <RowList>
                 {statements.map((month) => (
-                  <li key={month}>
-                    <span>
-                      <b>{month}</b>
-                      <small>Monthly statement</small>
-                    </span>
-                    <small>PDF</small>
-                  </li>
+                  <ValueRow key={month} title={month} line="Monthly statement" figure={<small>PDF</small>} />
                 ))}
-              </ul>
+              </RowList>
             )}
           </div>
         </Stack>

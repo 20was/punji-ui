@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { useState } from 'react';
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
@@ -20,6 +20,49 @@ function Qty(props: { min?: string; max?: string; step?: string; initial?: strin
 }
 
 describe('NumberField steppers', () => {
+  it('holds a stepper button to repeat, quickening, and stops on release, leave, blur and at the limit', () => {
+    vi.useFakeTimers();
+    try {
+      render(<Qty integer step="1" min="0" max="12" initial="0" />);
+      const input = screen.getByRole('spinbutton', { name: 'Units' }) as HTMLInputElement;
+      const plus = screen.getByRole('button', { name: 'Increase' });
+      fireEvent.pointerDown(plus, { button: 0 });
+      expect(input.value).toBe('1');
+      act(() => { vi.advanceTimersByTime(399); });
+      expect(input.value).toBe('1');
+      act(() => { vi.advanceTimersByTime(1); });
+      expect(input.value).toBe('2');
+      act(() => { vi.advanceTimersByTime(160); });
+      expect(input.value).toBe('3');
+      act(() => { vi.advanceTimersByTime(136); });
+      expect(input.value).toBe('4');
+      fireEvent.pointerUp(plus);
+      act(() => { vi.advanceTimersByTime(2000); });
+      expect(input.value).toBe('4');
+      fireEvent.click(plus, { detail: 1 });
+      expect(input.value).toBe('4');
+      for (const stop of [() => fireEvent.pointerLeave(plus), () => fireEvent.pointerCancel(plus), () => fireEvent.blur(plus)]) {
+        const before = Number(input.value);
+        fireEvent.pointerDown(plus, { button: 0 });
+        stop();
+        act(() => { vi.advanceTimersByTime(2000); });
+        expect(Number(input.value)).toBe(before + 1);
+      }
+      fireEvent.pointerDown(plus, { button: 0 });
+      for (let i = 0; i < 50; i++) act(() => { vi.advanceTimersByTime(100); });
+      expect(input.value).toBe('12');
+      expect((plus as HTMLButtonElement).disabled).toBe(true);
+      expect(vi.getTimerCount()).toBe(0);
+      const minus = screen.getByRole('button', { name: 'Decrease' });
+      fireEvent.pointerDown(minus, { button: 2 });
+      expect(input.value).toBe('12');
+    } finally { vi.useRealTimers(); }
+  });
+  it('keeps keyboard activation of a stepper button at one step', () => {
+    render(<Qty integer step="1" initial="5" />);
+    fireEvent.click(screen.getByRole('button', { name: 'Increase' }), { detail: 0 });
+    expect((screen.getByRole('spinbutton') as HTMLInputElement).value).toBe('6');
+  });
   it('is a spin button whose arrows step exactly and clamp into min and max', async () => {
     const user = userEvent.setup();
     render(<Qty integer step="10" min="10" max="30" initial="20" />);
@@ -198,6 +241,14 @@ function Otp(props: { length?: number; type?: 'numeric' | 'alphanumeric'; mask?:
 const cells = () => screen.getAllByRole('textbox') as HTMLInputElement[];
 
 describe('OtpInput', () => {
+  it('marks long codes to wrap into two balanced rows instead of shrinking the boxes', () => {
+    for (const [length, fit, cols] of [[6, null, '3'], [8, 'm', '4'], [9, 'l', '5'], [12, 'xl', '6']] as const) {
+      const { unmount } = render(<Otp length={length} />);
+      const group = screen.getByTestId('otp');
+      expect([group.getAttribute('data-fit'), group.style.getPropertyValue('--otp-cols')]).toEqual([fit, cols]);
+      unmount();
+    }
+  });
   it('is one labelled group with a name per box and the one-time-code autocomplete on the first', () => {
     render(<Otp />);
     const group = screen.getByRole('group', { name: 'Verification code' });

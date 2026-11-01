@@ -14,7 +14,7 @@ export default function Example() {
   const [current, setCurrent] = useState('concentration');
   const detail = checks.find((c) => c.id === current)!;
   return (
-    <div className="ex-grid">
+    <div style={{ display: 'grid', gap: '16px 20px', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 13rem), 1fr))' }}>
       <CheckList role="tablist" label="Checks">
         {checks.map((c) => (
           <CheckRow

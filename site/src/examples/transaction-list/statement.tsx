@@ -9,7 +9,7 @@ const statement = transactions.filter((t) => !t.counterparty.startsWith('='));
 
 export default function Example() {
   return (
-    <div className="ex-medium">
+    <div style={{ width: 'min(100%, 720px)', marginInline: 'auto' }}>
       <Card title={`${accounts.savings.institution} savings`} description="Statement, 9 to 14 November 2025" headingLevel={3}>
         <TransactionList transactions={statement} showBalance />
       </Card>

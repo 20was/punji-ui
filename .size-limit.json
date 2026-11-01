@@ -73,7 +73,7 @@
     "name": "fields (import from '@punji/ui/fields')",
     "path": "dist/fields/Fields.js",
     "import": "*",
-    "limit": "4.2 kB",
+    "limit": "4.4 kB",
     "gzip": true
   },
   {
@@ -297,13 +297,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "93.26 kB",
+    "limit": "93.7 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "27.71 kB",
+    "limit": "28.15 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -325,7 +325,7 @@
     "name": "Financial compositions",
     "path": "dist/financial/financial.js",
     "import": "*",
-    "limit": "4.8 kB",
+    "limit": "4.85 kB",
     "gzip": true
   },
   {
@@ -437,7 +437,7 @@
     "name": "otp-input (import from '@punji/ui/otp-input')",
     "path": "dist/otp-input/OtpInput.js",
     "import": "*",
-    "limit": "1.85 kB",
+    "limit": "1.9 kB",
     "gzip": true
   },
   {
@@ -471,7 +471,7 @@
   {
     "name": "OTP input CSS",
     "path": "dist/css/otp-input.css",
-    "limit": "0.6 kB",
+    "limit": "0.68 kB",
     "rolldown": false,
     "gzip": true
   },

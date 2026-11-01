@@ -1,5 +1,6 @@
 import { Card } from '@punji/ui/card';
 import { StatusTag } from '@punji/ui/status-tag';
+import { RowList, ValueRow } from '@punji/ui/rows';
 
 // A StatusTag is the state of a setting at the end of its row: read, never pressed. The words carry the state; the icon is extra.
 const rows = [
@@ -11,19 +12,13 @@ const rows = [
 
 export default function Example() {
   return (
-    <div className="ex-narrow">
+    <div style={{ width: 'min(100%, 440px)', marginInline: 'auto' }}>
       <Card title="Account settings" headingLevel={3}>
-        <ul className="ex-rows">
+        <RowList>
           {rows.map((r) => (
-            <li key={r.name}>
-              <span>
-                <b>{r.name}</b>
-                <small>{r.hint}</small>
-              </span>
-              {r.tag}
-            </li>
+            <ValueRow key={r.name} title={r.name} line={r.hint} figure={r.tag} />
           ))}
-        </ul>
+        </RowList>
       </Card>
     </div>
   );

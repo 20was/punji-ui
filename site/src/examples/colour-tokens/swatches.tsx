@@ -1,3 +1,4 @@
+import { Stack } from '@punji/ui/stack';
 import tokens from '@punji/ui/tokens.css?raw';
 
 // Read from the shipped tokens.css, so this list cannot drift from the package.
@@ -21,11 +22,11 @@ const groups: { title: string; names: string[] }[] = [
 
 export default function Example() {
   return (
-    <div className="ex-token-groups">
+    <Stack gap={4}>
       {groups.map((group) => (
-        <section key={group.title} aria-label={group.title}>
-          <p className="ex-label">{group.title}</p>
-          <div className="ex-swatches">
+        <Stack as="section" gap={2} key={group.title} aria-label={group.title}>
+          <p style={{ margin: 0, fontSize: 'var(--pu-text-sm)', color: 'var(--pu-color-text-muted)' }}>{group.title}</p>
+          <div style={{ display: 'grid', gap: 12, gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 8.5rem), 1fr))' }}>
             {group.names
               .map((short) => `--pu-color-${short}`)
               .filter((name) => light.has(name))
@@ -33,20 +34,20 @@ export default function Example() {
                 const l = light.get(name)!;
                 const d = dark.get(name) ?? l;
                 return (
-                  <div key={name} className="ex-swatch">
-                    <i style={{ background: `linear-gradient(135deg, ${l} 50%, ${d} 50%)` }} />
-                    <b>
-                      <code>{name}</code>
+                  <Stack key={name} gap={1} style={{ fontSize: '0.75rem' }}>
+                    <span style={{ display: 'block', height: '2.5rem', borderRadius: 'var(--pu-radius-control)', border: '1px solid var(--pu-color-border-strong)', background: `linear-gradient(135deg, ${l} 50%, ${d} 50%)` }} />
+                    <b style={{ overflowWrap: 'anywhere' }}>
+                      <code style={{ fontSize: 11.5 }}>{name}</code>
                     </b>
-                    <span>
+                    <span style={{ color: 'var(--pu-color-text-muted)', overflowWrap: 'anywhere', fontVariantNumeric: 'tabular-nums' }}>
                       {l} · {d}
                     </span>
-                  </div>
+                  </Stack>
                 );
               })}
           </div>
-        </section>
+        </Stack>
       ))}
-    </div>
+    </Stack>
   );
 }

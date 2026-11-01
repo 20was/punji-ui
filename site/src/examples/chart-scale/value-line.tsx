@@ -18,22 +18,22 @@ const lakh = (v: number) => `${(v / 100_000).toFixed(1)} L`;
 
 export default function Example() {
   return (
-    <div className="ex-medium">
+    <div style={{ width: 'min(100%, 720px)', marginInline: 'auto' }}>
       <Card title="Portfolio value, 5 weeks" description={off ? `Invested (NPR 4 L) is ${off} the plot, so it is named, not drawn` : 'Value and invested'} headingLevel={3}>
-        <div className="ex-chart">
-          <svg viewBox={`0 0 ${W} 200`} preserveAspectRatio="none" role="img" aria-label={`Portfolio value from ${lakh(values[0] ?? 0)} to ${lakh(values.at(-1) ?? 0)}; week 3 has no value`}>
+        <div style={{ position: 'relative', height: 200, margin: '4px 0 10px', paddingRight: 40 }}>
+          <svg viewBox={`0 0 ${W} 200`} preserveAspectRatio="none" role="img" aria-label={`Portfolio value from ${lakh(values[0] ?? 0)} to ${lakh(values.at(-1) ?? 0)}; week 3 has no value`} style={{ display: 'block', width: '100%', height: '100%', overflow: 'visible' }}>
             {scale.ticks.map((t) => (
-              <line key={t} className="ex-chart-grid" x1={0} x2={W} y1={scale.y(t)} y2={scale.y(t)} />
+              <line key={t} stroke="var(--pu-color-border-default)" strokeDasharray="2 4" vectorEffect="non-scaling-stroke" x1={0} x2={W} y1={scale.y(t)} y2={scale.y(t)} />
             ))}
-            <polyline className="ex-chart-line is-close" points={line} />
+            <polyline fill="none" stroke="var(--pu-color-chart)" strokeWidth={2} strokeLinejoin="round" vectorEffect="non-scaling-stroke" points={line} />
           </svg>
           {scale.ticks.map((t) => (
-            <span key={t} className="ex-chart-tick" style={{ top: `${(scale.y(t) / 200) * 100}%` }} aria-hidden="true">
+            <span key={t} style={{ position: 'absolute', right: 0, transform: 'translateY(-50%)', fontSize: 11.5, lineHeight: 1, color: 'var(--pu-color-text-muted)', fontVariantNumeric: 'tabular-nums', top: `${(scale.y(t) / 200) * 100}%` }} aria-hidden="true">
               {lakh(t)}
             </span>
           ))}
         </div>
-        <p className="ex-label">A flat series still gets a range: {flat.ticks.map(lakh).join(', ')}.</p>
+        <p style={{ margin: 0, fontSize: 'var(--pu-text-sm)', color: 'var(--pu-color-text-muted)' }}>A flat series still gets a range: {flat.ticks.map(lakh).join(', ')}.</p>
       </Card>
     </div>
   );

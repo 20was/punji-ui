@@ -37,4 +37,80 @@
     .pu-shell-nav { flex-direction: row; flex-wrap: wrap; }
     .pu-shell-main { padding: var(--pu-space-3); }
   }
+
+  /* The same stacked card layout, driven by the table's own width (a narrow card or sidebar on any screen), as on a phone. */
+  .pu-fin { container: pu-fin / inline-size; min-width: 0 }
+  @container pu-fin (max-width: 639px) {
+    .pu-fin .kit-tablebox.stack { overflow: visible }
+    .pu-fin .kit-tablebox.stack .kit-table thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+      border: 0;
+    }
+    /* On phones, keep the record identity and headline figure together;
+       secondary figures use their own short, visible column labels. */
+    .pu-fin .kit-tablebox.stack .kit-table tbody tr {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      align-items: start;
+      gap: 10px 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--pu-color-border);
+    }
+    .pu-fin .kit-tablebox.stack .kit-table tbody tr:last-child { border-bottom: 0 }
+    .pu-fin .kit-tablebox.stack .kit-table tfoot tr {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      align-items: start;
+      gap: 10px 12px;
+      padding: 12px 0;
+      border-top: 1px solid var(--pu-color-border-control);
+      background: var(--pu-color-surface-subtle);
+    }
+    .pu-fin .kit-tablebox.stack:not(.bare, .dense) .kit-table tfoot tr { padding-inline: 12px; border-radius: 0 0 var(--pu-radius-2xl) var(--pu-radius-2xl) }
+    .pu-fin .kit-tablebox.stack .kit-table tfoot tr > * { min-width: 0; padding: 0; border: 0; background: transparent; white-space: normal }
+    .pu-fin .kit-tablebox.stack .kit-table tfoot tr > th { grid-column: 1 / 4 }
+    .pu-fin .kit-tablebox.stack .kit-table tfoot tr > th + td { grid-column: 4; text-align: right; white-space: nowrap }
+    .pu-fin .kit-tablebox.stack .kit-table tfoot tr > th + td ~ td { font-size: 13px; text-align: left }
+    .pu-fin .kit-tablebox.stack .kit-table tfoot tr > th + td ~ td::before { content: attr(data-label); display: block; margin-bottom: 2px; color: var(--pu-color-text-muted); font-size: 11px; font-weight: 400; line-height: 14px }
+    .pu-fin .kit-tablebox.stack:not(.bare, .dense) .kit-table tbody tr { padding-inline: 12px }
+    .pu-fin .kit-tablebox.stack.selection:not(.bare, .dense) .kit-table tbody tr { padding-left: 40px }
+    .pu-fin .kit-tablebox.stack.selection:not(.bare, .dense) .kit-table tbody tr > .kit-table-selection-cell { left: 12px }
+    .pu-fin .kit-tablebox.stack .kit-table tbody tr > * { min-width: 0; padding: 0; border: 0; white-space: normal }
+    .pu-fin .kit-tablebox.stack .kit-table tbody tr > th { grid-column: 1 / 4 }
+    .pu-fin .kit-tablebox.stack .kit-table tbody tr > th + td { grid-column: 4; text-align: right; white-space: nowrap }
+    .pu-fin .kit-tablebox.stack .kit-table tbody tr > th + td ~ td { font-size: 13px; text-align: left }
+    /* A text headline cell (a company name, not a figure) wraps in its track instead of pushing the card wider. */
+    .pu-fin .kit-tablebox.stack .kit-table tbody tr > th + td:not(.num) { white-space: normal; overflow-wrap: anywhere }
+    .pu-fin .kit-tablebox.stack .kit-table tbody tr > th + td ~ td::before {
+      content: attr(data-label);
+      display: block;
+      margin-bottom: 2px;
+      color: var(--pu-color-text-muted);
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 14px;
+    }
+    .pu-fin .kit-tablebox.stack .kit-table tbody tr:hover { background: transparent }
+    .pu-fin .kit-tablebox.stack .kit-table tbody tr:has(> .kit-table-empty) { display: block; padding: 0 }
+    .pu-fin .kit-tablebox.stack .kit-table tbody tr > .kit-table-empty { display: block; height: auto; padding: 28px 12px }
+    .pu-fin .kit-tablebox.stack.selection .kit-table tbody tr { position: relative; padding-left: 28px }
+    .pu-fin .kit-tablebox.stack.selection .kit-table tbody tr > .kit-table-selection-cell { position: absolute; top: 12px; left: 0; width: 24px; min-width: 24px; padding: 0 }
+    .pu-fin .kit-tablebox.stack.selection .kit-table thead .kit-table-selection-cell > input { display: none }
+    .pu-fin .kit-table-mobile-select { display: flex; align-items: center; min-height: 40px; padding: 0 12px; border-bottom: 1px solid var(--pu-color-border); color: var(--pu-color-text-muted); font-size: var(--pu-text-sm) }
+    .pu-fin .kit-table-mobile-select label { display: inline-flex; align-items: center; gap: 9px; min-height: 40px; cursor: pointer }
+    .pu-fin .kit-table-mobile-select input { appearance: none; -webkit-appearance: none; display: grid; width: 18px; height: 18px; margin: 0; place-content: center; border: 1.5px solid var(--pu-color-border-control); border-radius: 5px; background: var(--pu-color-surface); cursor: pointer }
+    .pu-fin .kit-table-mobile-select input::after { content: ''; width: 9px; height: 5px; margin-top: -2px; border: solid var(--pu-color-on-accent-fill); border-width: 0 0 2px 2px; transform: rotate(-45deg) scale(0) }
+    .pu-fin .kit-table-mobile-select input:checked, .pu-fin .kit-table-mobile-select input:indeterminate { background: var(--pu-color-accent-fill); border-color: var(--pu-color-accent-fill) }
+    .pu-fin .kit-table-mobile-select input:checked::after { transform: rotate(-45deg) scale(1) }
+    .pu-fin .kit-table-mobile-select input:indeterminate::after { width: 8px; height: 0; margin: 0; border-width: 2px 0 0; transform: none }
+    .pu-fin .kit-table-mobile-select input:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+  }
 }

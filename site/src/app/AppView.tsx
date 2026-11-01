@@ -1,5 +1,5 @@
 import { Fragment, type ComponentType, type ReactNode } from 'react';
-import { pagePath, REPO } from '../paths.ts';
+import { pagePath, REPO, SITE_NAME } from '../paths.ts';
 import type { PageData } from './load.ts';
 import { groupTitleOf } from './nav.ts';
 import { Link } from './router.tsx';
@@ -47,12 +47,19 @@ export function AppView({ data, App }: { data: PageData; App: ComponentType }): 
   return (
     <div className="doc-app-page" data-testid={`app-${page.slug}`}>
       <header className="doc-app-bar">
-        <Link className="doc-app-brand" to="/" aria-label="Punji UI documentation">
-          <Wordmark height={16} />
-        </Link>
-        <span className="doc-app-crumb" aria-hidden="true">
-          /
-        </span>
+        <nav aria-label="Breadcrumb" className="doc-app-crumbs">
+          <ol>
+            <li>
+              <Link className="doc-app-brand" to="/">
+                <Wordmark height={16} />
+                <span className="kit-sr">{SITE_NAME}</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/#apps">Apps</Link>
+            </li>
+          </ol>
+        </nav>
         <h1 id="page-title" tabIndex={-1} className="doc-app-title">
           {page.navTitle ?? page.title}
         </h1>

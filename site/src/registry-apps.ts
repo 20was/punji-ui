@@ -6,8 +6,7 @@ import type { PageDef } from './registry.ts';
 export const APP_PAGES: readonly PageDef[] = [
   {
     slug: 'trading-terminal',
-    title: 'Trading terminal: live NEPSE order entry demo',
-    navTitle: 'Trading terminal',
+    title: 'Trading terminal',
     description:
       'A complete NEPSE trading terminal built from Punji UI: live market watch, candles, depth and order book, an order ticket that fills orders, positions and P&L.',
     lead: 'A TMS-class terminal on a simulated session: watch, chart, place, fill, and see the P&L move, all from documented components.',
@@ -63,8 +62,7 @@ export const APP_PAGES: readonly PageDef[] = [
   },
   {
     slug: 'wealth-dashboard',
-    title: 'Wealth dashboard: portfolio and IPO centre demo',
-    navTitle: 'Wealth dashboard',
+    title: 'Wealth dashboard',
     description:
       'A personal wealth dashboard built from Punji UI: net worth, allocation, live holdings, dividends by fiscal year, an IPO centre with allotment, goals and CSV.',
     lead: 'Net worth to the paisa, holdings at live prices, dividends, share issues from application to allotment, and savings goals.',

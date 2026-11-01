@@ -13,7 +13,7 @@ export const LEADS: Readonly<Record<string, string>> = {
   tailwind: 'Use Tailwind for page layout and Punji UI for components, with one line of CSS so neither overrides the other by accident.',
   'live-data': 'Stream prices into tables and figures through a small adapter, so components stay pure and every update keeps exact amounts.',
   security: 'What the package does to keep your users safe, and the parts that stay your responsibility.',
-  roadmap: 'What is built today, what is being worked on, and what is planned before and after the first release.',
+  roadmap: 'What shipped in 0.1.0, what is being worked on now, and what is planned for later releases.',
   agents: 'Which component to use for which job, the checks to run before calling work done, and the bar every new component meets.',
 
   // Foundations

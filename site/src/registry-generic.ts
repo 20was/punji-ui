@@ -249,7 +249,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       'The / hint is decorative (`aria-hidden`).',
     ],
     responsive: ['Fills its container. lg uses 16px text so `iOS` does not zoom on focus.'],
-    related: ['field', 'command-palette', 'company-search', 'data-table'],
+    related: ['field', 'command-palette', 'company-search', 'data-table', 'range-slider'],
   },
   {
     slug: 'popover',
@@ -298,7 +298,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       'Include a visible heading and a Cancel button inside; do not rely on Esc alone.',
     ],
     responsive: ['A 432px panel on wide screens; on narrow screens it fills the width. It renders nothing during server rendering.'],
-    related: ['popover', 'command-palette', 'field', 'button'],
+    related: ['popover', 'command-palette', 'field', 'button', 'drawer-screen'],
   },
   {
     slug: 'command-palette',
@@ -402,7 +402,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       '`CountBadge` is `role="img"` with `aria-label` (label), e.g. "2 waiting"; the heading beside it says what is counted.',
     ],
     responsive: ['Pills are inline and do not shrink below their text; let the row wrap.'],
-    related: ['market-status', 'payment-status', 'locked-note', 'card'],
+    related: ['market-status', 'payment-status', 'locked-note', 'card', 'status-tag'],
   },
   {
     slug: 'locked-note',
@@ -545,7 +545,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       '`ariaLabel` gives a row a fuller name when its visible text is in several pieces; it must contain the visible words. The tile is decorative.',
     ],
     responsive: ['Symbols never shrink or truncate (a Tile draws up to five letters, set a little smaller at five); the name beside a symbol is the part that gives way with an ellipsis. Figures stay on one line.'],
-    related: ['link-table', 'card', 'key-stats', 'stock-table'],
+    related: ['link-table', 'card', 'key-stats', 'stock-table', 'show-more'],
   },
   {
     slug: 'financial-summary',
@@ -739,7 +739,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       'Name the buttons for what they do ("Confirm sale"), and state the amount in the body.',
     ],
     responsive: ['At most 28rem wide: pinned to the bottom edge on a phone, centred from 640px. Dock is sticky at the bottom of its scroll container.'],
-    related: ['drawer', 'inline-confirm', 'toast', 'button'],
+    related: ['drawer', 'inline-confirm', 'toast', 'button', 'drawer-screen'],
   },
   {
     slug: 'drawer-screen',
@@ -853,6 +853,6 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     keyboard: ['Tab reaches the separator.', 'Left and Right (Up and Down when vertical) move it by `step`; with Shift, four steps.', 'Home and End move it to `min` and `max`; Enter collapses the start pane to `min` and restores it.'],
     accessibility: ['`role="separator"` with `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, a percent `aria-valuetext`, `aria-controls` on the start pane and a required `label`.', 'When the panes stack the separator is hidden, so it leaves the tab order.'],
     responsive: ['Stacks below 640 px of container width (a container query), so it adapts to the space it is given, not the viewport. `stack={false}` keeps the split.'],
-    related: ['page-layout', 'stack', 'candlestick-chart', 'order-ticket'],
+    related: ['page-layout', 'stack', 'candlestick-chart', 'order-ticket', 'trading-terminal'],
   },
 ];

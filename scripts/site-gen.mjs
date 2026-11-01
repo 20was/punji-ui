@@ -42,15 +42,13 @@ for (const page of PAGES) {
   if (page.kind !== 'foundation' && page.kind !== 'guide' && page.kind !== 'showcase' && page.kind !== 'app' && !(page.api?.length > 0)) problems.push(`registry: ${page.slug} registers no API entries`);
   for (const rel of page.related ?? []) if (!PAGES.some((p) => p.slug === rel)) problems.push(`registry: ${page.slug} relates to unknown page ${rel}`);
 }
-// Apps: each app page has site/src/apps/<slug>/App.tsx and screens; every app folder belongs to an app page. The title
-// ("<title> — Punji UI") is 40 to 62 characters and the description 120 to 160, since an app is a landing page of its own.
+// Apps: each app page has site/src/apps/<slug>/App.tsx and screens; every app folder belongs to an app page; the
+// description is 120 to 160 characters (check:seo holds the search title, from seo-titles.ts, to 40 to 62).
 const appRoot = resolve(root, 'site/src/apps');
 for (const page of PAGES.filter((p) => p.kind === 'app')) {
   if (!existsSync(resolve(appRoot, page.slug, 'App.tsx'))) problems.push(`apps: ${page.slug} has no site/src/apps/${page.slug}/App.tsx`);
   if (!(page.app?.screens?.length > 0)) problems.push(`apps: ${page.slug} lists no screens`);
   if (page.group !== 'apps') problems.push(`apps: ${page.slug} must be in the apps group`);
-  const title = `${page.title} — Punji UI`;
-  if (title.length < 40 || title.length > 62) problems.push(`apps: ${page.slug} title "${title}" is ${title.length} characters; want 40 to 62`);
   if (page.description.length < 120) problems.push(`apps: ${page.slug} description is ${page.description.length} characters; want 120 to 160`);
 }
 for (const slug of existsSync(appRoot) ? readdirSync(appRoot) : []) {

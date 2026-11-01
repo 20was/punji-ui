@@ -71,7 +71,12 @@ export const TICK = 10n;
 export const LOT = 10n;
 /** The daily band around the previous close used here: ±10%. */
 export const BAND_RATE = '0.10';
-export const bandOf = (previousClose: bigint) => ({ lower: (previousClose * 90n) / 100n, upper: (previousClose * 110n) / 100n });
+/** The band on the tick grid: the lower limit rounds up to a tick and the upper rounds down, so both are tradable prices. */
+export const bandOf = (previousClose: bigint) => {
+  const lower = (previousClose * 90n + 99n) / 100n;
+  const upper = (previousClose * 110n) / 100n;
+  return { lower: ((lower + TICK - 1n) / TICK) * TICK, upper: (upper / TICK) * TICK };
+};
 
 /** The simulated session starts at 12:00 on Sunday 1 November 2026, Kathmandu time (06:15 UTC). */
 export const SESSION_START = Date.UTC(2026, 10, 1, 6, 15, 0);

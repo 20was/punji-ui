@@ -1,0 +1,16 @@
+/* Wealth dashboard layout. Colours and type from the package tokens; classes prefixed wd-. */
+.wd-networth-mini { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 6px; margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.wd-networth-mini > span:first-child { color: var(--doc-ink-2); font-size: 12px; font-weight: 500; }
+.wd-headline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; margin: 0 0 16px; }
+.wd-headline-value { font: 600 32px/1.1 var(--pu-font-display); font-variant-numeric: tabular-nums; }
+.wd-headline-day { display: inline-flex; align-items: baseline; gap: 6px; color: var(--doc-ink-2); font-size: 14px; }
+.wd-upcoming { display: grid; gap: 10px; margin: 0 0 16px; padding: 0; list-style: none; }
+.wd-links { display: flex; flex-wrap: wrap; gap: 8px; }
+.wd-apps { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.wd-apps li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 12px; }
+.wd-goals { display: grid; gap: 16px; margin: 0; padding: 0; list-style: none; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+.wd-goal-figure { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; margin: 0 0 10px; font: 600 20px/1.2 var(--pu-font-display); font-variant-numeric: tabular-nums; }
+.wd-goal-figure .app-muted { font: 400 13px/1.2 var(--pu-font-body); }
+.wd-goal-form { display: grid; gap: 12px; align-items: end; grid-template-columns: minmax(0, 1fr); max-width: 720px; }
+@media (min-width: 720px) { .wd-goal-form { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; } }
+@media (max-width: 639px) { .wd-headline-value { font-size: 26px; } }

@@ -28,13 +28,28 @@ const CLASS: Record<string, string> = { n: '\\d', a: '[A-Z]', c: '[A-Z0-9]' };
 export function ibanLength(country: string, formats: Readonly<Record<string, string>> = IBAN_FORMATS): number | null {
   const spec = formats[country.toUpperCase()];
   if (!spec) return null;
-  let total = 4;
-  for (const part of spec.matchAll(/(\d+)[nac]/g)) total += Number(part[1]);
-  return total;
+  return 4 + specParts(spec).reduce((sum, part) => sum + part.count, 0);
+}
+
+/** A BBAN structure such as '4a14n' as its parts, read in one pass (no regex over caller-supplied text). */
+function specParts(spec: string): { count: number; kind: 'n' | 'a' | 'c' }[] {
+  const parts: { count: number; kind: 'n' | 'a' | 'c' }[] = [];
+  let digits = '';
+  for (const char of spec) {
+    if (char >= '0' && char <= '9') {
+      if (digits.length >= 3) throw new RangeError(`IBAN format part is too long: ${spec}`);
+      digits += char;
+    } else if ((char === 'n' || char === 'a' || char === 'c') && digits) {
+      parts.push({ count: Number(digits), kind: char });
+      digits = '';
+    } else throw new RangeError(`IBAN format must be parts like 4a or 14n: ${spec}`);
+  }
+  if (digits) throw new RangeError(`IBAN format ends without a type letter: ${spec}`);
+  return parts;
 }
 
 function bbanPattern(spec: string): RegExp {
-  return new RegExp(`^${[...spec.matchAll(/(\d+)([nac])/g)].map((m) => `${CLASS[m[2]!]}{${m[1]}}`).join('')}$`);
+  return new RegExp(`^${specParts(spec).map((part) => `${CLASS[part.kind]}{${part.count}}`).join('')}$`);
 }
 
 export interface IbanCheck extends PaymentCheck {

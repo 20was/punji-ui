@@ -42,7 +42,7 @@
   .pu-tx-name { font: 500 var(--pu-text-sm) / 1.35 var(--pu-font-body); overflow-wrap: anywhere; unicode-bidi: isolate }
   .pu-tx-sub { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
   .pu-tx-ref { font-variant-numeric: tabular-nums; overflow-wrap: anywhere }
-  .pu-tx-money { display: grid; justify-items: end; gap: 3px; flex: none; text-align: right }
+  .pu-tx-money { display: grid; justify-items: end; gap: 3px; flex: none; text-align: end }
   .pu-tx-amount { display: inline-flex; align-items: center; gap: 4px; font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body); font-variant-numeric: tabular-nums; white-space: nowrap }
   .pu-tx[data-direction='credit'] .pu-tx-amount { color: var(--pu-color-gain) }
   .pu-tx[data-status='failed'] .pu-tx-amount, .pu-tx[data-status='reversed'] .pu-tx-amount { text-decoration: line-through; color: var(--pu-color-text-muted) }
@@ -51,7 +51,7 @@
   .pu-tx-skel { align-items: center; min-height: 56px }
   @media (max-width: 479px) {
     .pu-tx { flex-wrap: wrap }
-    .pu-tx-money { justify-items: start; text-align: left; width: 100% }
+    .pu-tx-money { justify-items: start; text-align: start; width: 100% }
   }
 
   /* PaymentReceipt */
@@ -62,7 +62,7 @@
   .pu-receipt-facts, .pu-receipt-sum { display: grid; gap: var(--pu-space-3); margin: 0 }
   .pu-receipt-facts > div, .pu-receipt-sum > div { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px var(--pu-space-3); min-width: 0 }
   .pu-receipt dt { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
-  .pu-receipt dd { margin: 0; display: grid; justify-items: end; text-align: right; font-size: var(--pu-text-sm); min-width: 0; overflow-wrap: anywhere }
+  .pu-receipt dd { margin: 0; display: grid; justify-items: end; text-align: end; font-size: var(--pu-text-sm); min-width: 0; overflow-wrap: anywhere }
   .pu-receipt dd.pu-receipt-ref { display: flex; align-items: center; justify-content: flex-end; gap: 4px }
   .pu-receipt-refval { font-variant-numeric: tabular-nums; overflow-wrap: anywhere }
   .pu-receipt-name { font-weight: 600; unicode-bidi: isolate }
@@ -83,7 +83,7 @@
   .pu-timeline { list-style: none; margin: 0; padding: 0; display: grid; min-width: 0 }
   .pu-step { position: relative; display: flex; gap: var(--pu-space-3); padding-bottom: var(--pu-space-4); min-width: 0 }
   .pu-step:last-child { padding-bottom: 0 }
-  .pu-step:not(:last-child)::before { content: ''; position: absolute; left: 13px; top: 28px; bottom: 0; width: 2px; background: var(--pu-color-border-strong) }
+  .pu-step:not(:last-child)::before { content: ''; position: absolute; inset-inline-start: 13px; top: 28px; bottom: 0; width: 2px; background: var(--pu-color-border-strong) }
   .pu-step[data-state='complete']:not(:last-child)::before { background: var(--pu-color-gain) }
   .pu-step-mark { flex: none; display: grid; place-items: center; width: 28px; height: 28px; border-radius: var(--pu-radius-full); border: 2px solid var(--pu-color-border-strong); background: var(--pu-color-surface); color: var(--pu-color-text-muted) }
   .pu-step[data-state='complete'] .pu-step-mark { border-color: var(--pu-color-gain); color: var(--pu-color-gain) }

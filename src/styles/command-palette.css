@@ -5,7 +5,7 @@
   .kit-cmd-scrim { position: absolute; inset: 0; background: var(--pu-color-scrim); animation: kit-cmd-fade 120ms linear }
   .kit-cmd { position: absolute; left: 50%; top: 96px; transform: translateX(-50%); width: 600px; max-width: calc(100vw - 32px); display: flex; flex-direction: column; max-height: calc(100dvh - 128px); overflow: hidden; border-radius: var(--pu-radius-card); background: var(--pu-color-surface-solid); box-shadow: var(--pu-shadow-lg); border: 1px solid var(--pu-color-card-border); color: var(--pu-color-text); animation: kit-cmd-in 140ms ease-out }
   .kit-cmd kbd { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 5px; background: var(--pu-color-surface-tint); color: var(--pu-color-text-muted); font: 600 11px / 1 var(--pu-font-body) }
-  .kit-cmd-in { flex: none; display: flex; align-items: center; gap: 10px; height: 52px; padding: 0 12px 0 18px; border-bottom: 1px solid var(--pu-color-border); color: var(--pu-color-text-tertiary) }
+  .kit-cmd-in { flex: none; display: flex; align-items: center; gap: 10px; height: 52px; padding-block: 0; padding-inline: 18px 12px; border-bottom: 1px solid var(--pu-color-border); color: var(--pu-color-text-tertiary) }
   .kit-cmd-in input { flex: 1; min-width: 0; height: 100%; border: 0; background: transparent; outline: none; color: var(--pu-color-text); font: 400 16px / 1 var(--pu-font-body) }
   .kit-cmd-in input::placeholder { color: var(--pu-color-text-tertiary) }
   .kit-cmd-esc { appearance: none; border: 0; cursor: pointer; flex: none; height: 24px; padding: 0 8px; border-radius: 6px; background: var(--pu-color-surface-tint); color: var(--pu-color-text-muted); font: 600 11px / 1 var(--pu-font-body) }
@@ -19,9 +19,9 @@
   .kit-cmd-it b { flex: none; font-weight: 700 }
   .kit-cmd-t { flex: 1; min-width: 0; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
   .kit-cmd-sub { flex: 1; min-width: 0; font-size: 12px; color: var(--pu-color-text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
-  .kit-cmd-meta { flex: none; margin-left: auto; font-size: 13px; font-weight: 600; color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums; white-space: nowrap }
-  .kit-cmd-enter { flex: none; margin-left: auto }
-  .kit-cmd-chips { flex: none; display: flex; gap: 4px; margin-left: auto }
+  .kit-cmd-meta { flex: none; margin-inline-start: auto; font-size: 13px; font-weight: 600; color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums; white-space: nowrap }
+  .kit-cmd-enter { flex: none; margin-inline-start: auto }
+  .kit-cmd-chips { flex: none; display: flex; gap: 4px; margin-inline-start: auto }
   .kit-cmd-chips.off { display: none }
   .kit-cmd-chip { display: inline-flex; align-items: center; cursor: pointer; height: 28px; padding: 0 10px; border-radius: 8px; background: none; color: var(--pu-color-text-muted); font: 600 12px / 1 var(--pu-font-body); white-space: nowrap }
   .kit-cmd-chip:hover { color: var(--pu-color-text); background: var(--pu-color-surface-tint) }
@@ -35,7 +35,7 @@
   .kit-cmd-it.more .kit-cmd-t { color: var(--pu-color-text-muted); font-size: 13px }
   .kit-cmd-foot { flex: none; display: flex; gap: 14px; padding: 10px 16px; border-top: 1px solid var(--pu-color-border); font-size: 11.5px; color: var(--pu-color-text-tertiary); white-space: nowrap; overflow: hidden }
   .kit-cmd-foot span { display: inline-flex; align-items: center; gap: 5px }
-  .kit-cmd-foot kbd + kbd { margin-left: -2px }
+  .kit-cmd-foot kbd + kbd { margin-inline-start: -2px }
   @keyframes kit-cmd-fade { from { opacity: 0; } to { opacity: 1; } }
   @keyframes kit-cmd-in { from { opacity: 0; transform: translate(-50%, -6px); } to { opacity: 1; transform: translate(-50%, 0); } }
   @media (max-width: 700px) { .kit-cmd-it { height: 52px } }
@@ -44,7 +44,7 @@
   @media (max-width: 700px) { .kit-cmd-chips { overflow-x: auto; scrollbar-width: none; max-width: calc(100% - 64px) } }
   @media (max-width: 700px) { .kit-cmd-chips::-webkit-scrollbar { display: none } }
   @media (max-width: 700px) { .kit-cmd-foot { display: none } }
-  @media (max-width: 639px) { .kit-cmd { inset: 0; top: 0; left: 0; transform: none; width: 100%; max-width: none; max-height: none; height: 100dvh; border-radius: 0; border: 0; animation: none } }
+  @media (max-width: 639px) { .kit-cmd { inset: 0; top: 0; inset-inline-start: 0; transform: none; width: 100%; max-width: none; max-height: none; height: 100dvh; border-radius: 0; border: 0; animation: none } }
   @media (max-width: 639px) { .kit-cmd-list { max-height: none } }
   @media (pointer: coarse) { .kit-cmd-foot { display: none } }
   @media (prefers-reduced-motion: reduce) { .kit-cmd, .kit-cmd-scrim { animation: none } }

@@ -2,8 +2,8 @@
    Styles for drawer-screen. Needs tokens.css and base.css (styles.css has everything). */
 @layer punji.components {
   .kit-drawer-screen { display: flex; flex-direction: column; min-height: 100%; color: var(--pu-color-text); font-variant-numeric: tabular-nums }
-  .kit-drawer-head { position: sticky; top: 0; z-index: 6; display: flex; align-items: center; gap: 8px; min-height: 56px; padding: 12px 12px 12px 8px; border-bottom: 1px solid var(--pu-color-border); background: var(--pu-color-surface-solid) }
-  .kit-drawer-head.noback { padding-left: 20px }
+  .kit-drawer-head { position: sticky; top: 0; z-index: 6; display: flex; align-items: center; gap: 8px; min-height: 56px; padding-block: 12px; padding-inline: 8px 12px; border-bottom: 1px solid var(--pu-color-border); background: var(--pu-color-surface-solid) }
+  .kit-drawer-head.noback { padding-inline-start: 20px }
   .kit-drawer-head h2 { flex: 1; min-width: 0; margin: 0; font: 700 16px / 22px var(--pu-font-display); overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
   .kit-drawer-x { flex: none; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; border: 0; border-radius: var(--pu-radius-sm); background: none; color: var(--pu-color-text-muted); cursor: pointer }
   .kit-drawer-x:hover { background: var(--pu-color-surface-tint); color: var(--pu-color-text) }
@@ -16,9 +16,9 @@
   .kit-drawer-acts > .kit-btn { flex: 1; --h: var(--pu-control-lg) }
   .kit-drawer-note { display: flex; align-items: center; gap: 6px; margin: 10px 0 0; font-size: 12px; color: var(--pu-color-text-tertiary) }
   .kit-drawer-note kbd { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 5px; background: var(--pu-color-surface-tint); color: var(--pu-color-text-muted); font: 600 11px / 1 var(--pu-font-body) }
-  .kit-drawer-note kbd:not(:first-child) { margin-left: 8px }
+  .kit-drawer-note kbd:not(:first-child) { margin-inline-start: 8px }
   @media (pointer: coarse) { .kit-drawer-note { display: none } }
-  .kit-drawer-screen.on-page .kit-drawer-foot { padding-left: 16px; padding-right: 16px; background: var(--pu-color-bg) }
+  .kit-drawer-screen.on-page .kit-drawer-foot { padding-inline-start: 16px; padding-inline-end: 16px; background: var(--pu-color-bg) }
   .kit-drawer-screen.on-page .kit-drawer-body { padding: 4px 0 16px }
   .kit-drawer-screen.on-page { min-height: 100% }
 }

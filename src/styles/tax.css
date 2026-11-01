@@ -15,7 +15,7 @@
   .pu-inv-logo { flex: none }
   .pu-inv-logo :is(img, svg) { display: block; max-width: 64px; max-height: 64px }
   .pu-inv-seller-name, .pu-slip-name { font: 700 var(--pu-text-base) / 1.3 var(--pu-font-display); overflow-wrap: anywhere }
-  .pu-inv-titlebox, .pu-slip-titlebox { display: grid; justify-items: end; gap: 2px; text-align: right }
+  .pu-inv-titlebox, .pu-slip-titlebox { display: grid; justify-items: end; gap: 2px; text-align: end }
   .pu-inv-title, .pu-slip-title { margin: 0; font: 700 var(--pu-text-lg) / 1.2 var(--pu-font-display); letter-spacing: 0.02em }
   .pu-inv-copy { font-size: var(--pu-text-xs); font-weight: 600; padding: 1px 6px; border: 1px solid var(--pu-color-border-strong); border-radius: var(--pu-radius-sm) }
   .pu-inv-pan { font-size: var(--pu-text-xs) }
@@ -27,16 +27,16 @@
   .pu-inv-facts, .pu-slip-facts { display: grid; gap: var(--pu-space-1); margin: 0 }
   .pu-inv-facts > div, .pu-slip-facts > div { display: flex; justify-content: space-between; gap: var(--pu-space-3) }
   .pu-inv-facts dt, .pu-slip-facts dt { color: var(--pu-color-text-muted); font-size: var(--pu-text-xs); padding-top: 1px }
-  .pu-inv-facts dd, .pu-slip-facts dd { margin: 0; display: grid; justify-items: end; text-align: right }
+  .pu-inv-facts dd, .pu-slip-facts dd { margin: 0; display: grid; justify-items: end; text-align: end }
   .pu-inv-date { font-variant-numeric: tabular-nums; white-space: nowrap }
   .pu-inv-cal { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); text-decoration: none }
 
   /* The items table: a plain document table, not a data grid. */
   .pu-inv-tablebox, .pu-lie-tablebox { overflow-x: auto; min-width: 0 }
   .pu-inv-table, .pu-slip-table, .pu-itax-table, .pu-lie-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums }
-  .pu-inv-table th, .pu-inv-table td { padding: var(--pu-space-2) var(--pu-space-2); text-align: left; vertical-align: top; border-bottom: 1px solid var(--pu-color-border) }
+  .pu-inv-table th, .pu-inv-table td { padding: var(--pu-space-2) var(--pu-space-2); text-align: start; vertical-align: top; border-bottom: 1px solid var(--pu-color-border) }
   .pu-inv-table thead th { font: 600 var(--pu-text-xs) / 1.3 var(--pu-font-body); color: var(--pu-color-text-muted); border-bottom: 1px solid var(--pu-color-border-strong); white-space: nowrap }
-  .pu-inv-table .num, .pu-slip-table .num, .pu-itax-table .num, .pu-lie-table .num { text-align: right; white-space: nowrap }
+  .pu-inv-table .num, .pu-slip-table .num, .pu-itax-table .num, .pu-lie-table .num { text-align: end; white-space: nowrap }
   .pu-inv-table tbody th { font-weight: 400 }
   .pu-inv-desc { display: grid; gap: 1px; min-width: 10em }
   .pu-inv-desc small, .pu-slip-table small { display: block; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
@@ -50,21 +50,21 @@
   .pu-inv-sum, .pu-lie-sum { display: grid; gap: var(--pu-space-1); margin: 0; font-variant-numeric: tabular-nums }
   .pu-inv-sum > div, .pu-lie-sum > div { display: flex; justify-content: space-between; gap: var(--pu-space-4) }
   .pu-inv-sum dt, .pu-lie-sum dt { color: var(--pu-color-text-muted) }
-  .pu-inv-sum dd, .pu-lie-sum dd { margin: 0; text-align: right }
+  .pu-inv-sum dd, .pu-lie-sum dd { margin: 0; text-align: end }
   .pu-inv-total, .pu-lie-total { margin-top: var(--pu-space-1); padding-top: var(--pu-space-2); border-top: 2px solid var(--pu-color-border-strong) }
   .pu-inv-total :is(dt, dd), .pu-lie-total :is(dt, dd) { font-weight: 700; font-size: var(--pu-text-base); color: var(--pu-color-text) }
   .pu-inv-end { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: var(--pu-space-3) }
-  .pu-inv-sign { min-width: 180px; margin-left: auto; padding-top: var(--pu-space-16); border-bottom: 0; text-align: center; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); background: linear-gradient(currentColor, currentColor) top 40px left 0 / 100% 1px no-repeat }
+  .pu-inv-sign { min-width: 180px; margin-inline-start: auto; padding-top: var(--pu-space-16); border-bottom: 0; text-align: center; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); background: linear-gradient(currentColor, currentColor) top 40px left 0 / 100% 1px no-repeat }
   .pu-inv-noprint { order: -1 }
   @container pu-doc (max-width: 520px) {
     .pu-inv-meta, .pu-inv-foot { grid-template-columns: minmax(0, 1fr) }
-    .pu-inv-titlebox, .pu-slip-titlebox { justify-items: start; text-align: left }
+    .pu-inv-titlebox, .pu-slip-titlebox { justify-items: start; text-align: start }
     .pu-inv-code { display: none }
   }
 
   /* LineItemEditor */
   .pu-lie { display: grid; gap: var(--pu-space-3); min-width: 0 }
-  .pu-lie-table th, .pu-lie-table td { padding: var(--pu-space-1) var(--pu-space-1); vertical-align: middle; text-align: left }
+  .pu-lie-table th, .pu-lie-table td { padding: var(--pu-space-1) var(--pu-space-1); vertical-align: middle; text-align: start }
   .pu-lie-table thead th { font: 600 var(--pu-text-xs) / 1.3 var(--pu-font-body); color: var(--pu-color-text-muted); padding-bottom: var(--pu-space-2); border-bottom: 1px solid var(--pu-color-border-strong); white-space: nowrap }
   .pu-lie-table tbody tr { border-bottom: 1px solid var(--pu-color-border) }
   .pu-lie-table .kit-field { gap: 0 }
@@ -88,8 +88,8 @@
     .pu-lie-table tbody tr { display: grid; grid-template-columns: 1fr 1fr auto; gap: var(--pu-space-1) var(--pu-space-2); padding: var(--pu-space-2) 0 }
     .pu-lie-table tbody td { padding: 0; width: auto }
     .pu-lie-table tbody td.pu-lie-desc { grid-column: 1 / -2 }
-    .pu-lie-table tbody td.pu-lie-amount { grid-column: 1 / -2; text-align: left }
-    .pu-lie-table tbody td.pu-lie-vat { text-align: left }
+    .pu-lie-table tbody td.pu-lie-amount { grid-column: 1 / -2; text-align: start }
+    .pu-lie-table tbody td.pu-lie-vat { text-align: start }
   }
 
   /* IncomeTaxCalculator */
@@ -107,10 +107,10 @@
   .pu-itax-facts { display: grid; gap: var(--pu-space-1); margin: 0; font-variant-numeric: tabular-nums }
   .pu-itax-facts > div { display: flex; justify-content: space-between; gap: var(--pu-space-3) }
   .pu-itax-facts dt { color: var(--pu-color-text-muted) }
-  .pu-itax-facts dd { margin: 0; text-align: right }
+  .pu-itax-facts dd { margin: 0; text-align: end }
   .pu-itax-box { overflow-x: auto; min-width: 0 }
-  .pu-itax-table caption { text-align: left; font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body); padding-bottom: var(--pu-space-2) }
-  .pu-itax-table th, .pu-itax-table td { padding: var(--pu-space-1) var(--pu-space-2); text-align: left; border-bottom: 1px solid var(--pu-color-border); font-size: var(--pu-text-sm) }
+  .pu-itax-table caption { text-align: start; font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body); padding-bottom: var(--pu-space-2) }
+  .pu-itax-table th, .pu-itax-table td { padding: var(--pu-space-1) var(--pu-space-2); text-align: start; border-bottom: 1px solid var(--pu-color-border); font-size: var(--pu-text-sm) }
   .pu-itax-table thead th { font: 600 var(--pu-text-xs) / 1.3 var(--pu-font-body); color: var(--pu-color-text-muted) }
   .pu-itax-table tbody th { font-weight: 400 }
   .pu-itax-table tr[data-empty] :is(th, td) { color: var(--pu-color-text-tertiary) }
@@ -122,7 +122,7 @@
   .pu-slip-parts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--pu-space-4) }
   .pu-slip-part { display: grid; gap: var(--pu-space-2); min-width: 0; align-content: start }
   .pu-slip-h { margin: 0; font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body); padding-bottom: var(--pu-space-1); border-bottom: 1px solid var(--pu-color-border-strong) }
-  .pu-slip-table th, .pu-slip-table td { padding: var(--pu-space-1) 0; text-align: left; vertical-align: top; border-bottom: 1px solid var(--pu-color-border) }
+  .pu-slip-table th, .pu-slip-table td { padding: var(--pu-space-1) 0; text-align: start; vertical-align: top; border-bottom: 1px solid var(--pu-color-border) }
   .pu-slip-table tbody th { font-weight: 400 }
   .pu-slip-table tfoot :is(th, td) { font-weight: 700; border-bottom: 0 }
   .pu-slip-none { color: var(--pu-color-text-muted) }
@@ -138,7 +138,7 @@
 
   /* AgingTable and TdsSummary */
   .pu-aging, .pu-tds { min-width: 0 }
-  .pu-aging .kit-table tbody th, .pu-tds .kit-table tbody th { font-weight: 400; text-align: left }
+  .pu-aging .kit-table tbody th, .pu-tds .kit-table tbody th { font-weight: 400; text-align: start }
   .pu-aging-zero { color: var(--pu-color-text-tertiary) }
   .pu-aging-old { font-weight: 700 }
   .pu-aging-rowtotal { font-weight: 600 }

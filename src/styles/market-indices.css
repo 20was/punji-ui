@@ -10,7 +10,7 @@
   .pu-index-value { font: 700 1.25rem / 1.2 var(--pu-font-display); font-variant-numeric: tabular-nums }
   .pu-index-trend { margin-top: 4px }
   .pu-indices[data-variant='strip'] .pu-indices-list { position: relative; display: flex; gap: 0; overflow-x: auto; border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-2xl); background: var(--pu-color-surface) }
-  .pu-indices[data-variant='strip'] .pu-index { flex: 0 0 auto; min-width: 11rem; border: 0; border-radius: 0; border-right: 1px solid var(--pu-color-border) }
-  .pu-indices[data-variant='strip'] .pu-index:last-child { border-right: 0 }
+  .pu-indices[data-variant='strip'] .pu-index { flex: 0 0 auto; min-width: 11rem; border: 0; border-radius: 0; border-inline-end: 1px solid var(--pu-color-border) }
+  .pu-indices[data-variant='strip'] .pu-index:last-child { border-inline-end: 0 }
   .pu-indices[data-variant='strip'] .pu-index-trend { width: 120px }
 }

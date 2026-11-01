@@ -13,6 +13,12 @@ Light and dark follow `prefers-color-scheme`; `data-theme="light"` or
 `data-theme="dark"` on any element forces one for that subtree. A dash in
 the dark column means the light value applies in both.
 
+High-contrast themes (`data-theme="light-hc"` and `"dark-hc"`, in
+`css/contrast.css`) give every colour token its own value, checked to WCAG
+AAA by `scripts/check-contrast.mjs`. Density (`data-pu-density`) changes the
+control, cell and row tokens listed under "Density and direction" below.
+Both are documented in [THEMING.md](THEMING.md).
+
 | Token | Light | Dark |
 | --- | --- | --- |
 | `--pu-ambient` | `none` | - |
@@ -100,3 +106,19 @@ the dark column means the light value applies in both.
 | `--pu-text-lg` | `clamp(1.125rem, 1rem + 0.75vw, 1.5rem)` | - |
 | `--pu-text-sm` | `clamp(0.8125rem, 0.77rem + 0.22vw, 0.9375rem)` | - |
 | `--pu-text-xs` | `clamp(0.6875rem, 0.65rem + 0.16vw, 0.75rem)` | - |
+
+## Density and direction
+
+Set on `:root` and by `data-pu-density` (control heights included); `--pu-dir`
+follows `dir`. Full table and touch-target rules: [THEMING.md](THEMING.md#density).
+
+| Token | Default (comfortable) | compact | spacious |
+| --- | --- | --- | --- |
+| `--pu-cell-x` | `12px` | `8px` | `16px` |
+| `--pu-cell-y` | `10px` | `5px` | `14px` |
+| `--pu-control-lg` | `44px` | `36px` (`44px` on coarse pointers) | `52px` |
+| `--pu-control-md` | `36px` | `32px` (`36px` on coarse pointers) | `44px` |
+| `--pu-control-sm` | `32px` | `28px` | `36px` |
+| `--pu-row-lg` | `72px` | `56px` | `80px` |
+| `--pu-row-min` | `48px` | `36px` | `56px` |
+| `--pu-dir` | `1` | `-1` under `dir="rtl"` | - |

@@ -427,6 +427,10 @@
       "types": "./dist/trading-halt/TradingHaltBanner.d.ts",
       "default": "./dist/trading-halt/TradingHaltBanner.js"
     },
+    "./theme": {
+      "types": "./dist/theme/theme.d.ts",
+      "default": "./dist/theme/theme.js"
+    },
     "./emvco-qr": {
       "types": "./dist/emvco-qr/emvco.d.ts",
       "default": "./dist/emvco-qr/emvco.js"
@@ -799,7 +803,7 @@
   },
   "scripts": {
     "build": "node scripts/clean.mjs && tsc -p tsconfig.build.json && node scripts/build-css.mjs",
-    "lint": "oxlint --max-warnings 0 --deny-warnings src test scripts examples portal site fixtures playwright.config.ts && node scripts/check-css.mjs && node scripts/check-source.mjs && node scripts/check-boundaries.mjs && node scripts/check-changesets.mjs",
+    "lint": "oxlint --max-warnings 0 --deny-warnings src test scripts examples portal site fixtures playwright.config.ts && node scripts/check-css.mjs && node scripts/check-contrast.mjs && node scripts/check-source.mjs && node scripts/check-boundaries.mjs && node scripts/check-changesets.mjs",
     "sync": "node scripts/sync-from-web.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
@@ -819,6 +823,7 @@
     "build:examples": "vite build examples",
     "prepack": "npm run build",
     "check:exports": "node scripts/check-exports.mjs",
+    "check:contrast": "node scripts/check-contrast.mjs",
     "typecheck:examples": "tsc -p examples/tsconfig.json --noEmit",
     "check:examples": "node scripts/check-examples.mjs",
     "portal": "npm run build && node scripts/portal.mjs",

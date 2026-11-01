@@ -9,6 +9,6 @@
   .kit-check input:checked::after { transform: rotate(-45deg) scale(1) }
   .kit-check input:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
   .kit-check-t { flex: 1; min-width: 0 }
-  .kit-check-end { flex: none; margin-left: auto; font-variant-numeric: tabular-nums; color: var(--pu-color-text-muted) }
+  .kit-check-end { flex: none; margin-inline-start: auto; font-variant-numeric: tabular-nums; color: var(--pu-color-text-muted) }
   @media (pointer: coarse) { .kit-check { min-height: var(--pu-tap-min) } }
 }

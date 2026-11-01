@@ -178,3 +178,5 @@ export * from './scam-warning/ScamWarning.tsx';
 export * from './secure-field/SecureField.tsx';
 // ISO 4217 data (also on its own subpath for lazy loading).
 export * from './money/iso4217.ts';
+// Themes, density and brand theming (pure).
+export * from './theme/theme.ts';

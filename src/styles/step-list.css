@@ -21,7 +21,7 @@
   .kit-steps.rows .n { width: 26px; height: 26px; border: 0; border-radius: 50%; background: var(--pu-color-text); color: var(--pu-color-surface-inverse); font-size: 12px }
   .kit-steps.rows:not(.kit-inv) .n { color: var(--pu-color-surface-solid) }
   .kit-steps.rows .n.on { background: var(--pu-color-accent-fill); color: var(--pu-color-on-accent-fill) }
-  .kit-steps.banner { position: relative; display: grid; grid-template-columns: minmax(220px, 1.2fr) minmax(0, 3fr) auto; align-items: center; gap: 12px 28px; padding: 20px 20px 20px 24px }
+  .kit-steps.banner { position: relative; display: grid; grid-template-columns: minmax(220px, 1.2fr) minmax(0, 3fr) auto; align-items: center; gap: 12px 28px; padding-block: 20px; padding-inline: 24px 20px}
   .kit-steps.banner .kit-steps-hd { display: grid; gap: 4px; min-width: 0 }
   .kit-steps.banner .kit-steps-lead, .kit-steps.banner .kit-steps-k { margin: 0 }
   .kit-steps.banner ol { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px 24px }

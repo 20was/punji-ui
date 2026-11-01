@@ -120,7 +120,8 @@ const SELECT_WIDTH = 44;
 const widthDefault = (column: { num?: boolean | undefined }) => (column.num ? 120 : 160);
 const nameOf = (column: { key: string; label: ReactNode }) => (typeof column.label === 'string' ? column.label : column.key);
 const pinClass = (column: PlacedColumn) => (column.pin ? `pin-${column.pin === 'left' ? 'l' : 'r'}${column.edge ? ' pin-edge' : ''}` : '');
-const pinStyle = (column: PlacedColumn) => (column.pin === 'left' ? { left: column.inset } : column.pin === 'right' ? { right: column.inset } : undefined);
+// Logical insets: 'left' pins to the start edge, so pinned columns follow dir="rtl".
+const pinStyle = (column: PlacedColumn) => (column.pin === 'left' ? { insetInlineStart: column.inset } : column.pin === 'right' ? { insetInlineEnd: column.inset } : undefined);
 
 /** Virtualised FinancialTable for 10k+ rows, with pinning, resizing and multi-sort. */
 export function VirtualFinancialTable<T>({
@@ -142,7 +143,7 @@ export function VirtualFinancialTable<T>({
   const [heights, setHeights] = useState<ReadonlyMap<string, number>>(() => new Map());
   const anchor = useRef<{ key: string; next: string | undefined; delta: number } | null>(null);
   const focusPending = useRef(false);
-  const dragStart = useRef<{ key: string; x: number; width: number; min: number; max: number } | null>(null);
+  const dragStart = useRef<{ key: string; x: number; sign: number; width: number; min: number; max: number } | null>(null);
   const lastRange = useRef('');
   const keysNow = useRef<readonly string[]>([]);
   const rowObserver = useRef<ResizeObserver | null>(null);
@@ -328,18 +329,20 @@ export function VirtualFinancialTable<T>({
     event.preventDefault();
     event.currentTarget.setPointerCapture?.(event.pointerId);
     const width = widthOf(column);
-    dragStart.current = { key: column.key, x: event.clientX, width, min: column.minWidth ?? 64, max: column.maxWidth ?? 560 };
+    // In a right-to-left table the handle sits on the cell's left edge, so dragging left widens it.
+    const rtl = typeof getComputedStyle === 'function' && getComputedStyle(event.currentTarget).direction === 'rtl';
+    dragStart.current = { key: column.key, x: event.clientX, sign: rtl ? -1 : 1, width, min: column.minWidth ?? 64, max: column.maxWidth ?? 560 };
     setDrag({ key: column.key, width });
   };
   const resizeMove = (event: PointerEvent<HTMLDivElement>) => {
     const d = dragStart.current;
-    if (d) setDrag({ key: d.key, width: clampWidth(d.width + event.clientX - d.x, d.min, d.max) });
+    if (d) setDrag({ key: d.key, width: clampWidth(d.width + (event.clientX - d.x) * d.sign, d.min, d.max) });
   };
   const resizeEnd = (event: PointerEvent<HTMLDivElement>) => {
     const d = dragStart.current;
     if (!d) return;
     dragStart.current = null;
-    const width = clampWidth(d.width + event.clientX - d.x, d.min, d.max);
+    const width = clampWidth(d.width + (event.clientX - d.x) * d.sign, d.min, d.max);
     setDrag(null);
     if (width !== d.width) commitWidth(d.key, width);
   };
@@ -356,7 +359,7 @@ export function VirtualFinancialTable<T>({
 
   const head = (
     <tr aria-rowindex={1}>
-      {selection && <th scope="col" className="kit-table-selection-cell pin-l" style={{ left: 0 }}>
+      {selection && <th scope="col" className="kit-table-selection-cell pin-l" style={{ insetInlineStart: 0 }}>
         <input
           type="checkbox"
           aria-label={selection.selectPageLabel ?? 'Select all rows'}
@@ -432,7 +435,7 @@ export function VirtualFinancialTable<T>({
         style={measureRows ? undefined : { height: rowHeight }}
         onFocus={() => setActiveKey(key)}
       >
-        {selection && <td className="kit-table-selection-cell pin-l" style={{ left: 0 }}>
+        {selection && <td className="kit-table-selection-cell pin-l" style={{ insetInlineStart: 0 }}>
           <input type="checkbox" tabIndex={-1} checked={isSelected} aria-label={selection.rowLabel(key)} onChange={() => toggleRow(key)} data-testid={selection.testIdPrefix ? `${selection.testIdPrefix}-row` : undefined} />
         </td>}
         {placed.map((place) => {

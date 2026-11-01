@@ -4,7 +4,7 @@
   .kit-switch { appearance: none; position: relative; flex: none; display: inline-flex; align-items: center; width: 48px; height: 28px; padding: 3px; border: 0; border-radius: var(--pu-radius-full); background: var(--pu-color-border-control); cursor: pointer; transition: background-color var(--pu-motion-fast) var(--pu-ease-out) }
   .kit-switch span { width: 22px; height: 22px; border-radius: var(--pu-radius-full); background: var(--pu-color-surface-solid); transition: transform var(--pu-motion-base) var(--pu-ease-out) }
   .kit-switch[aria-checked='true'] { background: var(--pu-color-accent-fill) }
-  .kit-switch[aria-checked='true'] span { transform: translateX(20px); background: var(--pu-color-on-accent-fill) }
+  .kit-switch[aria-checked='true'] span { transform: translateX(calc(20px * var(--pu-dir))); background: var(--pu-color-on-accent-fill) }
   .kit-switch:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
   .kit-switch:disabled { opacity: 0.5; cursor: not-allowed }
   .kit-switch[aria-busy='true'] { cursor: progress }

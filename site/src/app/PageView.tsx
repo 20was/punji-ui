@@ -362,12 +362,14 @@ function PropsTable({ entry }: { entry: ApiEntry }) {
 
 function ApiBlock({ entry }: { entry: ApiEntry }) {
   return (
-    <section className="doc-api" data-testid={`api-${entry.name}`} aria-labelledby={`api-${entry.name}`}>
+    // Labelled by the name and its kind, so a value and its type that differ only in case (nepseFeeSchedule,
+    // NepseFeeSchedule) are distinct landmarks.
+    <section className="doc-api" data-testid={`api-${entry.name}`} aria-labelledby={`api-${entry.name} api-${entry.name}-kind`}>
       <div className="doc-api-head">
         <h3 id={`api-${entry.name}`}>
           <code>{entry.name}</code>
         </h3>
-        <span className="doc-kind">{entry.kind}</span>
+        <span className="doc-kind" id={`api-${entry.name}-kind`}>{entry.kind}</span>
         <span className="doc-from">
           <code>{entry.module}</code>
         </span>

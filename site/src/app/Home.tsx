@@ -104,7 +104,7 @@ const DOMAINS: { id: GroupId; flagship: string; blurb: string; featured?: boolea
     id: 'stock-market',
     flagship: 'stock-table',
     featured: true,
-    blurb: 'Quote boards, candlesticks, depth, indices and market status.',
+    blurb: 'Quote boards, candlesticks, depth, indices, market status, order tickets and trading halts.',
     preview: () => (
       <ul className="home-pv-quotes">
         {['NABIL', 'HDL', 'CHCL'].map((symbol) => {
@@ -130,7 +130,7 @@ const DOMAINS: { id: GroupId; flagship: string; blurb: string; featured?: boolea
   {
     id: 'accounting',
     flagship: 'ledger-table',
-    blurb: 'Ledgers, journals, trial balances and financial statements.',
+    blurb: 'Ledgers, journals, trial balances, financial statements, tax, invoices and payroll.',
     preview: () => (
       <dl className="home-pv-ledger">
         <div>
@@ -157,7 +157,7 @@ const DOMAINS: { id: GroupId; flagship: string; blurb: string; featured?: boolea
   {
     id: 'banking',
     flagship: 'transaction-list',
-    blurb: 'Accounts, transactions, receipts, payees and payment steps.',
+    blurb: 'Accounts, transactions, receipts, payees, loans, KYC and wallet payments.',
     preview: () => (
       <div className="home-pv-bank">
         <span className="home-pv-label">Savings ·••• 2345</span>
@@ -165,6 +165,20 @@ const DOMAINS: { id: GroupId; flagship: string; blurb: string; featured?: boolea
         <div className="home-pv-row">
           <TransactionStatus status="completed" />
           <TransactionStatus status="pending" />
+        </div>
+      </div>
+    ),
+  },
+  {
+    id: 'share-issues',
+    flagship: 'issue-card',
+    blurb: 'IPO and right-share issues, applications, allotment results, demat accounts and corporate actions.',
+    preview: () => (
+      <div className="home-pv-bank">
+        <span className="home-pv-label">IPO · open</span>
+        <div className="home-pv-row">
+          <StatusPill tone="info">Apply by 15 Poush</StatusPill>
+          <StatusPill tone="gain">Allotted</StatusPill>
         </div>
       </div>
     ),

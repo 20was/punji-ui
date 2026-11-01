@@ -1,0 +1,15 @@
+/* Punji UI styles.
+   Styles for OrderList and TradeList. Needs tokens.css, base.css, table.css, status-pill.css, button.css and inline-confirm.css (styles.css has everything). */
+@layer punji.components {
+  .pu-orders { min-width: 0 }
+  .pu-orders-side { margin-inline-start: 6px; vertical-align: middle }
+  .pu-orders-fill { display: inline-grid; justify-items: end; gap: 4px }
+  .pu-orders-meter { display: block; width: 64px; height: 4px; border: 0; border-radius: var(--pu-radius-full); background: var(--pu-color-track); appearance: none }
+  .pu-orders-meter::-webkit-meter-bar { background: var(--pu-color-track); border: 0; border-radius: var(--pu-radius-full); height: 4px }
+  .pu-orders-meter::-webkit-meter-optimum-value { background: var(--pu-color-accent); border-radius: var(--pu-radius-full) }
+  .pu-orders-meter::-moz-meter-bar { background: var(--pu-color-accent); border-radius: var(--pu-radius-full) }
+  .pu-orders-sub { display: block; margin-top: 2px; font-size: var(--pu-text-xs); color: var(--pu-color-text-tertiary); white-space: normal }
+  .pu-orders-actions { display: inline-flex; flex-wrap: wrap; gap: var(--pu-space-2) }
+  .pu-orders-confirm { padding: 4px 0 }
+  .pu-trades-total { display: inline-grid; justify-items: end; gap: 2px }
+}

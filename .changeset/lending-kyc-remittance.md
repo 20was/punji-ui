@@ -1,0 +1,5 @@
+---
+'@punji/ui': minor
+---
+
+Lending, deposits, KYC onboarding and remittance, Nepal-first and exact: the pure `@punji/ui/lending` module (`calculateEmi`, `amortise` with part-prepayments that shorten the tenure or lower the instalment, `simulateDeposit` for fixed and recurring deposits credited monthly to at maturity with configurable TDS) and `@punji/ui/kyc` (`validatePan`, `validateCitizenshipNumber`, Devanagari digits accepted), all in bigint minor units with an explicit `RoundingMode`. Components: `LoanCalculator`, `AmortisationTable`, `DepositCalculator`, `InterestRateTable` (changes in words, AD or BS dates), `NepalAddressPicker` (Province, District, Local level and Ward; the 753 local levels ship as the separate `@punji/ui/nepal-address-data` subpath, loaded on demand and kept off the root), `IdNumberInput`, `DocumentUpload`, `OnboardingWizard`, `RemittanceTracker` and `InsurancePremiumCard`. Estimates and display only: nothing prices, verifies, uploads or pays. See docs/LENDING.md. The check-pack unpacked budget rises from 1350 to 1548 KiB, and the Everything and styles.css size budgets from 93.26 to 111.1 kB and 27.71 to 29.46 kB gzip.

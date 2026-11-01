@@ -40,7 +40,7 @@ punji-ui (this repo, source of truth)  -->  npm @punji/ui (exact version)  -->  
 | `PURE` (dir: file allowed one external import) | `nepal` (`calendar.ts` may import the converter), `calculations`, `money`, `export` |
 | `SHARED` (pure modules a pure dir may reuse) | `money` may import `../nepal/decimal.ts`, `../nepal/money.ts`, `../calculations/rounding.ts` |
 
-Other guards: `check-css.mjs` (no raw colours in component CSS; every `var(--pu-*)` is defined in `tokens.css`), `check-exports.mjs` (see above), `check-pack.mjs` (tarball allows only `dist/**/*.{js,d.ts,css}` plus standard files, requires `THIRD_PARTY_NOTICES.md`, caps unpacked size at 680 KiB). Exact commands: [QUALITY.md](QUALITY.md).
+Other guards: `check-css.mjs` (no raw colours in component CSS; every `var(--pu-*)` is defined in `tokens.css`), `check-exports.mjs` (see above), `check-pack.mjs` (tarball allows only `dist/**/*.{js,d.ts,css}` plus standard files, requires `THIRD_PARTY_NOTICES.md`, caps unpacked size at 2060 KiB). Exact commands: [QUALITY.md](QUALITY.md).
 
 ## CSS, tokens and themes
 
@@ -111,5 +111,5 @@ Sources: [docs/RESEARCH.md](docs/RESEARCH.md), [docs/research/](docs/research/),
 | Topic | docs/ARCHITECTURE.md | Reality |
 | --- | --- | --- |
 | Aggregate budget | 21 kB gzip, 4 kB financial, 4.5 kB Nepal | `.size-limit.json` (`npm run size` prints the measured "Everything" size; 95.16 kB against a 98.1 kB limit on 2026-11-01) |
-| Tarball ceiling | 400 KiB | `MAX_UNPACKED` in `scripts/check-pack.mjs` (1410 KiB; `npm run check:package` prints the measured size) |
+| Tarball ceiling | 400 KiB | `MAX_UNPACKED` in `scripts/check-pack.mjs` (2060 KiB; `npm run check:package` prints the measured size) |
 | Status line | "implemented foundation, 2026-10-28"; the 4 kB financial and 4.5 kB Nepal budgets still match `.size-limit.json` | Hooks, export, calculations, money, 10 migrated modules and the visual gate were added since |

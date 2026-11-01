@@ -411,6 +411,106 @@
       "types": "./dist/period-selector/FinancialPeriodSelector.d.ts",
       "default": "./dist/period-selector/FinancialPeriodSelector.js"
     },
+    "./nepse-fees": {
+      "types": "./dist/nepse-fees/fees.d.ts",
+      "default": "./dist/nepse-fees/fees.js"
+    },
+    "./order-ticket": {
+      "types": "./dist/order-ticket/OrderTicket.d.ts",
+      "default": "./dist/order-ticket/OrderTicket.js"
+    },
+    "./order-list": {
+      "types": "./dist/order-list/OrderList.d.ts",
+      "default": "./dist/order-list/OrderList.js"
+    },
+    "./trading-halt": {
+      "types": "./dist/trading-halt/TradingHaltBanner.d.ts",
+      "default": "./dist/trading-halt/TradingHaltBanner.js"
+    },
+    "./emvco-qr": {
+      "types": "./dist/emvco-qr/emvco.d.ts",
+      "default": "./dist/emvco-qr/emvco.js"
+    },
+    "./qr-code": {
+      "types": "./dist/qr-code/QrCode.d.ts",
+      "default": "./dist/qr-code/QrCode.js"
+    },
+    "./qr-code/matrix": {
+      "types": "./dist/qr-code/matrix.d.ts",
+      "default": "./dist/qr-code/matrix.js"
+    },
+    "./payment-qr-card": {
+      "types": "./dist/payment-qr-card/PaymentQrCard.d.ts",
+      "default": "./dist/payment-qr-card/PaymentQrCard.js"
+    },
+    "./amount-keypad": {
+      "types": "./dist/amount-keypad/AmountKeypad.d.ts",
+      "default": "./dist/amount-keypad/AmountKeypad.js"
+    },
+    "./pin-pad": {
+      "types": "./dist/pin-pad/PinPad.d.ts",
+      "default": "./dist/pin-pad/PinPad.js"
+    },
+    "./nepal/mobile": {
+      "types": "./dist/nepal/mobile.d.ts",
+      "default": "./dist/nepal/mobile.js"
+    },
+    "./mobile-number-input": {
+      "types": "./dist/mobile-number-input/MobileNumberInput.d.ts",
+      "default": "./dist/mobile-number-input/MobileNumberInput.js"
+    },
+    "./lending": {
+      "types": "./dist/lending/lending.d.ts",
+      "default": "./dist/lending/lending.js"
+    },
+    "./kyc": {
+      "types": "./dist/kyc/kyc.d.ts",
+      "default": "./dist/kyc/kyc.js"
+    },
+    "./nepal-address-data": {
+      "types": "./dist/nepal-address-data/data.d.ts",
+      "default": "./dist/nepal-address-data/data.js"
+    },
+    "./amortisation-table": {
+      "types": "./dist/amortisation-table/AmortisationTable.d.ts",
+      "default": "./dist/amortisation-table/AmortisationTable.js"
+    },
+    "./loan-calculator": {
+      "types": "./dist/loan-calculator/LoanCalculator.d.ts",
+      "default": "./dist/loan-calculator/LoanCalculator.js"
+    },
+    "./deposit-calculator": {
+      "types": "./dist/deposit-calculator/DepositCalculator.d.ts",
+      "default": "./dist/deposit-calculator/DepositCalculator.js"
+    },
+    "./interest-rate-table": {
+      "types": "./dist/interest-rate-table/InterestRateTable.d.ts",
+      "default": "./dist/interest-rate-table/InterestRateTable.js"
+    },
+    "./id-number-input": {
+      "types": "./dist/id-number-input/IdNumberInput.d.ts",
+      "default": "./dist/id-number-input/IdNumberInput.js"
+    },
+    "./nepal-address-picker": {
+      "types": "./dist/nepal-address-picker/NepalAddressPicker.d.ts",
+      "default": "./dist/nepal-address-picker/NepalAddressPicker.js"
+    },
+    "./document-upload": {
+      "types": "./dist/document-upload/DocumentUpload.d.ts",
+      "default": "./dist/document-upload/DocumentUpload.js"
+    },
+    "./onboarding-wizard": {
+      "types": "./dist/onboarding-wizard/OnboardingWizard.d.ts",
+      "default": "./dist/onboarding-wizard/OnboardingWizard.js"
+    },
+    "./remittance-tracker": {
+      "types": "./dist/remittance-tracker/RemittanceTracker.d.ts",
+      "default": "./dist/remittance-tracker/RemittanceTracker.js"
+    },
+    "./insurance-premium-card": {
+      "types": "./dist/insurance-premium-card/InsurancePremiumCard.d.ts",
+      "default": "./dist/insurance-premium-card/InsurancePremiumCard.js"
+    },
     "./styles.css": {
       "types": "./dist/styles.css.d.ts",
       "default": "./dist/styles.css"
@@ -587,6 +687,70 @@
     "./table-export": {
       "types": "./dist/table-export/TableExport.d.ts",
       "default": "./dist/table-export/TableExport.js"
+    },
+    "./share-issues": {
+      "types": "./dist/share-issues/share-issues.d.ts",
+      "default": "./dist/share-issues/share-issues.js"
+    },
+    "./issue-card": {
+      "types": "./dist/issue-card/IssueCard.d.ts",
+      "default": "./dist/issue-card/IssueCard.js"
+    },
+    "./apply-issue-form": {
+      "types": "./dist/apply-issue-form/ApplyIssueForm.d.ts",
+      "default": "./dist/apply-issue-form/ApplyIssueForm.js"
+    },
+    "./boid-input": {
+      "types": "./dist/boid-input/BoidInput.d.ts",
+      "default": "./dist/boid-input/BoidInput.js"
+    },
+    "./allotment-checker": {
+      "types": "./dist/allotment-checker/AllotmentChecker.d.ts",
+      "default": "./dist/allotment-checker/AllotmentChecker.js"
+    },
+    "./demat-account-card": {
+      "types": "./dist/demat-account-card/DematAccountCard.d.ts",
+      "default": "./dist/demat-account-card/DematAccountCard.js"
+    },
+    "./corporate-action-timeline": {
+      "types": "./dist/corporate-action-timeline/CorporateActionTimeline.d.ts",
+      "default": "./dist/corporate-action-timeline/CorporateActionTimeline.js"
+    },
+    "./edis-confirmation": {
+      "types": "./dist/edis-confirmation/EdisConfirmation.d.ts",
+      "default": "./dist/edis-confirmation/EdisConfirmation.js"
+    },
+    "./tax": {
+      "types": "./dist/tax/tax.d.ts",
+      "default": "./dist/tax/tax.js"
+    },
+    "./pan-input": {
+      "types": "./dist/pan-input/PanInput.d.ts",
+      "default": "./dist/pan-input/PanInput.js"
+    },
+    "./tax-invoice": {
+      "types": "./dist/tax-invoice/TaxInvoice.d.ts",
+      "default": "./dist/tax-invoice/TaxInvoice.js"
+    },
+    "./line-item-editor": {
+      "types": "./dist/line-item-editor/LineItemEditor.d.ts",
+      "default": "./dist/line-item-editor/LineItemEditor.js"
+    },
+    "./income-tax-calculator": {
+      "types": "./dist/income-tax-calculator/IncomeTaxCalculator.d.ts",
+      "default": "./dist/income-tax-calculator/IncomeTaxCalculator.js"
+    },
+    "./payslip": {
+      "types": "./dist/payslip/Payslip.d.ts",
+      "default": "./dist/payslip/Payslip.js"
+    },
+    "./aging-table": {
+      "types": "./dist/aging-table/AgingTable.d.ts",
+      "default": "./dist/aging-table/AgingTable.js"
+    },
+    "./tds-summary": {
+      "types": "./dist/tds-summary/TdsSummary.d.ts",
+      "default": "./dist/tds-summary/TdsSummary.js"
     }
   },
   "files": [
@@ -639,7 +803,7 @@
     "typecheck:visual": "tsc -p test/visual/tsconfig.json --noEmit",
     "site:gen": "node scripts/site-gen.mjs",
     "site:dev": "npm run build && npm run site:gen && vite site",
-    "site:build": "npm run site:gen && vite build site && vite build site --ssr src/entry-server.tsx --outDir dist-server && node scripts/site-prerender.mjs && node scripts/site-headers.mjs",
+    "site:build": "npm run site:gen && vite build site && vite build site --ssr src/entry-server.tsx --outDir dist-server && node scripts/site-prerender.mjs",
     "site:preview": "vite preview site",
     "typecheck:site": "npm run site:gen && tsc -p site/tsconfig.json --noEmit",
     "check:site": "node scripts/check-site.mjs",

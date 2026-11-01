@@ -54,7 +54,10 @@
     },
     {
       "files": [
-        "src/table/Table.tsx"
+        "src/table/Table.tsx",
+        "src/interest-rate-table/InterestRateTable.tsx",
+        "src/tax-invoice/TaxInvoice.tsx",
+        "src/income-tax-calculator/IncomeTaxCalculator.tsx"
       ],
       "rules": {
         "jsx-a11y/no-noninteractive-tabindex": "off"

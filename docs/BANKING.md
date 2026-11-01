@@ -134,9 +134,18 @@ Tab moves on. A11y: `role="combobox"` with `aria-expanded`, `aria-controls`, `ar
 `aria-activedescendant`; groups are `role="group"`; masked numbers are `aria-hidden` and read as "account ending in".
 It reuses the package's combobox conventions but not `CompanySearch` itself, which is tied to stock symbols.
 
+## BillSummary
+
+**Use** after a biller lookup and before the payer pays (`@punji/ui/bill-summary`). Props: `biller`, `service`,
+`customerName`, `customerId`, `period`, `lines` and `adjustments` (`{ id, label, amount, detail }`, rebates negative),
+`total` (the biller's; else `billTotal(lines, adjustments)`), `dueDate` with `calendar` `ad` or `bs`, `status` (a
+`PaymentStatus` value), `state` (`ready`, `loading`, `error` with `onRetry`, `empty` for nothing due), `money`,
+`action` (your Pay button), `headingLevel`, `labels`.
+
 ## Testing
 
 `test/banking.test.ts` covers the pure helpers (including property tests that masking never reveals more than asked).
 `test/banking-components.test.tsx` asserts on `container.innerHTML` that the full number never appears while masked,
 that the clipboard is touched only on the button press, keyboard behaviour, states and axe. The visual gate has nine
-fixtures (`test/visual/fixtures-banking.tsx`) and two browser interaction tests.
+fixtures (`test/visual/fixtures-banking.tsx`) and two browser interaction tests. `test/bill-summary.test.tsx` covers
+`BillSummary` and its states with axe.

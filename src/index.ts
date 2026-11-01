@@ -120,6 +120,7 @@ export * from './transaction-list/TransactionList.tsx';
 export * from './transaction-status/TransactionStatus.tsx';
 export * from './payment-receipt/PaymentReceipt.tsx';
 export * from './payment-timeline/PaymentTimeline.tsx';
+export * from './bill-summary/BillSummary.tsx';
 export * from './beneficiary-selector/BeneficiarySelector.tsx';
 export * from './virtual-table/VirtualFinancialTable.tsx';
 export * from './table-export/TableExport.tsx';

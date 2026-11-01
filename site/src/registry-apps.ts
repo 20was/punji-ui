@@ -234,4 +234,119 @@ export const APP_PAGES: readonly PageDef[] = [
         'Customers, staff and payroll come from `site/src/apps/shared/books.ts`, shared with the accounting app; a dozen earlier invoices and payments are seeded in `site/src/apps/business/store.ts`. Nothing is fetched.',
     },
   },
+  {
+    slug: 'retail-banking',
+    title: 'Retail banking',
+    description:
+      'A mobile-first retail banking app built from Punji UI: balances, statements in BS and AD, a transfer with payee check and OTP, cards, loans, deposits and KYC.',
+    lead: 'A bank app of the Monzo and Nabil class: see your money, send it safely, control your cards, and keep your KYC current.',
+    group: 'apps',
+    kind: 'app',
+    summary:
+      'A retail bank\'s app, phone first, on a simulated customer. Three accounts with three months of statements; a transfer that checks the payee\'s name with the receiving bank, says the amount in words, asks for a one-time code and prints a receipt; cards you can freeze, limit, block and replace; a home loan with its exact schedule and an early EMI; fixed deposits; a KYC update with the Nepal address picker and document upload; and notifications. One reducer holds the money, so the balance on Home, the statement\'s running balance, the receipt and the notification agree to the paisa.',
+    use: [
+      'Replace the reducer\'s actions with your core banking API: `transfer`, `card-status`, `pay-emi`, `open-fd` and `kyc-submit` are the calls a bank makes; keep the screens.',
+      'Feed `PayeeVerification` the answer from your Confirmation of Payee or ConnectIPS name lookup, and record the acknowledgement with the payment.',
+      'Send the OTP from your server and check it there; the demo accepts 246810 so the flow can be tried.',
+    ],
+    avoid: [
+      'Authentication, device binding, session timeouts and fraud scoring: the app starts signed in.',
+      'The fee schedule and limits: ConnectIPS-style fees and a Rs 10 lakh daily limit are illustrations, not any bank\'s tariff.',
+    ],
+    api: [],
+    examples: [],
+    keyboard: [
+      '`1` to `7` open the screens; `H` hides and shows balances.',
+      'The payee picker is a combobox (arrows, Enter, Escape); the code boxes take digits, Backspace and paste; segmented controls move with the arrow keys.',
+      'Every money action has a confirm step you reach with Tab and Enter: Review, then the code, for a transfer; an inline confirm to unfreeze or block a card, pay an EMI or open a deposit.',
+    ],
+    accessibility: [
+      'Each screen has its own `h2` and focus moves to it from the navigation; each transfer step moves focus to its heading. What the app did is announced in a polite live region.',
+      'Account and card numbers are masked and spoken as "ending in"; "Hide balances" replaces every figure with dots and the word hidden.',
+      'The payee check is a live region; statuses are words and icons, never colour alone.',
+    ],
+    responsive: [
+      'Designed at 390 px: quick actions in a 3 by 2 grid, stacked cards and a bottom tab bar. Tablets and desktops get a navigation rail and two columns.',
+      'Print or Save as PDF from the statement drops the app chrome and prints every entry.',
+    ],
+    notes: {
+      title: 'Limits',
+      points: [
+        'Punji Bank and every name, number and balance are invented. The session is 1 November 2026 (15 Kartik 2083), 10:30 Kathmandu time.',
+        '"Offline (demo)" makes the bank unreachable: statements fail with a retry and nothing that moves money goes through.',
+        'The OTP is shown on screen for the demo. A real bank never shows it, and limits tries on its server.',
+      ],
+    },
+    related: ['bank-account-card', 'transaction-list', 'statement-table', 'beneficiary-selector', 'transfer-review', 'payee-verification', 'currency-input', 'otp-input', 'payment-receipt', 'payment-timeline', 'account-number', 'loan-calculator', 'amortisation-table', 'deposit-calculator', 'interest-rate-table', 'onboarding-wizard', 'nepal-address-picker', 'id-number-input', 'document-upload'],
+    app: {
+      screens: [
+        { id: 'home', title: 'Home', summary: 'The total and each account (`BankAccountCard`) with hide-balance, six quick actions, the latest entries and what is coming up: the EMI, a deposit maturing, KYC.' },
+        { id: 'accounts', title: 'Accounts', summary: 'A statement per account: search, money in or out, period, BS or AD dates (`TransactionList`), a monthly summary by category (`StatementTable`), CSV and a printable view.' },
+        { id: 'transfer', title: 'Transfer', summary: 'A saved payee (`BeneficiarySelector`) or a new account, `CurrencyInput` with fee and limits, a `TransferReview` with `PayeeVerification` and the amount in words, an `OtpInput` step, then `PaymentReceipt` and `PaymentTimeline`.' },
+        { id: 'cards', title: 'Cards', summary: 'Debit and virtual cards with a masked `AccountNumber`: freeze, block and replace, online, international and contactless switches, and daily limits.' },
+        { id: 'loans', title: 'Loans and deposits', summary: 'The home loan with its `AmortisationTable` and an early EMI, a `LoanCalculator`, fixed deposits with `DepositCalculator`, and the `InterestRateTable`.' },
+        { id: 'profile', title: 'Profile and KYC', summary: 'The KYC update in an `OnboardingWizard`: `IdNumberInput` for citizenship and PAN, `NepalAddressPicker`, `DocumentUpload`, review and consent.' },
+        { id: 'alerts', title: 'Notifications', summary: 'Money, security, reminders and offers, with unread markers, filters and Mark all read.' },
+      ],
+      data:
+        'A fixed seed builds three months of statements (salary, rent, bills, EMIs, card spends, a failed transfer, quarterly interest and TDS). The loan schedule comes from `amortise`, the same function the statement\'s EMI lines use. Nothing is fetched; the receiving banks, the SMS gateway and the KYC desk are simulated.',
+    },
+  },
+  {
+    slug: 'digital-wallet',
+    title: 'Digital wallet',
+    description:
+      'An eSewa and Khalti class digital wallet built from Punji UI: balance and load money, scan and pay EMVCo QR, send to mobile with a PIN, bills, top-up, rewards.',
+    lead: 'A Nepali wallet done properly: load, scan, send, pay bills and top up, each confirmed with a PIN that never reaches the page.',
+    group: 'apps',
+    kind: 'app',
+    summary:
+      'A digital wallet of the eSewa and Khalti kind, phone first. Load money from a linked bank; scan a merchant\'s NepalPay-style QR (paste a payload or pick a sample) and see the merchant and amount the code carries before you pay; send money to a mobile number; pay electricity, water and internet bills and top up a phone; follow every payment\'s timeline; and earn and redeem cashback. Every payment is confirmed with a `PinPad` whose digits are never written to the page. One reducer holds the balance, so Home, History, the receipt and Rewards agree to the paisa.',
+    use: [
+      'Swap the reducer\'s actions for your wallet API: `load`, `pay` and `redeem`; each payment carries the PIN for your server to check.',
+      'Decode the camera\'s QR text and pass it to `parseMerchantQr`; the screen already handles static and dynamic codes and every parse error.',
+      'Replace the simulated billers in `bills.ts` with your biller gateway: the screen needs a lookup that returns the lines for a `BillSummary`.',
+    ],
+    avoid: [
+      'Checking the PIN in the browser: the demo compares it with 2580 so the flow can be tried; your server must check it and count attempts.',
+      'The limits and cashback rules: they are illustrations, not Nepal Rastra Bank\'s or any wallet\'s.',
+    ],
+    api: [],
+    examples: [],
+    keyboard: [
+      '`1` to `6` open the screens; `H` hides and shows the balance.',
+      'The PIN pad and the amount keypad take digit keys and Backspace while focused, and arrow keys move between their keys.',
+      'Sample QR codes, billers and plans are buttons and segmented controls: Tab, arrows, Enter and Space.',
+    ],
+    accessibility: [
+      'Each screen has its own `h2`; focus moves to it from the navigation and to each step\'s heading inside a flow. Payments are announced in a polite live region.',
+      'The PIN pad announces "2 of 4 digits entered" and nothing else; a wrong PIN is an alert.',
+      'Statuses are words and icon shapes; amounts carry their sign and direction in words.',
+    ],
+    responsive: [
+      'Designed at 390 px with a bottom tab bar; wider screens get a navigation rail and the flow beside its summary.',
+      'The payment detail opens in a sheet that fits the phone.',
+    ],
+    notes: {
+      title: 'Limits',
+      points: [
+        'Every merchant, biller, person and number is invented. The session is 1 November 2026, 10:30 Kathmandu time.',
+        'The demo PIN is 2580; three wrong PINs lock payments for the session. Sending to 9841000000 is refused as not registered.',
+        'A load from the bank settles a few seconds later, and one pending internet payment fails and is refunded, so the timeline shows each outcome.',
+      ],
+    },
+    related: ['payment-qr-card', 'qr-code', 'emvco-qr', 'mobile-number-input', 'amount-keypad', 'pin-pad', 'bill-summary', 'payment-timeline', 'payment-receipt', 'payment-status', 'currency-input', 'payee-verification'],
+    app: {
+      screens: [
+        { id: 'home', title: 'Home', summary: 'The balance with hide, Load money from a linked bank (`AmountKeypad`, then `PinPad`), quick actions, limits used this month and recent activity.' },
+        { id: 'scan', title: 'Scan and pay', summary: 'Paste or pick a merchant QR; `parseMerchantQr` reads the merchant, city and amount; enter an amount for a static code; pay with the PIN. Your own receive code in a `PaymentQrCard`.' },
+        { id: 'send', title: 'Send money', summary: '`MobileNumberInput` with the operator, the receiver\'s registered name, `AmountKeypad`, purpose and remark, then the `PinPad` and a receipt.' },
+        { id: 'bills', title: 'Bills and top-up', summary: 'Electricity, water and internet: a biller form, the bill in a `BillSummary` (loading, error, nothing due), then pay; and mobile top-up by operator.' },
+        { id: 'history', title: 'History', summary: 'Every payment with its status, search and filters; each opens in a sheet with its `PaymentTimeline` and receipt.' },
+        { id: 'rewards', title: 'Rewards', summary: 'Cashback earned on bills, top-ups and QR payments, points with a tier meter, offers, and redeeming points into the balance.' },
+      ],
+      data:
+        'A fixed history of wallet payments around the session date; merchant QR payloads built with `buildMerchantQr`; billers answer from a small simulated table. Pending payments settle on a timer after hydration. Nothing is fetched.',
+    },
+  },
 ];

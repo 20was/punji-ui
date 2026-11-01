@@ -60,7 +60,7 @@ From `0.0.0`, the pending minor changesets produce `0.1.0`. Only the latest `0.x
 
 ## First-publish owner steps
 
-Required before the workflow can do anything. The exact click-by-click procedure, including the placeholder bootstrap npm needs because a trusted publisher can only be added to an existing package, is [docs/RELEASE-SETUP-RUNBOOK.md](docs/RELEASE-SETUP-RUNBOOK.md). State on 2026-11-01: the `punji` npm org exists with no packages; the `npm` environment and `PUNJI_UI_PR_TOKEN` exist; the environment has no protection rules yet; `UI_NPM_RELEASE_ENABLED` is not set.
+Required before the workflow can do anything. The exact click-by-click procedure, including the placeholder bootstrap npm needs because a trusted publisher can only be added to an existing package, is [docs/RELEASE-SETUP-RUNBOOK.md](docs/RELEASE-SETUP-RUNBOOK.md). State on 2026-11-01, 01:05 UTC: `@punji/ui` exists on npm with the placeholders `0.0.0-bootstrap.0` (`latest`, `bootstrap`) and `0.0.0-stage`; the trusted publisher (`20was/punji-ui`, `release.yml`, environment `npm`, publish allowed) is configured and must complete its first publish before 2026-11-03 01:00 UTC; the `npm` environment requires reviewer `20was` and allows only `main`; `UI_NPM_RELEASE_ENABLED` is `true`. Next: the version PR, then `0.1.0`.
 
 1. Confirm the `@punji` npm scope/organisation exists and the owner can publish `@punji/ui` publicly.
 2. Create the package with a code-free placeholder (`0.0.0-bootstrap.0`, dist-tag `bootstrap`), then configure the npm Trusted Publisher for `@punji/ui`: repository `20was/punji-ui`, workflow file `release.yml`, environment `npm`, `npm publish` allowed. npm requires the package to exist first, and the first OIDC publish must follow within 2 days.

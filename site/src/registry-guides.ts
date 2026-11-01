@@ -513,6 +513,78 @@ export const GUIDES: readonly PageDef[] = [
     ],
   }),
   guide({
+    slug: 'localisation',
+    navTitle: 'Localisation',
+    title: 'Localisation of component copy',
+    lead: 'Nepali, Hindi and Bengali words for the trust kit, forms, tables, pagination, dates and amounts in words, through one provider or none.',
+    description: 'Translate Punji UI component copy with PunjiLocaleProvider and typed ne, hi and bn message packs, each its own import, with English fallback per key.',
+    summary:
+      'Components ship English words and take `labels` or `messages` props. The locale layer gives them all their words at once: a typed catalogue (`PunjiMessages`), a `PunjiLocaleProvider`, and packs for Nepali, Hindi and Bengali on their own subpaths, so an app ships only the languages it imports. A missing key falls back to English, and a component\'s own props always win. The packs are machine-drafted and need native review.',
+    related: ['transfer-review', 'payment-fields', 'date-picker', 'global-money'],
+    examples: [{ id: 'switcher', title: 'Switch language', note: 'The same TransferReview and Pagination in English, Nepali, Hindi and Bengali. Amount in words follows the pack.' }],
+    guide: [
+      {
+        id: 'status',
+        title: 'Machine-drafted, needs native review',
+        paragraphs: [
+          'Every pack in the package (`ne`, `hi`, `bn`) was written without review by a native speaker, and says so in its file header and in `pack.review === \'machine-drafted\'`. Have the text you use reviewed, and adapted to your product\'s voice, before customers see it. Corrections are welcome as pull requests.',
+        ],
+      },
+      {
+        id: 'covered',
+        title: 'What a pack covers',
+        paragraphs: ['One namespace per component family. Everything in it is optional.'],
+        points: [
+          'Trust kit: `transferReview`, `confirmAmount`, `payeeVerification`, `holdToConfirm`, `sessionTimeout`, `scamWarning` (with all six scenarios), `secureField` and `spoofing` (the name-check sentences [TransferReview](/components/transfer-review/) shows).',
+          'Forms: `paymentFields` (messages and field names for the [payment fields](/components/payment-fields/)), `idNumberInput`, `panInput` and `calendar` (the [date picker](/components/date-picker/) and calendar words).',
+          'Tables: `table` (empty, loading, search, selection and page controls of `DataTable`) and `pagination`.',
+          'Money in words: `amountWords`, the language\'s words for 0 to 99, the lakh and crore scale names and currency unit names. `ConfirmAmount` and `TransferReview` use it automatically; `localAmountInWords` gives you the same text.',
+        ],
+      },
+      {
+        id: 'provider',
+        title: 'With a provider',
+        paragraphs: [
+          'Wrap the app (or one screen) once. Components read the provider and merge, in order: their English defaults, the pack, then their own `labels` or `messages` props. Without a provider nothing changes. The provider sets no `lang` attribute: set `lang` on the element that holds the translated text so screen readers pick the right voice.',
+        ],
+        code: [{ label: 'One provider at the root', file: 'provider' }, { label: 'Your own words over the pack', file: 'override' }],
+      },
+      {
+        id: 'no-context',
+        title: 'Without context',
+        paragraphs: [
+          'A pack is plain data, so you can skip the provider and pass a namespace into the component\'s own prop. This suits apps that already have their own i18n library: copy the strings into your catalogue and pass them the same way.',
+        ],
+        code: [{ label: 'A pack namespace as labels', file: 'no-context' }],
+      },
+      {
+        id: 'words',
+        title: 'Amounts in words',
+        paragraphs: [
+          '`localAmountInWords(minor, currency, pack.messages.amountWords)` reads an exact bigint amount in the South Asian system (hundred, thousand, lakh, crore, arab, kharab) with the pack\'s number words and unit names. A currency the pack does not name prints its ISO code, with the minor part as a fraction.',
+        ],
+        code: [{ label: 'Hindi words for an INR amount', file: 'words' }],
+      },
+      {
+        id: 'size',
+        title: 'Size and tree-shaking',
+        paragraphs: [
+          'The provider and helpers (`@punji/ui/locale`) are about 2 kB gzip; each pack is about 5 kB and is its own subpath (`@punji/ui/locale/ne`, `/hi`, `/bn`), kept off the root export so importing the root never pulls a language in. Load a pack on demand with `import()` if you switch language at runtime.',
+        ],
+      },
+      {
+        id: 'limits',
+        title: 'Limits',
+        paragraphs: ['What a pack does not change.'],
+        points: [
+          'Month and weekday names in the date picker come from its `language` (English or Nepali); the `hi` and `bn` packs translate the picker\'s words, not the month names.',
+          'Number formatting is not part of a pack: pass `money.locale` (for example `hi-IN` or `bn-BD`) and `digits` as before.',
+          'Bengali names for arab and kharab are rarely used and especially need review.',
+        ],
+      },
+    ],
+  }),
+  guide({
     slug: 'roadmap',
     title: 'Roadmap',
     description: 'What ships today, what is in progress and what comes in waves 2 to 4: guides, compositions, portfolio components, scale, accessibility and example apps.',

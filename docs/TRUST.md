@@ -16,7 +16,12 @@ and for the rules that now require some of it (UK Confirmation of Payee, EU Veri
 | `ScamWarning`, `SCAM_SCENARIOS` | `@punji/ui/scam-warning` | Scenario-specific scam interstitial |
 | `SecureField`, `secureFieldAttributes` | `@punji/ui/secure-field` | Secret inputs with the right autofill and no value in the DOM |
 
-Styles: `@punji/ui/css/trust.css` (also in `styles.css`). The components also use `button.css`, `checkbox.css`,
+Styles: `@punji/ui/css/trust.css` (also in `styles.css`).
+
+**Other languages.** Every component here reads `PunjiLocaleProvider`; machine-drafted Nepali, Hindi and Bengali packs
+(scam scenarios, spoofing sentences and amount in words included) are in `@punji/ui/locale/ne`, `/hi` and `/bn`. They
+need native review before customers see them. See [LOCALISATION.md](LOCALISATION.md). For payment identifiers
+(IBAN, card, UPI and others) see [PAYMENTS.md](PAYMENTS.md). The components also use `button.css`, `checkbox.css`,
 `fields.css` and `overlay.css` when you import CSS per component.
 
 **What this is not.** Nothing here decides whether a payment is fraud, verifies a payee or moves money. Your risk

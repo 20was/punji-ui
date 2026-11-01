@@ -12,6 +12,8 @@ import { SHOWCASE_PAGES } from './registry-showcase.ts';
 import { TRADING_PAGES } from './registry-trading.ts';
 import { WALLET_PAGES } from './registry-wallet.ts';
 import { TRUST_PAGES } from './registry-trust.ts';
+// Global payment-field kit: inputs and pure checks.
+import { PAYMENT_PAGES } from './registry-payments.ts';
 // Tax, invoicing and payroll pages.
 import { TAX_PAGES } from './registry-tax.ts';
 import { LEADS, NAV_TITLES } from './registry-leads.ts';
@@ -1856,6 +1858,7 @@ export const PAGES: readonly PageDef[] = [
   ...WALLET_PAGES,
   // Trust and safety kit and global money.
   ...TRUST_PAGES,
+  ...PAYMENT_PAGES,
   // Tax, invoicing and payroll.
   ...TAX_PAGES,
   ...APP_PAGES,

@@ -8,6 +8,7 @@ import { BS_MONTHS, type NepalLanguage } from '../nepal/locale.ts';
 import { instantToNepalDate } from '../nepal/calendar.ts';
 import { calendarLimits, dayNumber, displayParts, fromDayNumber, isoDate, monthLength, nextRange, rangeAvailable, requireISO, shiftMonth, storageDate, type CalendarSystem, type DateRange } from './calendarMath.ts';
 import { calendarLabels, gregorianMonths, weekDays, type CalendarLabels } from './labels.ts';
+import { useLocaleMessages } from '../locale/context.tsx';
 export type { CalendarSystem, DateRange, CalendarLabels };
 
 export interface CalendarBaseProps {
@@ -71,7 +72,7 @@ function YearInput({year,min,max,label,invalid,disabled,number,onChange}:{year:n
 
 export function Calendar(props: CalendarProps) {
   const {calendar='gregory',language='en',digits='latn',weekStartsOn=0,disabled=false,readOnly=false,required=false,autoFocus=false,bare=false} = props;
-  const words = {...calendarLabels[language],...props.labels};
+  const words = {...calendarLabels[language],...useLocaleMessages().messages.calendar,...props.labels};
   if(props.min)requireISO(props.min);
   if(props.max)requireISO(props.max);
   if(props.defaultMonth)requireISO(props.defaultMonth);

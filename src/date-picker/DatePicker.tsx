@@ -8,6 +8,7 @@ import type { CalendarBaseProps } from '../calendar/Calendar.tsx';
 import type DatePickerPanel from './DatePickerPanel.tsx';
 import { calendarLimits, displayParts, isoDate, parseDateInput, rangeAvailable, requireISO, type DateRange } from '../calendar/calendarMath.ts';
 import { calendarLabels } from '../calendar/labels.ts';
+import { useLocaleMessages } from '../locale/context.tsx';
 import type { DateRangePreset } from '../date-range-presets/presets.ts';
 export { DateRangePresetList, type DateRangePresetListProps } from './DateRangePresetList.tsx';
 
@@ -48,7 +49,7 @@ const CalendarIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill=
 
 function Picker(props:PickerProps) {
   const {calendar='gregory',language='en',digits='latn',disabled=false,readOnly=false,required=false} = props;
-  const words={...calendarLabels[language],...props.labels};
+  const words={...calendarLabels[language],...useLocaleMessages().messages.calendar,...props.labels};
   const auto=useId(), id=props.id??auto, panelId=`${id}-calendar`;
   const root=useRef<HTMLDivElement>(null), anchor=useRef<HTMLButtonElement>(null);
   const positionAnchor=useRef<HTMLElement|null>(null);

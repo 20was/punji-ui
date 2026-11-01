@@ -9,6 +9,7 @@
 import { useState, type FocusEvent, type InputHTMLAttributes, type ReactNode } from 'react';
 
 import { Field } from '../fields/Fields.tsx';
+import { useLocaleMessages } from '../locale/context.tsx';
 import { PAN_LENGTH, checkPan, formatPanNumber, type PanCheck } from '../tax/pan.ts';
 
 export interface PanInputLabels {
@@ -53,7 +54,7 @@ export interface PanInputProps extends Omit<InputHTMLAttributes<HTMLInputElement
 }
 
 export function PanInput({ label, hint = '9 digits', error, value, onValueChange, digits = 'latn', labels, onBlur, className, ...rest }: PanInputProps) {
-  const words = { ...DEFAULT_PAN_INPUT_LABELS, ...labels };
+  const words = { ...DEFAULT_PAN_INPUT_LABELS, ...useLocaleMessages().messages.panInput, ...labels };
   const [left, setLeft] = useState(false);
   const check = checkPan(value);
   const builtIn = !left ? undefined

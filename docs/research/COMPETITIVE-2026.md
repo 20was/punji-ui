@@ -144,10 +144,13 @@ implements.
 6. **Density switch.** One `data-density` attribute driving control height, table row height and type scale, like
    Carbon's sizes.
 7. **Accessible live market data.** A shared announcer that batches price changes across a page.
-8. **Payment-field kit.** IBAN/account number with mod-97 check, card number with Luhn and brand, sort code and
-   IFSC formats, all through `SecureField`.
+8. **Payment-field kit [built].** IBAN (per-country structure, mod-97), card number (IIN brands, Luhn, masked),
+   expiry and CVC, SWIFT/BIC, IFSC, UPI ID, UK sort code and account, US ABA routing and Nepal accounts: pure checks in
+   `@punji/ui/payments` and paste-tolerant inputs in `@punji/ui/payment-fields` (docs/PAYMENTS.md).
 9. **Non-Gregorian calendars beyond BS.** Hijri and Thai solar for the Gulf and Thailand.
-10. **Localised trust copy.** Nepali, Hindi and Bengali defaults for the trust kit labels and scam scenarios.
+10. **Localised component copy [built, machine-drafted].** `PunjiLocaleProvider` with Nepali, Hindi and Bengali packs
+    for the trust kit, forms, tables, pagination, date picker and amounts in words (docs/LOCALISATION.md). The packs
+    need native review.
 
 ## Sources
 

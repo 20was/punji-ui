@@ -20,6 +20,7 @@
  */
 import { Children, createContext, isValidElement, useContext, useId, type ReactNode } from 'react';
 
+import { useLocaleMessages } from '../locale/context.tsx';
 import { paginate } from '../use-pagination/usePagination.ts';
 
 
@@ -102,9 +103,9 @@ export function DataTable<K extends string>({
   search,
   pagination,
   selection,
-  empty = 'No records to display.',
+  empty,
   loading = false,
-  loadingLabel = 'Loading records…',
+  loadingLabel,
   footer,
 }: {
   /** Names the table for screen readers: its caption, region and page controls. */
@@ -135,15 +136,16 @@ export function DataTable<K extends string>({
   pagination?: DataTablePagination;
   /** Optional controlled selection. Each selectable DataListRow needs a stable `rowId`. */
   selection?: DataTableSelection;
-  /** Content for an empty table. Defaults to a plain, accessible message. */
+  /** Content for an empty table. Default: the locale pack's message, else "No records to display." */
   empty?: ReactNode;
   /** Keep headers visible and announce the loading state while the caller fetches rows. */
   loading?: boolean;
-  /** Text announced while `loading` is true. Default "Loading records…". */
+  /** Text announced while `loading` is true. Default: the locale pack's text, else "Loading records…". */
   loadingLabel?: string;
   /** A totals row: one DataListRow (its first cell a row header) rendered in a `<tfoot>`, only when there are rows to total. It stacks like a body row on phones. Put your own empty cell first when the table has a selection column. */
   footer?: ReactNode;
 }) {
+  const t = useLocaleMessages().messages.table ?? {};
   const auto = useId();
   const tableId = `${auto}-table`;
   const rows = Children.toArray(children);
@@ -201,7 +203,7 @@ export function DataTable<K extends string>({
               spellCheck={false}
             />
             {search.value && (
-              <button type="button" aria-label={search.clearLabel ?? 'Clear search'} onClick={() => searchChange('')}>
+              <button type="button" aria-label={search.clearLabel ?? t.clearSearch ?? 'Clear search'} onClick={() => searchChange('')}>
                 <span aria-hidden="true">×</span>
               </button>
             )}
@@ -211,22 +213,22 @@ export function DataTable<K extends string>({
       <div className={box} role="region" aria-label={caption} tabIndex={0} aria-busy={loading || undefined}>
       {selection && selection.selectedRowIds.length > 0 && (
         <div className="kit-table-selection-summary" aria-live="polite" aria-atomic="true">
-          <span>{selection.selectedCountLabel?.(selection.selectedRowIds.length) ?? `${selection.selectedRowIds.length} selected`}</span>
-          <button type="button" onClick={() => selection.onChange([])}>{selection.clearLabel ?? 'Clear selection'}</button>
+          <span>{selection.selectedCountLabel?.(selection.selectedRowIds.length) ?? t.selected?.(selection.selectedRowIds.length) ?? `${selection.selectedRowIds.length} selected`}</span>
+          <button type="button" onClick={() => selection.onChange([])}>{selection.clearLabel ?? t.clearSelection ?? 'Clear selection'}</button>
         </div>
       )}
       {selection && stack && <div className="kit-table-mobile-select">
         <label>
           <input
             type="checkbox"
-            aria-label={selection.selectPageLabel ?? 'Select all rows on this page'}
+            aria-label={selection.selectPageLabel ?? t.selectPage ?? 'Select all rows on this page'}
             checked={allOnPageSelected}
             ref={(input) => { if (input) input.indeterminate = someOnPageSelected; }}
             onChange={togglePage}
             disabled={selectableIds.length === 0}
             data-testid={selection.testIdPrefix ? `${selection.testIdPrefix}-select-page-mobile` : undefined}
           />
-          <span>{selection.selectPageLabel ?? 'Select all rows on this page'}</span>
+          <span>{selection.selectPageLabel ?? t.selectPage ?? 'Select all rows on this page'}</span>
         </label>
       </div>}
       <SelectionContext.Provider value={selectionContext}>
@@ -237,7 +239,7 @@ export function DataTable<K extends string>({
             {selection && <th scope="col" className="kit-table-selection-cell">
               <input
                 type="checkbox"
-                aria-label={selection.selectPageLabel ?? 'Select all rows on this page'}
+                aria-label={selection.selectPageLabel ?? t.selectPage ?? 'Select all rows on this page'}
                 checked={allOnPageSelected}
                 ref={(input) => { if (input) input.indeterminate = someOnPageSelected; }}
                 onChange={togglePage}
@@ -245,7 +247,7 @@ export function DataTable<K extends string>({
                 data-testid={selection.testIdPrefix ? `${selection.testIdPrefix}-select-page` : undefined}
               />
               {/* The checkbox is hidden in the stacked layout; the header keeps its name there (axe: empty-table-header). */}
-              <span className="kit-sr">{selection.selectPageLabel ?? 'Select all rows on this page'}</span>
+              <span className="kit-sr">{selection.selectPageLabel ?? t.selectPage ?? 'Select all rows on this page'}</span>
             </th>}
             {columns.map((c) => {
               const active = sort?.key === c.key;
@@ -269,9 +271,9 @@ export function DataTable<K extends string>({
         </thead>
         <tbody>
           {loading ? (
-            <tr><td className="kit-table-empty" colSpan={columns.length + Number(Boolean(selection))}><span role="status">{loadingLabel}</span></td></tr>
+            <tr><td className="kit-table-empty" colSpan={columns.length + Number(Boolean(selection))}><span role="status">{loadingLabel ?? t.loading ?? 'Loading records…'}</span></td></tr>
           ) : rows.length === 0 ? (
-            <tr><td className="kit-table-empty" colSpan={columns.length + Number(Boolean(selection))}><span role="status">{empty}</span></td></tr>
+            <tr><td className="kit-table-empty" colSpan={columns.length + Number(Boolean(selection))}><span role="status">{empty ?? t.empty ?? 'No records to display.'}</span></td></tr>
           ) : children}
         </tbody>
         {footer && !loading && rows.length > 0 && <tfoot>{footer}</tfoot>}
@@ -281,17 +283,17 @@ export function DataTable<K extends string>({
       {pagination && (
         <div className="kit-table-footer" data-testid={pagination.testIdPrefix ? `${pagination.testIdPrefix}-footer` : undefined}>
           <span className="kit-table-range" aria-live="polite" aria-atomic="true">
-            {pagination.rangeLabel ? pagination.rangeLabel(rangeStart, rangeEnd, rowCount) : rowCount === 0 ? '0 results' : `${rangeStart}–${rangeEnd} of ${rowCount}`}
+            {pagination.rangeLabel ? pagination.rangeLabel(rangeStart, rangeEnd, rowCount) : rowCount === 0 ? (t.noResults ?? '0 results') : t.range ? t.range(rangeStart, rangeEnd, rowCount) : `${rangeStart}–${rangeEnd} of ${rowCount}`}
           </span>
-          <nav className="kit-table-pages" aria-label={`${caption} pages`}>
-            <button type="button" onClick={() => pagination.onPageChange(pageIndex - 1)} disabled={pageIndex <= 0} aria-label={pagination.previousLabel ?? 'Previous page'} data-testid={pagination.testIdPrefix ? `${pagination.testIdPrefix}-previous` : undefined}>
-              {pagination.previousLabel ?? 'Previous'}
+          <nav className="kit-table-pages" aria-label={t.pages ? t.pages(caption) : `${caption} pages`}>
+            <button type="button" onClick={() => pagination.onPageChange(pageIndex - 1)} disabled={pageIndex <= 0} aria-label={pagination.previousLabel ?? t.previousPage ?? 'Previous page'} data-testid={pagination.testIdPrefix ? `${pagination.testIdPrefix}-previous` : undefined}>
+              {pagination.previousLabel ?? t.previous ?? 'Previous'}
             </button>
             <span aria-current="page">
-              {pagination.pageLabel ? pagination.pageLabel(pageCount === 0 ? 0 : pageIndex + 1, pageCount) : pageCount === 0 ? 'No pages' : `Page ${pageIndex + 1} of ${pageCount}`}
+              {pagination.pageLabel ? pagination.pageLabel(pageCount === 0 ? 0 : pageIndex + 1, pageCount) : pageCount === 0 ? (t.noPages ?? 'No pages') : t.page ? t.page(pageIndex + 1, pageCount) : `Page ${pageIndex + 1} of ${pageCount}`}
             </span>
-            <button type="button" onClick={() => pagination.onPageChange(pageIndex + 1)} disabled={pageCount === 0 || pageIndex >= pageCount - 1} aria-label={pagination.nextLabel ?? 'Next page'} data-testid={pagination.testIdPrefix ? `${pagination.testIdPrefix}-next` : undefined}>
-              {pagination.nextLabel ?? 'Next'}
+            <button type="button" onClick={() => pagination.onPageChange(pageIndex + 1)} disabled={pageCount === 0 || pageIndex >= pageCount - 1} aria-label={pagination.nextLabel ?? t.nextPage ?? 'Next page'} data-testid={pagination.testIdPrefix ? `${pagination.testIdPrefix}-next` : undefined}>
+              {pagination.nextLabel ?? t.next ?? 'Next'}
             </button>
           </nav>
         </div>

@@ -19,6 +19,7 @@ export const SEO_TITLES: Readonly<Record<string, string>> = {
   security: 'Security in Punji UI: CSV formula injection, masking',
   roadmap: 'Punji UI roadmap: shipped, in progress and planned',
   agents: 'Contributing to Punji UI: checks and component bar',
+  localisation: 'Localise Punji UI: Nepali, Hindi and Bengali copy packs',
   // Money, Nepal formatting and calendars
   'money-display': 'React money display for NPR, USD and any currency | Punji UI',
   'currency-input': 'React currency input for NPR and any currency | Punji UI',
@@ -26,6 +27,9 @@ export const SEO_TITLES: Readonly<Record<string, string>> = {
   'financial-calculations': 'Exact financial calculations in TypeScript | Punji UI',
   'date-picker': 'Nepali date picker for React (Bikram Sambat) | Punji UI',
   'period-selector': 'Fiscal year and period selector for React | Punji UI',
+  // Payments
+  'payment-fields': 'IBAN, card, UPI and IFSC inputs for React | Punji UI',
+  'payment-validation': 'IBAN, Luhn and ABA validation in TypeScript | Punji UI',
   // Stock market
   'stock-table': 'NEPSE stock table: React quote board component | Punji UI',
   'candlestick-chart': 'React candlestick chart with volume and averages | Punji UI',

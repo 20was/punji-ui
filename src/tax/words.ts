@@ -1,7 +1,8 @@
 /**
  * Amounts in words for bills and cheques, in the South Asian system: hundred, thousand, lakh, crore, arab, kharab
- * (an amount past 99 kharab is read as "<n> kharab"). English or Nepali. Exact: the amount is bigint minor units
- * and nothing passes through Number.
+ * (an amount past 99 kharab is read as "<n> kharab"). English or Nepali. `system: 'international'` reads English in
+ * thousand, million, billion, trillion instead, and `currencyAmountInWords` names any ISO 4217 currency's units
+ * (dollars and cents, pounds and pence, yen). Exact: the amount is bigint minor units and nothing passes through Number.
  */
 
 export type WordsLanguage = 'en' | 'ne';
@@ -33,9 +34,19 @@ const SCALES: readonly { value: bigint; en: string; ne: string }[] = [
   { value: 100n, en: 'hundred', ne: 'सय' },
 ];
 
+const INTERNATIONAL: readonly { value: bigint; en: string }[] = [
+  { value: 1_000_000_000_000n, en: 'trillion' },
+  { value: 1_000_000_000n, en: 'billion' },
+  { value: 1_000_000n, en: 'million' },
+  { value: 1_000n, en: 'thousand' },
+  { value: 100n, en: 'hundred' },
+];
+
 export interface IntegerWordsOptions {
   /** 'en' (default) or 'ne'. */
   language?: WordsLanguage;
+  /** 'south-asian' (default: lakh, crore, arab, kharab) or 'international' (million, billion, trillion; English only). */
+  system?: 'south-asian' | 'international';
   /** Your own 100 words for 0 to 99 (index = number). Overrides the built-in list for the language. */
   numberWords?: readonly string[];
   /** Your own words for the scale names, largest first: kharab, arab, crore, lakh, thousand, hundred. */
@@ -53,6 +64,15 @@ function below100(n: number, options: IntegerWordsOptions): string {
 function positive(n: bigint, options: IntegerWordsOptions): string[] {
   const parts: string[] = [];
   let rest = n;
+  if (options.system === 'international') {
+    for (const scale of INTERNATIONAL) {
+      if (rest < scale.value) continue;
+      parts.push(...positive(rest / scale.value, options), scale.en);
+      rest %= scale.value;
+    }
+    if (rest > 0n) parts.push(below100(Number(rest), options));
+    return parts;
+  }
   SCALES.forEach((scale, index) => {
     if (rest < scale.value) return;
     const count = rest / scale.value;
@@ -68,6 +88,7 @@ function positive(n: bigint, options: IntegerWordsOptions): string[] {
 export function integerInWords(value: bigint, options: IntegerWordsOptions = {}): string {
   if (typeof value !== 'bigint') throw new TypeError('integerInWords expects a bigint');
   if (options.numberWords && options.numberWords.length !== 100) throw new RangeError('numberWords must have 100 entries (0 to 99)');
+  if (options.system === 'international' && options.language === 'ne') throw new RangeError("system 'international' is English only");
   if (value === 0n) return below100(0, options);
   const words = positive(value < 0n ? -value : value, options).join(' ');
   return value < 0n ? `${options.language === 'ne' ? 'ऋण' : 'minus'} ${words}` : words;
@@ -76,6 +97,8 @@ export function integerInWords(value: bigint, options: IntegerWordsOptions = {})
 export interface AmountInWordsOptions extends IntegerWordsOptions {
   /** Minor-unit digits of the currency. Default 2 (paisa). 0 for a currency with no minor unit. */
   scale?: number;
+  /** Read the minor part as a fraction ("and 50/100") instead of words with a unit name, as cheques in many countries do. Default false. */
+  fractionAsDigits?: boolean;
   /** Name of the major unit. Default 'rupees' (English) or 'रुपैयाँ' (Nepali). */
   major?: string;
   /** Name of the minor unit. Default 'paisa' or 'पैसा'. */
@@ -115,10 +138,47 @@ export function amountInWords(minorUnits: bigint, options: AmountInWordsOptions 
   if (negative) parts.push(ne ? 'ऋण' : 'minus');
   if (position === 'before') parts.push(major, wholeWords);
   else parts.push(wholeWords, major);
-  if (fraction > 0n) parts.push(ne ? '' : 'and', integerInWords(fraction, options), minor);
+  if (fraction > 0n && options.fractionAsDigits) parts.push(ne ? '' : 'and', `${fraction.toString().padStart(scale, '0')}/${unit}`);
+  else if (fraction > 0n) parts.push(ne ? '' : 'and', integerInWords(fraction, options), minor);
   if (suffix) parts.push(suffix);
   const text = parts.filter(Boolean).join(' ');
   if (ne) return text;
   const mode = options.case ?? 'title';
   return mode === 'title' ? title(text) : mode === 'sentence' ? text.charAt(0).toUpperCase() + text.slice(1) : text;
+}
+
+// Unit words for common currencies: [major plural, minor plural]. Others take Intl's plural name and a "50/100" fraction.
+const CURRENCY_UNITS: Readonly<Record<string, readonly [string, string]>> = {
+  NPR: ['rupees', 'paisa'], INR: ['rupees', 'paise'], PKR: ['rupees', 'paisa'], LKR: ['rupees', 'cents'], BDT: ['taka', 'poisha'],
+  USD: ['dollars', 'cents'], AUD: ['dollars', 'cents'], CAD: ['dollars', 'cents'], NZD: ['dollars', 'cents'], SGD: ['dollars', 'cents'], HKD: ['dollars', 'cents'],
+  EUR: ['euros', 'cents'], GBP: ['pounds', 'pence'], JPY: ['yen', ''], CNY: ['yuan', 'fen'], CHF: ['francs', 'centimes'],
+  AED: ['dirhams', 'fils'], SAR: ['riyals', 'halalas'], QAR: ['riyals', 'dirhams'], KWD: ['dinars', 'fils'], BHD: ['dinars', 'fils'], OMR: ['rials', 'baisa'],
+  MYR: ['ringgit', 'sen'], THB: ['baht', 'satang'], ZAR: ['rand', 'cents'],
+};
+
+export interface CurrencyWordsOptions extends Omit<AmountInWordsOptions, 'scale' | 'major' | 'minor' | 'language'> {
+  /** Minor-unit digits. Default: Intl's for the currency (JPY 0, USD 2, KWD 3). */
+  scale?: number;
+}
+
+/**
+ * Any currency's amount in English words, for a "read it back" line before money moves:
+ * `currencyAmountInWords(125050n, 'USD')` is "One Thousand Two Hundred Fifty Dollars and Fifty Cents Only".
+ * NPR, INR, PKR, LKR and BDT read in lakh and crore, the rest in million and billion (override with `system`).
+ * Currencies without built-in unit words use Intl's English plural name and read the minor part as "50/100".
+ */
+export function currencyAmountInWords(minorUnits: bigint, currency: string, options: CurrencyWordsOptions = {}): string {
+  const code = currency.toUpperCase();
+  if (!/^[A-Z]{3}$/.test(code)) throw new RangeError(`Invalid currency code: ${currency}`);
+  const scale = options.scale ?? (new Intl.NumberFormat('en', { style: 'currency', currency: code }).resolvedOptions().maximumFractionDigits ?? 2);
+  const known = CURRENCY_UNITS[code];
+  const major = known?.[0] ?? (new Intl.NumberFormat('en', { style: 'currency', currency: code, currencyDisplay: 'name' }).formatToParts(2).find(part => part.type === 'currency')?.value ?? code);
+  const southAsian = code === 'NPR' || code === 'INR' || code === 'PKR' || code === 'LKR' || code === 'BDT';
+  return amountInWords(minorUnits, {
+    system: southAsian ? 'south-asian' : 'international',
+    unitPosition: 'after',
+    fractionAsDigits: !known?.[1],
+    ...options,
+    scale, major, minor: known?.[1] ?? '', language: 'en',
+  });
 }

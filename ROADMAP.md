@@ -45,8 +45,9 @@ visual baselines and size budgets.
 
 - Virtualised data table for 10k+ rows; column pinning, resizing and multi-sort; export controls. Done: `VirtualFinancialTable` and `TableExport`, no new dependency ([docs/TABLES.md](docs/TABLES.md)).
 - High-contrast theme, density setting, RTL verification. Done: `light-hc` and `dark-hc` (AAA, gated), forced colours, `data-pu-density`, `createTheme` brand theming, logical properties and RTL fixtures ([docs/THEMING.md](docs/THEMING.md)). Open: visual baselines for the `rtl` and `theme-modes` fixtures, a manual Windows High Contrast pass.
-- Performance profiling of live-updating tables and charts with published numbers. Tables done ([docs/PERFORMANCE.md](docs/PERFORMANCE.md), `scripts/bench-table.mjs`); charts and `Live` tweening still open.
-- Manual VoiceOver/NVDA pass; automated Next.js App Router consumer build.
+- Performance profiling of live-updating tables and charts with published numbers. Done: tables (`npm run bench:table`) and live charts and `Live` tweening (`npm run bench:charts`), in [docs/PERFORMANCE.md](docs/PERFORMANCE.md), with a count-based regression test in CI.
+- Automated Next.js App Router consumer build. Done: `npm run check:nextjs`, its own CI job.
+- Manual VoiceOver/NVDA pass.
 
 ### Wave 4: adoption
 

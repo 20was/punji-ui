@@ -166,7 +166,8 @@ export const GUIDES: readonly PageDef[] = [
         points: [
           'The peer range is `react@^19`. Use a Next.js release that ships React 19 for the App Router.',
           'Import by subpath (`@punji/ui/stock-table`) to keep client bundles small.',
-          'CI builds the [Next.js starter](' + TREE + '/nextjs-app-router) against the packed package on every change (`npm run check:templates`), beside a clean Vite consumer and a server render in Node.',
+          'Every pull request builds a real Next.js App Router app against the packed package (`npm run check:nextjs`): server components call the pure modules and render client components directly, the CSS imports go through Next, and the built pages hydrate with no errors or warnings. A clean Vite consumer and a server render in Node are checked too.',
+          'CI also builds the [Next.js starter](' + TREE + '/nextjs-app-router) against the packed package on every change (`npm run check:templates`).',
           'Dark mode and theme switching are covered in [Theming](/get-started/theming/); avoiding a flash of the wrong theme is in [Server rendering](/get-started/ssr/).',
         ],
       },
@@ -671,7 +672,7 @@ export const GUIDES: readonly PageDef[] = [
     lead: 'One shadcn command copies a whole finance screen into your app: the TSX, its layout CSS and sample data.',
     description: 'Copy a Punji UI Showcase screen into your React app with one shadcn CLI command: the TSX, its layout CSS and sample data, with @punji/ui as the dependency.',
     summary:
-      'Every Showcase pattern is also a shadcn registry item at `/r/<name>.json`. One command writes the screen, its layout CSS and only the sample data it uses into your app and installs `@punji/ui`. The copied files are yours; the components inside them stay package code that you update with npm.',
+      'Every Showcase pattern and every App is also a shadcn registry item at `/r/<name>.json`. One command writes the screen (or the whole app), its layout CSS and only the sample data it uses into your app and installs `@punji/ui`. The copied files are yours; the components inside them stay package code that you update with npm.',
     related: ['using', 'nextjs', 'bank-statement', 'portfolio-tracker'],
     guide: [
       {

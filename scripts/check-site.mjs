@@ -188,6 +188,68 @@ try {
     }
   }
 
+  // Apps (/apps/<slug>/): every screen of every app at phone, tablet and desktop widths, light and dark: axe, no
+  // horizontal overflow, no console errors. Screens after the first load on demand, so each is opened through the
+  // app's navigation and audited once its heading has focus. Runs on the first shard.
+  if (shardIndex === 1) {
+    for (const app of PAGES.filter((p) => p.kind === 'app')) {
+      for (const width of [390, 768, 1440]) {
+        for (const theme of ['light', 'dark']) {
+          const context = await browser.newContext({ viewport: { width, height: 900 }, colorScheme: theme, reducedMotion: 'reduce' });
+          await context.addInitScript((t) => localStorage.setItem('punji-docs-theme', JSON.stringify(t)), theme);
+          const page = await context.newPage();
+          const errors = [];
+          page.on('pageerror', (error) => errors.push(error.message));
+          page.on('console', (message) => { if (message.type() === 'error' || message.type() === 'warning') errors.push(message.text()); });
+          await page.goto(`${base}${pagePath(app)}`);
+          await page.locator('#page-title').waitFor();
+          await page.addScriptTag({ content: axeSource });
+          for (const screen of app.app.screens) {
+            const name = `app ${app.slug} ${width} ${theme} #${screen.id}`;
+            await page.getByTestId(`screen-${screen.id}`).click();
+            await page.locator(`[data-screen="${screen.id}"] [data-screen-title]`).waitFor();
+            if ((await page.getByTestId(`screen-${screen.id}`).getAttribute('aria-current')) !== 'page') fail(`${name}: the nav item is not marked current`);
+            await page.evaluate(() => window.scrollTo(0, 0));
+            const violations = await page.evaluate(async () => (await globalThis.axe.run(document)).violations.map((v) => `${v.id} (${v.impact}): ${v.nodes.slice(0, 3).map((n) => n.target.join(' ')).join(' | ')}`));
+            for (const v of violations) fail(`${name}: axe ${v}`);
+            const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
+            if (overflow > 0) fail(`${name}: horizontal overflow by ${overflow}px`);
+            if (width === 390 || width === 1440) await page.screenshot({ path: `${out}/app-${app.slug}-${screen.id}-${width}-${theme}.png`, fullPage: true });
+            for (const e of errors.splice(0)) fail(`${name}: console/page error ${e}`);
+          }
+          await context.close();
+        }
+      }
+    }
+
+    // App behaviour: the trading terminal places an order that reaches the order list, and opens the command palette
+    // from the keyboard; the wealth dashboard applies for an issue and an allotment changes the holdings.
+    const appCtx = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: 'light' });
+    const t = await appCtx.newPage();
+    const appErrors = [];
+    t.on('pageerror', (e) => appErrors.push(e.message));
+    t.on('console', (msg) => { if (msg.type() === 'error') appErrors.push(msg.text()); });
+    await t.goto(`${base}/apps/trading-terminal/#orders`);
+    await t.locator('[data-screen="orders"] [data-screen-title]').waitFor();
+    await t.getByTestId('tt-ticket-submit').click();
+    await t.getByTestId('tt-ticket-confirm').click();
+    await t.locator('[data-testid^="tt-orders-N-0001"]').first().waitFor({ timeout: 5000 }).catch(() => fail('trading terminal: a placed order did not reach the order list'));
+    await t.keyboard.press('Escape');
+    await t.locator('body').click({ position: { x: 5, y: 600 } });
+    await t.keyboard.press('ControlOrMeta+k');
+    await t.getByRole('dialog', { name: 'Terminal commands' }).waitFor({ timeout: 5000 }).catch(() => fail('trading terminal: Ctrl/Cmd-K did not open the command palette'));
+    await t.keyboard.press('Escape');
+    await t.keyboard.press('4');
+    await t.locator('[data-screen="positions"] [data-screen-title]').waitFor({ timeout: 5000 }).catch(() => fail('trading terminal: the 4 key did not open Positions'));
+    await t.goto(`${base}/apps/wealth-dashboard/#issues`);
+    await t.locator('[data-screen="issues"] [data-screen-title]').waitFor();
+    await t.getByTestId('wd-allot-check').click();
+    await t.getByText('Added to your holdings.').or(t.getByText(/unblocked\./)).first().waitFor({ timeout: 5000 }).catch(() => fail('wealth dashboard: the allotment check did not settle the application'));
+    if (!(await t.getByTestId('wd-applications').textContent())?.match(/Allotted|Not allotted/)) fail('wealth dashboard: the application status did not change after the allotment check');
+    for (const e of appErrors) fail(`apps behaviour: console ${e}`);
+    await appCtx.close();
+  }
+
   // Behaviour checks run once, on the first shard.
   if (shardIndex === 1) {
   // Behaviour: desktop.
@@ -399,4 +461,5 @@ if (failures.length) {
   process.exit(1);
 }
 console.log(`layout flags: edge ${flagCounts.edge} (+${flagCounts.edgeAllowed} allowlisted), clip ${flagCounts.clip}, dup ${flagCounts.dup}, icon ${flagCounts.icon}`);
+console.log(`apps: every screen of ${PAGES.filter((p) => p.kind === 'app').length} apps at 390, 768 and 1440 px, light and dark, plus order entry, the command palette and the allotment flow`);
 console.log(`site check${shardCount > 1 ? ` (shard ${shardIndex}/${shardCount})` : ''}: ${routes.length} routes x 2 widths x 2 themes, ${checked.variants} example variants and ${checked.tabs} page tabs (axe, overflow, console, layout) and the copy, variant, preview theme, phone-width frame, tabs, theme, search, sidebar, drawer, path routing, hash redirect, 404 and no-JS behaviours passed`);

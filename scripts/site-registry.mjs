@@ -1,4 +1,4 @@
-// Copy-in registry (shadcn-style): one site/dist/r/<name>.json per Showcase pattern, in the shadcn registry item
+// Copy-in registry (shadcn-style): one site/dist/r/<name>.json per Showcase pattern and per App, in the shadcn registry item
 // schema, plus site/dist/r/registry.json (the index). `npx shadcn@latest add https://design.punji.app/r/<name>.json`
 // then writes the pattern's screen, its layout CSS and only the sample data it uses into the app, and installs
 // @punji/ui. Run by `npm run site:build` after the prerender; validated by scripts/check-registry.mjs (check:seo).
@@ -10,7 +10,7 @@
 //   components/punji/<slug>/data/<file>.ts  the fixture files those names live in (type imports point at @punji/ui)
 // Relative imports lose their .ts extension so the files work with any bundler's resolution.
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
-import { basename, resolve } from 'node:path';
+import { basename, dirname, relative, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { PAGES } from '../site/src/registry.ts';
 import { PACKAGE_NAME, REPO, SITE_NAME, pagePath } from '../site/src/paths.ts';
@@ -23,7 +23,7 @@ export const TARGET_DIR = 'components/punji';
 const root = fileURLToPath(new URL('..', import.meta.url));
 const version = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8')).version;
 const pascal = (slug) => slug.replace(/(^|-)([a-z0-9])/g, (_, __, c) => c.toUpperCase());
-const stripTs = (text) => text.replace(/(from\s+['"]\.{1,2}\/[^'"]+?)\.tsx?(['"])/g, '$1$2');
+const stripTs = (text) => text.replace(/((?:from\s+|import\(\s*)['"]\.{1,2}\/[^'"]+?)\.tsx?(['"])/g, '$1$2');
 
 // Which fixture file exports each name (fixtures are one flat folder of plain `export const|function|type|interface`).
 const fixturesDir = resolve(root, 'fixtures');
@@ -97,6 +97,51 @@ export function buildRegistry(siteUrl = 'https://design.punji.app', base = '/') 
       categories: ['finance', 'showcase'],
       docs: `Import '${PACKAGE_NAME}/styles.css' once at your app root, then render <${pascal(page.slug)} /> from './${TARGET_DIR}/${page.slug}/${page.slug}'. Guide: ${origin}${pagePath(page)}`,
       meta: { source: `${REPO}/tree/main/site/src/examples/${page.slug}`, docs: `${origin}${pagePath(page)}`, markdown: `${origin}${pagePath(page)}index.md` },
+    });
+  }
+  // Apps (/apps/<slug>/): site/src/apps/<slug>/App.tsx and every file it reaches through relative imports, which stay
+  // inside site/src/apps (the app's own folder and shared/). Shared files land in components/punji/<slug>/shared/.
+  const appsDir = resolve(root, 'site/src/apps');
+  for (const page of PAGES.filter((p) => p.kind === 'app')) {
+    const own = resolve(appsDir, page.slug);
+    const entry = resolve(own, 'App.tsx');
+    if (!existsSync(entry)) throw new Error(`registry: app ${page.slug} has no site/src/apps/${page.slug}/App.tsx`);
+    const seen = new Set();
+    const walk = (file) => {
+      if (seen.has(file)) return;
+      seen.add(file);
+      if (!/\.tsx?$/.test(file)) return;
+      for (const m of readFileSync(file, 'utf8').matchAll(/(?:from\s+|import\s+|import\(\s*)'(\.{1,2}\/[^']+)'/g)) {
+        const next = resolve(dirname(file), m[1]);
+        if (!next.startsWith(`${appsDir}/`)) throw new Error(`registry: ${file.slice(root.length)} imports ${m[1]}, outside site/src/apps`);
+        if (!existsSync(next)) throw new Error(`registry: ${file.slice(root.length)} imports ${m[1]}, which does not exist`);
+        walk(next);
+      }
+    };
+    walk(entry);
+    const rel = (file) => (file.startsWith(`${own}/`) ? file.slice(own.length + 1) : `shared/${relative(resolve(appsDir, 'shared'), file)}`);
+    const files = [...seen].toSorted((a, b) => (a === entry ? -1 : b === entry ? 1 : rel(a).localeCompare(rel(b)))).map((file) => {
+      const target = `${TARGET_DIR}/${page.slug}/${rel(file)}`;
+      let content = readFileSync(file, 'utf8');
+      if (file.startsWith(`${own}/`)) content = content.replace(/(['"])\.\.\/shared\//g, '$1./shared/');
+      if (/\.tsx?$/.test(file)) content = stripTs(content);
+      if (file === entry && !/^['"]use client['"]/.test(content)) content = `'use client';\n\n${content}`;
+      const type = file === entry ? 'registry:component' : file.endsWith('.css') ? 'registry:file' : 'registry:lib';
+      return { path: target, type, target, content };
+    });
+    const exported = /export default function (\w+)/.exec(files[0].content)?.[1] ?? pascal(page.slug);
+    items.push({
+      $schema: ITEM_SCHEMA,
+      name: page.slug,
+      type: 'registry:block',
+      title: page.title,
+      description: page.description,
+      author: `${SITE_NAME} <${origin}/>`,
+      dependencies: [`${PACKAGE_NAME}@^${version}`],
+      files,
+      categories: ['finance', 'app'],
+      docs: `Import '${PACKAGE_NAME}/styles.css' once at your app root, then render <${exported} /> from './${TARGET_DIR}/${page.slug}/App'. The data is a seeded simulation (shared/sim.ts): replace it with your feed. Guide: ${origin}${pagePath(page)}`,
+      meta: { source: `${REPO}/tree/main/site/src/apps/${page.slug}`, docs: `${origin}${pagePath(page)}`, markdown: `${origin}${pagePath(page)}index.md` },
     });
   }
   const index = {

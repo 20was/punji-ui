@@ -1,5 +1,6 @@
 /** Pure helpers behind the kit (formatting, parsing, search); no React. */
 import { fixed, int, rs } from '../internal/number.ts';
+import { toAsciiDigits } from '../nepal/decimal.ts';
 
 export const isNum = (n: unknown): n is number => typeof n === 'number' && Number.isFinite(n);
 
@@ -38,11 +39,9 @@ export function toneOf(value: number | null | undefined, dp = 2): 'up' | 'down' 
   return r > 0 ? 'up' : r < 0 ? 'down' : 'flat';
 }
 
-const DEV = '०१२३४५६७८९';
-
-/** A typed number: grouping commas, spaces and Devanagari digits accepted. NaN when empty or invalid. */
+/** A typed number: grouping commas, spaces and Devanagari, Bengali, Arabic-Indic, Thai (any `DIGIT_SCRIPTS`) digits accepted. NaN when empty or invalid. */
 export function parseNumber(v: string): number {
-  const s = v.replace(/[,\s]/g, '').replace(/[०-९]/g, (c) => String(DEV.indexOf(c)));
+  const s = toAsciiDigits(v.replace(/[,\s]/g, ''));
   // One linear pattern (no nested or adjacent repeats), and a length cap first: a typed number never needs more.
   if (s.length > 64 || !/^-?(?:\d+(?:\.\d*)?|\.\d+)$/.test(s)) return Number.NaN;
   return Number.parseFloat(s);

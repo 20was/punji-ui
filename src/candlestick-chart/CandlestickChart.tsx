@@ -28,9 +28,9 @@
  * bodies are optional, and the readout, live region and table spell it out.
  * A visually hidden table lists every candle.
  */
-import { useId, useMemo, type CSSProperties, type PointerEvent, type ReactNode } from 'react';
+import { memo, useId, useMemo, type CSSProperties, type PointerEvent, type ReactNode } from 'react';
 
-import { bandScale, ema, niceTicks, reduceCandles, sma, timeScale, validateOhlc, type OhlcIssue } from '../chart-math/chartMath.ts';
+import { bandScale, ema, niceTicks, reduceCandles, timeScale, validateOhlc, type OhlcIssue } from '../chart-math/chartMath.ts';
 import { ChartTooltip, clamp, isNum, nprPrice, quantity, shortDate, thinned, useChartCursor, useMeasuredWidth } from '../internal/chartFrame.tsx';
 
 export interface Candle {
@@ -143,9 +143,43 @@ const DEFAULT_ISSUES: Record<OhlcIssue, string> = {
   'negative-volume': 'volume is negative',
 };
 
+/*
+ * Live data replaces one candle at a time (the forming session), so the checks
+ * of a candle are kept per candle object: a new array with 99,999 of the same
+ * candles re-checks one. The entry remembers the values it checked, so a
+ * candle changed in place is checked again; a new entry (a new identity) is
+ * also what tells a table row to re-render.
+ */
+interface CheckEntry { open: number; high: number; low: number; close: number; volume: Candle['volume']; date: string; issues: OhlcIssue[]; time: number }
+const checks = new WeakMap<Candle, CheckEntry>();
+const NO_ISSUES: OhlcIssue[] = [];
+function checkOf(c: Candle): CheckEntry {
+  const r = checks.get(c);
+  if (r && r.open === c.open && r.high === c.high && r.low === c.low && r.close === c.close && r.volume === c.volume && r.date === c.date) return r;
+  const next: CheckEntry = { open: c.open, high: c.high, low: c.low, close: c.close, volume: c.volume, date: c.date, issues: validateOhlc(c), time: Date.parse(c.date) };
+  if (next.issues.length === 0) next.issues = NO_ISSUES;
+  if (typeof c === 'object' && c !== null) checks.set(c, next);
+  return next;
+}
+
+/** The simple moving average at index i only (the mean of i-w+1..i, null on a gap); the same sum, in the same order, as sma(). */
+function smaAt(values: readonly number[], w: number, i: number): number | null {
+  if (i < w - 1) return null;
+  let sum = 0;
+  for (let j = i - w + 1; j <= i; j += 1) {
+    const v = values[j];
+    if (!isNum(v)) return null;
+    sum += v;
+  }
+  return sum / w;
+}
+
 export function CandlestickChart(props: CandlestickChartProps) {
   const { candles, label, labels, testId } = props;
-  const checked = useMemo(() => candles.map((c, i) => ({ c, i, issues: validateOhlc(c), time: Date.parse(c.date) })), [candles]);
+  const checked = useMemo(() => candles.map((c, i) => {
+    const entry = checkOf(c);
+    return { c, i, issues: entry.issues, time: entry.time, entry };
+  }), [candles]);
   const timeAxis = props.axis === 'time';
   const valid = useMemo(() => {
     const ok = checked.filter((x) => x.issues.length === 0 && (!timeAxis || Number.isFinite(x.time)));
@@ -162,7 +196,7 @@ export function CandlestickChart(props: CandlestickChartProps) {
   return <Plot {...props} checked={checked} valid={valid} />;
 }
 
-type Checked = { c: Candle; i: number; issues: OhlcIssue[]; time: number };
+type Checked = { c: Candle; i: number; issues: OhlcIssue[]; time: number; entry: object };
 
 function Plot({ candles, label, variant = 'candles', height = 280, volume, axis = 'category', hollowUp = false, convention = 'green-up', averages = [], formatPrice = nprPrice, formatVolume = quantity, formatDate = shortDate, labels, testId, checked, valid, tableLimit = 500 }: CandlestickChartProps & { checked: Checked[]; valid: Checked[] }) {
   const { ref, width } = useMeasuredWidth(640);
@@ -191,11 +225,13 @@ function Plot({ candles, label, variant = 'candles', height = 280, volume, axis 
   const aggregated = items.length < valid.length;
 
   const lines = useMemo(() => {
+    if (averages.length === 0) return [];
     const closes = valid.map((x) => x.c.close);
     return averages.map((a, k) => {
       const w = Math.max(2, Math.floor(a.window) || 2);
-      const full = (a.type === 'ema' ? ema : sma)(closes, w);
-      return { label: a.label ?? `${a.type.toUpperCase()} ${w}`, tone: AVERAGE_TONES[k % AVERAGE_TONES.length]!, values: items.map((it) => full[it.to] ?? null) };
+      // A simple average is only needed where a mark is drawn (a few hundred points, not every candle); an exponential one carries through every close.
+      const full = a.type === 'ema' ? ema(closes, w) : null;
+      return { label: a.label ?? `${a.type.toUpperCase()} ${w}`, tone: AVERAGE_TONES[k % AVERAGE_TONES.length]!, values: items.map((it) => (full ? (full[it.to] ?? null) : smaAt(closes, w, it.to))) };
     });
   }, [averages, valid, items]);
 
@@ -285,27 +321,10 @@ function Plot({ candles, label, variant = 'candles', height = 280, volume, axis 
             {items.map((it, k) => {
               const c = it.candle;
               const d = dirOf(c);
-              const tone = toneOf(d);
-              const x = cx(k);
-              const yo = yOf(c.open);
-              const yc = yOf(c.close);
-              const hollow = hollowUp && d === 'up';
               return (
-                <g key={`${it.candle.date}-${k}`} className={`kit-ct-c ${tone}`} data-dir={d}>
-                  {variant === 'bars' ? (
-                    <>
-                      <line x1={x} x2={x} y1={yOf(c.high)} y2={yOf(c.low)} />
-                      <line x1={x - body / 2} x2={x} y1={yo} y2={yo} />
-                      <line x1={x} x2={x + body / 2} y1={yc} y2={yc} />
-                    </>
-                  ) : (
-                    <>
-                      <line x1={x} x2={x} y1={yOf(c.high)} y2={yOf(c.low)} />
-                      <rect x={x - body / 2} width={body} y={Math.min(yo, yc) - (Math.abs(yo - yc) < 1 ? 0.5 : 0)} height={Math.max(1, Math.abs(yo - yc))} className={hollow ? 'hollow' : undefined} />
-                    </>
-                  )}
-                  {showVolume && isNum(c.volume) && <rect className="kit-ct-vol" x={x - body / 2} width={body} y={volY(c.volume)} height={Math.max(c.volume > 0 ? 1 : 0, volTop + volH - volY(c.volume))} />}
-                </g>
+                <CandleMark key={`${it.candle.date}-${k}`} variant={variant} tone={toneOf(d)} dir={d} hollow={hollowUp && d === 'up'} x={cx(k)} body={body}
+                  yo={yOf(c.open)} yc={yOf(c.close)} yh={yOf(c.high)} yl={yOf(c.low)}
+                  volY={showVolume && isNum(c.volume) ? volY(c.volume) : null} volBase={volTop + volH} volPositive={isNum(c.volume) && c.volume > 0} />
               );
             })}
             {lines.map((l) => (
@@ -346,12 +365,50 @@ function Plot({ candles, label, variant = 'candles', height = 280, volume, axis 
   );
 }
 
+interface MarkProps {
+  variant: 'candles' | 'bars';
+  tone: string;
+  dir: Dir;
+  hollow: boolean;
+  x: number;
+  body: number;
+  yo: number;
+  yc: number;
+  yh: number;
+  yl: number;
+  volY: number | null;
+  volBase: number;
+  volPositive: boolean;
+}
+
+/** One candle (or OHLC bar) and its volume bar, from pixel positions only: a live tick that moves one candle re-renders one mark, not hundreds. */
+const CandleMark = memo(function CandleMark({ variant, tone, dir, hollow, x, body, yo, yc, yh, yl, volY, volBase, volPositive }: MarkProps) {
+  return (
+    <g className={`kit-ct-c ${tone}`} data-dir={dir}>
+      {variant === 'bars' ? (
+        <>
+          <line x1={x} x2={x} y1={yh} y2={yl} />
+          <line x1={x - body / 2} x2={x} y1={yo} y2={yo} />
+          <line x1={x} x2={x + body / 2} y1={yc} y2={yc} />
+        </>
+      ) : (
+        <>
+          <line x1={x} x2={x} y1={yh} y2={yl} />
+          <rect x={x - body / 2} width={body} y={Math.min(yo, yc) - (Math.abs(yo - yc) < 1 ? 0.5 : 0)} height={Math.max(1, Math.abs(yo - yc))} className={hollow ? 'hollow' : undefined} />
+        </>
+      )}
+      {volY !== null && <rect className="kit-ct-vol" x={x - body / 2} width={body} y={volY} height={Math.max(volPositive ? 1 : 0, volBase - volY)} />}
+    </g>
+  );
+});
+
 function DataTable({ label, labels, formatPrice = nprPrice, formatVolume = quantity, formatDate = shortDate, checked, tableLimit = 500 }: CandlestickChartProps & { checked: Checked[] }) {
   const none = labels?.none ?? 'none';
   const rows = checked.slice(-Math.max(1, tableLimit));
   const anyProblem = checked.some((x) => x.issues.length > 0);
-  const issueText = (i: OhlcIssue) => labels?.issues?.[i] ?? DEFAULT_ISSUES[i];
-  const price = (v: number) => (isNum(v) ? formatPrice(v) : none);
+  const custom = labels?.issues;
+  const issueText = useMemo(() => (i: OhlcIssue) => custom?.[i] ?? DEFAULT_ISSUES[i], [custom]);
+  const price = useMemo(() => (v: number) => (isNum(v) ? formatPrice(v) : none), [formatPrice, none]);
   return (
     <div className="kit-sr">
       <table>
@@ -369,15 +426,7 @@ function DataTable({ label, labels, formatPrice = nprPrice, formatVolume = quant
         </thead>
         <tbody>
           {rows.map((x) => (
-            <tr key={x.i}>
-              <th scope="row">{formatDate(x.c.date)}</th>
-              <td>{price(x.c.open)}</td>
-              <td>{price(x.c.high)}</td>
-              <td>{price(x.c.low)}</td>
-              <td>{price(x.c.close)}</td>
-              <td>{isNum(x.c.volume) ? formatVolume(x.c.volume) : none}</td>
-              {anyProblem && <td>{x.issues.map(issueText).join('; ')}</td>}
-            </tr>
+            <TableRow key={x.i} x={x} price={price} formatVolume={formatVolume} formatDate={formatDate} none={none} problem={anyProblem ? issueText : null} />
           ))}
         </tbody>
       </table>
@@ -385,3 +434,27 @@ function DataTable({ label, labels, formatPrice = nprPrice, formatVolume = quant
     </div>
   );
 }
+
+interface RowProps {
+  x: Checked;
+  price: (v: number) => string;
+  formatVolume: (v: number) => string;
+  formatDate: (d: string) => string;
+  none: string;
+  problem: ((i: OhlcIssue) => string) | null;
+}
+
+/** A table row re-renders only when its candle (or a formatter) changed: a live tick reformats one row, not 500. */
+const TableRow = memo(function TableRow({ x, price, formatVolume, formatDate, none, problem }: RowProps) {
+  return (
+    <tr>
+      <th scope="row">{formatDate(x.c.date)}</th>
+      <td>{price(x.c.open)}</td>
+      <td>{price(x.c.high)}</td>
+      <td>{price(x.c.low)}</td>
+      <td>{price(x.c.close)}</td>
+      <td>{isNum(x.c.volume) ? formatVolume(x.c.volume) : none}</td>
+      {problem && <td>{x.issues.map(problem).join('; ')}</td>}
+    </tr>
+  );
+}, (a, b) => a.x.c === b.x.c && a.x.entry === b.x.entry && a.price === b.price && a.formatVolume === b.formatVolume && a.formatDate === b.formatDate && a.none === b.none && a.problem === b.problem);

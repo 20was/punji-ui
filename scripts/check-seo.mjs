@@ -266,6 +266,22 @@ else {
   for (const m of llms.matchAll(/\]\((https?:[^)]+)\)/g)) if (m[1].startsWith(origin) && !fileFor(new URL(m[1]).pathname) && !existsSync(resolve(dist, new URL(m[1]).pathname.slice(base.length)))) fail(`llms.txt: ${m[1]} is not in the build`);
   const full = read('llms-full.txt');
   for (const page of PAGES) if (!full.includes(`## ${page.title}\n`) || !full.includes(`URL: ${origin}${pagePath(page)}`)) fail(`llms-full.txt: missing ${page.slug}`);
+  if (!llms.includes(`${origin}/components.json`)) fail('llms.txt: does not link components.json');
+}
+// components.json: valid JSON, one entry per component or utility page, each with an import line for every export and its examples.
+if (!existsSync(resolve(dist, 'components.json'))) fail('components.json: not built');
+else {
+  let componentManifest = null;
+  try { componentManifest = JSON.parse(read('components.json')); } catch (error) { fail(`components.json: not valid JSON (${error.message})`); }
+  if (componentManifest) {
+    const bySlug = new Map((componentManifest.items ?? []).map((item) => [item.slug, item]));
+    for (const page of PAGES.filter((p) => p.kind !== 'guide' && p.kind !== 'foundation')) {
+      const item = bySlug.get(page.slug);
+      if (!item) { fail(`components.json: missing ${page.slug}`); continue; }
+      if (item.examples.length !== page.examples.length || item.examples.some((ex) => !ex.code)) fail(`components.json: ${page.slug} examples incomplete`);
+      for (const e of item.exports) if (!/^import \{ (type )?\w+ \} from '@punji\/ui(\/[\w/-]+)?';$/.test(e.import)) fail(`components.json: ${page.slug} ${e.name} has a bad import line`);
+    }
+  }
 }
 for (const file of ['favicon.svg', 'og.png', '404.html']) if (!existsSync(resolve(dist, file))) fail(`${file}: not built`);
 
@@ -287,9 +303,9 @@ if (PORTAL_TO_HOME.length === 0) fail('PORTAL_TO_HOME is empty');
 }
 
 // No orphans: every page is linked from another page's content (a related card, a guide link or a showcase's
-// "Built from"), or, for showcase patterns, from the overview. The sidebar alone does not count.
+// "Built from"), or, for showcase patterns and apps, from the overview. The sidebar alone does not count.
 {
-  const inbound = new Set(PAGES.filter((p) => p.kind === 'showcase').map((p) => p.slug));
+  const inbound = new Set(PAGES.filter((p) => p.kind === 'showcase' || p.kind === 'app').map((p) => p.slug));
   for (const p of PAGES) {
     for (const slug of p.related) if (slug !== p.slug) inbound.add(slug);
     for (const section of p.guide ?? []) for (const text of [...section.paragraphs, ...(section.points ?? [])]) for (const m of text.matchAll(/\]\(\/[a-z-]+\/([a-z0-9-]+)\/\)/g)) if (m[1] !== p.slug) inbound.add(m[1]);

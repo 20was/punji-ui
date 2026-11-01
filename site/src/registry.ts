@@ -12,19 +12,24 @@ import { SHOWCASE_PAGES } from './registry-showcase.ts';
 import { TRADING_PAGES } from './registry-trading.ts';
 import { COMMUNITY_PAGES } from './registry-community.ts';
 import { WALLET_PAGES } from './registry-wallet.ts';
+import { TRUST_PAGES } from './registry-trust.ts';
 // Tax, invoicing and payroll pages.
 import { TAX_PAGES } from './registry-tax.ts';
 import { LEADS, NAV_TITLES } from './registry-leads.ts';
 import { SHARE_ISSUE_PAGES } from './registry-share-issues.ts';
+// Apps: full-viewport interactive dashboards at /apps/<slug>/ (site/src/apps/<slug>/).
+import { APP_PAGES } from './registry-apps.ts';
 
 export type GroupId =
   | 'get-started'
+  | 'apps'
   | 'foundations'
   | 'financial-primitives'
   | 'stock-market'
   | 'portfolio'
   | 'accounting'
   | 'banking'
+  | 'trust'
   | 'share-issues'
   | 'data'
   | 'forms'
@@ -43,12 +48,14 @@ export interface Group {
 /** The sidebar order. Domains, not component types. */
 export const GROUPS: readonly Group[] = [
   { id: 'get-started', title: 'Get started', planned: [] },
+  { id: 'apps', title: 'Apps', planned: [] },
   { id: 'foundations', title: 'Foundations', planned: [] },
   { id: 'financial-primitives', title: 'Financial primitives', planned: [] },
   { id: 'stock-market', title: 'Stock market', planned: [] },
   { id: 'portfolio', title: 'Portfolio', planned: [] },
   { id: 'accounting', title: 'Accounting', planned: [] },
   { id: 'banking', title: 'Banking', planned: [] },
+  { id: 'trust', title: 'Trust and safety', planned: [] },
   { id: 'share-issues', title: 'Share issues', planned: [] },
   { id: 'data', title: 'Data', planned: [] },
   { id: 'forms', title: 'Forms', planned: ['Calendar'] },
@@ -85,7 +92,7 @@ export interface PageDef {
    */
   lead?: string;
   group: GroupId;
-  kind: 'foundation' | 'component' | 'utility' | 'hooks' | 'guide' | 'showcase';
+  kind: 'foundation' | 'component' | 'utility' | 'hooks' | 'guide' | 'showcase' | 'app';
   /** The overview: what it is and the one rule that matters. */
   summary: string;
   /** The meta description and social card text: one or two sentences, at most 160 characters (the build checks). */
@@ -104,6 +111,24 @@ export interface PageDef {
   related: readonly string[];
   /** A guide page (kind 'guide') is prose and code instead of the component template. */
   guide?: readonly GuideSection[];
+  /** An app (kind 'app'): its screens and what it is built from. The app itself is site/src/apps/<slug>/App.tsx. */
+  app?: AppMeta;
+}
+
+export interface AppScreen {
+  /** The screen's id: the `#<id>` hash that opens it and the nav item's key. */
+  id: string;
+  /** The nav label and the screen's heading. */
+  title: string;
+  /** One sentence on the About page: what the screen does. */
+  summary: string;
+}
+
+export interface AppMeta {
+  /** The screens in navigation order. The first renders on the server; the others may load on demand. */
+  screens: readonly AppScreen[];
+  /** What the simulated data is and how it moves (the About page's "Data" paragraph). */
+  data: string;
 }
 
 export interface GuideCode {
@@ -751,21 +776,22 @@ export const PAGES: readonly PageDef[] = [
     use: ['`useDebounce` for search, `useLocalStorage` for persisted preferences, `useClipboard` for copy buttons.', '`usePagination`, `useTableSelection` and `useColumnVisibility` beside `DataTable`.'],
     avoid: ['Storing tokens, secrets or account data in web storage: any script on the origin can read it.', 'Using `useHydrated` to hide server-renderable content.'],
     api: [
-      ...ui('hooks', 'useDebounce', 'useDebouncedCallback', 'useThrottle', 'useControllableState', 'usePrevious', 'useToggle', 'useClipboard', 'useLocalStorage', 'useSessionStorage', 'useClickOutside', 'usePagination', 'useTableSelection', 'useColumnVisibility', 'useMediaQuery', 'useHydrated', 'useStableOrder'),
+      ...ui('hooks', 'useDebounce', 'useDebouncedCallback', 'useThrottle', 'useControllableState', 'usePrevious', 'useToggle', 'useClipboard', 'useLocalStorage', 'useSessionStorage', 'useClickOutside', 'usePagination', 'useTableSelection', 'useColumnVisibility', 'useMediaQuery', 'useHydrated', 'useStableOrder', 'useHotkeys', 'formatHotkey', 'matchHotkey', 'Hotkey'),
     ],
     examples: [
       { id: 'debounce', title: 'useDebounce' },
       { id: 'clipboard', title: 'useClipboard', note: 'This site\'s own copy button uses it.' },
       { id: 'storage', title: 'useLocalStorage', note: 'This site\'s theme switch uses it with a validator.' },
+      { id: 'hotkeys', title: 'useHotkeys', note: 'Press B or S with focus outside the field; Ctrl+J or ⌘J works from inside it too. The trading terminal app binds its shortcuts this way.' },
     ],
-    keyboard: ['Hooks have no UI.'],
+    keyboard: ['Hooks have no UI. `useHotkeys` ignores plain keys while focus is in a text field, a select or an editable region, and during IME composition; combinations with a modifier fire everywhere.'],
     accessibility: ['`useClipboard` reports `copied` for a short confirmation: announce it (`role="status"`) rather than relying on a colour change.'],
     responsive: ['`useMediaQuery` takes a server fallback; use CSS for purely visual layout.'],
     notes: {
       title: 'Storage safety',
       points: ['Stored data is untrusted. `validate` is required: a stored value is returned only if it parses and passes it; otherwise you get `defaultValue` and error: "invalid".', 'Write failures (quota, serialize, unavailable) are returned in `error`, never thrown during render.'],
     },
-    related: ['data-table', 'csv-export'],
+    related: ['data-table', 'csv-export', 'command-palette', 'trading-terminal', 'wealth-dashboard'],
   },
   {
     slug: 'stock-table',
@@ -1829,8 +1855,11 @@ export const PAGES: readonly PageDef[] = [
   ...TRADING_PAGES,
   ...SHARE_ISSUE_PAGES,
   ...WALLET_PAGES,
+  // Trust and safety kit and global money.
+  ...TRUST_PAGES,
   // Tax, invoicing and payroll.
   ...TAX_PAGES,
+  ...APP_PAGES,
   // Scaffolded with npm run new:component, waiting to move into a domain file.
   ...COMMUNITY_PAGES,
 ];

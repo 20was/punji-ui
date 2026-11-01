@@ -1,0 +1,24 @@
+/* Trading terminal layout. Colours and type from the package tokens; classes prefixed tt-. */
+.tt-index { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; margin: 0; font-variant-numeric: tabular-nums; }
+.tt-index-name { color: var(--doc-ink-2); font-size: 12px; font-weight: 600; letter-spacing: 0.04em; }
+.tt-index-value { font-weight: 600; }
+.tt-index-change { font-size: 13px; }
+.tt-index-change[data-dir='up'] { color: var(--pu-color-gain); }
+.tt-index-change[data-dir='down'] { color: var(--pu-color-loss); }
+.tt-mini { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-bottom: 12px; }
+.tt-mini-price { font: 600 26px/1.1 var(--pu-font-display); font-variant-numeric: tabular-nums; }
+.tt-mini-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.tt-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px; margin: 0; font-size: 14px; }
+.tt-facts div { display: grid; gap: 2px; min-width: 0; }
+.tt-facts dt { color: var(--doc-ink-2); font-size: 12px; }
+.tt-facts dd { margin: 0; font-variant-numeric: tabular-nums; }
+.tt-facts.is-ticket { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--doc-rule); }
+.tt-ticket { display: grid; gap: 12px; }
+.tt-title-name { color: var(--doc-ink-2); font-size: 15px; font-weight: 500; }
+.tt-quote { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin-top: -8px; }
+.tt-quote-price { font: 600 30px/1.1 var(--pu-font-display); font-variant-numeric: tabular-nums; }
+.tt-split { min-width: 0; }
+@media (max-width: 639px) {
+  .tt-index-name { display: none; }
+  .tt-quote-price { font-size: 26px; }
+}

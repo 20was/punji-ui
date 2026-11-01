@@ -2,34 +2,14 @@ import { createElement, useEffect, useMemo, useReducer, useRef, useState } from 
 import { Drawer } from '@punji/ui/drawer';
 import { headFor, NPM_URL, pagePath, REPO } from '../paths.ts';
 import { applyHead } from './head.ts';
-import { homeView, loadRoute, pageData, pageView, routeReady } from './load.ts';
+import { appView, homeView, loadedApp, loadRoute, pageData, pageView, routeReady } from './load.ts';
 import { groupTitleOf, type ClientRoute } from './nav.ts';
 import { BASE, Link, useRoute } from './router.tsx';
 import { NotFound } from './NotFound.tsx';
 import { Sidebar } from './Sidebar.tsx';
 import { Search } from './Search.tsx';
-import { useTheme, type ThemeChoice } from './theme.ts';
-import { CloseIcon, ExternalIcon, GitHubIcon, MenuIcon, MonitorIcon, MoonIcon, SunIcon, Wordmark } from './icons.tsx';
-
-const THEMES: { value: ThemeChoice; label: string; Icon: () => React.JSX.Element }[] = [
-  { value: 'light', label: 'Light', Icon: SunIcon },
-  { value: 'dark', label: 'Dark', Icon: MoonIcon },
-  { value: 'system', label: 'System', Icon: MonitorIcon },
-];
-
-/** Light, dark or the system setting as three icon buttons (a toggle group); the choice persists. */
-function ThemeSwitch() {
-  const [theme, setTheme] = useTheme();
-  return (
-    <div className="doc-theme" role="group" aria-label="Theme">
-      {THEMES.map(({ value, label, Icon }) => (
-        <button key={value} type="button" aria-pressed={theme === value} aria-label={label} title={`${label} theme`} onClick={() => setTheme(value)} data-testid={`theme-${value}`}>
-          <Icon />
-        </button>
-      ))}
-    </div>
-  );
-}
+import { ThemeSwitch } from './ThemeSwitch.tsx';
+import { CloseIcon, ExternalIcon, GitHubIcon, MenuIcon, Wordmark } from './icons.tsx';
 
 function Brand() {
   return (
@@ -123,8 +103,24 @@ export function App({ path }: { path: string }) {
     if (route.kind === 'notfound') return <NotFound />;
     // The views are module-level components from their own chunks (load.ts), looked up once they are loaded.
     if (route.kind === 'home') return createElement(homeView());
+    if (route.page.kind === 'app') return createElement(appView(), { key: route.page.slug, data: pageData(route.page.slug)!, App: loadedApp(route.page.slug)! });
     return createElement(pageView(), { key: route.page.slug, data: pageData(route.page.slug)! });
   }, [route]);
+
+  // An app owns the whole viewport: its own bar (with the way back to the docs and the theme) replaces the docs
+  // header, sidebar and footer. One main landmark, one skip link, as on every other page.
+  if (route.kind === 'page' && route.page.kind === 'app') {
+    return (
+      <div className="doc-app is-app">
+        <a className="doc-skip" href="#main">
+          Skip to content
+        </a>
+        <main id="main" className="doc-app-main" tabIndex={-1}>
+          {view}
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className={`doc-app${route.kind === 'home' ? ' is-home' : ''}`}>

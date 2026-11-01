@@ -35,7 +35,7 @@ const readJson = (file) => {
 const ITEM_TYPES = new Set(['registry:lib', 'registry:block', 'registry:component', 'registry:ui', 'registry:hook', 'registry:page', 'registry:file', 'registry:theme', 'registry:style', 'registry:item', 'registry:example', 'registry:internal']);
 const FILE_TYPES = new Set(['registry:lib', 'registry:block', 'registry:component', 'registry:ui', 'registry:hook', 'registry:page', 'registry:file', 'registry:theme', 'registry:style', 'registry:item', 'registry:example', 'registry:internal']);
 const ALLOWED_KEYS = new Set(['$schema', 'extends', 'name', 'type', 'title', 'author', 'description', 'dependencies', 'devDependencies', 'registryDependencies', 'files', 'tailwind', 'cssVars', 'css', 'envVars', 'meta', 'docs', 'categories']);
-const SHOWCASE = PAGES.filter((p) => p.kind === 'showcase' && p.examples.length > 0);
+const SHOWCASE = PAGES.filter((p) => (p.kind === 'showcase' && p.examples.length > 0) || p.kind === 'app');
 
 function checkItem(item, where) {
   if (item.$schema !== ITEM_SCHEMA) fail(`${where}: $schema should be ${ITEM_SCHEMA}`);
@@ -55,7 +55,7 @@ function checkItem(item, where) {
     if (targets.has(file.target)) fail(`${where}: two files target ${file.target}`);
     targets.add(file.target);
     if (typeof file.content !== 'string' || !file.content.trim()) fail(`${where}: ${file.path} has no content`);
-    for (const m of (file.content ?? '').matchAll(/(?:from|import)\s+'([^']+)'/g)) {
+    for (const m of (file.content ?? '').matchAll(/(?:from\s+|import\s+|import\(\s*)'([^']+)'/g)) {
       const spec = m[1];
       if (spec.startsWith('.')) {
         const resolved = resolve('/', dirname(file.target), spec);
@@ -76,7 +76,7 @@ else {
     if (!index.name || !index.homepage) fail('r/registry.json: needs name and homepage');
     const listed = (index.items ?? []).map((i) => i.name).toSorted();
     const want = SHOWCASE.map((p) => p.slug).toSorted();
-    if (listed.join() !== want.join()) fail(`r/registry.json: items ${listed.join(', ')} differ from the showcase patterns ${want.join(', ')}`);
+    if (listed.join() !== want.join()) fail(`r/registry.json: items ${listed.join(', ')} differ from the showcase patterns and apps ${want.join(', ')}`);
   }
   const files = readdirSync(out).filter((f) => f.endsWith('.json') && f !== 'registry.json');
   for (const page of SHOWCASE) if (!files.includes(`${page.slug}.json`)) fail(`r/${page.slug}.json: missing`);

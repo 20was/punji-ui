@@ -19,11 +19,12 @@ export const NOT_FOUND_TITLE = `Page not found | ${SITE_NAME}`;
 export const NOT_FOUND_DESCRIPTION = 'This page does not exist in the Punji UI documentation. Go to the overview to find a component.';
 export const THEME_COLOR = { light: '#e4e7de', dark: '#0d0e10' } as const;
 
-export type Section = 'get-started' | 'foundations' | 'components' | 'utilities' | 'showcase';
+export type Section = 'get-started' | 'apps' | 'foundations' | 'components' | 'utilities' | 'showcase';
 
 export function sectionOf(page: PageRef): Section {
   if (page.kind === 'guide') return 'get-started';
   if (page.kind === 'showcase') return 'showcase';
+  if (page.kind === 'app') return 'apps';
   if (page.kind === 'foundation') return 'foundations';
   if (page.kind === 'component') return 'components';
   return 'utilities';
@@ -35,7 +36,7 @@ export const pagePath = (page: PageRef): string => `/${sectionOf(page)}/${page.s
 export const HOME_DOMAINS: readonly string[] = ['financial-primitives', 'stock-market', 'portfolio', 'accounting', 'banking', 'data', 'forms', 'layout', 'feedback', 'developer'];
 /** The overview anchor for a page's group, or undefined when the group has no section there. */
 export const groupAnchor = (page: Pick<PageDef, 'group' | 'kind'>): string | undefined =>
-  page.kind === 'showcase' ? 'showcase' : HOME_DOMAINS.includes(page.group) ? `domain-${page.group}` : undefined;
+  page.kind === 'showcase' ? 'showcase' : page.kind === 'app' ? 'apps' : HOME_DOMAINS.includes(page.group) ? `domain-${page.group}` : undefined;
 
 const DOMAIN_WORDS: Partial<Record<PageDef['group'], string>> = {
   'stock-market': 'stock market apps',
@@ -76,7 +77,9 @@ export function headTitleOf(page: PageRef & Pick<PageDef, 'title' | 'group'>): s
             ? 'design tokens'
             : page.kind === 'showcase'
               ? 'React screen pattern'
-              : 'guide';
+              : page.kind === 'app'
+                ? 'React app demo'
+                : 'guide';
   const domain = page.kind === 'foundation' ? 'React apps' : (DOMAIN_WORDS[page.group] ?? 'finance apps');
   const [language, ...rest] = noun.split(' ');
   const short = page.kind === 'guide' || page.kind === 'foundation' ? undefined : `${language} ${DOMAIN_ADJECTIVES[page.group] ?? 'finance'} ${rest.join(' ')}`;

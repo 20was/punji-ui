@@ -67,7 +67,9 @@ jobs:
   build:
     name: Gates and tarball
     needs: version
-    if: needs.version.outputs.pending == 'false'
+    # changesets/action sets hasChangesets only when it opens or updates a version PR; with no changesets and no
+    # publish-script it exits early and leaves the output empty, so anything but 'true' means "release what is on main".
+    if: needs.version.outputs.pending != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     permissions:

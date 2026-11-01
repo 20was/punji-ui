@@ -266,6 +266,22 @@ else {
   for (const m of llms.matchAll(/\]\((https?:[^)]+)\)/g)) if (m[1].startsWith(origin) && !fileFor(new URL(m[1]).pathname) && !existsSync(resolve(dist, new URL(m[1]).pathname.slice(base.length)))) fail(`llms.txt: ${m[1]} is not in the build`);
   const full = read('llms-full.txt');
   for (const page of PAGES) if (!full.includes(`## ${page.title}\n`) || !full.includes(`URL: ${origin}${pagePath(page)}`)) fail(`llms-full.txt: missing ${page.slug}`);
+  if (!llms.includes(`${origin}/components.json`)) fail('llms.txt: does not link components.json');
+}
+// components.json: valid JSON, one entry per component or utility page, each with an import line for every export and its examples.
+if (!existsSync(resolve(dist, 'components.json'))) fail('components.json: not built');
+else {
+  let componentManifest = null;
+  try { componentManifest = JSON.parse(read('components.json')); } catch (error) { fail(`components.json: not valid JSON (${error.message})`); }
+  if (componentManifest) {
+    const bySlug = new Map((componentManifest.items ?? []).map((item) => [item.slug, item]));
+    for (const page of PAGES.filter((p) => p.kind !== 'guide' && p.kind !== 'foundation')) {
+      const item = bySlug.get(page.slug);
+      if (!item) { fail(`components.json: missing ${page.slug}`); continue; }
+      if (item.examples.length !== page.examples.length || item.examples.some((ex) => !ex.code)) fail(`components.json: ${page.slug} examples incomplete`);
+      for (const e of item.exports) if (!/^import \{ (type )?\w+ \} from '@punji\/ui(\/[\w/-]+)?';$/.test(e.import)) fail(`components.json: ${page.slug} ${e.name} has a bad import line`);
+    }
+  }
 }
 for (const file of ['favicon.svg', 'og.png', '404.html']) if (!existsSync(resolve(dist, file))) fail(`${file}: not built`);
 

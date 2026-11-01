@@ -86,4 +86,5 @@
 @import './lending.css';
 /* Tax, invoicing and payroll. */
 @import './tax.css';
+@import './trust.css';
 @import './contrast.css';

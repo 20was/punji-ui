@@ -1,0 +1,36 @@
+/* Market portal layout. Colours and type from the package tokens; classes prefixed mp-. */
+.mp-index { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; margin: 0; font-variant-numeric: tabular-nums; }
+.mp-index-name { color: var(--doc-ink-2); font-size: 12px; font-weight: 600; letter-spacing: 0.04em; }
+.mp-index-value { font-weight: 600; }
+.mp-index-change, .mp-returns-pct { font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+:is(.mp-index-change, .mp-returns-pct)[data-dir='up'] { color: var(--pu-color-gain); }
+:is(.mp-index-change, .mp-returns-pct)[data-dir='down'] { color: var(--pu-color-loss); }
+.mp-filters { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; min-width: 0; }
+.mp-filters > .kit-lf, .mp-filters > .kit-lf-f { flex: 1 1 220px; max-width: 320px; }
+.mp-field { flex: 0 1 180px; min-width: 150px; }
+.mp-pop { display: grid; gap: 12px; min-width: min(280px, calc(100vw - 48px)); padding: 12px 14px; }
+.mp-pop-value { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.mp-checks { display: grid; gap: 4px; max-height: 280px; margin: 0; padding: 0; overflow-y: auto; border: 0; }
+.mp-sym strong { font-weight: 600; }
+.mp-title-name { color: var(--doc-ink-2); font-size: 15px; font-weight: 500; }
+.mp-co-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; margin-top: -8px; }
+.mp-co-search { flex: 0 1 320px; min-width: min(100%, 240px); }
+.mp-quote { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+.mp-quote-price { font: 600 30px/1.1 var(--pu-font-display); font-variant-numeric: tabular-nums; }
+.mp-sub { display: block; color: var(--doc-ink-2); font-size: 12px; font-weight: 400; }
+.mp-returns { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.mp-returns li { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-width: 0; padding: 6px 0; border-bottom: 1px solid var(--doc-rule); }
+.mp-returns li:last-child { border-bottom: 0; }
+.mp-returns-name { font-weight: 600; }
+.mp-alert-form { display: grid; gap: 12px; margin: 0 0 16px; padding-bottom: 16px; border-bottom: 1px solid var(--doc-rule); }
+.mp-alert-form > button { justify-self: start; }
+.mp-alerts { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.mp-alerts li { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 4px 12px; padding: 10px 0; border-bottom: 1px solid var(--doc-rule); }
+.mp-alerts li:last-child { border-bottom: 0; }
+.mp-alert-what { min-width: 0; font-variant-numeric: tabular-nums; }
+.mp-alert-actions { display: flex; flex-wrap: wrap; gap: 4px; grid-column: 1 / -1; }
+@media (max-width: 639px) {
+  .mp-index-name { display: none; }
+  .mp-quote-price { font-size: 26px; }
+  .mp-filters > .kit-lf, .mp-filters > .kit-lf-f, .mp-field, .mp-co-search { flex: 1 1 100%; max-width: none; }
+}

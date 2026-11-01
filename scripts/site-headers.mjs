@@ -12,7 +12,7 @@ const hashes = new Set();
 for (const file of pages) {
   // Every inline script that runs needs its hash. External scripts (`src`) are allowed by 'self', and JSON-LD
   // (`type="application/ld+json"`) is data, not code.
-  for (const [, attrs, body] of readFileSync(join(dist, String(file)), 'utf8').matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi)) {
+  for (const [, attrs, body] of readFileSync(join(dist, String(file)), 'utf8').matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\b[^>]*>/gi)) {
     if (/\bsrc\s*=/i.test(attrs) || /\btype\s*=\s*["']?application\/(?:ld\+)?json/i.test(attrs)) continue;
     hashes.add(`'sha256-${createHash('sha256').update(body).digest('base64')}'`);
   }

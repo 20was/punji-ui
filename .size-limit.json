@@ -248,7 +248,7 @@
     "name": "virtual-table (import from '@punji/ui/virtual-table')",
     "path": "dist/virtual-table/VirtualFinancialTable.js",
     "import": "*",
-    "limit": "5.28 kB",
+    "limit": "5.34 kB",
     "gzip": true
   },
   {
@@ -598,7 +598,7 @@
     "name": "All hooks (import from @punji/ui/hooks)",
     "path": "dist/hooks/hooks.js",
     "import": "*",
-    "limit": "5.1 kB",
+    "limit": "5.20 kB",
     "gzip": true
   },
   {
@@ -759,7 +759,7 @@
     "name": "performance-chart (import from '@punji/ui/performance-chart')",
     "path": "dist/performance-chart/PerformanceChart.js",
     "import": "*",
-    "limit": "4.5 kB",
+    "limit": "4.58 kB",
     "gzip": true
   },
   {
@@ -829,7 +829,7 @@
     "name": "watchlist (import from '@punji/ui/watchlist')",
     "path": "dist/watchlist/Watchlist.js",
     "import": "*",
-    "limit": "7.62 kB",
+    "limit": "7.70 kB",
     "gzip": true
   },
   {
@@ -1402,14 +1402,14 @@
     "name": "payments (import from '@punji/ui/payments')",
     "path": "dist/payments/payments.js",
     "import": "*",
-    "limit": "5.23 kB",
+    "limit": "5.38 kB",
     "gzip": true
   },
   {
     "name": "payment-fields (import from '@punji/ui/payment-fields')",
     "path": "dist/payment-fields/PaymentFields.js",
     "import": "*",
-    "limit": "10.15 kB",
+    "limit": "10.28 kB",
     "gzip": true
   },
   {

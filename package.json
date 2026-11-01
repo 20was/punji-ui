@@ -1,6 +1,6 @@
 {
   "name": "@punji/ui",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Finance-first React design system: exact bigint money, stock-market tables, ledgers and Nepal-first locale (NPR, BS calendar), any currency.",
   "license": "MIT",
   "author": "Punji",

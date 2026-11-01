@@ -56,7 +56,8 @@ read-only inventory comparison. See [architecture](docs/ARCHITECTURE.md).
 
 Run `npm run build && npm run examples` for the package-based showcase.
 Every new component needs a public root/subpath API, explicit CSS distribution,
-realistic examples, accessibility checks, and a changeset. Keep calendar,
+realistic examples, accessibility checks, and a changeset. `npm run new:component -- <name>`
+scaffolds all of it; [docs/CONTRIBUTING-COMPONENT.md](docs/CONTRIBUTING-COMPONENT.md) walks through the rest. Keep calendar,
 display formatting and financial calculations separate.
 
 ## The bar for a new component

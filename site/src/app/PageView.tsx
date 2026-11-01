@@ -2,12 +2,13 @@ import { Fragment, useCallback, useEffect, useMemo, useState, type ReactNode } f
 import type { ExampleDef, GuideSection } from '../registry.ts';
 import { groupAnchor, pagePath, SITE_NAME } from '../paths.ts';
 import sizes from '../generated/sizes.json';
-import { Link } from './router.tsx';
+import { Link, hrefFor } from './router.tsx';
 import { apiEntryIn, type ApiEntry } from './api.ts';
 import { Code, CopyButton } from './Code.tsx';
 import { formatBytes } from './format.ts';
 import { exampleCss, guideSource, loadedExample, type PageData } from './load.ts';
 import { GROUPS, NAV, groupTitleOf, navTitleOf, type NavPage, type PageCard } from './nav.ts';
+import { PageActions } from './PageActions.tsx';
 import { PhoneFrame } from './PhoneFrame.tsx';
 import { useResolvedTheme } from './theme.ts';
 import { ChevronIcon, CodeIcon, DoIcon, DontIcon, MonitorIcon, MoonIcon, PhoneIcon, SunIcon } from './icons.tsx';
@@ -176,6 +177,7 @@ function PageHeader({ page, children }: { page: Page; children?: ReactNode }) {
       </h1>
       <p className="doc-lead">{page.lead}</p>
       {children}
+      <PageActions path={pagePath(page)} title={page.title} />
     </header>
   );
 }
@@ -718,6 +720,16 @@ function ShowcasePage({ data }: { data: PageData }) {
               Live screen
             </h2>
             <Demo page={page} def={def} onPick={() => undefined} />
+          </section>
+        )}
+        {def && (
+          <section aria-labelledby="copy-pattern" className="doc-section">
+            <h2 id="copy-pattern">Copy it into your app</h2>
+            <p className="doc-p">
+              The shadcn CLI writes this screen, its layout CSS and only the sample data it uses into <code>components/punji/{page.slug}/</code>, and
+              installs <code>@punji/ui</code>. The files are yours to change. See <Link to="/get-started/copy-a-pattern/">Copy a pattern</Link>.
+            </p>
+            <Code label={`Copy the ${page.title} pattern`} title="Terminal" lang="sh" code={`npx shadcn@latest add ${SITE_ORIGIN}${hrefFor(`/r/${page.slug}.json`)}`} />
           </section>
         )}
         {css && def && (

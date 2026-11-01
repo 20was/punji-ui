@@ -10,6 +10,7 @@ import { GENERIC_PAGES } from './registry-generic.ts';
 import { FORMS_PAGES } from './registry-forms.ts';
 import { SHOWCASE_PAGES } from './registry-showcase.ts';
 import { TRADING_PAGES } from './registry-trading.ts';
+import { COMMUNITY_PAGES } from './registry-community.ts';
 import { WALLET_PAGES } from './registry-wallet.ts';
 // Tax, invoicing and payroll pages.
 import { TAX_PAGES } from './registry-tax.ts';
@@ -1830,6 +1831,8 @@ export const PAGES: readonly PageDef[] = [
   ...WALLET_PAGES,
   // Tax, invoicing and payroll.
   ...TAX_PAGES,
+  // Scaffolded with npm run new:component, waiting to move into a domain file.
+  ...COMMUNITY_PAGES,
 ];
 
 /** The page's one-line lead: its own `lead`, else LEADS[slug], else the first sentence of `description`. */

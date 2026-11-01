@@ -1,0 +1,14 @@
+/* Layout only. Colours, type and spacing come from the --pu-* tokens, so light, dark and density just work. */
+body {
+  margin: 0;
+  background: var(--pu-color-bg);
+  color: var(--pu-color-text);
+  font-family: var(--pu-font-body);
+}
+.app { max-width: 960px; margin: 0 auto; padding: var(--pu-space-4); }
+.app-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--pu-space-3); padding-block: var(--pu-space-3); }
+.app-bar h1 { margin: 0; font-size: 1.25rem; }
+.app-prefs { display: flex; flex-wrap: wrap; gap: var(--pu-space-3); }
+.app-main { display: grid; gap: var(--pu-space-4); }
+.app-balance-label { margin: 0; color: var(--pu-color-text-muted); }
+.app-balance { margin: var(--pu-space-1) 0 0; font-size: 2rem; font-weight: 600; }

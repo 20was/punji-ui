@@ -1,0 +1,53 @@
+name: Good first issue
+description: A small, well-scoped task for a first contribution. Mostly for maintainers to file; anyone may propose one.
+title: "[good first issue] "
+labels: [good first issue]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A good first issue can be finished in a few hours by someone new to the codebase: one component, page or script, with the files named and a clear "done". Contributors: comment that you are taking it, then follow [CONTRIBUTING.md](https://github.com/20was/punji-ui/blob/main/CONTRIBUTING.md).
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of task
+      options:
+        - Docs page or example (site/src)
+        - A missing prop doc comment or test
+        - A small component fix (one component)
+        - A new component from an accepted component request
+        - Tooling or a check (scripts/)
+        - Translation or Nepal locale data
+    validations:
+      required: true
+  - type: textarea
+    id: task
+    attributes:
+      label: The task
+      description: What to change and why, in two or three sentences.
+    validations:
+      required: true
+  - type: textarea
+    id: files
+    attributes:
+      label: Where to look
+      description: The files to read and change (src/<name>/, test/<name>.test.tsx, site/src/registry*.ts, site/src/examples/<slug>/).
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: Done when
+      description: The checks that prove it, for example "`npm test -- <name>` passes and the page shows the new example".
+      value: |
+        - [ ] The change and a test for it
+        - [ ] `npm run lint && npm run typecheck && npm test -- <name>` pass
+        - [ ] For a docs change: `npm run build && npm run site:build && npm run check:seo` pass
+        - [ ] A changeset if it changes what ships (`npm run changeset`)
+    validations:
+      required: true
+  - type: input
+    id: mentor
+    attributes:
+      label: Who can help
+      description: A maintainer to ask (GitHub handle, without the @).

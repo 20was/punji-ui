@@ -1,5 +1,5 @@
 // Prerender: write every route of the docs site to its own index.html (plus 404.html), the sitemap,
-// robots.txt, llms.txt, llms-full.txt and a Cloudflare Pages _redirects file.
+// robots.txt, llms.txt, llms-full.txt, an index.md (Markdown for agents) beside every page and a Cloudflare Pages _redirects file.
 // Run after `vite build site` (the client, which provides the template) and
 // `vite build site --ssr src/entry-server.tsx --outDir dist-server` (the renderer): `npm run site:build` does all three.
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
@@ -117,56 +117,91 @@ const facts = [
   `- Source: ${REPO}`,
 ];
 const intro = `${HOME_DESCRIPTION}\n\n${facts.join('\n')}`;
-const lines = [`# ${SITE_NAME}`, '', `> ${HOME_DESCRIPTION}`, '', ...facts, '', `- [Overview](${absolute('/')}): every page, by domain`, ''];
+const lines = [
+  `# ${SITE_NAME}`, '', `> ${HOME_DESCRIPTION}`, '', ...facts, '',
+  'Each link below is the page as Markdown (an index.md beside the HTML page): its text, props tables and example code.', '',
+  `- [Overview](${absolute('/')}): every page, by domain`, '',
+];
 for (const group of GROUPS) {
   const pages = PAGES.filter((p) => p.group === group.id);
   if (!pages.length) continue;
   lines.push(`## ${group.title}`, '');
-  for (const p of pages) lines.push(`- [${p.title}](${absolute(pagePath(p))}): ${p.description}`);
+  for (const p of pages) lines.push(`- [${p.title}](${absolute(pagePath(p))}index.md): ${p.description}`);
   lines.push('');
 }
-lines.push('## Optional', '', `- [Full text of every page](${siteUrl}${withBase('/llms-full.txt')})`, '');
+lines.push(
+  '## Optional', '',
+  `- [Full text of every page](${siteUrl}${withBase('/llms-full.txt')})`,
+  `- [Copy-in registry](${siteUrl}${withBase('/r/registry.json')}): every Showcase pattern as a shadcn registry item; \`npx shadcn@latest add ${siteUrl}${withBase('/r/<name>.json')}\` copies one into an app`,
+  '',
+);
 write('llms.txt', lines.join('\n'));
+// The overview as Markdown is the same index.
+write('index.md', lines.join('\n'));
 
 const api = JSON.parse(readFileSync(resolve('site/src/generated/api.json'), 'utf8'));
 const bullets = (items) => items.map((i) => `- ${i}`);
-const full = [`# ${SITE_NAME}`, '', intro, ''];
-for (const p of PAGES) {
-  full.push(`## ${p.title}`, '', `URL: ${absolute(pagePath(p))}`, `Section: ${GROUPS.find((g) => g.id === p.group)?.title} (${sectionOf(p)})`, '', p.summary, '');
+const cell = (text) => String(text ?? '').replace(/\|/g, '\\|').replace(/\s*\n\s*/g, ' ');
+const fence = (lang, text) => [`\`\`\`${lang}`, text.replace(/\n+$/, ''), '```', ''];
+const exampleSource = (p, id) => readFileSync(resolve('site/src/examples', p.slug, `${id}.tsx`), 'utf8');
+
+/** One page as Markdown (an h1 and h2 sections): its text, props tables and example code. Written beside the page as index.md. */
+function pageMarkdown(p) {
+  const md = [`# ${p.title}`, '', `> ${p.description}`, '', `URL: ${absolute(pagePath(p))}`, `Section: ${GROUPS.find((g) => g.id === p.group)?.title} (${sectionOf(p)})`, '', p.summary, ''];
   if (p.guide) {
     for (const section of p.guide) {
-      full.push(`### ${section.title}`, '', ...section.paragraphs.flatMap((t) => [t, '']), ...(section.points ? [...bullets(section.points), ''] : []));
-      for (const code of section.code ?? []) full.push(`${code.label}:`, '', '```', (code.file ? readFileSync(resolve('site/src/guides', p.slug, `${code.file}.tsx`), 'utf8') : code.text).replace(/\n+$/, ''), '```', '');
+      md.push(`## ${section.title}`, '', ...section.paragraphs.flatMap((t) => [t, '']), ...(section.points ? [...bullets(section.points), ''] : []));
+      for (const code of section.code ?? []) md.push(`${code.label}:`, '', ...fence('', code.file ? readFileSync(resolve('site/src/guides', p.slug, `${code.file}.tsx`), 'utf8') : code.text));
     }
-    full.push('');
-    continue;
+    for (const ex of p.examples) md.push(`## Example: ${ex.title}`, '', ...(ex.note ? [ex.note, ''] : []), ...fence('tsx', exampleSource(p, ex.id)));
+    return md;
   }
-  if (p.kind === 'showcase') full.push('A pattern to copy, not package API: a screen built only from @punji/ui exports plus its layout CSS.', '', '### Adapting it', '', ...bullets(p.use), '', '### What stays yours', '', ...bullets(p.avoid), '');
-  else full.push('### When to use', '', ...bullets(p.use), '', '### When not to use', '', ...bullets(p.avoid), '');
+  if (p.kind === 'showcase') {
+    md.push('A pattern to copy, not package API: a screen built only from @punji/ui exports plus its layout CSS.', '');
+    md.push('## Copy it into your app', '', 'The shadcn CLI writes the screen, its layout CSS and its sample data under components/punji/ and installs @punji/ui:', '', ...fence('sh', `npx shadcn@latest add ${siteUrl}${withBase(`/r/${p.slug}.json`)}`));
+    md.push('## Adapting it', '', ...bullets(p.use), '', '## What stays yours', '', ...bullets(p.avoid), '');
+  } else md.push('## When to use', '', ...bullets(p.use), '', '## When not to use', '', ...bullets(p.avoid), '');
   const names = [...new Set(p.api.map((a) => a.name))];
   if (names.length) {
-    full.push('### API', '');
+    md.push('## API', '');
     for (const name of names) {
       const e = api[name];
       if (!e) continue;
-      full.push(`#### ${name} (${e.kind}, from @punji/ui/${e.module})`, '');
-      if (e.description) full.push(e.description, '');
-      for (const row of e.props ?? []) full.push(`- ${row.name}${row.required ? ' (required)' : ''}: ${row.type}${row.description ? `. ${row.description}` : ''}${row.default ? ` Default: ${row.default}` : ''}`);
-      if (e.props?.length) full.push('');
-      if (e.signature) full.push('```ts', `${e.kind === 'constant' ? 'const' : 'function'} ${name}: ${e.signature}`, '```', '');
-      if (e.definition) full.push('```ts', `type ${name} = ${e.definition}`, '```', '');
+      md.push(`### ${name} (${e.kind}, from ${e.module.startsWith('@') ? e.module : `@punji/ui/${e.module}`})`, '');
+      if (e.description) md.push(e.description, '');
+      if (e.props?.length) {
+        md.push('| Prop | Type | Default | Description |', '| --- | --- | --- | --- |');
+        for (const row of e.props) md.push(`| ${row.name}${row.required ? ' (required)' : ''} | \`${cell(row.type)}\` | ${row.default ? `\`${cell(row.default)}\`` : ''} | ${cell(row.description)} |`);
+        md.push('');
+      }
+      if (e.signature) md.push(...fence('ts', `${e.kind === 'constant' ? 'const' : 'function'} ${name}: ${e.signature}`));
+      if (e.definition) md.push(...fence('ts', `type ${name} = ${e.definition}`));
     }
   }
   for (const ex of p.examples) {
-    const file = resolve('site/src/examples', p.slug, `${ex.id}.tsx`);
-    full.push(`### Example: ${ex.title}`, '', ...(ex.note ? [ex.note, ''] : []), '```tsx', readFileSync(file, 'utf8').replace(/\n+$/, ''), '```', '');
+    md.push(`## Example: ${ex.title}`, '', ...(ex.note ? [ex.note, ''] : []), ...fence('tsx', exampleSource(p, ex.id)));
     // Showcase patterns keep their layout CSS beside the screen.
     const css = resolve('site/src/examples', p.slug, `${ex.id}.css`);
-    if (existsSync(css)) full.push(`Layout CSS (${ex.id}.css):`, '', '```css', readFileSync(css, 'utf8').replace(/\n+$/, ''), '```', '');
+    if (existsSync(css)) md.push(`Layout CSS (${ex.id}.css):`, '', ...fence('css', readFileSync(css, 'utf8')));
   }
-  full.push('### Keyboard behaviour', '', ...bullets(p.keyboard), '', '### Accessibility', '', ...bullets(p.accessibility), '', '### Responsive behaviour', '', ...bullets(p.responsive), '');
-  if (p.notes) full.push(`### ${p.notes.title}`, '', ...bullets(p.notes.points), '');
-  full.push('');
+  md.push('## Keyboard behaviour', '', ...bullets(p.keyboard), '', '## Accessibility', '', ...bullets(p.accessibility), '', '## Responsive behaviour', '', ...bullets(p.responsive), '');
+  if (p.notes) md.push(`## ${p.notes.title}`, '', ...bullets(p.notes.points), '');
+  return md;
+}
+/** One heading level down (outside code fences), so each page nests under llms-full.txt's own h1. */
+function demote(source) {
+  let code = false;
+  return source.map((line) => {
+    if (line.startsWith('```')) code = !code;
+    return !code && /^#{1,5} /.test(line) ? `#${line}` : line;
+  });
+}
+
+const full = [`# ${SITE_NAME}`, '', intro, ''];
+for (const p of PAGES) {
+  const md = pageMarkdown(p);
+  write(`${pagePath(p).slice(1)}index.md`, `${md.join('\n').replace(/\n+$/, '')}\n`);
+  full.push(...demote(md), '');
 }
 write('llms-full.txt', full.join('\n'));
 
@@ -186,4 +221,4 @@ write('_redirects', `${redirects.join('\n')}\n`);
 // GitHub Pages: serve files whose names start with an underscore.
 write('.nojekyll', '');
 
-console.log(`prerender: ${ROUTES.length} pages + 404.html, sitemap.xml, robots.txt, llms.txt, llms-full.txt, _redirects (base ${base}, ${siteUrl})`);
+console.log(`prerender: ${ROUTES.length} pages + 404.html, sitemap.xml, robots.txt, llms.txt, llms-full.txt, index.md per page, _redirects (base ${base}, ${siteUrl})`);

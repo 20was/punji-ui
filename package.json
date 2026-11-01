@@ -808,14 +808,17 @@
     "typecheck:visual": "tsc -p test/visual/tsconfig.json --noEmit",
     "site:gen": "node scripts/site-gen.mjs",
     "site:dev": "npm run build && npm run site:gen && vite site",
-    "site:build": "npm run site:gen && vite build site && vite build site --ssr src/entry-server.tsx --outDir dist-server && node scripts/site-prerender.mjs",
+    "site:build": "npm run site:gen && vite build site && vite build site --ssr src/entry-server.tsx --outDir dist-server && node scripts/site-prerender.mjs && node scripts/site-registry.mjs",
     "site:preview": "vite preview site",
     "typecheck:site": "npm run site:gen && tsc -p site/tsconfig.json --noEmit",
     "check:site": "node scripts/check-site.mjs",
-    "check:seo": "node scripts/check-seo.mjs",
+    "check:seo": "node scripts/check-seo.mjs && node scripts/check-registry.mjs",
     "site:brand": "node scripts/site-brand.mjs",
     "check:consumer": "node scripts/check-consumer.mjs",
-    "dev": "node scripts/dev.mjs"
+    "dev": "node scripts/dev.mjs",
+    "check:registry": "node scripts/check-registry.mjs",
+    "check:templates": "node scripts/check-templates.mjs",
+    "new:component": "node scripts/new-component.mjs"
   },
   "peerDependencies": {
     "react": "^19.0.0",

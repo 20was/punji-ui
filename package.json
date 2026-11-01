@@ -602,7 +602,38 @@
     },
     "./table-export": {
       "types": "./dist/table-export/TableExport.d.ts",
-      "default": "./dist/table-export/TableExport.js"
+      "default": "./dist/table-export/TableExport.js",
+    "./share-issues": {
+      "types": "./dist/share-issues/share-issues.d.ts",
+      "default": "./dist/share-issues/share-issues.js"
+    },
+    "./issue-card": {
+      "types": "./dist/issue-card/IssueCard.d.ts",
+      "default": "./dist/issue-card/IssueCard.js"
+    },
+    "./apply-issue-form": {
+      "types": "./dist/apply-issue-form/ApplyIssueForm.d.ts",
+      "default": "./dist/apply-issue-form/ApplyIssueForm.js"
+    },
+    "./boid-input": {
+      "types": "./dist/boid-input/BoidInput.d.ts",
+      "default": "./dist/boid-input/BoidInput.js"
+    },
+    "./allotment-checker": {
+      "types": "./dist/allotment-checker/AllotmentChecker.d.ts",
+      "default": "./dist/allotment-checker/AllotmentChecker.js"
+    },
+    "./demat-account-card": {
+      "types": "./dist/demat-account-card/DematAccountCard.d.ts",
+      "default": "./dist/demat-account-card/DematAccountCard.js"
+    },
+    "./corporate-action-timeline": {
+      "types": "./dist/corporate-action-timeline/CorporateActionTimeline.d.ts",
+      "default": "./dist/corporate-action-timeline/CorporateActionTimeline.js"
+    },
+    "./edis-confirmation": {
+      "types": "./dist/edis-confirmation/EdisConfirmation.d.ts",
+      "default": "./dist/edis-confirmation/EdisConfirmation.js"
     }
   },
   "files": [

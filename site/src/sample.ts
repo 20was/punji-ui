@@ -5,3 +5,4 @@ export * from '../../fixtures/accounting-data.ts';
 export * from '../../fixtures/banking-data.ts';
 export * from '../../fixtures/portfolio-data.ts';
 export * from '../../fixtures/trade-data.ts';
+export * from '../../fixtures/share-issues-data.ts';

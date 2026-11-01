@@ -11,6 +11,7 @@ import { FORMS_PAGES } from './registry-forms.ts';
 import { SHOWCASE_PAGES } from './registry-showcase.ts';
 import { TRADING_PAGES } from './registry-trading.ts';
 import { LEADS, NAV_TITLES } from './registry-leads.ts';
+import { SHARE_ISSUE_PAGES } from './registry-share-issues.ts';
 
 export type GroupId =
   | 'get-started'
@@ -20,6 +21,7 @@ export type GroupId =
   | 'portfolio'
   | 'accounting'
   | 'banking'
+  | 'share-issues'
   | 'data'
   | 'forms'
   | 'layout'
@@ -43,6 +45,7 @@ export const GROUPS: readonly Group[] = [
   { id: 'portfolio', title: 'Portfolio', planned: [] },
   { id: 'accounting', title: 'Accounting', planned: [] },
   { id: 'banking', title: 'Banking', planned: [] },
+  { id: 'share-issues', title: 'Share issues', planned: [] },
   { id: 'data', title: 'Data', planned: [] },
   { id: 'forms', title: 'Forms', planned: ['Calendar'] },
   { id: 'layout', title: 'Layout', planned: [] },
@@ -1573,6 +1576,7 @@ export const PAGES: readonly PageDef[] = [
   ...FORMS_PAGES,
   ...SHOWCASE_PAGES,
   ...TRADING_PAGES,
+  ...SHARE_ISSUE_PAGES,
 ];
 
 /** The page's one-line lead: its own `lead`, else LEADS[slug], else the first sentence of `description`. */

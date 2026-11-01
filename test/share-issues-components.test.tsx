@@ -134,6 +134,7 @@ describe('ApplyIssueForm', () => {
     await user.click(screen.getByTestId('ap-declaration'));
     await user.click(screen.getByTestId('ap-continue'));
     expect(screen.getByRole('heading', { name: 'Review and confirm' })).toBeTruthy();
+    await waitFor(() => expect(document.activeElement).toBe(screen.getByRole('heading', { name: 'Review and confirm' })));
     expect(screen.getByTestId('ap-review-kitta').textContent).toBe('1,000');
     await user.click(screen.getByTestId('ap-submit'));
     expect(screen.getByRole('alert').textContent).toBe('Enter all 4 digits.');
@@ -154,6 +155,8 @@ describe('ApplyIssueForm', () => {
     expect((screen.getByTestId('ap-crn') as HTMLInputElement).value).toBe('HBL-77120931');
     await user.click(screen.getByTestId('ap-continue'));
     expect(screen.getByTestId('ap-resend')).toBeTruthy();
+    // The form moves focus to the step heading on the next animation frame; typing before that would lose digits.
+    await waitFor(() => expect(document.activeElement).toBe(screen.getByRole('heading', { name: 'Review and confirm' })));
     await user.type(screen.getByLabelText('Digit 1 of 6'), '123456');
     await user.click(screen.getByTestId('ap-submit'));
     expect(screen.getByTestId('ap-submit').getAttribute('aria-busy')).toBe('true');

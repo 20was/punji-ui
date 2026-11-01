@@ -74,6 +74,10 @@ export const remittanceTrackerLabels: RemittanceTrackerLabels = {
 export interface RemittanceTrackerProps {
   /** Look the control number up on your server. Resolve with the details, or null when nothing matches; reject on failure. */
   onLookup: (controlNumber: string, signal: AbortSignal) => Promise<RemittanceDetails | null>;
+  /** A control number to start with (from a link in an SMS or email). Digits only after normalising. */
+  defaultControlNumber?: string;
+  /** Look `defaultControlNumber` up as soon as the tracker mounts. Default false. */
+  lookupOnMount?: boolean;
   /** Fewest digits in a control number. Default 8. */
   minLength?: number;
   /** Most digits. Default 16. */
@@ -110,22 +114,22 @@ export function maskControlNumber(value: string): string {
 
 type State = { kind: 'idle' } | { kind: 'loading' } | { kind: 'found'; number: string; details: RemittanceDetails } | { kind: 'not-found' } | { kind: 'error' };
 
-export function RemittanceTracker({ onLookup, minLength = 8, maxLength = 16, payoutMoney = { currency: 'NPR', locale: 'en-IN', display: 'code' }, sentLocale = 'en', timeZone, labels, headingLevel = 3, footer, className, testId }: RemittanceTrackerProps) {
+export function RemittanceTracker({ onLookup, defaultControlNumber = '', lookupOnMount = false, minLength = 8, maxLength = 16, payoutMoney = { currency: 'NPR', locale: 'en-IN', display: 'code' }, sentLocale = 'en', timeZone, labels, headingLevel = 3, footer, className, testId }: RemittanceTrackerProps) {
   const words = { ...remittanceTrackerLabels, ...labels, methods: { ...remittanceTrackerLabels.methods, ...labels?.methods } };
   const uid = useId();
-  const [text, setText] = useState('');
+  const [text, setText] = useState(() => (normalizeControlNumber(defaultControlNumber) ?? '').slice(0, maxLength));
   const [problem, setProblem] = useState<string | null>(null);
   const [state, setState] = useState<State>({ kind: 'idle' });
   const controller = useRef<AbortController | null>(null);
   const result = useRef<HTMLHeadingElement>(null);
+  const focusResult = useRef(false);
   useEffect(() => () => controller.current?.abort(), []);
-  useEffect(() => { if (state.kind === 'found') result.current?.focus(); }, [state]);
+  useEffect(() => { if (state.kind === 'found' && focusResult.current) result.current?.focus(); }, [state]);
 
-  const submit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const number = normalizeControlNumber(text) ?? '';
+  const run = (number: string, moveFocus: boolean) => {
     if (number.length < minLength || number.length > maxLength) { setProblem(words.invalid(minLength, maxLength)); return; }
     setProblem(null);
+    focusResult.current = moveFocus;
     controller.current?.abort();
     const mine = new AbortController();
     controller.current = mine;
@@ -135,6 +139,19 @@ export function RemittanceTracker({ onLookup, minLength = 8, maxLength = 16, pay
       () => { if (controller.current === mine && !mine.signal.aborted) setState({ kind: 'error' }); },
     );
   };
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    run(normalizeControlNumber(text) ?? '', true);
+  };
+  const mounted = useRef(false);
+  useEffect(() => {
+    if (mounted.current) return;
+    mounted.current = true;
+    // A lookup from a link: run once, without moving focus away from where the page put it. It starts a request (an
+    // external system), so the loading state is set from the effect on purpose.
+    // oxlint-disable-next-line react/set-state-in-effect
+    if (lookupOnMount && text !== '') run(text, false);
+  });
   const Heading = `h${headingLevel}` as 'h3';
   const grouped = text.replace(/(\d{4})(?=\d)/g, '$1 ');
   return (

@@ -56,7 +56,7 @@ export interface InsurancePremiumCardProps {
   /** Where the policy stands, from the insurer. */
   status?: PolicyStatus;
   /** The premium per instalment in minor units. Ignored when `breakdown` is given: the total of the lines is shown. */
-  premium?: bigint;
+  premium?: bigint | null;
   /** How often the premium is due. */
   frequency: PremiumFrequency;
   /** Lines that make up one premium. Their exact sum is the premium shown. */

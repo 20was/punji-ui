@@ -6,7 +6,7 @@ import { describe, expect, it, vi } from 'vitest';
 import {
   AmortisationTable, DepositCalculator, DocumentUpload, IdNumberInput, InsurancePremiumCard, InterestRateTable, LoanCalculator, NepalAddressPicker,
   OnboardingWizard, RemittanceTracker, amortise, emptyNepalAddress, loadNepalAddressData, maskControlNumber, normalizeControlNumber,
-  type NepalAddress, type RemittanceDetails,
+  type AmortisationSchedule, type DepositResult, type NepalAddress, type RemittanceDetails,
 } from '../src/index.ts';
 import { nepalAddressData } from '../src/nepal-address-data/data.ts';
 import { depositRates, kycDocumentSlots, lendingRates, onboardingSteps, premiumBreakdown, remittanceSample } from '../fixtures/lending-data.ts';
@@ -46,7 +46,7 @@ describe('AmortisationTable', () => {
 describe('LoanCalculator', () => {
   it('shows the EMI and totals, announces politely, and reveals the schedule', async () => {
     const user = userEvent.setup();
-    const onScheduleChange = vi.fn();
+    const onScheduleChange = vi.fn<(s: AmortisationSchedule | null) => void>();
     const { container } = render(<LoanCalculator defaultAmount="1000000" defaultRatePercent="10" defaultMonths={120} onScheduleChange={onScheduleChange} testId="lc" />);
     expect(flat(screen.getByTestId('lc-emi').textContent)).toContain('13,215.07');
     expect(container.querySelector('[aria-live="polite"]')).toBeTruthy();
@@ -87,11 +87,12 @@ describe('DepositCalculator', () => {
   });
   it('deducts TDS, switches to recurring, and lists each credit', async () => {
     const user = userEvent.setup();
-    const onResultChange = vi.fn();
+    const onResultChange = vi.fn<(r: DepositResult | null) => void>();
     render(<DepositCalculator defaultAmount="1000" defaultRatePercent="12" onResultChange={onResultChange} testId="dc" />);
     await user.click(screen.getByRole('radio', { name: 'Recurring deposit' }));
     expect(screen.getByLabelText(/Monthly instalment/)).toBeTruthy();
     const last = onResultChange.mock.lastCall?.[0];
+    if (!last) throw new Error('no result');
     expect(last.totalDeposited).toBe(1_200_000n);
     expect(last.totalTds > 0n).toBe(true);
     await user.click(screen.getByTestId('dc-toggle'));
@@ -111,7 +112,7 @@ describe('InterestRateTable', () => {
     expect(await seriousViolations(container)).toEqual([]);
   });
   it('prints Bikram Sambat dates in Nepali and drops the change column when there is none', () => {
-    render(<InterestRateTable caption="Loan rates" rates={lendingRates.map(({ previousRatePercent: _, ...r }) => r)} calendar="bs" language="ne" digits="deva" />);
+    render(<InterestRateTable caption="Loan rates" rates={lendingRates.map((r) => ({ ...r, previousRatePercent: undefined }))} calendar="bs" language="ne" digits="deva" />);
     expect(screen.queryByRole('columnheader', { name: 'Change' })).toBeNull();
     expect(screen.getAllByText(/२०८२/).length).toBeGreaterThan(0);
     expect(screen.getAllByText('८.४९%')).toHaveLength(1);
@@ -126,7 +127,7 @@ function IdHarness({ kind, onResult }: { kind: 'pan' | 'citizenship'; onResult?:
 describe('IdNumberInput', () => {
   it('refuses letters, accepts Devanagari digits and reports a valid PAN', async () => {
     const user = userEvent.setup();
-    const onResult = vi.fn();
+    const onResult = vi.fn<(state: string) => void>();
     const { container } = render(<IdHarness kind="pan" onResult={onResult} />);
     const input = screen.getByTestId('id') as HTMLInputElement;
     await user.type(input, '30a12345६७');
@@ -160,7 +161,7 @@ function AddressHarness({ data, onChange }: { data?: typeof nepalAddressData; on
 describe('NepalAddressPicker', () => {
   it('narrows districts and local levels and clears lower levels', async () => {
     const user = userEvent.setup();
-    const onChange = vi.fn();
+    const onChange = vi.fn<(a: NepalAddress) => void>();
     const { container } = render(<AddressHarness data={nepalAddressData} onChange={onChange} />);
     await user.selectOptions(screen.getByTestId('addr-province'), 'Bagmati');
     const district = screen.getByTestId('addr-district') as HTMLSelectElement;
@@ -191,7 +192,7 @@ function UploadHarness({ onChange }: { onChange?: (v: Record<string, File | null
 describe('DocumentUpload', () => {
   it('takes a file per slot, announces it, and removes it', async () => {
     const user = userEvent.setup();
-    const onChange = vi.fn();
+    const onChange = vi.fn<(v: Record<string, File | null>) => void>();
     const { container } = render(<UploadHarness onChange={onChange} />);
     const file = new File(['x'.repeat(10)], 'front.png', { type: 'image/png' });
     await user.upload(screen.getByTestId('docs-citizenship-front-input'), file);
@@ -204,7 +205,7 @@ describe('DocumentUpload', () => {
   });
   it('refuses a wrong type or an oversized file with a message', async () => {
     const user = userEvent.setup({ applyAccept: false });
-    const onChange = vi.fn();
+    const onChange = vi.fn<(v: Record<string, File | null>) => void>();
     render(<UploadHarness onChange={onChange} />);
     await user.upload(screen.getByTestId('docs-photo-input'), new File(['x'], 'photo.pdf', { type: 'application/pdf' }));
     expect(screen.getByRole('alert').textContent).toContain('not accepted');
@@ -227,7 +228,7 @@ function WizardHarness({ onSubmit }: { onSubmit: () => void }) {
 describe('OnboardingWizard', () => {
   it('moves through steps, focuses each heading, and submits on the last', async () => {
     const user = userEvent.setup();
-    const onSubmit = vi.fn();
+    const onSubmit = vi.fn<() => void>();
     const { container } = render(<WizardHarness onSubmit={onSubmit} />);
     expect(screen.getByRole('heading', { name: 'Personal details' })).toBeTruthy();
     expect(container.querySelector('[aria-current="step"]')?.textContent).toContain('Personal details');
@@ -288,6 +289,16 @@ describe('RemittanceTracker', () => {
     expect((screen.getByTestId('rt-submit') as HTMLButtonElement).disabled).toBe(true);
     unmount();
     expect(onLookup.mock.calls[2]![1].aborted).toBe(true);
+  });
+});
+
+describe('RemittanceTracker from a link', () => {
+  it('looks up a control number on mount without moving focus', async () => {
+    const onLookup = vi.fn<(n: string, s: AbortSignal) => Promise<RemittanceDetails | null>>(async () => remittanceSample);
+    render(<RemittanceTracker onLookup={onLookup} defaultControlNumber="1234 5678 9012" lookupOnMount testId="rt" />);
+    await screen.findByTestId('rt-result');
+    expect(onLookup.mock.calls[0]![0]).toBe('123456789012');
+    expect(document.activeElement).toBe(document.body);
   });
 });
 

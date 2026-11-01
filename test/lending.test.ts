@@ -4,12 +4,13 @@ import { describe, expect, it } from 'vitest';
 import { amortise, calculateEmi, parsePercentRate, simulateDeposit, type RoundingMode } from '../src/index.ts';
 import { formatPan, idNumberToDevanagari, validateCitizenshipNumber, validateIdNumber, validatePan } from '../src/kyc/kyc.ts';
 import { nepalAddressData } from '../src/nepal-address-data/data.ts';
-import './fc.ts';
+import { NUM_RUNS } from './fc.ts';
 
 const MODES: RoundingMode[] = ['half-even', 'half-up', 'floor', 'ceil', 'trunc'];
 const lakh = (n: number) => BigInt(n) * 100_000n * 100n; // n lakh rupees in paisa
 
 describe('parsePercentRate', () => {
+  it('runs properties with the shared settings', () => expect(NUM_RUNS).toBeGreaterThan(0));
   it('parses exact percent strings and refuses anything else', () => {
     expect(parsePercentRate('11.5')).toEqual({ numerator: 115n, denominator: 10n });
     expect(parsePercentRate('0')).toEqual({ numerator: 0n, denominator: 1n });
@@ -172,6 +173,6 @@ describe('Nepal address data', () => {
     const byProvince = provinces.map((p) => localLevels.filter((l) => districts[l.districtId - 1]!.provinceId === p.id).length);
     expect(byProvince).toEqual([137, 136, 119, 85, 109, 79, 88]);
     expect(new Set(localLevels.map((l) => l.id)).size).toBe(753);
-    expect(localLevels.filter((l) => l.type === 'metropolitan').map((l) => l.name).sort()).toEqual(['Bharatpur', 'Biratnagar', 'Birgunj', 'Kathmandu', 'Lalitpur', 'Pokhara']);
+    expect(localLevels.filter((l) => l.type === 'metropolitan').map((l) => l.name).toSorted()).toEqual(['Bharatpur', 'Biratnagar', 'Birgunj', 'Kathmandu', 'Lalitpur', 'Pokhara']);
   });
 });

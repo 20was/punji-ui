@@ -297,13 +297,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "93.26 kB",
+    "limit": "111.10 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "27.71 kB",
+    "limit": "29.46 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -980,6 +980,114 @@
     "path": "dist/transaction-history/TransactionHistory.js",
     "import": "*",
     "limit": "22.94 kB",
+    "gzip": true
+  },
+  {
+    "name": "lending (import from '@punji/ui/lending')",
+    "path": "dist/lending/lending.js",
+    "import": "*",
+    "limit": "1.69 kB",
+    "gzip": true
+  },
+  {
+    "name": "kyc (import from '@punji/ui/kyc')",
+    "path": "dist/kyc/kyc.js",
+    "import": "*",
+    "limit": "0.61 kB",
+    "gzip": true
+  },
+  {
+    "name": "nepal-address-data (import from '@punji/ui/nepal-address-data')",
+    "path": "dist/nepal-address-data/data.js",
+    "import": "*",
+    "limit": "5.99 kB",
+    "gzip": true
+  },
+  {
+    "name": "amortisation-table (import from '@punji/ui/amortisation-table')",
+    "path": "dist/amortisation-table/AmortisationTable.js",
+    "import": "*",
+    "limit": "4.97 kB",
+    "gzip": true
+  },
+  {
+    "name": "loan-calculator (import from '@punji/ui/loan-calculator')",
+    "path": "dist/loan-calculator/LoanCalculator.js",
+    "import": "*",
+    "limit": "11.30 kB",
+    "gzip": true
+  },
+  {
+    "name": "deposit-calculator (import from '@punji/ui/deposit-calculator')",
+    "path": "dist/deposit-calculator/DepositCalculator.js",
+    "import": "*",
+    "limit": "11.04 kB",
+    "gzip": true
+  },
+  {
+    "name": "interest-rate-table (import from '@punji/ui/interest-rate-table')",
+    "path": "dist/interest-rate-table/InterestRateTable.js",
+    "import": "*",
+    "limit": "3.64 kB",
+    "gzip": true
+  },
+  {
+    "name": "id-number-input (import from '@punji/ui/id-number-input')",
+    "path": "dist/id-number-input/IdNumberInput.js",
+    "import": "*",
+    "limit": "1.42 kB",
+    "gzip": true
+  },
+  {
+    "name": "nepal-address-picker (import from '@punji/ui/nepal-address-picker')",
+    "path": "dist/nepal-address-picker/NepalAddressPicker.js",
+    "import": "*",
+    "limit": "2.99 kB",
+    "gzip": true,
+    "entry": [
+      "index"
+    ]
+  },
+  {
+    "name": "document-upload (import from '@punji/ui/document-upload')",
+    "path": "dist/document-upload/DocumentUpload.js",
+    "import": "*",
+    "limit": "2.20 kB",
+    "gzip": true
+  },
+  {
+    "name": "onboarding-wizard (import from '@punji/ui/onboarding-wizard')",
+    "path": "dist/onboarding-wizard/OnboardingWizard.js",
+    "import": "*",
+    "limit": "1.84 kB",
+    "gzip": true
+  },
+  {
+    "name": "remittance-tracker (import from '@punji/ui/remittance-tracker')",
+    "path": "dist/remittance-tracker/RemittanceTracker.js",
+    "import": "*",
+    "limit": "7.06 kB",
+    "gzip": true
+  },
+  {
+    "name": "insurance-premium-card (import from '@punji/ui/insurance-premium-card')",
+    "path": "dist/insurance-premium-card/InsurancePremiumCard.js",
+    "import": "*",
+    "limit": "5.32 kB",
+    "gzip": true
+  },
+  {
+    "name": "nepal-address-picker with the address list (all chunks)",
+    "path": "dist/nepal-address-picker/NepalAddressPicker.js",
+    "import": "*",
+    "limit": "8.89 kB",
+    "gzip": true
+  },
+  {
+    "name": "css/lending.css",
+    "path": "dist/css/lending.css",
+    "limit": "2.59 kB",
+    "rolldown": false,
     "gzip": true
   }
 ]

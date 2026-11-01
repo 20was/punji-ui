@@ -795,6 +795,10 @@
     "./tds-summary": {
       "types": "./dist/tds-summary/TdsSummary.d.ts",
       "default": "./dist/tds-summary/TdsSummary.js"
+    },
+    "./reconciliation-matcher": {
+      "types": "./dist/reconciliation-matcher/ReconciliationMatcher.d.ts",
+      "default": "./dist/reconciliation-matcher/ReconciliationMatcher.js"
     }
   },
   "files": [

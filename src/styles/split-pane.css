@@ -1,0 +1,24 @@
+/* Punji UI styles.
+   Styles for SplitPane. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .pu-split { container-type: inline-size; min-width: 0; min-height: 0 }
+  .pu-split-in { --pu-split-handle: 12px; display: grid; grid-template-columns: minmax(0, var(--pu-split, 50%)) var(--pu-split-handle) minmax(0, 1fr); height: 100%; min-height: 0 }
+  .pu-split-in[data-orientation='vertical'] { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, var(--pu-split, 50%)) var(--pu-split-handle) minmax(0, 1fr) }
+  .pu-split-pane { min-width: 0; min-height: 0; overflow: auto }
+  .pu-split-handle { position: relative; display: block; cursor: col-resize; touch-action: none; outline: none }
+  .pu-split-in[data-orientation='vertical'] > .pu-split-handle { cursor: row-resize }
+  .pu-split-handle::before { content: ''; position: absolute; inset: 0 calc(50% - 1px); border-radius: var(--pu-radius-full); background: var(--pu-color-border); transition: background-color 120ms ease }
+  .pu-split-in[data-orientation='vertical'] > .pu-split-handle::before { inset: calc(50% - 1px) 0 }
+  .pu-split-handle::after { content: ''; position: absolute; top: 50%; left: 50%; width: 4px; height: 28px; transform: translate(-50%, -50%); border-radius: var(--pu-radius-full); background: var(--pu-color-border-strong) }
+  .pu-split-in[data-orientation='vertical'] > .pu-split-handle::after { width: 28px; height: 4px }
+  .pu-split-handle:hover::before { background: var(--pu-color-border-strong) }
+  .pu-split-handle:focus-visible::before { inset: 0 calc(50% - 2px); background: var(--pu-color-accent) }
+  .pu-split-in[data-orientation='vertical'] > .pu-split-handle:focus-visible::before { inset: calc(50% - 2px) 0 }
+  @media (prefers-reduced-motion: reduce) { .pu-split-handle::before { transition: none } }
+  /* A narrow container stacks the panes; the separator has nothing to do there, so it is hidden (and leaves the tab order). */
+  @container (max-width: 639px) {
+    .pu-split-in[data-stack] { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; height: auto; row-gap: var(--pu-space-4) }
+    .pu-split-in[data-stack] > .pu-split-handle { display: none }
+    .pu-split-in[data-stack] > .pu-split-pane { overflow: visible }
+  }
+}

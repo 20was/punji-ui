@@ -834,4 +834,25 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     },
     related: ['chart-math', 'performance-chart', 'price-chart', 'sparkline'],
   },
+  {
+    slug: 'split-pane',
+    title: 'SplitPane',
+    description: 'Two panes with a separator you drag or move with the keyboard: a WAI-ARIA window splitter that stacks the panes in a narrow container.',
+    lead: 'A chart beside its order ticket, resizable by pointer or keyboard, stacked on a phone.',
+    group: 'layout',
+    kind: 'component',
+    summary:
+      'Two panes side by side (or one above the other) and a separator between them. The separator is a WAI-ARIA window splitter: it takes focus, reports the start pane\'s share as its value, moves with the arrow keys (Shift for bigger steps), Home and End, and Enter collapses the start pane to its minimum and restores it. Dragging uses pointer capture, so it works with a mouse, a pen and a finger. The share is a percent of the container; below 640 px of container width the panes stack and the separator is hidden.',
+    use: ['A chart and an order ticket, a list and its detail, a table and a preview.', 'Controlled `size` with `onSizeChange` to remember the split (for example with `useLocalStorage`).'],
+    avoid: ['Fixed sidebars that people never resize: a CSS grid is simpler.', 'Nesting many split panes: two levels at most stay understandable.'],
+    api: [...ui('split-pane', 'SplitPane', 'SplitPaneProps')],
+    examples: [
+      { id: 'basic', title: 'Chart and ticket', note: 'Drag the separator, or focus it and use the arrow keys, Home, End and Enter.' },
+      { id: 'vertical', title: 'Vertical', note: 'Up and Down move the separator; the share is controlled and shown.' },
+    ],
+    keyboard: ['Tab reaches the separator.', 'Left and Right (Up and Down when vertical) move it by `step`; with Shift, four steps.', 'Home and End move it to `min` and `max`; Enter collapses the start pane to `min` and restores it.'],
+    accessibility: ['`role="separator"` with `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, a percent `aria-valuetext`, `aria-controls` on the start pane and a required `label`.', 'When the panes stack the separator is hidden, so it leaves the tab order.'],
+    responsive: ['Stacks below 640 px of container width (a container query), so it adapts to the space it is given, not the viewport. `stack={false}` keeps the split.'],
+    related: ['page-layout', 'stack', 'candlestick-chart', 'order-ticket'],
+  },
 ];

@@ -32,7 +32,7 @@ export function writePageData({ PAGES, GROUPS, leadOf, navTitleOf }) {
   mkdirSync(resolve(out, 'pages'), { recursive: true });
   mkdirSync(resolve(out, 'routes'), { recursive: true });
   write(resolve(out, 'nav.json'), { groups: GROUPS.map(({ id, title }) => ({ id, title })), pages: PAGES.map(nav) });
-  write(resolve(out, 'home.json'), { showcase: PAGES.filter((p) => p.kind === 'showcase').map(card) });
+  write(resolve(out, 'home.json'), { showcase: PAGES.filter((p) => p.kind === 'showcase').map(card), apps: PAGES.filter((p) => p.kind === 'app').map(card) });
   write(resolve(out, 'search.json'), PAGES.map((p) => ({ ...card(p), description: p.description, api: [...new Set(p.api.map((a) => a.name))] })));
   for (const p of PAGES) {
     const entries = Object.fromEntries([...new Set(p.api.map((a) => a.name))].filter((name) => api[name]).map((name) => [name, api[name]]));
@@ -62,6 +62,8 @@ function routeModule(p) {
     if (css) lines.push(`import c${i} from '${file}.css?raw';`);
     examples.push(`${JSON.stringify(ex.id)}: { Component: e${i}.default, source: s${i}${css ? `, css: c${i}` : ''} }`);
   });
+  // An app (kind 'app') is one component, site/src/apps/<slug>/App.tsx, which loads its other screens itself.
+  if (p.kind === 'app') lines.push(`import App from '../../apps/${p.slug}/App.tsx';`);
   const guides = [];
   const files = [...new Set((p.guide ?? []).flatMap((section) => (section.code ?? []).map((c) => c.file).filter(Boolean)))];
   files.forEach((file, i) => {
@@ -74,6 +76,7 @@ function routeModule(p) {
     "  data: data as unknown as RouteModule['data'],",
     `  examples: {${examples.length ? `\n    ${examples.join(',\n    ')},\n  ` : ''}},`,
     `  guides: {${guides.length ? `\n    ${guides.join(',\n    ')},\n  ` : ''}},`,
+    ...(p.kind === 'app' ? ['  app: App,'] : []),
     '};',
     'export default route;',
     '',

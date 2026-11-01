@@ -427,6 +427,14 @@
       "types": "./dist/trading-halt/TradingHaltBanner.d.ts",
       "default": "./dist/trading-halt/TradingHaltBanner.js"
     },
+    "./split-pane": {
+      "types": "./dist/split-pane/SplitPane.d.ts",
+      "default": "./dist/split-pane/SplitPane.js"
+    },
+    "./use-hotkeys": {
+      "types": "./dist/use-hotkeys/useHotkeys.d.ts",
+      "default": "./dist/use-hotkeys/useHotkeys.js"
+    },
     "./emvco-qr": {
       "types": "./dist/emvco-qr/emvco.d.ts",
       "default": "./dist/emvco-qr/emvco.js"

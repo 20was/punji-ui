@@ -86,3 +86,5 @@
 @import './lending.css';
 /* Tax, invoicing and payroll. */
 @import './tax.css';
+/* Layout: resizable split pane. */
+@import './split-pane.css';

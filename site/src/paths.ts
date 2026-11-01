@@ -15,11 +15,12 @@ export const NOT_FOUND_TITLE = `Page not found — ${SITE_NAME}`;
 export const NOT_FOUND_DESCRIPTION = 'This page does not exist in the Punji UI documentation. Go to the overview to find a component.';
 export const THEME_COLOR = { light: '#e4e7de', dark: '#0d0e10' } as const;
 
-export type Section = 'get-started' | 'foundations' | 'components' | 'utilities' | 'showcase';
+export type Section = 'get-started' | 'apps' | 'foundations' | 'components' | 'utilities' | 'showcase';
 
 export function sectionOf(page: PageRef): Section {
   if (page.kind === 'guide') return 'get-started';
   if (page.kind === 'showcase') return 'showcase';
+  if (page.kind === 'app') return 'apps';
   if (page.kind === 'foundation') return 'foundations';
   if (page.kind === 'component') return 'components';
   return 'utilities';

@@ -168,3 +168,5 @@ export * from './income-tax-calculator/IncomeTaxCalculator.tsx';
 export * from './payslip/Payslip.tsx';
 export * from './aging-table/AgingTable.tsx';
 export * from './tds-summary/TdsSummary.tsx';
+export * from './split-pane/SplitPane.tsx';
+export * from './use-hotkeys/useHotkeys.ts';

@@ -34,13 +34,19 @@ export interface RouteModule {
   examples: Record<string, LoadedExample>;
   /** Guide code files' text by file name (site/src/guides/<slug>/<file>.tsx). Shown, never executed. */
   guides: Record<string, string>;
+  /** An app page's app (site/src/apps/<slug>/App.tsx). */
+  app?: ComponentType;
 }
 
 const routeModules = import.meta.glob<RouteModule>('../generated/routes/*.ts', { import: 'default' });
 const views = {
   './Home.tsx': () => import('./Home.tsx').then((m) => m.Home),
   './PageView.tsx': () => import('./PageView.tsx').then((m) => m.PageView),
+  './AppView.tsx': () => import('./AppView.tsx').then((m) => m.AppView),
 };
+
+/** The view a page renders with: apps get the full-viewport app frame, every other page the docs template. */
+const viewOf = (page: { kind: string }) => (page.kind === 'app' ? './AppView.tsx' : './PageView.tsx');
 
 const values = new Map<string, unknown>();
 const pending = new Map<string, Promise<unknown>>();
@@ -78,7 +84,8 @@ export async function loadRoute(route: ClientRoute): Promise<string[]> {
   if (route.kind === 'page') {
     const loader = routeModules[routeKey(route.page.slug)];
     if (!loader) throw new Error(`No route module for ${route.page.slug}. Run npm run site:gen.`);
-    jobs.push([routeKey(route.page.slug), loader], ['./PageView.tsx', views['./PageView.tsx']]);
+    const view = viewOf(route.page);
+    jobs.push([routeKey(route.page.slug), loader], [view, views[view]]);
   }
   await Promise.all(jobs.map(([key, loader]) => fetchInto(key, loader)));
   return jobs.map(([key]) => (key.startsWith('../') ? `src/${key.slice(3)}` : `src/app/${key.slice(2)}`));
@@ -87,7 +94,7 @@ export async function loadRoute(route: ClientRoute): Promise<string[]> {
 /** Whether a route can render now, without waiting. */
 export function routeReady(route: ClientRoute): boolean {
   if (route.kind === 'home') return values.has('./Home.tsx');
-  if (route.kind === 'page') return values.has(routeKey(route.page.slug)) && values.has('./PageView.tsx');
+  if (route.kind === 'page') return values.has(routeKey(route.page.slug)) && values.has(viewOf(route.page));
   return true;
 }
 
@@ -95,6 +102,9 @@ const routeOf = (slug: string) => values.get(routeKey(slug)) as RouteModule | un
 
 export const homeView = () => values.get('./Home.tsx') as ComponentType;
 export const pageView = () => values.get('./PageView.tsx') as ComponentType<{ data: PageData }>;
+export const appView = () => values.get('./AppView.tsx') as ComponentType<{ data: PageData; App: ComponentType }>;
+/** An app page's app component, once its route is loaded. */
+export const loadedApp = (slug: string): ComponentType | undefined => routeOf(slug)?.app;
 export const pageData = (slug: string): PageData | undefined => routeOf(slug)?.data;
 export const loadedExample = (slug: string, id: string): LoadedExample | undefined => routeOf(slug)?.examples[id];
 /** The text of an example's CSS file (site/src/examples/<slug>/<id>.css), if it has one. */

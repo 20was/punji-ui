@@ -318,6 +318,25 @@ try {
     await t.getByTestId('bz-preview').waitFor({ timeout: 5000 }).catch(() => fail('billing: the invoice preview did not open'));
     await t.getByTestId('bz-create-issue').click();
     await t.getByTestId('bz-inv-INV-2083/84-0013').waitFor({ timeout: 5000 }).catch(() => fail('billing: the issued invoice did not reach the list'));
+    // Market portal: a preset screen narrows the screener, a broker filter narrows the floorsheet, a heatmap tile
+    // opens the company page, and an alert can be set.
+    await t.goto(`${base}/apps/market-portal/#screener`);
+    await t.locator('[data-screen="screener"] [data-screen-title]').waitFor();
+    const allCount = await t.getByTestId('mp-screen-count').textContent();
+    await t.getByTestId('mp-preset-value').click();
+    if ((await t.getByTestId('mp-screen-count').textContent()) === allCount) fail('market portal: the Value screen did not narrow the screener');
+    await t.getByTestId('screen-floorsheet').click();
+    await t.locator('[data-screen="floorsheet"] [data-screen-title]').waitFor();
+    await t.getByTestId('mp-floor-buyer').selectOption('7');
+    await t.getByTestId('mp-floor-clear').waitFor({ timeout: 5000 }).catch(() => fail('market portal: the buyer broker filter did not apply'));
+    await t.getByTestId('screen-overview').click();
+    await t.getByTestId('mp-heatmap').locator('button').first().click();
+    await t.locator('[data-screen="company"] [data-screen-title]').waitFor({ timeout: 5000 }).catch(() => fail('market portal: a heatmap tile did not open the company page'));
+    await t.getByTestId('screen-watchlist').click();
+    await t.locator('[data-screen="watchlist"] [data-screen-title]').waitFor();
+    await t.getByTestId('mp-alert-price').fill('99999');
+    await t.getByTestId('mp-alert-add').click();
+    await t.getByTestId('mp-alert-A-3').waitFor({ timeout: 5000 }).catch(() => fail('market portal: setting a price alert did not add it'));
     for (const e of appErrors) fail(`apps behaviour: console ${e}`);
     await appCtx.close();
   }
@@ -533,6 +552,5 @@ if (failures.length) {
   process.exit(1);
 }
 console.log(`layout flags: edge ${flagCounts.edge} (+${flagCounts.edgeAllowed} allowlisted), clip ${flagCounts.clip}, dup ${flagCounts.dup}, icon ${flagCounts.icon}`);
-console.log(`apps: every screen of ${PAGES.filter((p) => p.kind === 'app').length} apps at 390, 768 and 1440 px, light and dark, plus order entry, the command palette, the allotment flow, a bank transfer and a wallet bill payment`);
-console.log(`apps: every screen of ${PAGES.filter((p) => p.kind === 'app').length} apps at 390, 768 and 1440 px, light and dark, plus order entry, the command palette, the allotment flow, posting a journal, reconciling and issuing an invoice`);
+console.log(`apps: every screen of ${PAGES.filter((p) => p.kind === 'app').length} apps at 390, 768 and 1440 px, light and dark, plus order entry, the command palette, the allotment flow, posting a journal, reconciling, issuing an invoice, a bank transfer, a wallet bill payment and the market portal screener, floorsheet and alerts`);
 console.log(`site check${shardCount > 1 ? ` (shard ${shardIndex}/${shardCount})` : ''}: ${routes.length} routes x 2 widths x 2 themes, ${checked.variants} example variants and ${checked.tabs} page tabs (axe, overflow, console, layout) and the copy, variant, preview theme, phone-width frame, tabs, theme, search, sidebar, drawer, path routing, hash redirect, 404 and no-JS behaviours passed`);

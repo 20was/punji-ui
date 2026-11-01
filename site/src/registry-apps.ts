@@ -350,6 +350,64 @@ export const APP_PAGES: readonly PageDef[] = [
     },
   },
   {
+    slug: 'market-portal',
+    title: 'Market portal',
+    description:
+      'A public NEPSE market portal built from Punji UI: indices, breadth, sector heatmap, a screener, a 10k-trade floorsheet, company pages, calendars and alerts.',
+    lead: 'What a market data site shows, on one live simulated session: overview, screener, floorsheet, company pages, calendars and alerts.',
+    group: 'apps',
+    kind: 'app',
+    summary:
+      'The public side of the market: what a reader of a market data site sees before they trade. Ninety-six listed companies tick live; every trade is written to the floorsheet with its buying and selling broker, and each company\'s volume and turnover are those contracts summed, so the floorsheet, the overview, the screener and the company page agree to the paisa. Valuation ratios use the live price over trailing EPS and book value, the sector heatmap is sized by the same turnover, the calendars list the same book closures and AGMs the company pages show, and price alerts fire on the tick the price crosses.',
+    use: [
+      'Replace `site/src/apps/market-portal/market.ts` with your data feed: the screens read `LiveQuote` objects (bigint paisa, the `Quote` shape `StockTable` takes) and `FloorTrade` contracts.',
+      'Feed fundamentals (EPS, book value, dividends) from published reports; `fundamentalsOf` recomputes P/E, P/B, yield and market cap from the live price.',
+      'Keep watchlists and alerts on your server per reader and send the alert from there; the reducer only shows how they fire against the ticks.',
+    ],
+    avoid: [
+      'Real prices, published financials and corporate announcements: everything here is generated. Verify against NEPSE, SEBON and company notices.',
+      'Trading: the portal links to nothing that places orders. The trading terminal app shows that side.',
+    ],
+    api: [],
+    examples: [],
+    keyboard: [
+      '`1` to `7` open the screens; `P` pauses and resumes the live prices. Plain keys never fire while you type in a field.',
+      'The screener and floorsheet tables move between rows with the arrow keys; Enter on a column head sorts it and Shift+Enter adds it to the sort. Filter chips open their editor; Esc closes it and returns focus to the chip.',
+      'Company search fields take the arrow keys and Enter; the watchlist moves a symbol up or down with its buttons.',
+    ],
+    accessibility: [
+      'Each screen has its own `h2` and focus moves to it from the navigation. Alerts that fire, watchlist changes and the feed dropping are announced in a polite live region.',
+      'Direction is never colour alone: arrows, signs and words, and breadth counts in text. The heatmap, charts and depth have their figures in tables.',
+      'Scrolling tables and chip rows are focusable regions; live prices honour reduced motion and can be paused.',
+    ],
+    responsive: [
+      'Wide screens: a navigation rail, index cards, the heatmap beside the movers and the company page in two columns.',
+      'Phones (390 px first): a bottom tab bar, the indices as a scrolling strip, a square heatmap, and tables that scroll inside their own focusable region with the symbol pinned.',
+    ],
+    notes: {
+      title: 'Limits',
+      points: [
+        'Synthetic companies, prices, results and events. The session is 1 November 2026, opening at 11:00 and closing at 15:00; the page opens at 11:20 after twenty minutes of trading, and each tick is five simulated seconds.',
+        'The floorsheet starts with about 13,000 contracts and grows while the market is open. Broker numbers are random.',
+        'Dividends are shown on 100 shares with bonus shares at par; the company page\'s results are derived from the trailing EPS.',
+      ],
+    },
+    related: ['market-indices', 'market-breadth', 'market-heatmap', 'market-movers', 'market-status', 'virtual-table', 'filter-chip', 'range-slider', 'list-filter', 'candlestick-chart', 'key-stats', 'dividend-history', 'corporate-action-timeline', 'depth-chart', 'order-book', 'issue-card', 'performance-chart', 'watchlist', 'company-search'],
+    app: {
+      screens: [
+        { id: 'overview', title: 'Market overview', summary: 'NEPSE and sector indices with trend lines (`MarketIndices`), the market status, turnover, `MarketBreadth` with circuit hits, a sector `MarketHeatmap` sized by turnover, and gainers, losers and turnover leaders (`MarketMovers`).' },
+        { id: 'screener', title: 'Screener', summary: 'Every listed company in a `VirtualFinancialTable` with the symbol pinned, multi-sort, preset screens, sector and range filters (`FilterChip`, `RangeSlider`, `ListFilter`), column choice and `TableExport`.' },
+        { id: 'floorsheet', title: 'Floorsheet', summary: 'Today\'s 13,000+ contracts, live, with buyer and seller broker filters, totals of what is shown and CSV export.' },
+        { id: 'company', title: 'Company page', summary: 'Candles with volume, `KeyStats`, `FinancialSummary` and quarterly results, `DividendHistory`, `CorporateActionTimeline`, depth and the order book, and sector peers.' },
+        { id: 'calendars', title: 'Calendars', summary: 'IPO, FPO, rights and fund issues (`IssueList`), and upcoming or recent book closures and AGMs for every company.' },
+        { id: 'compare', title: 'Compare', summary: 'Up to five companies against the NEPSE index in a `PerformanceChart`, with the period\'s returns ranked.' },
+        { id: 'watchlist', title: 'Watchlist', summary: 'A reorderable `Watchlist` at live prices and price alerts that fire once when the price crosses.' },
+      ],
+      data:
+        'A seeded generator (`site/src/apps/market-portal/market.ts`) adds 80 companies to the shared sim\'s 16 scrips with fundamentals, a year of daily candles, dividends and corporate events, and writes every trade to the floorsheet. The same seed gives the same market on the server and in the browser, so the page prerenders the 11:20 state and the clock starts after hydration. Nothing is fetched.',
+    },
+  },
+  {
     slug: 'invest-insure',
     title: 'Invest and insure',
     description:

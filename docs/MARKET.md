@@ -1,7 +1,7 @@
 # Market components
 
-Seven display components and their pure helpers for stock quotes: `StockTable`, `MarketMovers`, `MarketIndices`,
-`MarketStatus`, `PriceLimitIndicator`, `Watchlist` and `MarketHeatmap`. Each has a subpath (`@punji/ui/stock-table`, …)
+Eight display components and their pure helpers for stock quotes: `StockTable`, `MarketMovers`, `MarketIndices`,
+`MarketStatus`, `PriceLimitIndicator`, `Watchlist`, `MarketHeatmap` and `MarketBreadth`. Each has a subpath (`@punji/ui/stock-table`, …)
 and a stylesheet (`@punji/ui/css/<name>.css`, all in `styles.css`).
 
 **Props only.** Nothing here fetches, polls or subscribes. Pass quotes in; for live data feed new props from your own
@@ -169,6 +169,18 @@ A11y: colour is never the only signal (each tile prints an arrow and a signed ch
 symbol, name, size, direction and percent); tiles too small for text are still named; the legend lists every step including
 "Unchanged" and "No change data"; a "View data as a table" disclosure lists every item, including unsized ones, in a
 scrollable, focusable region.
+
+## MarketBreadth
+
+Advances, declines and unchanged as one bar split in three, with the counts, their shares and the advance/decline ratio
+printed beside it. Props: `advances`, `declines`, `unchanged` (counts; negative or non-finite count as 0), `label`, `extra`
+(more counts under the bar: `{ id, label, value, tone? }`, for circuit hits or 52-week highs), `showRatio` (default true),
+`convention`, `loading`, `size: 'sm'`, `labels`, `formatCount`. With every count at zero it says "No stocks have traded yet."
+
+Pure helpers: `breadthOf(quotes)` counts from `{ ltp, previousClose }` (a missing price is unchanged, as exchanges report a
+stock that did not trade); `advanceDeclineRatio(b)` is advances over declines, `null` with no declines.
+
+A11y: the bar is an image named with every count; arrows and words carry direction; declines are hatched in forced colours.
 
 ## Decisions
 

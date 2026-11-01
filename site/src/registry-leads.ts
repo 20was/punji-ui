@@ -45,6 +45,7 @@ export const LEADS: Readonly<Record<string, string>> = {
   'price-limit': 'Where today\'s price sits between the lower and upper circuit limits, with a clear flag when it hits one.',
   watchlist: 'The stocks someone follows, in their own order, updating in place as prices change.',
   'market-heatmap': 'The whole market at a glance: tile size is weight, colour and a signed number show the day\'s change.',
+  'market-breadth': 'How many stocks rose, fell and stayed flat, as one split bar with the counts and the A/D ratio in words.',
   'price-chart': 'A small line chart for a short price series, with gaps shown as gaps and a table behind every point.',
   sparkline: 'A tiny trend line to sit beside a number in a table row or card.',
   'company-search': 'Find a company by symbol or name, with ranked suggestions as you type and a full-screen sheet on phones.',

@@ -318,13 +318,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "178.1 kB",
+    "limit": "179.3 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "40.1 kB",
+    "limit": "40.5 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -837,6 +837,20 @@
     "path": "dist/market-heatmap/MarketHeatmap.js",
     "import": "*",
     "limit": "2.51 kB",
+    "gzip": true
+  },
+  {
+    "name": "market-breadth (import from '@punji/ui/market-breadth')",
+    "path": "dist/market-breadth/MarketBreadth.js",
+    "import": "*",
+    "limit": "1.38 kB",
+    "gzip": true
+  },
+  {
+    "name": "css/market-breadth.css (MarketBreadth)",
+    "path": "dist/css/market-breadth.css",
+    "limit": "0.73 kB",
+    "rolldown": false,
     "gzip": true
   },
   {

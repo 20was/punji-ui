@@ -2,7 +2,9 @@ import { Fragment, type ComponentType, type ReactNode } from 'react';
 import { pagePath, REPO, SITE_NAME } from '../paths.ts';
 import type { PageData } from './load.ts';
 import { groupTitleOf } from './nav.ts';
-import { Link } from './router.tsx';
+import { Code } from './Code.tsx';
+import { PageActions } from './PageActions.tsx';
+import { Link, hrefFor } from './router.tsx';
 import { ThemeSwitch } from './ThemeSwitch.tsx';
 import { CodeIcon, ExternalIcon, Wordmark } from './icons.tsx';
 // oxlint-disable-next-line import/no-unassigned-import -- the app's layout styles
@@ -91,6 +93,15 @@ export function AppView({ data, App }: { data: PageData; App: ComponentType }): 
             simulated market are site code in <a href={source} target="_blank" rel="noopener noreferrer">site/src/apps/{page.slug}<ExternalIcon /><span className="kit-sr"> (opens in a new tab)</span></a> for you to copy.
             Prices, companies and accounts are synthetic.
           </p>
+          <PageActions path={pagePath(page)} title={page.title} />
+          <section aria-labelledby="copy-app-h" className="doc-app-about-block">
+            <h3 id="copy-app-h">Copy it into your app</h3>
+            <p>
+              The shadcn CLI writes every screen, the shared kit and the simulation into <code>components/punji/{page.slug}/</code> and installs{' '}
+              <code>@punji/ui</code>. See <Link to="/get-started/copy-a-pattern/">Copy a pattern</Link>.
+            </p>
+            <Code label={`Copy the ${page.title} app`} title="Terminal" lang="sh" code={`npx shadcn@latest add ${SITE_ORIGIN}${hrefFor(`/r/${page.slug}.json`)}`} />
+          </section>
           {screens.length > 0 && (
             <section aria-labelledby="screens-h" className="doc-app-about-block">
               <h3 id="screens-h">Screens</h3>

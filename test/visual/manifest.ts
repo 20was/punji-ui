@@ -155,6 +155,7 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'amount-keypad', title: 'AmountKeypad empty, grouped, error, Devanagari', layout: true },
   { id: 'pin-pad', title: 'PinPad empty, partial, error, shuffled', layout: true },
   { id: 'mobile-number-input', title: 'MobileNumberInput operators and states' },
+  // new:component inserts fixtures above this line
 ];
 
 export const themes = ['light', 'dark'] as const;

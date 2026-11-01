@@ -1,3 +1,4 @@
+---
 "@punji/ui": patch
 ---
 

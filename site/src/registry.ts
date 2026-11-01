@@ -493,7 +493,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['Sort headers are buttons: Tab to one, Enter or Space to sort.', 'Search, pagination and selection controls are native controls in tab order.'],
     accessibility: ['A real <table> with a caption, scoped headers and `aria-sort` on the sorted column.', 'The first column can be a row header for screen-reader navigation.', 'Loading is announced with a status label; errors with `role="alert"`.'],
     responsive: ['Wide tables scroll horizontally inside their container; columns can fold away under set widths (`hideUnder`).'],
-    related: ['money-display', 'price-change', 'hooks', 'csv-export'],
+    related: ['virtual-table', 'money-display', 'price-change', 'hooks', 'csv-export'],
   },
   {
     slug: 'virtual-table',
@@ -757,7 +757,7 @@ export const PAGES: readonly PageDef[] = [
       title: 'Data rules',
       points: ['`sortQuotes` is stable (ties keep input order in both directions), puts null last in both directions, compares symbols by upper-cased code units (not locale) and never mutates.', '`nextQuoteSort`(current, key) is the click rule: the symbol starts ascending, figures descending, a repeat click flips.', 'The change is derived from ltp and `previousClose`; a previous close of zero gives no percent.'],
     },
-    related: ['market-movers', 'watchlist', 'data-table', 'price-change', 'sparkline'],
+    related: ['market-movers', 'watchlist', 'data-table', 'virtual-table', 'price-change', 'sparkline'],
   },
   {
     slug: 'market-movers',

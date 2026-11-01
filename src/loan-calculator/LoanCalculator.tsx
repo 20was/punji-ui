@@ -16,8 +16,9 @@ import { CurrencyInput } from '../currency-input/CurrencyInput.tsx';
 import { NumberField } from '../fields/Fields.tsx';
 import { amortise, type AmortisationSchedule } from '../lending/loan.ts';
 import { MoneyDisplay } from '../money-display/MoneyDisplay.tsx';
+import { useDebounce } from '../use-debounce/useDebounce.ts';
 import { minorOf, rateWithin, showDigits, wholeNumber } from '../internal/lendingDigits.ts';
-import { currencyExponent, nepalMoneyPreset, type MoneyFormatConfig } from '../money/money.ts';
+import { currencyExponent, getMoneyFormatter, nepalMoneyPreset, type MoneyFormatConfig } from '../money/money.ts';
 import { compareDecimals } from '../nepal/decimal.ts';
 import { PercentageInput } from '../percentage-input/PercentageInput.tsx';
 
@@ -52,7 +53,7 @@ export interface LoanCalculatorLabels {
   disclaimer: string;
 }
 
-export const loanCalculatorLabels: LoanCalculatorLabels = {
+export const DEFAULT_LOAN_CALCULATOR_LABELS: LoanCalculatorLabels = {
   amount: 'Loan amount', rate: 'Interest rate (yearly)', tenure: 'Tenure', tenureUnit: 'Tenure in', years: 'Years', months: 'Months',
   prepayment: 'Part-prepayment (optional)', prepaymentAmount: 'Prepayment amount', prepaymentAfter: 'Paid after instalment number', strategy: 'After prepaying', reduceTenure: 'Finish sooner', reduceEmi: 'Lower instalment',
   emi: 'Monthly instalment (EMI)', totalInterest: 'Total interest', totalPayable: 'Total payable', interestSaved: 'Interest saved', monthsSaved: 'Instalments saved',
@@ -100,11 +101,14 @@ export interface LoanCalculatorProps {
   testId?: string;
 }
 
+/** How long typing must pause before the new instalment is announced. */
+const ANNOUNCE_DELAY_MS = 700;
+
 export function LoanCalculator({
   defaultAmount = '', defaultRatePercent = '', defaultMonths = 60, defaultTenureUnit, maxMonths = 360, maxRatePercent = '40', allowPrepayment = true,
   rounding = 'half-up', roundTo = 1n, money = nepalMoneyPreset, digits = 'latn', onScheduleChange, labels, tableLabels, title, headingLevel = 2, className, testId,
 }: LoanCalculatorProps) {
-  const words = { ...loanCalculatorLabels, ...labels };
+  const words = { ...DEFAULT_LOAN_CALCULATOR_LABELS, ...labels };
   const uid = useId();
   const exponent = currencyExponent(money.currency);
   const [amount, setAmount] = useState(defaultAmount);
@@ -139,6 +143,11 @@ export function LoanCalculator({
   useEffect(() => { report.current = onScheduleChange; }, [onScheduleChange]);
   useEffect(() => { report.current?.(shown); }, [shown]);
 
+  // One short sentence, once typing settles: the whole result block as a live region re-read every figure and the
+  // disclaimer on each keystroke.
+  const spoken = result ? `${words.emi}: ${getMoneyFormatter(money).formatSpoken(result.base.emi)}` : '';
+  const announcement = useDebounce(spoken, ANNOUNCE_DELAY_MS);
+
   const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
   const resultId = `${uid}-result`;
   return (
@@ -170,7 +179,7 @@ export function LoanCalculator({
             </fieldset>
           )}
         </div>
-        <div className="pu-lcalc-result" id={resultId} aria-live="polite" aria-atomic="true">
+        <div className="pu-lcalc-result" id={resultId}>
           {result && shown ? (
             <>
               <dl className="pu-lcalc-figures">
@@ -193,6 +202,7 @@ export function LoanCalculator({
             </>
           ) : <p className="pu-lcalc-empty">{words.incomplete}</p>}
         </div>
+        <p className="kit-sr" role="status" data-testid={testId && `${testId}-status`}>{announcement}</p>
       </div>
       {shown && (
         <div className="pu-lcalc-schedule">

@@ -49,7 +49,8 @@ describe('LoanCalculator', () => {
     const onScheduleChange = vi.fn<(s: AmortisationSchedule | null) => void>();
     const { container } = render(<LoanCalculator defaultAmount="1000000" defaultRatePercent="10" defaultMonths={120} onScheduleChange={onScheduleChange} testId="lc" />);
     expect(flat(screen.getByTestId('lc-emi').textContent)).toContain('13,215.07');
-    expect(container.querySelector('[aria-live="polite"]')).toBeTruthy();
+    expect(container.querySelector('.pu-lcalc-result[aria-live]')).toBeNull();
+    expect(screen.getByTestId('lc-status').getAttribute('role')).toBe('status');
     expect(onScheduleChange).toHaveBeenLastCalledWith(expect.objectContaining({ emi: 1_321_507n, periods: 120 }));
     const toggle = screen.getByTestId('lc-toggle');
     expect(toggle.getAttribute('aria-expanded')).toBe('false');
@@ -121,7 +122,7 @@ describe('InterestRateTable', () => {
 
 function IdHarness({ kind, onResult }: { kind: 'pan' | 'citizenship'; onResult?: (state: string) => void }) {
   const [value, setValue] = useState('');
-  return <IdNumberInput kind={kind} label={kind === 'pan' ? 'PAN' : 'Citizenship number'} value={value} onValueChange={(text, r) => { setValue(text); onResult?.(r.state); }} testId="id" />;
+  return <IdNumberInput kind={kind} label={kind === 'pan' ? 'PAN' : 'Citizenship number'} value={value} onValueChange={({ value: text, check }) => { setValue(text); onResult?.(check.state); }} testId="id" />;
 }
 
 describe('IdNumberInput', () => {

@@ -8,6 +8,8 @@
  * top-up aggregator before you charge.
  */
 
+import { fromDevanagari, showDigits } from '../internal/digits.ts';
+
 export interface MobileOperator {
   /** Stable id for code and analytics ('ntc'). */
   id: string;
@@ -52,7 +54,6 @@ export interface NepalMobileOptions {
   allowUnknownPrefix?: boolean;
 }
 
-const DEVANAGARI = '०१२३४५६७८९';
 
 /**
  * Typed or pasted text to ASCII national digits: Devanagari digits converted, spaces, dashes, dots and brackets
@@ -60,7 +61,7 @@ const DEVANAGARI = '०१२३४५६७८९';
  * Other characters are kept so `parseNepalMobile` can refuse them.
  */
 export function normalizeNepalMobile(input: string): string {
-  let text = input.replace(/[०-९]/g, (d) => String(DEVANAGARI.indexOf(d))).replace(/[\s\-.() ​-‏]/g, '');
+  let text = fromDevanagari(input).replace(/[\s\-.() ​-‏]/g, '');
   if (text.startsWith('+977')) text = text.slice(4);
   else if (text.startsWith('00977')) text = text.slice(5);
   else if (/^977\d{10}$/.test(text)) text = text.slice(3);
@@ -107,5 +108,5 @@ export function formatNepalMobile(input: string, options: { separator?: string; 
   const national = normalizeNepalMobile(input).replace(/\D/g, '');
   let text = national.length > 3 ? `${national.slice(0, 3)}${separator}${national.slice(3)}` : national;
   if (international && national) text = `+977 ${text}`;
-  return digits === 'deva' ? text.replace(/\d/g, (d) => DEVANAGARI[Number(d)]!) : text;
+  return showDigits(text, digits);
 }

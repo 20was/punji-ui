@@ -51,7 +51,7 @@ export interface DocumentUploadLabels {
   rules: (accepted: string, limit: string) => string;
 }
 
-export const documentUploadLabels: DocumentUploadLabels = {
+export const DEFAULT_DOCUMENT_UPLOAD_LABELS: DocumentUploadLabels = {
   choose: 'Choose file', replace: 'Replace', remove: (slot) => `Remove ${slot}`, required: '(required)', optional: '(optional)',
   type: (accepted) => `This file type is not accepted. Use ${accepted}.`, size: (limit) => `This file is too large. The limit is ${limit}.`, empty: 'This file is empty.',
   added: (slot, file) => `${file} added for ${slot}.`, removed: (slot) => `${slot} removed.`, preview: (slot) => `Preview of ${slot}`,
@@ -155,7 +155,7 @@ function Slot({ slot, file, error, disabled, words, onPick, onRemove, testId, he
 }
 
 export function DocumentUpload({ slots, value, onChange, errors, title, headingLevel = 3, disabled, labels, className, testId }: DocumentUploadProps) {
-  const words = { ...documentUploadLabels, ...labels };
+  const words = { ...DEFAULT_DOCUMENT_UPLOAD_LABELS, ...labels };
   const uid = useId();
   const [status, setStatus] = useState('');
   const Heading = `h${headingLevel}` as 'h3';

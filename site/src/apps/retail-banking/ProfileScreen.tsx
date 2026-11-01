@@ -77,8 +77,8 @@ function KycWizard({ onDone }: { onDone: () => void }) {
           <Field label="Full name" value={name} onChange={setName} autoComplete="name" error={errors.name} testId="rb-kyc-name" />
           <Field label="Father's name" value={father} onChange={setFather} error={errors.father} testId="rb-kyc-father" />
           <Select label="Occupation" labelPlacement="above" value={occupation} onChange={setOccupation} options={OCCUPATIONS.map((o) => ({ value: o, label: o }))} block />
-          <IdNumberInput kind="citizenship" label="Citizenship certificate number" value={citizenship.text} onValueChange={(text, r) => setCitizenship({ text, valid: r.state === 'valid' })} error={errors.citizenship} testId="rb-kyc-citizenship" />
-          <IdNumberInput kind="pan" label="PAN (optional)" value={pan.text} onValueChange={(text, r) => setPan({ text, valid: r.state === 'valid' })} hint="Needed for interest above Rs 10,000 a year" error={errors.pan} testId="rb-kyc-pan" />
+          <IdNumberInput kind="citizenship" label="Citizenship certificate number" value={citizenship.text} onValueChange={(change) => setCitizenship({ text: change.value, valid: change.check.state === 'valid' })} error={errors.citizenship} testId="rb-kyc-citizenship" />
+          <IdNumberInput kind="pan" label="PAN (optional)" value={pan.text} onValueChange={(change) => setPan({ text: change.value, valid: change.check.state === 'valid' })} hint="Needed for interest above Rs 10,000 a year" error={errors.pan} testId="rb-kyc-pan" />
         </div>
       )}
       {step === 1 && <NepalAddressPicker value={address} onChange={setAddress} errors={errors} labels={{ legend: 'Permanent address' }} testId="rb-kyc-address" />}

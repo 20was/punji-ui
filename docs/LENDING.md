@@ -81,7 +81,8 @@ With `payout: 'compound'` (default) the net interest joins the balance; with `'p
 Props: `defaultAmount`, `defaultRatePercent`, `defaultMonths` (60), `defaultTenureUnit`, `maxMonths` (360),
 `maxRatePercent` ('40'), `allowPrepayment` (true), `rounding` ('half-up'), `roundTo` (1n), `money` (NPR),
 `digits`, `onScheduleChange`, `labels`, `tableLabels`, `title`, `headingLevel`, `testId`. Built from `CurrencyInput`,
-`PercentageInput`, `NumberField` and `ChoiceGroup`. The results are a polite live region; the schedule opens under an
+`PercentageInput`, `NumberField` and `ChoiceGroup`. Once typing pauses, a polite status says the new instalment in one sentence (the figures themselves are not a live
+region, so a screen reader is not read every total on each keystroke); the schedule opens under an
 `aria-expanded` disclosure. An empty or out-of-range field shows a prompt instead of a figure, never zero.
 
 ### AmortisationTable
@@ -122,9 +123,10 @@ relying on the list for a regulated record.
 
 ### IdNumberInput
 
-Props: `kind` ('pan' | 'citizenship'), `label`, `hint`, `error`, `value`, `onValueChange(text, result)`, `digits`,
-`messages`, plus input attributes. Letters are refused as typed; Devanagari digits become ASCII; the shape message
-appears after the field is left. A PAN is nine digits. A citizenship number is digit groups joined by single `-` or
+Props: `kind` ('pan' | 'citizenship'), `label`, `hint`, `error`, `value`, `onValueChange({ value, check })` (as
+BoidInput), `digits`, `labels` (`DEFAULT_ID_NUMBER_INPUT_LABELS`), `size`, `hideLabel`, `testId`, `ref`, plus input
+attributes. Letters are refused as typed; Devanagari digits become ASCII; the shape message
+appears after the field is left. A PAN is nine digits, by the same rule as `checkPan` in `@punji/ui/tax` (`validatePan` calls it; `PanInput` is the tax-form field). A citizenship number is digit groups joined by single `-` or
 `/`, 3 to 20 digits, with the separators kept as typed because the office's grouping is part of the number. Neither
 has a public check digit: a valid shape is not a verified number.
 

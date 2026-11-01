@@ -4,6 +4,8 @@
  * Gregorian `YYYY-MM-DD` civil days; money is bigint minor units (paisa); kitta are bigint whole units.
  */
 
+import { fromDevanagari } from '../internal/digits.ts';
+
 export type ShareIssueKind = 'ipo' | 'fpo' | 'right' | 'mutual-fund' | 'debenture';
 
 /** Short English names for each kind. Pass your own words to the components for Nepali. */
@@ -101,11 +103,10 @@ export type KittaProblem = 'empty' | 'invalid' | 'below-min' | 'above-max' | 'no
 
 export type KittaCheck = { ok: true; kitta: bigint } | { ok: false; problem: KittaProblem };
 
-const DEVANAGARI = '०१२३४५६७८९';
 
 /** Typed kitta to a whole number: Devanagari digits, spaces and grouping commas are accepted. null for empty or anything that is not a whole number. */
 export function parseKitta(text: string): bigint | null {
-  const ascii = text.replace(/[०-९]/g, (d) => String(DEVANAGARI.indexOf(d))).replace(/[\s,]/g, '');
+  const ascii = fromDevanagari(text).replace(/[\s,]/g, '');
   if (!/^\d{1,15}$/.test(ascii)) return null;
   return BigInt(ascii);
 }

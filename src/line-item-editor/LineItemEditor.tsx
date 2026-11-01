@@ -98,6 +98,8 @@ export interface LineItemEditorProps {
   onTotals?: (totals: InvoiceTotals | null, incomplete: string[]) => void;
   /** Words, in the reader's language. */
   labels?: Partial<LineItemEditorLabels>;
+  /** Extra class on the root element (layout only). */
+  className?: string;
   /** Sets `data-testid` on the root. */
   testId?: string;
 }
@@ -109,7 +111,7 @@ const defaultNewLine = (): LineItemDraft => ({ id: `line-${Date.now().toString(3
 
 export function LineItemEditor({
   lines, onChange, newLine = defaultNewLine, money = nepalLedgerMoney, vatRate = '0.13', rounding = 'half-up', discount, quantityDigits = 3,
-  showTaxable = true, maxLines, onTotals, labels, testId,
+  showTaxable = true, maxLines, onTotals, labels, className, testId,
 }: LineItemEditorProps) {
   const words = { ...DEFAULT_LINE_ITEM_EDITOR_LABELS, ...labels };
   const root = useRef<HTMLDivElement>(null);
@@ -151,7 +153,7 @@ export function LineItemEditor({
   const sum = (value: bigint, id: string) => <MoneyDisplay value={value} preset={money} testId={testId ? `${testId}-${id}` : undefined} />;
 
   return (
-    <div className="pu-lie" ref={root} data-testid={testId}>
+    <div className={`pu-lie${className ? ` ${className}` : ''}`} ref={root} data-testid={testId}>
       <div className="pu-lie-tablebox">
         <table className="pu-lie-table">
           <caption className="kit-sr">{words.lines}</caption>

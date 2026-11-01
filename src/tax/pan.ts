@@ -5,6 +5,8 @@
  * no checksum, because none is published. Look the number up with the IRD and validate it again on your server.
  */
 
+import { fromDevanagari, showDigits } from '../internal/digits.ts';
+
 export const PAN_LENGTH = 9;
 
 export type PanCheck =
@@ -35,11 +37,10 @@ export type PanCheck =
       reason: 'characters' | 'length';
     };
 
-const DEVANAGARI = '०१२३४५६७८९';
 
 /** Devanagari digits to ASCII, spaces, hyphens and dots removed. Other characters are kept so the check can refuse them. */
 export function normalizePan(input: string): string {
-  return input.slice(0, 64).replace(/[०-९]/g, (d) => String(DEVANAGARI.indexOf(d))).replace(/[\s\-‐-―.]/g, '');
+  return fromDevanagari(input.slice(0, 64)).replace(/[\s\-‐-―.]/g, '');
 }
 
 /**
@@ -63,5 +64,5 @@ export function isValidPan(input: string): boolean {
 /** A PAN for display: the nine digits, optionally in Devanagari. A value that is not a valid PAN is returned normalised but unchanged otherwise. */
 export function formatPanNumber(input: string, options: { digits?: 'latn' | 'deva' } = {}): string {
   const value = normalizePan(input);
-  return options.digits === 'deva' ? value.replace(/\d/g, (d) => DEVANAGARI[Number(d)]!) : value;
+  return showDigits(value, options.digits);
 }

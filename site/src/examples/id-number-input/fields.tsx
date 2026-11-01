@@ -8,8 +8,8 @@ export default function Example() {
   const [state, setState] = useState('empty');
   return (
     <div className="ex-narrow" style={{ display: 'grid', gap: 16 }}>
-      <IdNumberInput kind="pan" label="PAN" value={pan} onValueChange={(text, result) => { setPan(text); setState(result.state); }} />
-      <IdNumberInput kind="citizenship" label="Citizenship certificate number" value={citizenship} onValueChange={(text) => setCitizenship(text)} />
+      <IdNumberInput kind="pan" label="PAN" value={pan} onValueChange={({ value, check }) => { setPan(value); setState(check.state); }} />
+      <IdNumberInput kind="citizenship" label="Citizenship certificate number" value={citizenship} onValueChange={({ value }) => setCitizenship(value)} />
       <p className="doc-muted">PAN check: <code>{state}</code></p>
     </div>
   );

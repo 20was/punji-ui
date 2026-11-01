@@ -23,6 +23,7 @@ import type { RoundingMode } from '../calculations/rounding.ts';
 import { computeInvoice, ratePercent, type InvoiceDiscount, type InvoiceTotals } from '../tax/invoice.ts';
 import { formatPanNumber } from '../tax/pan.ts';
 import { amountInWords, type AmountInWordsOptions } from '../tax/words.ts';
+import { showDigits } from '../internal/digits.ts';
 
 export interface InvoiceParty {
   /** Registered name. */
@@ -127,7 +128,6 @@ export interface TaxInvoiceProps {
 }
 
 const iso = (d: CalendarDate) => `${String(d.year).padStart(4, '0')}-${String(d.month).padStart(2, '0')}-${String(d.day).padStart(2, '0')}`;
-const DEVANAGARI = '०१२३४५६७८९';
 
 function Party({ heading, party, words }: { heading: string; party: InvoiceParty; words: TaxInvoiceLabels }) {
   return (
@@ -148,7 +148,7 @@ function DateCell({ date, language, digits, words }: { date: CalendarDate; langu
   return (
     <>
       {bs && <span className="pu-inv-date">{bs} <abbr className="pu-inv-cal">{words.dateBS}</abbr></span>}
-      <span className="pu-inv-date"><time dateTime={ad}>{digits === 'deva' ? ad.replace(/\d/g, (d) => DEVANAGARI[Number(d)]!) : ad}</time> <abbr className="pu-inv-cal">{words.dateAD}</abbr></span>
+      <span className="pu-inv-date"><time dateTime={ad}>{showDigits(ad, digits)}</time> <abbr className="pu-inv-cal">{words.dateAD}</abbr></span>
     </>
   );
 }

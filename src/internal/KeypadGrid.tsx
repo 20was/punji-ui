@@ -7,6 +7,7 @@
  * inside the pad (the parent handles them through `onKeyInput`).
  */
 import { useRef, type KeyboardEvent, type ReactNode } from 'react';
+import { fromDevanagari, showDigits } from './digits.ts';
 
 export interface KeypadKey {
   /** Stable key ('7', 'backspace'), also the data-key attribute. */
@@ -21,17 +22,16 @@ export interface KeypadKey {
   kind?: 'digit' | 'action';
 }
 
-const DEVANAGARI = '०१२३४५६७८९';
 
 /** A Devanagari or ASCII digit from a keyboard event, or null. */
 export function digitOfKey(key: string): string | null {
   if (/^\d$/.test(key)) return key;
-  const deva = DEVANAGARI.indexOf(key);
-  return deva >= 0 ? String(deva) : null;
+  const ascii = fromDevanagari(key);
+  return /^[0-9]$/.test(ascii) ? ascii : null;
 }
 
 export function digitFace(digit: string, digits: 'latn' | 'deva'): string {
-  return digits === 'deva' ? digit.replace(/\d/g, (d) => DEVANAGARI[Number(d)]!) : digit;
+  return showDigits(digit, digits);
 }
 
 export function BackspaceIcon() {

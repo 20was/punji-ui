@@ -12,7 +12,7 @@ import { Field } from '../fields/Fields.tsx';
 import { useLocaleMessages } from '../locale/context.tsx';
 import { idNumberToDevanagari, toAsciiIdText, validateIdNumber, type IdNumberKind, type IdNumberResult } from '../kyc/kyc.ts';
 
-export interface IdNumberInputMessages {
+export interface IdNumberInputLabels {
   /** For a PAN that is not nine digits. */
   panLength: string;
   /** For characters other than digits. */
@@ -23,12 +23,19 @@ export interface IdNumberInputMessages {
   citizenshipLength: string;
 }
 
-export const idNumberInputMessages: IdNumberInputMessages = {
+export const DEFAULT_ID_NUMBER_INPUT_LABELS: IdNumberInputLabels = {
   panLength: 'A PAN has 9 digits.',
   characters: 'Use digits only, with - or / between groups.',
   format: 'Put one - or / between groups of digits.',
   citizenshipLength: 'Enter the number as printed on the certificate (3 to 20 digits).',
 };
+
+export interface IdNumberInputChange {
+  /** The text as typed, with ASCII digits and separators. Pass it back as `value`. */
+  value: string;
+  /** The shape check of `value`. */
+  check: IdNumberResult;
+}
 
 export interface IdNumberInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'size' | 'type' | 'inputMode' | 'defaultValue' | 'pattern'> {
   /** 'pan' or 'citizenship'. */
@@ -41,12 +48,12 @@ export interface IdNumberInputProps extends Omit<InputHTMLAttributes<HTMLInputEl
   error?: ReactNode;
   /** Controlled text, as typed (ASCII digits and separators). */
   value: string;
-  /** Called on each accepted edit with the text and the check result. */
-  onValueChange: (text: string, result: IdNumberResult) => void;
+  /** Called on each accepted edit with the text (`value`, ASCII) and the shape check (`check`), like BoidInput. */
+  onValueChange: (change: IdNumberInputChange) => void;
   /** Show the digits in Devanagari. The reported value stays ASCII. Default 'latn'. */
   digits?: 'latn' | 'deva';
   /** Replace the built-in messages, for translation. */
-  messages?: Partial<IdNumberInputMessages>;
+  labels?: Partial<IdNumberInputLabels>;
   /** Field size: 'lg' (default) or 'md'. */
   size?: 'md' | 'lg';
   /** Hide the label visually; it stays in the accessible name. */
@@ -59,9 +66,9 @@ export interface IdNumberInputProps extends Omit<InputHTMLAttributes<HTMLInputEl
 
 const HINTS: Record<IdNumberKind, string> = { pan: '9 digits, for example 301234567', citizenship: 'As printed, for example 27-01-71-02345' };
 
-export function IdNumberInput({ kind, label, hint, error, value, onValueChange, digits = 'latn', messages, onBlur, testId, ...rest }: IdNumberInputProps) {
+export function IdNumberInput({ kind, label, hint, error, value, onValueChange, digits = 'latn', labels, onBlur, testId, ...rest }: IdNumberInputProps) {
   const [left, setLeft] = useState(false);
-  const words = { ...idNumberInputMessages, ...useLocaleMessages().messages.idNumberInput, ...messages };
+  const words = { ...DEFAULT_ID_NUMBER_INPUT_LABELS, ...useLocaleMessages().messages.idNumberInput, ...labels };
   const result = validateIdNumber(kind, value);
   let message: string | undefined;
   if (left && result.state === 'invalid') {
@@ -83,7 +90,7 @@ export function IdNumberInput({ kind, label, hint, error, value, onValueChange, 
       onChange={(raw) => {
         const text = toAsciiIdText(raw).replace(/^\s+/, '');
         if (!allowed.test(text)) return;
-        onValueChange(text, validateIdNumber(kind, text));
+        onValueChange({ value: text, check: validateIdNumber(kind, text) });
       }}
       onBlur={(event: FocusEvent<HTMLInputElement>) => {
         setLeft(true);

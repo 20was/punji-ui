@@ -66,6 +66,8 @@ export interface PayeeVerificationProps {
   onProceed?: () => void;
   /** Words, in the reader's language. */
   labels?: PayeeVerificationLabels;
+  /** Extra class on the root element (layout only). */
+  className?: string;
   /** Becomes data-testid on the root. */
   testId?: string;
 }
@@ -99,7 +101,7 @@ function Name({ name }: { name: string }) {
   return <bdi className="pu-payee-name">{detectSpoofing(name).display}</bdi>;
 }
 
-export function PayeeVerification({ result, enteredName, accountName, onUseAccountName, onEdit, onProceed, labels = {}, testId }: PayeeVerificationProps) {
+export function PayeeVerification({ result, enteredName, accountName, onUseAccountName, onEdit, onProceed, labels = {}, className, testId }: PayeeVerificationProps) {
   const words = { ...DEFAULTS, ...useLocaleMessages().messages.payeeVerification, ...labels };
   const id = useId();
   const [acknowledged, setAcknowledged] = useState(false);
@@ -108,7 +110,7 @@ export function PayeeVerification({ result, enteredName, accountName, onUseAccou
 
   if (result === 'checking') {
     return (
-      <div className="pu-payee" data-result="checking" role="status" data-testid={testId}>
+      <div className={`pu-payee${className ? ` ${className}` : ''}`} data-result="checking" role="status" data-testid={testId}>
         <span className="kit-spin" aria-hidden="true" />
         <span className="pu-payee-title">{words.checking}</span>
       </div>
@@ -120,7 +122,7 @@ export function PayeeVerification({ result, enteredName, accountName, onUseAccou
   const risky = result === 'no-match' || result === 'unavailable';
 
   return (
-    <section className="pu-payee" data-result={result} aria-labelledby={`${id}-t`} data-testid={testId}>
+    <section className={`pu-payee${className ? ` ${className}` : ''}`} data-result={result} aria-labelledby={`${id}-t`} data-testid={testId}>
       <div className="pu-payee-head" role={result === 'match' ? 'status' : 'alert'}>
         <svg className="pu-payee-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
           <circle cx="10" cy="10" r="9" />

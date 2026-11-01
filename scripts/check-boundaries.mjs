@@ -15,12 +15,16 @@ const SHARED = {
   ledger: new Set(['../nepal/date-only.ts', '../nepal/money.ts', '../money/money.ts', '../export/csv.ts']),
   'nepse-fees': new Set(['../calculations/rounding.ts']),
   // Share issues and corporate actions: exact rounding only.
-  'share-issues': new Set(['../calculations/rounding.ts']),
+  'share-issues': new Set(['../calculations/rounding.ts', '../internal/digits.ts']),
+  // The one Devanagari digit mapping (internal/digits.ts is pure: no React, no browser).
+  nepal: new Set(['../internal/digits.ts']),
+  // KYC reuses the tax PAN check, so there is one PAN rule.
+  kyc: new Set(['../internal/digits.ts', '../tax/pan.ts']),
   'emvco-qr': new Set(['../nepal/money.ts']),
   // Loan and deposit maths reuse the exact rounding.
   lending: new Set(['../calculations/rounding.ts']),
   // Tax, invoicing and payroll helpers: exact rounding, calendar dates, minor-unit money and the CSV writer.
-  tax: new Set(['../calculations/rounding.ts', '../nepal/date-only.ts', '../nepal/money.ts', '../export/csv.ts']),
+  tax: new Set(['../calculations/rounding.ts', '../nepal/date-only.ts', '../nepal/money.ts', '../export/csv.ts', '../internal/digits.ts']),
   // Payment identifiers read every script's digits through the shared parser.
   payments: new Set(['../nepal/decimal.ts']),
 };

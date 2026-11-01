@@ -39,7 +39,7 @@ export interface InsurancePremiumCardLabels {
   years: (n: string) => string;
 }
 
-export const insurancePremiumCardLabels: InsurancePremiumCardLabels = {
+export const DEFAULT_INSURANCE_PREMIUM_CARD_LABELS: InsurancePremiumCardLabels = {
   premium: 'Premium', nextDue: 'Next due', sumAssured: 'Sum assured', term: 'Term', policyNumber: 'Policy number', breakdown: 'Premium breakdown', total: 'Total premium',
   frequency: { monthly: 'per month', quarterly: 'per quarter', 'half-yearly': 'every six months', yearly: 'per year', single: 'single premium' },
   status: { active: 'In force', grace: 'In grace period', lapsed: 'Lapsed', matured: 'Matured' },
@@ -98,7 +98,7 @@ export function InsurancePremiumCard({
   plan, insurer, policyNumber, status, premium, frequency, breakdown, nextDueDate, nextDueLabel, sumAssured, termYears, money = nepalMoneyPreset,
   language = 'en', digits = 'latn', actions, headingLevel = 3, labels, className, testId,
 }: InsurancePremiumCardProps) {
-  const words = { ...insurancePremiumCardLabels, ...labels, frequency: { ...insurancePremiumCardLabels.frequency, ...labels?.frequency }, status: { ...insurancePremiumCardLabels.status, ...labels?.status } };
+  const words = { ...DEFAULT_INSURANCE_PREMIUM_CARD_LABELS, ...labels, frequency: { ...DEFAULT_INSURANCE_PREMIUM_CARD_LABELS.frequency, ...labels?.frequency }, status: { ...DEFAULT_INSURANCE_PREMIUM_CARD_LABELS.status, ...labels?.status } };
   const total = breakdown && breakdown.length > 0 ? breakdown.reduce((sum, line) => sum + line.amount, 0n) : premium ?? null;
   const Heading = `h${headingLevel}` as 'h3';
   const due = nextDueLabel ?? (nextDueDate && parseCalendarDate(nextDueDate) ? formatCalendarDate(nextDueDate, { language, digits }) : null);

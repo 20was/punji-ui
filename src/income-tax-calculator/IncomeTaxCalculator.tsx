@@ -48,6 +48,7 @@ export interface IncomeTaxBreakdownProps {
 /** The band-by-band table: what part of the income fell in each band, its rate and the tax on it. */
 export function IncomeTaxBreakdown({ result, caption, money = nepalLedgerMoney, hideEmpty = false, labels, testId }: IncomeTaxBreakdownProps) {
   const words = { ...DEFAULT_INCOME_TAX_BREAKDOWN_LABELS, ...labels };
+  const captionId = useId();
   const formatter = getMoneyFormatter({ ...money, display: 'none' });
   const bandName = (band: IncomeTaxResult['bands'][number]) => {
     if (band.label) return band.label;
@@ -56,9 +57,10 @@ export function IncomeTaxBreakdown({ result, caption, money = nepalLedgerMoney, 
   };
   const bands = hideEmpty ? result.bands.filter((band) => band.taxed > 0n) : result.bands;
   return (
-    <div className="pu-itax-box">
+    // Scrolls sideways on a narrow screen, so it takes focus and is named by the caption.
+    <div className="pu-itax-box" role="region" aria-labelledby={captionId} tabIndex={0}>
       <table className="pu-itax-table" data-testid={testId}>
-        <caption>{caption}</caption>
+        <caption id={captionId}>{caption}</caption>
         <thead>
           <tr><th scope="col">{words.band}</th><th scope="col" className="num">{words.rate}</th><th scope="col" className="num">{words.taxed}</th><th scope="col" className="num">{words.tax}</th></tr>
         </thead>

@@ -3,7 +3,7 @@
 @layer punji.components {
   .pu-stock { min-width: 0 }
   .pu-stock .kit-tablebox { max-height: var(--stock-max-h, none) }
-  .pu-stock .kit-table tbody th { font-weight: 400; text-align: left }
+  .pu-stock .kit-table tbody th { font-weight: 400; text-align: start }
   .pu-stock .kit-table tbody th b { display: block; letter-spacing: 0.01em }
   .pu-stock .kit-table tbody th .sub { max-width: 16rem }
   .pu-stock[data-density='compact'] .kit-table { font-size: 13px }

@@ -14,6 +14,7 @@ import { layoutRegistry } from './fixtures-layout.tsx';
 import { chartsRegistry } from './fixtures-charts.tsx';
 import { domainRegistry } from './fixtures-domain.tsx';
 import { fitRegistry } from './fixtures-fit.tsx';
+import { rtlRegistry } from './fixtures-rtl.tsx';
 import { portfolioRegistry } from './fixtures-portfolio.tsx';
 import { kitRegistry } from './fixtures-kit.tsx';
 import { formsRegistry } from './fixtures-forms.tsx';
@@ -335,6 +336,7 @@ export const registry: Record<string, () => ReactNode> = {
   ...chartsRegistry,
   ...portfolioRegistry,
   ...fitRegistry,
+  ...rtlRegistry,
   ...tradingRegistry,
   ...shareIssuesRegistry,
   ...walletRegistry,

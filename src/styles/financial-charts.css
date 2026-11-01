@@ -13,7 +13,8 @@
   .kit-ct-toggle[aria-pressed='false'] { color: var(--pu-color-text-muted); text-decoration: line-through; background: transparent }
   .kit-ct-toggle[aria-pressed='false'] svg { opacity: 0.4 }
   .kit-ct-toggle:focus-visible { outline: 2px solid var(--pu-color-link); outline-offset: 2px }
-  .kit-ct-area { position: relative; width: 100%; min-width: 0 }
+  /* Time runs left to right in every direction, so the plot, its axes and its tooltip stay LTR. */
+  .kit-ct-area { position: relative; width: 100%; min-width: 0; direction: ltr }
   .kit-ct-plot { position: relative; width: 100%; height: 100%; touch-action: pan-y; border-radius: 6px }
   .kit-ct-plot:focus-visible { outline: 2px solid var(--pu-color-link); outline-offset: 2px }
   .kit-ct-plot svg { display: block; overflow: visible; font-family: var(--pu-font-body) }

@@ -3,14 +3,14 @@
    Needs tokens.css, base.css, table.css, money.css, status-pill.css, states.css, choice-group.css and select.css (styles.css has everything). */
 @layer punji.components {
   .pu-dc { display: inline-flex; align-items: baseline; justify-content: flex-end; gap: 0.35em; font-variant-numeric: tabular-nums; white-space: nowrap }
-  .pu-dc-side { min-width: 1.6em; text-align: left; font: 600 var(--pu-text-xs) / 1 var(--pu-font-body); letter-spacing: 0.04em; color: var(--pu-color-text-muted) }
+  .pu-dc-side { min-width: 1.6em; text-align: start; font: 600 var(--pu-text-xs) / 1 var(--pu-font-body); letter-spacing: 0.04em; color: var(--pu-color-text-muted) }
   .pu-dc-blank { display: inline-block; min-width: 1px }
 
   /* Ledger-shaped tables: the head sticks inside a scrolling box when the caller sets a height. */
   .pu-ledger, .pu-stmt { min-width: 0 }
   .pu-ledger, .pu-trial, .pu-journal { container: pu-acct / inline-size }
   .pu-ledger .kit-tablebox, .pu-trial .kit-tablebox, .pu-stmt .kit-tablebox { max-height: var(--ledger-max-h, none) }
-  .pu-ledger .kit-table tbody th, .pu-trial .kit-table tbody th, .pu-journal .kit-table tbody th, .pu-stmt .kit-table tbody th { font-weight: 400; text-align: left }
+  .pu-ledger .kit-table tbody th, .pu-trial .kit-table tbody th, .pu-journal .kit-table tbody th, .pu-stmt .kit-table tbody th { font-weight: 400; text-align: start }
   .pu-ledger .kit-table .pu-ledger-ref { display: none; margin-top: 2px }
   @media (max-width: 759px) {
     .pu-ledger .kit-table .pu-ledger-ref { display: block }
@@ -21,9 +21,9 @@
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > th { grid-column: 1 / -1; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > th.pu-ledger-label { font-size: var(--pu-text-sm) }
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > th + td ~ td { grid-column: auto; font-size: var(--pu-text-sm) }
-    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:has(.pu-ledger-desc) { grid-column: 1 / -1; text-align: left; white-space: normal }
+    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:has(.pu-ledger-desc) { grid-column: 1 / -1; text-align: start; white-space: normal }
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:has(.pu-ledger-desc)::before, .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:has(.pu-dc-blank)::before { content: none }
-    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td.num { text-align: left }
+    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td.num { text-align: start }
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:empty { display: none }
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:has(.pu-dc-blank) { min-height: 1px }
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td .pu-dc { justify-content: flex-start }
@@ -62,8 +62,8 @@
     .pu-ledger .kit-tablebox.stack:not(.bare, .dense) .kit-table tbody tr { padding-inline: 12px }
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > * { min-width: 0; padding: 0; border: 0; white-space: normal }
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > th { grid-column: 1 / 4 }
-    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > th + td { grid-column: 4; text-align: right; white-space: nowrap }
-    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > th + td ~ td { font-size: 13px; text-align: left }
+    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > th + td { grid-column: 4; text-align: end; white-space: nowrap }
+    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > th + td ~ td { font-size: 13px; text-align: start }
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > th + td ~ td::before {
       content: attr(data-label);
       display: block;
@@ -84,9 +84,9 @@
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > th { grid-column: 1 / -1; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > th.pu-ledger-label { font-size: var(--pu-text-sm) }
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > th + td ~ td { grid-column: auto; font-size: var(--pu-text-sm) }
-    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:has(.pu-ledger-desc) { grid-column: 1 / -1; text-align: left; white-space: normal }
+    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:has(.pu-ledger-desc) { grid-column: 1 / -1; text-align: start; white-space: normal }
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:has(.pu-ledger-desc)::before, .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:has(.pu-dc-blank)::before { content: none }
-    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td.num { text-align: left }
+    .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td.num { text-align: start }
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:empty { display: none }
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td:has(.pu-dc-blank) { display: none }
     .pu-ledger .kit-tablebox.stack .kit-table tbody tr > td .pu-dc { justify-content: flex-start }
@@ -100,8 +100,8 @@
   @container pu-acct (max-width: 339px) {
     :is(.pu-trial, .pu-journal) .kit-table { font-size: 12px }
     :is(.pu-trial, .pu-journal) .kit-table :is(th, td) { padding: 8px 4px }
-    :is(.pu-trial, .pu-journal) .kit-table :is(th, td):first-child { padding-left: 8px }
-    :is(.pu-trial, .pu-journal) .kit-table :is(th, td):last-child { padding-right: 8px }
+    :is(.pu-trial, .pu-journal) .kit-table :is(th, td):first-child { padding-inline-start: 8px }
+    :is(.pu-trial, .pu-journal) .kit-table :is(th, td):last-child { padding-inline-end: 8px }
     :is(.pu-trial, .pu-journal) .kit-table tbody th { min-width: 0; white-space: normal; overflow-wrap: anywhere }
     :is(.pu-trial, .pu-journal) .pu-dc-side { min-width: 0 }
   }

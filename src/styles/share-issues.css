@@ -55,7 +55,7 @@
   .pu-ca-timeline { list-style: none; margin: 0; padding: 0; display: grid; min-width: 0 }
   .pu-ca-event { position: relative; display: flex; gap: var(--pu-space-3); padding-bottom: var(--pu-space-4); min-width: 0 }
   .pu-ca-event:last-child { padding-bottom: 0 }
-  .pu-ca-event:not(:last-child)::before { content: ''; position: absolute; left: 13px; top: 28px; bottom: 0; width: 2px; background: var(--pu-color-border-strong) }
+  .pu-ca-event:not(:last-child)::before { content: ''; position: absolute; inset-inline-start: 13px; top: 28px; bottom: 0; width: 2px; background: var(--pu-color-border-strong) }
   .pu-ca-event[data-phase='past']:not(:last-child)::before { background: var(--pu-color-gain) }
   .pu-ca-mark { flex: none; display: grid; place-items: center; width: 28px; height: 28px; box-sizing: border-box; border-radius: var(--pu-radius-full); border: 2px solid var(--pu-color-border-strong); background: var(--pu-color-surface); color: var(--pu-color-text-muted) }
   .pu-ca-event[data-phase='past'] .pu-ca-mark { border-color: var(--pu-color-gain); color: var(--pu-color-gain) }

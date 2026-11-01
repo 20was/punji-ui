@@ -17,7 +17,7 @@ for (const file of pages) {
 }
 const csp = [
   "default-src 'self'",
-  `script-src 'self' ${[...hashes].sort().join(' ')}`.trim(),
+  `script-src 'self' ${[...hashes].toSorted().join(' ')}`.trim(),
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self'",

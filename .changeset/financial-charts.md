@@ -1,5 +1,0 @@
----
-'@punji/ui': minor
----
-
-Financial charts, drawn as SVG with no chart library: `CandlestickChart` (candles or OHLC bars, volume pane, SMA and EMA overlays, session or time axis, hollow up candles, green-up or red-up, crosshair and keyboard navigation with a live-region readout, contradictory candles reported and not drawn, aggregation of long series), `PerformanceChart` (portfolio against benchmarks, normalised to 0% or raw, gain and loss area, toggleable legend, period selector slot) and `DepthChart` (cumulative bid and ask depth with mid price and spread), each with a visually hidden data table. The pure `@punji/ui/chart-math` module (`niceTicks`, `bandScale`, `timeScale`, `validateOhlc`, `reduceCandles`, `downsampleIndices`, `sma`, `ema`, `rebase`, `cumulativeDepth`) is property-tested. See docs/CHARTS.md. The check-pack unpacked budget rises from 960 to 1032 KiB (about 75 kB of new JS, declarations and CSS), and the Everything and styles.css size budgets from 64 to 72 kB and 23.2 to 24 kB gzip.

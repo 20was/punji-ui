@@ -1,5 +1,0 @@
----
-'@punji/ui': minor
----
-
-Banking and payments display components, secure by default and currency-agnostic (NPR default): `AccountNumber` (masked by default, explicit reveal with auto-hide, opt-in copy), `BankAccountCard`, `TransactionList` (with `TransactionRow` and `TransactionStatus`; AD or BS date groups, Dr/Cr in words, paging), `PaymentReceipt` (print styles, QR slot, timestamp in a named zone), `PaymentTimeline` and `BeneficiarySelector`, plus the pure `@punji/ui/banking` module (`maskAccountNumber`, `formatAccountNumber`, `isValidIban`, `formatTransactionReference`, `formatTimestamp`, `transactionsToCsv`). The full account number is never written to the DOM while masked. Display only: nothing submits money, and client-side checks never replace server-side validation. See docs/BANKING.md. The check-pack unpacked budget rises from 960 to 1030 KiB, and the Everything and styles.css size budgets from 64 to 70.3 kB and 23.2 to 24.7 kB gzip, for about 4.5 kB of JS and 0.8 kB of CSS.

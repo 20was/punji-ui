@@ -57,7 +57,7 @@ export interface PaymentQrCardProps {
   state?: 'ready' | 'loading' | 'expired' | 'error';
   /** Shown with `state="error"`. */
   errorMessage?: ReactNode;
-  /** Adds a "Get a new code" button to the expired and error states. */
+  /** Adds a "Get a new code" button to the expired, error and damaged-payload states. */
   onRefresh?: () => void;
   /** Turns on the amount fallback: called with the typed amount in minor units, or null to remove it. */
   onAmountChange?: (amount: bigint | null) => void;
@@ -73,9 +73,13 @@ export interface PaymentQrCardProps {
   actions?: ReactNode;
   /** A line at the bottom ("Pay with any NepalPay or Fonepay app"). */
   footer?: ReactNode;
+  /** Level of the title heading. Default 3. */
   headingLevel?: 2 | 3 | 4;
+  /** Words for every string the card shows; English by default. */
   labels?: PaymentQrCardLabels;
+  /** Extra class on the card (layout only). */
   className?: string;
+  /** Becomes data-testid on the card. */
   testId?: string;
 }
 
@@ -118,7 +122,7 @@ export function PaymentQrCard({
     body = (
       <div className="pu-payqr-blocked" role="alert" style={{ minHeight: qrSize }}>
         <p>{message}</p>
-        {onRefresh && shownState !== 'invalid' && <Button variant="secondary" onClick={onRefresh}>{words.refresh}</Button>}
+        {onRefresh && <Button variant="secondary" onClick={onRefresh}>{words.refresh}</Button>}
       </div>
     );
   }

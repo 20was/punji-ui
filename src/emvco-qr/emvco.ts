@@ -79,9 +79,13 @@ export interface MerchantQrInput {
 }
 
 export interface ParsedMerchantQr {
+  /** Payload format indicator (id 00), always '01' for a payload that parses. */
   payloadFormat: string;
+  /** Id 01: 'static' (11, reusable), 'dynamic' (12, one payment) or null when absent. */
   pointOfInitiation: 'static' | 'dynamic' | null;
+  /** Merchant account templates (ids 02 to 51) with their GUID and sub-fields. */
   merchantAccounts: readonly EmvMerchantAccount[];
+  /** Merchant category code (id 52). */
   merchantCategoryCode: string | null;
   /** Three-digit ISO 4217 numeric code as in the payload ('524'). */
   currencyNumeric: string | null;
@@ -91,12 +95,19 @@ export interface ParsedMerchantQr {
   amount: bigint | null;
   /** The amount exactly as written in the payload ('1250.50'). */
   amountText: string | null;
+  /** Tip or convenience fee (ids 55 to 57), or null. */
   tip: EmvTip | null;
+  /** Country code (id 58). */
   countryCode: string | null;
+  /** Merchant name (id 59). */
   merchantName: string | null;
+  /** Merchant city (id 60). */
   merchantCity: string | null;
+  /** Postal code (id 61). */
   postalCode: string | null;
+  /** Additional data (id 62); empty when absent. */
   additionalData: EmvAdditionalData;
+  /** Name and city in another language (id 64), or null. */
   alternateLanguage: { language: string; merchantName: string; merchantCity?: string } | null;
   /** Every top-level object in order, CRC included. */
   objects: readonly EmvTlv[];
@@ -105,8 +116,20 @@ export interface ParsedMerchantQr {
 export type EmvQrErrorCode = 'empty' | 'malformed' | 'crc' | 'format' | 'missing' | 'amount';
 
 export type MerchantQrParseResult =
-  | { ok: true; value: ParsedMerchantQr }
-  | { ok: false; code: EmvQrErrorCode; message: string };
+  | {
+      /** The payload is well formed and its CRC matches. */
+      ok: true;
+      /** The fields read from the payload. */
+      value: ParsedMerchantQr;
+    }
+  | {
+      /** The payload cannot be used. */
+      ok: false;
+      /** What is wrong: 'empty', 'malformed', 'crc', 'format', 'missing' or 'amount'. */
+      code: EmvQrErrorCode;
+      /** A sentence to show the person ("The code is damaged: its checksum does not match."). */
+      message: string;
+    };
 
 const CURRENCIES: Readonly<Record<string, readonly [string, number]>> = { NPR: ['524', 2], INR: ['356', 2], USD: ['840', 2] };
 const ADDITIONAL: readonly (readonly [keyof EmvAdditionalData, string])[] = [

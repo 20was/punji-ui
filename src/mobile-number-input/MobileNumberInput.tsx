@@ -11,11 +11,13 @@ import { useCallback, useId, useRef, useState, type FocusEvent, type InputHTMLAt
 import { formatNepalMobile, parseNepalMobile, type MobileOperator, type NepalMobileOptions, type NepalMobileResult } from '../nepal/mobile.ts';
 
 export interface MobileNumberInputProps extends NepalMobileOptions, Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'size' | 'type' | 'defaultValue' | 'prefix'> {
+  /** The visible label, a real <label> tied to the input. */
   label: ReactNode;
   /** Controlled value: the national digits from `onValueChange` (`result.national`), '' for none. */
   value: string;
   /** Called on every accepted edit with the parsed result: state, national digits, E.164 and operator. */
   onValueChange: (result: NepalMobileResult) => void;
+  /** A quiet line under the field. Replaced by an error. */
   hint?: ReactNode;
   /** Your own error. It replaces the built-in message. */
   error?: ReactNode;
@@ -29,9 +31,13 @@ export interface MobileNumberInputProps extends NepalMobileOptions, Omit<InputHT
   digits?: 'latn' | 'deva';
   /** The fixed country code. Default '+977'. Set null to hide it. */
   countryCode?: string | null;
+  /** The box: 'lg' 44 (default) or 'md' 36. */
   size?: 'md' | 'lg';
+  /** Keep the label for screen readers only. */
   hideLabel?: boolean;
+  /** Becomes data-testid on the input. */
   testId?: string;
+  /** Ref to the input element. */
   ref?: Ref<HTMLInputElement>;
 }
 

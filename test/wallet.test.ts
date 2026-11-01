@@ -9,7 +9,7 @@ import {
   NEPAL_MOBILE_OPERATORS, detectNepalOperator, formatNepalMobile, isValidNepalMobile, normalizeNepalMobile, parseNepalMobile, type MobileOperator,
 } from '../src/nepal/mobile.ts';
 import { shuffleDigits } from '../src/pin-pad/PinPad.tsx';
-import './fc.ts';
+import { NUM_RUNS } from './fc.ts';
 
 // The worked example from the EMVCo MPM specification (v1.1, Appendix A), CRC A13A, with Chinese text in template 64.
 const EMV_SPEC_SAMPLE = '00020101021229300012D156000000000510A93FO3230Q31280012D15600000001030812345678520441115802CN5914BEST TRANSPORT6007BEIJING64200002ZH0104最佳运输0202北京540523.7253031565502016233030412340603***0708A60086670902ME91320016A0112233449988770708123456786304A13A';
@@ -62,11 +62,11 @@ describe('parseMerchantQr', () => {
     expect(parseMerchantQr('https://example.com')).toMatchObject({ ok: false, code: 'malformed' });
     expect(parseMerchantQr(EMV_SPEC_SAMPLE.replace('BEST', 'BEST'.toLowerCase()))).toMatchObject({ ok: false, code: 'crc' });
     expect(parseMerchantQr('000201')).toMatchObject({ ok: false, code: 'malformed' });
-    const noCity = '000201010211520400005303524' + '5802NP5904Shop' + '6304';
-    expect(parseMerchantQr(noCity + crc16Ccitt(noCity))).toMatchObject({ ok: false, code: 'missing' });
-    const badAmount = '00020101021226180014np.com.example52040000530352454041.2.' + '5802NP5904Shop6003KTM6304';
+    const noAccount = '0002010102115204000053035245802NP5904Shop6304';
+    expect(parseMerchantQr(noAccount + crc16Ccitt(noAccount))).toMatchObject({ ok: false, code: 'missing' });
+    const badAmount = '00020101021226180014np.com.example52040000530352454041.2.5802NP5904Shop6003KTM6304';
     expect(parseMerchantQr(badAmount + crc16Ccitt(badAmount))).toMatchObject({ ok: false, code: 'amount' });
-    const tooPrecise = '00020101021226180014np.com.example520400005303524540612.345' + '5802NP5904Shop6003KTM6304';
+    const tooPrecise = '00020101021226180014np.com.example520400005303524540612.3455802NP5904Shop6003KTM6304';
     expect(parseMerchantQr(tooPrecise + crc16Ccitt(tooPrecise))).toMatchObject({ ok: false, code: 'amount' });
     expect(parseMerchantQr('9'.repeat(EMV_QR_MAX_LENGTH + 1))).toMatchObject({ ok: false, code: 'malformed' });
   });
@@ -80,7 +80,7 @@ describe('parseMerchantQr', () => {
 describe('buildMerchantQr', () => {
   it('builds a static NPR payload with the mandatory objects and a valid CRC', () => {
     const payload = buildMerchantQr(merchant);
-    expect(payload).toBe('00020101021126300014np.com.example0108M123456752040000530352458' + '02NP5914Himalayan Momo6009Kathmandu6304' + payload.slice(-4));
+    expect(payload).toBe(`00020101021126300014np.com.example0108M12345675204000053035245802NP5914Himalayan Momo6009Kathmandu6304${payload.slice(-4)}`);
     expect(verifyMerchantQrCrc(payload)).toBe(true);
   });
   it('makes a dynamic code with an exact amount from minor units', () => {
@@ -115,7 +115,7 @@ describe('buildMerchantQr', () => {
     expect(() => buildMerchantQr({ ...merchant, amount: 10n ** 13n })).toThrow(RangeError);
     expect(() => buildMerchantQr({ ...merchant, currency: 'EUR' })).toThrow(RangeError);
     expect(() => buildMerchantQr({ ...merchant, currency: '978' })).toThrow(RangeError);
-    expect(buildMerchantQr({ ...merchant, currency: '978', exponent: 2, amount: 5n })).toContain('53039785404' + '0.05');
+    expect(buildMerchantQr({ ...merchant, currency: '978', exponent: 2, amount: 5n })).toContain('530397854040.05');
     expect(() => buildMerchantQr({ ...merchant, merchantAccounts: [] })).toThrow(RangeError);
     expect(() => buildMerchantQr({ ...merchant, merchantAccounts: [{ id: '52', value: 'x' }] })).toThrow(RangeError);
     expect(() => buildMerchantQr({ ...merchant, merchantAccounts: [{ id: '26' }] })).toThrow(RangeError);
@@ -126,14 +126,14 @@ describe('buildMerchantQr', () => {
     expect(() => buildMerchantQr({ ...merchant, extra: [{ id: '62', value: 'x' }] })).toThrow(RangeError);
   });
   it('property: any amount and name round-trips exactly', () => {
-    fc.assert(fc.property(
+    expect(() => fc.assert(fc.property(
       fc.bigInt({ min: 1n, max: 9_999_999_999_99n }),
       fc.string({ minLength: 1, maxLength: 25, unit: fc.constantFrom(...'abcXYZ 0123-&.नेपाल') }).filter((s) => s.trim().length > 0),
       (amount, name) => {
         const parsed = parseMerchantQr(buildMerchantQr({ ...merchant, merchantName: name, amount }));
         return parsed.ok && parsed.value.amount === amount && parsed.value.merchantName === name;
       },
-    ));
+    ), { numRuns: NUM_RUNS })).not.toThrow();
   });
 });
 
@@ -176,7 +176,7 @@ describe('encodeQr', () => {
     const { modules, size } = encodeQr(buildMerchantQr(merchant));
     const finder = ['1111111', '1000001', '1011101', '1011101', '1011101', '1000001', '1111111'];
     for (const [ox, oy] of [[0, 0], [size - 7, 0], [0, size - 7]] as const) {
-      expect(finder.map((_, y) => finder[y]!.split('').map((_, x) => (modules[oy + y]![ox + x] ? '1' : '0')).join(''))).toEqual(finder);
+      expect(finder.map((row, y) => row.split('').map((_, x) => (modules[oy + y]![ox + x] ? '1' : '0')).join(''))).toEqual(finder);
     }
     for (let i = 8; i < size - 8; i++) {
       expect(modules[6]![i]).toBe(i % 2 === 0);
@@ -245,11 +245,11 @@ describe('Nepal mobile numbers', () => {
 
 describe('shuffleDigits', () => {
   it('is a permutation of the ten digits for any random source', () => {
-    fc.assert(fc.property(fc.array(fc.double({ min: 0, max: 0.999_999, noNaN: true }), { minLength: 9, maxLength: 9 }), (values) => {
+    expect(() => fc.assert(fc.property(fc.array(fc.double({ min: 0, max: 0.999_999, noNaN: true }), { minLength: 9, maxLength: 9 }), (values) => {
       let i = 0;
       const out = shuffleDigits(() => values[i++]!);
       return out.toSorted().join('') === '0123456789';
-    }));
+    }))).not.toThrow();
   });
   it('uses crypto by default', () => {
     expect(shuffleDigits().toSorted().join('')).toBe('0123456789');

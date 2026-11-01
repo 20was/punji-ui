@@ -26,8 +26,11 @@ export interface QrCodeProps {
   foreground?: string;
   /** Background colour. Default '#ffffff'. `transparent` drops it; only do so on a light surface. */
   background?: string;
+  /** Extra class on the SVG (layout only). */
   className?: string;
+  /** Inline style on the SVG (layout only). */
   style?: CSSProperties;
+  /** Becomes data-testid on the SVG. */
   testId?: string;
 }
 

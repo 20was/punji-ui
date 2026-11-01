@@ -1,6 +1,6 @@
 import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { renderToString } from 'react-dom/server';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
@@ -35,6 +35,11 @@ describe('QrCode', () => {
   });
 });
 
+function AmountHost() {
+  const [amount, setAmount] = useState<bigint | null>(null);
+  return <PaymentQrCard payload={buildMerchantQr({ ...merchant, amount })} onAmountChange={setAmount} />;
+}
+
 describe('PaymentQrCard', () => {
   it('shows what the payload says: merchant, city and amount', async () => {
     const payload = buildMerchantQr({ ...merchant, amount: 125050n });
@@ -53,7 +58,7 @@ describe('PaymentQrCard', () => {
     expect(screen.queryByRole('img')).toBeNull();
   });
   it('hides an expired code and offers a new one', async () => {
-    const onRefresh = vi.fn();
+    const onRefresh = vi.fn<() => void>();
     render(<PaymentQrCard payload={buildMerchantQr(merchant)} state="expired" onRefresh={onRefresh} />);
     expect(screen.queryByRole('img')).toBeNull();
     expect(screen.getByRole('alert').textContent).toContain('expired');
@@ -66,11 +71,7 @@ describe('PaymentQrCard', () => {
   });
   it('lets the payee add, change and remove an amount on a static code', async () => {
     const user = userEvent.setup();
-    function Host() {
-      const [amount, setAmount] = useState<bigint | null>(null);
-      return <PaymentQrCard payload={buildMerchantQr({ ...merchant, amount })} onAmountChange={setAmount} />;
-    }
-    render(<Host />);
+    render(<AmountHost />);
     expect(screen.getByText('The payer enters the amount')).toBeTruthy();
     await user.click(screen.getByRole('button', { name: 'Add amount' }));
     const input = screen.getByRole('textbox', { name: /Amount/ });
@@ -84,7 +85,7 @@ describe('PaymentQrCard', () => {
     expect(screen.getByText('The payer enters the amount')).toBeTruthy();
   });
   it('accepts a custom renderer, a display name and actions', () => {
-    const renderQr = vi.fn((_payload: string, label: string) => <img alt={label} src="data:," />);
+    const renderQr = vi.fn<(payload: string, label: string) => ReactNode>((_payload, label) => <img alt={label} src="data:," />);
     render(<PaymentQrCard payload={buildMerchantQr(merchant)} merchantName="हिमालयन मम" detail="Counter 2" renderQr={renderQr} actions={<button type="button">Share</button>} footer="Pay with any NepalPay app" money={nepalMoneyConfig()} />);
     expect(renderQr).toHaveBeenCalled();
     expect(screen.getByText('हिमालयन मम')).toBeTruthy();
@@ -114,7 +115,7 @@ function Keypad(props: { max?: bigint; quick?: bigint[]; onChange?: (c: AmountKe
 describe('AmountKeypad', () => {
   it('builds an exact amount from key presses and reports minor units', async () => {
     const user = userEvent.setup();
-    const onChange = vi.fn();
+    const onChange = vi.fn<(c: AmountKeypadChange) => void>();
     const { container } = render(<Keypad onChange={onChange} />);
     for (const key of ['1', '2', '3', '4', '5', '6', '.', '5']) await user.click(container.querySelector(`[data-key="${key}"]`)!);
     expect(onChange).toHaveBeenLastCalledWith({ value: '123456.5', minorUnits: 12345650n, state: 'valid' });
@@ -126,7 +127,7 @@ describe('AmountKeypad', () => {
   });
   it('refuses a third decimal and an amount above max, and says why', async () => {
     const user = userEvent.setup();
-    const onChange = vi.fn();
+    const onChange = vi.fn<(c: AmountKeypadChange) => void>();
     const { container } = render(<Keypad max={100000n} onChange={onChange} />);
     const press = (k: string) => user.click(container.querySelector(`[data-key="${k}"]`)!);
     await press('.');
@@ -147,7 +148,7 @@ describe('AmountKeypad', () => {
   });
   it('is one Tab stop with arrow-key movement and accepts typed digits', async () => {
     const user = userEvent.setup();
-    const onChange = vi.fn();
+    const onChange = vi.fn<(c: AmountKeypadChange) => void>();
     const { container } = render(<Keypad onChange={onChange} />);
     await user.tab();
     expect(document.activeElement?.getAttribute('data-key')).toBe('1');
@@ -165,7 +166,7 @@ describe('AmountKeypad', () => {
   });
   it('quick amounts set the whole amount and respect max', async () => {
     const user = userEvent.setup();
-    const onChange = vi.fn();
+    const onChange = vi.fn<(c: AmountKeypadChange) => void>();
     render(<Keypad quick={[10000n, 50000n, 200000n]} max={100000n} onChange={onChange} />);
     const chip = screen.getByRole('button', { name: /Set amount to .*500\.00/ });
     await user.click(chip);
@@ -185,13 +186,15 @@ function Pin(props: { onComplete?: (pin: string) => void; shuffle?: boolean; ran
   return <PinPad label="Enter your 4-digit PIN" value={pin} onChange={setPin} onComplete={props.onComplete} shuffle={props.shuffle} random={props.random} shuffleKey={props.shuffleKey} error={props.error} testId="pin" />;
 }
 
+// Ids from useId differ between mounts; everything else must be identical for two different PINs.
+const markup = (c: HTMLElement) => c.innerHTML.replace(/_r_\w+_/g, 'id');
+const order = (c: HTMLElement) => [...c.querySelectorAll('.pu-keypad-key[data-key]')].map((b) => b.getAttribute('data-key')).filter((k) => k !== 'backspace').join('');
+
 describe('PinPad', () => {
   it('shows dots and progress, never the digits', async () => {
     const user = userEvent.setup();
     const first = render(<Pin />);
     for (const k of ['1', '9', '7', '3']) await user.click(first.container.querySelector(`[data-key="${k}"]`)!);
-    // Ids from useId differ between mounts; everything else must be identical for two different PINs.
-    const markup = (c: HTMLElement) => c.innerHTML.replace(/_r_\w+_/g, 'id');
     const afterA = markup(first.container);
     first.unmount();
     const second = render(<Pin />);
@@ -203,7 +206,7 @@ describe('PinPad', () => {
   });
   it('calls onComplete once and ignores keys after the last digit', async () => {
     const user = userEvent.setup();
-    const onComplete = vi.fn();
+    const onComplete = vi.fn<(pin: string) => void>();
     const { container } = render(<Pin onComplete={onComplete} />);
     await user.tab();
     await user.keyboard('12345');
@@ -214,7 +217,6 @@ describe('PinPad', () => {
     expect(await seriousViolations(container)).toEqual([]);
   });
   it('shuffles the keys with the random source and reshuffles on shuffleKey', () => {
-    const order = (c: HTMLElement) => [...c.querySelectorAll('.pu-keypad-key[data-key]')].map((b) => b.getAttribute('data-key')).filter((k) => k !== 'backspace').join('');
     const { container, rerender } = render(<Pin shuffle random={() => 0} />);
     // Math.floor(0 * (i + 1)) = 0 swaps each position with the first: a fixed, non-ordered permutation.
     expect(order(container)).toBe('2345678901');
@@ -241,7 +243,7 @@ function Mobile(props: { onResult?: (r: NepalMobileResult) => void }) {
 describe('MobileNumberInput', () => {
   it('groups the digits, names the operator and announces it', async () => {
     const user = userEvent.setup();
-    const onResult = vi.fn();
+    const onResult = vi.fn<(r: NepalMobileResult) => void>();
     const { container } = render(<Mobile onResult={onResult} />);
     const input = screen.getByRole('textbox', { name: 'Mobile number' }) as HTMLInputElement;
     await user.type(input, '9801234567');
@@ -280,7 +282,7 @@ describe('MobileNumberInput', () => {
   });
   it('shows Devanagari digits while keeping the value ASCII', async () => {
     const user = userEvent.setup();
-    const onResult = vi.fn();
+    const onResult = vi.fn<(r: NepalMobileResult) => void>();
     function Deva() {
       const [value, setValue] = useState('');
       return <MobileNumberInput label="मोबाइल नम्बर" digits="deva" value={value} onValueChange={(r) => { setValue(r.national); onResult(r); }} />;

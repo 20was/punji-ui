@@ -44,6 +44,7 @@ export interface AmountKeypadOptions extends Partial<Pick<MoneyFormatConfig, 'lo
   label?: string;
   /** Controlled value: the exact ASCII decimal string from `onValueChange` ('' for none). */
   value: string;
+  /** Called with each accepted key: the exact string, the minor units and the state. */
   onValueChange: (change: AmountKeypadChange) => void;
   /** The largest amount in minor units (a wallet balance, a per-transaction limit). Keys that would pass it are refused. */
   max?: bigint;
@@ -59,9 +60,13 @@ export interface AmountKeypadOptions extends Partial<Pick<MoneyFormatConfig, 'lo
   hint?: ReactNode;
   /** What is wrong, announced as an alert. */
   error?: ReactNode;
+  /** Disable every key. */
   disabled?: boolean;
+  /** Words for the keys and announcements; English by default. */
   labels?: AmountKeypadLabels;
+  /** Extra class on the root (layout only). */
   className?: string;
+  /** Becomes data-testid on the root. */
   testId?: string;
 }
 

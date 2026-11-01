@@ -42,9 +42,10 @@ Currency is any ISO 4217 code (default NPR with lakh/crore grouping via `nepalMo
    give (`Asia/Kathmandu` by default) and include the zone name. An ISO string with no offset is refused (shown as a
    dash) because it would be read in the host's zone. Ledger-style entry dates (`TransactionList`) are calendar dates
    and are never read in the host's time zone.
-8. **Receipts and QR codes.** The QR slot renders what you pass; the package has no QR encoder and adds no
-   dependency. Generate the payload on the server, and never put a full account number in it unless the payee must
-   have it.
+8. **Receipts and QR codes.** The QR slot renders what you pass. To draw one, pass `<QrCode value={payload} />`
+   from `@punji/ui/qr-code` (a dependency-free encoder; EMVCo payload helpers and the scan-to-pay card are in
+   [WALLETS.md](WALLETS.md)). Generate the payload on the server, and never put a full account number in it unless
+   the payee must have it.
 
 ## Numeric contract
 

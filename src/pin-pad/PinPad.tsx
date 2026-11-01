@@ -26,7 +26,9 @@ export interface PinPadProps {
   length?: number;
   /** Controlled PIN so far. Keep it in memory only; clear it after use. */
   value?: string;
+  /** Initial PIN when uncontrolled (usually ''). */
   defaultValue?: string;
+  /** Called with the PIN so far after every key. */
   onChange?: (pin: string) => void;
   /** Called once with the full PIN when the last digit is entered. Further keys are ignored until the value shrinks. */
   onComplete?: (pin: string) => void;
@@ -44,9 +46,13 @@ export interface PinPadProps {
   error?: ReactNode;
   /** An extra key in the bottom-left cell, such as a fingerprint button. Rendered as given; give it a name. */
   extraKey?: ReactNode;
+  /** Disable every key (while the PIN is being checked). */
   disabled?: boolean;
+  /** Words for the backspace key and the progress announcement; English by default. */
   labels?: PinPadLabels;
+  /** Extra class on the root (layout only). */
   className?: string;
+  /** Becomes data-testid on the root. */
   testId?: string;
 }
 

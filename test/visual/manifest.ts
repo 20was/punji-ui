@@ -112,6 +112,12 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'popover', title: 'Popover', page: true },
   { id: 'command-palette', title: 'CommandPalette', page: true },
   { id: 'toast', title: 'Toasts', page: true },
+  // Wallets and payments.
+  { id: 'qr-code', title: 'QrCode at levels M and H' },
+  { id: 'payment-qr-card', title: 'PaymentQrCard dynamic, static, expired, damaged, loading', layout: true },
+  { id: 'amount-keypad', title: 'AmountKeypad empty, grouped, error, Devanagari', layout: true },
+  { id: 'pin-pad', title: 'PinPad empty, partial, error, shuffled', layout: true },
+  { id: 'mobile-number-input', title: 'MobileNumberInput operators and states' },
 ];
 
 export const themes = ['light', 'dark'] as const;

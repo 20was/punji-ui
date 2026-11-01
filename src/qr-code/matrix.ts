@@ -13,6 +13,7 @@ export interface QrMatrix {
   version: number;
   /** Modules per side. */
   size: number;
+  /** The level used, which may be higher than asked when `boostErrorCorrection` found room. */
   errorCorrection: QrErrorCorrection;
   /** Mask pattern 0 to 7. */
   mask: number;

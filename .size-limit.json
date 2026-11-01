@@ -1002,5 +1002,54 @@
     "import": "*",
     "limit": "22.94 kB",
     "gzip": true
+  },
+  {
+    "name": "nepse-fees (import from '@punji/ui/nepse-fees')",
+    "path": "dist/nepse-fees/fees.js",
+    "import": "*",
+    "limit": "1.79 kB",
+    "gzip": true
+  },
+  {
+    "name": "order-ticket (import from '@punji/ui/order-ticket')",
+    "path": "dist/order-ticket/OrderTicket.js",
+    "import": "*",
+    "limit": "10.95 kB",
+    "gzip": true
+  },
+  {
+    "name": "order-list (import from '@punji/ui/order-list')",
+    "path": "dist/order-list/OrderList.js",
+    "import": "*",
+    "limit": "8.37 kB",
+    "gzip": true
+  },
+  {
+    "name": "trading-halt (import from '@punji/ui/trading-halt')",
+    "path": "dist/trading-halt/TradingHaltBanner.js",
+    "import": "*",
+    "limit": "1.47 kB",
+    "gzip": true
+  },
+  {
+    "name": "Order ticket CSS",
+    "path": "dist/css/order-ticket.css",
+    "limit": "0.75 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "Order list CSS",
+    "path": "dist/css/order-list.css",
+    "limit": "0.4 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "Trading halt CSS",
+    "path": "dist/css/trading-halt.css",
+    "limit": "0.51 kB",
+    "rolldown": false,
+    "gzip": true
   }
 ]

@@ -113,6 +113,10 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'popover', title: 'Popover', page: true },
   { id: 'command-palette', title: 'CommandPalette', page: true },
   { id: 'toast', title: 'Toasts', page: true },
+  // Trading
+  { id: 'order-ticket', title: 'OrderTicket buy, sell with tax and halted' },
+  { id: 'order-list', title: 'OrderList and TradeList', layout: true },
+  { id: 'trading-halt', title: 'TradingHaltBanner states' },
 ];
 
 export const themes = ['light', 'dark'] as const;

@@ -262,7 +262,8 @@ All must be true. If any is false, stop and report.
 
 ## Part H. Lock down after the first release
 
-Do these only after Part G succeeded.
+Do these only after Part G succeeded. Done for 0.1.0 on 2026-11-01: both placeholders deprecated and
+publishing access set to `mfa=publish` from the command line (`npm access set mfa=publish @punji/ui`).
 
 1. **Deprecate the placeholder:**
    1. Run `npm login`, then
@@ -285,6 +286,7 @@ Do these only after Part G succeeded.
 
 | Symptom | Likely cause | What to do |
 | --- | --- | --- |
+| `npm deprecate` or `npm access set` fails with `EOTP`, or with `E404 … /-/v1/done?authId=…` after the browser step | The account requires 2FA for writes and npm was not attached to a terminal, so it exited instead of waiting for the browser approval | Run it in an interactive terminal, press Enter to open the page, approve, and let npm finish |
 | Release job shows "skipped" | Variable missing or not exactly `true`, or the run is on a fork | Check the variable's spelling and value |
 | Run waits forever | Environment approval pending | Actions → the run → Review deployments |
 | `npm too old for OIDC` | npm in CI older than 11.5.1 | Stop and report; needs a code change (`.nvmrc`) |

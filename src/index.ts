@@ -121,3 +121,17 @@ export * from './transaction-status/TransactionStatus.tsx';
 export * from './payment-receipt/PaymentReceipt.tsx';
 export * from './payment-timeline/PaymentTimeline.tsx';
 export * from './beneficiary-selector/BeneficiarySelector.tsx';
+// Lending, deposits, KYC onboarding and remittance. The address list (`@punji/ui/nepal-address-data`) is deliberately not
+// re-exported here: NepalAddressPicker loads it on demand so the root stays small.
+export * from './lending/lending.ts';
+export * from './kyc/kyc.ts';
+export * from './amortisation-table/AmortisationTable.tsx';
+export * from './loan-calculator/LoanCalculator.tsx';
+export * from './deposit-calculator/DepositCalculator.tsx';
+export * from './interest-rate-table/InterestRateTable.tsx';
+export * from './id-number-input/IdNumberInput.tsx';
+export * from './nepal-address-picker/NepalAddressPicker.tsx';
+export * from './document-upload/DocumentUpload.tsx';
+export * from './onboarding-wizard/OnboardingWizard.tsx';
+export * from './remittance-tracker/RemittanceTracker.tsx';
+export * from './insurance-premium-card/InsurancePremiumCard.tsx';

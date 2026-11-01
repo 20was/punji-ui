@@ -1,0 +1,69 @@
+/* Digital wallet layout, phone first. Colours and type from the package tokens; classes prefixed dw-. */
+.dw-brand { display: grid; gap: 0; margin: 0; font-size: 13px; line-height: 1.3; }
+.dw-brand-name { font: 600 15px/1.2 var(--pu-font-display); }
+.dw-switches { gap: 8px 16px; }
+.dw-offline { padding: 10px 14px; border: 1px solid var(--pu-color-warn-accent); border-radius: 10px; background: var(--pu-color-surface-tint); font-size: 14px; }
+
+.dw-hero { display: grid; gap: 4px; padding: 20px 18px; border-radius: var(--pu-radius-card); background: var(--pu-color-surface-inverse); color: var(--pu-color-text-inverse); }
+.dw-hero-label, .dw-hero-sub { margin: 0; color: var(--pu-color-inverse-muted); font-size: 13px; }
+.dw-hero-value { margin: 0; font: 700 34px/1.15 var(--pu-font-display); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.dw-hero-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.dw-panel { max-width: 560px; }
+.dw-actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0; padding: 0; list-style: none; }
+.dw-action { display: grid; justify-items: center; gap: 6px; width: 100%; min-height: 76px; padding: 10px 4px; border: 1px solid var(--doc-rule); border-radius: 14px; background: var(--pu-color-surface); color: var(--pu-color-text); font: 500 13px/1.2 var(--pu-font-body); text-align: center; cursor: pointer; }
+.dw-action:hover { background: var(--doc-hover); }
+.dw-action:focus-visible { outline: 2px solid var(--doc-ring); outline-offset: 2px; }
+.dw-action-icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--pu-color-surface-tint); }
+
+.dw-txs { display: grid; margin: 0; padding: 0; list-style: none; }
+.dw-txs-card { border: 1px solid var(--doc-rule); border-radius: var(--pu-radius-card); }
+.dw-tx + .dw-tx { border-top: 1px solid var(--doc-rule); }
+.dw-tx-btn { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; width: 100%; padding: 10px 4px; border: 0; background: none; color: inherit; font: inherit; text-align: left; }
+.dw-txs-card .dw-tx-btn { padding: 12px 14px; }
+button.dw-tx-btn { cursor: pointer; }
+button.dw-tx-btn:hover { background: var(--doc-hover); }
+button.dw-tx-btn:focus-visible { outline: 2px solid var(--doc-ring); outline-offset: -2px; border-radius: 8px; }
+.dw-tx-kind { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--pu-color-surface-tint); font-weight: 700; font-size: 14px; }
+.dw-tx-main { display: grid; gap: 2px; min-width: 0; }
+.dw-tx-title { overflow: hidden; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.dw-tx-sub { color: var(--doc-ink-2); font-size: 12px; }
+.dw-tx-end { display: grid; justify-items: end; gap: 4px; }
+.dw-tx-amount { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.dw-tx-amount[data-credit] { color: var(--pu-color-gain); }
+.dw-tx-amount[data-void] { color: var(--doc-ink-2); text-decoration: line-through; }
+
+.dw-limit { display: grid; gap: 6px; }
+.dw-limit-line { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; margin: 0; font-size: 14px; font-variant-numeric: tabular-nums; }
+.dw-limit-line > span:first-child { color: var(--doc-ink-2); }
+
+.dw-flow { max-width: 560px; }
+.dw-form { display: grid; gap: 14px; }
+.dw-confirm { max-width: 420px; }
+.dw-confirm-amount { margin: 0; font: 700 30px/1.15 var(--pu-font-display); font-variant-numeric: tabular-nums; }
+.dw-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+.dw-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.dw-lookup:empty { display: none; }
+.dw-lookup-row { display: flex; align-items: center; gap: 10px; min-height: 36px; }
+.dw-avatar { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--pu-color-surface-inverse); color: var(--pu-color-text-inverse); font-weight: 700; font-size: 13px; }
+
+.dw-samples { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.dw-sample { display: flex; align-items: center; gap: 12px; width: 100%; padding: 8px 10px; border: 1px solid var(--doc-rule); border-radius: 12px; background: var(--pu-color-surface); color: inherit; font: inherit; font-size: 14px; text-align: left; cursor: pointer; }
+.dw-sample:hover { background: var(--doc-hover); }
+.dw-sample[aria-pressed='true'] { border-color: var(--pu-color-text); box-shadow: inset 0 0 0 1px var(--pu-color-text); }
+.dw-sample:focus-visible { outline: 2px solid var(--doc-ring); outline-offset: 2px; }
+.dw-sample-qr { display: grid; flex: none; padding: 2px; border-radius: 4px; background: #fff; }
+.dw-receive { max-width: 420px; }
+
+.dw-history-totals { margin: 0; font-variant-numeric: tabular-nums; }
+.dw-redeem { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px; }
+.dw-section-title { margin: 0 0 10px; font: 600 17px/1.3 var(--pu-font-display); }
+.dw-offers { display: grid; gap: 10px; margin: 0 0 8px; padding: 0; list-style: none; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
+.dw-offers li { display: grid; gap: 4px; align-content: start; justify-items: start; padding: 14px; border: 1px solid var(--doc-rule); border-radius: var(--pu-radius-card); }
+
+@media (min-width: 640px) {
+  .dw-actions { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .dw-hero { padding: 24px; }
+}
+@media (max-width: 389px) {
+  .dw-hero-value, .dw-confirm-amount { font-size: 26px; }
+}

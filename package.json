@@ -403,6 +403,14 @@
       "types": "./dist/payment-timeline/PaymentTimeline.d.ts",
       "default": "./dist/payment-timeline/PaymentTimeline.js"
     },
+    "./payee-check": {
+      "types": "./dist/payee-check/PayeeCheck.d.ts",
+      "default": "./dist/payee-check/PayeeCheck.js"
+    },
+    "./bill-summary": {
+      "types": "./dist/bill-summary/BillSummary.d.ts",
+      "default": "./dist/bill-summary/BillSummary.js"
+    },
     "./beneficiary-selector": {
       "types": "./dist/beneficiary-selector/BeneficiarySelector.d.ts",
       "default": "./dist/beneficiary-selector/BeneficiarySelector.js"

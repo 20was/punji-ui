@@ -945,6 +945,34 @@
     "gzip": true
   },
   {
+    "name": "payee-check (import from '@punji/ui/payee-check')",
+    "path": "dist/payee-check/PayeeCheck.js",
+    "import": "*",
+    "limit": "3.4 kB",
+    "gzip": true
+  },
+  {
+    "name": "Payee check CSS",
+    "path": "dist/css/payee-check.css",
+    "limit": "0.8 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "bill-summary (import from '@punji/ui/bill-summary')",
+    "path": "dist/bill-summary/BillSummary.js",
+    "import": "*",
+    "limit": "8.9 kB",
+    "gzip": true
+  },
+  {
+    "name": "Bill summary CSS",
+    "path": "dist/css/bill-summary.css",
+    "limit": "0.8 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
     "name": "beneficiary-selector (import from '@punji/ui/beneficiary-selector')",
     "path": "dist/beneficiary-selector/BeneficiarySelector.js",
     "import": "*",

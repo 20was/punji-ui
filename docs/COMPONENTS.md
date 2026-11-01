@@ -310,6 +310,6 @@ Portfolio: `HoldingsTable`, `PortfolioAllocation`, `PortfolioOverview`, `Dividen
 
 Accounting: `DebitCredit`, `LedgerTable`, `JournalEntryView`, `TrialBalance`, `StatementTable`, `PaymentStatus`, `FinancialPeriodSelector` and the pure `@punji/ui/ledger` helpers (`isBalanced`, `trialBalance`, `runningBalance`, `rollUp`, `ledgerToCsv`): see [ACCOUNTING.md](ACCOUNTING.md).
 
-Banking and payments: `AccountNumber`, `BankAccountCard`, `TransactionList`, `TransactionStatus`, `PaymentReceipt`, `PaymentTimeline`, `BeneficiarySelector` and the pure `@punji/ui/banking` helpers (`maskAccountNumber`, `isValidIban`, `formatTransactionReference`, `transactionsToCsv`): display only, masked by default; see [BANKING.md](BANKING.md).
+Banking and payments: `AccountNumber`, `BankAccountCard`, `TransactionList`, `TransactionStatus`, `PaymentReceipt`, `PaymentTimeline`, `BeneficiarySelector`, `PayeeCheck` (Confirmation of Payee), `BillSummary` (a biller's bill before payment) and the pure `@punji/ui/banking` helpers (`maskAccountNumber`, `isValidIban`, `formatTransactionReference`, `transactionsToCsv`): display only, masked by default; see [BANKING.md](BANKING.md).
 
 Lending, deposits, KYC and remittance: `LoanCalculator`, `AmortisationTable`, `DepositCalculator`, `InterestRateTable`, `NepalAddressPicker` (with the lazy `@punji/ui/nepal-address-data` list), `IdNumberInput`, `DocumentUpload`, `OnboardingWizard`, `RemittanceTracker`, `InsurancePremiumCard` and the pure `@punji/ui/lending` and `@punji/ui/kyc` helpers; see [LENDING.md](LENDING.md).

@@ -185,4 +185,52 @@ export const WALLET_PAGES: readonly PageDef[] = [
     },
     related: ['otp-input', 'amount-keypad', 'field'],
   },
+  {
+    slug: 'payee-check',
+    title: 'PayeeCheck',
+    group: 'banking',
+    kind: 'component',
+    description: 'Confirmation of Payee for React: the name on the account matches, nearly matches or does not, shown before a transfer, with a required risk acknowledgement.',
+    lead: 'Tell the payer whether the name on the receiving account matches before any money moves, and make them stop and think when it does not.',
+    summary:
+      'The answer to "is this who I mean to pay?" on a transfer\'s review step, in the manner of the UK\'s Confirmation of Payee and the name lookup a ConnectIPS or wallet transfer runs. Give it the result your server got from the receiving bank: a match, a close match (it then shows the name the bank holds and offers to use it), no match, unavailable, checking or an error with a retry. For anything but a match the payer ticks "I understand the risk" before `payeeCheckAllowsProceed` lets them continue. `comparePayeeNames` is a reference matcher (case, punctuation, honorifics, word order, initials, one slip in five letters) for demos and tests.',
+    use: ['The review step of a bank transfer, a wallet send or a new payee form, above the Confirm button.', 'Gate Confirm with `payeeCheckAllowsProceed(result, acknowledged)`.', '`comparePayeeNames` in a prototype or a test fixture before your bank\'s API is wired.'],
+    avoid: ['Deciding on the client: the receiving bank\'s answer is the only real check.', 'Showing the registered name for a no-match: that would let anyone fish for account holders\' names. The component shows it only for a close match.'],
+    api: [...ui('payee-check', 'PayeeCheck', 'PayeeCheckResult', 'PayeeCheckLabels', 'comparePayeeNames', 'payeeNameWords', 'payeeCheckAllowsProceed')],
+    examples: [
+      { id: 'results', title: 'Every answer', note: 'Choose a result. A close match offers the registered name; the risky ones need the box ticked before Continue works.' },
+    ],
+    keyboard: ['Tab reaches the actions and the acknowledgement; Space ticks it. Nothing else is interactive.'],
+    accessibility: ['The title sits in a polite live region, so the answer is heard when it replaces "Checking". Each answer has its own icon shape and words; the coloured edge is extra.', 'Only the last four characters of the account number are shown, and they are spoken as "account ending in 9 0 1 2".'],
+    responsive: ['Fills its column; the payee line and the actions wrap on a phone.'],
+    notes: {
+      title: 'Security boundary',
+      points: ['The result comes from your server. A client that could choose its own result could skip the warning.', 'Record the acknowledgement with the payment on your server, as UK banks do for reimbursement decisions.'],
+    },
+    related: ['beneficiary-selector', 'payment-receipt', 'otp-input', 'retail-banking'],
+  },
+  {
+    slug: 'bill-summary',
+    title: 'BillSummary',
+    group: 'banking',
+    kind: 'component',
+    description: 'A utility bill fetched for a customer ID before it is paid: biller, customer, charges, rebates and fines, an exact total and a due date in AD or BS.',
+    lead: 'Show the electricity, water or internet bill a biller returned, so the payer sees whose bill and how much before paying it.',
+    summary:
+      'The card a wallet shows after you type an electricity SC number, a water customer ID or an internet username: the biller and service, the customer\'s name as the biller holds it, the period, each charge, rebates (negative) and late fines (positive), the total due and the due date in AD or Bikram Sambat, with a `PaymentStatus` you decide. The total is the one your biller returned, or the exact bigint sum of the lines. It has loading, error-with-retry and nothing-due states, and your Pay button goes in `action`.',
+    use: ['Bill payment flows: electricity, water, internet, TV, school fees, insurance premiums.', 'A "bill details" page after payment, with `status="paid"`.'],
+    avoid: ['Adding fines or rebates on the client: show what the biller returned.', 'A full tax invoice with VAT lines: use `TaxInvoice`.'],
+    api: [...ui('bill-summary', 'BillSummary', 'BillLine', 'BillSummaryLabels', 'billTotal')],
+    examples: [
+      { id: 'states', title: 'Bill, loading, error, nothing due', note: 'Switch states; the due date flips between AD and BS.' },
+    ],
+    keyboard: ['Only your action and the retry button are interactive.'],
+    accessibility: ['The biller is a heading that names the region. The loading state is a status with words; an error is an alert. A rebate is signed and labelled, never colour alone.'],
+    responsive: ['Fills its column; each line keeps its amount on the right and wraps its words.'],
+    notes: {
+      title: 'Exact money',
+      points: ['Amounts are bigint minor units. When `total` is given it is printed as given: compare it with `billTotal(lines, adjustments)` in a test if your biller itemises.'],
+    },
+    related: ['payment-status', 'payment-receipt', 'mobile-number-input', 'digital-wallet'],
+  },
 ];

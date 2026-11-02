@@ -13,9 +13,10 @@ import { Watchlist } from '@punji/ui/watchlist';
 import { holdings, nabilCloses, quotes, sampleNow } from '../../sample.ts';
 import './screen.css';
 
-// A mobile-app promotion band (the portal's "app strip"): what the phone does best, the download actions and two
-// screens of the app, each drawn with the same components the app uses. The screens are pictures here, so they are
-// inert: not focusable and not announced twice. The band forces the dark theme on its own subtree with data-theme.
+// A mobile-app promotion band (the portal's "app strip"): what the app does best, the download actions and a flat
+// preview of its two main views, drawn with the same components the app uses. No device outline: the components are
+// the product. The preview is a picture here, so it is inert: not focusable and not announced twice. The band forces
+// the dark theme on its own subtree with data-theme.
 const npr = nepalMoneyConfig();
 const value = quotes.reduce((sum, q, i) => sum + (q.ltp ?? 0n) * BigInt(holdings[i]?.qty ?? 0), 0n);
 const previous = quotes.reduce((sum, q, i) => sum + (q.previousClose ?? 0n) * BigInt(holdings[i]?.qty ?? 0), 0n);
@@ -43,15 +44,15 @@ export default function Example() {
           </div>
         </div>
 
-        <div className="sc-band-phones">
-          <figure className="sc-band-phone">
-            <div className="sc-band-screen" inert>
+        <figure className="sc-band-preview">
+          <div className="sc-band-panes" inert>
+            <div className="sc-band-pane">
               <p className="sc-band-eyebrow">Portfolio</p>
               <p className="sc-band-figure">
                 <MoneyDisplay value={value} preset={npr} />
               </p>
               <PriceChange current={value} previous={previous} preset={npr} size="sm" />
-              <Sparkline values={nabilCloses} tone="chart" width={220} height={44} />
+              <Sparkline values={nabilCloses} tone="chart" width={260} height={44} />
               <RowList label="Holdings">
                 {holdings.slice(0, 3).map((h) => (
                   <ValueRow
@@ -65,19 +66,16 @@ export default function Example() {
                 ))}
               </RowList>
             </div>
-            <figcaption>The home screen: value, today’s move, holdings.</figcaption>
-          </figure>
-          <figure className="sc-band-phone is-back">
-            <div className="sc-band-screen" inert>
+            <div className="sc-band-pane">
               <div className="sc-band-row">
                 <p className="sc-band-eyebrow">Watchlist</p>
                 <MarketStatus session={getMarketSession(sampleNow, nepseSchedule)} size="sm" />
               </div>
               <Watchlist quotes={quotes.slice(3, 8)} label="Watchlist" />
             </div>
-            <figcaption>The watchlist, with the market session.</figcaption>
-          </figure>
-        </div>
+          </div>
+          <figcaption>In the app: your value, today’s move and holdings, beside the watchlist and market session.</figcaption>
+        </figure>
       </div>
     </section>
   );

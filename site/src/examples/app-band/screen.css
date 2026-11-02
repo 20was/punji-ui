@@ -16,30 +16,28 @@
 .sc-band-copy > :nth-child(4) { width: 100%; }
 .sc-band-actions { display: flex; flex-wrap: wrap; gap: var(--pu-space-3); }
 
-.sc-band-phones { position: relative; display: flex; justify-content: center; min-width: 0; }
-.sc-band-phone { position: relative; z-index: 1; display: grid; gap: var(--pu-space-2); width: min(100%, 270px); margin: 0; flex: 0 1 270px; min-width: 0; }
-.sc-band-phone figcaption { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); text-align: center; }
-.sc-band-phone.is-back { display: none; }
-.sc-band-screen {
+.sc-band-preview { container: sc-band-preview / inline-size; display: grid; gap: var(--pu-space-2); align-content: center; margin: 0; min-width: 0; }
+.sc-band-preview figcaption { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); }
+/* One flat panel, the same card the app uses: no device outline, no tilt. Two panes side by side when there is room. */
+.sc-band-panes {
   display: grid;
-  gap: var(--pu-space-2);
-  align-content: start;
-  min-height: 460px;
-  padding: calc(var(--pu-space-4) * 1.75) var(--pu-space-3) var(--pu-space-4);
-  border: 7px solid var(--pu-color-surface-solid);
-  border-radius: 38px;
+  gap: var(--pu-space-4) calc(var(--pu-space-4) * 1.5);
+  padding: var(--pu-space-4);
+  border: 1px solid var(--pu-color-card-border);
+  border-radius: var(--pu-radius-xl);
   background: var(--pu-color-surface);
-  box-shadow: var(--pu-shadow-lg);
 }
+.sc-band-pane { display: grid; gap: var(--pu-space-2); align-content: start; min-width: 0; }
 .sc-band-eyebrow { margin: 0; font-size: var(--pu-text-xs); font-weight: 600; color: var(--pu-color-text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
 .sc-band-figure { margin: 0; font: 700 1.625rem/1.1 var(--pu-font-display); letter-spacing: -0.02em; }
 .sc-band-row { display: flex; align-items: center; justify-content: space-between; gap: var(--pu-space-2); }
 
-@container sc-band (min-width: 620px) {
-  .sc-band-phone.is-back { display: grid; transform: translateY(var(--pu-space-16)); margin-left: var(--pu-space-3); z-index: 0; }
+/* Sized by the panel, not the band: on a wide band the copy takes half the width, and each pane needs ~280 px. */
+@container sc-band-preview (min-width: 600px) {
+  .sc-band-panes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sc-band-pane + .sc-band-pane { padding-left: calc(var(--pu-space-4) * 1.5); border-left: 1px solid var(--pu-color-border); }
 }
 @container sc-band (min-width: 900px) {
   .sc-band { padding: calc(var(--pu-space-4) * 2.5); }
-  .sc-band-in { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); }
-  .sc-band-phones { padding-bottom: var(--pu-space-16); }
+  .sc-band-in { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); }
 }

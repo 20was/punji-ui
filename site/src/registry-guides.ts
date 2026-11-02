@@ -622,7 +622,7 @@ export const GUIDES: readonly PageDef[] = [
       {
         id: 'done',
         title: 'Shipped on main',
-        paragraphs: ['Merged on main. Version 0.1.0 is published on npm; later merges ship in the next release.'],
+        paragraphs: ['Merged on main. Version 0.2.0 is published on npm; later merges ship in the next release.'],
         points: [
           'Financial utilities: exact calculations, generic money formatting and parsing, ledger maths, CSV export with formula neutralisation, hooks.',
           'Components: money primitives, stock market (tables, movers, indices, status, price limits, watchlist, heatmap, order books), accounting (ledger, journal, trial balance, statements, payment status, period selector), forms, layout and feedback modules.',
@@ -659,7 +659,7 @@ export const GUIDES: readonly PageDef[] = [
         points: [
           'Wave 3, scale and trust: a virtualised data table for 10k+ rows with column pinning, resizing and multi-sort; a high-contrast theme, density setting and RTL verification; performance numbers for live tables; a manual VoiceOver and NVDA pass; an automated Next.js consumer build.',
           'Wave 4, adoption: full example apps (trading dashboard, portfolio tracker, invoicing). Done: StackBlitz starters (see [Introduction](/get-started/using/)), [copy-in patterns](/get-started/copy-a-pattern/), Markdown for every page, good first issues and a component contribution template.',
-          'Since the 0.1.0 release: these docs replaced the old portal at design.punji.app with its URLs preserved, and punji-web adopts the published package next.',
+          'Since 0.1.0: these docs replaced the old portal at design.punji.app with its URLs preserved; 0.2.0 added the Nepal finance domains, the trust kit, payment fields, themes and eight apps. punji-web adopts the published package next.',
         ],
       },
       {

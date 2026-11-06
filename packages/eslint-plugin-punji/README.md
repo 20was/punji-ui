@@ -59,6 +59,8 @@ Option `maxNames` (default `3`): imports with more names are left alone. Imports
 node packages/eslint-plugin-punji/scripts/generate-subpath-map.mjs
 ```
 
+`npm run lint` runs the same script with `--check` and fails if the committed map is stale.
+
 Re-run it whenever `@punji/ui` adds a module (commit the JSON).
 
 ### `punji/no-raw-pu-token-override`

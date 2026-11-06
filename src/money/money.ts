@@ -77,6 +77,49 @@ export interface MoneyFormatter {
   toDecimal(minor: bigint): string;
 }
 
+/** An ISO 4217 code such as 'USD', 'JPY', 'NPR'. A plain string alias today (validated by `currencyExponent` / `createMoneyFormatter`). */
+export type CurrencyCode = string;
+
+/** An exact amount: integer minor units (bigint) in one currency. Build it with `money()`. Never holds a float. */
+export interface Money {
+  readonly minor: bigint;
+  readonly currency: CurrencyCode;
+}
+
+/** Creates a `Money`. The currency is upper-cased and checked as three letters; `minor` must be a bigint. */
+export function money(minor: bigint, currency: CurrencyCode): Money {
+  if (typeof minor !== 'bigint') throw new TypeError('Money is bigint minor units');
+  const code = currency.toUpperCase();
+  if (!/^[A-Z]{3}$/.test(code)) throw new RangeError(`Invalid currency code: ${currency}`);
+  return Object.freeze({ minor, currency: code });
+}
+
+/** True for a `{ minor: bigint, currency: string }` value (what `money()` returns). */
+export function isMoney(value: unknown): value is Money {
+  return typeof value === 'object' && value !== null && typeof (value as Money).minor === 'bigint' && typeof (value as Money).currency === 'string';
+}
+
+/** True when both amounts are in the same currency (case-insensitive). */
+export function isSameCurrency(a: Money, b: Money): boolean {
+  return a.currency.toUpperCase() === b.currency.toUpperCase();
+}
+
+function assertSame(a: Money, b: Money): void {
+  if (!isSameCurrency(a, b)) throw new TypeError(`Cannot combine ${a.currency} and ${b.currency}: convert first`);
+}
+
+/** Exact sum. Throws a TypeError on mixed currencies; there is no implicit conversion. */
+export function addMoney(a: Money, b: Money): Money {
+  assertSame(a, b);
+  return money(a.minor + b.minor, a.currency);
+}
+
+/** Exact difference (a minus b). Throws a TypeError on mixed currencies. */
+export function subtractMoney(a: Money, b: Money): Money {
+  assertSame(a, b);
+  return money(a.minor - b.minor, a.currency);
+}
+
 const exponents = new Map<string, number>();
 /** Minor-unit digits of an ISO 4217 currency as Intl knows them: JPY 0, USD 2, KWD 3. */
 export function currencyExponent(currency: string): number {

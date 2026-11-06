@@ -60,7 +60,7 @@ export interface DepthChartProps {
   label: string;
   /** Plot height in CSS px, clamped to 140..520. Default 240. */
   height?: number;
-  /** Prints a price. Default NPR with two decimals. */
+  /** Prints a price. Default: Intl en-IN NPR with two decimals. Pass your own (for example `price => formatter.format(BigInt(Math.round(price * 100)))` from a `createMoneyFormatter`) for another currency. */
   formatPrice?: (price: number) => string;
   /** Prints a quantity. Default grouped whole shares. */
   formatQuantity?: (quantity: number) => string;

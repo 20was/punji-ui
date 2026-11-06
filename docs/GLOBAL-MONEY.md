@@ -92,3 +92,7 @@ currencyAmountInWords(1050n, 'BRL');    // 'Ten Brazilian Reals and 50/100 Only'
 
 NPR, INR, PKR, LKR and BDT read in lakh and crore; currencies without built-in unit words use Intl's English plural
 name and a "50/100" fraction. English only; for other languages pass `numberWords` and `scaleWords`, or your own text.
+
+## The Money value and which formatter to use
+
+`money(minor, 'USD')` returns `{ minor: bigint, currency }`. `isSameCurrency`, `addMoney` and `subtractMoney` never mix currencies silently: mixed input throws a `TypeError`. `Figure` and `Delta` take a `Money` as `value` (and an optional `formatter`) and print it through `createMoneyFormatter`; plain numbers stay for percent, ratio and count. `kind="rs"` and `compactRs` are deprecated in favour of `formatter.formatCompact`. Chart price props (`formatPrice`, `formatValue`, `format`) default to en-IN NPR; pass a formatter-backed function for another currency.

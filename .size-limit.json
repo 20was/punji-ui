@@ -696,7 +696,7 @@
     "name": "inline-state (import from '@punji/ui/inline-state')",
     "path": "dist/inline-state/InlineState.js",
     "import": "*",
-    "limit": "0.93 kB",
+    "limit": "956 B",
     "gzip": true
   },
   {
@@ -899,7 +899,7 @@
     "name": "trial-balance (import from '@punji/ui/trial-balance')",
     "path": "dist/trial-balance/TrialBalance.js",
     "import": "*",
-    "limit": "9.26 kB",
+    "limit": "9.45 kB",
     "gzip": true
   },
   {
@@ -1374,7 +1374,7 @@
     "name": "tds-summary (import from '@punji/ui/tds-summary')",
     "path": "dist/tds-summary/TdsSummary.js",
     "import": "*",
-    "limit": "9.08 kB",
+    "limit": "9.28 kB",
     "gzip": true
   },
   {

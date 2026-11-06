@@ -20,8 +20,9 @@ const invoices: Invoice[] = [
 const show = (value: unknown) => (isMoney(value) ? <MoneyDisplay value={value.minor} preset={preset} /> : String(value));
 
 const columns: FinancialColumn<Invoice>[] = [
-  { key: 'id', label: 'Invoice', rowHeader: true, render: (i) => i.id, value: (i) => i.id, aggregate: 'count', formatAggregate: (n) => `${String(n)} invoices` },
-  { key: 'due', label: 'Due (BS)', kind: 'date', render: (i) => i.due },
+  { key: 'id', label: 'Invoice', rowHeader: true, render: (i) => i.id },
+  // Not essential on a phone: folds away under 760px, so the stacked rows keep the invoice and amount.
+  { key: 'due', label: 'Due (BS)', kind: 'date', wide: true, render: (i) => i.due },
   { key: 'amount', label: 'Amount', kind: 'money', value: (i) => i.amount, aggregate: 'sum', formatAggregate: show, render: (i) => <MoneyDisplay value={i.amount.minor} preset={preset} /> },
 ];
 

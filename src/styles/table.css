@@ -67,7 +67,8 @@
        secondary figures use their own short, visible column labels. */
     .kit-tablebox.stack .kit-table tbody tr {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      /* The headline figure's column grows to fit an amount that never wraps (the same layout whenever it already fits). */
+      grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(min-content, 1fr);
       align-items: start;
       gap: 10px 12px;
       padding: 12px 0;
@@ -76,7 +77,8 @@
     .kit-tablebox.stack .kit-table tbody tr:last-child { border-bottom: 0 }
     .kit-tablebox.stack .kit-table tfoot tr {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      /* The headline figure's column grows to fit an amount that never wraps (the same layout whenever it already fits). */
+      grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(min-content, 1fr);
       align-items: start;
       gap: 10px 12px;
       padding: 12px 0;
@@ -111,6 +113,14 @@
     .kit-tablebox.stack .kit-table tbody tr.kit-table-group-head { background: var(--pu-color-surface-subtle) }
     .kit-tablebox.stack .kit-table tbody tr.kit-table-group-head > * { background: transparent }
     .kit-tablebox.stack .kit-table :is(.kit-table-group-head, .kit-table-total) > td:empty { display: none }
+    /* Group heads and the totals row wrap as one flexible line (name, then figures at the end) instead of the
+       four fixed figure columns, so a long subtotal moves to the next line rather than widening the row. */
+    .kit-tablebox.stack .kit-table tr:is(.kit-table-group-head, .kit-table-total) { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px }
+    .kit-tablebox.stack .kit-table tr:is(.kit-table-group-head, .kit-table-total) > th { flex: 1 1 auto; min-width: 0 }
+    .kit-tablebox.stack .kit-table tr:is(.kit-table-group-head, .kit-table-total) > td { flex: 0 1 auto; min-width: 0; max-width: 100%; margin-inline-start: auto; font-size: inherit; text-align: end; overflow-wrap: anywhere }
+    /* The reconciliation badge drops below the total and wraps inside the row. */
+    .kit-tablebox.stack .kit-table .kit-table-total > td:has(.kit-recon) { flex-basis: 100% }
+    .kit-tablebox.stack .kit-table .kit-recon { display: flex; flex-wrap: wrap; width: fit-content; max-width: 100%; margin: 4px 0 0 auto; white-space: normal; text-align: start }
     /* The loading and empty rows are one cell across the table, not a card of figures. */
     .kit-tablebox.stack .kit-table tbody tr:has(> .kit-table-empty) { display: block; padding: 0 }
     .kit-tablebox.stack .kit-table tbody tr > .kit-table-empty { display: block; height: auto; padding: 28px 12px }

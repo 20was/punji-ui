@@ -107,6 +107,10 @@
       "types": "./dist/floating-tooltip/FloatingTooltip.d.ts",
       "default": "./dist/floating-tooltip/FloatingTooltip.js"
     },
+    "./icons": {
+      "types": "./dist/icons/Icons.d.ts",
+      "default": "./dist/icons/Icons.js"
+    },
     "./info-tip": {
       "types": "./dist/info-tip/InfoTip.d.ts",
       "default": "./dist/info-tip/InfoTip.js"

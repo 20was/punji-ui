@@ -332,7 +332,7 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "197.70 kB",
+    "limit": "201.90 kB",
     "gzip": true
   },
   {
@@ -1592,6 +1592,20 @@
     "path": "dist/status-banner/StatusBanner.js",
     "import": "*",
     "limit": "2.1 kB",
+    "gzip": true
+  },
+  {
+    "name": "icons: one icon (import { IconBell } from '@punji/ui/icons')",
+    "path": "dist/icons/Icons.js",
+    "import": "{ IconBell }",
+    "limit": "600 B",
+    "gzip": true
+  },
+  {
+    "name": "icons: Icon with every glyph (import { Icon } from '@punji/ui/icons')",
+    "path": "dist/icons/Icons.js",
+    "import": "{ Icon }",
+    "limit": "7.5 kB",
     "gzip": true
   },
   {

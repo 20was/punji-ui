@@ -70,6 +70,9 @@ const SERIES = (words: { cash: string; bonus: string; rights: string }): ColumnS
   { key: 'rights', label: words.rights, tone: 'series3' },
 ];
 
+/**
+ * @stability composition
+ */
 export function DividendHistory({
   entries, caption, money = nepalQuoteMoney, labels, chartHeight = 220, chart = true, state = 'ready', emptyLabel = 'No dividends received yet.',
   loadingLabel = 'Loading dividends…', errorLabel = 'Dividends could not be loaded.', retryLabel = 'Try again', onRetry, testId, marketValue, costBasis, fiscalLabel,

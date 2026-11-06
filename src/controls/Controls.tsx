@@ -55,6 +55,8 @@ export interface ChipProps {
  * The one chip (design.punji.app/components/chip): a pill you press to
  * filter or toggle. Selected is the inverse surface; hover never hides the
  * text. A label that is not pressable is a StatusPill, never a chip.
+ *
+ * @stability stable
  */
 export function Chip({ children, selected, current, onClick, size = 'md', count, icon, disabled, label, testId, id, className }: ChipProps) {
   return (
@@ -133,6 +135,8 @@ export interface SegmentedProps<T extends string> {
  * The one segmented control: a tinted track with a raised pill on the chosen
  * segment, for small option sets (windows, periods, horizons, scopes).
  * Arrow keys, Home and End move the choice.
+ *
+ * @stability stable
  */
 export function SegmentedControl<T extends string>({ options, value, onChange, prefix, label, panelId, size = 'md', fill, wrap, disabled, tone = 'neutral', testId, className }: SegmentedProps<T>) {
   const key = (k: string) => {

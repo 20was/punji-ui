@@ -109,6 +109,9 @@ const REMOVE_ICON = <svg width="16" height="16" viewBox="0 0 16 16" fill="none" 
 let counter = 0;
 const defaultNewLine = (): LineItemDraft => ({ id: `line-${Date.now().toString(36)}-${(counter++).toString(36)}`, description: '', quantity: '1', rate: '', taxable: true });
 
+/**
+ * @stability beta
+ */
 export function LineItemEditor({
   lines, onChange, newLine = defaultNewLine, money = nepalLedgerMoney, vatRate = '0.13', rounding = 'half-up', discount, quantityDigits = 3,
   showTaxable = true, maxLines, onTotals, labels, className, testId,

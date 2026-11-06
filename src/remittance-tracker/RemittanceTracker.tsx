@@ -114,6 +114,9 @@ export function maskControlNumber(value: string): string {
 
 type State = { kind: 'idle' } | { kind: 'loading' } | { kind: 'found'; number: string; details: RemittanceDetails } | { kind: 'not-found' } | { kind: 'error' };
 
+/**
+ * @stability composition
+ */
 export function RemittanceTracker({ onLookup, defaultControlNumber = '', lookupOnMount = false, minLength = 8, maxLength = 16, payoutMoney = { currency: 'NPR', locale: 'en-IN', display: 'code' }, sentLocale = 'en', timeZone, labels, headingLevel = 3, footer, className, testId }: RemittanceTrackerProps) {
   const words = { ...DEFAULT_REMITTANCE_TRACKER_LABELS, ...labels, methods: { ...DEFAULT_REMITTANCE_TRACKER_LABELS.methods, ...labels?.methods } };
   const uid = useId();

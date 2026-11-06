@@ -51,6 +51,9 @@ export interface CorporateActionTimelineProps {
   testId?: string;
 }
 
+/**
+ * @stability composition
+ */
 export function CorporateActionTimeline({
   events, today, label = 'Corporate action dates', primaryCalendar = 'bs', language, digits, kindLabels, labels, className, testId,
 }: CorporateActionTimelineProps) {

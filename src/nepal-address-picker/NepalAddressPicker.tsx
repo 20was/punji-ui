@@ -86,6 +86,9 @@ export function loadNepalAddressData(): Promise<NepalAddressData> {
   return pending;
 }
 
+/**
+ * @stability composition
+ */
 export function NepalAddressPicker({ value, onChange, data, language = 'en', digits = 'latn', hideWard, errors, labels, size, className, testId }: NepalAddressPickerProps) {
   const words = { ...DEFAULT_NEPAL_ADDRESS_PICKER_LABELS, ...labels, types: { ...DEFAULT_NEPAL_ADDRESS_PICKER_LABELS.types, ...labels?.types } };
   const uid = useId();

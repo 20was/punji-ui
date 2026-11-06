@@ -123,5 +123,8 @@ function Picker(props:PickerProps) {
     })()}
   </div>;
 }
+/**
+ * @stability beta
+ */
 export function DatePicker(props:DatePickerProps) {return <Picker {...props}/>;}
 export function DateRangePicker(props:DateRangePickerProps) {return <Picker {...props} range/>;}

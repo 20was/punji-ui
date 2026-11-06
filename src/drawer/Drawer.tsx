@@ -33,6 +33,9 @@ export interface DrawerProps {
   testId?: string;
 }
 
+/**
+ * @stability beta
+ */
 export function Drawer(props: DrawerProps) {
   return props.open ? (
     <Portal>

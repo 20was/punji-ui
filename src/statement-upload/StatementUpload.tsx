@@ -87,6 +87,9 @@ export interface StatementUploadProps {
 
 const sameFile = (a: File, b: File) => a.name === b.name && a.size === b.size && a.lastModified === b.lastModified;
 
+/**
+ * @stability composition
+ */
 export function StatementUpload({
   label, hint, error, accept = ['.csv', '.pdf'], maxSize = 5 * 1024 * 1024, multiple = false, maxFiles = 10,
   value, defaultValue, onChange, onReject, disabled = false, id: idProp, testId, labels,

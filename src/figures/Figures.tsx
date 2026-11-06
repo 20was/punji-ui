@@ -59,6 +59,9 @@ function printMoney(value: Money, formatter: MoneyFormatter | undefined, absolut
   return intl.format(`${negative ? '-' : ''}${decimal}` as `${number}`);
 }
 
+/**
+ * @stability stable
+ */
 export function Figure({ value, kind = 'num', dp = 2, formatter, mark, testId }: FigureProps) {
   const rupee = useRsMark(mark);
   if (isMoney(value)) return <span className="kit-fig" data-testid={testId}>{printMoney(value, formatter)}</span>;

@@ -91,6 +91,9 @@ function defaultRangeMessage({ min, max }: { min: string | null; max: string | n
   return max !== null ? `Enter a rate of ${max}% or less.` : `Enter a rate of ${min}% or more.`;
 }
 
+/**
+ * @stability beta
+ */
 export function PercentageInput({
   label, value, onValueChange, min, max, maxFractionDigits = 2, allowNegative = false, digits = 'latn', unitLabel = 'percent',
   rangeMessage = defaultRangeMessage, error, onBlur, testId, className, ...rest

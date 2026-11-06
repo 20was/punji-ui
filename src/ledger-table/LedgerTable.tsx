@@ -85,6 +85,9 @@ type Key = 'date' | 'reference' | 'description' | 'debit' | 'credit' | 'balance'
 
 const defaultDate = (date: CalendarDate) => formatCalendarDate(date);
 
+/**
+ * @stability stable
+ */
 export function LedgerTable({
   caption, entries, normal, opening = 0n, money = nepalLedgerMoney, formatDate = defaultDate, labels, sideLabels, showReference = true, maxHeight, bare,
   state = 'ready', emptyLabel = 'No entries in this period.', loadingLabel = 'Loading entries…', errorLabel = 'The ledger could not be loaded.', retryLabel = 'Try again', onRetry, testId,

@@ -57,6 +57,8 @@ const defaultSpoken = (m: number, s: number) =>
 
 /**
  * @remarks UX safeguard only. It does not enforce authorisation, step-up authentication, limits, payee checks, session expiry or validation; do all of that on the server. Hidden or disabled controls are not access control.
+ *
+ * @stability composition
  */
 export function SessionTimeoutWarning({
   expiresAt, warnBefore = 120_000, onExtend, onSignOut, onExpire, now = Date.now, labels = {}, className, testId,

@@ -42,6 +42,9 @@ export function StateGlyph({ name, size = 18 }: {
   );
 }
 
+/**
+ * @stability stable
+ */
 export function InlineState({ icon, tone, title, body, actions, layout = 'stack', bare = false, role, className, testId }: {
   /** The state icon in the tile (decorative). */
   icon: StateIcon;

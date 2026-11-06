@@ -68,6 +68,9 @@ function currencyName(code: string, locale: string): string {
   try { return new Intl.DisplayNames(locale, { type: 'currency' }).of(code) ?? code; } catch { return code; }
 }
 
+/**
+ * @stability beta
+ */
 export function CurrencyInput({
   label, value, onValueChange, allowNegative = false, showCurrency = true, preset, currency, locale, numberingSystem,
   onBlur, ref, testId, className, ...rest

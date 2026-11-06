@@ -36,6 +36,9 @@ export interface PaymentStatusProps {
   testId?: string;
 }
 
+/**
+ * @stability stable
+ */
 export function PaymentStatus({ status, labels, size, className, testId }: PaymentStatusProps) {
   const text = labels?.[status] ?? PAYMENT_STATUS_LABELS[status];
   return (

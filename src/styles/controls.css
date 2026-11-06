@@ -9,7 +9,7 @@
   .kit-chip:hover:not(:disabled) { background: var(--pu-color-surface-tint) }
   .kit-chip:is([aria-pressed='true'], [aria-current='true']) { background: var(--pu-color-surface-inverse); border-color: transparent; color: var(--pu-color-text-inverse) }
   .kit-chip:is([aria-pressed='true'], [aria-current='true']):hover:not(:disabled) { background: color-mix(in srgb, var(--pu-color-surface-inverse) 86%, var(--pu-color-text-inverse)) }
-  .kit-chip:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+  .kit-chip:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
   .kit-chip:disabled { opacity: 0.5; cursor: not-allowed }
   .kit-chip .count { font-weight: 500; opacity: 0.72; font-variant-numeric: var(--pu-font-numeric) }
   .kit-chip-ico { display: inline-flex }
@@ -28,7 +28,7 @@
   .kit-seg button:hover:not(:disabled) { color: var(--pu-color-text) }
   .kit-seg button:disabled { cursor: not-allowed; color: var(--pu-color-text-tertiary) }
   .kit-seg button[aria-selected='true'], .kit-seg button[aria-pressed='true'] { background: var(--pu-seg-thumb); color: var(--pu-color-text); box-shadow: var(--pu-seg-thumb-shadow) }
-  .kit-seg button:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: -2px }
+  .kit-seg button:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: -2px }
   .kit-seg button .count { font-weight: 400; font-variant-numeric: var(--pu-font-numeric) }
   .kit-seg.accent { border-radius: var(--pu-radius-full); background: var(--pu-color-surface); box-shadow: inset 0 0 0 1px var(--pu-color-card-border) }
   .kit-seg.accent button { border-radius: var(--pu-radius-full); padding: 0 16px }

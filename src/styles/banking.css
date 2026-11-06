@@ -7,7 +7,7 @@
   .pu-acct-num { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.95em; letter-spacing: 0.02em; overflow-wrap: anywhere }
   .pu-acct-btn { flex: none; display: inline-grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; border-radius: var(--pu-radius-16); background: transparent; color: var(--pu-color-text-muted); cursor: pointer }
   .pu-acct-btn:hover { background: var(--pu-color-surface-tint); color: var(--pu-color-text) }
-  .pu-acct-btn:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 1px }
+  .pu-acct-btn:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 1px }
   .pu-acct-btn[aria-pressed='true'] { color: var(--pu-color-text); background: var(--pu-color-surface-tint) }
   @media (pointer: coarse) { .pu-acct-btn { width: var(--pu-tap-min); height: var(--pu-tap-min) } }
 
@@ -100,7 +100,7 @@
   .pu-bene { position: relative; display: grid; gap: 6px; max-width: 26rem; min-width: 0 }
   .pu-bene-label { font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body) }
   .pu-bene-input { box-sizing: border-box; width: 100%; height: var(--pu-control-md); padding: 0 12px; font: 400 var(--pu-text-base) / 1.3 var(--pu-font-body); color: var(--pu-color-text); background: var(--pu-color-surface); border: 1px solid var(--pu-color-border-control); border-radius: var(--pu-radius-control) }
-  .pu-bene-input:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 1px }
+  .pu-bene-input:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 1px }
   .pu-bene.bad .pu-bene-input { border-color: var(--pu-color-loss) }
   .pu-bene-err { font-size: var(--pu-text-xs); color: var(--pu-color-loss) }
   .pu-bene-sel { display: flex; flex-wrap: wrap; gap: 2px 8px; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); font-variant-numeric: var(--pu-font-numeric) }

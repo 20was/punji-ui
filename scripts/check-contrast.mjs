@@ -75,6 +75,19 @@ const PAIRS = [
   ['text', 'loss-soft', 'text'],
   ['gain', 'gain-soft', 'text'],
   ['loss', 'loss-soft', 'text'],
+  // Text on --pu-color-accent (a step number or badge on the accent colour), not on the fill.
+  ['on-accent', 'accent', 'text'],
+  // Info is a status hue: readable as text on every surface, and as an icon or swatch.
+  ...SURFACES.map((bg) => ['info', bg, 'text']),
+  ...['surface', 'surface-tint', 'bg'].map((bg) => ['focus-ring', bg, 'ui']),
+  ['focus-ring', 'surface-elevated', 'ui'],
+  ['btn-line', 'surface', 'ui'],
+  ['btn-line', 'surface-tint', 'ui'],
+  ['btn-line', 'surface-elevated', 'ui'],
+  ['info', 'surface-elevated', 'text'],
+  ['text', 'surface-elevated', 'text'],
+  ['text-muted', 'surface-elevated', 'text'],
+  // The area under a chart line is decoration; the line itself (chart, checked below) carries the data.
   ['border-control', 'surface', 'ui'],
   ['border-control', 'surface-tint', 'ui'],
   ['chart', 'surface', 'ui'],

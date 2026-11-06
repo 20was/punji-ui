@@ -27,6 +27,14 @@
   [data-theme='light'] {
     color-scheme: light;
     --pu-ambient: none;
+    --pu-color-btn-line: #7a7e78;
+    --pu-color-chart-fill: rgba(200, 242, 61, 0.3);
+    --pu-color-focus-ring: #3f6a00;
+    --pu-color-info: #2a62c4;
+    --pu-color-inverse-shimmer: rgba(255, 255, 255, 0.07);
+    --pu-color-inverse-shimmer-hi: rgba(255, 255, 255, 0.12);
+    --pu-color-on-accent: #ffffff;
+    --pu-color-surface-elevated: #ffffff;
     --pu-color-accent: #3f6a00;
     --pu-color-accent-fill: #c8f23d;
     --pu-color-accent-fill-hover: #b9e62a;
@@ -207,6 +215,14 @@
 
   [data-theme='dark'] {
     color-scheme: dark;
+    --pu-color-btn-line: #6e7480;
+    --pu-color-chart-fill: rgba(200, 242, 61, 0.1);
+    --pu-color-focus-ring: #c8f23d;
+    --pu-color-info: #8fb8ff;
+    --pu-color-inverse-shimmer: rgba(18, 19, 20, 0.07);
+    --pu-color-inverse-shimmer-hi: rgba(18, 19, 20, 0.12);
+    --pu-color-on-accent: #0d0e10;
+    --pu-color-surface-elevated: #1f2226;
     --pu-color-accent: #c8f23d;
     --pu-color-accent-fill-hover: #d6ff5a;
     --pu-color-bg: #0d0e10;
@@ -271,6 +287,14 @@
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme='light']) {
       color-scheme: dark;
+      --pu-color-btn-line: #6e7480;
+      --pu-color-chart-fill: rgba(200, 242, 61, 0.1);
+      --pu-color-focus-ring: #c8f23d;
+      --pu-color-info: #8fb8ff;
+      --pu-color-inverse-shimmer: rgba(18, 19, 20, 0.07);
+      --pu-color-inverse-shimmer-hi: rgba(18, 19, 20, 0.12);
+      --pu-color-on-accent: #0d0e10;
+      --pu-color-surface-elevated: #1f2226;
       --pu-color-accent: #c8f23d;
       --pu-color-accent-fill-hover: #d6ff5a;
       --pu-color-bg: #0d0e10;

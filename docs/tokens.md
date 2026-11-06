@@ -28,10 +28,13 @@ Both are documented in [THEMING.md](THEMING.md).
 | `--pu-color-bg` | `#e4e7de` | `#0d0e10` |
 | `--pu-color-border` | `rgba(18, 19, 20, 0.07)` | `rgba(255, 255, 255, 0.07)` |
 | `--pu-color-border-control` | `#7a7e78` | `#6e7480` |
+| `--pu-color-btn-line` | `#7a7e78` | `#6e7480` |
 | `--pu-color-border-default` | `rgba(18, 19, 20, 0.1)` | `rgba(255, 255, 255, 0.1)` |
 | `--pu-color-border-strong` | `rgba(18, 19, 20, 0.18)` | `rgba(255, 255, 255, 0.18)` |
 | `--pu-color-card-border` | `#d9dcd2` | `#24272b` |
 | `--pu-color-chart` | `#5e8c00` | `#c8f23d` |
+| `--pu-color-chart-fill` | `rgba(200, 242, 61, 0.3)` | `rgba(200, 242, 61, 0.1)` |
+| `--pu-color-focus-ring` | `#3f6a00` | `#c8f23d` |
 | `--pu-color-gain` | `#284800` | `#c8f23d` |
 | `--pu-color-gain-soft` | `rgba(40, 72, 0, 0.1)` | `rgba(200, 242, 61, 0.12)` |
 | `--pu-color-inverse-gain` | `#c8f23d` | `#284800` |
@@ -41,7 +44,11 @@ Both are documented in [THEMING.md](THEMING.md).
 | `--pu-color-inverse-nepse` | `#8ea8ff` | `#3552c8` |
 | `--pu-color-inverse-row` | `#1f2226` | `#ffffff` |
 | `--pu-color-inverse-warn` | `#f5b84b` | `#7e5200` |
+| `--pu-color-info` | `#2a62c4` | `#8fb8ff` |
+| `--pu-color-inverse-shimmer` | `rgba(255, 255, 255, 0.07)` | `rgba(18, 19, 20, 0.07)` |
+| `--pu-color-inverse-shimmer-hi` | `rgba(255, 255, 255, 0.12)` | `rgba(18, 19, 20, 0.12)` |
 | `--pu-color-link` | `#3f6a00` | `#c8f23d` |
+| `--pu-color-on-accent` | `#ffffff` | `#0d0e10` |
 | `--pu-color-loss` | `#a3321f` | `#ff8a78` |
 | `--pu-color-loss-soft` | `rgba(163, 50, 31, 0.1)` | `rgba(255, 122, 102, 0.14)` |
 | `--pu-color-on-accent-fill` | `#0d0e10` | - |
@@ -63,6 +70,7 @@ Both are documented in [THEMING.md](THEMING.md).
 | `--pu-color-shimmer-highlight` | `#eceee7` | `rgba(255, 255, 255, 0.12)` |
 | `--pu-color-surface` | `#f7f8f3` | `#17191c` |
 | `--pu-color-surface-inverse` | `#17191c` | `#f3f4ef` |
+| `--pu-color-surface-elevated` | `#ffffff` | `#1f2226` |
 | `--pu-color-surface-solid` | `#f7f8f3` | `#17191c` |
 | `--pu-color-surface-subtle` | `rgba(18, 19, 20, 0.04)` | `rgba(255, 255, 255, 0.04)` |
 | `--pu-color-surface-tint` | `#eceee7` | `#1f2226` |

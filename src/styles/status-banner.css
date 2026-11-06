@@ -1,0 +1,14 @@
+/* Punji UI styles.
+   Styles for StatusBanner. Needs tokens.css and base.css (styles.css has everything). Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  .pu-status-banner { display: flex; align-items: center; gap: var(--pu-space-3); padding-block: var(--pu-space-2); padding-inline: var(--pu-space-4); border-block-end: 1px solid var(--pu-color-border); background: var(--pu-color-surface-tint); color: var(--pu-color-text); font-size: var(--pu-text-sm); line-height: 1.5 }
+  .pu-status-banner.sticky { position: sticky; inset-block-start: 0; z-index: var(--pu-z-sticky) }
+  .pu-status-banner-ico { flex: none; color: var(--pu-color-text-muted) }
+  .pu-status-banner.warn { background: color-mix(in srgb, var(--pu-color-warn) 12%, var(--pu-color-surface-tint)) }
+  .pu-status-banner.warn .pu-status-banner-ico { color: var(--pu-color-warn) }
+  .pu-status-banner.danger { background: color-mix(in srgb, var(--pu-color-loss) 12%, var(--pu-color-surface-tint)) }
+  .pu-status-banner.danger .pu-status-banner-ico { color: var(--pu-color-loss) }
+  .pu-status-banner-body { flex: 1; min-inline-size: 0; display: flex; flex-wrap: wrap; gap: 0 var(--pu-space-2) }
+  .pu-status-banner-title { font-weight: 600 }
+  @media (pointer: coarse) { .pu-status-banner .kit-btn { min-block-size: 44px; min-inline-size: 44px } }
+}

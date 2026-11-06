@@ -1,0 +1,11 @@
+/* Punji UI styles.
+   Styles for DataFreshness. Needs tokens.css and base.css (styles.css has everything). Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  .pu-fresh { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--pu-space-1) var(--pu-space-2); color: var(--pu-color-text-muted); font-size: var(--pu-text-xs) }
+  .pu-fresh-label { font-weight: 600; color: var(--pu-color-text) }
+  .pu-fresh-ico { flex: none }
+  .pu-fresh.live .pu-fresh-ico { color: var(--pu-color-gain) }
+  .pu-fresh.delayed .pu-fresh-ico, .pu-fresh.stale .pu-fresh-ico { color: var(--pu-color-warn) }
+  .pu-fresh.offline .pu-fresh-ico { color: var(--pu-color-loss) }
+  .pu-fresh-time { font-variant-numeric: tabular-nums }
+}

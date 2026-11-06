@@ -25,7 +25,7 @@ export default function Example() {
       </Card>
       <Note>Prices are delayed by 15 minutes.</Note>
       <Note tone="warn">Dividend data for this year is not final.</Note>
-      <Note tone="error">The last sync failed; figures may be stale.</Note>
+      <Note tone="danger">The last sync failed; figures may be stale.</Note>
       <Note quiet>Source: exchange end-of-day file.</Note>
       <Note plain>Figures are synthetic.</Note>
     </Stack>

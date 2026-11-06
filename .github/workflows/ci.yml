@@ -39,6 +39,7 @@ jobs:
           filters: |
             package:
               - 'src/**'
+              - 'packages/**'
               - 'test/**'
               - 'examples/**'
               - 'portal/**'

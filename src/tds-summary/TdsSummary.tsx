@@ -75,7 +75,7 @@ export function TdsSummary({
     result = summariseTds(state === 'ready' ? entries : [], { rounding });
     for (const entry of result.entries) ratePercent(entry.rate);
   } catch {
-    return <div role="alert" data-testid={testId}><Note tone="error">{words.invalid}</Note></div>;
+    return <div role="alert" data-testid={testId}><Note tone="danger">{words.invalid}</Note></div>;
   }
   const amount = (value: bigint, id?: string) => <MoneyDisplay value={value} preset={money} testId={id && testId ? `${testId}-${id}` : undefined} />;
   const empty = result.entries.length === 0;

@@ -13,6 +13,7 @@
  */
 import type { ReactNode } from 'react';
 
+import { directionClass } from '../internal/tone.ts';
 import { Skeleton } from '../states/States.tsx';
 
 export interface KeyStat {
@@ -22,8 +23,8 @@ export interface KeyStat {
   value: ReactNode | null;
   /** One quiet line under the value. */
   sub?: ReactNode;
-  /** A tone for a signed figure (a net position). */
-  tone?: 'up' | 'down';
+  /** A tone for a signed figure (a net position). Deprecated: 'up' and 'down', use `gain` and `loss`. */
+  tone?: 'gain' | 'loss' | 'up' | 'down';
   /** Sets `data-testid` on the cell. */
   testId?: string;
 }
@@ -54,7 +55,7 @@ export function KeyStats({ items, cols = 2, layout = 'grid', empty, label, loadi
         return (
           <div key={i} className="kit-kstat" data-testid={it.testId}>
             <dt>{it.label}</dt>
-            <dd className={unknown ? (loading ? 'wait' : 'none') : it.tone}>{unknown ? (loading ? <Skeleton width={64} height={16} /> : empty) : it.value}</dd>
+            <dd className={unknown ? (loading ? 'wait' : 'none') : directionClass(it.tone)}>{unknown ? (loading ? <Skeleton width={64} height={16} /> : empty) : it.value}</dd>
             {it.sub && <dd className="sub">{it.sub}</dd>}
           </div>
         );

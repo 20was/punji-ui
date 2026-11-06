@@ -103,7 +103,7 @@ export function AmortisationTable({ schedule, money = nepalMoneyPreset, view, de
   return (
     <div className={`pu-amort${className ? ` ${className}` : ''}`} data-testid={testId}>
       {!hideViewSwitch && (
-        <ChoiceGroup label={words.view} testId={`${testId ?? uid}-view`} size="sm" appearance="compact" value={current} onChange={setCurrent}
+        <ChoiceGroup label={words.view} testId={`${testId ?? uid}-view`} size="sm" variant="compact" value={current} onChange={setCurrent}
           options={[{ value: 'monthly', label: words.monthly }, { value: 'yearly', label: words.yearly }]} />
       )}
       {/* A scrollable region must be focusable so keyboard users can scroll it. */}

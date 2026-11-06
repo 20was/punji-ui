@@ -46,8 +46,8 @@ export function Overview() {
           label="NEPSE breadth"
           {...breadth}
           extra={[
-            { id: 'upper', label: 'At upper circuit', value: derived.upperCircuit, tone: 'up' },
-            { id: 'lower', label: 'At lower circuit', value: derived.lowerCircuit, tone: 'down' },
+            { id: 'upper', label: 'At upper circuit', value: derived.upperCircuit, tone: 'gain' },
+            { id: 'lower', label: 'At lower circuit', value: derived.lowerCircuit, tone: 'loss' },
             { id: 'traded', label: 'Scrips traded', value: derived.traded },
           ]}
           testId="mp-breadth"

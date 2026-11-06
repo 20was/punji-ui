@@ -43,7 +43,7 @@ export default function Example() {
         status={{ label: 'Below minimum', tone: 'loss' }}
       />
       <CheckRow
-        kind="report"
+        variant="report"
         icon={<StateGlyph name="chart" size={18} />}
         tone="neutral"
         title="Annual statement"

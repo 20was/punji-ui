@@ -24,7 +24,7 @@ export default function Example() {
       <ChoiceGroup<Kind>
         label="Transaction type, compact"
         testId="choice-kind-compact"
-        appearance="compact"
+        variant="compact"
         size="md"
         value={kind}
         onChange={setKind}

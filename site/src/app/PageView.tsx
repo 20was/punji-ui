@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { Fragment, lazy, Suspense, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { ExampleDef, GuideSection } from '../registry.ts';
 import { groupAnchor, pagePath, SITE_NAME } from '../paths.ts';
 import { Link, hrefFor } from './router.tsx';
@@ -10,6 +10,10 @@ import { exampleCss, exampleKey, guideSource, loadedExample, loadExample, type P
 import { GROUPS, NAV, groupTitleOf, navTitleOf, type NavPage, type PageCard } from './nav.ts';
 import { PageActions } from './PageActions.tsx';
 import { PhoneFrame } from './PhoneFrame.tsx';
+import { PLAYGROUNDS } from '../playground.ts';
+import { LocaleScope } from './PreviewScope.tsx';
+import { PreviewControls } from './PreviewControls.tsx';
+import { setPreviewPrefs, usePreviewPrefs } from './preview.ts';
 import { useResolvedTheme } from './theme.ts';
 import { ChevronIcon, CodeIcon, DoIcon, DontIcon, MonitorIcon, MoonIcon, PhoneIcon, SunIcon } from './icons.tsx';
 
@@ -256,7 +260,8 @@ const PEEK_LINES = 24;
 function Demo({ page, def, onPick }: { page: Page; def: ExampleDef; onPick: (id: string) => void }) {
   const loaded = loadedExample(page.slug, def.id);
   const resolved = useResolvedTheme();
-  const [theme, setTheme] = useState<'light' | 'dark' | null>(null);
+  const prefs = usePreviewPrefs();
+  const theme = prefs.theme;
   const [phone, setPhone] = useState(false);
   const [codeOpen, setCodeOpen] = useState(true);
   // Long examples open as a peek (about fourteen lines under a fade) with a button for the rest.
@@ -277,6 +282,7 @@ function Demo({ page, def, onPick }: { page: Page; def: ExampleDef; onPick: (id:
           ))}
         </div>
       )}
+      <PreviewControls />
       <div className="doc-demo" id={`ex-${def.id}`}>
         <div className="doc-demo-bar">
           {/* With variant chips above, the active chip already names the example: on wide screens the bar shows only its note
@@ -295,24 +301,24 @@ function Demo({ page, def, onPick }: { page: Page; def: ExampleDef; onPick: (id:
               </button>
             </div>
             <div className="doc-seg" role="group" aria-label="Preview theme">
-              <button type="button" aria-pressed={shown === 'light'} onClick={() => setTheme('light')} aria-label="Light preview" title="Light preview">
+              <button type="button" aria-pressed={shown === 'light'} onClick={() => setPreviewPrefs({ theme: 'light' })} aria-label="Light preview" title="Light preview">
                 <SunIcon />
               </button>
-              <button type="button" aria-pressed={shown === 'dark'} onClick={() => setTheme('dark')} aria-label="Dark preview" title="Dark preview">
+              <button type="button" aria-pressed={shown === 'dark'} onClick={() => setPreviewPrefs({ theme: 'dark' })} aria-label="Dark preview" title="Dark preview">
                 <MoonIcon />
               </button>
             </div>
           </div>
         </div>
-        <div className={`doc-stage${phone ? ' is-phone' : ''}`} data-theme={theme ?? undefined}>
+        <div className={`doc-stage${phone ? ' is-phone' : ''}`} data-theme={theme ?? undefined} data-pu-density={prefs.density}>
           <div className="doc-stage-in" data-testid="preview">
             {/* Phone width renders the example in its own 375 px viewport, so its media queries apply (PhoneFrame). */}
             {phone ? (
-              <PhoneFrame slug={page.slug} id={def.id} title={def.title} theme={shown} showcase={page.kind === 'showcase'} />
-            ) : Component ? (
-              <Component key={`${page.slug}/${def.id}`} />
+              <PhoneFrame slug={page.slug} id={def.id} title={def.title} theme={shown} prefs={prefs} showcase={page.kind === 'showcase'} />
             ) : (
-              <Late key={`${page.slug}/${def.id}`} id={exampleKey(page.slug, def.id)} />
+              <LocaleScope locale={prefs.locale}>
+                {Component ? <Component key={`${page.slug}/${def.id}`} /> : <Late key={`${page.slug}/${def.id}`} id={exampleKey(page.slug, def.id)} />}
+              </LocaleScope>
             )}
           </div>
         </div>
@@ -342,6 +348,36 @@ function Demo({ page, def, onPick }: { page: Page; def: ExampleDef; onPick: (id:
         </p>
       )}
     </>
+  );
+}
+
+const LazyPlayground = lazy(() => import('./Playground.tsx'));
+
+/**
+ * The props playground of a page that opts in (site/src/playground.ts). The prerendered page and the first client
+ * render show only the closed section, so no playground code loads until someone asks for it.
+ */
+function PlaygroundSection({ slug, api }: { slug: string; api: Record<string, ApiEntry> }) {
+  const def = PLAYGROUNDS[slug];
+  const [open, setOpen] = useState(false);
+  const entry = def && api[def.component];
+  if (!def || !entry) return null;
+  return (
+    <section className="doc-section doc-playground" aria-labelledby="playground-h" id="playground">
+      <h3 id="playground-h">Props playground</h3>
+      <p className="doc-p">
+        Change <code>{entry.name}</code> props and see the result live, with the locale, density and theme chosen above. The JSX below is what to paste.
+      </p>
+      {open ? (
+        <Suspense fallback={<p className="doc-p" role="status">Loading the playground…</p>}>
+          <LazyPlayground def={def} entry={entry} api={api} />
+        </Suspense>
+      ) : (
+        <button type="button" className="doc-play-open" aria-expanded="false" onClick={() => setOpen(true)} data-testid="playground-open">
+          Open the playground
+        </button>
+      )}
+    </section>
   );
 }
 
@@ -556,6 +592,7 @@ function ComponentPage({ data }: { data: PageData }) {
               Examples
             </h2>
             <Demo page={page} def={def} onPick={pick} />
+            <PlaygroundSection slug={page.slug} api={data.api} />
           </section>
         )}
 

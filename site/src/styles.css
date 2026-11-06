@@ -257,6 +257,18 @@ h1:focus, main:focus { outline: none; }
 .doc-phone-frame { display: block; width: 375px; max-width: 100%; border: 0; outline: 1px solid var(--pu-color-card-border); background: var(--pu-color-bg); }
 .doc-frame .doc-stage-in { min-height: 0; padding: 20px 16px; }
 .doc-frame.is-showcase .doc-stage-in { align-content: start; padding: 16px 12px; }
+/* Global preview controls (locale, density, theme) above the example frame, and the props playground. */
+.doc-preview-bar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 12px; margin: 0 0 12px; }
+.doc-preview-bar label, .doc-play-field { display: grid; gap: 4px; min-width: 0; font: 500 12px/1.2 var(--pu-font-body); color: var(--doc-ink-2); }
+.doc-preview-bar select, .doc-play-field select, .doc-play-field input[type='text'], .doc-play-field input[type='number'] { height: 32px; max-width: 100%; padding: 0 8px; border: 1px solid var(--doc-rule); border-radius: 8px; background: var(--doc-raised); color: var(--pu-color-text); font: 400 13px/1 var(--pu-font-body); }
+.doc-preview-reset, .doc-play-open { height: 32px; padding: 0 12px; border: 1px solid var(--doc-rule); border-radius: 8px; background: transparent; color: var(--pu-color-text); font: 500 13px/1 var(--pu-font-body); cursor: pointer; }
+.doc-preview-reset:hover:not(:disabled), .doc-play-open:hover { border-color: var(--pu-color-border-strong); }
+.doc-preview-reset:disabled { color: var(--doc-ink-3); cursor: default; }
+.doc-playground { margin-top: 32px; }
+.doc-play { display: grid; gap: 12px; }
+.doc-play-controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 14px; }
+.doc-play-field.is-check { display: flex; align-items: center; gap: 6px; min-height: 32px; font-size: 13px; color: var(--pu-color-text); }
+.doc-play-field.is-check input { width: 18px; height: 18px; margin: 0; }
 .doc-demo-code { border-top: 1px solid var(--pu-color-card-border); background: var(--doc-code-bg); }
 .doc-demo-codebar { display: flex; align-items: center; gap: 10px; min-height: 42px; padding: 0 8px 0 8px; background: var(--doc-code-bar); }
 .doc-demo-toggle { display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 10px 0 8px; border: 0; border-radius: 7px; background: transparent; font: 500 13px/1 var(--pu-font-body); color: var(--doc-ink-2); cursor: pointer; }

@@ -53,6 +53,9 @@ export function resolveMoneyConfig(props: Partial<MoneyFormatConfig>, preset?: M
   return config as MoneyFormatConfig;
 }
 
+/**
+ * @stability beta
+ */
 export function MoneyDisplay({ value, compact, missing = '—', missingLabel = 'No value', preset, className, testId, ref, currency, locale, display, accounting, signDisplay, numberingSystem }: MoneyDisplayProps) {
   const config = resolveMoneyConfig({ currency, locale, display, accounting, signDisplay, numberingSystem }, preset);
   const formatter = getMoneyFormatter(config);

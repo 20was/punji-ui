@@ -34,6 +34,8 @@ export function idNumberToDevanagari(text: string): string {
  * 'length' rather than `partial`, because a KYC form checks a finished value.
  *
  * @remarks Typing-slip checks only. UX safeguard only. It does not enforce authorisation, step-up authentication, limits, payee checks, session expiry or validation; do all of that on the server. Hidden or disabled controls are not access control.
+ *
+ * @stability beta
  */
 export function validatePan(text: string): IdNumberResult {
   const check = checkPan(String(text ?? '').replace(/[‐-―−]/g, '-'));

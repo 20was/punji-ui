@@ -70,6 +70,9 @@ export interface PortfolioOverviewProps {
 
 const defaultMoney: MoneyFormatConfig = { currency: 'NPR', locale: 'en-IN', display: 'code' };
 
+/**
+ * @stability composition
+ */
 export function PortfolioOverview({
   totals, label = 'Portfolio summary', asOf, money = defaultMoney, convention, changeLabels, labels, state = 'ready',
   errorLabel = 'The portfolio could not be loaded.', retryLabel = 'Try again', onRetry, testId,

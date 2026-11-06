@@ -33,6 +33,8 @@ export interface TabsProps<T extends string> {
  * tabs with a roving tab stop; arrows, Home and End move the choice. A small
  * option set inside a toolbar is a SegmentedControl; tabs that change the
  * URL are links in the page's nav, not these.
+ *
+ * @stability stable
  */
 export function Tabs<T extends string>({ options, value, onChange, prefix, label, panelId, fill, variant = 'line', testId }: TabsProps<T>) {
   const key = (k: string) => {

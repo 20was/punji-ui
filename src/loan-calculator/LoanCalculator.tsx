@@ -104,6 +104,9 @@ export interface LoanCalculatorProps {
 /** How long typing must pause before the new instalment is announced. */
 const ANNOUNCE_DELAY_MS = 700;
 
+/**
+ * @stability composition
+ */
 export function LoanCalculator({
   defaultAmount = '', defaultRatePercent = '', defaultMonths = 60, defaultTenureUnit, maxMonths = 360, maxRatePercent = '40', allowPrepayment = true,
   rounding = 'half-up', roundTo = 1n, money = nepalMoneyPreset, digits = 'latn', onScheduleChange, labels, tableLabels, title, headingLevel = 2, className, testId,

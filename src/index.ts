@@ -194,6 +194,9 @@ export * from './locale/locale.ts';
 export * from './money/iso4217.ts';
 // Themes, density and brand theming (pure).
 export * from './theme/theme.ts';
+export * from './fx-rate/FxRate.tsx';
+export * from './data-freshness/DataFreshness.tsx';
+export * from './status-banner/StatusBanner.tsx';
 export * from './menu/Menu.tsx';
 export * from './breadcrumb/Breadcrumb.tsx';
 export * from './accordion/Accordion.tsx';

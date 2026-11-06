@@ -30,6 +30,9 @@ export interface RangeSliderProps {
   testId: string;
 }
 
+/**
+ * @stability beta
+ */
 export function RangeSlider({ min, max, step, lo, hi, onChange, labelLo, labelHi, valueText, testId }: RangeSliderProps) {
   const span = max - min || 1;
   const pLo = ((lo - min) / span) * 100;

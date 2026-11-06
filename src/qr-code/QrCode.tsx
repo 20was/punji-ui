@@ -34,6 +34,9 @@ export interface QrCodeProps {
   testId?: string;
 }
 
+/**
+ * @stability experimental
+ */
 export function QrCode({ value, label = 'QR code', errorCorrection = 'M', size = 200, margin = 4, foreground = '#000000', background = '#ffffff', className, style, testId }: QrCodeProps) {
   if (!Number.isInteger(margin) || margin < 0 || margin > 16) throw new RangeError('QrCode margin must be a whole number from 0 to 16');
   const matrix = encodeQr(value, { errorCorrection });

@@ -71,6 +71,9 @@ export interface WatchlistProps<T extends Quote = Quote> {
   testId?: string;
 }
 
+/**
+ * @stability stable
+ */
 export function Watchlist<T extends Quote = Quote>({
   quotes, label, onReorder, onRemove, labels, money = nepalQuoteMoney, convention, changeLabels, showTrend = true, live, renderSymbol,
   emptyTitle = 'Your watchlist is empty', emptyBody, emptyAction, testId,

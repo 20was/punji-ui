@@ -52,6 +52,9 @@ export interface BoidInputProps extends Omit<InputHTMLAttributes<HTMLInputElemen
 
 const defaultParts = (p: BoidParts) => `DP ID ${p.dpId} · Client ID ${p.clientId}`;
 
+/**
+ * @stability stable
+ */
 export function BoidInput({
   label = 'BOID', value, onValueChange, hint = '16 digits, as printed on your demat statement', error, prefix, digits = 'latn', partsHint = defaultParts,
   message, onBlur, testId, className, ...rest

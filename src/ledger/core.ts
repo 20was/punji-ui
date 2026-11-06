@@ -76,7 +76,9 @@ export function journalImbalance(journal: Pick<JournalEntry, 'lines'>): bigint {
   return debit - credit;
 }
 
-/** True when total debits equal total credits. A journal with no lines is trivially equal; check `lines.length` if you need two. */
+/** True when total debits equal total credits. A journal with no lines is trivially equal; check `lines.length` if you need two. *
+ * @stability stable
+ */
 export function isBalanced(journal: Pick<JournalEntry, 'lines'>): boolean {
   return journalImbalance(journal) === 0n;
 }

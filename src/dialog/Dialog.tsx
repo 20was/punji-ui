@@ -80,6 +80,10 @@ function Layer({ role, title, body, testId, onEscape, onScrim, children, foot }:
   );
 }
 
+/**
+ * A modal dialog: named by its title, described by its body, Tab trapped, the page behind inert, focus returned on close.
+ * @stability beta
+ */
 export function Dialog({ open, title, body, children, actions, onClose, testId, closeLabel = 'Close' }: DialogProps) {
   if (!open) return null;
   return (
@@ -92,6 +96,10 @@ export function Dialog({ open, title, body, children, actions, onClose, testId, 
   );
 }
 
+/**
+ * A dialog that must be answered (role alertdialog): Esc cancels, the scrim does nothing, and a destructive confirm starts focus on Cancel.
+ * @stability beta
+ */
 export function AlertDialog({ open, title, body, onConfirm, onCancel, confirmLabel, cancelLabel = 'Cancel', destructive = false, busy, testId }: AlertDialogProps) {
   if (!open) return null;
   return (

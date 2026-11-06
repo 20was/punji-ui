@@ -15,6 +15,7 @@ export const TAX_PAGES: readonly PageDef[] = [
     lead: 'A VAT bill that prints cleanly: PANs, BS and AD dates, exact VAT and the total in words, from bigint paisa.',
     group: 'accounting',
     kind: 'component',
+    stability: 'composition',
     summary:
       'A tax invoice as a document: the seller with logo, address and PAN/VAT number; the buyer and their PAN; the invoice number, the date in Bikram Sambat and Gregorian, a due date and the payment mode; the lines with quantity, unit, rate and amount; subtotal, discount, taxable and exempt amounts, VAT at the rate you pass (default 13%), the total, and the total in words (English or Nepali). Every figure comes from `computeInvoice` in exact bigint minor units, with a rounding mode you choose. It has its own print styles: plain background, no buttons, rows never split across pages.',
     use: [
@@ -49,6 +50,7 @@ export const TAX_PAGES: readonly PageDef[] = [
     lead: 'Edit the lines of a bill and watch exact totals update, with focus and announcements handled for you.',
     group: 'accounting',
     kind: 'component',
+    stability: 'beta',
     summary:
       'The lines of a bill, quotation or purchase order as a small editable table. Each line has a description, a quantity (decimal and Devanagari digits accepted), a rate (a CurrencyInput, never a float) and whether VAT applies. The line amount and the subtotal, taxable and exempt amounts, VAT and total update as you type, computed by `computeInvoice` in bigint minor units. A line whose quantity or rate is unfinished is marked and left out of the totals rather than counted as zero. Controlled: the lines are drafts of what was typed; convert them with `lineItemsToInvoiceLines` when saving.',
     use: ['The billing screen of a POS or accounting app.', 'A quotation or purchase order before it becomes a TaxInvoice.', '`maxLines` when your bill format has a fixed number of rows.'],
@@ -75,6 +77,7 @@ export const TAX_PAGES: readonly PageDef[] = [
     lead: 'A PAN/VAT field that accepts what people paste, keeps nine ASCII digits and explains mistakes politely.',
     group: 'forms',
     kind: 'component',
+    stability: 'beta',
     summary:
       'A text field for a Nepal Permanent Account Number, which is also the VAT number once a business registers for VAT. It accepts Devanagari digits and drops spaces, hyphens and dots, so a pasted "३०१-२३४-५६७" becomes "301234567". `onValueChange` reports the normalised digits and a state: `empty`, `partial` (still typing), `valid` (nine digits) or `invalid` (a letter, or more than nine digits). Messages appear once the field is left, never while the person is typing.',
     use: ['Buyer and seller PAN on a bill, a supplier record, a payroll employee record.', '`digits="deva"` for a Nepali form; the stored value stays ASCII.'],
@@ -97,6 +100,7 @@ export const TAX_PAGES: readonly PageDef[] = [
     lead: 'Estimate annual income tax from your own slab table, with SSF, CIT and PF deductions and a clear band-by-band breakdown.',
     group: 'accounting',
     kind: 'component',
+    stability: 'composition',
     summary:
       'A calculator for a person\'s annual income tax. Inputs: annual income, filing status (single or couple), whether they contribute to the Social Security Fund (which waives slabs marked `waivable`), retirement contributions (SSF, CIT, PF by default) limited together by your rule (a cap and a fraction of income), other capped deductions and rebates. Outputs: taxable income, the tax for the year and per month, the effective rate, income after tax and `IncomeTaxBreakdown`, the band-by-band table. The slabs are props: the package ships no tax table, because budgets change them every year.',
     use: ['An employee self-service screen ("how much tax will I pay?").', 'A payroll officer checking a TDS estimate.', '`IncomeTaxBreakdown` on its own under a payslip or in a report.'],
@@ -120,6 +124,7 @@ export const TAX_PAGES: readonly PageDef[] = [
     lead: 'A clear, printable payslip with exact sums and the net pay in words.',
     group: 'accounting',
     kind: 'component',
+    stability: 'composition',
     summary:
       'One employee\'s pay for a period. The employer, the employee with PAN and any facts you add (designation, SSF number, a masked bank account), the period and pay date, earnings and deductions as two tables side by side (one column on a phone), gross pay, total deductions, net pay and the net in words. Sums are exact (`payslipTotals`). The lines come from your payroll: it computes no salary, SSF, CIT or TDS. A net below zero is shown in red and with its sign, never hidden.',
     use: ['Monthly payslips in a payroll app, emailed or printed.', 'An employee portal\'s pay history detail.'],
@@ -139,6 +144,7 @@ export const TAX_PAGES: readonly PageDef[] = [
     lead: 'Who owes what, and for how long: aging buckets by party with exact totals and shares.',
     group: 'accounting',
     kind: 'component',
+    stability: 'composition',
     summary:
       'Outstanding balances by party and by age on an as-of date. Columns: not yet due (shown when any item is), 0–30, 31–60, 61–90 and over 90 days (pass your own `limits`), and the party total; a totals row and a share-of-total row underneath. Dates are date-only values, so the host\'s time zone never moves a day; sums are exact (`ageItems`). The oldest bucket is bold, not only coloured. Count from due dates or invoice dates: whichever you pass.',
     use: ['Accounts receivable follow-up; accounts payable planning.', 'A dashboard card with `bare` inside a Card.'],
@@ -158,6 +164,7 @@ export const TAX_PAGES: readonly PageDef[] = [
     lead: 'TDS for a period by category or payment, with exact totals and a CSV for the working behind a return.',
     group: 'accounting',
     kind: 'component',
+    stability: 'composition',
     summary:
       'Tax deducted at source for a period. The category view lists each category (house rent, contract payments, service fees...) with its rate (or "Mixed"), the number of payments, the gross paid and the tax withheld, and a totals row. The entries view lists each payment with the payee\'s PAN, category, gross, rate, TDS and net. Withholding is gross × rate rounded with your mode, or the `withheld` amount you pass for a lower-rate certificate or a correction. `tdsToCsv` writes the same entries as exact, formula-safe CSV.',
     use: ['Monthly TDS review before deposit; the working behind a TDS return.', 'A vendor payment screen showing what was withheld.'],
@@ -180,6 +187,7 @@ export const TAX_PAGES: readonly PageDef[] = [
     lead: 'The arithmetic behind the tax components, as pure functions you can run on the server too.',
     group: 'developer',
     kind: 'utility',
+    stability: 'beta',
     summary:
       'Pure functions (`@punji/ui/tax`), no React and no browser globals: `amountInWords` and `integerInWords` (English or Nepali, hundred, thousand, lakh, crore, arab, kharab); `checkPan`, `isValidPan`, `formatPanNumber`; `computeInvoice` (line amounts, line and invoice discounts shared exactly between taxable and exempt, VAT, total) and `ratePercent`; `computeIncomeTax` from slabs with waivable bands and rebates, and `taxableIncome` with capped retirement and other deductions; `ageItems` and `calendarDaysBetween`; `summariseTds` and `tdsToCsv`; `payslipTotals`. Amounts are bigint minor units; every fraction is rounded with a RoundingMode you pass. No tax table ships with the package.',
     use: ['The same totals on the server as on the screen.', 'Amount in words on a cheque, a receipt or an email.'],

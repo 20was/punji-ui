@@ -23,6 +23,9 @@ export function avatarInitials(name: string | null | undefined, email?: string |
   return e ? ([...e][0] ?? '?').toUpperCase() : '?';
 }
 
+/**
+ * @stability stable
+ */
 export function Avatar({
   name,
   email,

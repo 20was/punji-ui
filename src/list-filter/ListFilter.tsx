@@ -45,6 +45,9 @@ interface ListFilterProps {
   selectOnFocus?: boolean;
 }
 
+/**
+ * @stability stable
+ */
 export function ListFilter({ value, onChange, label, clear, testId, slash = false, size = 'md', labelPlacement = 'hidden', placeholder, id, onBlur, name, selectOnFocus }: ListFilterProps) {
   const input = useRef<HTMLInputElement>(null);
   const auto = useId();

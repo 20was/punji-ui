@@ -18,7 +18,9 @@ export type DrawerScreenProps = ComponentPropsWithoutRef<'form'> & {
   testId?: string;
 };
 
-/** One screen of the drawer, filling its height: header, the content, the docked footer. */
+/** One screen of the drawer, filling its height: header, the content, the docked footer. *
+ * @stability beta
+ */
 export function DrawerScreen({ as = 'div', ground = 'panel', className, testId, children, ...rest }: DrawerScreenProps) {
   const cls = `kit-drawer-screen${ground === 'page' ? ' on-page' : ''}${className ? ` ${className}` : ''}`;
   if (as === 'form')

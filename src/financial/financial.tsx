@@ -27,7 +27,9 @@ export interface AppShellProps {
   /** The skip link's words, in the reader's language. Default "Skip to content". */
   skipLabel?: string;
 }
-/** Router-independent landmarks. Navigation wraps on phones; no inaccessible hidden menu. */
+/** Router-independent landmarks. Navigation wraps on phones; no inaccessible hidden menu. *
+ * @stability beta
+ */
 export function AppShell({ brand, navigation, navigationLabel, children, actions, footer, skipLabel = 'Skip to content' }: AppShellProps) {
   const id = useId();
   return <div className="pu-shell">
@@ -56,6 +58,9 @@ export interface FinancialSummaryProps {
   label: string;
 }
 
+/**
+ * @stability stable
+ */
 export function FinancialSummary({ metrics, label }: FinancialSummaryProps) {
   return <StatGrid label={label} cols={Math.min(4, Math.max(1, metrics.length))}>{metrics.map(metric => <StatTile key={metric.id} {...metric} />)}</StatGrid>;
 }
@@ -124,7 +129,9 @@ export interface FinancialTableProps<T> {
   /** Words for groups, the totals row and reconciliation. @stability beta */
   totalsLabels?: Partial<TableTotalsLabels>;
 }
-/** Holdings, invoices, transactions and ledgers share semantic table behavior, not a business schema. Columns are normalised to `ColumnDef` (`@punji/ui/table-core`); grouping, subtotals and totals are opt-in. */
+/** Holdings, invoices, transactions and ledgers share semantic table behavior, not a business schema. Columns are normalised to `ColumnDef` (`@punji/ui/table-core`); grouping, subtotals and totals are opt-in.
+ * @stability stable
+ */
 export function FinancialTable<T>({ caption, columns, rows, rowKey, state = 'ready', emptyTitle, emptyBody, emptyAction, loadingLabel = 'Loading records', errorTitle = 'Records unavailable', errorAction, sort, onSort, search, pagination, selection, stack, groupBy, groupLabel, collapsedGroups, onCollapsedGroupsChange, totals, expectedTotals, totalsLabels }: FinancialTableProps<T>) {
   const [ownCollapsed, setOwnCollapsed] = useState<readonly string[]>([]);
   if (state === 'loading') return <div aria-busy="true"><Skeleton label={loadingLabel} height={160} /></div>;
@@ -181,7 +188,9 @@ export interface PricePoint {
   /** The value at that label. Null or not finite is a gap: the line breaks and the table shows `missingLabel`. */
   value: number | null;
 }
-/** Straight segments, gaps stay gaps, fixed aspect ratio, and an accessible data table. */
+/** Straight segments, gaps stay gaps, fixed aspect ratio, and an accessible data table. *
+ * @stability stable
+ */
 export function PriceChart({ points, label, formatValue, dataLabel = 'View chart data', missingLabel = 'Unavailable' }: {
   /** The observations in order. With no finite value at all the chart is replaced by an empty state titled `missingLabel`. */
   points: readonly PricePoint[];

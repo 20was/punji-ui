@@ -78,6 +78,9 @@ export interface PopoverProps {
   testId?: string;
 }
 
+/**
+ * @stability beta
+ */
 export function Popover({ open, onClose, anchor, label, role = 'dialog', id, align = 'end', wide = false, fullScreenPhone = false, initialFocus, children, testId, portal = false, width = 320, positionAnchor }: PopoverProps) {
   const panel = useRef<HTMLDivElement>(null);
   const close = useRef(onClose);

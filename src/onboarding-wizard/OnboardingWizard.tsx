@@ -69,6 +69,9 @@ export interface OnboardingWizardProps {
   testId?: string;
 }
 
+/**
+ * @stability composition
+ */
 export function OnboardingWizard({ steps, current, onNext, onBack, onStepSelect, children, busy, nextDisabled, digits = 'latn', headingLevel = 2, labels, className, testId }: OnboardingWizardProps) {
   const words = { ...DEFAULT_ONBOARDING_WIZARD_LABELS, ...labels };
   const uid = useId();

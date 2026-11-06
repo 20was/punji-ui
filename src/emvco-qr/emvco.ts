@@ -204,7 +204,9 @@ function bounded(id: string, value: string, max: number, what: string): string {
   return encodeTlv(id, value);
 }
 
-/** Builds a merchant-presented payload, CRC included. Throws RangeError for a value the format cannot carry. */
+/** Builds a merchant-presented payload, CRC included. Throws RangeError for a value the format cannot carry. *
+ * @stability beta
+ */
 export function buildMerchantQr(input: MerchantQrInput): string {
   const [numeric, scale] = currencyOf(input.currency ?? 'NPR', input.exponent);
   const amount = input.amount ?? null;

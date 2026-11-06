@@ -61,6 +61,9 @@ export interface MarketIndicesProps {
 
 const toMinor = (v: number | null): bigint | null => (v === null || !Number.isFinite(v) ? null : BigInt(Math.round(v * 100)));
 
+/**
+ * @stability composition
+ */
 export function MarketIndices({
   indices, label, variant = 'cards', state, session, statusLabels, asOf, convention, changeLabels, fractionDigits = 2,
   showTrend = true, loading = false, loadingLabel = 'Loading indices', emptyLabel = 'No index data.', testId,

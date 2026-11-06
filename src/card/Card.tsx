@@ -48,6 +48,9 @@ export interface CardProps {
   className?: string;
 }
 
+/**
+ * @stability stable
+ */
 export function Card({ children, title, description, clipDescription, meta, action, icon, rule, flush, footer, stretch, tone, eyebrow, size, headingLevel = 2, label, testId, className }: CardProps) {
   const H = headingLevel === 3 ? 'h3' : 'h2';
   return (

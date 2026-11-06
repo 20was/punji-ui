@@ -154,6 +154,9 @@ function Slot({ slot, file, error, disabled, words, onPick, onRemove, testId, he
   );
 }
 
+/**
+ * @stability composition
+ */
 export function DocumentUpload({ slots, value, onChange, errors, title, headingLevel = 3, disabled, labels, className, testId }: DocumentUploadProps) {
   const words = { ...DEFAULT_DOCUMENT_UPLOAD_LABELS, ...labels };
   const uid = useId();

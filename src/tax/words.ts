@@ -120,6 +120,8 @@ const title = (text: string) => text.replace(/(^|[\s-])([a-z]+)/g, (_, gap: stri
  * An amount in minor units in words, for the "amount in words" line of a bill or a cheque:
  * `amountInWords(12345678n)` is "Rupees One Lakh Twenty-Three Thousand Four Hundred Fifty-Six and Seventy-Eight Paisa Only".
  * Zero paisa is left out. A negative amount starts with "minus".
+ *
+ * @stability beta
  */
 export function amountInWords(minorUnits: bigint, options: AmountInWordsOptions = {}): string {
   if (typeof minorUnits !== 'bigint') throw new TypeError('amountInWords expects bigint minor units');

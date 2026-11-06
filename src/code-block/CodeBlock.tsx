@@ -39,6 +39,9 @@ export interface CodeBlockProps {
   testId?: string;
 }
 
+/**
+ * @stability stable
+ */
 export function CodeBlock({ children, label, copy, labels, 'aria-label': ariaLabel, className, testId }: CodeBlockProps) {
   const words = { ...DEFAULT_CODE_BLOCK_LABELS, ...labels };
   const clipboard = useClipboard();

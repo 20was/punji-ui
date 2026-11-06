@@ -1,0 +1,9 @@
+/* Punji UI styles.
+   Styles for FxRateDisplay. Needs tokens.css and base.css (styles.css has everything). Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  .pu-fx-rate { display: grid; gap: var(--pu-space-1); color: var(--pu-color-text); font-size: var(--pu-text-sm) }
+  .pu-fx-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--pu-space-1) var(--pu-space-3); margin: 0 }
+  .pu-fx-text { font-weight: 600; font-variant-numeric: tabular-nums }
+  .pu-fx-kind { min-inline-size: 2.5rem; color: var(--pu-color-text-muted); font-size: var(--pu-text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em }
+  .pu-fx-meta { color: var(--pu-color-text-muted); font-size: var(--pu-text-xs) }
+}

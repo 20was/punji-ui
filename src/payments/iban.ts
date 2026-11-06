@@ -74,6 +74,8 @@ export function formatIbanGroups(value: string): string {
 /**
  * Check a typed or pasted IBAN: spaces, dashes, a leading "IBAN" and invisible characters are dropped, any script's
  * digits are read, and letters are uppercased. Never throws.
+ *
+ * @stability beta
  */
 export function parseIban(input: string, options: IbanOptions = {}): IbanCheck {
   const formats = options.formats ?? IBAN_FORMATS;

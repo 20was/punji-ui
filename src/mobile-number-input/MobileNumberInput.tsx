@@ -47,6 +47,9 @@ function defaultInvalid(result: NepalMobileResult): string {
   return 'Enter a 10-digit mobile number starting with 9.';
 }
 
+/**
+ * @stability beta
+ */
 export function MobileNumberInput({
   label, value, onValueChange, hint, error, invalidMessage = defaultInvalid, renderOperator = (o) => o.shortName,
   operatorAnnouncement = (o) => `Operator: ${o.name}`, digits = 'latn', countryCode = '+977', size = 'lg', hideLabel, testId,

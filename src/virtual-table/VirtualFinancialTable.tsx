@@ -145,7 +145,9 @@ const pinClass = (column: PlacedColumn) => (column.pin ? `pin-${column.pin === '
 // Logical insets: 'left' pins to the start edge, so pinned columns follow dir="rtl".
 const pinStyle = (column: PlacedColumn) => (column.pin === 'left' ? { insetInlineStart: column.inset } : column.pin === 'right' ? { insetInlineEnd: column.inset } : undefined);
 
-/** Virtualised FinancialTable for 10k+ rows, with pinning, resizing and multi-sort. */
+/** Virtualised FinancialTable for 10k+ rows, with pinning, resizing and multi-sort. *
+ * @stability beta
+ */
 export function VirtualFinancialTable<T>({
   caption, columns, rows, rowKey, state = 'ready', emptyTitle, emptyBody, loadingLabel = 'Loading records', errorTitle = 'Records unavailable', errorAction,
   height = 480, rowHeight = 40, measureRows = false, overscan = 8, sort, onSortChange, columnWidths, onColumnResize, search, selection, toolbar,

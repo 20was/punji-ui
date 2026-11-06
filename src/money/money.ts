@@ -165,7 +165,9 @@ function groupAscii(digits: string, southAsian: boolean, separator: string): str
 const join = (parts: MoneyPart[]) => parts.map(part => part.value).join('');
 function pow10(n: number): bigint { return 10n ** BigInt(n); }
 
-/** Creates a formatter. Intl instances are built once here; reuse it for a table's rows. See `getMoneyFormatter` for a cached lookup. */
+/** Creates a formatter. Intl instances are built once here; reuse it for a table's rows. See `getMoneyFormatter` for a cached lookup. *
+ * @stability beta
+ */
 export function createMoneyFormatter(config: MoneyFormatConfig): MoneyFormatter {
   const currency = config.currency.toUpperCase();
   const exponent = config.exponent ?? currencyExponent(currency);
@@ -335,7 +337,9 @@ export function getMoneyFormatter(config: MoneyFormatConfig): MoneyFormatter {
   return formatter;
 }
 
-/** One-off exact formatting of minor units. For many rows, call `createMoneyFormatter` once. */
+/** One-off exact formatting of minor units. For many rows, call `createMoneyFormatter` once. *
+ * @stability beta
+ */
 export function formatMoney(minor: bigint, config: MoneyFormatConfig): string {
   return getMoneyFormatter(config).format(minor);
 }

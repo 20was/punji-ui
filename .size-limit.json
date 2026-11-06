@@ -338,7 +338,7 @@
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "41.70 kB",
+    "limit": "42.84 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -1556,6 +1556,48 @@
     "name": "Accordion CSS",
     "path": "dist/css/accordion.css",
     "limit": "800 B",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "fx-rate (import from '@punji/ui/fx-rate')",
+    "path": "dist/fx-rate/FxRate.js",
+    "import": "*",
+    "limit": "2.9 kB",
+    "gzip": true
+  },
+  {
+    "name": "FxRate CSS",
+    "path": "dist/css/fx-rate.css",
+    "limit": "0.5 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "data-freshness (import from '@punji/ui/data-freshness')",
+    "path": "dist/data-freshness/DataFreshness.js",
+    "import": "*",
+    "limit": "1.7 kB",
+    "gzip": true
+  },
+  {
+    "name": "DataFreshness CSS",
+    "path": "dist/css/data-freshness.css",
+    "limit": "0.5 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "status-banner (import from '@punji/ui/status-banner')",
+    "path": "dist/status-banner/StatusBanner.js",
+    "import": "*",
+    "limit": "2.1 kB",
+    "gzip": true
+  },
+  {
+    "name": "StatusBanner CSS",
+    "path": "dist/css/status-banner.css",
+    "limit": "0.5 kB",
     "rolldown": false,
     "gzip": true
   }

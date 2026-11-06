@@ -45,6 +45,9 @@ const ICONS = {
   flat: <path d="M1.5 4h7v2h-7z" />,
 } as const;
 
+/**
+ * @stability stable
+ */
 export function PriceChange({
   current, previous, change, showAbsolute = true, showPercent = true, percentDigits = 2, convention,
   labels = EN_LABELS, size, missing = '—', missingLabel = 'No value', preset, className, testId, ref,

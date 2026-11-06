@@ -41,6 +41,9 @@ export interface MarketStatusProps {
   testId?: string;
 }
 
+/**
+ * @stability stable
+ */
 export function MarketStatus({ state, session, labels, detail, market, size, testId }: MarketStatusProps) {
   const resolved: MarketState = state ?? session?.state ?? 'closed';
   const words = { ...EN_LABELS, ...labels }[resolved];

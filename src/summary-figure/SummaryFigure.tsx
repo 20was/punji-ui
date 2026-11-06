@@ -70,6 +70,8 @@ export interface HeadlineFigureProps {
  * A page's or a view's lead figure: a quiet label, the figure large ("Rs"
  * smaller and muted), and beside or under it the changes as FigureChips. The
  * figure never truncates; a long label wraps.
+ *
+ * @stability stable
  */
 export function HeadlineFigure({ label, labelAction, value, currency, aside, line, children, size = 'xl', testId, valueTestId }: HeadlineFigureProps) {
   return (

@@ -56,6 +56,17 @@ describe('createTheme', () => {
     expect(theme.vars.light['--pu-color-gain']).toBeUndefined();
   });
 
+  it('derives on-accent, focus-ring and chart-fill from the brand, and checks them', () => {
+    const { vars, issues } = createTheme(brand);
+    expect(vars.light['--pu-color-on-accent']).toBe('#ffffff');
+    expect(vars.light['--pu-color-focus-ring']).toBe('#0b5cad');
+    expect(vars.light['--pu-color-chart-fill']).toBe('rgba(11, 92, 173, 0.2)');
+    expect(issues).toEqual([]);
+    const weak = createTheme({ light: { accent: '#0b5cad', onAccent: '#555555', focusRing: '#dddddd' } }).issues;
+    expect(weak.some((i) => i.token === '--pu-color-on-accent' && i.min === 4.5)).toBe(true);
+    expect(weak.some((i) => i.token === '--pu-color-focus-ring' && i.min === 3)).toBe(true);
+  });
+
   it('reports colours that miss their contrast target, and throws when strict', () => {
     const lime = { light: { accent: '#c8f23d' } };
     const { issues } = createTheme(lime);

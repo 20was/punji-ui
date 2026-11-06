@@ -18,7 +18,7 @@
   :is(button, a).kit-crow { cursor: pointer }
   :is(button, a).kit-crow:hover { background: color-mix(in srgb, var(--pu-color-text) 4%, transparent) }
   .kit-crow[aria-pressed='true'], .kit-crow[aria-selected='true'], .kit-crow[aria-current='true'] { background: var(--pu-color-surface-tint) }
-  .kit-crow:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: -2px; border-radius: 12px }
+  .kit-crow:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: -2px; border-radius: 12px }
   .kit-crow-b { min-width: 0; display: flex; flex-direction: column }
   .kit-crow-t { font-size: 15px; line-height: 20px; font-weight: 600; overflow-wrap: anywhere }
   .kit-crow.is-report .kit-crow-t { font-weight: 500 }

@@ -208,6 +208,7 @@ All new files below are in punji-web and are proposals; nothing was written ther
    needs something the system lacks, add it to the system first").
 8. **Version-skew guard** in punji-ui: nothing new is needed because releases are immutable on npm and
    punji-web pins exactly.
+9. **Lint rules for misuse** of the kit itself (float money, root-barrel imports, hand-set `--pu-*` tokens, unsafe hrefs): `packages/eslint-plugin-punji` (flat config, not yet published; see its README).
 
 ## 6. Migration order
 

@@ -12,6 +12,14 @@
   :root[data-theme='light-hc'],
   [data-theme='light-hc'] {
     color-scheme: light;
+    --pu-color-btn-line: #000000;
+    --pu-color-chart-fill: rgba(29, 77, 0, 0.14);
+    --pu-color-focus-ring: #1c3a00;
+    --pu-color-info: #0a3d91;
+    --pu-color-inverse-shimmer: rgba(255, 255, 255, 0.12);
+    --pu-color-inverse-shimmer-hi: rgba(255, 255, 255, 0.2);
+    --pu-color-on-accent: #ffffff;
+    --pu-color-surface-elevated: #ffffff;
     --pu-color-accent: #1c3a00;
     --pu-color-accent-fill: #1c3a00;
     --pu-color-accent-fill-hover: #0f2400;
@@ -77,6 +85,14 @@
   :root[data-theme='dark-hc'],
   [data-theme='dark-hc'] {
     color-scheme: dark;
+    --pu-color-btn-line: #ffffff;
+    --pu-color-chart-fill: rgba(214, 255, 90, 0.16);
+    --pu-color-focus-ring: #d6ff5a;
+    --pu-color-info: #b8d4ff;
+    --pu-color-inverse-shimmer: rgba(0, 0, 0, 0.12);
+    --pu-color-inverse-shimmer-hi: rgba(0, 0, 0, 0.2);
+    --pu-color-on-accent: #000000;
+    --pu-color-surface-elevated: #1a1a1a;
     --pu-color-accent: #d6ff5a;
     --pu-color-accent-fill: #d6ff5a;
     --pu-color-accent-fill-hover: #e4ff8a;
@@ -194,6 +210,12 @@
   @layer punji.tokens {
     :root:not([data-theme]) {
       color-scheme: light;
+      --pu-color-btn-line: #000000;
+      --pu-color-chart-fill: rgba(29, 77, 0, 0.14);
+      --pu-color-focus-ring: #1c3a00;
+      --pu-color-info: #0a3d91;
+      --pu-color-on-accent: #ffffff;
+      --pu-color-surface-elevated: #ffffff;
       --pu-color-accent: #1c3a00;
       --pu-color-accent-fill: #1c3a00;
       --pu-color-accent-fill-hover: #0f2400;
@@ -234,6 +256,12 @@
   @layer punji.tokens {
     :root:not([data-theme]) {
       color-scheme: dark;
+      --pu-color-btn-line: #ffffff;
+      --pu-color-chart-fill: rgba(214, 255, 90, 0.16);
+      --pu-color-focus-ring: #d6ff5a;
+      --pu-color-info: #b8d4ff;
+      --pu-color-on-accent: #000000;
+      --pu-color-surface-elevated: #1a1a1a;
       --pu-color-accent: #d6ff5a;
       --pu-color-accent-fill: #d6ff5a;
       --pu-color-accent-fill-hover: #e4ff8a;

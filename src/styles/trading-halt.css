@@ -10,7 +10,7 @@
   .pu-halt-actions { flex: none; display: flex; align-items: center; gap: var(--pu-space-2) }
   .pu-halt-dismiss { display: grid; place-items: center; width: var(--pu-control-sm); height: var(--pu-control-sm); border: 0; border-radius: var(--pu-radius-full); background: transparent; color: var(--pu-color-text-muted); cursor: pointer }
   .pu-halt-dismiss:hover { background: var(--pu-color-surface) }
-  .pu-halt-dismiss:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+  .pu-halt-dismiss:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
   .pu-halt-dismiss svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round }
   @media (pointer: coarse) {
     .pu-halt-dismiss { width: var(--pu-tap-min); height: var(--pu-tap-min) }

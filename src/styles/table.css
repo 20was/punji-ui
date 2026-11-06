@@ -105,7 +105,7 @@
   .kit-table-search > input { box-sizing: border-box; width: 100%; min-height: 40px; padding-block: 8px; padding-inline: 36px 40px; border: 1px solid var(--pu-color-border-control); border-radius: var(--pu-radius-control); background: var(--pu-color-surface); color: var(--pu-color-text); font: 500 var(--pu-text-sm) / 1.3 var(--pu-font-body) }
   .kit-table-search > input::placeholder { color: var(--pu-color-text-muted); opacity: 1 }
   .kit-table-search > input::-webkit-search-cancel-button { display: none }
-  .kit-table-search > input:focus-visible, .kit-table-pages > button:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+  .kit-table-search > input:focus-visible, .kit-table-pages > button:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
   .kit-table-search > button { position: absolute; top: 50%; inset-inline-end: 5px; display: grid; width: 30px; height: 30px; place-items: center; transform: translateY(-50%); border: 0; border-radius: var(--pu-radius-8); background: transparent; color: var(--pu-color-text-muted); cursor: pointer; font: 500 20px / 1 var(--pu-font-body) }
   .kit-table-search > button:hover { background: var(--pu-color-surface-subtle); color: var(--pu-color-text) }
   .kit-table-empty { height: 88px; text-align: center !important; color: var(--pu-color-text-muted) }
@@ -122,12 +122,12 @@
   .kit-table-selection-cell > input:checked::after { transform: rotate(-45deg) scale(1) }
   .kit-table-selection-cell > input:indeterminate { background: var(--pu-color-accent-fill); border-color: var(--pu-color-accent-fill) }
   .kit-table-selection-cell > input:indeterminate::after { width: 8px; height: 0; margin: 0; border-width: 2px 0 0; transform: none }
-  .kit-table-selection-cell > input:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+  .kit-table-selection-cell > input:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
   .kit-table-selection-cell > input:disabled { cursor: not-allowed; opacity: .48 }
   .kit-table-selection-summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 40px; padding: 4px 12px; border-bottom: 1px solid var(--pu-color-border); color: var(--pu-color-text); font-size: var(--pu-text-sm); font-weight: 600 }
   .kit-table-selection-summary button { min-height: 32px; padding: 4px 8px; border: 0; border-radius: var(--pu-radius-8); background: transparent; color: var(--pu-color-link); cursor: pointer; font: inherit }
   .kit-table-selection-summary button:hover { background: var(--pu-color-surface-subtle) }
-  .kit-table-selection-summary button:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+  .kit-table-selection-summary button:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
   .kit-table-mobile-select { display: none }
   @media (max-width: 639px) {
     .kit-table-footer { align-items: flex-start; flex-direction: column; gap: 8px }
@@ -140,6 +140,6 @@
     .kit-table-mobile-select input:checked, .kit-table-mobile-select input:indeterminate { background: var(--pu-color-accent-fill); border-color: var(--pu-color-accent-fill) }
     .kit-table-mobile-select input:checked::after { transform: rotate(-45deg) scale(1) }
     .kit-table-mobile-select input:indeterminate::after { width: 8px; height: 0; margin: 0; border-width: 2px 0 0; transform: none }
-    .kit-table-mobile-select input:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+    .kit-table-mobile-select input:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
   }
 }

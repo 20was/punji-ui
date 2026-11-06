@@ -1,0 +1,30 @@
+{
+  "name": "eslint-plugin-punji",
+  "version": "0.0.0",
+  "private": true,
+  "description": "ESLint rules that catch the common misuse of @punji/ui: float money, root-barrel imports, raw --pu-* overrides and unsafe hrefs. Not yet published.",
+  "license": "MIT",
+  "author": "Punji",
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "files": [
+    "index.js",
+    "rules",
+    "data"
+  ],
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "punji"
+  ],
+  "peerDependencies": {
+    "eslint": ">=9"
+  },
+  "engines": {
+    "node": ">=20.19"
+  }
+}

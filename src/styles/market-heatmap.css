@@ -8,7 +8,7 @@
   .pu-heat-tile > :is(button, div) { appearance: none; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 2px; width: 100%; height: 100%; margin: 0; padding: 4px 6px; border: 0; background: transparent; color: inherit; font: inherit; text-align: start; overflow: hidden }
   .pu-heat-tile > button { cursor: pointer }
   .pu-heat-tile > button:hover { background: color-mix(in srgb, var(--pu-color-text) 8%, transparent) }
-  .pu-heat-tile > button:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: -3px }
+  .pu-heat-tile > button:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: -3px }
   .pu-heat-sym { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 700 13px / 1.2 var(--pu-font-body); letter-spacing: 0.01em }
   .pu-heat-chg { max-width: 100%; overflow: hidden; text-overflow: ellipsis; font: 600 11px / 1.2 var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); white-space: nowrap }
   .pu-heat-tile[data-size='sm'] .pu-heat-chg { display: none }
@@ -30,6 +30,6 @@
   .pu-heat-legend i { flex: none; width: 14px; height: 14px; border-radius: 3px; border: 1px solid var(--pu-color-border-strong) }
   .pu-heat-size-note, .pu-heat-skipped, .pu-heat-empty { margin: 0; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }
   .pu-heat-data > summary { cursor: pointer; font-size: var(--pu-text-sm); color: var(--pu-color-text) }
-  .pu-heat-data > summary:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+  .pu-heat-data > summary:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
   .pu-heat-data .kit-tablebox { margin-top: 8px; max-height: 320px }
 }

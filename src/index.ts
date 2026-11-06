@@ -2,6 +2,7 @@
 export * from './avatar/Avatar.tsx';
 export * from './choice-group/ChoiceGroup.tsx';
 export * from './command-palette/CommandPalette.tsx';
+export * from './dialog/Dialog.tsx';
 export * from './drawer/Drawer.tsx';
 export * from './drawer-screen/DrawerScreen.tsx';
 export * from './floating-tooltip/FloatingTooltip.tsx';

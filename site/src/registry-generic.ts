@@ -12,6 +12,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'Text, number, price, date, symbol, select and long-text fields: a label over a boxed input with a hint or an error, correctly wired for screen readers.',
     group: 'forms',
     kind: 'component',
+    stability: 'stable',
     summary:
       'A label over a boxed input, with a hint or an error under it. Field is the text input; NumberField, PriceField, DateField, SelectField, SymbolField and TextAreaField are the same box for other kinds of value. Every one wires the label, the hint and the error to the control for you.',
     use: [
@@ -62,6 +63,9 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'The one dropdown: a real native select in the kit box, with grouped options, loading and disabled states and a themed picker where the browser supports it.',
     group: 'forms',
     kind: 'component',
+    stability: 'stable',
+    spoken: ["\"Fiscal year, combo box, 2081/82\" with the native control; the platform announces the options and the position as it does for any select."],
+    apg: { name: "Combobox (select-only)", url: "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/" },
     summary:
       'A native <select> in the kit box, at the shared control heights (32, 36, 44). On a desktop browser that supports it the open list is themed; touch and unsupported browsers keep the platform picker. It is generic over the value type, so options can be a union of string literals.',
     use: ['One choice from five or more options, or from a long list.', 'Inside a Field as `SelectField`, or alone in a toolbar with a hidden label.', 'options with group to gather related choices under a heading.'],
@@ -87,6 +91,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'A small set of exclusive options in one track: periods, windows, scopes. A toggle group by default, or ARIA tabs when it controls a panel.',
     group: 'forms',
     kind: 'component',
+    stability: 'stable',
     summary:
       'A tinted track with a raised pill on the chosen segment, for small option sets such as a chart window, a period or a scope. Without panelId it is a toggle group of buttons; with panelId it is ARIA tabs. SegmentedSwitch is the same control at 44px for a page\'s own views.',
     use: ['Two to five short options, always visible: a window (1D, 1W, 1M), a period, a scope.', '`tone="accent"` for the one choice that frames a whole page (whose portfolio), at most once per page.', '`panelId` when the segments switch a tabpanel.'],
@@ -116,6 +121,9 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'The views of one section as ARIA tabs with an underline on the chosen one, plus PanelTabs for a side panel: an icon over a short label.',
     group: 'layout',
     kind: 'component',
+    stability: 'stable',
+    spoken: ["\"Overview, tab, selected, 1 of 3\" for the chosen tab; arrows move focus and the next tab reads \"Holdings, tab, 2 of 3\"."],
+    apg: { name: "Tabs", url: "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/" },
     summary:
       'A row of labels with an underline on the chosen one, for switching the views of one section. They are ARIA tabs with a roving tab stop, and each must control a tabpanel you render. PanelTabs is the variant for a side panel: an icon over one short word on a track.',
     use: ['The views of one section on one page (Summary, Transactions, Documents).', 'fill for a phone\'s two or three views.', '`PanelTabs` for the views of a panel beside a tool.'],
@@ -143,6 +151,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'One of several choices that can each be on, or a yes or no that waits for Save: a real checkbox in its label, with a lead swatch and an end count.',
     group: 'forms',
     kind: 'component',
+    stability: 'stable',
     summary:
       'A real <input type="checkbox"> inside its <label>, so the whole row is the tap target (44px on touch). lead draws before the words (a series swatch), end after them (a count). Use it for choices that wait for a Save; a setting that applies at once is a Switch.',
     use: ['Several choices that can each be on: columns to show, lines on a chart, filters.', 'A single yes or no inside a form that is saved later.'],
@@ -167,6 +176,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'An on or off setting that takes effect at once: a button with role switch and aria-checked, named by the row\'s title, with a busy state while it saves.',
     group: 'forms',
     kind: 'component',
+    stability: 'stable',
     summary:
       'A button with role="switch" and aria-checked, for a setting that takes effect at once (an alert, sharing). Name it with labelledBy (the row\'s visible title) or label. Show busy while the change is saving.',
     use: ['A setting that applies the moment it is flipped: alerts on or off, sharing.', 'busy while the request runs, then flip it when the server confirms.'],
@@ -191,6 +201,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'One track, two thumbs: a minimum and a maximum, each a native range input with its own keyboard and a spoken value, for filters like yield or price.',
     group: 'forms',
     kind: 'component',
+    stability: 'beta',
     summary:
       'A range between lo and hi on one track, the span filled. It is two native range inputs, so each thumb keeps the browser\'s keyboard, and a thumb never passes the other. valueText says each value in words, with its unit, to screen readers.',
     use: ['A filter with a minimum and a maximum: yield, price, market cap.', '`valueText` to print "Any" at an open end.'],
@@ -212,6 +223,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'Exclusive filters as native radio buttons with an underline or a compact look, so the browser provides arrow keys, one tab stop and disabled handling.',
     group: 'forms',
     kind: 'component',
+    stability: 'stable',
     summary:
       'Exclusive choices as native radio inputs in a fieldset, drawn with an underline (default) or a compact look. Because they are real radios, the browser provides the arrow keys, the single tab stop and disabled handling.',
     use: ['Exclusive filters that should all be visible: All, Buy, Sell.', 'A form choice where a screen reader should hear "radio button, 2 of 3".'],
@@ -233,6 +245,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'A list\'s own search field over rows already on the page, matched in memory: an x button and Esc clear it, and an optional slash key focuses it.',
     group: 'forms',
     kind: 'component',
+    stability: 'stable',
     summary:
       'One search field for a list that is already on the page, matched in memory with no request. The × button and Esc clear it. With slash, pressing / focuses it when nothing else is being typed in and no dialog is open. Sizes match Select so the two sit in one row.',
     use: ['Narrowing a table or list you hold in memory: holdings, a watchlist, a symbol list.', '`size="lg"` for a public toolbar: 44px with 16px text so a phone does not zoom on focus.'],
@@ -257,6 +270,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'A panel anchored under the control that opened it: Esc and a click outside close it, focus moves in and returns, and a portal mode avoids clipping.',
     group: 'layout',
     kind: 'component',
+    stability: 'beta',
     summary:
       'A panel placed against the control that opened it, for a small menu or editor. Esc closes it and returns focus to the control; a click or tap outside closes it; focus leaving both closes it. Only one is open at a time. portal floats it above clipping ancestors and flips it above the anchor when there is no room.',
     use: ['A small menu, a sort list, a quick editor (set an alert) under a button.', 'portal inside a card or scroller with overflow hidden.', '`fullScreenPhone` for content that needs the whole screen on a phone.'],
@@ -285,6 +299,9 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'A modal side panel that slides in from the right for a form over the page: Tab stays inside, Esc and the scrim close it, and focus returns to the opener.',
     group: 'layout',
     kind: 'component',
+    stability: 'beta',
+    spoken: ["\"Filters, dialog\" on open (named by its label); focus returns to the opener on close."],
+    apg: { name: "Dialog (Modal)", url: "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/" },
     summary:
       'The one place a page\'s actions open on a wide screen (add, sell, edit, review): a 432px panel slides in from the right over the page, wherever the reader has scrolled. It is modal: the page behind is inert to the pointer, Tab stays inside, Esc and the scrim close it, and focus returns to the button that opened it.',
     use: ['A form or review step that should not leave the page: add a transaction, edit a holding.', '`DrawerScreen` inside it for a header on top and Save and Cancel docked at the foot.'],
@@ -306,6 +323,9 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'The command-K dialog: a search field over grouped results run by keyboard, with entity rows that carry action chips and spoken, announced choices.',
     group: 'layout',
     kind: 'component',
+    stability: 'beta',
+    spoken: ["\"Search commands, dialog\" on open, then \"Search, combobox, expanded\" in the field.", "\"Buy NABIL, option, 1 of 5\" as the arrow keys move; a move between chips reads the chosen label (labels.chosen)."],
+    apg: { name: "Combobox", url: "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/" },
     summary:
       'A search field over grouped results, run entirely by keyboard. You mount it when it is open, own the query, and filter the items; it draws them, handles the keys and reports what was run. Rows of kind "entity" carry action chips chosen with the left and right arrows.',
     use: ['"Search the app": pages, actions and companies in one dialog.', 'Actions on an entity (open, watch, set an alert) without leaving the keyboard.'],
@@ -335,6 +355,9 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'What just happened: saved, failed or info messages in a polite live region, with an optional undo, wrapped once in ToastProvider and raised with useToast.',
     group: 'feedback',
     kind: 'component',
+    stability: 'beta',
+    spoken: ["\"Saved. Your watchlist was updated.\" for success and info, spoken politely (role status).", "\"Alert. Payment failed.\" for an error, spoken at once (role alert)."],
+    apg: { name: "Alert", url: "https://www.w3.org/WAI/ARIA/apg/patterns/alert/" },
     summary:
       'A short message for what just happened: saved, failed, or a note, with an optional action such as Undo. Wrap the app once in ToastProvider and call useToast().show anywhere below it. At most three are visible, newest first, and each leaves by itself.',
     use: ['Confirming an action that has no other visible result: saved, removed, copied.', 'An undo for a removal: the action runs when pressed.', 'Errors the person can do nothing about on the spot (the form field keeps its own inline error).'],
@@ -363,6 +386,9 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'A control\'s name on hover and focus, and a visible info button that explains a label. Neither holds the only copy of a fact, because a phone has no hover.',
     group: 'feedback',
     kind: 'component',
+    stability: 'beta',
+    spoken: ["\"Net asset value, button, Net asset value is the price of one unit.\" for an InfoTip: the label names the button and the tip is its description.", "A Tooltip that repeats the control name is hidden from screen readers; with describe the text is read as the description."],
+    apg: { name: "Tooltip", url: "https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/" },
     summary:
       'Tooltip names a control that has only an icon; InfoTip explains a label on a visible ⓘ button beside it. Hover or keyboard focus shows either at once; an InfoTip click or tap keeps it open until Esc, a second tap, a tap elsewhere or a scroll. Never a native title attribute.',
     use: ['Tooltip on an icon-only button, to show its name.', '`InfoTip` beside a term that needs a definition: cost basis, circuit limit.', 'trigger for a short text trigger instead of the icon.'],
@@ -387,6 +413,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'A short label for a state, a tone or a tag such as Bonus or New, with a marker form beside a title, and a CountBadge for how many are waiting.',
     group: 'feedback',
     kind: 'component',
+    stability: 'stable',
     summary:
       'A short label: a state, a tone, a tag ("Bonus", "Estimate", "Yours", "New"). It is not pressable, except as a link with href. swatch adds a series colour square, size="sm" is the 20px tag, and marker is an outlined pill with a state dot for beside a page title (live, warn, off). CountBadge shows how many are waiting.',
     use: ['A status or tag in a row, a card header or beside a title.', 'marker for a market or data state next to a heading.', '`CountBadge` beside a heading for a number of things waiting.'],
@@ -411,6 +438,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'The locked state of a data view: a lock and a plain line saying what is not included on this account. Never a plan name, never a blurred fake of the data.',
     group: 'feedback',
     kind: 'component',
+    stability: 'stable',
     summary:
       'The locked state of a data view: a small lock and what is not included on this account. Give it one line, or a bold first line (title) and a second line under it. Say what is missing and, if you can, how to get it.',
     use: ['A panel whose data this account cannot see: broker activity, depth, an export.', 'Replacing a data view entirely, in the space the data would take.'],
@@ -428,6 +456,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'Every number on a page: tabular digits with lakh and crore grouping, never truncated, and a change shown as a sign, an arrow, a colour and a spoken word.',
     group: 'financial-primitives',
     kind: 'component',
+    stability: 'stable',
     summary:
       'Figure prints a number with tabular digits and en-IN grouping, and is never truncated (it has its own element and no wrapping). Delta prints a change as a sign, an arrow, a colour and a spoken word, so colour never carries it alone. A move that prints as zero is no move: grey, no arrow. Missing values print a dash, never zero.',
     use: ['Any number you format for display in a row, a card or a sentence: a price, a count, a percent.', 'Delta for a day\'s change; words to translate "up", "down" and "unchanged".'],
@@ -456,6 +485,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'A figure fed by a live price: it counts to the new value over 450 ms and tints once in the direction of the change, and honours reduced motion.',
     group: 'stock-market',
     kind: 'component',
+    stability: 'beta',
     summary:
       'A plain figure that moves. When the value changes it counts to the new one over 450 ms (the same formatting at every frame, exactly the new value at the end) and its ground flashes the gain or loss tint for 900 ms. Under reduced motion it simply shows the new value. Live does the same for any figure through a render function.',
     use: ['A last traded price, a value or a weight that updates while it is on screen.', 'Live to move a Delta, a signed amount or a figure inside a sentence.', 'id to say what the figure stands for, so picking another row snaps instead of tweening.'],
@@ -484,6 +514,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'The page ground, the page header with a back circle, a large title, a meta line and up to three actions, and the section header: a title with one action.',
     group: 'layout',
     kind: 'component',
+    stability: 'stable',
     summary:
       'PageLayout is the page ground and the page\'s one <main>. PageHeader is the header every page uses: a back circle, a large title (an h1), a meta line under it and up to three actions. ListSectionHeader is a section title with one action or a quiet detail.',
     use: ['`PageHeader` at the top of every page, with the one h1.', '`ListSectionHeader` over a group of rows or a card.', 'stamp to say what the page\'s figures are as of; eyebrow for the page\'s group.'],
@@ -509,6 +540,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'Router-independent page landmarks: a skip link, a header with brand and actions, a navigation, the main area and a footer. Navigation wraps on phones.',
     group: 'layout',
     kind: 'component',
+    stability: 'beta',
     summary:
       'The frame of an application: a skip link, a banner with your brand and actions, a navigation landmark, the main area and an optional footer. It does not know your router; you pass the navigation. On phones the navigation wraps, with no hidden menu that assistive technology cannot reach. This documentation site is built with it.',
     use: ['The outer frame of a dashboard or docs site.', 'Your own navigation component passed as `navigation`.'],
@@ -530,6 +562,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'A grouped card of rows: ValueRow with a tile, title, line, figure and note as a link, a button or plain, and DataRows for label and value facts.',
     group: 'accounting',
     kind: 'component',
+    stability: 'stable',
     summary:
       'Rows inside one grouped card. GroupedCell is the card, RowList a list of rows, ValueRow a row with a tile, a title, a line, a figure and a note, and DataRows / DataRow a flat list of label and value facts. Rows never carry a card of their own.',
     use: ['A short list where each row is a holding, a transaction or an account, optionally opening something.', '`DataRows` for a card of facts: cost, fees and a total.', 'bar and note on a `DataRow` to show what a value means on a scale.'],
@@ -554,6 +587,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'A grid of key figures with a label, a value and a note, two across on a phone and up to four across on a wide screen, for totals you have already calculated.',
     group: 'accounting',
     kind: 'component',
+    stability: 'stable',
     summary:
       'A named grid of key figures: each metric is a quiet label, a value and an optional note. You calculate and format the amounts and say their currency and as-of date; the component only lays them out, two across on a phone and up to four across on a wide screen.',
     use: ['The totals at the top of a portfolio, an invoice or a statement.', 'A note on each figure for its as-of date, basis or count.'],
@@ -574,6 +608,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'A pill you press to filter or toggle, and a single-choice row of them: sector filters, quick amounts and section jumps, with counts and a 44px tap area.',
     group: 'forms',
     kind: 'component',
+    stability: 'stable',
     summary:
       'A pill you press. With selected it is a toggle (aria-pressed); without it, a suggestion that acts once, such as filling a field with a quarter of your units. ChipRow is exactly one choice out of several. A label that cannot be pressed is a StatusPill, never a chip.',
     use: ['Filtering a list by a few named groups: sector, type, held or not.', 'Quick values beside a field: a quarter, half or all of the units.', 'current for a jump link in an in-page section nav.'],
@@ -599,6 +634,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'One filter that is set, in words ("P/B 0.00 to 1.20"): press to edit it, press the x to remove it, with a caret for lists and a ring for an error.',
     group: 'forms',
     kind: 'component',
+    stability: 'stable',
     summary:
       'One filter that is set, in words: the label, then its value. The chip opens its editor (a Popover or a Sheet you build) and its x removes the filter. Without an x it is a fixed filter such as Sector; with a caret it opens a list. Each of the two buttons draws its own focus ring.',
     use: ['The active filters of a screener or a transaction list, above the results.', 'A yes/no filter: the label alone with its x.', 'Showing that a filter cannot apply (error) while the editor says why.'],
@@ -620,6 +656,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'The last line of a long list inside its card, "Show all 24" and "Show fewer": a full-width quiet button that says whether the list is open.',
     group: 'data',
     kind: 'component',
+    stability: 'stable',
     summary:
       'The last line of a long list inside its card. You keep the state and the words, including the count ("Show all 12"). It is a full-width quiet button that takes the colour of the card it sits on, so it also works on an inverse card.',
     use: ['Five rows of holdings with the rest behind "Show all 12".', 'Any list inside a Card that is long on a phone.'],
@@ -641,6 +678,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'The second step of a destructive action, in place of the row that asked: a question, a danger button that names what goes, and the way back, with Esc to cancel.',
     group: 'feedback',
     kind: 'component',
+    stability: 'stable',
     summary:
       'The second step of a destructive action, drawn where the first step was. It shows a question, one line about what goes, a danger button that names it and the way back. The confirm takes focus; Esc backs out before anything around it reacts. A decision that needs the whole screen is a Sheet.',
     use: ['Removing a symbol from a watchlist or a beneficiary from a saved list.', 'Replacing a row (`as="li"`) or a toolbar with the question.'],
@@ -662,6 +700,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'A person\'s initials in a circle for an account line, a list row or the account button: from the name or email, never a photo, with a skeleton while loading.',
     group: 'data',
     kind: 'component',
+    stability: 'stable',
     summary:
       'A person\'s initials in a circle. The initials are the first and last word of the name, or the first letter of the email, or a question mark. It is never a photo. Beside a written name it is decorative; alone it needs a label. loading draws a skeleton of the same size.',
     use: ['An account line, a person in a list, or the account button in a top bar.', 'Beneficiaries and holders beside their names.'],
@@ -683,6 +722,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'The state of a setting at the end of its row in a word or two, such as View only, On or Off: quiet, read and never pressed, with an optional small icon.',
     group: 'feedback',
     kind: 'component',
+    stability: 'stable',
     summary:
       'The state of a setting at the end of its row, in a word or two ("View only", "On", "Off", "Staff only"). It is quiet by design: read, never pressed, with no hover or focus. A tone or an event worth a look ("Bonus", "New") is a StatusPill instead. accent is for a setting that is on.',
     use: ['Settings and permissions lists: sharing, notifications, security.', 'A row whose only job is to tell you how a setting stands.'],
@@ -704,6 +744,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'Figures two by two, four across on a wide screen: a quiet label, the figure and a note, as a description list so a screen reader pairs each term with its value.',
     group: 'data',
     kind: 'component',
+    stability: 'stable',
     summary:
       'A grid of figures: each StatTile has a quiet label, the figure and an optional note. It is two columns on a phone and up to cols (default 4) on a wide screen. The figure is whatever you pass, usually a Figure or a MoneyDisplay, so formatting stays exact.',
     use: ['The headline numbers of a screen: value, today, holdings, fees.', 'A short set of related figures that should read as one block.'],
@@ -724,6 +765,9 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'A short modal decision for one or two controls, with Tab trapped and Esc to close, and a sticky Dock that keeps the page\'s main action in reach at the bottom.',
     group: 'layout',
     kind: 'component',
+    stability: 'beta',
+    spoken: ["\"Confirm sale, dialog\" on open (named by the title); the hidden close button reads the closeLabel, for example \"Close\"."],
+    apg: { name: "Dialog (Modal)", url: "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/" },
     summary:
       'Sheet is a short confirm: a title, one line and one or two controls, rising from the bottom on a phone and centred on a wide screen. Long forms are pages or a Drawer. Dock is the page\'s main action docked at the bottom, sticky while a long list scrolls.',
     use: ['Confirming a sell order, a transfer or a delete that needs the whole screen.', 'Dock for Review order on a long, scrolling form.'],
@@ -744,6 +788,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
   },
   {
     slug: 'dialog',
+    stability: 'beta',
     title: 'Dialog and AlertDialog',
     description: 'A modal Dialog and an AlertDialog that must be answered: named by the title, described by the body, Tab trapped, page behind inert, focus returned.',
     group: 'layout',
@@ -777,6 +822,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'The inside of a Drawer: a screen with a header (title, back, close), a body and a footer that keeps Save and Cancel in reach however long the form is.',
     group: 'layout',
     kind: 'component',
+    stability: 'beta',
     summary:
       'The parts of a drawer\'s screen. DrawerScreen fills the drawer (a div, or the form itself so Enter submits); DrawerHeader carries the title, an optional back and the close; DrawerBody holds the content; DrawerFooter docks Save and Cancel at the foot. ground="page" is the same screen pushed full screen on a phone.',
     use: ['The form inside a Drawer: add a transaction, edit a holding.', 'A second screen opened from the first, with a back chevron.'],
@@ -798,6 +844,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'Two layout primitives: Stack puts children in one column and Cluster in a row that wraps, both spaced by the --pu-space-* scale and nothing else.',
     group: 'layout',
     kind: 'component',
+    stability: 'stable',
     summary:
       'Stack lays its children out in one column; Cluster lays them out in a row that wraps onto the next line when it is full. Each takes a `gap` from the spacing scale (1, 2, 3, 4 or 16) and draws nothing else: no colour, border or padding. Use them in place of one-off flex and grid rules, so copied code works without any CSS of your own.',
     use: ['A form or card body: fields and notes one under the other (Stack).', 'A toolbar of buttons and chips that wraps on a phone (Cluster, `justify="between"` to push the last to the far end).', 'A list: `as="ul"` with `li` children removes the bullets and the padding for you.'],
@@ -821,6 +868,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'A monospace box for plain text people read or copy, such as a CSV export or a JSON payload, with an optional label and Copy button. No syntax highlighting.',
     group: 'layout',
     kind: 'component',
+    stability: 'stable',
     summary:
       'A block of plain text in a monospace box, for output a person reads or copies: a CSV export, a JSON payload, an account statement. The text is shown exactly as given. Add a `label` to name it, and `copy` for a Copy button that puts the whole text on the clipboard. It does not colour syntax.',
     use: ['Showing the CSV a user is about to download.', 'A JSON response or a reference number to copy (`copy`).'],
@@ -845,6 +893,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     description: 'Pure Y scales for value charts: round ticks that bracket the line so it fills the plot, and a far-off second series named instead of squashed at the edge.',
     group: 'data',
     kind: 'utility',
+    stability: 'stable',
     summary:
       'Two pure functions for value charts. bracketScale picks round ticks (1, 2, 2.5, 3, 4 or 5 of a power of ten) so the lowest tick is at or below the data and the highest at or above, and the line fills the plot. valueScale brackets the value line alone and reports whether a second series such as the money invested lies below or above it.',
     use: ['A portfolio value line with a benchmark or an amount invested.', 'Your own SVG chart that should look like the kit\'s.'],
@@ -871,6 +920,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     lead: 'A chart beside its order ticket, resizable by pointer or keyboard, stacked on a phone.',
     group: 'layout',
     kind: 'component',
+    stability: 'experimental',
     summary:
       'Two panes side by side (or one above the other) and a separator between them. The separator is a WAI-ARIA window splitter: it takes focus, reports the start pane\'s share as its value, moves with the arrow keys (Shift for bigger steps), Home and End, and Enter collapses the start pane to its minimum and restores it. Dragging uses pointer capture, so it works with a mouse, a pen and a finger. The share is a percent of the container; below 640 px of container width the panes stack and the separator is hidden.',
     use: ['A chart and an order ticket, a list and its detail, a table and a preview.', 'Controlled `size` with `onSizeChange` to remember the split (for example with `useLocalStorage`).'],

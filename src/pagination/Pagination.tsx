@@ -59,6 +59,9 @@ function Chevron({ dir }: { dir: 'left' | 'right' }): ReactNode {
   );
 }
 
+/**
+ * @stability stable
+ */
 export function Pagination({
   page,
   total,

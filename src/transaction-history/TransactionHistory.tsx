@@ -112,6 +112,9 @@ const TYPE_WORDS: Record<TransactionType, string> = { buy: 'Buy', sell: 'Sell', 
 const NO_FILTERS: TransactionFilters = {};
 const blank = (value: unknown, render: () => ReactNode): ReactNode => (value === undefined ? null : render());
 
+/**
+ * @stability composition
+ */
 export function TransactionHistory({
   transactions, caption, filters: controlled, defaultFilters = NO_FILTERS, onFiltersChange, pageSize = 10, order = 'newest', formatDate = (iso) => formatCalendarDate(iso),
   money = nepalQuoteMoney, convention, changeLabels, labels, minDate, maxDate, state = 'ready', emptyLabel = 'No transactions yet.',

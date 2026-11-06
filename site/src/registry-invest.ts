@@ -10,6 +10,7 @@ export const INVEST_PAGES: readonly PageDef[] = [
     title: 'RiskMeter',
     group: 'portfolio',
     kind: 'component',
+    stability: 'composition',
     description: 'A mutual fund riskometer in React: six levels from Low to Very high as a half-dial or a compact row of steps, with the level always printed in words.',
     lead: 'The riskometer every fund factsheet carries, as a dial for a fund page or a row of steps for a fund list.',
     summary:
@@ -30,6 +31,7 @@ export const INVEST_PAGES: readonly PageDef[] = [
     lead: 'XIRR, SIP with step-up, lump sum, the SIP for a goal, units at a NAV and term cover, in exact bigint arithmetic.',
     group: 'portfolio',
     kind: 'utility',
+    stability: 'beta',
     description: 'Pure exact mutual fund maths: XIRR by bisection on bigint fixed point, SIP and step-up projections, the SIP for a goal, units at a NAV and life cover needed.',
     summary:
       'Pure functions in @punji/ui/invest. `xirr(flows)` solves the annual rate of dated cash flows (actual/365) by bisection with 36-place bigint fixed point, rounded half-even to 8 places, and `xnpv` checks it. `projectSip` grows monthly instalments (with an optional yearly step-up rounded to whole rupees) at an expected return compounded monthly, carrying the balance as an exact fraction and rounding each reported figure once; `projectLumpSum` does the same for one payment, and `sipForGoal` finds the smallest instalment that reaches a goal. `allotUnits` and `unitsValue` convert between money and units at a decimal NAV, rounding units down so the cost never exceeds the payment. `termCoverNeeded` is the income-replacement cover gap. Amounts are bigint minor units; no React, no browser globals.',

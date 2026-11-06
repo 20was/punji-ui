@@ -36,6 +36,9 @@ export interface StatusTagProps {
   className?: string;
 }
 
+/**
+ * @stability stable
+ */
 export function StatusTag({ children, tone = 'neutral', icon, testId, className }: StatusTagProps) {
   return (
     <span className={`kit-tag${tone === 'accent' ? ' accent' : ''}${className ? ` ${className}` : ''}`} data-testid={testId}>

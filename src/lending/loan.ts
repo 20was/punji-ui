@@ -43,7 +43,9 @@ function emiFor(principal: bigint, n: bigint, d: bigint, months: number, roundin
   return divideRounded(principal * n * grown, d * (grown - base) * roundTo, rounding) * roundTo;
 }
 
-/** The equated monthly instalment, exact to the minor unit and rounded with the mode you pass. */
+/** The equated monthly instalment, exact to the minor unit and rounded with the mode you pass. *
+ * @stability stable
+ */
 export function calculateEmi({ principal, ratePercent, months, rounding, roundTo = 1n }: EmiInput): bigint {
   check(principal, months, roundTo);
   const { n, d } = monthly(ratePercent);

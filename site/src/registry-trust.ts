@@ -11,6 +11,7 @@ export const TRUST_PAGES: readonly PageDef[] = [
     title: 'TransferReview',
     group: 'trust',
     kind: 'component',
+    stability: 'composition',
     description: 'The last screen before money moves: amount in figures and words, a spoofing-checked recipient name, changed fields marked, fee and exact total.',
     lead: 'Read the amount back in words, check the name for look-alike letters, and mark what changed, before anyone presses send.',
     summary:
@@ -53,6 +54,7 @@ export const TRUST_PAGES: readonly PageDef[] = [
     title: 'PayeeVerification',
     group: 'trust',
     kind: 'component',
+    stability: 'composition',
     description: 'Show a Confirmation of Payee or Verification of Payee result: match, close match with the real name, no match with an acknowledgement, or unavailable.',
     lead: 'Match, close match, no match or could not check, shown the way UK Confirmation of Payee and EU Verification of Payee intend.',
     summary:
@@ -75,6 +77,9 @@ export const TRUST_PAGES: readonly PageDef[] = [
     title: 'HoldToConfirm',
     group: 'trust',
     kind: 'component',
+    stability: 'beta',
+    spoken: ["\"Transfer NPR 5,000, button. Press and hold to confirm.\" in hold mode.", "\"Keep holding\", \"Released too early\" and \"Confirmed\" are announced as status text; a cooling-off button reads its countdown while disabled."],
+    apg: { name: "Button", url: "https://www.w3.org/WAI/ARIA/apg/patterns/button/" },
     description: 'Friction for high-risk actions: press and hold (pointer or held Space/Enter) to confirm, or a cooling-off countdown before the button works.',
     lead: 'Press and hold, or wait a few seconds: deliberate friction for large transfers, new payees and account closures.',
     summary:
@@ -97,6 +102,7 @@ export const TRUST_PAGES: readonly PageDef[] = [
     title: 'SessionTimeoutWarning',
     group: 'trust',
     kind: 'component',
+    stability: 'composition',
     description: 'The sign-out warning WCAG 2.2.1 asks for: at least 20 seconds notice, one action to stay, a visible countdown announced only at key moments.',
     lead: 'Warn at least 20 seconds before sign-out, offer one action to stay, and announce the countdown without flooding a screen reader.',
     summary:
@@ -116,6 +122,7 @@ export const TRUST_PAGES: readonly PageDef[] = [
     title: 'ScamWarning',
     group: 'trust',
     kind: 'component',
+    stability: 'composition',
     description: 'A full-stop scam interstitial: names the scam, asks the questions scammers coach victims to lie about, makes cancel primary and continuing deliberate.',
     lead: 'Name the specific scam, ask the questions that break the script, and make cancelling the easy choice.',
     summary:
@@ -138,6 +145,7 @@ export const TRUST_PAGES: readonly PageDef[] = [
     title: 'SecureField',
     group: 'trust',
     kind: 'component',
+    stability: 'beta',
     description: 'Inputs for passwords, one-time codes, PINs, card data and account numbers with the right autocomplete, no spellcheck and no value in the DOM.',
     lead: 'The right autocomplete for each secret, no spellcheck or autocorrect, and a value that never lands in a DOM attribute.',
     summary:
@@ -157,6 +165,7 @@ export const TRUST_PAGES: readonly PageDef[] = [
     navTitle: 'detectSpoofing',
     group: 'trust',
     kind: 'utility',
+    stability: 'experimental',
     description: 'detectSpoofing checks a payee name for mixed scripts, look-alike letters, bidi controls and invisible characters, after Unicode UTS #39.',
     lead: 'Is that "PayPal" with a Cyrillic "а"? A pure check for look-alike letters, bidi tricks and invisible characters in names.',
     summary:
@@ -183,6 +192,7 @@ export const TRUST_PAGES: readonly PageDef[] = [
     title: 'Global money',
     group: 'financial-primitives',
     kind: 'utility',
+    stability: 'beta',
     description: 'Exact money for any currency and locale: lakh/crore or western grouping, 0 to 3 decimals, 18 digit scripts, exact compact notation and ISO 4217 data.',
     lead: 'INR lakh and crore, KWD fils, JPY with no decimals, Bengali and Thai digits, exact compact notation, and ISO 4217 data on demand.',
     summary:

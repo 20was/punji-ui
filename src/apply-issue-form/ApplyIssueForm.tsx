@@ -152,6 +152,9 @@ export interface ApplyIssueFormProps {
 
 type ErrorKey = 'kitta' | 'account' | 'crn' | 'declaration';
 
+/**
+ * @stability composition
+ */
 export function ApplyIssueForm({
   issue, accounts, defaultAccountId, defaultKitta, requireCrn = true, declaration, verification = 'pin', secretLength, verificationHint, onResend, onSubmit,
   submitting: submittingProp, error, onCancel, disabled = false, money, digits = 'latn', headingLevel = 2, labels, className, testId,

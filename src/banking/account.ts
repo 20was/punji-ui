@@ -44,6 +44,8 @@ function group(text: string, size: number, separator: string): string {
  * "0123 4567 8901 2345" and "0123456789012345" mask the same. It never reveals more than `visible` characters, and never
  * more than half the number: "1234" with visible 4 shows "••34". Empty or non-string input gives ''. The result keeps the
  * length (one mark per hidden character); if the length itself is sensitive, show a fixed placeholder instead.
+ *
+ * @stability stable
  */
 export function maskAccountNumber(value: unknown, options: MaskAccountNumberOptions = {}): string {
   const { groupSize = 0, maskChar = '•', separator = ' ' } = options;

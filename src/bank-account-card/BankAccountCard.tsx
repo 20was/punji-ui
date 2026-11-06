@@ -104,6 +104,9 @@ const Eye = ({ off }: { off: boolean }) => (
   </svg>
 );
 
+/**
+ * @stability composition
+ */
 export function BankAccountCard({
   institution, holder, accountNumber, accountType, balance, money = nepalMoneyPreset, status, balanceToggle = false, defaultBalanceHidden = true,
   numberProps, actions, loading, error, onRetry, headingLevel = 3, labels, className, testId,

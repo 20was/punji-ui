@@ -26,6 +26,7 @@ export const SEO_TITLES: Readonly<Record<string, string>> = {
   tailwind: 'Using Punji UI with Tailwind CSS: cascade layers',
   'live-data': 'Live market data in React: Punji UI data adapters',
   security: 'Security in Punji UI: CSV formula injection, masking',
+  versioning: 'Punji UI versioning, stability levels and 0.x policy',
   roadmap: 'Punji UI roadmap: shipped, in progress and planned',
   agents: 'Contributing to Punji UI: checks and component bar',
   localisation: 'Localise Punji UI: Nepali, Hindi and Bengali copy packs',

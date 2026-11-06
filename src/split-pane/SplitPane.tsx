@@ -50,6 +50,9 @@ function onPointerDown(event: PointerEvent<HTMLDivElement>) {
 const clamp = (value: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, value));
 const round1 = (value: number) => Math.round(value * 10) / 10;
 
+/**
+ * @stability experimental
+ */
 export function SplitPane({
   start,
   end,

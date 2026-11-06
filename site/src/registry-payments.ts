@@ -10,6 +10,7 @@ export const PAYMENT_PAGES: readonly PageDef[] = [
     title: 'Payment fields',
     group: 'banking',
     kind: 'component',
+    stability: 'beta',
     description: 'React inputs for IBAN, card number, expiry and CVC, SWIFT/BIC, IFSC, UPI ID, UK sort code, US routing and Nepal bank accounts: checked, grouped, paste-safe.',
     lead: 'IBAN, card, SWIFT, IFSC, UPI, sort code, ABA and Nepal account fields that group as you type, accept any paste and catch typing slips.',
     summary:
@@ -59,6 +60,7 @@ export const PAYMENT_PAGES: readonly PageDef[] = [
     navTitle: 'Payment checks',
     group: 'banking',
     kind: 'utility',
+    stability: 'beta',
     description: 'Pure TypeScript checks for IBAN mod-97, card Luhn and brand by IIN range, expiry, SWIFT/BIC, IFSC, UPI, UK sort code, ABA routing and Nepal accounts.',
     lead: 'The checks behind the payment fields, usable on the server: IBAN mod-97, Luhn, IIN brand ranges, ABA check digit, BIC, IFSC and UPI.',
     summary:

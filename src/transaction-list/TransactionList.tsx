@@ -162,6 +162,9 @@ function dateHeading(date: string, calendar: 'ad' | 'bs', language: 'en' | 'ne',
   }
 }
 
+/**
+ * @stability composition
+ */
 export function TransactionList({
   transactions, calendar = 'ad', language = 'en', money = nepalMoneyPreset, showBalance, showCompletedStatus, pageSize, page, onPageChange,
   loading, error, onRetry, labels, statusLabels, className, testId,

@@ -69,6 +69,9 @@ export interface LiveFigureProps {
   testId?: string;
 }
 
+/**
+ * @stability beta
+ */
 export function LiveFigure({ value, kind = 'num', dp = 2, id, className, testId }: LiveFigureProps) {
   return (
     <Live value={value} id={id} dp={kind === 'int' ? 0 : dp} className={className ? `kit-fig ${className}` : 'kit-fig'} testId={testId}>

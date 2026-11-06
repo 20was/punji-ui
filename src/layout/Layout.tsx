@@ -16,6 +16,9 @@ export interface PageLayoutProps {
   nav?: ReactNode;
 }
 
+/**
+ * @stability stable
+ */
 export function PageLayout({ children, nav }: PageLayoutProps) {
   return (
     <div className="kit-page">

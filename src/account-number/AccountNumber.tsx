@@ -87,6 +87,8 @@ const CopyIcon = () => (
 
 /**
  * @remarks Masking is presentation only. UX safeguard only. It does not enforce authorisation, step-up authentication, limits, payee checks, session expiry or validation; do all of that on the server. Hidden or disabled controls are not access control.
+ *
+ * @stability stable
  */
 export function AccountNumber({ value, label = 'Account number', visible = 4, groupSize = 4, revealable = true, autoHideMs = 30000, copyable = false, onRevealedChange, labels, className, testId }: AccountNumberProps) {
   const words = { ...DEFAULT_ACCOUNT_NUMBER_LABELS, ...labels };

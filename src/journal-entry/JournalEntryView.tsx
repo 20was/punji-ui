@@ -55,6 +55,9 @@ export interface JournalEntryViewProps {
 
 type Key = 'account' | 'debit' | 'credit';
 
+/**
+ * @stability composition
+ */
 export function JournalEntryView({ journal, renderAccount, money = nepalLedgerMoney, formatDate = formatCalendarDate, labels, headingLevel = 3, bare, testId }: JournalEntryViewProps) {
   const words = { ...DEFAULT_JOURNAL_LABELS, ...labels };
   const totals = useMemo(() => { try { return journalTotals(journal); } catch { return null; } }, [journal]);

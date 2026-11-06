@@ -36,6 +36,8 @@ export interface NiceTicks {
  * spaced by 1, 2, 2.5 or 5 times a power of ten, about `count` of them.
  * A flat domain (min equals max) is widened so the value sits inside; a
  * reversed or non-finite domain is repaired (swapped, or 0..1).
+ *
+ * @stability stable
  */
 export function niceTicks(min: number, max: number, count = 5): NiceTicks {
   let a = isNum(min) ? min : 0;

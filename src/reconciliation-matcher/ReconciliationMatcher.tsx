@@ -97,6 +97,9 @@ const uniqueIds = (items: readonly ReconcileItem[]) => new Set(items.map((item) 
 const describe = (item: ReconcileItem) => item.description ?? item.reference ?? item.id;
 const byId = (items: readonly ReconcileItem[], ids: readonly string[]) => items.filter((item) => ids.includes(item.id));
 
+/**
+ * @stability experimental
+ */
 export function ReconciliationMatcher({
   statement, ledger, matches, onMatchesChange, statementBalance, ledgerBalance, onCreateEntry, dateWindow = 5, newMatchId,
   money = nepalLedgerMoney, formatDate = formatCalendarDate, headingLevel = 3, maxHeight = 360, labels, state = 'ready',

@@ -52,6 +52,9 @@ export interface MarketMoversProps<T extends Quote = Quote>
   testId?: string;
 }
 
+/**
+ * @stability composition
+ */
 export function MarketMovers<T extends Quote = Quote>({
   quotes, label, tab, defaultTab = 'gainers', onTabChange, limit = 5, activeBy = 'turnover', tabLabels, emptyLabels, footer, density = 'compact', testId, ...table
 }: MarketMoversProps<T>) {

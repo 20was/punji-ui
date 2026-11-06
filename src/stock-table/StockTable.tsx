@@ -88,6 +88,9 @@ export interface StockTableProps<T extends Quote = Quote> {
   testId?: string;
 }
 
+/**
+ * @stability stable
+ */
 export function StockTable<T extends Quote = Quote>({
   caption, quotes, columns = DEFAULT_STOCK_COLUMNS, labels, sort, onSortChange, money = nepalQuoteMoney, convention, changeLabels,
   selectedSymbols, onSelectedSymbolsChange, selectLabel = (symbol) => `Select ${symbol}`, density = 'comfortable', bare, maxHeight, stickToPage,

@@ -59,6 +59,9 @@ export interface PortfolioAllocationProps extends AllocationOptions {
   testId?: string;
 }
 
+/**
+ * @stability composition
+ */
 export function PortfolioAllocation({
   holdings, label, view = 'donut', tableView = 'hidden', unit = 'holdings', money = nepalQuoteMoney, labels, state = 'ready',
   emptyLabel = 'No holdings to chart.', loadingLabel = 'Loading allocation…', testId, by = 'holding', maxSlices = 6, decimals = 1, otherLabel = 'Other', unclassifiedLabel = 'Unclassified',

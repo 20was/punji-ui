@@ -53,6 +53,9 @@ export type DebitCreditProps = DebitCreditOptions & {
   preset?: MoneyFormatConfig;
 };
 
+/**
+ * @stability stable
+ */
 export function DebitCredit({ value, variant = 'suffix', column = 'debit', labels, preset: presetProp, accounting, className, testId, ...money }: DebitCreditProps) {
   const words = { ...DEFAULT_DEBIT_CREDIT_LABELS, ...labels };
   // Nepal rupees without a mark unless the caller names a currency or brings their own preset.

@@ -62,7 +62,9 @@ export function buttonClass({ variant = 'primary', size = 'md', block, iconOnly,
   return `kit-btn ${variant}${size === 'md' ? '' : ` ${size}`}${iconOnly ? ' icon' : ''}${block ? ' block' : ''}${stacked && !iconOnly ? ' stacked' : ''}`;
 }
 
-/** The one button (design.punji.app/components/button). */
+/** The one button (design.punji.app/components/button). *
+ * @stability stable
+ */
 export function Button({ variant = 'primary', size = 'md', block, loading, icon, stacked, iconOnly, label, href, external, newTabLabel = '(opens in a new tab)', linkComponent, testId, children, disabled, type = 'button', className, ...rest }: ButtonProps) {
   const cls = `${buttonClass({ variant, size, block, iconOnly, stacked })}${className ? ` ${className}` : ''}`;
   const glyph = iconOnly ? (icon ?? children) : icon;

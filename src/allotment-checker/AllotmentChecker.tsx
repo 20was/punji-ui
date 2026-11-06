@@ -119,6 +119,9 @@ function splitEntries(text: string): { line: number; value: string }[] {
   return text.split('\n').flatMap((lineText, i) => lineText.split(/[,;]/).map((v) => ({ line: i + 1, value: normalizeBoid(v) }))).filter((e) => e.value !== '');
 }
 
+/**
+ * @stability composition
+ */
 export function AllotmentChecker({
   issues, defaultIssue, savedAccounts = [], onCheck, maxBoids = 20, prefix, digits = 'latn', outcomeLabels, labels, headingLevel = 3, className, testId,
 }: AllotmentCheckerProps) {

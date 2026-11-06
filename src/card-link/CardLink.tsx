@@ -47,6 +47,9 @@ export interface CardLinkProps {
   className?: string;
 }
 
+/**
+ * @stability beta
+ */
 export function CardLink({ href, children, external, linkComponent, newTabLabel = '(opens in a new tab)', ariaLabel, testId, className }: CardLinkProps) {
   const out = external ?? /^https?:/.test(href);
   const cls = `kit-cardlink${out ? ' out' : ''}${className ? ` ${className}` : ''}`;

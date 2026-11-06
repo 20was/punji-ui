@@ -138,7 +138,9 @@ export function presetRange(id: DateRangePresetId, options: DateRangePresetOptio
   }
 }
 
-/** Labelled presets ready for `DateRangePicker`'s `presets` prop. */
+/** Labelled presets ready for `DateRangePicker`'s `presets` prop. *
+ * @stability stable
+ */
 export function dateRangePresets(options: DateRangePresetListOptions): DateRangePreset[] {
   const ids = options.ids ?? ['today', 'this-week', 'this-month', 'last-30-days', ...(options.fiscalYearStartMonth === undefined ? [] : (['fiscal-year-to-date'] as const))];
   const words = DATE_RANGE_PRESET_LABELS[options.language ?? 'en'];

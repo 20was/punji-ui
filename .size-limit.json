@@ -745,7 +745,7 @@
     "name": "column-chart (import from '@punji/ui/column-chart')",
     "path": "dist/column-chart/ColumnChart.js",
     "import": "*",
-    "limit": "3.04 kB",
+    "limit": "3.11 kB",
     "gzip": true
   },
   {
@@ -1018,7 +1018,7 @@
     "name": "dividend-history (import from '@punji/ui/dividend-history')",
     "path": "dist/dividend-history/DividendHistory.js",
     "import": "*",
-    "limit": "12.7 kB",
+    "limit": "13.02 kB",
     "gzip": true
   },
   {

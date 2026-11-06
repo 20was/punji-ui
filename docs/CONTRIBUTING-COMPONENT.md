@@ -46,7 +46,9 @@ says `TODO`.
 2. **Money and numbers.** Amounts are `bigint` minor units or exact decimal strings, never `number`. Format with
    `@punji/ui/money` and `@punji/ui/format`; anything that divides takes an explicit rounding mode. Direction is never
    colour alone: a sign, an arrow or a word.
-3. **Locale.** No user-facing copy baked in: labels are props. Support `nepalMoneyConfig()`, Devanagari digits and
+3. **Locale and props.** No user-facing copy baked in: words go in a `labels` prop. Name props from the shared
+   vocabulary in [API-CONVENTIONS.md](API-CONVENTIONS.md) (`size`, `variant`, `tone`, `labels`, `on*`, `value` +
+   `defaultValue` + `onChange`, `pu-` classes); `scripts/check-api-conventions.mjs` fails on drift. Support `nepalMoneyConfig()`, Devanagari digits and
    Bikram Sambat dates where they apply.
 4. **CSS.** `--pu-*` tokens only (`scripts/check-css.mjs` fails on a raw colour), logical properties so it mirrors in
    `dir="rtl"`, one focus ring, 44 px targets under `(pointer: coarse)`, works in light, dark and both high-contrast

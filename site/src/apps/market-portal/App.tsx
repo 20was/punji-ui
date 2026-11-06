@@ -94,7 +94,7 @@ export default function MarketPortal() {
             <div className="app-banner">
               <InlineState
                 icon="offline"
-                tone="error"
+                tone="danger"
                 role="alert"
                 layout="row"
                 title="The price feed stopped"

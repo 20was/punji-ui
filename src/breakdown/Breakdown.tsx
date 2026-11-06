@@ -12,6 +12,8 @@
  */
 import type { ReactNode } from 'react';
 
+import { directionClass } from '../internal/tone.ts';
+
 export interface BreakdownProps {
   /** BreakdownRows. */
   children: ReactNode;
@@ -43,8 +45,8 @@ export interface BreakdownRowProps {
   value: ReactNode;
   /** The ruled-off total row: larger, with a rule above it. */
   total?: boolean;
-  /** Tint the amount as a gain or a loss; the amount also carries its sign. */
-  tone?: 'up' | 'down';
+  /** Tint the amount as a gain or a loss; the amount also carries its sign. Deprecated: 'up' and 'down', use `gain` and `loss`. */
+  tone?: 'gain' | 'loss' | 'up' | 'down';
   /** Sets `data-testid` on the amount. */
   testId?: string;
 }
@@ -56,7 +58,7 @@ export function BreakdownRow({ label, note, value, total, tone, testId }: Breakd
         {label}
         {note !== undefined && note !== null && <small>{note}</small>}
       </dt>
-      <dd className={tone} data-testid={testId}>
+      <dd className={directionClass(tone)} data-testid={testId}>
         {value}
       </dd>
     </div>

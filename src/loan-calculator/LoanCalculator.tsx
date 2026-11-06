@@ -164,7 +164,7 @@ export function LoanCalculator({
           <div className="pu-lcalc-tenure">
             <NumberField label={words.tenure} integer value={tenure} onChange={setTenure} testId={testId && `${testId}-tenure`}
               error={tenure !== '' && !monthsOk ? words.tenureError(maxMonths) : undefined} hint={unit === 'years' && monthsOk ? `${showDigits(months, digits)} ${words.months.toLowerCase()}` : undefined} />
-            <ChoiceGroup label={words.tenureUnit} testId={`${testId ?? uid}-unit`} size="lg" appearance="compact" value={unit}
+            <ChoiceGroup label={words.tenureUnit} testId={`${testId ?? uid}-unit`} size="lg" variant="compact" value={unit}
               onChange={(next) => {
                 if (next === unit) return;
                 if (monthsOk) setTenure(String(next === 'years' ? (months % 12 === 0 ? months / 12 : Math.max(1, Math.round(months / 12))) : months));
@@ -177,7 +177,7 @@ export function LoanCalculator({
               <legend>{words.prepayment}</legend>
               <CurrencyInput label={words.prepaymentAmount} preset={money} value={prepay} onValueChange={(c) => setPrepay(c.value)} numberingSystem={deva ?? money.numberingSystem} size="md" testId={testId && `${testId}-prepay`} />
               <NumberField label={words.prepaymentAfter} integer size="md" value={after} onChange={setAfter} error={prepay !== '' && !afterOk ? words.prepaymentAfterError(monthsOk ? months : maxMonths) : undefined} testId={testId && `${testId}-after`} />
-              <ChoiceGroup label={words.strategy} testId={`${testId ?? uid}-strategy`} size="md" appearance="compact" value={strategy} onChange={setStrategy}
+              <ChoiceGroup label={words.strategy} testId={`${testId ?? uid}-strategy`} size="md" variant="compact" value={strategy} onChange={setStrategy}
                 options={[{ value: 'reduce-tenure', label: words.reduceTenure }, { value: 'reduce-emi', label: words.reduceEmi }]} />
             </fieldset>
           )}

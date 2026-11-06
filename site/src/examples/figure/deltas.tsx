@@ -15,7 +15,7 @@ export default function Example() {
         <DataRow label="NICA" value={<Delta value={change('NICA')} />} />
         <DataRow label="SBL, unchanged" value={<Delta value={change('SBL')} />} />
         <DataRow label="NTC, in rupees" value={<Delta value={-3.95} kind="rs" arrow={false} />} />
-        <DataRow label="UPPER, in Nepali" value={<Delta value={change('UPPER')} size="sm" words={{ up: 'बढेको', down: 'घटेको', flat: 'उस्तै' }} />} />
+        <DataRow label="UPPER, in Nepali" value={<Delta value={change('UPPER')} size="sm" labels={{ up: 'बढेको', down: 'घटेको', flat: 'उस्तै' }} />} />
         <DataRow label="BFC, not traded" value={<Delta value={undefined} />} />
       </DataRows>
     </Card>

@@ -108,7 +108,7 @@ export default function Example() {
           <div className="sc-inv-totals">
             <Breakdown>
               <BreakdownRow label="Subtotal" value={money(subtotal)} />
-              <BreakdownRow label="Trade discount" note="5% of the subtotal" value={<>- {money(discount)}</>} tone="down" />
+              <BreakdownRow label="Trade discount" note="5% of the subtotal" value={<>- {money(discount)}</>} tone="loss" />
               <BreakdownRow label="Taxable amount" value={money(taxable)} />
               <BreakdownRow label="VAT" note="13% of the taxable amount" value={money(vat)} />
               <BreakdownRow label="Total" total value={<MoneyDisplay value={total} preset={npr} />} />

@@ -204,7 +204,7 @@ export function TaxInvoice({
       </div>
 
       {totals === null ? (
-        <div role="alert" data-testid={testId ? `${testId}-invalid` : undefined}><Note tone="error">{words.invalid}</Note></div>
+        <div role="alert" data-testid={testId ? `${testId}-invalid` : undefined}><Note tone="danger">{words.invalid}</Note></div>
       ) : (
         <>
           {/* Scrolls sideways on a narrow screen, so it takes focus and is named by the caption. */}

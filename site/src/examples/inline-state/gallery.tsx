@@ -13,7 +13,7 @@ export default function Example() {
         <InlineState
           bare
           icon="error"
-          tone="error"
+          tone="danger"
           role="alert"
           title="Could not load your alerts"
           body="Your other settings are unaffected."

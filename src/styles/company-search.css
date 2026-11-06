@@ -50,7 +50,7 @@
   .kit-cs-sheet .kit-cs { flex: 1; min-width: 0; height: var(--pu-control-lg); gap: 10px; padding: 0 12px; background: var(--pu-color-surface) }
   .kit-cs-sheet .kit-cs input { font-size: 16px; font-weight: 400 }
   .kit-cs-back { appearance: none; flex: none; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: var(--pu-radius-16); background: none; color: var(--pu-color-text); cursor: pointer }
-  .kit-cs-back:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: -2px }
+  .kit-cs-back:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: -2px }
   .kit-cs-sheet .kit-cs-sugg { position: static; flex: 1; min-height: 0; max-height: none; margin: 0; padding: 8px 8px calc(8px + env(safe-area-inset-bottom)); border: 0; border-radius: 0; background: none; box-shadow: none; overscroll-behavior: contain }
   .kit-cs-sheet .kit-cs-opt { min-height: 52px }
   :root:has(.kit-cs-sheet) .app-tabbar { display: none }

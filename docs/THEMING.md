@@ -72,6 +72,10 @@ blocks differ from their theme. `--json` prints every ratio.
 | `text-inverse` on `surface-inverse` | 15.95 | 16.83 | 21.00 | 21.00 |
 | `border-control` on `surface-tint` | 3.53 | 3.40 | 18.43 | 17.40 |
 | `chart` on `surface` | 3.76 | 13.61 | 9.93 | 18.31 |
+| `on-accent` on `accent` | 6.42 | 14.92 | 12.69 | 18.31 |
+| `info` on `bg` | 4.61 | 9.63 | 10.05 | 13.90 |
+| `focus-ring` on `bg` | 5.13 | 14.92 | 12.69 | 18.31 |
+| `btn-line` on `surface-tint` | 3.53 | 3.40 | 18.43 | 17.40 |
 
 Lowest text ratio per theme: light 5.13 (`gain` on `bg`), dark 4.90
 (`text-tertiary` on `surface-tint`), light-hc 8.09, dark-hc 9.33. The
@@ -153,7 +157,7 @@ import { createTheme } from '@punji/ui/theme';
 
 const { css, issues, vars } = createTheme(
   {
-    light: { accent: '#0b5cad' },                 // accentFill, hover, onAccentFill, link, chart are derived
+    light: { accent: '#0b5cad' },                 // accentFill, hover, onAccentFill, onAccent, link, focusRing, chart are derived
     dark: { accent: '#8bbcff' },
     radius: { control: '8px', card: '16px' },
     font: { body: '"Inter", system-ui, sans-serif' },
@@ -168,7 +172,10 @@ const { css, issues, vars } = createTheme(
   Generate it at build time and serve it as a file.
 - **Contrast on generation:** accent and link need 4.5:1 on `bg`, `surface`
   and `surface-tint`; the text on the fill needs 4.5:1 on the fill and its
-  hover; the chart colour needs 3:1 on `surface`. Misses are returned in
+  hover; `onAccent` (text on the accent colour itself) needs 4.5:1 on `accent`;
+  the focus ring (`focusRing`, default `accent`) needs 3:1 on each surface; the
+  chart colour needs 3:1 on `surface`. The chart area fill is derived from the
+  chart colour (20% light, 12% dark) and is not checked: the line carries the data. Misses are returned in
   `issues` (`{ theme, token, against, ratio, min }`); `strict: true` throws a
   `RangeError` instead. Missing values are derived: the fill is the accent,
   the hover moves 10% toward black (light) or white (dark), the text on the

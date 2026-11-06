@@ -2,7 +2,7 @@
    Styles for list-filter. Needs tokens.css and base.css (styles.css has everything). */
 @layer punji.components {
   .kit-lf { display: flex; align-items: center; gap: 8px; min-width: 0; height: 36px; padding-block: 0; padding-inline: 10px 6px; border-radius: 10px; background: var(--pu-color-surface-tint); border: 1px solid transparent; color: var(--pu-color-text-tertiary) }
-  .kit-lf:focus-within { outline: 2px solid var(--pu-color-accent); outline-offset: -1px; border-color: transparent }
+  .kit-lf:focus-within { outline: 2px solid var(--pu-color-focus-ring); outline-offset: -1px; border-color: transparent }
   .kit-lf.lg { height: 44px; min-width: min(100%, 17rem); padding-block: 0; padding-inline: 14px 8px; border-radius: var(--pu-radius-control); border-color: var(--pu-color-border-control); background: var(--pu-color-surface); transition: border-color var(--pu-motion-fast) var(--pu-ease-out) }
   .kit-lf.lg:hover:not(:focus-within) { border-color: var(--pu-color-text-tertiary) }
   .kit-lf.lg:focus-within { border-color: transparent }
@@ -16,6 +16,6 @@
   .kit-lf kbd { flex: none }
   .kit-lf-x { appearance: none; flex: none; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 8px; background: none; color: var(--pu-color-text-muted); cursor: pointer }
   .kit-lf-x:hover { background: var(--pu-color-surface-subtle); color: var(--pu-color-text) }
-  .kit-lf-x:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 0 }
+  .kit-lf-x:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 0 }
   @media (pointer: coarse) { .kit-lf kbd { display: none } }
 }

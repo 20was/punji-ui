@@ -101,8 +101,12 @@ export interface BrandColors {
   accentFillHover?: string;
   /** Text on the fill. Default: black or white, whichever contrasts more. */
   onAccentFill?: string;
+  /** Text on `accent` itself (a badge or step number on the accent colour). Default: black or white, whichever contrasts more. Needs 4.5:1. */
+  onAccent?: string;
   /** Links. Default: `accent`. */
   link?: string;
+  /** The keyboard focus ring. Default: `accent`. Needs 3:1 on every surface. */
+  focusRing?: string;
   /** The single-series chart colour. Needs 3:1 on the surface. Default: `accent`. */
   chart?: string;
 }
@@ -200,13 +204,18 @@ function resolveColors(input: BrandColors, theme: 'light' | 'dark'): Record<stri
   const accent = colour(input.accent, `${theme}.accent`);
   if (!accent) throw new TypeError(`createTheme: ${theme}.accent is required`);
   const fill = colour(input.accentFill, `${theme}.accentFill`) ?? accent;
+  const chart = colour(input.chart, `${theme}.chart`) ?? accent;
   return {
     '--pu-color-accent': accent,
     '--pu-color-accent-fill': fill,
     '--pu-color-accent-fill-hover': colour(input.accentFillHover, `${theme}.accentFillHover`) ?? mix(fill, theme === 'light' ? '#000000' : '#ffffff', 0.1),
     '--pu-color-on-accent-fill': colour(input.onAccentFill, `${theme}.onAccentFill`) ?? bestOn(fill),
+    '--pu-color-on-accent': colour(input.onAccent, `${theme}.onAccent`) ?? bestOn(accent),
     '--pu-color-link': colour(input.link, `${theme}.link`) ?? accent,
-    '--pu-color-chart': colour(input.chart, `${theme}.chart`) ?? accent,
+    '--pu-color-focus-ring': colour(input.focusRing, `${theme}.focusRing`) ?? accent,
+    '--pu-color-chart': chart,
+    // The area under the chart line follows the chart colour, so a brand never shows the default lime fill.
+    '--pu-color-chart-fill': `rgba(${rgb(chart).join(', ')}, ${theme === 'light' ? 0.2 : 0.12})`,
   };
 }
 
@@ -218,9 +227,11 @@ function check(vars: Record<string, string>, theme: 'light' | 'dark'): ThemeIssu
   };
   for (const [against, back] of Object.entries(SURFACES[theme])) {
     for (const token of ['--pu-color-accent', '--pu-color-link']) measure(token, against, back, 4.5);
+    measure('--pu-color-focus-ring', against, back, 3);
     for (const token of ['--pu-color-gain', '--pu-color-loss']) if (vars[token]) measure(token, against, back, 4.5);
   }
   measure('--pu-color-chart', '--pu-color-surface', SURFACES[theme]['--pu-color-surface'], 3);
+  measure('--pu-color-on-accent', '--pu-color-accent', vars['--pu-color-accent']!, 4.5);
   measure('--pu-color-on-accent-fill', '--pu-color-accent-fill', vars['--pu-color-accent-fill']!, 4.5);
   measure('--pu-color-on-accent-fill', '--pu-color-accent-fill-hover', vars['--pu-color-accent-fill-hover']!, 4.5);
   return issues;

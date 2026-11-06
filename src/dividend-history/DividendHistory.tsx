@@ -116,6 +116,7 @@ export function DividendHistory({
             label={caption}
             height={chartHeight}
             legend
+            interactive={false}
             minSlots={Math.max(2, plot.length)}
             format={(v) => formatter.format(toMinor(v))}
             formatAxis={(v) => formatter.formatCompact(toMinor(v))}

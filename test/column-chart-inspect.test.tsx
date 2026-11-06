@@ -77,4 +77,14 @@ describe('ColumnChart inspection', () => {
     await user.keyboard('{ArrowLeft}');
     expect(live(container)).toBe('Tue: Bought Rs 60, Sold Rs 90, Net -Rs 30');
   });
+
+  it('interactive={false} leaves no tab stop, readout or live region (a parent supplies the accessible form)', () => {
+    const { container } = render(<ColumnChart label="Flow" series={SERIES} columns={COLUMNS} format={fmt} interactive={false} testId="cc" />);
+    expect(container.querySelector('[tabindex]')).toBeNull();
+    expect(container.querySelector('[role="status"]')).toBeNull();
+    const p = container.querySelector<HTMLElement>('.kit-col-plot')!;
+    p.getBoundingClientRect = () => ({ left: 0, top: 0, right: 300, bottom: 200, width: 300, height: 200, x: 0, y: 0, toJSON: () => ({}) });
+    fireEvent.pointerMove(p, { clientX: 150, clientY: 50 });
+    expect(screen.queryByTestId('cc-tip')).toBeNull();
+  });
 });

@@ -601,7 +601,7 @@ export const PAGES: readonly PageDef[] = [
     group: 'data',
     kind: 'component',
     summary: 'One column per period with its parts stacked from the baseline, the total printed over each column and a round labelled scale that includes zero. Never smoothed, never 3D. Missing values are drawn as nothing and written "none" in the data table, never zero.',
-    use: ['Revenue, dividends or flows by fiscal year or quarter.', 'Stacked parts that add to a meaningful total.', '`mirror` for two opposing flows (bought and sold) either side of a zero line on one round scale (`mirrorScaleTop`), with `net` for the first less the second.'],
+    use: ['Revenue, dividends or flows by fiscal year or quarter.', 'Stacked parts that add to a meaningful total.', '`mirror` for two opposing flows (bought and sold) either side of a zero line on one round scale (`mirrorScaleTop`), with `net` for the first less the second.', 'Inside an `aria-hidden` wrapper beside a table of the same figures (as DividendHistory does): pass `interactive={false}` so no tab stop sits in the hidden subtree.'],
     avoid: ['Long continuous price series: use a line chart.', 'More series than the legend and data table can tell apart without colour.'],
     api: [...ui('column-chart', 'ColumnChart', 'ColumnSeries', 'ColumnDatum', 'mirrorScaleTop')],
     examples: [

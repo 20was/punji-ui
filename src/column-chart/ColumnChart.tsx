@@ -103,6 +103,12 @@ export interface ColumnChartProps {
   mirror?: boolean;
   /** In a mirror, an extra readout and table line: the first series less the second, written by `format` (so it carries its sign). */
   net?: { label: string; format?: (v: number) => string };
+  /**
+   * Default true: the plot is one focus stop with hover and keyboard inspection. Pass false when a parent already gives the
+   * same figures an accessible form (a table beside it) and hides the chart with `aria-hidden`: the plot then has no tab stop,
+   * no pointer readout and no live region, so nothing focusable sits inside the hidden subtree.
+   */
+  interactive?: boolean;
   /** Test id on the figure; each column gets `${testId}-${key}`. */
   testId?: string;
 }
@@ -175,7 +181,7 @@ export function ColumnChart(props: ColumnChartProps) {
   return <ColumnPlot {...props} />;
 }
 
-function ColumnPlot({ series, columns, label, format = String, formatAxis, height = 200, minSlots = 6, legend = false, axis = true, labels, mirror = false, net, testId }: ColumnChartProps) {
+function ColumnPlot({ series, columns, label, format = String, formatAxis, height = 200, minSlots = 6, legend = false, axis = true, labels, mirror = false, net, interactive = true, testId }: ColumnChartProps) {
   const hintId = useId();
   const cursor = useChartCursor(columns.length);
   // 0 until the first measurement: the columns then lay out at their natural size, with every label shown.
@@ -251,8 +257,8 @@ function ColumnPlot({ series, columns, label, format = String, formatAxis, heigh
         )}
         {/* The plot is the one focus stop: arrow keys move through the columns, the pointer reads one. */}
         {/* oxlint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/no-noninteractive-tabindex */}
-        <div className="kit-col-plot" tabIndex={0} role="group" aria-label={label} aria-roledescription="column chart" aria-describedby={hintId}
-          onKeyDown={cursor.onKeyDown} onFocus={cursor.onFocus} onBlur={cursor.clear} onPointerMove={onPointer} onPointerDown={onPointer} onPointerLeave={() => cursor.pointerTo(null)}>
+        <div className="kit-col-plot" {...(interactive ? { tabIndex: 0, role: 'group', 'aria-label': label, 'aria-roledescription': 'column chart', 'aria-describedby': hintId,
+          onKeyDown: cursor.onKeyDown, onFocus: cursor.onFocus, onBlur: cursor.clear, onPointerMove: onPointer, onPointerDown: onPointer, onPointerLeave: () => cursor.pointerTo(null) } : {})}>
           <div ref={area} className="kit-col-area" aria-hidden="true">
             {hasScale && ticks.filter((t) => t.v !== 0).map((t) => <span key={t.v} className="kit-col-grid" style={{ bottom: `${t.at}%` }} />)}
             <span className="kit-col-zero" style={{ bottom: `${base}%` }} />
@@ -281,7 +287,7 @@ function ColumnPlot({ series, columns, label, format = String, formatAxis, heigh
               })}
             </div>
           </div>
-          {active && cursor.index !== null && (
+          {interactive && active && cursor.index !== null && (
             <div className={`kit-col-tip${activeFrac > 0.5 ? ' end' : ''}`} aria-hidden="true" style={{ left: `${activeFrac * 100}%` }} data-testid={testId ? `${testId}-tip` : undefined}>
               <b>{active.label}</b>
               <dl>
@@ -308,8 +314,8 @@ function ColumnPlot({ series, columns, label, format = String, formatAxis, heigh
           <ColumnLegend series={series} />
         </figcaption>
       )}
-      <p className="kit-sr" id={hintId}>{labels?.hint ?? 'Use the left and right arrow keys to move between columns, Home and End to jump to the first and last.'}</p>
-      <div className="kit-sr" role="status" aria-live="polite" aria-atomic="true">{active && cursor.index !== null ? spoken(active, cursor.index) : ''}</div>
+      {interactive && <p className="kit-sr" id={hintId}>{labels?.hint ?? 'Use the left and right arrow keys to move between columns, Home and End to jump to the first and last.'}</p>}
+      {interactive && <div className="kit-sr" role="status" aria-live="polite" aria-atomic="true">{active && cursor.index !== null ? spoken(active, cursor.index) : ''}</div>}
       <div className="kit-sr">
         <table>
           <caption>{label}</caption>

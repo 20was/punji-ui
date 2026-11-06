@@ -31,8 +31,8 @@ interface MenuItemBase {
   icon?: ReactNode;
   /** Announced as dimmed, skipped by the arrow keys, cannot be chosen. */
   disabled?: boolean;
-  /** danger: removes or deletes something. Always words, never colour alone; confirm before acting. */
-  tone?: 'default' | 'danger';
+  /** danger: removes or deletes something. Always words, never colour alone; confirm before acting. neutral (default): any other item. */
+  tone?: 'neutral' | 'danger';
   /** Becomes data-testid on the item. */
   testId?: string;
 }

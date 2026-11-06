@@ -201,7 +201,7 @@ export default function TransferScreen() {
           <Card title="Who and how much" headingLevel={3}>
             {cancelled && (
               <div className="rb-gap">
-                <Note tone="error">{cancelled}</Note>
+                <Note tone="danger">{cancelled}</Note>
               </div>
             )}
             <form className="rb-form" onSubmit={continueToReview} noValidate>
@@ -301,7 +301,7 @@ export default function TransferScreen() {
               verification={
                 check === 'error' ? (
                   <div className="rb-check-error" data-testid="rb-payee-check" data-result="error">
-                    <Note tone="error">Could not check the name on the account: you are offline. Try again before you pay.</Note>
+                    <Note tone="danger">Could not check the name on the account: you are offline. Try again before you pay.</Note>
                     <Button size="sm" variant="secondary" onClick={() => runCheck(target)}>
                       Try again
                     </Button>

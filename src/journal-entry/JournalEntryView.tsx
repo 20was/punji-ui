@@ -63,7 +63,7 @@ export function JournalEntryView({ journal, renderAccount, money = nepalLedgerMo
   const totals = useMemo(() => { try { return journalTotals(journal); } catch { return null; } }, [journal]);
   const Heading = `h${headingLevel}` as 'h3';
   const title = `${journal.id}${journal.memo ? ` · ${journal.memo}` : ''}`;
-  if (totals === null) return <div role="alert" data-testid={testId}><Note tone="error">{words.invalid}</Note></div>;
+  if (totals === null) return <div role="alert" data-testid={testId}><Note tone="danger">{words.invalid}</Note></div>;
   const columns: Column<Key>[] = [
     { key: 'account', label: words.account },
     { key: 'debit', label: words.debit, num: true },

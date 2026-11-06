@@ -48,8 +48,8 @@ export function StateGlyph({ name, size = 18 }: {
 export function InlineState({ icon, tone, title, body, actions, layout = 'stack', bare = false, role, className, testId }: {
   /** The state icon in the tile (decorative). */
   icon: StateIcon;
-  /** The icon tile's colour: error (loss), warn (amber), or quiet (default). */
-  tone?: 'error' | 'warn';
+  /** The icon tile's colour: danger (loss), warn (amber), or quiet (default). Deprecated: 'error', use `danger`. */
+  tone?: 'danger' | 'warn' | 'error';
   /** What the state is, in words ("Not included on this account"). */
   title?: ReactNode;
   /** One line of detail under the title. */
@@ -68,7 +68,7 @@ export function InlineState({ icon, tone, title, body, actions, layout = 'stack'
   testId?: string;
 }) {
   return (
-    <div className={`kit-istate ${layout}${bare ? ' bare' : ''}${tone ? ` ${tone}` : ''}${className ? ` ${className}` : ''}`} role={role} data-testid={testId}>
+    <div className={`kit-istate ${layout}${bare ? ' bare' : ''}${tone ? ` ${tone === 'danger' ? 'error' : tone}` : ''}${className ? ` ${className}` : ''}`} role={role} data-testid={testId}>
       <span className="kit-istate-ic">
         <StateGlyph name={icon} />
       </span>

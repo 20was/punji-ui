@@ -122,7 +122,7 @@ export default function ExportsScreen() {
       <ScreenTitle aside={<PeriodBar testId="ac-export-period" />}>Exports</ScreenTitle>
       <Card title="Choose a report" description={`${period.label}: ${shortDate(from)} to ${shortDate(to)}`} headingLevel={3}>
         <div className="app-stack">
-          <ChoiceGroup label="Report" value={kind} onChange={setKind} options={KINDS.map(({ value, label }) => ({ value, label }))} size="sm" appearance="compact" testId="ac-export-kind" />
+          <ChoiceGroup label="Report" value={kind} onChange={setKind} options={KINDS.map(({ value, label }) => ({ value, label }))} size="sm" variant="compact" testId="ac-export-kind" />
           <p className="app-muted">{about.about}</p>
           <div className="ac-links">
             <Button onClick={() => downloadText(file.filename, file.csv, 'text/csv;charset=utf-8')} testId="ac-export-download">

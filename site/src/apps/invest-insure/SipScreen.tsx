@@ -190,13 +190,13 @@ export default function SipScreen() {
         {step === 'status' && (
           <Card title={order?.stage === 'failed' ? 'Order failed' : order?.stage === 'allotted' ? 'Units allotted' : 'Order on its way'} headingLevel={3} testId="ii-order-status">
             {!order ? (
-              <Note tone="error">The order could not be found. Check Portfolio for its status.</Note>
+              <Note tone="danger">The order could not be found. Check Portfolio for its status.</Note>
             ) : (
               <div className="app-stack">
                 <PaymentTimeline steps={orderSteps(order)} label={`Order ${order.id} progress`} testId="ii-order-timeline" />
                 {order.stage === 'failed' && (
                   <>
-                    <Note tone="error">{order.error}</Note>
+                    <Note tone="danger">{order.error}</Note>
                     <div className="ii-buttons">
                       <Button onClick={() => setStep('review')} testId="ii-retry">Try again</Button>
                     </div>
@@ -225,7 +225,7 @@ export default function SipScreen() {
             )}
           </Card>
         )}
-        {step === 'review' && !valid && <Note tone="error">Check the amount and try again.</Note>}
+        {step === 'review' && !valid && <Note tone="danger">Check the amount and try again.</Note>}
         <div className="app-stack">
           <Card title="Projection" description={`At ${ret}% a year, compounded monthly. An illustration, not a promise.`} headingLevel={3} testId="ii-projection">
             {!valid ? (

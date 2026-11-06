@@ -38,7 +38,12 @@ export interface HoldToConfirmProps {
   holdMs?: number;
   /** Cooling-off mode: seconds before the button works, 1 to 120. Default 5. To restart it (for example after the amount changes), give the component a new React `key`. */
   delaySeconds?: number;
-  /** 'danger' (default, a red fill) or 'primary'. */
+  /** The button style, as on `Button`: 'danger' (default, a red fill) or 'primary'. */
+  variant?: 'danger' | 'primary';
+  /**
+   * The former name of `variant`, still honoured.
+   * @deprecated Use `variant`; same values. Kept until the next major.
+   */
   tone?: 'danger' | 'primary';
   /** Not available at all (for example while the form is invalid). */
   disabled?: boolean;
@@ -60,8 +65,9 @@ const KEYS = new Set([' ', 'Enter']);
  * @stability beta
  */
 export function HoldToConfirm({
-  children, onConfirm, mode = 'hold', holdMs = 1500, delaySeconds = 5, tone = 'danger', disabled = false, block, labels = {}, className, testId,
+  children, onConfirm, mode = 'hold', holdMs = 1500, delaySeconds = 5, variant: variantProp, tone, disabled = false, block, labels = {}, className, testId,
 }: HoldToConfirmProps) {
+  const variant = variantProp ?? tone ?? 'danger';
   if (!Number.isFinite(holdMs) || holdMs < 500 || holdMs > 10000) throw new RangeError('holdMs must be 500 to 10000');
   if (!Number.isInteger(delaySeconds) || delaySeconds < 1 || delaySeconds > 120) throw new RangeError('delaySeconds must be a whole number from 1 to 120');
   const {
@@ -139,7 +145,7 @@ export function HoldToConfirm({
     <span className={`pu-hold${block ? ' block' : ''}${className ? ` ${className}` : ''}`}>
       <button
         type="button"
-        className={`kit-btn lg pu-hold-btn ${tone === 'primary' ? 'primary' : 'danger'}${block ? ' block' : ''}`}
+        className={`kit-btn lg pu-hold-btn ${variant === 'primary' ? 'primary' : 'danger'}${block ? ' block' : ''}`}
         aria-disabled={unavailable || undefined}
         data-holding={active ? 'true' : undefined}
         data-testid={testId}

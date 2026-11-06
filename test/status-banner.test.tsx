@@ -8,6 +8,13 @@ import { seriousViolations } from './axe.ts';
 
 afterEach(cleanup);
 
+function Host() {
+  const [open, setOpen] = useState(true);
+  return <><StatusBanner dismissible open={open} onOpenChange={setOpen} testId="b">Hello</StatusBanner><button type="button" onClick={() => setOpen(true)}>Reopen</button></>;
+}
+
+const Router: LinkComponent = ({ href, children, ...rest }) => <a {...rest} href={href} data-router="yes">{children}</a>;
+
 describe('StatusBanner', () => {
   it('is a polite status for info and warn, and an assertive alert for danger', () => {
     const { rerender } = render(<StatusBanner title="Markets are closed">Orders queue until 11:00.</StatusBanner>);
@@ -40,10 +47,6 @@ describe('StatusBanner', () => {
 
   it('is controlled with `open`: stays until the parent closes it', async () => {
     const user = userEvent.setup();
-    function Host() {
-      const [open, setOpen] = useState(true);
-      return <><StatusBanner dismissible open={open} onOpenChange={setOpen} testId="b">Hello</StatusBanner><button type="button" onClick={() => setOpen(true)}>Reopen</button></>;
-    }
     render(<Host />);
     await user.click(screen.getByRole('button', { name: 'Dismiss' }));
     expect(screen.queryByTestId('b')).toBeNull();
@@ -67,7 +70,6 @@ describe('StatusBanner', () => {
     await user.click(screen.getByRole('button', { name: 'Retry' }));
     expect(onClick).toHaveBeenCalledTimes(1);
 
-    const Router: LinkComponent = ({ href, children, ...rest }) => <a {...rest} href={href} data-router="yes">{children}</a>;
     rerender(<LinkProvider component={Router}><StatusBanner action={{ label: 'Status page', href: '/status' }} testId="b">Down.</StatusBanner></LinkProvider>);
     const link = screen.getByRole('link', { name: 'Status page' });
     expect(link.getAttribute('href')).toBe('/status');

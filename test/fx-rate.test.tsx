@@ -106,6 +106,18 @@ describe('invertRate and formatFxRate', () => {
   });
 });
 
+describe('long inputs', () => {
+  it('reject or trim a 100k-character run of zeros quickly', () => {
+    const zeros = '0'.repeat(100_000);
+    const start = performance.now();
+    expect(isValidFxRate(`1.${zeros}`)).toBe(false);
+    expect(isValidFxRate(zeros)).toBe(false);
+    expect(() => formatFxRate(`1.${zeros}`)).toThrow(TypeError);
+    expect(formatFxRate('1.50000000000000000')).toBe('1.50');
+    expect(performance.now() - start).toBeLessThan(200);
+  });
+});
+
 describe('FxRateDisplay', () => {
   it('renders the sentence, a machine-readable time and the source, and speaks currency names', () => {
     render(<FxRateDisplay rate={usdNpr} timeZone="UTC" testId="fx" />);

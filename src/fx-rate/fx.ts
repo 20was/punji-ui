@@ -92,7 +92,9 @@ export function invertFxRate(rate: FxRate, places = 6, rounding: RoundingMode = 
 export function formatFxRate(rate: string, locale = 'en', minFraction = 2): string {
   parseFxRate(rate);
   const [whole = '0', fraction = ''] = rate.split('.');
-  let trimmed = fraction.replace(/0+$/, '');
+  let end = fraction.length;
+  while (end > 0 && fraction.charCodeAt(end - 1) === 48) end--;
+  let trimmed = fraction.slice(0, end);
   if (trimmed.length < minFraction) trimmed = trimmed.padEnd(minFraction, '0');
   const format = new Intl.NumberFormat(locale, { useGrouping: true, maximumFractionDigits: 0 });
   const parts = new Intl.NumberFormat(locale, { minimumFractionDigits: 1 }).formatToParts(1.1);

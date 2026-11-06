@@ -79,7 +79,7 @@ export interface PerformanceChartProps {
   convention?: 'green-up' | 'red-up';
   /** Plot height in CSS px, clamped to 140..520. Default 260. */
   height?: number;
-  /** Prints a raw value (when not normalised, and in the table). Default two decimals with lakh grouping. */
+  /** Prints a raw value (when not normalised, and in the table). Default: Intl en-IN, two decimals with lakh grouping (no currency mark). */
   formatValue?: (value: number) => string;
   /** Prints a percent change. Default signed, two decimals ("+4.20%"). */
   formatPercent?: (percent: number) => string;

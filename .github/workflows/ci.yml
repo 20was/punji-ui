@@ -89,7 +89,10 @@ jobs:
         run: npm audit signatures
       - run: npm run lint
       - run: npm run typecheck
-      - run: npm run test
+      - name: Unit tests with the coverage ratchet (thresholds in vitest.config.ts)
+        run: npm run test:coverage
+      - name: Type tests (expectTypeOf)
+        run: npm run test:types
       - run: npm run build
       - run: npm run typecheck:examples
       - run: npm run typecheck:portal

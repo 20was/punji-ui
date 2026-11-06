@@ -16,6 +16,8 @@ export interface CompactUnits {
  * A rupee amount short enough for a tile: exact below `from` (1 crore by default), then
  * in crore or arba to two places ("Rs 1.24 Cr", "Rs 2.05 Arba"; lakh only when `from` is
  * lower). `mark` is the rupee prefix in the reader's language ("Rs" by default, "रु." in Nepali). Returns the exact amount too, for the accessible name and the hover.
+ *
+ * @deprecated Rupee-only, takes a float and prints a fixed "Rs"-style mark. Use `createMoneyFormatter({ currency, locale }).formatCompact(minor)` (exact bigint minor units, any currency, locale-aware). Behaviour is unchanged for existing callers.
  */
 export function compactRs(value: number | null | undefined, units: CompactUnits, from = 1e7, mark = 'Rs'): { short: string; full: string; compact: boolean } {
   if (!isNum(value)) return { short: '-', full: '-', compact: false };

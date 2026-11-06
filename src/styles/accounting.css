@@ -127,7 +127,7 @@
   .pu-balance-amount { font-weight: 700 }
 
   /* Statement: sections indent by depth; subtotals take a rule above, the grand total a double rule. */
-  .pu-stmt .kit-table tbody th.pu-stmt-label { padding-inline-start: calc(12px + var(--depth, 0) * 18px); white-space: normal; min-width: 11rem; position: sticky; inset-inline-start: 0; background: var(--pu-color-surface); z-index: 1 }
+  .pu-stmt .kit-table tbody th.pu-stmt-label { padding-inline-start: calc(12px + var(--depth, 0) * 18px); white-space: normal; min-width: 11rem; position: sticky; inset-inline-start: 0; background: var(--pu-color-surface); z-index: var(--pu-z-raised) }
   .pu-stmt .kit-table tbody th.pu-stmt-section { position: static; font-weight: 700; color: var(--pu-color-text); background: var(--pu-color-surface-subtle) }
   .pu-stmt .kit-table tbody tr:has(.pu-stmt-section) { background: var(--pu-color-surface-subtle) }
   .pu-stmt .kit-table tbody tr:hover th.pu-stmt-label:not(.pu-stmt-section) { background: var(--pu-color-surface-tint) }

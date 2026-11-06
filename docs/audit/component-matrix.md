@@ -1,5 +1,7 @@
 # Consumer component inventory
 
+> What this describes: the punji-web kit (its src/components files and pages), not the src/ of this package. It compares the punji-web fork against @punji/ui, and is a snapshot taken at the pinned punji-web commit, not a current inventory of @punji/ui.
+
 Static comparison against f6df01a149318af373b7b0605edd2f446e9722f7. Missing means missing at the public root; matching names require behavioral review.
 
 | Consumer source | Available at root | Missing at root |

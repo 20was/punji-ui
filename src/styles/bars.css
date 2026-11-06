@@ -28,7 +28,7 @@
   .kit-netbar-t { position: relative; display: grid; grid-template-columns: 1fr 1fr; align-items: center; height: 16px }
   .kit-netbar-t::before { content: ''; position: absolute; inset-inline-start: 0; inset-inline-end: 0; top: 50%; height: 2px; margin-top: -1px; border-radius: 1px; background: var(--pu-color-track) }
   .kit-netbar-t::after { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; border-radius: 1px; background: var(--pu-color-text-tertiary) }
-  .kit-netbar-l, .kit-netbar-r { position: relative; z-index: 1; display: flex; height: 8px }
+  .kit-netbar-l, .kit-netbar-r { position: relative; z-index: var(--pu-z-raised); display: flex; height: 8px }
   .kit-netbar-l { justify-content: flex-end }
   .kit-netbar-t i { display: block; height: 8px }
   .kit-netbar-l i { border-start-start-radius: 4px; border-start-end-radius: 0; border-end-end-radius: 0; border-end-start-radius: 4px; background: var(--pu-color-loss) }

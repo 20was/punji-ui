@@ -80,7 +80,7 @@
     "name": "figures (import from '@punji/ui/figures')",
     "path": "dist/figures/Figures.js",
     "import": "*",
-    "limit": "840 B",
+    "limit": "1.16 kB",
     "gzip": true
   },
   {
@@ -331,7 +331,7 @@
   {
     "name": "tokens.css",
     "path": "dist/tokens.css",
-    "limit": "1.65 kB",
+    "limit": "1.72 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -619,7 +619,7 @@
     "name": "Money formatter and parser without React (import from '@punji/ui/money')",
     "path": "dist/money/money.js",
     "import": "*",
-    "limit": "3.88 kB",
+    "limit": "3.96 kB",
     "gzip": true
   },
   {

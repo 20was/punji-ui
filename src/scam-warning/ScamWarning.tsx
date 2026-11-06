@@ -87,6 +87,9 @@ export interface ScamWarningProps {
   testId?: string;
 }
 
+/**
+ * @remarks UX safeguard only. It does not enforce authorisation, step-up authentication, limits, payee checks, session expiry or validation; do all of that on the server. Hidden or disabled controls are not access control.
+ */
 export function ScamWarning({ scenario, copy, onCancel, onProceed, coolingOffSeconds = 0, help, labels = {}, className, testId }: ScamWarningProps) {
   if (!Number.isInteger(coolingOffSeconds) || coolingOffSeconds < 0 || coolingOffSeconds > 120) throw new RangeError('coolingOffSeconds must be a whole number from 0 to 120');
   const {

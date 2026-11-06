@@ -1,6 +1,6 @@
 # Financial design-system audit and implementation backlog
 
-Date: 2026-10-28. This is an initial source audit, not a claim of exhaustive visual/behavioral parity. Run `npm run audit:web -- /path/to/punji-web` to refresh [component matrix](component-matrix.md) and [machine-readable inventory](inventory.json). Inventory includes 246 component files and 247 page/example files with imports. A matching export name does not prove API, styling or accessibility parity. Both local repositories were accessible; the remote design site could not be opened by the web research tool.
+Date: 2026-10-28. Note: the generated component matrix and inventory describe the punji-web kit, not this package's `src/`; they compare punji-web's fork against `@punji/ui`. This is an initial source audit, not a claim of exhaustive visual/behavioral parity. Run `npm run audit:web -- /path/to/punji-web` to refresh [component matrix](component-matrix.md) and [machine-readable inventory](inventory.json). Inventory includes 246 component files and 247 page/example files with imports. A matching export name does not prove API, styling or accessibility parity. Both local repositories were accessible; the remote design site could not be opened by the web research tool.
 
 ## Findings and priorities
 
@@ -33,6 +33,8 @@ Completed in this branch:
 - [x] Add package-based portfolio, invoice and watchlist showcases.
 - [x] Document architecture, upstream source/licence review and release boundary.
 - [x] Implement Calendar, DatePicker and DateRangePicker with AD/BS display, strict date-only form contracts, keyboard interaction, full portal examples and responsive theme checks. See [calendar scope and remaining release checks](../CALENDAR.md).
+
+Kit-to-package migration diff: [punji-web-kit-diff.md](punji-web-kit-diff.md) (module map, usage weight, upstream-first list, migration order).
 
 Next, in order:
 1. Complete manual per-component and per-page audit using the generated matrix. Record exact API/CSS/keyboard differences, not only names.

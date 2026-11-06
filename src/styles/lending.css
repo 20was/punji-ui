@@ -34,7 +34,7 @@
   .pu-amort-table caption { padding: 10px 12px; text-align: start; font-weight: 600; caption-side: top }
   .pu-amort-unit { font-weight: 400; color: var(--pu-color-text-muted) }
   .pu-amort-table th, .pu-amort-table td { padding: calc(var(--pu-cell-y) - 2px) var(--pu-cell-x); text-align: end; white-space: nowrap; border-top: 1px solid var(--pu-color-card-border) }
-  .pu-amort-table thead th { position: sticky; top: 0; z-index: 1; background: var(--pu-color-surface-solid); font-size: var(--pu-text-xs); font-weight: 600; color: var(--pu-color-text-muted) }
+  .pu-amort-table thead th { position: sticky; top: 0; z-index: var(--pu-z-raised); background: var(--pu-color-surface-solid); font-size: var(--pu-text-xs); font-weight: 600; color: var(--pu-color-text-muted) }
   .pu-amort-table tbody th { font-weight: 500; color: var(--pu-color-text-muted) }
   .pu-amort-table th:first-child { text-align: start }
   .pu-amort-table tr[data-prepaid] td, .pu-amort-table tr[data-prepaid] th { background: var(--pu-color-surface-tint) }

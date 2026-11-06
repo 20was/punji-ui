@@ -104,7 +104,7 @@ export interface CandlestickChartProps {
   convention?: 'green-up' | 'red-up';
   /** Moving averages over closes, drawn over the candles. */
   averages?: readonly MovingAverage[];
-  /** How a price is printed. Default NPR through the money formatter ("NPR 487.50"). */
+  /** How a price is printed. Default: en-IN NPR through the money formatter ("NPR 487.50"). Pass your own to change currency or locale, for example `price => formatter.format(BigInt(Math.round(price * 100)))`. */
   formatPrice?: (price: number) => string;
   /** How a volume is printed. Default grouped whole shares. */
   formatVolume?: (volume: number) => string;

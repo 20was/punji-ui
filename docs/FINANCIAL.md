@@ -276,3 +276,14 @@ Use it for entering an amount. It does not enforce a minimum, maximum or balance
 Accessibility: native `<label for>`, hint and error wired through `aria-describedby`, `aria-invalid` and a live `role="alert"` error; every state has a text alternative; no information is colour-only. Contrast is checked in the browser pass, as for the other components.
 
 Notes: the `Intl` data (symbols, plural names, grouping) comes from the browser or Node. `PriceField` now lets a caller's `inputMode` override its `decimal` default, which `CurrencyInput` uses for exponent-0 currencies.
+
+## Which formatter to use
+
+| You have | Use |
+| --- | --- |
+| An exact amount (ledger, balance, stored price) | `money(minor, currency)` with `createMoneyFormatter`, `MoneyDisplay`, or `<Figure value={money(...)} />` / `<Delta value={money(...)} />` |
+| A percent, ratio or count (not money) | `Figure` / `Delta` with `kind` `pct`, `int`, `num` |
+| A short amount for a tile | `formatter.formatCompact(minor)` |
+| Chart price or axis text | the chart prop (`formatPrice`, `formatValue`, `format`); the default is Intl en-IN NPR, so pass a formatter-backed function for other currencies |
+
+`money`, `addMoney` and `subtractMoney` work on bigint minor units and throw on mixed currencies; convert first. Deprecated but unchanged: `Figure`/`Delta` `kind="rs"` and `compactRs` (rupee-only, float input).

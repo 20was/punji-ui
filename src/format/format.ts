@@ -4,6 +4,7 @@ import { toAsciiDigits } from '../nepal/decimal.ts';
 
 export const isNum = (n: unknown): n is number => typeof n === 'number' && Number.isFinite(n);
 
+/** `'rs'` is rupee-only and en-IN fixed; for money pass a `Money` value (see `Figure`) so the currency and formatter are explicit. */
 export type FigureKind = 'rs' | 'int' | 'pct' | 'num';
 
 export function formatFigure(value: number | null | undefined, kind: FigureKind = 'num', dp = 2): string {

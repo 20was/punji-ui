@@ -596,6 +596,14 @@ function ComponentPage({ data }: { data: PageData }) {
               </div>
             </div>
           </section>
+          {page.uxOnly && (
+            <aside className="doc-callout" role="note" aria-label="UI is not enforcement">
+              <p className="doc-callout-title">UI is not enforcement</p>
+              <p>
+                This component is a UX safeguard. It does not enforce anything. Authorisation, step-up authentication, limits, payee checks, session expiry and validation must be enforced on the server. Hidden or disabled controls are not access control.
+              </p>
+            </aside>
+          )}
           <Bullets id="keyboard" title="Keyboard" items={page.keyboard} />
           <Bullets id="a11y" title="Accessibility" items={page.accessibility} />
           <Bullets id="responsive" title="Responsive behaviour" items={page.responsive} />

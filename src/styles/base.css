@@ -11,5 +11,21 @@
   [dir='rtl'] .pu-flip { transform: scaleX(-1) }
   [dir='rtl'] span.pu-flip { display: inline-block }
   [dir='rtl'] :is(.pu-money, .pu-change, .kit-fig, .kit-figchip) { direction: ltr; unicode-bidi: isolate }
+  /* Reduced motion, for every Punji class at once: animations and transitions collapse to an instant
+     change. Scoped to kit-* and pu-* elements so your own CSS is untouched. The spinner keeps turning
+     (it is the only sign that work is running), and the hold-to-confirm fill still tracks progress
+     because JS sets its width through --hold-progress; only the 60ms smoothing is dropped. */
+  @media (prefers-reduced-motion: reduce) {
+    :is([class^='kit-'], [class*=' kit-'], [class^='pu-'], [class*=' pu-']):not(.kit-spin),
+    :is([class^='kit-'], [class*=' kit-'], [class^='pu-'], [class*=' pu-']):not(.kit-spin)::before,
+    :is([class^='kit-'], [class*=' kit-'], [class^='pu-'], [class*=' pu-']):not(.kit-spin)::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      animation-delay: 0s !important;
+      transition-duration: 0.01ms !important;
+      transition-delay: 0s !important;
+      scroll-behavior: auto !important;
+    }
+  }
   .kit-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0 }
 }

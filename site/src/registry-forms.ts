@@ -49,6 +49,7 @@ export const FORMS_PAGES: readonly PageDef[] = [
   },
   {
     slug: 'otp-input',
+    uxOnly: true,
     title: 'OtpInput',
     description: 'A one-time code field with one box per character: paste and SMS autofill, numeric or alphanumeric, masked option, one group label, and left-to-right in RTL.',
     lead: 'Enter a code from an SMS or authenticator app, one box per character, with paste, autofill and full keyboard support.',

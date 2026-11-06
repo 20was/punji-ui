@@ -16,6 +16,9 @@ export interface LockedNoteProps {
   testId?: string;
 }
 
+/**
+ * @remarks A locked state is a message, not a lock. UX safeguard only. It does not enforce authorisation, step-up authentication, limits, payee checks, session expiry or validation; do all of that on the server. Hidden or disabled controls are not access control.
+ */
 export function LockedNote({ children, title, testId }: LockedNoteProps) {
   const lock = (
     <svg className="kit-tone-ico locked" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

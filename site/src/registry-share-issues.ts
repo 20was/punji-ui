@@ -144,6 +144,7 @@ export const SHARE_ISSUE_PAGES: readonly PageDef[] = [
   },
   {
     slug: 'edis-confirmation',
+    uxOnly: true,
     title: 'EdisConfirmation',
     description: 'Confirm an EDIS transfer of sold shares to the broker: pick the sales, see the exact unit total, accept the declaration and enter the PIN.',
     lead: 'Confirm moving sold shares to the broker: each sale can be left out, the total is exact, and the button says what will move.',

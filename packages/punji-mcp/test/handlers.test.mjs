@@ -3,7 +3,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { TOPICS, getComponent, getGuide, indexSnapshot, listComponents, listResources, readResource, reviewUsage } from '../src/handlers.mjs';
 
-const snapshot = JSON.parse(readFileSync(new URL('../data/snapshot.json', import.meta.url), 'utf8'));
+const snapshot = JSON.parse(readFileSync(new URL('./fixture/snapshot.json', import.meta.url), 'utf8'));
 const index = indexSnapshot(snapshot);
 const textOf = (r) => r.content[0].text;
 const rootPkg = JSON.parse(readFileSync(new URL('../../../package.json', import.meta.url), 'utf8'));
@@ -12,7 +12,7 @@ const rules = (code) => reviewUsage(snapshot, index, { code }).structuredContent
 describe('snapshot', () => {
   it('is pinned to the @punji/ui version in this repository', () => {
     expect(snapshot.version).toBe(rootPkg.version);
-    expect(snapshot.items.length).toBeGreaterThan(100);
+    expect(snapshot.items.length).toBeGreaterThan(3);
   });
 });
 

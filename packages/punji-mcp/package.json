@@ -9,7 +9,8 @@
   "files": ["bin", "src", "data", "README.md"],
   "engines": { "node": ">=22.12" },
   "scripts": {
-    "build:data": "node scripts/build-data.mjs"
+    "build": "node scripts/build-data.mjs",
+    "prepack": "node scripts/build-data.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.32.2",

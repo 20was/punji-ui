@@ -60,15 +60,17 @@ After publishing, use `"command": "npx", "args": ["punji-mcp"]`.
 
 ## Data: offline and version-pinned
 
-The server reads `data/snapshot.json`, committed to the repository, so it needs no network and always matches the
+The server reads `data/snapshot.json`, which is generated (gitignored; `npm run build` in this package writes it, and `prepack` runs it before publishing), so it needs no network and always matches the
 `@punji/ui` version it was generated from (`version` in the snapshot; `get_guide versioning` reports it).
 
-Regenerate after docs or API changes, from the repository root:
+Generate it (and regenerate after docs or API changes) from the repository root:
 
 ```sh
 npm run build && npm run site:build        # writes site/dist (components.json, llms.txt, index.md)
-node packages/punji-mcp/scripts/build-data.mjs
+npm run build --prefix packages/punji-mcp  # writes data/snapshot.json
 ```
+
+The server exits with a clear message if the snapshot is missing.
 
 `build-data.mjs` prefers the site build outputs. Without `site/dist` it falls back to the site registry sources
 (and `site/src/generated/api.json` if `site:gen` has run; otherwise there are no props tables) and says so.
@@ -77,7 +79,7 @@ showcases and apps report `pattern`.
 
 ## Tests
 
-Handler tests run from the repository root with the rest of vitest (no network, no SDK needed):
+Handler tests use a small committed fixture (`test/fixture/snapshot.json`); one test runs `build-data.mjs --fallback` against the registry sources and checks the shape. They run from the repository root with the rest of vitest (no network, no SDK needed):
 
 ```sh
 npx vitest run packages

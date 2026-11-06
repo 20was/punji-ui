@@ -4,7 +4,12 @@ import { z } from 'zod';
 import { TOPICS, getComponent, getGuide, indexSnapshot, listComponents, listResources, readResource, reviewUsage } from './handlers.mjs';
 
 export function loadSnapshot() {
-  return JSON.parse(readFileSync(new URL('../data/snapshot.json', import.meta.url), 'utf8'));
+  try {
+    return JSON.parse(readFileSync(new URL('../data/snapshot.json', import.meta.url), 'utf8'));
+  } catch (error) {
+    if (error?.code === 'ENOENT') throw new Error('punji-mcp: data/snapshot.json is missing. Run `npm run build` in packages/punji-mcp (needs the repository checkout; build the docs site first for the full data).', { cause: error });
+    throw error;
+  }
 }
 
 /** Build the MCP server over a snapshot (defaults to the bundled one). Transport is attached by the caller. */

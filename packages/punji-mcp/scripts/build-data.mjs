@@ -16,7 +16,10 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '../../..');
-const out = resolve(here, '../data/snapshot.json');
+// Options: --fallback ignores site/dist (reads the registry sources); --out <file> writes elsewhere.
+const argv = process.argv.slice(2);
+const outArg = argv.indexOf('--out');
+const out = outArg >= 0 ? resolve(argv[outArg + 1]) : resolve(here, '../data/snapshot.json');
 const dist = resolve(root, 'site/dist');
 const read = (p) => readFileSync(resolve(root, p), 'utf8');
 const pkg = JSON.parse(read('package.json'));
@@ -26,7 +29,7 @@ const { pagePath } = await import(pathToFileURL(resolve(root, 'site/src/seo.ts')
 const SITE = 'https://design.punji.app';
 
 const notes = [];
-const fromDist = existsSync(resolve(dist, 'components.json'));
+const fromDist = !argv.includes('--fallback') && existsSync(resolve(dist, 'components.json'));
 let manifest;
 let llms;
 
@@ -78,7 +81,19 @@ for (const item of items) {
 // Topic guides: markdown from the docs site pages (if built) plus the repository docs.
 const page = (slug, section = 'get-started') => {
   const p = resolve(dist, section, slug, 'index.md');
-  return existsSync(p) ? readFileSync(p, 'utf8') : null;
+  if (fromDist && existsSync(p)) return readFileSync(p, 'utf8');
+  // Fallback: the guide or foundation page rebuilt from the registry (prose and code, no props tables).
+  const def = PAGES.find((x) => x.slug === slug && (x.kind === 'guide' || x.kind === 'foundation'));
+  if (!def) return null;
+  const md = [`# ${def.title}`, '', def.summary ?? def.description, ''];
+  for (const sec of def.guide ?? []) {
+    md.push(`## ${sec.title}`, '', ...sec.paragraphs.flatMap((t) => [t, '']), ...(sec.points ?? []).map((x) => `- ${x}`), '');
+    for (const c of sec.code ?? []) {
+      const code = c.file ? readFileSync(resolve(root, 'site/src/guides', def.slug, `${c.file}.tsx`), 'utf8') : c.text;
+      md.push(`${c.label}:`, '', '```', code.replace(/\n+$/, ''), '```', '');
+    }
+  }
+  return md.join('\n');
 };
 const doc = (file) => read(file).replace(/^<!--.*-->\n+/, '');
 const join = (...parts) => parts.filter(Boolean).join('\n\n---\n\n');
@@ -86,7 +101,8 @@ const conventions = manifest.conventions?.length ? `# Conventions\n\n${manifest.
 const pageMd = (slug) => {
   const i = items.find((x) => x.slug === slug);
   if (!i) return null;
-  return page(slug, 'components') ?? null;
+  const p = resolve(dist, 'components', slug, 'index.md');
+  return fromDist && existsSync(p) ? readFileSync(p, 'utf8') : null;
 };
 const guides = {
   'money-rules': join(

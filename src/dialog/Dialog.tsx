@@ -64,9 +64,10 @@ function Layer({ role, title, body, testId, onEscape, onScrim, children, foot }:
   const ref = useRef<HTMLDivElement>(null);
   const titleId = useId();
   const bodyId = useId();
-  useFocusScope(ref, { onEscape });
-  useScrollLock(true);
+  // Inert first: effect cleanups run in this order, so the page is live again before focus goes back into it.
   useInertOthers(ref, true);
+  useScrollLock(true);
+  useFocusScope(ref, { onEscape });
   return (
     <div className="kit-sheet-back" role="presentation" onMouseDown={(e) => e.target === e.currentTarget && onScrim?.()}>
       <div className="kit-sheet" role={role} aria-modal="true" aria-labelledby={titleId} aria-describedby={body ? bodyId : undefined} ref={ref} tabIndex={-1} data-testid={testId}>

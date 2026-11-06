@@ -44,9 +44,10 @@ export function Drawer(props: DrawerProps) {
 function DrawerLayer({ label, onClose, children, testId }: DrawerProps) {
   const ref = useRef<HTMLDivElement>(null);
   // The form's own first field takes focus (autoFocus); else the panel itself, so Tab starts inside.
-  useFocusScope(ref, { initialFocus: 'container', onEscape: onClose });
-  useScrollLock(true);
+  // Inert first: effect cleanups run in this order, so the page is live again before focus goes back into it.
   useInertOthers(ref, true);
+  useScrollLock(true);
+  useFocusScope(ref, { initialFocus: 'container', onEscape: onClose });
   return (
     <div className="kit-drawer-back" onMouseDown={(e) => e.target === e.currentTarget && onClose()} data-testid={testId ? `${testId}-scrim` : undefined}>
       <div ref={ref} className="kit-drawer" role="dialog" aria-modal="true" aria-label={label} tabIndex={-1} data-testid={testId}>

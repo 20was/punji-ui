@@ -114,6 +114,24 @@ describe('overlay layer', () => {
     expect(document.activeElement).toBe(screen.getByRole('button', { name: 'last' }));
   });
 
+  it('lifts inert before focus goes back to the opener (a browser ignores focus() on inert content)', async () => {
+    const seen: boolean[] = [];
+    const real = HTMLElement.prototype.focus;
+    HTMLElement.prototype.focus = function (this: HTMLElement, ...a) {
+      if (this.textContent === 'Open drawer') seen.push(!!this.closest('[inert]'));
+      return real.apply(this, a);
+    };
+    try {
+      render(<Stack />);
+      await userEvent.click(screen.getByRole('button', { name: 'Open drawer' }));
+      seen.length = 0;
+      await userEvent.keyboard('{Escape}');
+      expect(seen).toEqual([false]);
+    } finally {
+      HTMLElement.prototype.focus = real;
+    }
+  });
+
   it('renders nothing on the server', async () => {
     const { renderToString } = await import('react-dom/server');
     expect(renderToString(<Sheet open title="T" onClose={() => {}}>x</Sheet>)).toBe('');

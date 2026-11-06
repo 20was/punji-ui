@@ -42,9 +42,10 @@ function SheetLayer({ title, body, children, onClose, testId, closeLabel = 'Clos
   const ref = useRef<HTMLDivElement>(null);
   const titleId = useId();
   // Focus lands on the safest control: an explicit [data-autofocus], else the first one that is not destructive (Keep, Cancel, Close), else the first.
-  useFocusScope(ref, { onEscape: onClose });
-  useScrollLock(true);
+  // Inert first: effect cleanups run in this order, so the page is live again before focus goes back into it.
   useInertOthers(ref, true);
+  useScrollLock(true);
+  useFocusScope(ref, { onEscape: onClose });
   return (
     <div className="kit-sheet-back" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
       <div className="kit-sheet" role="dialog" aria-modal="true" aria-labelledby={titleId} ref={ref} data-testid={testId}>

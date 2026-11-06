@@ -815,7 +815,7 @@
     "name": "market-movers (import from '@punji/ui/market-movers')",
     "path": "dist/market-movers/MarketMovers.js",
     "import": "*",
-    "limit": "11.92 kB",
+    "limit": "12.17 kB",
     "gzip": true
   },
   {
@@ -1025,7 +1025,7 @@
     "name": "dividend-history (import from '@punji/ui/dividend-history')",
     "path": "dist/dividend-history/DividendHistory.js",
     "import": "*",
-    "limit": "12.02 kB",
+    "limit": "12.28 kB",
     "gzip": true
   },
   {

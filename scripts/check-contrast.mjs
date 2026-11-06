@@ -58,6 +58,7 @@ export const ratio = (a, b) => {
 };
 
 // [foreground, background, kind]. A translucent background is laid over --pu-color-bg first.
+const vars0 = new Map([...light, ...darkOnly]);
 const SURFACES = ['bg', 'surface', 'surface-tint'];
 const PAIRS = [
   ...['text', 'text-muted', 'text-tertiary', 'link', 'accent', 'gain', 'loss', 'warn'].flatMap((fg) => SURFACES.map((bg) => [fg, bg, 'text'])),
@@ -78,6 +79,7 @@ const PAIRS = [
   ['chart', 'surface', 'ui'],
   ['series-nepse', 'surface', 'ui'],
   ['accent', 'surface', 'ui'],
+  ...Array.from({ length: 12 }, (_, i) => `series-${i + 1}`).filter((n) => vars0.has(`--pu-color-${n}`)).map((n) => [n, 'surface', 'ui']),
 ];
 
 const problems = [];

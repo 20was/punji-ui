@@ -16,7 +16,7 @@
   .kit-cs-w.sm .kit-cs input { font-size: 13px; font-weight: 400 }
   @media (max-width: 599px) { .kit-cs-w.sm .kit-cs { height: var(--pu-control-lg) } }
   @media (max-width: 599px) { .kit-cs-w.sm .kit-cs input { font-size: 16px } }
-  .kit-cs-sugg { position: absolute; z-index: 20; inset-inline-start: 0; inset-inline-end: 0; top: 100%; margin-top: 6px; padding: 6px; max-height: min(420px, 60vh); overflow-y: auto; border-radius: var(--pu-radius-card); background: var(--pu-color-surface-solid); border: 1px solid var(--pu-color-card-border); box-shadow: var(--pu-shadow-lg) }
+  .kit-cs-sugg { position: absolute; z-index: var(--pu-z-dropdown); inset-inline-start: 0; inset-inline-end: 0; top: 100%; margin-top: 6px; padding: 6px; max-height: min(420px, 60vh); overflow-y: auto; border-radius: var(--pu-radius-card); background: var(--pu-color-surface-solid); border: 1px solid var(--pu-color-card-border); box-shadow: var(--pu-shadow-lg) }
   .kit-cs-opt { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 4px 10px; border-radius: 8px; cursor: pointer }
   .kit-cs-opt.on, .kit-cs-opt:hover { background: color-mix(in srgb, var(--pu-color-text) 6.5%, transparent) }
   .kit-cs-id { flex: 1; min-width: 0; display: flex; flex-direction: column }
@@ -45,7 +45,7 @@
   .kit-cs-w.bad .kit-cs-l { color: var(--pu-color-loss) }
   .kit-cs-err { font: 600 12px / 16px var(--pu-font-body); color: var(--pu-color-loss) }
   .kit-cs-sk { height: 40px; margin: 4px }
-  .kit-cs-sheet { position: fixed; inset: 0; z-index: 70; display: flex; flex-direction: column; background: var(--pu-color-bg); color: var(--pu-color-text) }
+  .kit-cs-sheet { position: fixed; inset: 0; z-index: var(--pu-z-modal); display: flex; flex-direction: column; background: var(--pu-color-bg); color: var(--pu-color-text) }
   .kit-cs-sheet-h { flex: none; display: flex; align-items: center; gap: 4px; padding-block: 10px; padding-inline: 4px 16px; border-bottom: 1px solid var(--pu-color-border) }
   .kit-cs-sheet .kit-cs { flex: 1; min-width: 0; height: var(--pu-control-lg); gap: 10px; padding: 0 12px; background: var(--pu-color-surface) }
   .kit-cs-sheet .kit-cs input { font-size: 16px; font-weight: 400 }

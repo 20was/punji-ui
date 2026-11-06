@@ -44,7 +44,7 @@
   .kit-ct-cross rect { fill: var(--pu-color-text) }
   .kit-ct-cross text { fill: var(--pu-color-surface); font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums }
   .kit-ct-cross circle { fill: var(--pu-color-surface); stroke: currentColor; stroke-width: 2 }
-  .kit-ct-tip { position: absolute; top: 8px; z-index: 1; min-width: 150px; max-width: 240px; padding: 8px 10px; border: 1px solid var(--pu-color-border-default); border-radius: 8px; background: var(--pu-color-surface); box-shadow: 0 4px 16px color-mix(in srgb, var(--pu-color-text) 14%, transparent); font: 500 12px / 16px var(--pu-font-body); color: var(--pu-color-text); pointer-events: none }
+  .kit-ct-tip { position: absolute; top: 8px; z-index: var(--pu-z-raised); min-width: 150px; max-width: 240px; padding: 8px 10px; border: 1px solid var(--pu-color-border-default); border-radius: 8px; background: var(--pu-color-surface); box-shadow: 0 4px 16px color-mix(in srgb, var(--pu-color-text) 14%, transparent); font: 500 12px / 16px var(--pu-font-body); color: var(--pu-color-text); pointer-events: none }
   .kit-ct-tip b { display: block; margin-bottom: 4px }
   .kit-ct-tip dl { display: grid; grid-template-columns: auto auto; gap: 2px 14px; margin: 0 }
   .kit-ct-tip dl > div { display: contents }

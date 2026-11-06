@@ -12,7 +12,7 @@
   .kit-table.pu-vt tbody tr.pu-vt-spacer > td { padding: 0; border: 0; background: transparent }
   .kit-table.pu-vt tbody tr.pu-vt-spacer:hover { background: transparent }
   /* Pinned cells need an opaque fill so the cells scrolling under them do not show through. */
-  .kit-table.pu-vt :is(.pin-l, .pin-r) { position: sticky; z-index: 1; background-color: var(--pu-color-surface-solid) }
+  .kit-table.pu-vt :is(.pin-l, .pin-r) { position: sticky; z-index: var(--pu-z-raised); background-color: var(--pu-color-surface-solid) }
   .kit-table.pu-vt thead :is(.pin-l, .pin-r) { z-index: 3 }
   .kit-table.pu-vt .pin-l.pin-edge { box-shadow: inset -1px 0 0 var(--pu-color-border-control) }
   .kit-table.pu-vt .pin-r.pin-edge { box-shadow: inset 1px 0 0 var(--pu-color-border-control) }

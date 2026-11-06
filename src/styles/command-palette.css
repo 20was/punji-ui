@@ -1,7 +1,7 @@
 /* Punji UI styles.
    Styles for command-palette. Needs tokens.css and base.css (styles.css has everything). */
 @layer punji.components {
-  .kit-cmd-ov { position: fixed; inset: 0; z-index: 60 }
+  .kit-cmd-ov { position: fixed; inset: 0; z-index: var(--pu-z-overlay) }
   .kit-cmd-scrim { position: absolute; inset: 0; background: var(--pu-color-scrim); animation: kit-cmd-fade 120ms linear }
   .kit-cmd { position: absolute; left: 50%; top: 96px; transform: translateX(-50%); width: 600px; max-width: calc(100vw - 32px); display: flex; flex-direction: column; max-height: calc(100dvh - 128px); overflow: hidden; border-radius: var(--pu-radius-card); background: var(--pu-color-surface-solid); box-shadow: var(--pu-shadow-lg); border: 1px solid var(--pu-color-card-border); color: var(--pu-color-text); animation: kit-cmd-in 140ms ease-out }
   .kit-cmd kbd { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 5px; background: var(--pu-color-surface-tint); color: var(--pu-color-text-muted); font: 600 11px / 1 var(--pu-font-body) }

@@ -105,7 +105,7 @@
   .pu-bene-err { font-size: var(--pu-text-xs); color: var(--pu-color-loss) }
   .pu-bene-sel { display: flex; flex-wrap: wrap; gap: 2px 8px; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums }
   .pu-bene-box { position: relative; display: grid }
-  .pu-bene-pop { position: absolute; inset-inline: 0; top: calc(100% + 4px); z-index: 3; display: grid; gap: 2px; box-sizing: border-box; max-height: 18rem; overflow: auto; padding: 4px; background: var(--pu-color-surface-solid); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-lg); box-shadow: var(--pu-shadow-lg) }
+  .pu-bene-pop { position: absolute; inset-inline: 0; top: calc(100% + 4px); z-index: var(--pu-z-dropdown); display: grid; gap: 2px; box-sizing: border-box; max-height: 18rem; overflow: auto; padding: 4px; background: var(--pu-color-surface-solid); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-lg); box-shadow: var(--pu-shadow-lg) }
   .pu-bene-none { margin: 0; padding: 12px; color: var(--pu-color-text-muted); font-size: var(--pu-text-sm) }
   .pu-bene-group { padding: 8px 8px 4px; font: 600 var(--pu-text-xs) / 1.2 var(--pu-font-body); letter-spacing: 0.04em; color: var(--pu-color-text-muted) }
   .pu-bene-opt { display: grid; gap: 2px; padding: 8px; min-height: 44px; box-sizing: border-box; border-radius: var(--pu-radius-md); cursor: pointer }

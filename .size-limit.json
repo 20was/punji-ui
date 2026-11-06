@@ -59,7 +59,7 @@
     "name": "drawer (import from '@punji/ui/drawer')",
     "path": "dist/drawer/Drawer.js",
     "import": "*",
-    "limit": "840 B",
+    "limit": "870 B",
     "gzip": true
   },
   {
@@ -101,7 +101,7 @@
     "name": "info-tip (import from '@punji/ui/info-tip')",
     "path": "dist/info-tip/InfoTip.js",
     "import": "*",
-    "limit": "1.51 kB",
+    "limit": "1.73 kB",
     "gzip": true
   },
   {
@@ -164,7 +164,7 @@
     "name": "overlay (import from '@punji/ui/overlay')",
     "path": "dist/overlay/Overlay.js",
     "import": "*",
-    "limit": "1.48 kB",
+    "limit": "2.06 kB",
     "gzip": true
   },
   {

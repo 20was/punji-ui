@@ -23,6 +23,21 @@
   .kit-table .sub { display: block; font-weight: 400; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); max-width: 14rem; overflow: hidden; text-overflow: ellipsis }
   .kit-table tbody tr:hover { background: var(--pu-color-surface-subtle) }
   .kit-table tfoot :is(th, td) { border-top: 1px solid var(--pu-color-border-control); border-bottom: 0; background: var(--pu-color-surface-subtle); font-weight: 600 }
+  /* Grouped rows: each group is its own tbody, headed by a row with a disclosure button and its subtotals. */
+  .kit-table tbody.kit-table-group:not(:last-of-type) tr:last-child > * { border-bottom: 1px solid var(--pu-color-border) }
+  .kit-table .kit-table-group-head > * { background: var(--pu-color-surface-subtle); font-weight: 600 }
+  .kit-table .kit-table-group-head button { display: inline-flex; align-items: center; gap: 8px; min-height: 24px; padding: 0; border: 0; background: none; color: var(--pu-color-text); font: inherit; cursor: pointer; text-align: start }
+  .kit-table .kit-table-group-head button:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px; border-radius: 2px }
+  .kit-table-group-i { flex: none; width: 6px; height: 6px; margin-inline: 2px; border: solid currentColor; border-width: 0 1.5px 1.5px 0; transform: rotate(45deg) translate(-1px, -1px); transition: transform var(--pu-motion-fast) var(--pu-ease-out) }
+  [aria-expanded='false'] > .kit-table-group-i { transform: rotate(-45deg) }
+  [dir='rtl'] [aria-expanded='false'] > .kit-table-group-i { transform: rotate(135deg) }
+  .kit-table-group-count { color: var(--pu-color-text-muted); font-weight: 400; font-size: var(--pu-text-xs) }
+  /* Reconciliation: a word and an icon, never colour alone. */
+  .kit-recon { display: inline-flex; align-items: center; gap: 4px; margin-inline-start: 8px; padding: 1px 6px; border-radius: var(--pu-radius-8); font-size: var(--pu-text-xs); font-weight: 600; white-space: nowrap }
+  .kit-recon.ok { background: var(--pu-color-surface-tint); color: var(--pu-color-text) }
+  .kit-recon.mismatch { border: 1px solid var(--pu-color-border-control); color: var(--pu-color-text) }
+  .kit-recon-expected { font-weight: 400; color: var(--pu-color-text-muted) }
+  @media (prefers-reduced-motion: reduce) { .kit-table-group-i { transition: none } }
   .kit-tablebox.bare { border: 0; border-radius: 0; background: transparent }
   .kit-tablebox.bare .kit-table thead th { background: var(--pu-color-surface) }
   .kit-sort-i { display: inline-block; width: 1ch; margin-inline-start: 2px }
@@ -92,6 +107,10 @@
       line-height: 14px;
     }
     .kit-tablebox.stack .kit-table tbody tr:hover { background: transparent }
+    /* A group head is one line: its name, then its labelled subtotals; empty cells fold away. */
+    .kit-tablebox.stack .kit-table tbody tr.kit-table-group-head { background: var(--pu-color-surface-subtle) }
+    .kit-tablebox.stack .kit-table tbody tr.kit-table-group-head > * { background: transparent }
+    .kit-tablebox.stack .kit-table :is(.kit-table-group-head, .kit-table-total) > td:empty { display: none }
     /* The loading and empty rows are one cell across the table, not a card of figures. */
     .kit-tablebox.stack .kit-table tbody tr:has(> .kit-table-empty) { display: block; padding: 0 }
     .kit-tablebox.stack .kit-table tbody tr > .kit-table-empty { display: block; height: auto; padding: 28px 12px }

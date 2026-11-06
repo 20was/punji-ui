@@ -13,9 +13,12 @@
  * matches.
  */
 import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react';
-import type { FinancialColumn } from '../financial/financial.tsx';
+import type { FinancialColumn, TableTotalsLabels } from '../financial/financial.tsx';
 import type { DataTableSearch, DataTableSelection } from '../table/Table.tsx';
+import type { Money } from '../money/money.ts';
 import { EmptyState, Skeleton } from '../states/States.tsx';
+import { columnAlign, footerTotals, fromFinancialColumn, groupRows, plainValue, type ColumnDef, type ColumnTotals } from '../table-core/tableCore.ts';
+import { DEFAULT_TOTALS_LABELS, ReconcileBadge, aggregateNode, reconcileOrEmpty } from '../internal/tableTotals.tsx';
 import { clampWidth, fixedLayout, measuredLayout, nextSortRules, placeColumns, renderedIndices, visibleRange, type PlacedColumn, type SortRule } from './layout.ts';
 
 export { nextSortRules, compareByRules } from './layout.ts';
@@ -114,7 +117,26 @@ export interface VirtualFinancialTableProps<T> {
   labels?: Partial<VirtualTableLabels>;
   /** Test id on the table element. */
   testId?: string;
+  /** Groups rows by this key: each group gets a header row (a virtual row too) with a disclosure button and its subtotals. Groups follow each key's first appearance, so sort first. Memoise it, like `rowKey`. @stability beta */
+  groupBy?: (row: T) => string;
+  /** A group header's name. Default the key. @stability beta */
+  groupLabel?: (key: string, rows: readonly T[]) => ReactNode;
+  /** Controlled collapsed group keys. Without it the table keeps them itself (all expanded at first). @stability beta */
+  collapsedGroups?: readonly string[];
+  /** Called with the next collapsed keys when a group is opened or closed. @stability beta */
+  onCollapsedGroupsChange?: (keys: readonly string[]) => void;
+  /** Adds a totals row, sticky at the bottom of the scroll box, with each `aggregate` column's total over every row. @stability beta */
+  totals?: boolean;
+  /** Expected totals by column key; each matching footer cell shows whether the total reconciles. Implies `totals`. @stability beta */
+  expectedTotals?: Readonly<Record<string, Money>>;
+  /** Words for groups, the totals row and reconciliation. @stability beta */
+  totalsLabels?: Partial<TableTotalsLabels>;
 }
+
+// A drawn line: a record, or a group's header. Group keys carry a prefix no row key is expected to start with.
+type Item = { kind: 'row'; key: string; index: number } | { kind: 'group'; key: string; group: string; indices: readonly number[] };
+const GROUP_PREFIX = '\u0000group:';
+const NO_GROUPS: readonly string[] = [];
 
 const SELECT_WIDTH = 44;
 const widthDefault = (column: { num?: boolean | undefined }) => (column.num ? 120 : 160);
@@ -128,6 +150,7 @@ export function VirtualFinancialTable<T>({
   caption, columns, rows, rowKey, state = 'ready', emptyTitle, emptyBody, loadingLabel = 'Loading records', errorTitle = 'Records unavailable', errorAction,
   height = 480, rowHeight = 40, measureRows = false, overscan = 8, sort, onSortChange, columnWidths, onColumnResize, search, selection, toolbar,
   onVisibleRangeChange, labels: labelOverrides, testId,
+  groupBy, groupLabel, collapsedGroups, onCollapsedGroupsChange, totals, expectedTotals, totalsLabels,
 }: VirtualFinancialTableProps<T>) {
   const auto = useId();
   const labels = { ...DEFAULT_LABELS, ...labelOverrides };
@@ -147,9 +170,26 @@ export function VirtualFinancialTable<T>({
   const lastRange = useRef('');
   const keysNow = useRef<readonly string[]>([]);
   const rowObserver = useRef<ResizeObserver | null>(null);
+  const [ownCollapsed, setOwnCollapsed] = useState<readonly string[]>(NO_GROUPS);
+  const collapsedList = collapsedGroups ?? ownCollapsed;
 
-  // Keys and their positions: one pass per new `rows` array.
-  const keys = useMemo(() => rows.map(rowKey), [rows, rowKey]);
+  // Row keys (selection) and drawn lines (records plus group headers): one pass per new `rows` array.
+  const rowKeys = useMemo(() => rows.map(rowKey), [rows, rowKey]);
+  const groups = useMemo(() => (groupBy ? groupRows(rows.map((_, i) => i), (i) => groupBy(rows[i]!)) : null), [rows, groupBy]);
+  const items = useMemo<Item[]>(() => {
+    if (!groups) return rowKeys.map((key, index) => ({ kind: 'row', key, index }));
+    const closed = new Set(collapsedList);
+    const out: Item[] = [];
+    for (const group of groups) {
+      out.push({ kind: 'group', key: `${GROUP_PREFIX}${group.key}`, group: group.key, indices: group.rows });
+      if (!closed.has(group.key)) for (const index of group.rows) out.push({ kind: 'row', key: rowKeys[index]!, index });
+    }
+    return out;
+  }, [groups, rowKeys, collapsedList]);
+  const keys = useMemo(() => items.map((item) => item.key), [items]);
+  const defs = useMemo(() => columns.map((column) => fromFinancialColumn<T, ReactNode>(column)), [columns]);
+  const showTotals = Boolean(totals || expectedTotals);
+  const sums = useMemo<ColumnTotals>(() => (showTotals ? footerTotals(rows, defs) : {}), [showTotals, rows, defs]);
   const indexOf = useMemo(() => {
     const map = new Map<string, number>();
     keys.forEach((key, i) => map.set(key, i));
@@ -159,7 +199,8 @@ export function VirtualFinancialTable<T>({
     () => (measureRows ? measuredLayout(keys.length, rowHeight, (i) => heights.get(keys[i]!)) : fixedLayout(keys.length, rowHeight)),
     [measureRows, keys, rowHeight, heights],
   );
-  const bodyViewport = Math.max(rowHeight, viewport - headHeight);
+  const footHeight = showTotals ? rowHeight : 0;
+  const bodyViewport = Math.max(rowHeight, viewport - headHeight - footHeight);
   const { start, end } = visibleRange(layout, scrollTop, bodyViewport, overscan);
   const firstVisible = layout.indexAt(scrollTop);
   const activeIndex = activeKey === null ? -1 : indexOf.get(activeKey) ?? -1;
@@ -172,6 +213,8 @@ export function VirtualFinancialTable<T>({
     return clampWidth(raw, column.minWidth ?? 64, column.maxWidth ?? 560);
   };
   const byKey = new Map(columns.map((column) => [column.key, column]));
+  const defOf = new Map(defs.map((def) => [def.id, def]));
+  const isNum = (key: string) => columnAlign(defOf.get(key)!) === 'end';
   const placed = placeColumns(columns.map((column) => ({ key: column.key, width: widthOf(column), pin: column.pin })), selection ? SELECT_WIDTH : 0);
   const totalWidth = placed.reduce((sum, column) => sum + column.width, selection ? SELECT_WIDTH : 0);
   const colCount = placed.length + (selection ? 1 : 0);
@@ -238,6 +281,12 @@ export function VirtualFinancialTable<T>({
   if (state === 'loading') return <div aria-busy="true"><Skeleton label={loadingLabel} height={160} /></div>;
   if (state === 'error') return <EmptyState title={errorTitle} action={errorAction} role="alert" />;
   if (!rows.length && !search) return <EmptyState title={emptyTitle} body={emptyBody} />;
+  const words = { ...DEFAULT_TOTALS_LABELS, ...totalsLabels };
+  const setExpanded = (group: string, expanded: boolean) => {
+    const next = expanded ? collapsedList.filter((k) => k !== group) : [...collapsedList, group];
+    if (!collapsedGroups) setOwnCollapsed(next);
+    onCollapsedGroupsChange?.(next);
+  };
 
   const sync = (top: number) => {
     const first = layout.indexAt(top);
@@ -257,7 +306,7 @@ export function VirtualFinancialTable<T>({
   const reveal = (index: number) => {
     const box = scrollRef.current;
     if (!box) return;
-    const view = box.clientHeight > 0 ? box.clientHeight - headHeight : bodyViewport;
+    const view = box.clientHeight > 0 ? box.clientHeight - headHeight - footHeight : bodyViewport;
     const top = layout.offset(index);
     const bottom = layout.offset(index + 1);
     if (top < box.scrollTop) box.scrollTop = top;
@@ -277,13 +326,13 @@ export function VirtualFinancialTable<T>({
     if (!selection) return;
     selection.onChange(selected.has(id) ? selection.selectedRowIds.filter((x) => x !== id) : [...selection.selectedRowIds, id]);
   };
-  const selectedHere = selection ? keys.reduce((n, key) => n + (selected.has(key) ? 1 : 0), 0) : 0;
-  const allSelected = keys.length > 0 && selectedHere === keys.length;
+  const selectedHere = selection ? rowKeys.reduce((n, key) => n + (selected.has(key) ? 1 : 0), 0) : 0;
+  const allSelected = rowKeys.length > 0 && selectedHere === rowKeys.length;
   const toggleAll = () => {
     if (!selection) return;
-    const here = new Set(keys);
+    const here = new Set(rowKeys);
     const kept = selection.selectedRowIds.filter((id) => !here.has(id));
-    selection.onChange(allSelected ? kept : [...kept, ...keys]);
+    selection.onChange(allSelected ? kept : [...kept, ...rowKeys]);
   };
 
   const onRowKeyDown = (event: KeyboardEvent<HTMLTableSectionElement>) => {
@@ -291,6 +340,17 @@ export function VirtualFinancialTable<T>({
     if (row.tagName !== 'TR' || row.dataset.index === undefined) return;
     const index = Number(row.dataset.index);
     const page = Math.max(1, Math.floor(bodyViewport / rowHeight) - 1);
+    const item = items[index];
+    // A group header: Enter or Space opens or closes it, Right opens and Left closes.
+    if (item?.kind === 'group') {
+      const open = !collapsedList.includes(item.group);
+      const want = event.key === 'Enter' || event.key === ' ' ? !open : event.key === 'ArrowRight' ? true : event.key === 'ArrowLeft' ? false : null;
+      if (want !== null) {
+        event.preventDefault();
+        if (want !== open) setExpanded(item.group, want);
+        return;
+      }
+    }
     let next: number;
     switch (event.key) {
       case 'ArrowDown': next = index + 1; break;
@@ -300,9 +360,9 @@ export function VirtualFinancialTable<T>({
       case 'Home': next = 0; break;
       case 'End': next = keys.length - 1; break;
       case ' ':
-        if (!selection) return;
+        if (!selection || item?.kind !== 'row') return;
         event.preventDefault();
-        toggleRow(keys[index]!);
+        toggleRow(item.key);
         return;
       default: return;
     }
@@ -366,7 +426,7 @@ export function VirtualFinancialTable<T>({
           checked={allSelected}
           ref={(input) => { if (input) input.indeterminate = selectedHere > 0 && !allSelected; }}
           onChange={toggleAll}
-          disabled={keys.length === 0}
+          disabled={rowKeys.length === 0}
           data-testid={selection.testIdPrefix ? `${selection.testIdPrefix}-select-all` : undefined}
         />
       </th>}
@@ -375,7 +435,7 @@ export function VirtualFinancialTable<T>({
         const rank = sortRules.findIndex((rule) => rule.key === column.key);
         const rule = rank >= 0 ? sortRules[rank] : undefined;
         const multi = Boolean(rule) && sortRules.length > 1;
-        const cls = [column.num && 'num', pinClass(place), drag?.key === column.key && 'resizing'].filter(Boolean).join(' ') || undefined;
+        const cls = [isNum(column.key) && 'num', pinClass(place), drag?.key === column.key && 'resizing'].filter(Boolean).join(' ') || undefined;
         return (
           <th key={column.key} scope="col" className={cls} style={pinStyle(place)} aria-sort={rank === 0 && rule ? (rule.dir === 'asc' ? 'ascending' : 'descending') : undefined}>
             {column.sortable && onSortChange ? (
@@ -420,9 +480,52 @@ export function VirtualFinancialTable<T>({
     </tr>
   );
 
+  // Subtotal and total lines: the first drawn column holds the line's name, each later one its aggregate (or nothing).
+  const aggregateCells = (values: ColumnTotals, members: readonly T[], extra?: (def: ColumnDef<T, ReactNode>) => ReactNode) => placed.slice(1).map((place) => {
+    const def = defOf.get(place.key)!;
+    const cls = [isNum(place.key) && 'num', pinClass(place)].filter(Boolean).join(' ') || undefined;
+    return <td key={place.key} className={cls} style={pinStyle(place)}>{def.aggregate ? aggregateNode(def, values[def.id], members) : null}{extra?.(def)}</td>;
+  });
+  const firstCell = (content: ReactNode) => {
+    const place = placed[0]!;
+    const cls = [isNum(place.key) && 'num', pinClass(place)].filter(Boolean).join(' ') || undefined;
+    return <th scope="row" className={cls} style={pinStyle(place)}>{content}</th>;
+  };
+
+  const renderGroup = (index: number, item: Extract<Item, { kind: 'group' }>) => {
+    const members = item.indices.map((i) => rows[i]!);
+    const open = !collapsedList.includes(item.group);
+    return (
+      <tr
+        key={item.key}
+        className="pu-vt-group"
+        ref={measureRows ? observeRow : undefined}
+        data-index={index}
+        aria-rowindex={index + 2}
+        tabIndex={index === tabIndexRow ? 0 : -1}
+        style={measureRows ? undefined : { height: rowHeight }}
+        onFocus={() => setActiveKey(item.key)}
+      >
+        {/* The selection column has no control on a group or totals line. */}
+        {/* oxlint-disable-next-line jsx-a11y/control-has-associated-label */}
+        {selection && <td className="kit-table-selection-cell pin-l" style={{ insetInlineStart: 0 }} />}
+        {firstCell(
+          <button type="button" tabIndex={-1} aria-expanded={open} onClick={() => setExpanded(item.group, !open)}>
+            <span className="kit-table-group-i" aria-hidden="true" />
+            <span>{groupLabel?.(item.group, members) ?? item.group}</span>{' '}
+            <span className="kit-table-group-count">{words.groupCount(members.length)}</span>
+          </button>,
+        )}
+        {aggregateCells(footerTotals(members, defs), members)}
+      </tr>
+    );
+  };
+
   const renderRow = (index: number) => {
-    const row = rows[index]!;
-    const key = keys[index]!;
+    const item = items[index]!;
+    if (item.kind === 'group') return renderGroup(index, item);
+    const row = rows[item.index]!;
+    const key = item.key;
     const isSelected = selected.has(key);
     return (
       <tr
@@ -439,11 +542,12 @@ export function VirtualFinancialTable<T>({
           <input type="checkbox" tabIndex={-1} checked={isSelected} aria-label={selection.rowLabel(key)} onChange={() => toggleRow(key)} data-testid={selection.testIdPrefix ? `${selection.testIdPrefix}-row` : undefined} />
         </td>}
         {placed.map((place) => {
-          const column = byKey.get(place.key)!;
-          const cls = [column.num && 'num', pinClass(place)].filter(Boolean).join(' ') || undefined;
-          return column.rowHeader
-            ? <th key={column.key} scope="row" className={cls} style={pinStyle(place)}>{column.render(row)}</th>
-            : <td key={column.key} className={cls} style={pinStyle(place)}>{column.render(row)}</td>;
+          const def = defOf.get(place.key)!;
+          const cls = [isNum(place.key) && 'num', pinClass(place)].filter(Boolean).join(' ') || undefined;
+          const content = def.cell ? def.cell(row) : plainValue(def.accessor?.(row));
+          return def.rowHeader
+            ? <th key={def.id} scope="row" className={cls} style={pinStyle(place)}>{content}</th>
+            : <td key={def.id} className={cls} style={pinStyle(place)}>{content}</td>;
         })}
       </tr>
     );
@@ -491,7 +595,7 @@ export function VirtualFinancialTable<T>({
         </div>
       )}
       <div ref={scrollBox} className={box} role="region" aria-label={caption} style={{ maxHeight: height }} onScroll={onScroll}>
-        <table id={`${auto}-table`} className="kit-table pu-vt" style={{ width: totalWidth }} aria-rowcount={keys.length + 1} aria-describedby={`${auto}-rowshint`} data-testid={testId}>
+        <table id={`${auto}-table`} className="kit-table pu-vt" style={{ width: totalWidth }} aria-rowcount={keys.length + 1 + (showTotals ? 1 : 0)} aria-describedby={`${auto}-rowshint`} data-testid={testId}>
           <caption className="kit-sr">{caption}</caption>
           <colgroup>
             {selection && <col style={{ width: SELECT_WIDTH }} />}
@@ -501,10 +605,20 @@ export function VirtualFinancialTable<T>({
           {/* Row keys move focus between rows (a roving tab stop); rows stay plain table rows for screen readers. */}
           {/* oxlint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
           <tbody ref={bodyRef} onKeyDown={onRowKeyDown}>
-            {keys.length === 0
+            {rowKeys.length === 0
               ? <tr aria-rowindex={2}><td className="kit-table-empty" colSpan={colCount}><span role="status">{emptyTitle}</span></td></tr>
               : body}
           </tbody>
+          {showTotals && rowKeys.length > 0 && (() => {
+            const checks = reconcileOrEmpty(sums, expectedTotals);
+            return <tfoot><tr className="pu-vt-total" aria-rowindex={keys.length + 2} style={{ height: rowHeight }}>
+              {/* The selection column has no control on a group or totals line. */}
+              {/* oxlint-disable-next-line jsx-a11y/control-has-associated-label */}
+              {selection && <td className="kit-table-selection-cell pin-l" style={{ insetInlineStart: 0 }} />}
+              {firstCell(words.total)}
+              {aggregateCells(sums, rows, (def) => checks[def.id] && <ReconcileBadge result={checks[def.id]!} def={def} rows={rows} labels={words} />)}
+            </tr></tfoot>;
+          })()}
         </table>
       </div>
       <p className="kit-sr" id={`${auto}-rowshint`}>{labels.rowsHint}</p>

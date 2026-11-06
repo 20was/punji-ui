@@ -1,0 +1,5 @@
+---
+"@punji/ui": minor
+---
+
+Table core (beta): new `@punji/ui/table-core` subpath with one column model, `ColumnDef<Row>` (`kind` drives alignment; bigint-safe `sortKey`; `aggregate: 'sum' | 'count' | 'min' | 'max' | fn`; `hideUnder`; `pin`), adapters `fromColumn` and `fromFinancialColumn`, and pure helpers `sortRows`, `compareRowsBy`, `groupRows`, `footerTotals`, `aggregateColumn`, `reconcile`, `reconcileTotals` and `plainValue`. Money is summed and compared as bigint minor units; mixed currencies throw `MixedCurrencyError`. `FinancialTable` and `VirtualFinancialTable` normalise their columns to `ColumnDef` and gain opt-in `groupBy` (collapsible group rows with subtotals; controlled with `collapsedGroups` / `onCollapsedGroupsChange`), `totals` (a `<tfoot>` totals row, sticky in the virtual table) and `expectedTotals` (a reconciliation badge). `FinancialColumn` gains optional `kind`, `value`, `aggregate` and `formatAggregate`. `DataTable` accepts `DataRowGroup` children (one `<tbody>` per group). Existing props and output are unchanged.

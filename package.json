@@ -776,6 +776,10 @@
       "types": "./dist/virtual-table/VirtualFinancialTable.d.ts",
       "default": "./dist/virtual-table/VirtualFinancialTable.js"
     },
+    "./table-core": {
+      "types": "./dist/table-core/tableCore.d.ts",
+      "default": "./dist/table-core/tableCore.js"
+    },
     "./table-export": {
       "types": "./dist/table-export/TableExport.d.ts",
       "default": "./dist/table-export/TableExport.js"

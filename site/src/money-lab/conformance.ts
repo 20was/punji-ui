@@ -37,7 +37,7 @@ export const CARDS: readonly ConformanceCard[] = [
       { id: 'grouping', claim: 'The Nepal preset groups in lakh and crore (12,34,567.89); the locale decides otherwise.' },
       { id: 'sign', claim: 'A negative amount carries a minus or accounting parentheses in the text, plus a data-sign attribute.' },
       { id: 'spoken', claim: 'A shared symbol ($, A$) is spoken as the full currency name; a missing value is "No value", never zero.' },
-      { id: 'axe', claim: 'No serious axe violations.' },
+      { id: 'axe', claim: 'axe finds no serious violation in a positive, a negative accounting and a missing MoneyDisplay.' },
     ],
     notClaimed: [],
   },
@@ -49,7 +49,7 @@ export const CARDS: readonly ConformanceCard[] = [
       { id: 'exact', claim: 'A Money value past 2^53 prints exactly, through a decimal string and never a Number.' },
       { id: 'grouping', claim: 'Given a lakh and crore formatter, a Money value groups as 12,34,567.89.' },
       { id: 'sign', claim: 'A negative Money value prints its minus sign.' },
-      { id: 'axe', claim: 'No serious axe violations.' },
+      { id: 'axe', claim: 'axe finds no serious violation in a Figure of a negative Money, a percent and a missing value.' },
     ],
     notClaimed: [
       { id: 'rounding', reason: 'A plain number is a display value and is rounded to dp; pass a Money value for exact amounts.' },
@@ -64,7 +64,7 @@ export const CARDS: readonly ConformanceCard[] = [
       { id: 'exact', claim: 'A Money change past 2^53 prints exactly.' },
       { id: 'sign', claim: 'Up and down carry a + or - sign and an arrow shape; a change of zero is neutral with no arrow.' },
       { id: 'spoken', claim: 'The direction is spoken as a word (up, down, unchanged), in your language through words.' },
-      { id: 'axe', claim: 'No serious axe violations.' },
+      { id: 'axe', claim: 'axe finds no serious violation in an up, a plain-number and a zero Delta.' },
     ],
     notClaimed: [
       { id: 'rounding', reason: 'A percent or number change is a float rounded to dp for display; only a Money change is exact.' },
@@ -79,7 +79,7 @@ export const CARDS: readonly ConformanceCard[] = [
       { id: 'exact', claim: 'The absolute change is bigint arithmetic and stays exact past 2^53.' },
       { id: 'sign', claim: 'Direction is a sign, an arrow shape and a word, never colour alone.' },
       { id: 'spoken', claim: 'A screen reader hears the direction word, then the amount without a sign.' },
-      { id: 'axe', claim: 'No serious axe violations.' },
+      { id: 'axe', claim: 'axe finds no serious violation in a rising, a flat and a missing PriceChange.' },
     ],
     notClaimed: [
       { id: 'rounding', reason: 'The percent is display-only, from percentageChange (a float); do not store it.' },
@@ -95,7 +95,7 @@ export const CARDS: readonly ConformanceCard[] = [
       { id: 'rounding', claim: 'A digit past the currency decimals is refused, never rounded (JPY takes none, KWD takes three).' },
       { id: 'grouping', claim: 'Digits regroup as you type, in lakh and crore for en-IN.' },
       { id: 'spoken', claim: 'The label is followed by the currency name for screen readers.' },
-      { id: 'axe', claim: 'No serious axe violations.' },
+      { id: 'axe', claim: 'axe finds no serious violation in a labelled USD CurrencyInput.' },
     ],
     notClaimed: [
       { id: 'sign', reason: 'A negative amount is not offered by default; allowNegative accepts a leading minus only.' },

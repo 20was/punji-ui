@@ -313,3 +313,14 @@ That is a stop-gap; the target is a standalone portal in punji-ui.
 5. **Docs for app-specific components** stay in punji-web; the punji-ui site documents only package code.
 6. Still unverified: whether Cloudflare Workers Builds needs registry configuration for `npm ci` (a public
    package should need none). Check on the first punji-web dependency bump.
+
+## 10. AI tooling
+
+The docs site emits machine-readable artifacts at build time, so coding agents do not have to guess the API:
+
+- [`llms.txt`](https://design.punji.app/llms.txt) (index) and [`llms-full.txt`](https://design.punji.app/llms-full.txt) (every page); each page also has an `index.md` beside its HTML.
+- [`components.json`](https://design.punji.app/components.json): every component with its import, props, examples and accessibility notes.
+- [`/r/registry.json`](https://design.punji.app/r/registry.json): the shadcn registry for the Showcase patterns and Apps (`npx shadcn@latest add https://design.punji.app/r/<name>.json`).
+- [`packages/punji-mcp`](../packages/punji-mcp/README.md): an MCP server (stdio) over an offline snapshot of the above, pinned to the `@punji/ui` version. Tools: `list_components`, `get_component`, `get_guide`, `review_usage` (static checks for money passed as numbers, root-barrel imports, `javascript:` hrefs and `--pu-*` overrides). Not yet published; run it from a checkout.
+
+None of this is an enforcement layer: the UI components are UX safeguards, and authorisation and validation stay on the server.

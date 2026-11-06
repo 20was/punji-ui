@@ -41,7 +41,7 @@ export interface MarketIndicesProps {
   statusLabels?: Partial<MarketStatusLabels>;
   /** Shown beside the status, for example "As of 15:00, 14 Oct". */
   asOf?: ReactNode;
-  /** Which colour means up. Default green-up. */
+  /** Per-instance override of which hue means up: 'green-up' or 'red-up' (absolute, never a second swap on top of the theme). Default: follow the theme's gain and loss colours (`createTheme({ finance })`), which is the one place to set the convention. */
   convention?: 'green-up' | 'red-up';
   /** Spoken direction words for the change. */
   changeLabels?: PriceChangeLabels;
@@ -62,7 +62,7 @@ export interface MarketIndicesProps {
 const toMinor = (v: number | null): bigint | null => (v === null || !Number.isFinite(v) ? null : BigInt(Math.round(v * 100)));
 
 export function MarketIndices({
-  indices, label, variant = 'cards', state, session, statusLabels, asOf, convention = 'green-up', changeLabels, fractionDigits = 2,
+  indices, label, variant = 'cards', state, session, statusLabels, asOf, convention, changeLabels, fractionDigits = 2,
   showTrend = true, loading = false, loadingLabel = 'Loading indices', emptyLabel = 'No index data.', testId,
 }: MarketIndicesProps) {
   const status = state ?? session?.state;

@@ -100,7 +100,7 @@ export interface CandlestickChartProps {
   axis?: 'category' | 'time';
   /** Draw up candles as outlines and down candles filled, so direction survives without colour. */
   hollowUp?: boolean;
-  /** Which colour means up. 'green-up' (default) or 'red-up', as PriceChange. */
+  /** Per-instance override of which hue means up: 'green-up' or 'red-up' (absolute, never a second swap on top of the theme). Default: follow the theme's gain and loss colours (`createTheme({ finance })`), which is the one place to set the convention. */
   convention?: 'green-up' | 'red-up';
   /** Moving averages over closes, drawn over the candles. */
   averages?: readonly MovingAverage[];
@@ -198,7 +198,7 @@ export function CandlestickChart(props: CandlestickChartProps) {
 
 type Checked = { c: Candle; i: number; issues: OhlcIssue[]; time: number; entry: object };
 
-function Plot({ candles, label, variant = 'candles', height = 280, volume, axis = 'category', hollowUp = false, convention = 'green-up', averages = [], formatPrice = nprPrice, formatVolume = quantity, formatDate = shortDate, labels, testId, checked, valid, tableLimit = 500 }: CandlestickChartProps & { checked: Checked[]; valid: Checked[] }) {
+function Plot({ candles, label, variant = 'candles', height = 280, volume, axis = 'category', hollowUp = false, convention, averages = [], formatPrice = nprPrice, formatVolume = quantity, formatDate = shortDate, labels, testId, checked, valid, tableLimit = 500 }: CandlestickChartProps & { checked: Checked[]; valid: Checked[] }) {
   const { ref, width } = useMeasuredWidth(640);
   const hintId = useId();
   const none = labels?.none ?? 'none';
@@ -276,8 +276,8 @@ function Plot({ candles, label, variant = 'candles', height = 280, volume, axis 
   };
   const skipped = checked.length - valid.length;
   const skippedText = (labels?.skipped ?? ((n: number) => `${n} ${n === 1 ? 'candle' : 'candles'} not drawn: inconsistent prices`))(skipped);
-  const upTone = convention === 'red-up' ? 'loss' : 'gain';
-  const downTone = convention === 'red-up' ? 'gain' : 'loss';
+  const upTone = 'gain';
+  const downTone = 'loss';
   const toneOf = (d: Dir) => (d === 'up' ? upTone : d === 'down' ? downTone : 'flat');
 
   const onPointer = (e: PointerEvent<HTMLDivElement>) => {

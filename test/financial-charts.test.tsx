@@ -19,13 +19,17 @@ describe('CandlestickChart', () => {
     expect(await seriousViolations(container)).toEqual([]);
   });
 
-  it('colours up and down by the convention and swaps for red-up', () => {
+  it('never swaps tones in markup: the theme or the convention attribute picks the hue once', () => {
     const candles = [{ date: '2025-11-13', open: 10, high: 12, low: 9, close: 11 }, { date: '2025-11-14', open: 11, high: 11.5, low: 8, close: 9 }];
     const { container, rerender } = render(<CandlestickChart candles={candles} label="x" />);
     const tones = () => [...container.querySelectorAll('.kit-ct-c')].map((g) => g.getAttribute('class'));
     expect(tones()).toEqual(['kit-ct-c gain', 'kit-ct-c loss']);
+    // Default props follow the theme: no data-convention, up is the gain token (red under a red-up theme).
+    expect(container.querySelector('figure')!.hasAttribute('data-convention')).toBe(false);
     rerender(<CandlestickChart candles={candles} label="x" convention="red-up" />);
-    expect(tones()).toEqual(['kit-ct-c loss', 'kit-ct-c gain']);
+    // The explicit prop is an absolute override done in CSS (tokens.css), not a second swap of the tone names.
+    expect(tones()).toEqual(['kit-ct-c gain', 'kit-ct-c loss']);
+    expect(container.querySelector('figure')!.getAttribute('data-convention')).toBe('red-up');
     rerender(<CandlestickChart candles={candles} label="x" hollowUp />);
     expect(container.querySelectorAll('rect.hollow')).toHaveLength(1);
     rerender(<CandlestickChart candles={candles} label="x" variant="bars" />);

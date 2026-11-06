@@ -123,6 +123,23 @@ and on a coarse pointer compact keeps the comfortable field heights
 (44 px and 36 px). Components with their own `density` prop (`StockTable`,
 `HoldingsTable`) keep it; the attribute changes the shared tokens.
 
+## Gain and loss colour convention
+
+One setting decides which colour means a rise: the theme. Components read `--pu-color-gain` and `--pu-color-loss` and
+nothing else, so `createTheme({ ..., finance: 'red-up' })` makes every candlestick, performance, depth, column and heat
+chart, `PriceChange`, table and breadth bar red-up exactly once. Use it for markets that show a rise in red (China, Japan,
+South Korea, Taiwan); keep `green-up` for most others, and offer `blue-orange` for red-green colour blindness. The theme
+also writes `--pu-finance-convention` (absent means `green-up`).
+
+The per-component `convention` prop (`'green-up' | 'red-up'`) is an **absolute per-instance override**, for a dashboard
+that mixes markets. It points that component's gain and loss at the fixed `--pu-hue-green` and `--pu-hue-red`, so it never
+swaps a second time on top of a red-up theme: `convention="red-up"` is red-up in any theme, and leaving it off follows the
+theme. Prefer the theme; reach for the prop only when one widget must differ. (Under `blue-orange` the hues are blue and
+orange, so the prop re-points to those.)
+
+Never rely on colour alone: every figure also carries a sign, arrow or word, and gain and loss differ in lightness as well
+as hue (at least 1.4:1, asserted by `scripts/check-contrast.mjs`).
+
 ## Brand theming
 
 `createTheme` from `@punji/ui/theme` builds a typed, validated brand:
@@ -155,7 +172,8 @@ const { css, issues, vars } = createTheme(
 - **Finance semantics stay out of the brand.** There is no brand key for gain,
   loss, debit or credit. `finance` picks a vetted palette: `green-up` (the
   default, no override), `red-up` (a rise in red, for markets that use it;
-  do not combine with a component's own `convention="red-up"`), or
+  every chart, `PriceChange` and table follows it once; see
+  [Gain and loss colour convention](#gain-and-loss-colour-convention)), or
   `blue-orange` (distinct for red-green colour blindness). Each passes 4.5:1
   on every surface. `financePalette(name)` returns the colours.
 - **High contrast is never branded.** At `:root` the `-hc` themes win on

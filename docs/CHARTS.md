@@ -33,7 +33,7 @@ Use it for OHLC per session with volume. Do not use it for a single line of clos
 | `volume` | volume pane; default on when any candle has a volume |
 | `axis` | `'category'` (default, one slot per session) or `'time'` (spaced by date, gaps stay visible) |
 | `hollowUp` | up candles as outlines, down filled |
-| `convention` | `'green-up'` (default) or `'red-up'`, as `PriceChange` |
+| `convention` | per-chart override, `'green-up'` or `'red-up'`; default follows the theme (see below) |
 | `averages` | `{ type: 'sma' \| 'ema', window, label? }[]`, computed over closes |
 | `formatPrice`, `formatVolume`, `formatDate` | printing |
 | `tableLimit` | latest N candles in the hidden table (default 500); the chart always uses all |
@@ -71,6 +71,15 @@ Cumulative bid and ask step areas around the mid price, with the spread under th
 `OrderBookDepth`, in any order: they are sorted best first, equal prices merged, invalid levels dropped. One side empty draws
 that side only. A crossed book (best bid at or above best ask) draws both sides, shows no mid price and says so. Left and Right
 move one price level; the readout says side, price, quantity and cumulative size.
+
+## Gain and loss colour convention
+
+Charts take up and down colours from the theme's `--pu-color-gain` and `--pu-color-loss`. Set the convention once with
+`createTheme({ finance: 'red-up' })` (China, Japan, South Korea and Taiwan show a rise in red); every chart then renders up
+in red, once. The `convention` prop on `CandlestickChart`, `PerformanceChart`, `MarketHeatmap`, `MarketBreadth` and
+`PriceChange` is an absolute per-instance override that cannot double-swap with the theme. Direction is never colour alone:
+candles can be hollow (`hollowUp`), and values carry signs, arrows and words. See
+[THEMING.md](THEMING.md#gain-and-loss-colour-convention).
 
 ## Chart math (`chart-math`)
 

@@ -93,6 +93,35 @@ describe('createTheme', () => {
     }
     expect(financePalette('green-up')).toBeNull();
   });
+
+  it('separates gain and loss in lightness as well as hue, in every palette', () => {
+    const surfaces = { light: '#f7f8f3', dark: '#17191c' } as const;
+    for (const name of ['red-up', 'blue-orange'] as const) {
+      for (const theme of ['light', 'dark'] as const) {
+        const p = financePalette(name)![theme];
+        const [hi, lo] = [p.gain, p.loss].map((c) => contrastRatio(c, theme === 'light' ? '#000000' : '#ffffff')!).toSorted((x, y) => x - y);
+        expect(contrastRatio(p.gain, p.loss)!, `${name} ${theme} (${hi}/${lo}, ${surfaces[theme]})`).toBeGreaterThanOrEqual(1.4);
+      }
+    }
+  });
+
+  it('makes the theme the single source: red-up swaps the gain and loss tokens once, and the hue tokens stay fixed', () => {
+    const redUp = createTheme({ ...brand, finance: 'red-up' });
+    const base = css('tokens.css');
+    const gain = /--pu-color-gain: (#\w+)/.exec(base)![1]!;
+    const loss = /--pu-color-loss: (#\w+)/.exec(base)![1]!;
+    expect(redUp.vars.light['--pu-color-gain']).toBe(loss);
+    expect(redUp.vars.light['--pu-color-loss']).toBe(gain);
+    expect(redUp.vars.light['--pu-hue-green']).toBe(gain);
+    expect(redUp.vars.light['--pu-hue-red']).toBe(loss);
+    expect(redUp.css).toContain('--pu-finance-convention: red-up');
+    expect(createTheme(brand).css).not.toContain('--pu-finance-convention');
+    const blue = createTheme({ ...brand, finance: 'blue-orange' });
+    expect(blue.vars.light['--pu-hue-green']).toBe(blue.vars.light['--pu-color-gain']);
+    // A component's `convention` prop re-points gain and loss at the fixed hues, so it cannot swap twice with the theme.
+    expect(base).toMatch(/\[data-convention='red-up'\] \{\s*--pu-color-gain: var\(--pu-hue-red\);/);
+    expect(base).toMatch(/\[data-convention='green-up'\] \{\s*--pu-color-gain: var\(--pu-hue-green\);/);
+  });
 });
 
 describe('density and contrast CSS', () => {

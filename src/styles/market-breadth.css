@@ -2,7 +2,6 @@
    Styles for MarketBreadth. Needs tokens.css, base.css and states.css (styles.css has everything). */
 @layer punji.components {
   .pu-breadth { --breadth-up: var(--pu-color-gain); --breadth-down: var(--pu-color-loss); display: grid; gap: 8px; min-width: 0; margin: 0 }
-  .pu-breadth[data-convention='red-up'] { --breadth-up: var(--pu-color-loss); --breadth-down: var(--pu-color-gain) }
   .pu-breadth-title { font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body); color: var(--pu-color-text) }
   .pu-breadth-body { display: grid; gap: 10px; min-width: 0 }
   .pu-breadth-empty { margin: 0; font-size: var(--pu-text-sm); color: var(--pu-color-text-muted) }

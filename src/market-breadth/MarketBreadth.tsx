@@ -87,7 +87,7 @@ export interface MarketBreadthProps extends Partial<Breadth> {
   extra?: readonly BreadthExtra[];
   /** Print the advance/decline ratio. Default true. */
   showRatio?: boolean;
-  /** Which colour means up. Default green-up. */
+  /** Per-instance override of which hue means up: 'green-up' or 'red-up' (absolute, never a second swap on top of the theme). Default: follow the theme's gain and loss colours (`createTheme({ finance })`), which is the one place to set the convention. */
   convention?: 'green-up' | 'red-up';
   /** Placeholders with a spoken status instead of the figures. */
   loading?: boolean;
@@ -105,7 +105,7 @@ const grouped = (n: number) => n.toLocaleString('en-IN');
 const safe = (n: number | undefined) => (typeof n === 'number' && Number.isFinite(n) && n > 0 ? Math.floor(n) : 0);
 
 export function MarketBreadth({
-  advances, declines, unchanged, label, extra, showRatio = true, convention = 'green-up', loading = false, size, labels, formatCount = grouped, testId,
+  advances, declines, unchanged, label, extra, showRatio = true, convention, loading = false, size, labels, formatCount = grouped, testId,
 }: MarketBreadthProps) {
   const words = { ...EN, ...labels };
   const b: Breadth = { advances: safe(advances), declines: safe(declines), unchanged: safe(unchanged) };

@@ -111,6 +111,9 @@ export interface BrandColors {
  * Gain and loss palettes, chosen for contrast and colour vision, never taken from the brand.
  * `green-up` is the library default; `red-up` swaps the two for markets that show a rise in red;
  * `blue-orange` stays distinct for red-green colour blindness. Components still add signs, arrows and words.
+ * This is the one place the convention is set: components read `--pu-color-gain` and `--pu-color-loss` only, so a
+ * `red-up` theme turns every chart, `PriceChange` and table red-up exactly once. The theme also writes
+ * `--pu-finance-convention` (absent means `green-up`) for code that wants to read it.
  */
 export type FinancePalette = 'green-up' | 'red-up' | 'blue-orange';
 
@@ -163,15 +166,18 @@ const SURFACES = {
   dark: { '--pu-color-bg': '#0d0e10', '--pu-color-surface': '#17191c', '--pu-color-surface-tint': '#1f2226' },
 } as const;
 
-/** Vetted finance palettes. Each passes 4.5:1 on every surface above (tested). */
+/**
+ * Vetted finance palettes. Each passes 4.5:1 on every surface above, and its gain and loss differ in lightness by at
+ * least 1.4:1 as well as in hue, so they stay apart without colour vision (tested).
+ */
 const FINANCE: Record<Exclude<FinancePalette, 'green-up'>, Record<'light' | 'dark', { gain: string; loss: string; gainSoft: string; lossSoft: string }>> = {
   'red-up': {
-    light: { gain: '#a3321f', loss: '#3f6a00', gainSoft: 'rgba(163, 50, 31, 0.1)', lossSoft: 'rgba(63, 106, 0, 0.1)' },
+    light: { gain: '#b23a26', loss: '#2f5300', gainSoft: 'rgba(178, 58, 38, 0.1)', lossSoft: 'rgba(47, 83, 0, 0.1)' },
     dark: { gain: '#ff8a78', loss: '#c8f23d', gainSoft: 'rgba(255, 122, 102, 0.14)', lossSoft: 'rgba(200, 242, 61, 0.12)' },
   },
   'blue-orange': {
-    light: { gain: '#0b5394', loss: '#9a3d00', gainSoft: 'rgba(11, 83, 148, 0.1)', lossSoft: 'rgba(154, 61, 0, 0.1)' },
-    dark: { gain: '#8cc4ff', loss: '#ffab70', gainSoft: 'rgba(140, 196, 255, 0.14)', lossSoft: 'rgba(255, 171, 112, 0.14)' },
+    light: { gain: '#084482', loss: '#a64200', gainSoft: 'rgba(8, 68, 130, 0.1)', lossSoft: 'rgba(166, 66, 0, 0.1)' },
+    dark: { gain: '#5fa3ec', loss: '#ffb785', gainSoft: 'rgba(95, 163, 236, 0.14)', lossSoft: 'rgba(255, 183, 133, 0.14)' },
   },
 };
 
@@ -252,7 +258,13 @@ export function createTheme(brand: BrandTheme, options: CreateThemeOptions = {})
     if (!palette) throw new TypeError(`createTheme: unknown finance palette ${String(finance)}`);
     for (const [theme, vars] of [['light', light], ['dark', dark]] as const) {
       const p = palette[theme];
-      Object.assign(vars, { '--pu-color-gain': p.gain, '--pu-color-gain-soft': p.gainSoft, '--pu-color-loss': p.loss, '--pu-color-loss-soft': p.lossSoft });
+      // `--pu-hue-*` are the fixed positive and negative hues a component's `convention` prop points at; they do not swap.
+      const [green, red] = finance === 'red-up' ? [p.loss, p.gain] : [p.gain, p.loss];
+      const [greenSoft, redSoft] = finance === 'red-up' ? [p.lossSoft, p.gainSoft] : [p.gainSoft, p.lossSoft];
+      Object.assign(vars, {
+        '--pu-color-gain': p.gain, '--pu-color-gain-soft': p.gainSoft, '--pu-color-loss': p.loss, '--pu-color-loss-soft': p.lossSoft,
+        '--pu-hue-green': green, '--pu-hue-green-soft': greenSoft, '--pu-hue-red': red, '--pu-hue-red-soft': redSoft,
+      });
     }
   }
   const issues = [...check(light, 'light'), ...check(dark, 'dark')];
@@ -271,7 +283,7 @@ export function createTheme(brand: BrandTheme, options: CreateThemeOptions = {})
   const systemDark = root ? ':root:not([data-theme])' : `:root:not([data-theme]) ${s}`;
   const indent = root ? '  ' : '    ';
   const parts = [
-    block(lightSel, { ...shared, ...light }, indent),
+    block(lightSel, { ...shared, ...(finance === 'green-up' ? {} : { '--pu-finance-convention': finance }), ...light }, indent),
     `${indent}@media (prefers-color-scheme: dark) and (not (prefers-contrast: more)) {\n${block([systemDark], dark, `${indent}  `)}\n${indent}}`,
     block(darkSel, dark, indent),
     ...(explicitLight.length ? [block(explicitLight, light, indent)] : []),

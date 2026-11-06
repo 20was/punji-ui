@@ -75,7 +75,7 @@ export interface PerformanceChartProps {
   normalize?: boolean;
   /** Fill between the portfolio and its start. Default true. */
   area?: boolean;
-  /** Which colour means up. 'green-up' (default) or 'red-up'. */
+  /** Per-instance override of which hue means up: 'green-up' or 'red-up' (absolute, never a second swap on top of the theme). Default: follow the theme's gain and loss colours (`createTheme({ finance })`), which is the one place to set the convention. */
   convention?: 'green-up' | 'red-up';
   /** Plot height in CSS px, clamped to 140..520. Default 260. */
   height?: number;
@@ -118,7 +118,7 @@ export function PerformanceChart(props: PerformanceChartProps) {
   return <Plot {...props} />;
 }
 
-function Plot({ dates, series, label, normalize = true, area = true, convention = 'green-up', height = 260, formatValue = defaultValue, formatPercent = defaultPercent, formatDate = shortDate, periods, labels, testId, tableLimit = 500 }: PerformanceChartProps) {
+function Plot({ dates, series, label, normalize = true, area = true, convention, height = 260, formatValue = defaultValue, formatPercent = defaultPercent, formatDate = shortDate, periods, labels, testId, tableLimit = 500 }: PerformanceChartProps) {
   const { ref, width } = useMeasuredWidth(640);
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
   const hintId = `${uid}h`;
@@ -182,8 +182,8 @@ function Plot({ dates, series, label, normalize = true, area = true, convention 
   const cursor = useChartCursor(n);
   const idx = cursor.index;
   const words = labels?.legend ?? 'Series';
-  const upTone = convention === 'red-up' ? 'loss' : 'gain';
-  const downTone = convention === 'red-up' ? 'gain' : 'loss';
+  const upTone = 'gain';
+  const downTone = 'loss';
   const baseY = yOf(baseLevel);
   const valueText = useMemo(() => (x: Shown, i: number) => {
     const v = x.y[i];

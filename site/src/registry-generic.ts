@@ -406,6 +406,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
   },
   {
     slug: 'locked-note',
+    uxOnly: true,
     title: 'LockedNote',
     description: 'The locked state of a data view: a lock and a plain line saying what is not included on this account. Never a plan name, never a blurred fake of the data.',
     group: 'feedback',

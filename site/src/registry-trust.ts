@@ -49,6 +49,7 @@ export const TRUST_PAGES: readonly PageDef[] = [
   },
   {
     slug: 'payee-verification',
+    uxOnly: true,
     title: 'PayeeVerification',
     group: 'trust',
     kind: 'component',
@@ -70,6 +71,7 @@ export const TRUST_PAGES: readonly PageDef[] = [
   },
   {
     slug: 'hold-to-confirm',
+    uxOnly: true,
     title: 'HoldToConfirm',
     group: 'trust',
     kind: 'component',
@@ -91,6 +93,7 @@ export const TRUST_PAGES: readonly PageDef[] = [
   },
   {
     slug: 'session-timeout',
+    uxOnly: true,
     title: 'SessionTimeoutWarning',
     group: 'trust',
     kind: 'component',
@@ -109,6 +112,7 @@ export const TRUST_PAGES: readonly PageDef[] = [
   },
   {
     slug: 'scam-warning',
+    uxOnly: true,
     title: 'ScamWarning',
     group: 'trust',
     kind: 'component',
@@ -130,6 +134,7 @@ export const TRUST_PAGES: readonly PageDef[] = [
   },
   {
     slug: 'secure-field',
+    uxOnly: true,
     title: 'SecureField',
     group: 'trust',
     kind: 'component',

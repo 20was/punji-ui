@@ -1,5 +1,7 @@
 # Component inventory: Punji Web versus Punji UI
 
+> **What this describes.** The punji-web kit (`src/components/kit/` and the other shared-looking code in punji-web), compared with `@punji/ui`. It is not an inventory of this package's `src/`. It is a snapshot from 2026-10-31, taken when the package was unpublished at `0.0.0`. `@punji/ui` has since been published (current release 0.2.0), so the package-side columns are out of date. For what this package ships today, see [docs/COMPONENTS.md](docs/COMPONENTS.md) and the docs site.
+
 Date: 2026-10-31. Facts only; anything not verified is marked **unverified**.
 Companion plan: [docs/INTEGRATION.md](docs/INTEGRATION.md). Machine-readable name-level
 inventory: [docs/audit/inventory.json](docs/audit/inventory.json) and
@@ -13,7 +15,7 @@ inventory: [docs/audit/inventory.json](docs/audit/inventory.json) and
   `src/design/pages/display.tsx` and `src/design/pages/inputs.tsx`; the kit directory itself was
   clean. `npm run audit:web` reads the working tree, so the generated files reflect that.
 - Package inspected: this repository on a branch based on `dbb01aa` (`feat(calculations)`), package
-  `@punji/ui` version `0.0.0`, not yet published (release is gated by the repository variable
+  `@punji/ui` version `0.0.0`, not yet published at the time (the package has since been published; the release is gated by the repository variable
   `UI_NPM_RELEASE_ENABLED`, see [.github/workflows/release.yml](.github/workflows/release.yml)).
 - Where punji-web keeps shared UI: **`src/components/kit/`** (167 modules, excluding `index.ts`),
   exposed to the app through the alias `@punji/ui` (see [docs/INTEGRATION.md](docs/INTEGRATION.md),

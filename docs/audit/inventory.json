@@ -1,4 +1,5 @@
 {
+  "note": "What this describes: the punji-web kit (its src/components files and pages), not the src/ of this package. It compares the punji-web fork against @punji/ui, and is a snapshot taken at the pinned punji-web commit, not a current inventory of @punji/ui.",
   "consumerCommit": "f6df01a149318af373b7b0605edd2f446e9722f7",
   "method": "Static named-export/import inventory; does not certify visual or behavior parity.",
   "packageEntrypoints": [

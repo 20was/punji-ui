@@ -127,6 +127,7 @@ export const WALLET_PAGES: readonly PageDef[] = [
   },
   {
     slug: 'pin-pad',
+    uxOnly: true,
     title: 'PinPad',
     group: 'banking',
     kind: 'component',

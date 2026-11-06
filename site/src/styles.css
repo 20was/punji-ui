@@ -192,6 +192,9 @@ h1:focus, main:focus { outline: none; }
 :is(.doc-p, .doc-list, .doc-intro, .doc-dodont, .doc-api-desc, .doc-table td, .doc-inherited, .doc-footnote) code:not([class]) { padding: 1px 5px; border-radius: 5px; background: var(--doc-hover); color: var(--pu-color-text); font-size: 0.84em; overflow-wrap: break-word; }
 .doc-muted { color: var(--doc-ink-3); }
 .doc-section > .doc-subtle-h, .doc-subtle-h { margin: 8px 0 0; font: 600 13px/1.2 var(--pu-font-body); color: var(--doc-ink-3); }
+.doc-callout { max-width: 70ch; margin: 4px 0 0; padding: 12px 14px; border: 1px solid var(--doc-rule); border-left: 3px solid var(--doc-ring); border-radius: 8px; background: var(--doc-raised); color: var(--doc-ink-2); font-size: 14px; }
+.doc-callout p { margin: 0; }
+.doc-callout .doc-callout-title { margin-bottom: 4px; font-weight: 600; color: var(--pu-color-text); }
 .doc-footnote { margin: 10px 0 0; font-size: 13px; color: var(--doc-ink-3); }
 
 /* when to use / not */

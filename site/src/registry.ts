@@ -110,6 +110,8 @@ export interface PageDef {
   keyboard: readonly string[];
   accessibility: readonly string[];
   responsive: readonly string[];
+  /** A UX safeguard only: the page shows the "UI is not enforcement" callout. */
+  uxOnly?: boolean;
   /** Extra "Security boundary" or "Limits" section: title and points. */
   notes?: { title: string; points: readonly string[] };
   related: readonly string[];
@@ -1497,6 +1499,7 @@ export const PAGES: readonly PageDef[] = [
   },
   {
     slug: 'account-number',
+    uxOnly: true,
     title: 'AccountNumber',
     group: 'banking',
     kind: 'component',
@@ -1854,6 +1857,7 @@ export const PAGES: readonly PageDef[] = [
   },
   {
     slug: 'kyc-helpers',
+    uxOnly: true,
     title: 'KYC helpers',
     lead: 'Shape checks for a Nepali PAN and citizenship number, with Devanagari digits accepted.',
     group: 'forms',

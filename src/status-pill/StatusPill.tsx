@@ -36,6 +36,9 @@ export interface StatusPillProps {
   className?: string;
 }
 
+/**
+ * @stability stable
+ */
 export function StatusPill({ children, tone, dot, swatch, size, href, linkComponent, marker, testId, className }: StatusPillProps) {
   const cls = `kit-pill${tone ? ` ${tone}` : ''}${dot ? ' dot' : ''}${marker ? ` marker ${marker}` : ''}${size === 'sm' ? ' sm' : ''}${href ? ' link' : ''}${className ? ` ${className}` : ''}`;
   const body = (

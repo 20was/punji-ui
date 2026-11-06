@@ -34,6 +34,9 @@ export interface MetricTileProps {
   testId?: string;
 }
 
+/**
+ * @stability stable
+ */
 export function MetricTile({ label, value, meter, note, tone = 'tint', compact, testId }: MetricTileProps) {
   return (
     <div className={`kit-metric${tone === 'inverse' ? ' lead' : ''}${compact ? ' compact' : ''}`} data-testid={testId}>

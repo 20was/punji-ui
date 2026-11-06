@@ -181,7 +181,9 @@ function ChangedNote({ previous, words }: { previous?: ReactNode; words: Require
   );
 }
 
-/** The transfer confirm screen: amount in figures and words, a spoofing-checked recipient, changed fields marked. */
+/** The transfer confirm screen: amount in figures and words, a spoofing-checked recipient, changed fields marked. *
+ * @stability composition
+ */
 export function TransferReview({
   amount, currency: currencyProp, money, recipient, knownPayees, fee, previousAmount, words, details = [], verification, onConfirm, confirm, onEdit, busy, labels = {}, className, testId,
 }: TransferReviewProps) {

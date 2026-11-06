@@ -161,6 +161,9 @@ export interface TooltipProps {
   testId?: string;
 }
 
+/**
+ * @stability beta
+ */
 export function Tooltip({ content, children, describe, testId }: TooltipProps) {
   const id = useId();
   const ref = useRef<HTMLSpanElement>(null);

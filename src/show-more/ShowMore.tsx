@@ -20,6 +20,9 @@ export interface ShowMoreProps {
   testId?: string;
 }
 
+/**
+ * @stability stable
+ */
 export function ShowMore({ expanded, onToggle, more, less, controls, testId }: ShowMoreProps) {
   return (
     <button type="button" className="kit-more" aria-expanded={expanded} aria-controls={controls} onClick={onToggle} data-testid={testId}>

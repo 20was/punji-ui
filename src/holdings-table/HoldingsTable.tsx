@@ -105,6 +105,9 @@ const defaultIncomplete = (unpriced: readonly string[], noPreviousClose: readonl
   </>
 );
 
+/**
+ * @stability composition
+ */
 export function HoldingsTable<T extends Holding = Holding>({
   caption, holdings, totals, columns = DEFAULT_HOLDING_COLUMNS, columnLabels, labels, sort, onSortChange, money = nepalQuoteMoney, convention,
   changeLabels, weightDigits = 2, density = 'comfortable', bare, maxHeight, stack = true, renderSymbol, exportFilename, state = 'ready',

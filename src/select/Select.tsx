@@ -68,6 +68,9 @@ export function ChevronDown() {
   );
 }
 
+/**
+ * @stability stable
+ */
 export function Select<T extends string>({
   value,
   onChange,

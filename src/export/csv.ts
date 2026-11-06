@@ -64,6 +64,8 @@ function quote(text: string, delimiter: string): string {
  * "e", "+", so negatives stay numeric); numeric-looking strings are not, unless the
  * column sets keepNumericText. Date, bigint and object values throw unless the column has
  * a `format`. Errors name the column header only, never the data.
+ *
+ * @stability stable
  */
 export function toCsv<T>(rows: readonly T[], columns: readonly CsvColumn<T>[], options: CsvOptions = {}): string {
   const { delimiter = ',', crlf = true, bom = false, header = true, neutralizeFormulas = true } = options;

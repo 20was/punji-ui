@@ -12,6 +12,7 @@ export const FORMS_PAGES: readonly PageDef[] = [
     lead: 'A rate field that keeps exactly what was typed, refuses extra decimals instead of rounding, and hands you the rate in basis points.',
     group: 'forms',
     kind: 'component',
+    stability: 'beta',
     summary:
       'A field for a rate: brokerage, commission, interest, a discount. The value is a plain decimal string in percent units (\'0.4\' means 0.4%), never a float. Devanagari and Arabic-Indic digits and a pasted percent sign are accepted, a fraction longer than `maxFractionDigits` is refused rather than rounded, and `onValueChange` reports the exact string, a state, the rate in basis points as a bigint and whether it is outside `min` and `max`.',
     use: [
@@ -55,6 +56,7 @@ export const FORMS_PAGES: readonly PageDef[] = [
     lead: 'Enter a code from an SMS or authenticator app, one box per character, with paste, autofill and full keyboard support.',
     group: 'forms',
     kind: 'component',
+    stability: 'beta',
     summary:
       'A one-time code as one box per character. The group has one label and each box has its own name ("Digit 3 of 6"). Typing moves forward, Backspace moves back, the arrows, Home and End move between boxes, and a paste or an SMS autofill spreads across the boxes. Numeric by default, alphanumeric on request, with an option to mask the characters. The boxes always run left to right, even on a right-to-left page.',
     use: [
@@ -94,6 +96,7 @@ export const FORMS_PAGES: readonly PageDef[] = [
     lead: 'Pick or drop a bank or broker statement, see what was accepted or why not, and remove it. You handle the upload.',
     group: 'forms',
     kind: 'component',
+    stability: 'composition',
     summary:
       'Choose or drop bank or broker statements (CSV and PDF by default). It collects `File` objects and checks each one: type, size, empty and duplicates, with a message for every refusal. Accepted files are listed with name and size and can be removed. It makes no network request: you receive the files in `onChange` and upload them yourself.',
     use: [
@@ -137,6 +140,7 @@ export const FORMS_PAGES: readonly PageDef[] = [
     lead: 'Today, this week, this month, last 30 days and the fiscal year to date, ready for a range picker and computed without Date.',
     group: 'forms',
     kind: 'utility',
+    stability: 'stable',
     summary:
       'Pure helpers that turn today\'s date into the ranges people pick most, and a `presets` prop on `DateRangePicker` that shows them as buttons above the calendar. The Nepal fiscal year runs from 1 Shrawan to the end of Asar and is computed from Bikram Sambat tables; a Gregorian fiscal year takes its start month. Everything is a civil date string (YYYY-MM-DD) and never reads the clock or the time zone.',
     use: [

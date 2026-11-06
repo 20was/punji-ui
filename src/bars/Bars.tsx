@@ -47,6 +47,9 @@ const finite = (v: unknown): v is number => typeof v === 'number' && Number.isFi
 /** A bar's width as a percentage of its scale; 0 for an unusable scale or value, never NaN. */
 const share = (value: number, max: number) => (finite(value) && finite(max) && max > 0 ? Math.min(100, (Math.abs(value) / max) * 100) : 0);
 
+/**
+ * @stability stable
+ */
 export function SplitBar({ parts, label, testId }: {
   /** The parts of the whole, in order. A part's share is its `value` over the sum of the positive values. */
   parts: readonly SplitPart[];

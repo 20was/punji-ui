@@ -28,6 +28,9 @@ export interface KeyStat {
   testId?: string;
 }
 
+/**
+ * @stability stable
+ */
 export function KeyStats({ items, cols = 2, layout = 'grid', empty, label, loading, testId }: {
   /** The cells, in reading order. */
   items: readonly KeyStat[];

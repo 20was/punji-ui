@@ -12,6 +12,7 @@ export const RECONCILIATION_PAGES: readonly PageDef[] = [
     lead: 'Statement lines beside ledger entries: tick, match when they agree to the paisa, and read what is left to reconcile.',
     group: 'accounting',
     kind: 'component',
+    stability: 'experimental',
     summary:
       'A bank statement beside the bank account in the books. Tick lines on both sides and match them when their totals agree exactly (one-to-one, one-to-many or many-to-many, such as a payroll paid as five transfers), accept the exact-amount suggestions within a date window (`suggestMatches`), undo a match, and read the reconciliation statement: balance per bank plus deposits in transit less outstanding payments, against balance per books plus receipts and less charges the books do not have yet (`reconciliationSummary`). Amounts are signed bigint minor units from the account holder\'s side, so money in is positive on both lists. It is controlled: you keep the matches. `onCreateEntry` puts a "Book" action on statement-only lines so you can post them.',
     use: [

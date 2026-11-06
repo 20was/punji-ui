@@ -16,6 +16,7 @@ export const SHARE_ISSUE_PAGES: readonly PageDef[] = [
     lead: 'Open, upcoming and closed share issues as cards, with the dates in Bikram Sambat and Gregorian and the kitta rules in plain words.',
     group: 'share-issues',
     kind: 'component',
+    stability: 'composition',
     summary:
       'One card per share issue: the kind (IPO, FPO, right share, mutual fund, debenture), the company and tranche, the status on the day you pass (Upcoming, Open, Closes today, Closed) in words with the days left, the open and close dates in Bikram Sambat with the Gregorian date beside them, the units on offer, the price per unit and the kitta rule ("10 to 1,000, multiples of 10"). IssueList orders issues (closing soonest first, then upcoming, then closed), adds kind filter chips with counts and announces the count after a filter.',
     use: [
@@ -46,6 +47,7 @@ export const SHARE_ISSUE_PAGES: readonly PageDef[] = [
     lead: 'A two-step application: kitta checked against the issue\'s rules, the exact amount to block, the bank account, then the PIN.',
     group: 'share-issues',
     kind: 'component',
+    stability: 'composition',
     summary:
       'Step one takes the kitta (a spin button that steps by the issue\'s multiple and stays inside the minimum and maximum), shows the exact amount to block as it changes, lets the reader choose a bank account (only its last four digits are rendered) and enter the CRN (prefilled from the account), and asks for the declaration. Continue reports every problem in words and focuses the first. Step two reviews what will be sent and takes a transaction PIN (masked boxes) or a one-time code, then calls `onSubmit` with the kitta and amount as bigints.',
     use: ['An IPO, FPO, right share or mutual fund application screen.', 'Return a promise from `onSubmit` to show the busy state; pass a server refusal back through `error`.'],
@@ -72,6 +74,7 @@ export const SHARE_ISSUE_PAGES: readonly PageDef[] = [
     lead: 'A BOID field that cleans what is pasted, shows the DP ID and client ID once complete, and says what is wrong in words.',
     group: 'share-issues',
     kind: 'component',
+    stability: 'stable',
     summary:
       'A text field for a BOID (the 16-digit demat account number). Typed or pasted text is cleaned as it arrives: Devanagari and Arabic-Indic digits become ASCII, spaces and hyphens are dropped and letters are refused, so the value is always digits. Once complete the hint shows the DP ID (first 8 digits) and the client ID (last 8). A short, long or wrongly prefixed BOID is said in words after the field is left, never while the reader is typing.',
     use: ['Login, allotment checks and linking a demat account.', '`prefix={null}` when your depository does not use the CDSC 130 prefix.'],
@@ -90,6 +93,7 @@ export const SHARE_ISSUE_PAGES: readonly PageDef[] = [
     lead: 'Check allotment for many BOIDs in one go, with each bad line named before anything is sent.',
     group: 'share-issues',
     kind: 'component',
+    stability: 'composition',
     summary:
       'Saved accounts are ticked by default and more BOIDs can be pasted one per line or separated by commas. Every BOID is checked for shape first and a bad one is named by its line ("Line 2: A BOID has 16 digits; this has 8."); duplicates are dropped and a cap keeps one check small. `onCheck` runs the check (through your server to the registrar) and resolves one result per BOID: allotted with units, not allotted, no application, pending or an error. Results show as rows with the outcome in words and a summary read politely ("2 of 3 allotted, 20 units in all").',
     use: ['A results page for an investor checking the family\'s accounts after an IPO.', 'Rate limits and captchas are your server\'s concern: `maxBoids` keeps a single request bounded.'],
@@ -109,6 +113,7 @@ export const SHARE_ISSUE_PAGES: readonly PageDef[] = [
     lead: 'A demat account at a glance: the BOID split by DP and client, the linked bank, and renewal dates that warn in words.',
     group: 'share-issues',
     kind: 'component',
+    stability: 'composition',
     summary:
       'One demat account: the holder, the depository participant, the BOID in two halves (DP ID and client ID) and read in blocks of four by screen readers, the CRN, the linked bank with only the last four digits of its number, the account status (active, dormant, suspended, closed) in words, and the demat renewal and online-access expiry in Bikram Sambat and Gregorian. Within `warnWithinDays` of a date a pill says "Due in 17 days"; past it, "Expired". Loading and error states keep the card\'s place.',
     use: ['An accounts screen in a depository or broker app, or a profile header.'],
@@ -131,6 +136,7 @@ export const SHARE_ISSUE_PAGES: readonly PageDef[] = [
     lead: 'Book close, AGM and credit dates in order, in both calendars, with the next one marked and the days to go.',
     group: 'share-issues',
     kind: 'component',
+    stability: 'composition',
     summary:
       'A company\'s corporate-action dates as an ordered list: announcement, book close, AGM, right issue window, listing and credit. Each date is in Bikram Sambat with the Gregorian date beside it, marked done, today or upcoming in words and in a distinct shape, with "In 7 days" for what is ahead. The first date that is today or later carries `aria-current="date"`.',
     use: ['A stock page\'s dividend and bonus section, or an investor\'s calendar of entitlements.'],
@@ -150,6 +156,7 @@ export const SHARE_ISSUE_PAGES: readonly PageDef[] = [
     lead: 'Confirm moving sold shares to the broker: each sale can be left out, the total is exact, and the button says what will move.',
     group: 'share-issues',
     kind: 'component',
+    stability: 'composition',
     summary:
       'An electronic delivery instruction slip (EDIS): each sale waiting for settlement is a row with the symbol, units, contract number, broker and settlement date (BS and AD). All are chosen at first and any can be left out; the total units are counted exactly and printed on the button ("Transfer 150 units"). A declaration and the transaction PIN complete it; `onConfirm` receives the chosen ids, the units and the PIN.',
     use: ['The step after a sale where the seller authorises the transfer from their demat account.'],
@@ -169,6 +176,7 @@ export const SHARE_ISSUE_PAGES: readonly PageDef[] = [
     lead: 'Exact maths for issues and corporate actions: kitta rules, BOID checks, the adjusted price after a book close and WACC.',
     group: 'share-issues',
     kind: 'utility',
+    stability: 'stable',
     summary:
       'Pure functions behind `@punji/ui/share-issues`, with no React, no browser globals and no calendar converter. Issues: `issueStatus`, `sortIssues`, `checkKitta`, `parseKitta`, `nearestValidKitta`, `issueAmount`. BOIDs: `checkBoid`, `boidParts`, `formatBoid`, `spokenBoid`. Corporate actions: `entitledUnits` (bonus or right, fractional units dropped by default), `adjustedPrice` ((price + right% × right price) / (1 + bonus% + right%), one final rounding), `costBasisSteps` and `costBasisAfter` for WACC through buys, bonus, right and sales (average cost), and `corporateTimeline`. Money is bigint paisa; percentages are decimal strings; every rounding is a RoundingMode you choose.',
     use: ['The same rules on the server (Node) as in the browser.', 'A WACC table for capital-gains estimates: `unitCost` on a bonus prices bonus units the way your tax rule does.'],

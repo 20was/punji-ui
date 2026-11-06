@@ -213,7 +213,9 @@ function regionName(code: string, locale: string): string {
   }
 }
 
-/** An IBAN field: per-country length and format, mod-97 check, grouped in fours, country announced. */
+/** An IBAN field: per-country length and format, mod-97 check, grouped in fours, country announced. *
+ * @stability beta
+ */
 export function IbanInput({ formats, countries, ...props }: PaymentFieldProps<IbanCheck> & IbanOptions) {
   const { locale } = useLocaleMessages();
   return (

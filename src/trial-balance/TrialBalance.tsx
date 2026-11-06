@@ -71,6 +71,9 @@ export interface TrialBalanceProps {
 
 type Key = 'account' | 'debit' | 'credit';
 
+/**
+ * @stability composition
+ */
 export function TrialBalance({
   caption, data, basis = 'net', renderAccount, money = nepalLedgerMoney, labels, bare, maxHeight, state = 'ready', emptyLabel = 'No accounts to show.',
   loadingLabel = 'Loading trial balance…', errorLabel = 'The trial balance could not be loaded.', retryLabel = 'Try again', onRetry, testId,

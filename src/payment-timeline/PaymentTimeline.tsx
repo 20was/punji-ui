@@ -51,6 +51,9 @@ export interface PaymentTimelineProps {
   testId?: string;
 }
 
+/**
+ * @stability composition
+ */
 export function PaymentTimeline({ steps, label = 'Payment progress', timeZone, locale, stateLabels, className, testId }: PaymentTimelineProps) {
   return (
     <ol className={`pu-timeline${className ? ` ${className}` : ''}`} aria-label={label} data-testid={testId}>

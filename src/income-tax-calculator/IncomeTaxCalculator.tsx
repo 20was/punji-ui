@@ -154,6 +154,9 @@ const DEFAULT_RETIREMENT: readonly TaxDeductionField[] = [
   { id: 'pf', label: 'Provident fund' },
 ];
 
+/**
+ * @stability composition
+ */
 export function IncomeTaxCalculator({
   slabs, retirement = DEFAULT_RETIREMENT, retirementRule, deductions = [], rebates = [], ssfOption, fiscalYear, defaultValues = {}, rounding = 'half-up',
   money = nepalLedgerMoney, onResult, labels, breakdownLabels, className, testId,

@@ -124,6 +124,7 @@ export const COMMUNITY_PAGES: readonly PageDef[] = [
   },
   {
     slug: 'menu',
+    stability: 'beta',
     title: 'Menu button',
     description: 'A button that opens a menu of actions, links, checkboxes or radios: WAI-ARIA menu button with typeahead, row actions for tables and an account menu.',
     lead: 'A button that opens a keyboard-complete menu: row actions in a table, an account menu, a More button.',
@@ -185,6 +186,7 @@ export const COMMUNITY_PAGES: readonly PageDef[] = [
   },
   {
     slug: 'breadcrumb',
+    stability: 'beta',
     title: 'Breadcrumb',
     description: 'A breadcrumb trail for deep account and document pages: a labelled nav, the current page marked, router links and a collapsed menu for long trails.',
     lead: 'Where the reader is in a hierarchy, with a link back to every level and the current page marked.',
@@ -228,6 +230,7 @@ export const COMMUNITY_PAGES: readonly PageDef[] = [
   },
   {
     slug: 'accordion',
+    stability: 'beta',
     title: 'Accordion',
     description: 'Stacked headings that each show or hide a panel: WAI-ARIA accordion with single or multiple open, controlled or uncontrolled, for FAQs and loan terms.',
     lead: 'Stacked sections that expand one at a time or together, with arrow-key movement between headers.',

@@ -29,6 +29,23 @@ for (const [sub, target] of Object.entries(pkg.exports)) {
   if (!existsSync(join(root, `${src}.ts`)) && !existsSync(join(root, `${src}.tsx`))) problems.push(`package.json: ${sub} has no source`);
 }
 
+// Stability: every documented component, hooks and utility page has a valid `stability` in the page registry, and
+// the source of its first documented export carries the same `@stability <level>` JSDoc tag.
+const { PAGES, STABILITY_LEVELS } = await import(join(root, 'site/src/registry.ts'));
+const stabilityRe = (name) => new RegExp(`/\\*\\*(?:(?!\\*/)[\\s\\S])*?@stability (\\w+)(?:(?!\\*/)[\\s\\S])*?\\*/\\n(?:export (?:declare )?(?:async )?(?:function|const|class) ${name}\\b)`);
+let tagged = 0;
+for (const page of PAGES) {
+  if (!['component', 'hooks', 'utility'].includes(page.kind)) continue;
+  if (!STABILITY_LEVELS.includes(page.stability)) { problems.push(`site registry: page "${page.slug}" needs stability: one of ${STABILITY_LEVELS.join(', ')}`); continue; }
+  const sourceText = page.api.map((a) => a.name).map((name) => [name, sources.map((f) => readFileSync(f, 'utf8')).find((t) => new RegExp(`^export (?:declare )?(?:async )?(?:function|const|class) ${name}\\b`, 'm').test(t))]).find(([, t]) => t);
+  if (!sourceText) continue;
+  const m = stabilityRe(sourceText[0]).exec(sourceText[1]);
+  if (!m) problems.push(`${page.slug}: the export ${sourceText[0]} needs a "@stability ${page.stability}" JSDoc tag`);
+  else if (m[1] !== page.stability) problems.push(`${page.slug}: @stability ${m[1]} on ${sourceText[0]} does not match the registry (${page.stability})`);
+  else tagged++;
+}
+console.log(`stability: ${tagged} documented exports carry a matching @stability tag`);
+
 if (problems.length) {
   console.error(problems.join('\n'));
   process.exit(1);

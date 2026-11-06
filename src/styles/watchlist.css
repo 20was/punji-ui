@@ -16,7 +16,7 @@
   .pu-watch-actions { flex: none; display: inline-flex; gap: 2px }
   .pu-watch-actions > button { appearance: none; display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 0; border-radius: var(--pu-radius-8); background: transparent; color: var(--pu-color-text-muted); cursor: pointer }
   .pu-watch-actions > button:hover:not(:disabled) { background: var(--pu-color-surface-tint); color: var(--pu-color-text) }
-  .pu-watch-actions > button:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 1px }
+  .pu-watch-actions > button:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 1px }
   .pu-watch-actions > button:disabled { opacity: 0.35; cursor: default }
   .pu-watch-actions svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round }
   /* Equal-width price cells keep the trend lines in one column. */

@@ -11,7 +11,7 @@
   .pu-ticket-fill button { display: inline-flex; align-items: baseline; gap: 6px; min-height: var(--pu-control-sm); padding: 0 12px; border: 1px solid var(--pu-color-border-control); border-radius: var(--pu-radius-full); background: var(--pu-color-surface); color: var(--pu-color-text-muted); font: 500 var(--pu-text-xs) / 1 var(--pu-font-body); cursor: pointer }
   .pu-ticket-fill button b { font-weight: 600; color: var(--pu-color-text); font-variant-numeric: var(--pu-font-numeric) }
   .pu-ticket-fill button:hover { background: var(--pu-color-surface-tint) }
-  .pu-ticket-fill button:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+  .pu-ticket-fill button:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
   .pu-ticket-estimate { display: grid; gap: var(--pu-space-2); padding: var(--pu-space-3); border-radius: var(--pu-radius-16); background: var(--pu-color-surface-tint) }
   .pu-ticket-estimate dl { display: grid; gap: 6px; margin: 0 }
   .pu-ticket-estimate dl > div { display: flex; justify-content: space-between; align-items: baseline; gap: var(--pu-space-3); font-size: var(--pu-text-sm); color: var(--pu-color-text-muted) }

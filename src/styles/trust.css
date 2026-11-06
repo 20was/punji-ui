@@ -71,7 +71,7 @@
   .pu-scam-icon { flex: none; width: 32px; height: 32px; fill: none; stroke: var(--pu-color-loss); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round }
   .pu-scam-title { margin: 0; font: 700 22px / 1.25 var(--pu-font-display); color: var(--pu-color-text) }
   .pu-scam-title:focus { outline: none }
-  .pu-scam-title:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 4px }
+  .pu-scam-title:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 4px }
   .pu-scam-summary { margin: 0; font: 500 var(--pu-text-base) / 1.5 var(--pu-font-body); color: var(--pu-color-text) }
   .pu-scam-qtitle { margin: 0; font: 700 var(--pu-text-sm) / 1.4 var(--pu-font-body); color: var(--pu-color-text) }
   .pu-scam-questions { margin: 0; padding-inline-start: 1.2em; display: grid; gap: var(--pu-space-1); font: 400 var(--pu-text-sm) / 1.5 var(--pu-font-body); color: var(--pu-color-text) }

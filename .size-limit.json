@@ -331,7 +331,7 @@
   {
     "name": "tokens.css",
     "path": "dist/tokens.css",
-    "limit": "2.0 kB",
+    "limit": "2.1 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -1104,7 +1104,7 @@
   {
     "name": "css/contrast.css (high-contrast themes, forced colours)",
     "path": "dist/css/contrast.css",
-    "limit": "1.92 kB",
+    "limit": "2.05 kB",
     "rolldown": false,
     "gzip": true
   },

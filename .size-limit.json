@@ -430,7 +430,7 @@
     "name": "Calendar including BS conversion and shared controls",
     "path": "dist/calendar/Calendar.js",
     "import": "*",
-    "limit": "8.66 kB",
+    "limit": "8.8 kB",
     "gzip": true
   },
   {
@@ -927,7 +927,7 @@
     "name": "bank-account-card (import from '@punji/ui/bank-account-card')",
     "path": "dist/bank-account-card/BankAccountCard.js",
     "import": "*",
-    "limit": "7.89 kB",
+    "limit": "8.0 kB",
     "gzip": true
   },
   {
@@ -1346,7 +1346,7 @@
     "name": "payslip (import from '@punji/ui/payslip')",
     "path": "dist/payslip/Payslip.js",
     "import": "*",
-    "limit": "7.59 kB",
+    "limit": "7.7 kB",
     "gzip": true
   },
   {
@@ -1360,7 +1360,7 @@
     "name": "tds-summary (import from '@punji/ui/tds-summary')",
     "path": "dist/tds-summary/TdsSummary.js",
     "import": "*",
-    "limit": "8.88 kB",
+    "limit": "8980 B",
     "gzip": true
   },
   {

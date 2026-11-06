@@ -2,6 +2,7 @@
 // @punji/ui package.json exports and its TypeScript sources (a light text scan: the repo's
 // TypeScript 7 has no JS compiler API). Run from the repo root:
 //   node packages/eslint-plugin-punji/scripts/generate-subpath-map.mjs
+// --check regenerates in memory and exits 1 if the committed JSON differs (run by `npm run lint`).
 // Commit the JSON; the plugin never reads the repo at lint time.
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
@@ -54,5 +55,20 @@ for (const name of [...found.keys()].toSorted()) {
   const pick = owned.length === 1 ? owned[0] : list.length === 1 ? list[0] : undefined;
   if (pick) map[name] = `@punji/ui/${pick.sub}`;
 }
-writeFileSync(join(here, '../data/subpath-map.json'), `${JSON.stringify(map, null, 2)}\n`);
-console.log(`subpath map: ${Object.keys(map).length} of ${found.size} names mapped`);
+const json = `${JSON.stringify(map, null, 2)}\n`;
+const mapPath = join(here, '../data/subpath-map.json');
+
+// --check: fail (exit 1) when the committed map is not what the current exports produce. Used by `npm run lint`.
+if (process.argv.includes('--check')) {
+  const committed = existsSync(mapPath) ? readFileSync(mapPath, 'utf8') : '';
+  if (committed !== json) {
+    console.error('subpath-map: packages/eslint-plugin-punji/data/subpath-map.json is stale.');
+    console.error('It no longer matches the @punji/ui exports and sources.');
+    console.error('Regenerate and commit it: node packages/eslint-plugin-punji/scripts/generate-subpath-map.mjs');
+    process.exit(1);
+  }
+  console.log(`subpath map: up to date (${Object.keys(map).length} of ${found.size} names mapped)`);
+} else {
+  writeFileSync(mapPath, json);
+  console.log(`subpath map: ${Object.keys(map).length} of ${found.size} names mapped`);
+}

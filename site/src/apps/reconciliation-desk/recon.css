@@ -1,0 +1,23 @@
+/* Reconciliation desk layout. Colours and type from the package tokens; classes prefixed rc-. */
+.rc-account { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; min-width: 0; margin: 0; }
+.rc-account span { color: var(--doc-ink-2); font-size: 12px; font-variant-numeric: tabular-nums; }
+.rc-h { margin: 0 0 8px; font: 600 16px/1.3 var(--pu-font-display); }
+.rc-banners { display: grid; gap: 8px; min-width: 0; }
+.rc-actions, .rc-exports { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin: 0 0 12px; }
+.rc-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 10px 12px; border: 1px solid var(--doc-rule); border-radius: 12px; background: var(--doc-raised); }
+.rc-sel { display: flex; flex: 1 1 320px; flex-wrap: wrap; gap: 4px 16px; margin: 0; font-variant-numeric: tabular-nums; }
+.rc-desc { display: grid; gap: 0; min-width: 0; }
+.rc-desc strong { font-weight: 600; overflow-wrap: anywhere; }
+.rc-desc span { color: var(--doc-ink-2); font-size: 12px; overflow-wrap: anywhere; }
+.rc-note { font-size: 13px; }
+.rc-queue { align-items: start; }
+.rc-facts { display: grid; gap: 6px; margin: 0; }
+.rc-facts > div { display: flex; justify-content: space-between; gap: 12px; font-variant-numeric: tabular-nums; }
+.rc-facts dt { min-width: 0; color: var(--doc-ink-2); }
+.rc-facts dd { margin: 0; text-align: right; }
+.rc-facts > .is-total { padding-top: 6px; border-top: 1px solid var(--pu-color-border-strong); font-weight: 600; }
+.rc-facts > .is-total dt { color: var(--pu-color-text); }
+@media (min-width: 1100px) { .rc-queue { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 639px) { .rc-account span { display: none; } }
+.rc-ack { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.rc-ack li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px; }

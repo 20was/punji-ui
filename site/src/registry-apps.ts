@@ -463,4 +463,112 @@ export const APP_PAGES: readonly PageDef[] = [
         'Eight synthetic funds with five years of seeded weekly NAVs (`site/src/apps/invest-insure/data.ts`), three SIPs and a lump sum paid since 2023 and allotted at those NAVs, three policies, a settled claim and nominees. Orders and claims move on a timer after hydration. Nothing is fetched.',
     },
   },
+  {
+    slug: 'reconciliation-desk',
+    title: 'Reconciliation desk',
+    description:
+      'A bank reconciliation desk built from Punji UI: statement against ledger, unmatched queue, match and unmatch, exceptions, control totals and safe CSV.',
+    lead: 'Match a month of bank lines to the books to the paisa, work the exceptions, and export evidence that cannot run as a formula.',
+    group: 'apps',
+    kind: 'app',
+    summary:
+      'The back-office side of cash: one month (October 2026) of a company\'s bank statement against the bank account in its books. Lines with the same reference and exact amount are matched on arrival; the rest wait in an unmatched queue where a person ticks lines on both sides and matches them (one to one, or many to one when payroll was paid as three transfers), accepts exact-amount suggestions, or books the bank\'s own charges and interest. A match is refused unless both sides agree to the paisa. What cannot be matched is named as an exception in a `StatusBanner`: an amount keyed wrongly, a line the bank repeated, a payment outstanding too long, bank items not yet in the books. The report checks each side\'s total against the bank\'s and the books\' own closing balance with `expectedTotals`, so a table says "Reconciles" or how far it is off, and the CSV goes through the library\'s formula-safe export.',
+    use: [
+      'Map your bank file and ledger to `ReconcileItem` (signed bigint paisa, date-only dates, a reference) and keep `matches` on your server; the `reducer` here only shows the rules.',
+      'Give `FinancialTable` columns a `value` (Money), an `aggregate` and a `formatAggregate` to get group subtotals and a totals row, and pass the closing-balance movement as `expectedTotals`.',
+      'Export with `TableExport` rather than building CSV by hand: a payer\'s narration that starts with `=`, `+`, `-` or `@` is prefixed so a spreadsheet keeps it as text.',
+    ],
+    avoid: [
+      'Treating a screen as a control: the server must check every match again (both sides equal, no line in two matches) and keep who matched what and when.',
+      'Maker-checker, write-offs, multi-currency accounts and bank feeds: this desk shows the matching rules, not the approval workflow.',
+    ],
+    api: [],
+    examples: [],
+    keyboard: [
+      '`1` to `4` open the screens. Plain keys never fire while you type in a field.',
+      'In the queue, Space ticks a line, `M` matches the ticked lines and `A` accepts the suggestions; each table is an ordinary table you move through with Tab.',
+      'Groups on Matched open and close with Enter or Space on the group header; Unmatch is a button on every line, named with its match.',
+    ],
+    accessibility: [
+      'Each screen has its own `h2` and focus moves to it from the navigation. Matches, refusals, bookings and unmatches are announced in a polite live region.',
+      'An exception says what is wrong in words with the amounts and has an icon; danger banners are alerts, the rest are status messages. "Reconciles" and "Off by" are words, not colour.',
+      'Amounts carry their sign as text (+ in, - out), so the figures read the same in a black and white print or to a screen reader.',
+    ],
+    responsive: [
+      'Wide screens: a navigation rail and the bank and books queues side by side.',
+      'Phones (390 px first): a bottom tab bar and tables that stack into labelled cards with the description first and the amount second. Nothing scrolls the page sideways.',
+    ],
+    notes: {
+      title: 'Limits',
+      points: [
+        'An invented company and bank. The month is October 2026 and the session date is 1 November 2026; the data has no clock and no randomness.',
+        'Both sides opened the month at the same balance (September was reconciled), so the adjusted balances always agree once every line is classified; what the desk tracks is whether anything is still unexplained.',
+        'One bank line carries a narration that starts with `=` and one starts with `+977` on purpose, to show the CSV export neutralising them.',
+      ],
+    },
+    related: ['reconciliation-matcher', 'data-table', 'status-banner', 'csv-export', 'money-display', 'metric-tile', 'statement-table', 'ledger-table', 'hooks'],
+    app: {
+      screens: [
+        { id: 'overview', title: 'Overview', summary: 'Both closing balances, the matched share and the open exceptions (`MetricRow`), every exception as a `StatusBanner` with the amounts, and the next step.' },
+        { id: 'queue', title: 'Unmatched queue', summary: 'Unmatched bank lines beside unmatched book entries in `FinancialTable` with selection and totals: match ticked lines when they agree to the paisa, accept suggestions, book charges and interest.' },
+        { id: 'matched', title: 'Matched', summary: 'Every match as a group in `FinancialTable` (`groupBy`), with bank and books subtotals that agree, a total row, and Unmatch on each line.' },
+        { id: 'report', title: 'Report and export', summary: 'The reconciliation statement, each side\'s lines grouped by status with totals checked against the closing balances (`expectedTotals`), and CSV of the lines and exceptions (`TableExport`).' },
+      ],
+      data:
+        'Hand-written fixtures in `site/src/apps/reconciliation-desk/recon.ts`: 33 bank lines and 29 book entries for October 2026 in bigint paisa, with the bank\'s and the books\' closing balances as printed. No clock, no random numbers, nothing fetched.',
+    },
+  },
+  {
+    slug: 'account-statements',
+    title: 'Account statements',
+    description:
+      'A monthly account statement built from Punji UI: opening and closing balance, a running balance, totals that reconcile and a print stylesheet.',
+    lead: 'A statement that proves its own arithmetic on screen, and prints as a clean black and white document.',
+    group: 'apps',
+    kind: 'app',
+    summary:
+      'A bank\'s monthly statement as a document, for a savings account and a business current account over August to October 2026. The summary shows the opening and closing balance with money in and out; the transactions carry a running balance; and the table\'s totals row checks the sum of the lines against the totals the bank declares, with `expectedTotals`, and says "Reconciles" or how far it is off. Fees, charges and interest are grouped with subtotals. Press P (or the button) and the browser prints the statement alone: no navigation or controls, black on white in any theme, the header and summary on the first page, the transactions starting a new page with the table head repeated, and no row split across pages. A statement that does not reconcile cannot be printed; the demo switch makes the bank\'s header one rupee wrong to show it.',
+    use: [
+      'Feed `Statement` objects from your core banking API: opening balance, lines with `credit` and `debit` in bigint paisa, and the bank\'s declared totals. `checkStatement` recomputes every running balance and the totals from the lines.',
+      'Pass the declared money in and out as `expectedTotals` on `FinancialTable`; give the columns a `value`, `aggregate: \'sum\'` and a `formatAggregate`.',
+      'Copy `statements.css`: the `@media print` block hides the app chrome, forces black on white, repeats table heads and starts sections on a new page, with no library API involved.',
+    ],
+    avoid: [
+      'Treating the on-screen check as the control: the bank\'s ledger is the source of the declared totals, and the server that issues the statement must check them again.',
+      'Producing the official PDF in the browser: print and save as PDF is for a customer\'s own copy; a regulated statement is rendered and signed on the server.',
+    ],
+    api: [],
+    examples: [],
+    keyboard: [
+      '`1` and `2` open the screens; `P` prints the statement; `[` and `]` step to the earlier or later month. Plain keys never fire while you type in a field.',
+      'The account and month are selects; Earlier month and Later month are buttons. The demo switch is a switch: Space toggles it.',
+      'On the archive, Open is a button on every row, named with the month and account.',
+    ],
+    accessibility: [
+      'Each screen has its own `h2` and focus moves to it from the navigation. The statement is an article named by its title, with a heading for each section.',
+      'Every figure has its sign or its column heading as text, and "Reconciles" or "Off by" is a word with a mark, never colour alone, so it reads the same to a screen reader and on a black and white print.',
+      'A statement that does not reconcile is announced as an alert, and the print button is disabled with the reason in its title.',
+    ],
+    responsive: [
+      'Wide screens: a navigation rail and the statement as a bordered sheet with the account details in two columns.',
+      'Phones (390 px first): a bottom tab bar, the summary in two columns, and the transactions stacked into labelled cards with the description first and the amount second. Nothing scrolls the page sideways.',
+    ],
+    notes: {
+      title: 'Limits',
+      points: [
+        'An invented bank, holders and transactions, generated from fixed templates with a seeded generator. The statements are issued on 1 November 2026.',
+        'The "declared" totals are written while the lines are generated, so they agree unless you flip the demo switch; they stand in for the header a real bank sends.',
+        'Printing uses the browser\'s dialog. Page breaks, fonts and margins differ a little between browsers; check yours with Save as PDF.',
+      ],
+    },
+    related: ['data-table', 'statement-table', 'transaction-list', 'financial-summary', 'money-display', 'status-banner', 'switch', 'select', 'hooks'],
+    app: {
+      screens: [
+        { id: 'statement', title: 'Statement', summary: 'One account and month as a printable document: the summary (`FinancialSummary`), the transactions with a running balance and totals checked with `expectedTotals`, fees and interest by kind, and notes.' },
+        { id: 'archive', title: 'All statements', summary: 'Every statement by account in `FinancialTable` (`groupBy`) with money in and out subtotals, whether each month opens at the last closing balance and reconciles, and a button to open it.' },
+      ],
+      data:
+        'Two accounts and three months each, generated in `site/src/apps/account-statements/statements.ts` from fixed templates and a seeded generator in bigint paisa. Each month opens at the previous month\'s closing balance. No clock, nothing fetched.',
+    },
+  },
 ];

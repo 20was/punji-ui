@@ -5,10 +5,10 @@ import '@punji/ui/styles.css';
 import './styles.css';
 import { App } from './app/App.tsx';
 import { applyHead } from './app/head.ts';
-import { loadRoute, pageData } from './app/load.ts';
+import { headData, loadRoute, pageData } from './app/load.ts';
 import { groupTitleOf, navBySlug, parseClientRoute } from './app/nav.ts';
 import { BASE, hrefFor, legacyHashSlug, relativePath } from './app/router.tsx';
-import { headFor, pagePath } from './paths.ts';
+import { pagePath } from './paths.ts';
 
 // Old `#/slug` links: move to the real path before anything renders.
 let redirected = false;
@@ -19,13 +19,14 @@ if (legacy !== null) {
   window.history.replaceState(null, '', hrefFor(path));
   await loadRoute(parseClientRoute(path));
   const data = page && pageData(page.slug);
+  const { headFor } = headData()!;
   applyHead(data ? headFor({ kind: 'page', page: data.page }, SITE_ORIGIN, BASE, { groupTitle: groupTitleOf(data.page.group), modified: data.modified }) : headFor({ kind: 'home' }, SITE_ORIGIN, BASE));
   redirected = true;
 }
 
 // The route's chunks (view, page data, examples) must be in before the first render, so hydration renders exactly
 // the prerendered HTML. The HTML preloads them (modulepreload), so this normally waits for nothing new.
-await loadRoute(parseClientRoute(relativePath(window.location.pathname)));
+await loadRoute(parseClientRoute(relativePath(window.location.pathname)), { hydrating: !redirected });
 
 const root = document.getElementById('root')!;
 const app = <App path={window.location.pathname} />;

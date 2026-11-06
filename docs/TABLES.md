@@ -1,4 +1,77 @@
-# Searchable and paginated tables
+# Tables
+
+## Which table to use
+
+| You have | Use | Why |
+|---|---|---|
+| A page of records (up to a few hundred rows) you lay out cell by cell | `DataTable` + `DataListRow` (`@punji/ui/table`) | Plain semantic `<table>`; you write the cells. |
+| Typed records and per-column render callbacks; groups, subtotals or a totals row | `FinancialTable` (`@punji/ui/financial`) | The same table driven by columns, with phone stacking, states, `groupBy`, `totals` and `expectedTotals`. |
+| Thousands of rows (floorsheet, blotter, statement lines) | `VirtualFinancialTable` (`@punji/ui/virtual-table`) | Draws only the rows in view; pinning, resizing, multi-sort, virtual group headers and a sticky totals row. |
+| A known financial document (holdings, ledger, statement, aging, trial balance, amortisation, stock list) | The domain table (`HoldingsTable`, `LedgerTable`, ...) | Fixed columns and finance rules already wired. These become `ColumnDef` presets in a later release. |
+| Sorting, grouping, totals or reconciliation without a UI (server, worker, export) | `@punji/ui/table-core` | Pure functions, no React. |
+
+Every table is controlled: you filter and sort, the table draws. None of them fetches data.
+
+## The column model: `ColumnDef<Row>` (beta)
+
+`@punji/ui/table-core` defines one column type that every table normalises to. `FinancialColumn<T>` and `VirtualColumn<T>` keep their props; `fromFinancialColumn()` and `fromColumn()` map them (and DataTable's `Column<K>`) onto it.
+
+```ts
+interface ColumnDef<Row, Node = unknown> {
+  id: string;                      // sort key, totals key, React key
+  header: Node;
+  accessor?: (row: Row) => CellValue;   // Money | bigint | number | string | Date
+  cell?: (row: Row) => Node;
+  kind?: 'text' | 'money' | 'quantity' | 'price' | 'percent' | 'date' | 'custom';
+  align?: 'start' | 'end';         // default: 'end' for money, quantity, price, percent
+  sortable?: boolean;
+  sortKey?: (row: Row) => SortKey; // default: the accessor's value
+  aggregate?: 'sum' | 'count' | 'min' | 'max' | ((values, rows) => CellValue);
+  formatAggregate?: (value: CellValue, rows: readonly Row[]) => Node;
+  hideUnder?: 760 | 1024 | 1256;   // 760 is the old `wide`
+  pin?: 'left' | 'right';
+  rowHeader?: boolean;
+}
+```
+
+On a `FinancialColumn` the same ideas are spelled `kind`, `value` (the accessor), `aggregate` and `formatAggregate`, next to the existing `render`, `num`, `wide` and `hideUnder`. `num` still wins over `kind` for alignment.
+
+Rules the helpers keep:
+
+- **Never sort formatted text.** Money sorts by currency code, then exact bigint minor units; bigint and number compare by value (`compareValues`, `compareRowsBy`, `sortRows`). Missing values (null, undefined, NaN) sort last in both directions.
+- **Exact sums.** `sum` adds Money and bigint with bigint arithmetic. Money in two currencies throws `MixedCurrencyError`; there is no implicit conversion. Numbers add as numbers, so keep money out of `number`.
+- **Groups.** `groupRows(rows, by, columns)` returns `{ key, rows, subtotals }[]` in order of each key's first appearance, rows in input order. Sort first.
+- **Totals that reconcile.** `footerTotals(rows, columns)` gives each aggregate column's total. `reconcile(expected, computed)` returns `{ status: 'ok' | 'mismatch', difference }` with `difference = computed − expected`, exactly. The sum of the group subtotals always equals the footer total (property-tested).
+
+```tsx
+const columns: FinancialColumn<Invoice>[] = [
+  { key: 'id', label: 'Invoice', rowHeader: true, render: (i) => i.id },
+  { key: 'amount', label: 'Amount', kind: 'money', value: (i) => i.amount, aggregate: 'sum',
+    formatAggregate: (v) => isMoney(v) && <MoneyDisplay value={v.minor} preset={preset} />,
+    render: (i) => <MoneyDisplay value={i.amount.minor} preset={preset} /> },
+];
+
+<FinancialTable
+  caption="Receivables, NPR"
+  columns={columns}
+  rows={invoices}               // sorted by customer first
+  rowKey={(i) => i.id}
+  emptyTitle="No open invoices"
+  groupBy={(i) => i.customer}   // a row group per customer, with subtotals
+  expectedTotals={{ amount: statementTotal }} // a totals row, and a badge: "Reconciles" or "Off by …"
+/>
+```
+
+Totals are over the `rows` you pass: with pagination that is the current page. To check a whole data set, compute `footerTotals` over it and pass a control total in `expectedTotals`.
+
+### Grouping accessibility
+
+- **FinancialTable / DataTable**: each group is its own `<tbody>` (`DataRowGroup`), headed by a row whose `<th scope="rowgroup">` holds a native disclosure button with `aria-expanded`. `scope="rowgroup"` relates every cell in the group to the group name, which is the HTML table model for exactly this structure. The subtotal cells sit under their columns, so a screen reader reads "Amount, Cash, NPR 799.75". Collapsed rows are not drawn; the page checkbox still selects them.
+- **VirtualFinancialTable**: rows are windowed into one `<tbody>`, so a group header is a row of its own: a `<th scope="row">` with the button and the subtotal cells, counted in `aria-rowcount` with its own `aria-rowindex`. With a row focused, Enter or Space opens or closes a group header, Right opens and Left closes.
+- **Not a treegrid.** `role="treegrid"` and `aria-level` only make sense with the full grid keyboard model (cell focus, arrow keys between cells); these are read-only data tables, so WAI-ARIA's guidance is to keep native table semantics and use disclosure buttons. `aria-level` is not valid on rows of a plain table and is not used.
+- The totals row is a `<tfoot>` row with a "Total" row header (sticky at the bottom of the virtual table's scroll box). The reconciliation badge is a word and an icon, never colour alone. All words come through `totalsLabels`.
+
+## Searchable and paginated tables
 
 `DataTable` keeps native table semantics and provides optional controlled search, selection and page controls. `FinancialTable` passes the same controls through while rendering typed financial rows. Neither component fetches data or guesses which business fields are safe to search.
 
@@ -111,6 +184,7 @@ const rows = useMemo(() => trades.filter(matches).toSorted(compareByRules(sort, 
 - **Multi-sort**: `nextSortRules` is the transition the heads use (plain press: only this column, flipping when it already was; Shift: add ascending, then descending, then remove). The primary column carries `aria-sort`; with more than one rule each sorted head shows its priority number and reads its direction and priority, and every change is announced. `compareByRules` sorts with missing values last.
 - **Live rows**: pass a new `rows` array per batch, ideally once per animation frame, replacing only the changed row objects. Rows inserted or removed above the view keep the reader's rows in place; a re-sort keeps the scroll offset.
 - **Export**: `TableExport` writes CSV through `toCsv` with formula neutralisation always on (it cannot be turned off here) and a UTF-8 BOM by default, from the rows you pass for each scope. It runs in the browser only; nothing is sent anywhere. `allRows` should hold only data the user may download.
+- **Groups and totals (beta)**: `groupBy` adds a header row per group (a virtual row, with its subtotals and a disclosure button); `collapsedGroups` / `onCollapsedGroupsChange` control which are closed. `totals` (or `expectedTotals`) adds a totals row that sticks to the bottom of the scroll box. Memoise `groupBy` like `rowKey`. The head checkbox selects every row, including rows in closed groups.
 - **Limits**: columns are not virtualised (all columns render for drawn rows); `wide` and `hideUnder` do not apply (use pinning and horizontal scroll); there is no stacked phone layout; browsers cap element height (about 33 million px in Chromium), so at 40 px rows the practical ceiling is about 800,000 rows.
 
 Measured numbers and the benchmark: [PERFORMANCE.md](PERFORMANCE.md).

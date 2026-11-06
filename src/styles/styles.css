@@ -95,6 +95,9 @@
 @import './split-pane.css';
 @import './trust.css';
 @import './payment-fields.css';
+@import './fx-rate.css';
+@import './data-freshness.css';
+@import './status-banner.css';
 @import './menu.css';
 @import './breadcrumb.css';
 @import './accordion.css';

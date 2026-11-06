@@ -1,12 +1,12 @@
 import { Fragment, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { ExampleDef, GuideSection } from '../registry.ts';
 import { groupAnchor, pagePath, SITE_NAME } from '../paths.ts';
-import sizes from '../generated/sizes.json';
 import { Link, hrefFor } from './router.tsx';
 import { apiEntryIn, type ApiEntry } from './api.ts';
 import { Code, CopyButton } from './Code.tsx';
 import { formatBytes } from './format.ts';
-import { exampleCss, guideSource, loadedExample, type PageData } from './load.ts';
+import { Late } from './Late.tsx';
+import { exampleCss, exampleKey, guideSource, loadedExample, loadExample, type PageData } from './load.ts';
 import { GROUPS, NAV, groupTitleOf, navTitleOf, type NavPage, type PageCard } from './nav.ts';
 import { PageActions } from './PageActions.tsx';
 import { PhoneFrame } from './PhoneFrame.tsx';
@@ -17,7 +17,6 @@ import { ChevronIcon, CodeIcon, DoIcon, DontIcon, MonitorIcon, MoonIcon, PhoneIc
 // Shared bits
 
 type Page = PageData['page'];
-const moduleSizes = (sizes as { modules: Record<string, number> }).modules;
 
 /** The sidebar order flattened: what comes before and after a page. */
 function neighbours(page: NavPage): { prev?: NavPage; next?: NavPage } {
@@ -207,10 +206,8 @@ function importLines({ page, api }: PageData): { subpath: string; root: string }
   };
 }
 
-function Badges({ page }: { page: Page }) {
-  const first = page.api[0];
-  const module = first?.module;
-  const size = module !== undefined ? moduleSizes[module] : undefined;
+function Badges({ page, size }: { page: Page; size?: number }) {
+  const module = page.api[0]?.module;
   const from = module === undefined ? undefined : module === '' ? '@punji/ui' : `@punji/ui/${module}`;
   const kind = page.kind === 'foundation' ? 'Foundation' : page.kind === 'component' ? 'React component' : page.kind === 'hooks' ? 'React hooks' : 'TypeScript utility';
   return (
@@ -312,8 +309,10 @@ function Demo({ page, def, onPick }: { page: Page; def: ExampleDef; onPick: (id:
             {/* Phone width renders the example in its own 375 px viewport, so its media queries apply (PhoneFrame). */}
             {phone ? (
               <PhoneFrame slug={page.slug} id={def.id} title={def.title} theme={shown} showcase={page.kind === 'showcase'} />
-            ) : (
+            ) : Component ? (
               <Component key={`${page.slug}/${def.id}`} />
+            ) : (
+              <Late key={`${page.slug}/${def.id}`} id={exampleKey(page.slug, def.id)} />
             )}
           </div>
         </div>
@@ -462,6 +461,16 @@ function ComponentPage({ data }: { data: PageData }) {
   const [tab, setTab] = useState<TabId>(tabs[0]!.id);
   const [active, setActive] = useState(page.examples[0]?.id ?? '');
   const def = page.examples.find((e) => e.id === active) ?? page.examples[0];
+  // A variant after the first is its own chunk: show it once it has arrived, so the stage never blanks while it loads.
+  const pick = useCallback(
+    (id: string) => {
+      void loadExample(page.slug, id).then(
+        () => setActive(id),
+        () => setActive(id),
+      );
+    },
+    [page.slug],
+  );
   const imports = useMemo(() => (page.api.length > 0 ? importLines(data) : undefined), [page, data]);
   const entries = useMemo(() => [...new Set(page.api.map((a) => a.name))].map((name) => apiEntryIn(data.api, name)), [page, data]);
   const styled = page.kind === 'component' || page.kind === 'foundation';
@@ -487,17 +496,17 @@ function ComponentPage({ data }: { data: PageData }) {
       const panel = el?.closest<HTMLElement>('[data-tab]')?.dataset.tab as TabId | undefined;
       if (id.startsWith('ex-') && page.examples.some((e) => `ex-${e.id}` === id)) {
         setTab('examples');
-        setActive(id.slice(3));
+        pick(id.slice(3));
       } else if (panel) setTab(panel);
       requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ block: 'start' }));
     };
     open();
     window.addEventListener('hashchange', open);
     return () => window.removeEventListener('hashchange', open);
-  }, [tabs, page]);
+  }, [tabs, page, pick]);
 
   const rail = useMemo((): Record<TabId, RailItem[]> => ({
-    examples: page.examples.map((e) => ({ id: `ex-${e.id}`, label: e.title, onSelect: () => setActive(e.id) })),
+    examples: page.examples.map((e) => ({ id: `ex-${e.id}`, label: e.title, onSelect: () => pick(e.id) })),
     code: [...(imports ? [{ id: 'import', label: 'Import' }] : []), ...page.examples.map((e) => ({ id: `src-${e.id}`, label: e.title }))],
     api: entries.map((e) => ({ id: `api-${e.name}`, label: e.name })),
     usage: [
@@ -510,14 +519,14 @@ function ComponentPage({ data }: { data: PageData }) {
       ...(page.related.length ? [{ id: 'related', label: 'Related' }] : []),
       ...(data.usedIn.length ? [{ id: 'used-in', label: 'Seen in' }] : []),
     ],
-  }), [page, imports, entries, data.usedIn.length]);
+  }), [page, pick, imports, entries, data.usedIn.length]);
 
   return (
     // The Examples tab has no rail (its chips already list the variants), so wide tables get the full column.
     <div className={`doc-page${tab === 'examples' ? ' is-wide' : ' has-rail'}`} data-testid={`page-${page.slug}`}>
       <article className="doc-article">
         <PageHeader page={page}>
-          <Badges page={page} />
+          <Badges page={page} size={data.size} />
         </PageHeader>
         <p className="doc-intro doc-intro-tight" id="overview">
           <Rich text={page.summary} />
@@ -546,7 +555,7 @@ function ComponentPage({ data }: { data: PageData }) {
             <h2 id="examples-h" className="doc-panel-h">
               Examples
             </h2>
-            <Demo page={page} def={def} onPick={setActive} />
+            <Demo page={page} def={def} onPick={pick} />
           </section>
         )}
 

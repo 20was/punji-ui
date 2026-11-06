@@ -58,7 +58,8 @@
        secondary figures use their own short, visible column labels. */
     .pu-fin .kit-tablebox.stack .kit-table tbody tr {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      /* The headline figure's column grows to fit an amount that never wraps (the same layout whenever it already fits). */
+      grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(min-content, 1fr);
       align-items: start;
       gap: 10px 12px;
       padding: 12px 0;
@@ -67,7 +68,8 @@
     .pu-fin .kit-tablebox.stack .kit-table tbody tr:last-child { border-bottom: 0 }
     .pu-fin .kit-tablebox.stack .kit-table tfoot tr {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      /* The headline figure's column grows to fit an amount that never wraps (the same layout whenever it already fits). */
+      grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(min-content, 1fr);
       align-items: start;
       gap: 10px 12px;
       padding: 12px 0;
@@ -104,6 +106,15 @@
     .pu-fin .kit-tablebox.stack.selection .kit-table tbody tr { position: relative; padding-inline-start: 28px }
     .pu-fin .kit-tablebox.stack.selection .kit-table tbody tr > .kit-table-selection-cell { position: absolute; top: 12px; inset-inline-start: 0; width: 24px; min-width: 24px; padding: 0 }
     .pu-fin .kit-tablebox.stack.selection .kit-table thead .kit-table-selection-cell > input { display: none }
+    /* Group heads and the totals row (as in table.css): one flexible line, the name then the figures at the end,
+       wrapping rather than widening the card; empty cells fold away; the reconciliation badge drops below the total. */
+    .pu-fin .kit-tablebox.stack .kit-table tbody tr.kit-table-group-head { background: var(--pu-color-surface-subtle) }
+    .pu-fin .kit-tablebox.stack .kit-table tr:is(.kit-table-group-head, .kit-table-total) { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px }
+    .pu-fin .kit-tablebox.stack .kit-table tr:is(.kit-table-group-head, .kit-table-total) > th { flex: 1 1 auto; min-width: 0 }
+    .pu-fin .kit-tablebox.stack .kit-table tr:is(.kit-table-group-head, .kit-table-total) > td { flex: 0 1 auto; min-width: 0; max-width: 100%; margin-inline-start: auto; font-size: inherit; text-align: end; overflow-wrap: anywhere }
+    .pu-fin .kit-tablebox.stack .kit-table tr:is(.kit-table-group-head, .kit-table-total) > td:empty { display: none }
+    .pu-fin .kit-tablebox.stack .kit-table .kit-table-total > td:has(.kit-recon) { flex-basis: 100% }
+    .pu-fin .kit-tablebox.stack .kit-table .kit-recon { display: flex; flex-wrap: wrap; width: fit-content; max-width: 100%; margin: 4px 0 0 auto; white-space: normal; text-align: start }
     .pu-fin .kit-table-mobile-select { display: flex; align-items: center; min-height: 40px; padding: 0 12px; border-bottom: 1px solid var(--pu-color-border); color: var(--pu-color-text-muted); font-size: var(--pu-text-sm) }
     .pu-fin .kit-table-mobile-select label { display: inline-flex; align-items: center; gap: 9px; min-height: 40px; cursor: pointer }
     .pu-fin .kit-table-mobile-select input { appearance: none; -webkit-appearance: none; display: grid; width: 18px; height: 18px; margin: 0; place-content: center; border: 1.5px solid var(--pu-color-border-control); border-radius: 5px; background: var(--pu-color-surface); cursor: pointer }

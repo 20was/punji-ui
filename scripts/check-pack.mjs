@@ -34,7 +34,7 @@ import { readFileSync } from 'node:fs';
 // ReconciliationMatcher (JS, declarations, CSS) on the merged main: measured 2,243,594 B; ~3% headroom.
 // Payment fields (pure checks, inputs, CSS) and the locale layer with ne, hi and bn packs, merged with main through #47: measured 2,399,225 B; ~3% headroom.
 // RiskMeter and the invest helpers (XIRR, SIP, units, cover: JS, declarations, CSS) on top: measured 2,452,997 B; ~3% headroom.
-const MAX_UNPACKED = 2569 * 1024; // Menu, Breadcrumb and Accordion (JS, declarations, CSS) took it to ~2482 KiB.
+const MAX_UNPACKED = 2598 * 1024; // Menu, Breadcrumb and Accordion (JS, declarations, CSS) took it to ~2482 KiB.
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
 const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md']);
 const allowed = (p) => always.has(p) || /^dist\/.+\.(js|d\.ts|css)$/.test(p);

@@ -248,14 +248,21 @@
     "name": "table (import from '@punji/ui/table')",
     "path": "dist/table/Table.js",
     "import": "*",
-    "limit": "2.58 kB",
+    "limit": "2.74 kB",
     "gzip": true
   },
   {
     "name": "virtual-table (import from '@punji/ui/virtual-table')",
     "path": "dist/virtual-table/VirtualFinancialTable.js",
     "import": "*",
-    "limit": "5.34 kB",
+    "limit": "7.55 kB",
+    "gzip": true
+  },
+  {
+    "name": "table-core (import from @punji/ui/table-core)",
+    "path": "dist/table-core/tableCore.js",
+    "import": "*",
+    "limit": "1.95 kB",
     "gzip": true
   },
   {
@@ -268,7 +275,7 @@
   {
     "name": "Virtual table CSS",
     "path": "dist/css/virtual-table.css",
-    "limit": "1.06 kB",
+    "limit": "1.17 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -325,13 +332,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "191.02 kB",
+    "limit": "193.29 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "41.6 kB",
+    "limit": "42.84 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -353,7 +360,7 @@
     "name": "Financial compositions",
     "path": "dist/financial/financial.js",
     "import": "*",
-    "limit": "4.96 kB",
+    "limit": "7.00 kB",
     "gzip": true
   },
   {
@@ -801,14 +808,14 @@
     "name": "stock-table (import from '@punji/ui/stock-table')",
     "path": "dist/stock-table/StockTable.js",
     "import": "*",
-    "limit": "10.76 kB",
+    "limit": "10.89 kB",
     "gzip": true
   },
   {
     "name": "market-movers (import from '@punji/ui/market-movers')",
     "path": "dist/market-movers/MarketMovers.js",
     "import": "*",
-    "limit": "11.92 kB",
+    "limit": "12.17 kB",
     "gzip": true
   },
   {
@@ -878,7 +885,7 @@
     "name": "ledger-table (import from '@punji/ui/ledger-table')",
     "path": "dist/ledger-table/LedgerTable.js",
     "import": "*",
-    "limit": "9.26 kB",
+    "limit": "9.45 kB",
     "gzip": true
   },
   {
@@ -892,14 +899,14 @@
     "name": "trial-balance (import from '@punji/ui/trial-balance')",
     "path": "dist/trial-balance/TrialBalance.js",
     "import": "*",
-    "limit": "9.09 kB",
+    "limit": "9.26 kB",
     "gzip": true
   },
   {
     "name": "statement-table (import from '@punji/ui/statement-table')",
     "path": "dist/statement-table/StatementTable.js",
     "import": "*",
-    "limit": "8.76 kB",
+    "limit": "8.91 kB",
     "gzip": true
   },
   {
@@ -997,7 +1004,7 @@
     "name": "holdings-table (import from '@punji/ui/holdings-table')",
     "path": "dist/holdings-table/HoldingsTable.js",
     "import": "*",
-    "limit": "10.94 kB",
+    "limit": "11.05 kB",
     "gzip": true
   },
   {
@@ -1056,7 +1063,7 @@
     "name": "order-list (import from '@punji/ui/order-list')",
     "path": "dist/order-list/OrderList.js",
     "import": "*",
-    "limit": "8.87 kB",
+    "limit": "9.04 kB",
     "gzip": true
   },
   {
@@ -1360,14 +1367,14 @@
     "name": "aging-table (import from '@punji/ui/aging-table')",
     "path": "dist/aging-table/AgingTable.js",
     "import": "*",
-    "limit": "8.79 kB",
+    "limit": "8.96 kB",
     "gzip": true
   },
   {
     "name": "tds-summary (import from '@punji/ui/tds-summary')",
     "path": "dist/tds-summary/TdsSummary.js",
     "import": "*",
-    "limit": "8980 B",
+    "limit": "9.08 kB",
     "gzip": true
   },
   {
@@ -1549,6 +1556,48 @@
     "name": "Accordion CSS",
     "path": "dist/css/accordion.css",
     "limit": "800 B",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "fx-rate (import from '@punji/ui/fx-rate')",
+    "path": "dist/fx-rate/FxRate.js",
+    "import": "*",
+    "limit": "2.9 kB",
+    "gzip": true
+  },
+  {
+    "name": "FxRate CSS",
+    "path": "dist/css/fx-rate.css",
+    "limit": "0.5 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "data-freshness (import from '@punji/ui/data-freshness')",
+    "path": "dist/data-freshness/DataFreshness.js",
+    "import": "*",
+    "limit": "1.7 kB",
+    "gzip": true
+  },
+  {
+    "name": "DataFreshness CSS",
+    "path": "dist/css/data-freshness.css",
+    "limit": "0.5 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "status-banner (import from '@punji/ui/status-banner')",
+    "path": "dist/status-banner/StatusBanner.js",
+    "import": "*",
+    "limit": "2.1 kB",
+    "gzip": true
+  },
+  {
+    "name": "StatusBanner CSS",
+    "path": "dist/css/status-banner.css",
+    "limit": "0.5 kB",
     "rolldown": false,
     "gzip": true
   }

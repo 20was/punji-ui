@@ -169,6 +169,9 @@ try {
         for (const variant of variants.slice(1)) {
           await page.getByRole('group', { name: `${route.title} variants` }).getByRole('button', { name: variant.title, exact: true }).click();
           await page.getByLabel(`${variant.title} example code`, { exact: true }).waitFor();
+          // A variant after the first arrives as its own chunk; let charts take their measured width (a ResizeObserver
+          // runs a frame after mount) before the layout is judged.
+          await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done))));
           checked.variants += 1;
           await audit(`${label} [${variant.id}]`, '[data-testid=preview]');
         }
@@ -378,6 +381,12 @@ try {
     height: f.getBoundingClientRect().height,
     content: f.contentDocument.getElementById('root').getBoundingClientRect().height,
   }));
+  // The frame grows to its content on a ResizeObserver callback, a frame or more after the content renders.
+  await page.waitForFunction(() => {
+    const f = document.querySelector('iframe[data-testid=phone-frame]');
+    const root = f?.contentDocument?.getElementById('root');
+    return root && Math.abs(f.getBoundingClientRect().height - Math.max(320, Math.ceil(root.getBoundingClientRect().height))) <= 2;
+  }, null, { timeout: 5000 }).catch(() => {});
   const phone = await frameState();
   if (phone.width !== 375) fail(`phone width: the frame's viewport is ${phone.width}px, not 375`);
   if (!phone.phoneQuery) fail('phone width: a (width <= 639px) media query does not match inside the frame');

@@ -1,7 +1,6 @@
 import { FinancialTable } from '@punji/ui/financial';
 import { money } from '@punji/ui/money';
 import { holdingsColumns, toFinancialColumns, type HoldingRow } from '@punji/ui/table-presets';
-import { tableTotals } from '@punji/ui/table-totals';
 
 // One preset gives the columns; value and gain total as exact bigint paisa. The data is invented.
 const npr = (minor: bigint) => money(minor, 'NPR');
@@ -13,5 +12,5 @@ const rows: HoldingRow[] = [
 const columns = toFinancialColumns(holdingsColumns<HoldingRow>({ locale: 'en-IN' }));
 
 export default function Example() {
-  return <FinancialTable caption="Holdings, NPR" columns={columns} rows={rows} rowKey={(r) => r.symbol} emptyTitle="No holdings" totals totalsEngine={tableTotals} />;
+  return <FinancialTable caption="Holdings, NPR" columns={columns} rows={rows} rowKey={(r) => r.symbol} emptyTitle="No holdings" totals />;
 }

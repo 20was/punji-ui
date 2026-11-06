@@ -62,8 +62,6 @@ const columns: FinancialColumn<Invoice>[] = [
 />
 ```
 
-Grouping, subtotals, totals and reconciliation are not in the tables' own code: without `totalsEngine={tableTotals}` (from `@punji/ui/table-totals`) a table loads them on first use, so the first draw is the plain rows; pass the engine for server output and the first paint. A table that never uses them does not ship them.
-
 Totals are over the `rows` you pass: with pagination that is the current page. To check a whole data set, compute `footerTotals` over it and pass a control total in `expectedTotals`.
 
 ### Grouping accessibility

@@ -1,7 +1,6 @@
 import { FinancialTable } from '@punji/ui/financial';
 import { money } from '@punji/ui/money';
 import { agingColumns, toFinancialColumns, type AgingLine } from '@punji/ui/table-presets';
-import { tableTotals } from '@punji/ui/table-totals';
 
 // Receivables by customer and age. Each bucket totals exactly, and the buckets add up to the total column. Invented.
 const npr = (minor: bigint) => money(minor, 'NPR');
@@ -14,5 +13,5 @@ const rows: AgingLine[] = [
 const columns = toFinancialColumns(agingColumns<AgingLine>({ display: 'none' }));
 
 export default function Example() {
-  return <FinancialTable caption="Receivables aging, NPR" columns={columns} rows={rows} rowKey={(r) => r.party} emptyTitle="Nothing owed" totals totalsEngine={tableTotals} />;
+  return <FinancialTable caption="Receivables aging, NPR" columns={columns} rows={rows} rowKey={(r) => r.party} emptyTitle="Nothing owed" totals />;
 }

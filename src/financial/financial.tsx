@@ -6,8 +6,7 @@ import { DataTable, DataListRow, DataRowGroup, Cell, type Column, type DataTable
 import type { Money } from '../money/money.ts';
 import { columnAlign, fromFinancialColumn, plainValue, type CellValue, type ColumnAggregate, type ColumnDef, type ColumnKind } from '../table-core/tableModel.ts';
 import type { ColumnTotals } from '../table-core/tableAggregate.ts';
-import type { TableTotalsEngine, TableTotalsLabels } from '../internal/tableTotals.tsx';
-import { useTableTotals } from '../internal/useTableTotals.ts';
+import { tableTotals as kit, type TableTotalsLabels } from '../internal/tableTotals.tsx';
 
 export type { TableTotalsLabels } from '../internal/tableTotals.tsx';
 import { EmptyState, Skeleton } from '../states/States.tsx';
@@ -130,20 +129,17 @@ export interface FinancialTableProps<T> {
   expectedTotals?: Readonly<Record<string, Money>>;
   /** Words for groups, the totals row and reconciliation. @stability beta */
   totalsLabels?: Partial<TableTotalsLabels>;
-  /** The grouping and totals code (`tableTotals` from `@punji/ui/table-totals`). Without it the table loads that code when `groupBy`, `totals` or `expectedTotals` is first used, so the first draw is the plain rows. Pass it for server output and the first paint. @stability beta */
-  totalsEngine?: TableTotalsEngine;
 }
 /** Holdings, invoices, transactions and ledgers share semantic table behavior, not a business schema. Columns are normalised to `ColumnDef` (`@punji/ui/table-core`); grouping, subtotals and totals are opt-in.
  * @stability stable
  */
-export function FinancialTable<T>({ caption, columns, rows, rowKey, state = 'ready', emptyTitle, emptyBody, emptyAction, loadingLabel = 'Loading records', errorTitle = 'Records unavailable', errorAction, sort, onSort, search, pagination, selection, stack, groupBy, groupLabel, collapsedGroups, onCollapsedGroupsChange, totals, expectedTotals, totalsLabels, totalsEngine }: FinancialTableProps<T>) {
+export function FinancialTable<T>({ caption, columns, rows, rowKey, state = 'ready', emptyTitle, emptyBody, emptyAction, loadingLabel = 'Loading records', errorTitle = 'Records unavailable', errorAction, sort, onSort, search, pagination, selection, stack, groupBy, groupLabel, collapsedGroups, onCollapsedGroupsChange, totals, expectedTotals, totalsLabels }: FinancialTableProps<T>) {
   const [ownCollapsed, setOwnCollapsed] = useState<readonly string[]>([]);
-  const kit = useTableTotals(Boolean(groupBy || totals || expectedTotals), totalsEngine);
   if (state === 'loading') return <div aria-busy="true"><Skeleton label={loadingLabel} height={160} /></div>;
   if (state === 'error') return <EmptyState title={errorTitle} action={errorAction} role="alert" />;
   if (!rows.length && !search && !pagination) return <EmptyState title={emptyTitle} body={emptyBody} action={emptyAction} />;
   const defs: ColumnDef<T, ReactNode>[] = columns.map((column) => fromFinancialColumn<T, ReactNode>(column));
-  const labels = { ...kit?.defaultLabels, ...totalsLabels } as TableTotalsLabels;
+  const labels = { ...kit.defaultLabels, ...totalsLabels } as TableTotalsLabels;
   const headColumns = columns.map((column, i) => ({ ...column, num: columnAlign(defs[i]!) === 'end' }));
   const layout = (def: ColumnDef<T, ReactNode>) => ({
     num: columnAlign(def) === 'end',
@@ -154,7 +150,7 @@ export function FinancialTable<T>({ caption, columns, rows, rowKey, state = 'rea
   const rowOf = (row: T) => <DataListRow key={rowKey(row)} rowId={rowKey(row)}>{defs.map(def => <Cell key={def.id} {...layout(def)} header={def.rowHeader} label={nameOf(def)}>{def.cell ? def.cell(row) : plainValue(def.accessor?.(row))}</Cell>)}</DataListRow>;
   // Subtotal and total rows: the first column holds the row's name, each later column its aggregate (or an empty cell, so hidden columns stay aligned).
   const aggregateCells = (values: ColumnTotals, members: readonly T[], extra?: (def: ColumnDef<T, ReactNode>) => ReactNode) => defs.slice(1).map(def => (
-    <Cell key={def.id} {...layout(def)} label={def.aggregate ? nameOf(def) : undefined}>{def.aggregate ? kit!.aggregateNode(def, values[def.id], members) : null}{extra?.(def)}</Cell>
+    <Cell key={def.id} {...layout(def)} label={def.aggregate ? nameOf(def) : undefined}>{def.aggregate ? kit.aggregateNode(def, values[def.id], members) : null}{extra?.(def)}</Cell>
   ));
   const collapsed = new Set(collapsedGroups ?? ownCollapsed);
   const setExpanded = (key: string, expanded: boolean) => {
@@ -162,7 +158,7 @@ export function FinancialTable<T>({ caption, columns, rows, rowKey, state = 'rea
     if (!collapsedGroups) setOwnCollapsed(next);
     onCollapsedGroupsChange?.(next);
   };
-  const body = groupBy && kit
+  const body = groupBy
     ? kit.groupRows(rows, groupBy, defs).map(group => (
       <DataRowGroup key={group.key} label={groupLabel?.(group.key, group.rows) ?? group.key} count={labels.groupCount(group.rows.length)}
         expanded={!collapsed.has(group.key)} onExpandedChange={(expanded) => setExpanded(group.key, expanded)} cells={aggregateCells(group.subtotals, group.rows)}>
@@ -171,7 +167,7 @@ export function FinancialTable<T>({ caption, columns, rows, rowKey, state = 'rea
     ))
     : rows.map(rowOf);
   let footer: ReactNode;
-  if (kit && (totals || expectedTotals)) {
+  if (totals || expectedTotals) {
     const sums = kit.footerTotals(rows, defs);
     const checks = kit.reconcileOrEmpty(sums, expectedTotals);
     footer = <tr className="kit-table-total">

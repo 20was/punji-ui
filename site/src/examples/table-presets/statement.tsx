@@ -1,7 +1,6 @@
 import { FinancialTable } from '@punji/ui/financial';
 import { money } from '@punji/ui/money';
 import { statementColumns, toFinancialColumns, type BankStatementLine } from '@punji/ui/table-presets';
-import { tableTotals } from '@punji/ui/table-totals';
 
 // A bank statement whose totals are checked against the figures printed on the statement. Labels are overridden
 // with the bank's own words. The second expected figure is deliberately off by 5.50 to show a mismatch.
@@ -23,7 +22,7 @@ export default function Example() {
       rowKey={(r) => `${r.date}-${r.description}`}
       emptyTitle="No transactions"
       stack
-      totalsEngine={tableTotals}
+     
       expectedTotals={{ moneyIn: npr(85_310_25n), moneyOut: npr(24_007_00n) }}
     />
   );

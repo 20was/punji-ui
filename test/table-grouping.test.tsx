@@ -7,7 +7,6 @@ import { FinancialTable, type FinancialColumn } from '../src/financial/financial
 import { VirtualFinancialTable, type VirtualColumn } from '../src/virtual-table/VirtualFinancialTable.tsx';
 import { money, type Money } from '../src/money/money.ts';
 import { seriousViolations } from './axe.ts';
-import { tableTotals } from '../src/table-totals/tableTotals.ts';
 
 interface Entry { id: string; account: string; memo: string; amount: Money }
 const entries: Entry[] = [
@@ -26,32 +25,14 @@ const byAccount = (e: Entry) => e.account;
 const vcolumns: VirtualColumn<Entry>[] = columns.map((c) => ({ ...c, width: 120 }));
 const drawn = (container: HTMLElement) => [...container.querySelectorAll<HTMLTableRowElement>('tbody tr[data-index]')];
 
-describe('grouping and totals load on demand without totalsEngine', () => {
-  it('FinancialTable draws plain rows first, then the groups and totals', async () => {
-    const { container } = render(<FinancialTable caption="Entries" columns={columns} rows={entries} rowKey={rowKey} emptyTitle="None" groupBy={byAccount} totals />);
-    expect(container.querySelector('tfoot')).toBeNull();
-    expect(await screen.findAllByRole('button', { expanded: true })).toHaveLength(2);
-    expect(container.querySelector('tfoot')).not.toBeNull();
-  });
-  it('VirtualFinancialTable gains its group rows and totals once loaded', async () => {
-    const { container } = render(<VirtualFinancialTable caption="Entries" columns={vcolumns} rows={entries} rowKey={rowKey} emptyTitle="None" groupBy={byAccount} totals />);
-    await vi.waitFor(() => expect(container.querySelector('tfoot')).not.toBeNull());
-    expect(container.querySelectorAll('tr.pu-vt-group')).toHaveLength(2);
-  });
-  it('draws no totals for a table that does not group or total', () => {
-    const { container } = render(<FinancialTable caption="Entries" columns={columns} rows={entries} rowKey={rowKey} emptyTitle="None" />);
-    expect(container.querySelector('tfoot')).toBeNull();
-  });
-});
-
 function GroupedSelection() {
   const [ids, setIds] = useState<readonly string[]>([]);
-  return <FinancialTable caption="Entries" columns={columns} rows={entries} rowKey={rowKey} emptyTitle="None" totalsEngine={tableTotals} groupBy={byAccount} collapsedGroups={['Bank']}
+  return <FinancialTable caption="Entries" columns={columns} rows={entries} rowKey={rowKey} emptyTitle="None" groupBy={byAccount} collapsedGroups={['Bank']}
     selection={{ selectedRowIds: ids, onChange: setIds, rowLabel: (id) => `Select ${id}` }} />;
 }
 function VirtualGroupedSelection() {
   const [ids, setIds] = useState<readonly string[]>([]);
-  return <VirtualFinancialTable caption="Entries" columns={vcolumns} rows={entries} rowKey={rowKey} emptyTitle="None" totalsEngine={tableTotals} groupBy={byAccount} collapsedGroups={['Cash']}
+  return <VirtualFinancialTable caption="Entries" columns={vcolumns} rows={entries} rowKey={rowKey} emptyTitle="None" groupBy={byAccount} collapsedGroups={['Cash']}
     expectedTotals={{ amount: money(3_290_25n, 'NPR') }} selection={{ selectedRowIds: ids, onChange: setIds, rowLabel: (id) => `Select ${id}` }} />;
 }
 
@@ -66,7 +47,7 @@ describe('FinancialTable grouping and totals', () => {
   });
 
   it('draws one row group per key with a rowgroup header, subtotals and a disclosure button', async () => {
-    const { container } = render(<FinancialTable caption="Entries" columns={columns} rows={entries} rowKey={rowKey} emptyTitle="None" totalsEngine={tableTotals} groupBy={byAccount} totals />);
+    const { container } = render(<FinancialTable caption="Entries" columns={columns} rows={entries} rowKey={rowKey} emptyTitle="None" groupBy={byAccount} totals />);
     const groups = container.querySelectorAll('tbody.kit-table-group');
     expect(groups).toHaveLength(2);
     const cash = groups[0]!;
@@ -96,7 +77,7 @@ describe('FinancialTable grouping and totals', () => {
 
   it('supports controlled collapsed groups and custom labels', async () => {
     const onChange = vi.fn<(keys: readonly string[]) => void>();
-    render(<FinancialTable caption="Entries" columns={columns} rows={entries} rowKey={rowKey} emptyTitle="None" totalsEngine={tableTotals} groupBy={byAccount}
+    render(<FinancialTable caption="Entries" columns={columns} rows={entries} rowKey={rowKey} emptyTitle="None" groupBy={byAccount}
       groupLabel={(key, rows) => `${key} (${rows.length})`} collapsedGroups={['Bank']} onCollapsedGroupsChange={onChange}
       totalsLabels={{ groupCount: (n) => `${n} entries` }} />);
     const bank = screen.getByRole('button', { name: 'Bank (2) 2 entries' });
@@ -109,9 +90,9 @@ describe('FinancialTable grouping and totals', () => {
   });
 
   it('shows a reconciliation badge in words when expected totals are given', async () => {
-    const { container, rerender } = render(<FinancialTable caption="Entries" columns={columns} rows={entries} rowKey={rowKey} emptyTitle="None" totalsEngine={tableTotals} expectedTotals={{ amount: money(3_290_25n, 'NPR') }} />);
+    const { container, rerender } = render(<FinancialTable caption="Entries" columns={columns} rows={entries} rowKey={rowKey} emptyTitle="None" expectedTotals={{ amount: money(3_290_25n, 'NPR') }} />);
     expect(screen.getByText('Reconciles')).toBeTruthy();
-    rerender(<FinancialTable caption="Entries" columns={columns} rows={entries} rowKey={rowKey} emptyTitle="None" totalsEngine={tableTotals} expectedTotals={{ amount: money(3_300_00n, 'NPR') }}
+    rerender(<FinancialTable caption="Entries" columns={columns} rows={entries} rowKey={rowKey} emptyTitle="None" expectedTotals={{ amount: money(3_300_00n, 'NPR') }}
       totalsLabels={{ mismatch: 'Differs by', expected: 'statement' }} />);
     const badge = container.querySelector('.kit-recon.mismatch')!;
     expect(badge.textContent).toBe('!Differs by NPR -9.75, statement NPR 3300.00');
@@ -128,7 +109,7 @@ describe('FinancialTable grouping and totals', () => {
   it('refuses mixed currencies in a total', () => {
     const mixed = [...entries, { id: 'e5', account: 'Cash', memo: 'FX', amount: money(1n, 'USD') }];
     vi.spyOn(console, 'error').mockImplementation(() => {});
-    expect(() => render(<FinancialTable caption="Entries" columns={columns} rows={mixed} rowKey={rowKey} emptyTitle="None" totalsEngine={tableTotals} totals />)).toThrow(/Cannot combine NPR and USD/);
+    expect(() => render(<FinancialTable caption="Entries" columns={columns} rows={mixed} rowKey={rowKey} emptyTitle="None" totals />)).toThrow(/Cannot combine NPR and USD/);
     vi.restoreAllMocks();
   });
 });
@@ -136,7 +117,7 @@ describe('FinancialTable grouping and totals', () => {
 describe('VirtualFinancialTable grouping and sticky totals', () => {
 
   it('draws group headers as virtual rows with subtotals and a footer total', async () => {
-    const { container } = render(<VirtualFinancialTable caption="Entries" columns={vcolumns} rows={entries} rowKey={rowKey} emptyTitle="None" totalsEngine={tableTotals} groupBy={byAccount} totals />);
+    const { container } = render(<VirtualFinancialTable caption="Entries" columns={vcolumns} rows={entries} rowKey={rowKey} emptyTitle="None" groupBy={byAccount} totals />);
     const rows = drawn(container);
     expect(rows).toHaveLength(6);
     expect(rows[0]!.classList.contains('pu-vt-group')).toBe(true);
@@ -151,7 +132,7 @@ describe('VirtualFinancialTable grouping and sticky totals', () => {
   });
 
   it('opens and closes groups from the keyboard on the focused header row', () => {
-    const { container } = render(<VirtualFinancialTable caption="Entries" columns={vcolumns} rows={entries} rowKey={rowKey} emptyTitle="None" totalsEngine={tableTotals} groupBy={byAccount} />);
+    const { container } = render(<VirtualFinancialTable caption="Entries" columns={vcolumns} rows={entries} rowKey={rowKey} emptyTitle="None" groupBy={byAccount} />);
     const head = drawn(container)[0]!;
     head.focus();
     fireEvent.keyDown(head, { key: 'ArrowLeft' });
@@ -177,7 +158,7 @@ describe('VirtualFinancialTable grouping and sticky totals', () => {
   });
 
   it('renders groups and totals on the server', () => {
-    const html = renderToString(<VirtualFinancialTable caption="Entries" columns={vcolumns} rows={entries} rowKey={rowKey} emptyTitle="None" totalsEngine={tableTotals} groupBy={byAccount} totals />);
+    const html = renderToString(<VirtualFinancialTable caption="Entries" columns={vcolumns} rows={entries} rowKey={rowKey} emptyTitle="None" groupBy={byAccount} totals />);
     expect(html).toContain('aria-expanded="true"');
     expect(html).toContain('<tfoot>');
   });

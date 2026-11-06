@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import { FinancialTable } from '../src/financial/financial.tsx';
 import { money } from '../src/money/money.ts';
 import { footerTotals, groupRows, reconcile, reconcileTotals, sortRows } from '../src/table-core/tableCore.ts';
-import { tableTotals } from '../src/table-totals/tableTotals.ts';
 import {
   agingColumns, formatBps, holdingsColumns, ledgerColumns, statementColumns, stockQuoteColumns, toFinancialColumns, trialBalanceColumns,
   type AgingLine, type HoldingRow, type LedgerRow, type StockQuoteRow, type TrialBalanceRow,
@@ -48,7 +47,7 @@ describe('holdingsColumns', () => {
     expect(() => footerTotals(mixed, cols)).toThrow(/Cannot combine/);
   });
   it('draws in a FinancialTable', () => {
-    render(<FinancialTable caption="Holdings" columns={toFinancialColumns(cols)} rows={rows} rowKey={(r) => r.symbol} emptyTitle="None" totals totalsEngine={tableTotals} />);
+    render(<FinancialTable caption="Holdings" columns={toFinancialColumns(cols)} rows={rows} rowKey={(r) => r.symbol} emptyTitle="None" totals />);
     expect(screen.getByRole('columnheader', { name: 'Gain or loss' })).toBeTruthy();
     expect(screen.getAllByText('NPR 16,000.00').length).toBeGreaterThan(0);
   });

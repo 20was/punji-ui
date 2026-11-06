@@ -641,7 +641,7 @@ export const PAGES: readonly PageDef[] = [
     group: 'data',
     kind: 'utility',
     stability: 'beta',
-    summary: 'Six factories return the columns finance tables keep needing as typed `ColumnDef[]`: `holdingsColumns`, `stockQuoteColumns`, `ledgerColumns`, `statementColumns`, `agingColumns` and `trialBalanceColumns`. Cells are formatted from exact bigint minor units with the money formatters, and the columns that should total carry a `sum` aggregate, so a table that groups or totals adds them up without a float. Every head is a word you can replace with `labels`. `toFinancialColumns` turns the result into the columns FinancialTable and VirtualFinancialTable take. Grouping and totals are opt-in: pass `tableTotals` (from `@punji/ui/table-totals`) as `totalsEngine` and use `groupBy`, `totals` or `expectedTotals`.',
+    summary: 'Six factories return the columns finance tables keep needing as typed `ColumnDef[]`: `holdingsColumns`, `stockQuoteColumns`, `ledgerColumns`, `statementColumns`, `agingColumns` and `trialBalanceColumns`. Cells are formatted from exact bigint minor units with the money formatters, and the columns that should total carry a `sum` aggregate, so a table that groups or totals adds them up without a float. Every head is a word you can replace with `labels`. `toFinancialColumns` turns the result into the columns FinancialTable and VirtualFinancialTable take. Grouping and totals are opt-in on the tables: use `groupBy`, `totals` or `expectedTotals`.',
     use: [
       'A standard financial table with the right alignment, folding and totals already decided: `toFinancialColumns(holdingsColumns({ locale }))`.',
       'Rows shaped like the preset\'s row type (`HoldingRow`, `LedgerRow`, ...) or any type that extends it; money fields are `Money` (`{ minor: bigint, currency }`).',
@@ -670,13 +670,6 @@ export const PAGES: readonly PageDef[] = [
       'A negative figure carries its sign in the text; nothing relies on colour.',
     ],
     responsive: ['Less important columns carry `hideUnder` and fold away on narrow screens (name, average cost, reference, older aging buckets); the first column becomes the row\'s heading when the table stacks on a phone.'],
-    notes: {
-      title: 'Loading the totals code',
-      points: [
-        'Grouping, subtotals, totals and reconciliation are not in the table\'s own code. A table that never uses `groupBy`, `totals` or `expectedTotals` does not ship them (FinancialTable about 0.7 kB gzip smaller, VirtualFinancialTable about 0.7 kB).',
-        'Without `totalsEngine` the table loads them on first use: the first draw is the plain rows and the groups and totals appear a moment later. Pass `totalsEngine={tableTotals}` to have them in the first paint and in server-rendered output.',
-      ],
-    },
     related: ['data-table', 'virtual-table', 'money-display', 'aging-table'],
   },
   {

@@ -1,7 +1,6 @@
 import { VirtualFinancialTable } from '@punji/ui/virtual-table';
 import { money } from '@punji/ui/money';
 import { ledgerColumns, toFinancialColumns, type LedgerRow } from '@punji/ui/table-presets';
-import { tableTotals } from '@punji/ui/table-totals';
 
 // The same presets drive the virtual table: 2,000 invented ledger lines, debit and credit totals exact.
 const rows: LedgerRow[] = Array.from({ length: 2_000 }, (_, i) => {
@@ -17,5 +16,5 @@ const rows: LedgerRow[] = Array.from({ length: 2_000 }, (_, i) => {
 const columns = toFinancialColumns(ledgerColumns<LedgerRow>()).map((c) => ({ ...c, width: c.key === 'description' ? 170 : 130 }));
 
 export default function Example() {
-  return <VirtualFinancialTable caption="General ledger, NPR" columns={columns} rows={rows} rowKey={(r) => r.reference ?? ''} emptyTitle="No entries" height={360} totals totalsEngine={tableTotals} />;
+  return <VirtualFinancialTable caption="General ledger, NPR" columns={columns} rows={rows} rowKey={(r) => r.reference ?? ''} emptyTitle="No entries" height={360} totals />;
 }

@@ -19,8 +19,7 @@ import type { Money } from '../money/money.ts';
 import { EmptyState, Skeleton } from '../states/States.tsx';
 import { columnAlign, fromFinancialColumn, plainValue, type ColumnDef } from '../table-core/tableModel.ts';
 import type { ColumnTotals } from '../table-core/tableAggregate.ts';
-import type { TableTotalsEngine } from '../internal/tableTotals.tsx';
-import { useTableTotals } from '../internal/useTableTotals.ts';
+import { tableTotals as kit } from '../internal/tableTotals.tsx';
 import { clampWidth, fixedLayout, measuredLayout, nextSortRules, placeColumns, renderedIndices, visibleRange, type PlacedColumn, type SortRule } from './layout.ts';
 
 export { nextSortRules, compareByRules } from './layout.ts';
@@ -133,8 +132,6 @@ export interface VirtualFinancialTableProps<T> {
   expectedTotals?: Readonly<Record<string, Money>>;
   /** Words for groups, the totals row and reconciliation. @stability beta */
   totalsLabels?: Partial<TableTotalsLabels>;
-  /** The grouping and totals code (`tableTotals` from `@punji/ui/table-totals`). Without it the table loads that code when `groupBy`, `totals` or `expectedTotals` is first used, so the first draw is the plain rows. Pass it for server output and the first paint. @stability beta */
-  totalsEngine?: TableTotalsEngine;
 }
 
 // A drawn line: a record, or a group's header. Group keys carry a prefix no row key is expected to start with.
@@ -156,7 +153,7 @@ export function VirtualFinancialTable<T>({
   caption, columns, rows, rowKey, state = 'ready', emptyTitle, emptyBody, loadingLabel = 'Loading records', errorTitle = 'Records unavailable', errorAction,
   height = 480, rowHeight = 40, measureRows = false, overscan = 8, sort, onSortChange, columnWidths, onColumnResize, search, selection, toolbar,
   onVisibleRangeChange, labels: labelOverrides, testId,
-  groupBy, groupLabel, collapsedGroups, onCollapsedGroupsChange, totals, expectedTotals, totalsLabels, totalsEngine,
+  groupBy, groupLabel, collapsedGroups, onCollapsedGroupsChange, totals, expectedTotals, totalsLabels,
 }: VirtualFinancialTableProps<T>) {
   const auto = useId();
   const labels = { ...DEFAULT_LABELS, ...labelOverrides };
@@ -181,8 +178,7 @@ export function VirtualFinancialTable<T>({
 
   // Row keys (selection) and drawn lines (records plus group headers): one pass per new `rows` array.
   const rowKeys = useMemo(() => rows.map(rowKey), [rows, rowKey]);
-  const kit = useTableTotals(Boolean(groupBy || totals || expectedTotals), totalsEngine);
-  const groups = useMemo(() => (groupBy && kit ? kit.groupRows(rows.map((_, i) => i), (i) => groupBy(rows[i]!)) : null), [rows, groupBy, kit]);
+  const groups = useMemo(() => (groupBy ? kit.groupRows(rows.map((_, i) => i), (i) => groupBy(rows[i]!)) : null), [rows, groupBy]);
   const items = useMemo<Item[]>(() => {
     if (!groups) return rowKeys.map((key, index) => ({ kind: 'row', key, index }));
     const closed = new Set(collapsedList);
@@ -195,8 +191,8 @@ export function VirtualFinancialTable<T>({
   }, [groups, rowKeys, collapsedList]);
   const keys = useMemo(() => items.map((item) => item.key), [items]);
   const defs = useMemo(() => columns.map((column) => fromFinancialColumn<T, ReactNode>(column)), [columns]);
-  const showTotals = Boolean(kit && (totals || expectedTotals));
-  const sums = useMemo<ColumnTotals>(() => (kit && showTotals ? kit.footerTotals(rows, defs) : {}), [kit, showTotals, rows, defs]);
+  const showTotals = Boolean(totals || expectedTotals);
+  const sums = useMemo<ColumnTotals>(() => (showTotals ? kit.footerTotals(rows, defs) : {}), [showTotals, rows, defs]);
   const indexOf = useMemo(() => {
     const map = new Map<string, number>();
     keys.forEach((key, i) => map.set(key, i));
@@ -288,7 +284,7 @@ export function VirtualFinancialTable<T>({
   if (state === 'loading') return <div aria-busy="true"><Skeleton label={loadingLabel} height={160} /></div>;
   if (state === 'error') return <EmptyState title={errorTitle} action={errorAction} role="alert" />;
   if (!rows.length && !search) return <EmptyState title={emptyTitle} body={emptyBody} />;
-  const words = { ...kit?.defaultLabels, ...totalsLabels } as TableTotalsLabels;
+  const words = { ...kit.defaultLabels, ...totalsLabels } as TableTotalsLabels;
   const setExpanded = (group: string, expanded: boolean) => {
     const next = expanded ? collapsedList.filter((k) => k !== group) : [...collapsedList, group];
     if (!collapsedGroups) setOwnCollapsed(next);
@@ -491,7 +487,7 @@ export function VirtualFinancialTable<T>({
   const aggregateCells = (values: ColumnTotals, members: readonly T[], extra?: (def: ColumnDef<T, ReactNode>) => ReactNode) => placed.slice(1).map((place) => {
     const def = defOf.get(place.key)!;
     const cls = [isNum(place.key) && 'num', pinClass(place)].filter(Boolean).join(' ') || undefined;
-    return <td key={place.key} className={cls} style={pinStyle(place)}>{def.aggregate ? kit!.aggregateNode(def, values[def.id], members) : null}{extra?.(def)}</td>;
+    return <td key={place.key} className={cls} style={pinStyle(place)}>{def.aggregate ? kit.aggregateNode(def, values[def.id], members) : null}{extra?.(def)}</td>;
   });
   const firstCell = (content: ReactNode) => {
     const place = placed[0]!;
@@ -523,7 +519,7 @@ export function VirtualFinancialTable<T>({
             <span className="kit-table-group-count">{words.groupCount(members.length)}</span>
           </button>,
         )}
-        {aggregateCells(kit!.footerTotals(members, defs), members)}
+        {aggregateCells(kit.footerTotals(members, defs), members)}
       </tr>
     );
   };
@@ -617,8 +613,8 @@ export function VirtualFinancialTable<T>({
               : body}
           </tbody>
           {showTotals && rowKeys.length > 0 && (() => {
-            const checks = kit!.reconcileOrEmpty(sums, expectedTotals);
-            const Badge = kit!.ReconcileBadge;
+            const checks = kit.reconcileOrEmpty(sums, expectedTotals);
+            const Badge = kit.ReconcileBadge;
             return <tfoot><tr className="pu-vt-total" aria-rowindex={keys.length + 2} style={{ height: rowHeight }}>
               {/* The selection column has no control on a group or totals line. */}
               {/* oxlint-disable-next-line jsx-a11y/control-has-associated-label */}

@@ -51,11 +51,8 @@ function ReconcileBadge<Row>({ result, def, rows, labels }: { result: Reconcilia
 }
 
 /**
- * Everything grouping, subtotals, totals and reconciliation need, in one object.
- * FinancialTable and VirtualFinancialTable load it on demand when `groupBy`,
- * `totals` or `expectedTotals` is used (the first draw is the plain rows); pass
- * it as `totalsEngine` (from `@punji/ui/table-totals`) to have it in the first
- * paint and in server output. A table that never groups or totals never loads it.
+ * Everything grouping, subtotals, totals and reconciliation need, in one object:
+ * what FinancialTable and VirtualFinancialTable use, for your own table.
  * @stability beta
  */
 export interface TableTotalsEngine {
@@ -73,5 +70,5 @@ export interface TableTotalsEngine {
   ReconcileBadge: typeof ReconcileBadge;
 }
 
-/** The engine. Importing it is what bundles grouping and totals. @stability beta */
+/** The grouping and totals engine the tables use. @stability beta */
 export const tableTotals: TableTotalsEngine = { defaultLabels: DEFAULT_TOTALS_LABELS, groupRows, footerTotals, reconcileOrEmpty, aggregateNode, ReconcileBadge };

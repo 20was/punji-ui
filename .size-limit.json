@@ -256,10 +256,7 @@
     "path": "dist/virtual-table/VirtualFinancialTable.js",
     "import": "*",
     "limit": "6.97 kB",
-    "gzip": true,
-    "entry": [
-      "index"
-    ]
+    "gzip": true
   },
   {
     "name": "table-core (import from @punji/ui/table-core)",
@@ -378,10 +375,7 @@
     "path": "dist/financial/financial.js",
     "import": "*",
     "limit": "6.37 kB",
-    "gzip": true,
-    "entry": [
-      "index"
-    ]
+    "gzip": true
   },
   {
     "name": "Button from root (tree-shaking regression)",
@@ -1053,10 +1047,7 @@
     "path": "dist/transaction-history/TransactionHistory.js",
     "import": "*",
     "limit": "17.88 kB",
-    "gzip": true,
-    "entry": [
-      "index"
-    ]
+    "gzip": true
   },
   {
     "name": "transaction-history with the date picker panel (all chunks)",
@@ -1294,10 +1285,7 @@
     "path": "dist/nepal-address-picker/NepalAddressPicker.js",
     "import": "*",
     "limit": "3.05 kB",
-    "gzip": true,
-    "entry": [
-      "index"
-    ]
+    "gzip": true
   },
   {
     "name": "document-upload (import from '@punji/ui/document-upload')",

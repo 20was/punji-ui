@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { FinancialTable, type FinancialColumn } from '@punji/ui/financial';
-import { tableTotals } from "@punji/ui/table-totals";
 import { MoneyDisplay } from '@punji/ui/money-display';
 import { Checkbox } from '@punji/ui/checkbox';
 import { isMoney, money, nepalMoneyConfig, type Money } from '@punji/ui/money';
@@ -43,7 +42,7 @@ export default function Example() {
         rows={invoices}
         rowKey={(i) => i.id}
         emptyTitle="No open invoices"
-        totalsEngine={tableTotals}
+       
         groupBy={grouped ? (i) => i.customer : undefined}
         expectedTotals={{ amount: expected }}
       />

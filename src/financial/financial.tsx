@@ -4,8 +4,9 @@ import { useId, useState, type PointerEvent, type ReactNode } from 'react';
 import { clamp, isNum, useChartCursor } from '../internal/chartFrame.tsx';
 import { DataTable, DataListRow, DataRowGroup, Cell, type Column, type DataTablePagination, type DataTableSearch, type DataTableSelection, type SortDir } from '../table/Table.tsx';
 import type { Money } from '../money/money.ts';
-import { columnAlign, footerTotals, fromFinancialColumn, groupRows, plainValue, type CellValue, type ColumnAggregate, type ColumnDef, type ColumnKind, type ColumnTotals } from '../table-core/tableCore.ts';
-import { DEFAULT_TOTALS_LABELS, ReconcileBadge, aggregateNode, reconcileOrEmpty, type TableTotalsLabels } from '../internal/tableTotals.tsx';
+import { columnAlign, fromFinancialColumn, plainValue, type CellValue, type ColumnAggregate, type ColumnDef, type ColumnKind } from '../table-core/tableModel.ts';
+import type { ColumnTotals } from '../table-core/tableAggregate.ts';
+import { tableTotals as kit, type TableTotalsLabels } from '../internal/tableTotals.tsx';
 
 export type { TableTotalsLabels } from '../internal/tableTotals.tsx';
 import { EmptyState, Skeleton } from '../states/States.tsx';
@@ -138,7 +139,7 @@ export function FinancialTable<T>({ caption, columns, rows, rowKey, state = 'rea
   if (state === 'error') return <EmptyState title={errorTitle} action={errorAction} role="alert" />;
   if (!rows.length && !search && !pagination) return <EmptyState title={emptyTitle} body={emptyBody} action={emptyAction} />;
   const defs: ColumnDef<T, ReactNode>[] = columns.map((column) => fromFinancialColumn<T, ReactNode>(column));
-  const labels = { ...DEFAULT_TOTALS_LABELS, ...totalsLabels };
+  const labels = { ...kit.defaultLabels, ...totalsLabels } as TableTotalsLabels;
   const headColumns = columns.map((column, i) => ({ ...column, num: columnAlign(defs[i]!) === 'end' }));
   const layout = (def: ColumnDef<T, ReactNode>) => ({
     num: columnAlign(def) === 'end',
@@ -149,7 +150,7 @@ export function FinancialTable<T>({ caption, columns, rows, rowKey, state = 'rea
   const rowOf = (row: T) => <DataListRow key={rowKey(row)} rowId={rowKey(row)}>{defs.map(def => <Cell key={def.id} {...layout(def)} header={def.rowHeader} label={nameOf(def)}>{def.cell ? def.cell(row) : plainValue(def.accessor?.(row))}</Cell>)}</DataListRow>;
   // Subtotal and total rows: the first column holds the row's name, each later column its aggregate (or an empty cell, so hidden columns stay aligned).
   const aggregateCells = (values: ColumnTotals, members: readonly T[], extra?: (def: ColumnDef<T, ReactNode>) => ReactNode) => defs.slice(1).map(def => (
-    <Cell key={def.id} {...layout(def)} label={def.aggregate ? nameOf(def) : undefined}>{def.aggregate ? aggregateNode(def, values[def.id], members) : null}{extra?.(def)}</Cell>
+    <Cell key={def.id} {...layout(def)} label={def.aggregate ? nameOf(def) : undefined}>{def.aggregate ? kit.aggregateNode(def, values[def.id], members) : null}{extra?.(def)}</Cell>
   ));
   const collapsed = new Set(collapsedGroups ?? ownCollapsed);
   const setExpanded = (key: string, expanded: boolean) => {
@@ -158,7 +159,7 @@ export function FinancialTable<T>({ caption, columns, rows, rowKey, state = 'rea
     onCollapsedGroupsChange?.(next);
   };
   const body = groupBy
-    ? groupRows(rows, groupBy, defs).map(group => (
+    ? kit.groupRows(rows, groupBy, defs).map(group => (
       <DataRowGroup key={group.key} label={groupLabel?.(group.key, group.rows) ?? group.key} count={labels.groupCount(group.rows.length)}
         expanded={!collapsed.has(group.key)} onExpandedChange={(expanded) => setExpanded(group.key, expanded)} cells={aggregateCells(group.subtotals, group.rows)}>
         {group.rows.map(rowOf)}
@@ -167,14 +168,14 @@ export function FinancialTable<T>({ caption, columns, rows, rowKey, state = 'rea
     : rows.map(rowOf);
   let footer: ReactNode;
   if (totals || expectedTotals) {
-    const sums = footerTotals(rows, defs);
-    const checks = reconcileOrEmpty(sums, expectedTotals);
+    const sums = kit.footerTotals(rows, defs);
+    const checks = kit.reconcileOrEmpty(sums, expectedTotals);
     footer = <tr className="kit-table-total">
       {/* The selection column has no control on a group or totals line. */}
       {/* oxlint-disable-next-line jsx-a11y/control-has-associated-label */}
       {selection && <td className="kit-table-selection-cell" />}
       <th scope="row">{labels.total}</th>
-      {aggregateCells(sums, rows, (def) => checks[def.id] && <ReconcileBadge result={checks[def.id]!} def={def} rows={rows} labels={labels} />)}
+      {aggregateCells(sums, rows, (def) => checks[def.id] && <kit.ReconcileBadge result={checks[def.id]!} def={def} rows={rows} labels={labels} />)}
     </tr>;
   }
   return <div className="pu-fin"><DataTable stack={stack ?? Boolean(columns[0]?.rowHeader)} caption={caption} columns={headColumns} sort={sort} onSort={onSort} search={search} pagination={pagination} selection={selection} footer={footer} empty={emptyBody || emptyAction ? <EmptyState title={emptyTitle} body={emptyBody} action={emptyAction} headingLevel={3} bare /> : emptyTitle}>

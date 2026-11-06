@@ -42,6 +42,7 @@ export default function Example() {
         rows={invoices}
         rowKey={(i) => i.id}
         emptyTitle="No open invoices"
+       
         groupBy={grouped ? (i) => i.customer : undefined}
         expectedTotals={{ amount: expected }}
       />

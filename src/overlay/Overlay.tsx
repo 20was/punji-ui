@@ -6,7 +6,10 @@
  */
 import { createContext, useCallback, useContext, useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react';
 
-import { isDestructive, tabbables } from '../internal/focusable.ts';
+import { useFocusScope } from '../internal/focusScope.ts';
+import { useInertOthers } from '../internal/inert.ts';
+import { Portal } from '../internal/Portal.tsx';
+import { useScrollLock } from '../internal/scrollLock.ts';
 import { ToneIcon } from '../states/States.tsx';
 
 export interface SheetProps {
@@ -26,38 +29,22 @@ export interface SheetProps {
   closeLabel?: string;
 }
 
-export function Sheet({ open, title, body, children, onClose, testId, closeLabel = 'Close' }: SheetProps) {
+export function Sheet(props: SheetProps) {
+  // The content mounts only while open, so the overlay hooks live and die with it.
+  return props.open ? (
+    <Portal>
+      <SheetLayer {...props} />
+    </Portal>
+  ) : null;
+}
+
+function SheetLayer({ title, body, children, onClose, testId, closeLabel = 'Close' }: SheetProps) {
   const ref = useRef<HTMLDivElement>(null);
   const titleId = useId();
-  useEffect(() => {
-    if (!open) return;
-    const prev = document.activeElement as HTMLElement | null;
-    // Focus lands on the safest control: an explicit [data-autofocus], else the first one that is not destructive (Keep, Cancel, Close), else the first.
-    const all = ref.current ? tabbables(ref.current) : [];
-    const first = all.find((el) => el.hasAttribute('data-autofocus')) ?? all.find((el) => !isDestructive(el)) ?? all[0];
-    first?.focus();
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-      if (e.key === 'Tab' && ref.current) {
-        const items = tabbables(ref.current);
-        if (!items.length) return;
-        const [a, z] = [items[0]!, items[items.length - 1]!];
-        if (e.shiftKey && document.activeElement === a) {
-          e.preventDefault();
-          z.focus();
-        } else if (!e.shiftKey && document.activeElement === z) {
-          e.preventDefault();
-          a.focus();
-        }
-      }
-    };
-    document.addEventListener('keydown', onKey);
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      prev?.focus?.();
-    };
-  }, [open, onClose]);
-  if (!open) return null;
+  // Focus lands on the safest control: an explicit [data-autofocus], else the first one that is not destructive (Keep, Cancel, Close), else the first.
+  useFocusScope(ref, { onEscape: onClose });
+  useScrollLock(true);
+  useInertOthers(ref, true);
   return (
     <div className="kit-sheet-back" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
       <div className="kit-sheet" role="dialog" aria-modal="true" aria-labelledby={titleId} ref={ref} data-testid={testId}>

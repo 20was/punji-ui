@@ -6,12 +6,14 @@ import { TOPICS, getComponent, getGuide, indexSnapshot, listComponents, listReso
 const snapshot = JSON.parse(readFileSync(new URL('./fixture/snapshot.json', import.meta.url), 'utf8'));
 const index = indexSnapshot(snapshot);
 const textOf = (r) => r.content[0].text;
-const rootPkg = JSON.parse(readFileSync(new URL('../../../package.json', import.meta.url), 'utf8'));
 const rules = (code) => reviewUsage(snapshot, index, { code }).structuredContent.findings.map((f) => f.rule);
 
 describe('snapshot', () => {
-  it('is pinned to the @punji/ui version in this repository', () => {
-    expect(snapshot.version).toBe(rootPkg.version);
+  // The fixture is a frozen sample, so it carries a version but is not tied to the
+  // repository's: a release bump must not break it. build-data.test.mjs checks the
+  // generated snapshot against package.json.
+  it('carries a semver version and items', () => {
+    expect(snapshot.version).toMatch(/^\d+\.\d+\.\d+/);
     expect(snapshot.items.length).toBeGreaterThan(3);
   });
 });

@@ -125,6 +125,7 @@ export * from './payment-timeline/PaymentTimeline.tsx';
 export * from './bill-summary/BillSummary.tsx';
 export * from './beneficiary-selector/BeneficiarySelector.tsx';
 export * from './virtual-table/VirtualFinancialTable.tsx';
+export * from './table-core/tableCore.ts';
 export * from './table-export/TableExport.tsx';
 // Trading: NEPSE fees, order ticket, order and trade book, halt banner.
 export * from './nepse-fees/fees.ts';

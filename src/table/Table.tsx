@@ -149,7 +149,10 @@ export function DataTable<K extends string>({
   const auto = useId();
   const tableId = `${auto}-table`;
   const rows = Children.toArray(children);
-  const selectableIds = [...new Set(rows.flatMap((row) => {
+  // Grouped tables pass DataRowGroup children: each renders its own <tbody>. Their rows (collapsed ones too) stay selectable.
+  const grouped = rows.some((row) => isValidElement(row) && row.type === DataRowGroup);
+  const flatRows = grouped ? rows.flatMap((row) => isValidElement<{ children?: ReactNode }>(row) && row.type === DataRowGroup ? Children.toArray(row.props.children) : [row]) : rows;
+  const selectableIds = [...new Set(flatRows.flatMap((row) => {
     if (!isValidElement<{ rowId?: string; selectionDisabled?: boolean }>(row) || row.type !== DataListRow) return [];
     const { rowId, selectionDisabled } = row.props;
     return typeof rowId === 'string' && rowId.length > 0 && !selectionDisabled ? [rowId] : [];
@@ -269,13 +272,13 @@ export function DataTable<K extends string>({
             })}
           </tr>
         </thead>
-        <tbody>
+        {grouped && !loading ? children : <tbody>
           {loading ? (
             <tr><td className="kit-table-empty" colSpan={columns.length + Number(Boolean(selection))}><span role="status">{loadingLabel ?? t.loading ?? 'Loading records…'}</span></td></tr>
           ) : rows.length === 0 ? (
             <tr><td className="kit-table-empty" colSpan={columns.length + Number(Boolean(selection))}><span role="status">{empty ?? t.empty ?? 'No records to display.'}</span></td></tr>
           ) : children}
-        </tbody>
+        </tbody>}
         {footer && !loading && rows.length > 0 && <tfoot>{footer}</tfoot>}
       </table>
       </SelectionContext.Provider>
@@ -311,6 +314,49 @@ export function DataListRow({ children, testId, rowId, selectionDisabled = false
     </td>}
     {children}
   </tr>;
+}
+
+/**
+ * A group of DataListRows in its own <tbody> (a row group), headed by a row whose
+ * row-group header holds a disclosure button (`aria-expanded`) and is followed by
+ * the group's subtotal cells. The header's `scope="rowgroup"` relates it to every
+ * cell in the group. Collapsed rows are not drawn but stay selectable through the
+ * page checkbox. Pass as DataTable children, one per group.
+ * @stability beta
+ */
+export function DataRowGroup({ label, count, expanded, onExpandedChange, cells, children, testId }: {
+  /** The group's name, printed in its header. */
+  label: ReactNode;
+  /** Words after the name, e.g. "3 rows"; part of the button's name. */
+  count?: ReactNode;
+  /** Whether the group's rows are drawn. */
+  expanded: boolean;
+  /** Called with the next state when the header button is pressed. */
+  onExpandedChange: (expanded: boolean) => void;
+  /** The cells after the header (subtotals, or empty cells), one per remaining column. */
+  cells?: ReactNode;
+  /** The group's DataListRows. */
+  children: ReactNode;
+  /** Test id on the tbody. */
+  testId?: string;
+}) {
+  const selection = useContext(SelectionContext);
+  return <tbody className="kit-table-group" data-testid={testId}>
+    <tr className="kit-table-group-head">
+      {/* The selection column has no control on a group or totals line. */}
+      {/* oxlint-disable-next-line jsx-a11y/control-has-associated-label */}
+      {selection && <td className="kit-table-selection-cell" />}
+      <th scope="rowgroup">
+        <button type="button" aria-expanded={expanded} onClick={() => onExpandedChange(!expanded)}>
+          <span className="kit-table-group-i" aria-hidden="true" />
+          <span>{label}</span>
+          {count !== undefined && <>{' '}<span className="kit-table-group-count">{count}</span></>}
+        </button>
+      </th>
+      {cells}
+    </tr>
+    {expanded && children}
+  </tbody>;
 }
 
 export function Cell({ children, num, wide, hideUnder, sym, header, label, testId }: {

@@ -59,10 +59,10 @@ export interface Direction {
   word: string;
   /** "▲", "▼" or "●". */
   glyph: string;
-  tone: 'gain' | 'loss' | 'even';
+  tone: 'gain' | 'loss' | 'flat';
 }
 export const directionOf = (v: bigint, words: { up: string; down: string; even: string }): Direction =>
-  v > 0n ? { word: words.up, glyph: '▲', tone: 'gain' } : v < 0n ? { word: words.down, glyph: '▼', tone: 'loss' } : { word: words.even, glyph: '●', tone: 'even' };
+  v > 0n ? { word: words.up, glyph: '▲', tone: 'gain' } : v < 0n ? { word: words.down, glyph: '▼', tone: 'loss' } : { word: words.even, glyph: '●', tone: 'flat' };
 
 export interface Extent { lo: number; hi: number }
 

@@ -30,7 +30,7 @@ export const GUIDES: readonly PageDef[] = [
     description: 'Install @punji/ui from npm, load the stylesheet once and render an exact NPR or USD amount in React. Who Punji UI is for, and how it differs from a generic kit.',
     summary:
       'Punji UI is a finance-first React component library: exact money, stock-market tables, ledgers and a Nepal-first locale layer (NPR, lakh and crore, Devanagari digits, Bikram Sambat dates, NEPSE) that works for any currency. Install it from npm, import one stylesheet and show your first exact amount in a few lines.',
-    related: ['nextjs', 'vite', 'router', 'theming', 'money-display'],
+    related: ['nextjs', 'vite', 'router', 'theming', 'money-display', 'versioning'],
     guide: [
       {
         id: 'who',
@@ -673,6 +673,70 @@ export const GUIDES: readonly PageDef[] = [
           'Number formatting is not part of a pack: pass `money.locale` (for example `hi-IN` or `bn-BD`) and `digits` as before.',
           'Bengali names for arab and kharab are rarely used and especially need review.',
         ],
+      },
+    ],
+  }),
+  guide({
+    slug: 'versioning',
+    navTitle: 'Versioning and stability',
+    title: 'Versioning and stability',
+    lead: 'What each stability badge promises, what can break in a 0.x release, and which React, Node and browsers are supported.',
+    description: 'Punji UI is pre-1.0. What stable, beta, experimental, composition and deprecated mean, how breaking changes are announced, and supported React, Node, browsers.',
+    summary:
+      'Punji UI is at 0.x, so any minor release may change an API. This page says how much each part of the package promises through its stability badge, how a removal is announced, and what environments are supported. The level is also a `@stability` JSDoc tag on the export, so your editor shows it.',
+    related: ['using', 'roadmap', 'security'],
+    guide: [
+      {
+        id: 'levels',
+        title: 'Stability levels',
+        paragraphs: ['Every component, hook and utility page carries one badge in its header. The same word is the `@stability` tag in the export\'s JSDoc.'],
+        points: [
+          '`stable`: long-tested primitives. A breaking change ships only in a minor release (0.x), is listed under Breaking in the changelog, and the old behaviour is deprecated first when that is possible.',
+          '`beta`: in use and tested, but the API surface (props, event shapes, subpaths) may still change in a minor release. Pin the minor version and read the changelog.',
+          '`experimental`: may change shape or be removed in any release, including a patch. Do not build a product on it without a plan to follow it.',
+          '`composition`: a product-shaped recipe (a calculator, a wizard, a card layout). Its copy, layout, default labels and the exact props can change in a minor release. Treat it as a starting point; if you need it fixed, copy it from [Copy a pattern](/get-started/copy-a-pattern/) and own it.',
+          '`deprecated`: replace it. It stays for at least one minor release after the deprecation, with a `@deprecated` JSDoc tag naming the replacement and a one-time development console warning.',
+        ],
+      },
+      {
+        id: 'zero-x',
+        title: 'What can break in 0.x',
+        paragraphs: ['Before 1.0 the version number does not promise compatibility, so these rules apply instead.'],
+        points: [
+          'A minor release (0.2 to 0.3) may break a `stable`, `beta`, `experimental` or `composition` API. It never breaks one silently: the change has a changeset that says what changed and how to migrate.',
+          'A patch release (0.2.0 to 0.2.1) fixes bugs, adds JSDoc and docs, and may adjust visuals. It does not change a `stable` or `beta` signature.',
+          'Removing an exported name, a subpath or a documented `--pu-*` token first goes through `deprecated` for at least one minor release. Exception: `experimental` exports and security fixes.',
+          'Monetary behaviour is the exception to visual freedom: rounding, parsing and calculation results change only with a changeset that names the change, in any level.',
+          'Class names that start with `pu-` are styling hooks for the documented tokens, not API. Override tokens, not selectors.',
+        ],
+      },
+      {
+        id: 'changesets',
+        title: 'How changes are recorded',
+        paragraphs: ['Releases use changesets. Each pull request that changes the published package adds a small file describing the change and its bump. When releases are cut, the files become the changelog entry and the version.'],
+        points: [
+          'Read [CHANGELOG.md](' + REPO + '/CHANGELOG.md) before a minor upgrade. Breaking changes are called out first.',
+          'Docs-only changes to this site do not need a changeset; they ship with the site, not the package.',
+          'Only the latest version of these docs is hosted, so check the version in the changelog against the one you installed.',
+        ],
+      },
+      {
+        id: 'compat',
+        title: 'Compatibility',
+        paragraphs: ['What is supported and tested today.'],
+        points: [
+          'React: 19 and later only (`react` and `react-dom` `^19.0.0` peers). React 18 is not supported: components use `ref` as a prop and other React 19 behaviour.',
+          'Node: 22.12 or later for tooling and server rendering (the `engines` field).',
+          'Packaging: ESM only with bundled declarations; CSS is the only side effect. Strict TypeScript.',
+          'Browsers: Chrome and Edge 111+, Firefox 113+, Safari and iOS Safari 16.4+ (CSS cascade layers and `color-mix()`).',
+          'Tested in CI: the visual and accessibility gate runs in Chromium at 390, 768 and 1440 px wide (layout checks also at 375, 1024 and 1920). Firefox and Safari are supported by the baseline above but are not in the automated gate yet.',
+          'Frameworks: a fresh Next.js App Router app and a Vite app are built against the packed tarball on every release check.',
+        ],
+      },
+      {
+        id: 'badges',
+        title: 'Reading a page',
+        paragraphs: ['The header badges are the contract at a glance: the kind (React component, hooks, utility), the stability level, the import path and the gzip size. The Usage tab lists the tokens the component reads, an example of what a screen reader says, and the WAI-ARIA pattern it follows when there is one. The API tab is generated from the shipped declarations, so it cannot drift from the package.'],
       },
     ],
   }),

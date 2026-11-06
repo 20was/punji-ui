@@ -67,7 +67,9 @@ export function daysBetween(from: string, to: string): number {
   return isoDayNumber(to) - isoDayNumber(from);
 }
 
-/** The issue's status on `today` (a Gregorian `YYYY-MM-DD` you pass, so server and client agree). Throws when close is before open. */
+/** The issue's status on `today` (a Gregorian `YYYY-MM-DD` you pass, so server and client agree). Throws when close is before open. *
+ * @stability stable
+ */
 export function issueStatus(issue: Pick<ShareIssue, 'openDate' | 'closeDate'>, today: string): IssueStatus {
   const open = isoDayNumber(issue.openDate), close = isoDayNumber(issue.closeDate), now = isoDayNumber(today);
   if (close < open) throw new RangeError('Issue closeDate is before openDate');

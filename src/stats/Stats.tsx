@@ -18,6 +18,9 @@ export interface StatGridProps {
   testId?: string;
 }
 
+/**
+ * @stability stable
+ */
 export function StatGrid({ children, cols = 4, label, testId }: StatGridProps) {
   return (
     <div className="kit-stats-box">

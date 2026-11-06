@@ -325,13 +325,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "187 kB",
+    "limit": "192.82 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "40.62 kB",
+    "limit": "41.6 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -1508,6 +1508,90 @@
     "path": "dist/link/Link.js",
     "import": "*",
     "limit": "900 B",
+    "gzip": true
+  },
+  {
+    "name": "menu (import from '@punji/ui/menu')",
+    "path": "dist/menu/Menu.js",
+    "import": "*",
+    "limit": "2.8 kB",
+    "gzip": true
+  },
+  {
+    "name": "Menu CSS",
+    "path": "dist/css/menu.css",
+    "limit": "900 B",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "breadcrumb (import from '@punji/ui/breadcrumb')",
+    "path": "dist/breadcrumb/Breadcrumb.js",
+    "import": "*",
+    "limit": "3.3 kB",
+    "gzip": true
+  },
+  {
+    "name": "Breadcrumb CSS",
+    "path": "dist/css/breadcrumb.css",
+    "limit": "500 B",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "accordion (import from '@punji/ui/accordion')",
+    "path": "dist/accordion/Accordion.js",
+    "import": "*",
+    "limit": "1.5 kB",
+    "gzip": true
+  },
+  {
+    "name": "Accordion CSS",
+    "path": "dist/css/accordion.css",
+    "limit": "800 B",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "fx-rate (import from '@punji/ui/fx-rate')",
+    "path": "dist/fx-rate/FxRate.js",
+    "import": "*",
+    "limit": "2.9 kB",
+    "gzip": true
+  },
+  {
+    "name": "FxRate CSS",
+    "path": "dist/css/fx-rate.css",
+    "limit": "0.5 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "data-freshness (import from '@punji/ui/data-freshness')",
+    "path": "dist/data-freshness/DataFreshness.js",
+    "import": "*",
+    "limit": "1.7 kB",
+    "gzip": true
+  },
+  {
+    "name": "DataFreshness CSS",
+    "path": "dist/css/data-freshness.css",
+    "limit": "0.5 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "status-banner (import from '@punji/ui/status-banner')",
+    "path": "dist/status-banner/StatusBanner.js",
+    "import": "*",
+    "limit": "2.1 kB",
+    "gzip": true
+  },
+  {
+    "name": "StatusBanner CSS",
+    "path": "dist/css/status-banner.css",
+    "limit": "0.5 kB",
+    "rolldown": false,
     "gzip": true
   }
 ]

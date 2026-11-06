@@ -10,6 +10,9 @@ import type { ReactNode } from 'react';
 import { Button } from '../button/Button.tsx';
 import { ToneIcon } from '../states/States.tsx';
 
+/**
+ * @stability stable
+ */
 export function RetryNote({ children, retryLabel, onRetry, testId }: {
   /** What did not load, and why if it is known ("Could not load your holdings"). */
   children: ReactNode;

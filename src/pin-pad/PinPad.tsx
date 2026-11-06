@@ -76,6 +76,8 @@ export function shuffleDigits(random: () => number = cryptoRandom): string[] {
 
 /**
  * @remarks UX safeguard only. It does not enforce authorisation, step-up authentication, limits, payee checks, session expiry or validation; do all of that on the server. Hidden or disabled controls are not access control.
+ *
+ * @stability beta
  */
 export function PinPad({
   label, length = 4, value, defaultValue = '', onChange, onComplete, shuffle = false, shuffleKey, random, digits = 'latn',

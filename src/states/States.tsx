@@ -6,6 +6,9 @@
 import type { CSSProperties, ReactNode } from 'react';
 
 
+/**
+ * @stability stable
+ */
 export function EmptyState({ title, body, action, icon, bare, center, headingLevel = 2, testId, role }: {
   /** What is empty or what failed (rendered as a heading: an h2 unless `headingLevel` says otherwise). */
   title: ReactNode;

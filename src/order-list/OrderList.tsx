@@ -136,6 +136,9 @@ function SidePill({ side, words }: { side: 'buy' | 'sell'; words: { buy: string;
   return <StatusPill size="sm" tone={side === 'buy' ? 'gain' : 'loss'} className="pu-orders-side">{side === 'buy' ? words.buy : words.sell}</StatusPill>;
 }
 
+/**
+ * @stability composition
+ */
 export function OrderList({ orders, onCancel, onModify, pendingIds = [], money, loading, labels, stack = true, testId }: OrderListProps) {
   const words: OrderListLabels = { ...EN, ...labels, statuses: { ...EN.statuses, ...labels?.statuses } };
   const config = money ?? nepalMoneyConfig();

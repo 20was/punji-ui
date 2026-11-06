@@ -3,7 +3,10 @@
  * anything a pack leaves out falls back to the component's English default, and a component's own `labels` prop
  * always wins over the pack. Types only: the packs (`@punji/ui/locale/ne`, `/hi`, `/bn`) are plain data.
  */
+import type { BreadcrumbLabels } from '../breadcrumb/Breadcrumb.tsx';
 import type { CalendarLabels } from '../calendar/labels.ts';
+import type { DataFreshnessLabels } from '../data-freshness/DataFreshness.tsx';
+import type { FxRateLabels } from '../fx-rate/FxRate.tsx';
 import type { HoldToConfirmLabels } from '../hold-to-confirm/HoldToConfirm.tsx';
 import type { IdNumberInputLabels } from '../id-number-input/IdNumberInput.tsx';
 import type { PanInputLabels } from '../pan-input/PanInput.tsx';
@@ -13,6 +16,7 @@ import type { ScamScenario, ScamWarningCopy, ScamWarningLabels } from '../scam-w
 import type { SecureFieldLabels } from '../secure-field/SecureField.tsx';
 import type { SessionTimeoutLabels } from '../session-timeout/SessionTimeoutWarning.tsx';
 import type { TransferReviewLabels } from '../transfer-review/TransferReview.tsx';
+import type { StatusBannerLabels } from '../status-banner/StatusBanner.tsx';
 import type { SpoofIssueKind } from '../trust/spoofing.ts';
 
 /** Pagination's words (the `Pagination` component's label props). */
@@ -95,12 +99,16 @@ export interface PunjiMessages {
   secureField?: SecureFieldLabels;
   spoofing?: SpoofingMessages;
   pagination?: PaginationMessages;
+  breadcrumb?: BreadcrumbLabels;
   table?: TableMessages;
   calendar?: Partial<CalendarLabels>;
   idNumberInput?: Partial<IdNumberInputLabels>;
   panInput?: Partial<PanInputLabels>;
   paymentFields?: { messages?: Partial<PaymentFieldMessages>; fieldNames?: Partial<Record<PaymentFieldKind, string>> };
   amountWords?: AmountWordsPack;
+  fxRate?: FxRateLabels;
+  dataFreshness?: DataFreshnessLabels;
+  statusBanner?: StatusBannerLabels;
 }
 
 /** One language's pack. */

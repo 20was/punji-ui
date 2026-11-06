@@ -153,6 +153,9 @@ function Lines({ title, lines, money }: { title: string; lines: readonly BillLin
   );
 }
 
+/**
+ * @stability composition
+ */
 export function BillSummary({
   biller, service, customerName, customerId, period, lines = [], adjustments = [], total, dueDate, calendar = 'ad', status, state = 'ready',
   errorMessage, onRetry, money = nepalMoneyPreset, action, headingLevel = 3, labels, className, testId,

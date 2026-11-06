@@ -45,6 +45,8 @@ export function StatusDisc({ tone = 'neutral', size, children, testId }: {
  * its panel (Arrow Up/Down, Home and End move focus between the tabs; the
  * caller's `onKeyDown` runs first and can cancel that). A tab list needs a
  * name (`label` or `labelledBy`). Its width decides the rows' layout.
+ *
+ * @stability stable
  */
 export function CheckList({ children, label, labelledBy, role, onKeyDown, testId }: {
   /** The `CheckRow`s. */

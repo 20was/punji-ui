@@ -45,6 +45,9 @@ export interface InlineConfirmProps {
   className?: string;
 }
 
+/**
+ * @stability stable
+ */
 export function InlineConfirm({
   title,
   body,

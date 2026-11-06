@@ -213,6 +213,11 @@ function Badges({ page, size }: { page: Page; size?: number }) {
   return (
     <ul className="doc-badges" aria-label="About this export">
       <li className="doc-badge">{kind}</li>
+      {page.stability && (
+        <li className={`doc-badge is-stability is-${page.stability}`}>
+          <Link to="/get-started/versioning/#levels">{page.stability}</Link>
+        </li>
+      )}
       {from && (
         <li className="doc-badge is-code">
           <code>{from}</code>
@@ -428,6 +433,28 @@ function Bullets({ id, title, items }: { id: string; title: string; items: reado
   );
 }
 
+/** The depth sections of the Usage tab: tokens read, what a screen reader says, the APG pattern. */
+function Depth({ page }: { page: Page }) {
+  return (
+    <>
+      {page.spoken && <Bullets id="spoken" title="Spoken output (typical)" items={page.spoken} />}
+      {page.apg && <Bullets id="apg" title="Pattern" items={[`Follows the WAI-ARIA Authoring Practices [${page.apg.name}](${page.apg.url}) pattern.`]} />}
+      {page.tokens && (
+        <section aria-labelledby="tokens" className="doc-section">
+          <h3 id="tokens">Tokens</h3>
+          <ul className="doc-tokens">
+            {page.tokens.map((token) => (
+              <li key={token}>
+                <code>{token}</code>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </>
+  );
+}
+
 function ComponentPage({ data }: { data: PageData }) {
   const { page } = data;
   const tabs = useMemo(() => tabsFor(page), [page]);
@@ -486,6 +513,7 @@ function ComponentPage({ data }: { data: PageData }) {
       { id: 'when', label: 'When to use' },
       ...(page.keyboard.length ? [{ id: 'keyboard', label: 'Keyboard' }] : []),
       ...(page.accessibility.length ? [{ id: 'a11y', label: 'Accessibility' }] : []),
+      ...(['spoken', 'apg', 'tokens'] as const).filter((k) => page[k]).map((id) => ({ id, label: id === 'apg' ? 'Pattern' : id === 'spoken' ? 'Spoken output' : 'Tokens' })),
       ...(page.responsive.length ? [{ id: 'responsive', label: 'Responsive' }] : []),
       ...(page.notes ? [{ id: 'notes', label: page.notes.title }] : []),
       ...(page.related.length ? [{ id: 'related', label: 'Related' }] : []),
@@ -615,6 +643,7 @@ function ComponentPage({ data }: { data: PageData }) {
           )}
           <Bullets id="keyboard" title="Keyboard" items={page.keyboard} />
           <Bullets id="a11y" title="Accessibility" items={page.accessibility} />
+          <Depth page={page} />
           <Bullets id="responsive" title="Responsive behaviour" items={page.responsive} />
           {page.notes && <Bullets id="notes" title={page.notes.title} items={page.notes.points} />}
           <RelatedCards others={data.related} />

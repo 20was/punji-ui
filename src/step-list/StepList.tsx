@@ -18,6 +18,9 @@ export interface Step {
   body?: ReactNode;
 }
 
+/**
+ * @stability stable
+ */
 export function StepList({ title, eyebrow, lead, foot, steps, current = 0, tone = 'inverse', layout = 'tiles', headingLevel = 2, onDismiss, dismissLabel = 'Dismiss', dismissTestId, testId }: {
   /** The heading over the steps. */
   title?: ReactNode;

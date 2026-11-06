@@ -96,6 +96,9 @@ function Party({ party, words }: { party: ReceiptParty; words: PaymentReceiptLab
   );
 }
 
+/**
+ * @stability composition
+ */
 export function PaymentReceipt({ amount, fees, total, money = nepalMoneyPreset, from, to, reference, timestamp, timeZone, locale, status, note, qr, printable, labels, qrLabel, headingLevel = 2, className, testId }: PaymentReceiptProps) {
   const words = { ...DEFAULT_PAYMENT_RECEIPT_LABELS, ...labels };
   const clipboard = useClipboard();

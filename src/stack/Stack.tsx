@@ -40,7 +40,9 @@ export interface ClusterProps extends LayoutProps {
   align?: 'center' | 'start' | 'end' | 'baseline' | 'stretch';
 }
 
-/** One column of children, spaced by `gap`. Paragraphs directly inside have no margin of their own, so the gap is the only space. */
+/** One column of children, spaced by `gap`. Paragraphs directly inside have no margin of their own, so the gap is the only space. *
+ * @stability stable
+ */
 export function Stack({ as: Tag = 'div', gap = 3, align = 'stretch', testId, className, children, ...rest }: StackProps) {
   return (
     <Tag {...(rest as object)} className={`pu-stack${className ? ` ${className}` : ''}`} data-gap={gap} data-align={align === 'stretch' ? undefined : align} data-testid={testId}>

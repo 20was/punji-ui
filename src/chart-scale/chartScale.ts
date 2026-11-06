@@ -29,6 +29,8 @@ export interface BracketScale {
  * plot. The data gets a 4% margin first (the line never sits on the edge),
  * then the step (1, 2, 2.5, 3, 4 or 5 of a power of ten) that gives 3 to 6
  * ticks with the least empty space wins.
+ *
+ * @stability stable
  */
 export function bracketScale(min: number, max: number, f: ScaleFrame): BracketScale {
   const span = max - min || Math.abs(max) * 0.02 || 1;

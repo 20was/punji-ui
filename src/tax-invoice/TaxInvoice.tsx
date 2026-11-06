@@ -155,6 +155,9 @@ function DateCell({ date, language, digits, words }: { date: CalendarDate; langu
 
 const quantityText = (quantity: bigint | string) => (typeof quantity === 'bigint' ? quantity.toString() : quantity);
 
+/**
+ * @stability composition
+ */
 export function TaxInvoice({
   seller, buyer, invoiceNumber, date, dueDate, paymentMode, lines, discount, vatRate = '0.13', rounding = 'half-up', money = nepalLedgerMoney,
   currencyNote, words: wordsOption, language = 'en', digits = 'latn', copyMark, notes, logo, showCode, signature = true, printable, onTotals,

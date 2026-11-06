@@ -14,6 +14,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync
 import { resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { pageDates } from './site-dates.mjs';
+import { makeTokenScanner } from './site-tokens.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const out = resolve(root, 'site/src/generated');
@@ -38,6 +39,7 @@ export function writePageData({ PAGES, GROUPS, leadOf, navTitleOf }) {
   write(resolve(out, 'home.json'), { showcase: PAGES.filter((p) => p.kind === 'showcase').map(card), apps: PAGES.filter((p) => p.kind === 'app').map(card) });
   write(resolve(out, 'search.json'), PAGES.map((p) => ({ ...card(p), description: p.description, api: [...new Set(p.api.map((a) => a.name))] })));
   const sizes = existsSync(resolve(out, 'sizes.json')) ? JSON.parse(readFileSync(resolve(out, 'sizes.json'), 'utf8')).modules : {};
+  const tokensFor = makeTokenScanner(root);
   const dates = pageDates(PAGES, root);
   write(resolve(out, 'dates.json'), dates);
   for (const p of PAGES) {
@@ -45,7 +47,7 @@ export function writePageData({ PAGES, GROUPS, leadOf, navTitleOf }) {
     const related = p.related.map((slug) => PAGES.find((o) => o.slug === slug)).filter(Boolean).map(card);
     // The reverse of a showcase's "Built from": every pattern that uses this page, so components link to real screens.
     const usedIn = p.kind === 'showcase' ? [] : PAGES.filter((o) => o.kind === 'showcase' && o.related.includes(p.slug)).map(card);
-    write(resolve(out, 'pages', `${p.slug}.json`), { page: { ...p, lead: leadOf(p) }, api: entries, related, usedIn, size: sizes[p.api[0]?.module], modified: dates[p.slug] });
+    write(resolve(out, 'pages', `${p.slug}.json`), { page: { ...p, lead: leadOf(p), ...(tokensFor(p).length ? { tokens: tokensFor(p) } : {}) }, api: entries, related, usedIn, size: sizes[p.api[0]?.module], modified: dates[p.slug] });
     writeText(resolve(out, 'routes', `${p.slug}.ts`), routeModule(p));
   }
   // A page that was removed or renamed must not leave its old files behind (the client would still bundle them).

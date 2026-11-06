@@ -559,3 +559,13 @@ h1:focus, main:focus { outline: none; }
 @media (max-width: 640px) {
   .doc-showcase .doc-stage-in { padding: 16px 12px; }
 }
+
+.doc-badge.is-stability a { color: inherit; text-decoration: none; text-transform: capitalize; }
+.doc-badge.is-stability::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--doc-ink-3); }
+.doc-badge.is-stable::before { background: var(--pu-color-gain); }
+.doc-badge.is-beta::before { background: var(--pu-color-accent); }
+.doc-badge.is-experimental::before { background: var(--pu-color-warning, var(--doc-ink-2)); }
+.doc-badge.is-deprecated { border-style: dashed; }
+.doc-badge.is-deprecated a { text-decoration: line-through; }
+.doc-tokens { display: flex; flex-wrap: wrap; gap: 6px 8px; margin: 0; padding: 0; list-style: none; max-width: 70ch; }
+.doc-tokens code { padding: 2px 7px; border-radius: 6px; background: var(--doc-hover); color: var(--pu-color-text); font-size: 12px; }

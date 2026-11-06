@@ -104,6 +104,9 @@ export interface MarketBreadthProps extends Partial<Breadth> {
 const grouped = (n: number) => n.toLocaleString('en-IN');
 const safe = (n: number | undefined) => (typeof n === 'number' && Number.isFinite(n) && n > 0 ? Math.floor(n) : 0);
 
+/**
+ * @stability stable
+ */
 export function MarketBreadth({
   advances, declines, unchanged, label, extra, showRatio = true, convention, loading = false, size, labels, formatCount = grouped, testId,
 }: MarketBreadthProps) {

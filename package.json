@@ -611,6 +611,30 @@
       "types": "./dist/tokens.css.d.ts",
       "default": "./dist/tokens.css"
     },
+    "./fx-rate": {
+      "types": "./dist/fx-rate/FxRate.d.ts",
+      "default": "./dist/fx-rate/FxRate.js"
+    },
+    "./data-freshness": {
+      "types": "./dist/data-freshness/DataFreshness.d.ts",
+      "default": "./dist/data-freshness/DataFreshness.js"
+    },
+    "./status-banner": {
+      "types": "./dist/status-banner/StatusBanner.d.ts",
+      "default": "./dist/status-banner/StatusBanner.js"
+    },
+    "./menu": {
+      "types": "./dist/menu/Menu.d.ts",
+      "default": "./dist/menu/Menu.js"
+    },
+    "./breadcrumb": {
+      "types": "./dist/breadcrumb/Breadcrumb.d.ts",
+      "default": "./dist/breadcrumb/Breadcrumb.js"
+    },
+    "./accordion": {
+      "types": "./dist/accordion/Accordion.d.ts",
+      "default": "./dist/accordion/Accordion.js"
+    },
     "./css/*.css": {
       "types": "./dist/css/*.css.d.ts",
       "default": "./dist/css/*.css"
@@ -953,5 +977,10 @@
   },
   "dependencies": {
     "@remotemerge/nepali-date-converter": "1.2.5"
+  },
+  "overrides": {
+    "eslint": {
+      "minimatch": "11.0.1"
+    }
   }
 }

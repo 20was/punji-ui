@@ -2,7 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-/** Trailing-edge debounced copy of `value`. The first render returns `value` unchanged. */
+/** Trailing-edge debounced copy of `value`. The first render returns `value` unchanged. *
+ * @stability stable
+ */
 export function useDebounce<T>(value: T, delayMs: number): T {
   const [debounced, setDebounced] = useState(value);
   useEffect(() => {

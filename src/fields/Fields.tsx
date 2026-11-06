@@ -56,7 +56,9 @@ interface FieldExtras {
   trailingAction?: ReactNode;
 }
 
-/** A text input in the kit box: a label over the input, a hint or an error under it. Any other <input> attribute is passed through. */
+/** A text input in the kit box: a label over the input, a hint or an error under it. Any other <input> attribute is passed through. *
+ * @stability stable
+ */
 export function Field({ label, hint, error, testId, value, onChange, id: idProp, size, hideLabel, trailingAction, ...rest }: InputProps & FieldExtras) {
   const auto = useId();
   const id = idProp ?? auto;

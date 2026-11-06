@@ -83,6 +83,9 @@ export interface PaymentQrCardProps {
   testId?: string;
 }
 
+/**
+ * @stability composition
+ */
 export function PaymentQrCard({
   payload, merchantName, detail, state = 'ready', errorMessage, onRefresh, onAmountChange, money = nepalMoneyPreset, qrSize = 224,
   errorCorrection = 'M', renderQr, actions, footer, headingLevel = 3, labels = {}, className, testId,

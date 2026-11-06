@@ -29,6 +29,9 @@ export interface SwitchProps {
   testId?: string;
 }
 
+/**
+ * @stability stable
+ */
 export function Switch({ checked, onChange, label, labelledBy, describedBy, disabled, busy, id, testId }: SwitchProps) {
   return (
     <button

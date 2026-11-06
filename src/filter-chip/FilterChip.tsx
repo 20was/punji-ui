@@ -38,6 +38,8 @@ export interface FilterChipProps {
  * a 36px box like the other controls in a bar; each of its two buttons draws
  * its own single focus ring. A filter with nothing to edit (a yes/no filter)
  * is the label alone with its ×.
+ *
+ * @stability stable
  */
 export function FilterChip({ label, value, onOpen, onRemove, openPrefix, removeLabel, expanded, caret, error, testId }: FilterChipProps) {
   const text = (

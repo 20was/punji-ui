@@ -86,6 +86,9 @@ const SIZE = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 });
 const defaultSize = (n: number) => SIZE.format(n);
 const trim = (n: number) => String(Math.round(n * 10) / 10);
 
+/**
+ * @stability experimental
+ */
 export function MarketHeatmap({ items, label, sizeLabel = 'Size', formatSize = defaultSize, scaleMax = 3, aspect = 1.5, convention, onSelect, labels, testId }: MarketHeatmapProps) {
   const words = { ...EN, ...labels };
   const W = 100;

@@ -12,6 +12,7 @@ export const TRADING_PAGES: readonly PageDef[] = [
     lead: 'Every cost of a NEPSE order, exact to the paisa, from a fee schedule you can replace when SEBON changes it.',
     group: 'stock-market',
     kind: 'utility',
+    stability: 'beta',
     summary:
       'Pure TypeScript for the cost of a NEPSE trade: no React, no browser, no dependency. Amounts are bigint paisa and every rate is a decimal string, so nothing is a float. `estimateNepseTrade` returns the amount, broker commission, SEBON fee, DP charge, capital gains tax on a sell, the total payable or receivable, and the effective price per unit. Every figure comes from a `NepseFeeSchedule`; `nepseFeeSchedule` is a dated example to verify, not an authority.',
     use: [
@@ -50,6 +51,7 @@ export const TRADING_PAGES: readonly PageDef[] = [
     lead: 'Place a buy or sell with the price on the tick, inside the circuit band, and every rupee of cost shown before you confirm.',
     group: 'stock-market',
     kind: 'component',
+    stability: 'composition',
     summary:
       'The order form of a trading terminal. Buy and Sell are a toggle; quantity steps in lots and price steps in ticks (arrow keys or the buttons). Leaving the price field moves it to the nearest tick, inside the band, and says so. The circuit band comes from the published limits or from the previous close and a band rate (`circuitLimits`), with one-tap fills for the lower limit, the LTP and the upper limit. The estimate is exact paisa from `estimateNepseTrade`. Submit checks everything, focuses the first problem, and asks to confirm with the total before `onSubmit` hands you the order.',
     use: [
@@ -98,6 +100,7 @@ export const TRADING_PAGES: readonly PageDef[] = [
     lead: 'Today\'s orders with their status in words and safe Modify and Cancel, plus the fills they produced.',
     group: 'stock-market',
     kind: 'component',
+    stability: 'composition',
     summary:
       'OrderList is the person\'s own order book (not market depth): symbol and side, time, filled share ("60 of 100" with a small meter), limit and average price, a status pill in words, and Modify and Cancel for live orders. Cancel asks first, in place. A change of status between renders is announced politely ("NABIL buy 100: Filled"). TradeList is the trade book: each fill with its exact amount, and a totals row with bought and sold apart. Both are `DataTable`s and stack on phones.',
     use: ['The orders and trades tabs of a terminal.', '`pendingIds` while a cancel or modify request is in flight.'],
@@ -123,6 +126,7 @@ export const TRADING_PAGES: readonly PageDef[] = [
     lead: 'Tell traders at once that trading stopped, why, and when it resumes, then politely that it has.',
     group: 'stock-market',
     kind: 'component',
+    stability: 'beta',
     summary:
       'The line across a terminal when trading stops. `circuit-breaker` names the index move and the pause from `circuitBreakerStage` (NEPSE example tiers: ±4% pauses 15 minutes, ±5% 40 minutes, ±6% closes the day); `halt` is an exchange halt; `resumed` is the all-clear. A halt is `role="alert"` so it is heard at once; resumed is a polite status. An icon and words carry the state, never colour alone.',
     use: ['At the top of a terminal or above an order ticket, with the ticket\'s `disabledReason` set while halted.', '`resumesAt` from the exchange notice when it gives a time.'],

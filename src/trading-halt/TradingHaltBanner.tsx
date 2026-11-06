@@ -88,6 +88,9 @@ export interface TradingHaltBannerProps {
   className?: string;
 }
 
+/**
+ * @stability beta
+ */
 export function TradingHaltBanner({ kind, market = 'NEPSE', changePercent, tiers = nepseCircuitTiers, resumesAt, detail, action, onDismiss, digits = 'latn', labels, testId, className }: TradingHaltBannerProps) {
   const words = { ...EN, ...labels };
   const num = (text: string) => showDigits(text, digits);

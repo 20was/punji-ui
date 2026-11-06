@@ -77,6 +77,9 @@ function share(part: bigint, whole: bigint): string {
   return `${part < 0n ? '−' : ''}${tenths / 10n}.${tenths % 10n}%`;
 }
 
+/**
+ * @stability composition
+ */
 export function AgingTable({
   caption, items, asOf, limits, notDue = 'auto', showShare = true, renderParty, money = nepalLedgerMoney, labels, bucketLabel, bare,
   state = 'ready', emptyLabel = 'Nothing outstanding.', loadingLabel = 'Loading aging…', errorLabel = 'The aging could not be loaded.', retryLabel = 'Try again', onRetry, testId,

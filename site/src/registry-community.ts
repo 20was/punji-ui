@@ -6,6 +6,7 @@ import type { PageDef } from './registry.ts';
 export const COMMUNITY_PAGES: readonly PageDef[] = [
   {
     slug: 'fx-rate',
+    stability: 'beta',
     title: 'FxRate and convertMoney',
     lead: 'An exchange rate as an exact decimal string, shown as a sentence with its time and source, and converted with bigint maths.',
     description: 'Show an FX rate as "1 USD = NPR 133.40" with time, source and buy/sell, and convert Money between currencies with exact bigint arithmetic and explicit rounding.',
@@ -46,6 +47,7 @@ export const COMMUNITY_PAGES: readonly PageDef[] = [
   },
   {
     slug: 'data-freshness',
+    stability: 'beta',
     title: 'DataFreshness',
     lead: 'Says how old the figures are: Live, Delayed, End of day, Stale or Offline, with an icon and an "Updated 2 min. ago" that stays current.',
     description: 'Show data freshness as live, delayed, end of day, stale or offline with an icon and words, plus an "updated" age that refreshes and pauses in a hidden tab.',
@@ -82,6 +84,7 @@ export const COMMUNITY_PAGES: readonly PageDef[] = [
   },
   {
     slug: 'status-banner',
+    stability: 'beta',
     title: 'StatusBanner',
     lead: 'A system-wide notice for market closed, delayed data, maintenance or degraded service, with an optional action and dismiss.',
     description: 'A system-wide notice for market closed, delayed data, maintenance or degraded service: info, warn, danger, an action, dismissible, optionally sticky.',

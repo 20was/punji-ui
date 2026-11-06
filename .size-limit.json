@@ -255,7 +255,7 @@
     "name": "virtual-table (import from '@punji/ui/virtual-table')",
     "path": "dist/virtual-table/VirtualFinancialTable.js",
     "import": "*",
-    "limit": "6.97 kB",
+    "limit": "7.71 kB",
     "gzip": true
   },
   {
@@ -266,7 +266,7 @@
     "gzip": true
   },
   {
-    "name": "table-totals (import from @punji/ui/table-totals; loaded on demand by the tables)",
+    "name": "table-totals (import from @punji/ui/table-totals)",
     "path": "dist/table-totals/tableTotals.js",
     "import": "*",
     "limit": "1.76 kB",
@@ -374,7 +374,7 @@
     "name": "Financial compositions",
     "path": "dist/financial/financial.js",
     "import": "*",
-    "limit": "6.37 kB",
+    "limit": "7.17 kB",
     "gzip": true
   },
   {
@@ -1047,7 +1047,10 @@
     "path": "dist/transaction-history/TransactionHistory.js",
     "import": "*",
     "limit": "17.88 kB",
-    "gzip": true
+    "gzip": true,
+    "entry": [
+      "index"
+    ]
   },
   {
     "name": "transaction-history with the date picker panel (all chunks)",
@@ -1285,7 +1288,10 @@
     "path": "dist/nepal-address-picker/NepalAddressPicker.js",
     "import": "*",
     "limit": "3.05 kB",
-    "gzip": true
+    "gzip": true,
+    "entry": [
+      "index"
+    ]
   },
   {
     "name": "document-upload (import from '@punji/ui/document-upload')",

@@ -158,6 +158,9 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'fx-rate', title: 'FxRate', pending: true },
   { id: 'data-freshness', title: 'DataFreshness', pending: true },
   { id: 'status-banner', title: 'StatusBanner', pending: true },
+  { id: 'menu', title: 'Menu', pending: true },
+  { id: 'breadcrumb', title: 'Breadcrumb', pending: true },
+  { id: 'accordion', title: 'Accordion', pending: true },
   // new:component inserts fixtures above this line
 ];
 

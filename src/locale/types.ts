@@ -3,6 +3,7 @@
  * anything a pack leaves out falls back to the component's English default, and a component's own `labels` prop
  * always wins over the pack. Types only: the packs (`@punji/ui/locale/ne`, `/hi`, `/bn`) are plain data.
  */
+import type { BreadcrumbLabels } from '../breadcrumb/Breadcrumb.tsx';
 import type { CalendarLabels } from '../calendar/labels.ts';
 import type { DataFreshnessLabels } from '../data-freshness/DataFreshness.tsx';
 import type { FxRateLabels } from '../fx-rate/FxRate.tsx';
@@ -98,6 +99,7 @@ export interface PunjiMessages {
   secureField?: SecureFieldLabels;
   spoofing?: SpoofingMessages;
   pagination?: PaginationMessages;
+  breadcrumb?: BreadcrumbLabels;
   table?: TableMessages;
   calendar?: Partial<CalendarLabels>;
   idNumberInput?: Partial<IdNumberInputLabels>;

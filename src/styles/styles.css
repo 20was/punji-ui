@@ -98,4 +98,7 @@
 @import './fx-rate.css';
 @import './data-freshness.css';
 @import './status-banner.css';
+@import './menu.css';
+@import './breadcrumb.css';
+@import './accordion.css';
 @import './contrast.css';

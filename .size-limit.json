@@ -331,7 +331,7 @@
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "40.62 kB",
+    "limit": "41.6 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -1508,6 +1508,48 @@
     "path": "dist/link/Link.js",
     "import": "*",
     "limit": "900 B",
+    "gzip": true
+  },
+  {
+    "name": "menu (import from '@punji/ui/menu')",
+    "path": "dist/menu/Menu.js",
+    "import": "*",
+    "limit": "2.8 kB",
+    "gzip": true
+  },
+  {
+    "name": "Menu CSS",
+    "path": "dist/css/menu.css",
+    "limit": "900 B",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "breadcrumb (import from '@punji/ui/breadcrumb')",
+    "path": "dist/breadcrumb/Breadcrumb.js",
+    "import": "*",
+    "limit": "3.3 kB",
+    "gzip": true
+  },
+  {
+    "name": "Breadcrumb CSS",
+    "path": "dist/css/breadcrumb.css",
+    "limit": "500 B",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "accordion (import from '@punji/ui/accordion')",
+    "path": "dist/accordion/Accordion.js",
+    "import": "*",
+    "limit": "1.5 kB",
+    "gzip": true
+  },
+  {
+    "name": "Accordion CSS",
+    "path": "dist/css/accordion.css",
+    "limit": "800 B",
+    "rolldown": false,
     "gzip": true
   },
   {

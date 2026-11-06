@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { useState } from 'react';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
@@ -50,6 +50,8 @@ function ToastButtons() {
   );
 }
 
+const click = (name: string) => act(() => { screen.getByRole('button', { name }).click(); });
+
 describe('Sheet', () => {
   it('opens as a modal dialog named by its title, focuses the first control, traps Tab and closes on Esc with focus back', async () => {
     render(<SheetHarness />);
@@ -58,12 +60,70 @@ describe('Sheet', () => {
     const dialog = screen.getByRole('dialog', { name: 'Remove NABIL?' });
     expect(dialog.getAttribute('aria-modal')).toBe('true');
     const buttons = dialog.querySelectorAll('button');
+    // The danger button is first in the DOM, but focus lands on the safe one (Keep).
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Keep' }));
+    await userEvent.tab({ shift: true });
     expect(document.activeElement).toBe(buttons[0]);
     await userEvent.tab({ shift: true });
     expect(document.activeElement).toBe(buttons[buttons.length - 1]);
     await userEvent.keyboard('{Escape}');
     expect(screen.queryByRole('dialog')).toBeNull();
     expect(document.activeElement).toBe(opener);
+  });
+
+  it('gives each open Sheet its own title id', () => {
+    render(
+      <>
+        <Sheet open title="First" onClose={() => {}}><button type="button">a</button></Sheet>
+        <Sheet open title="Second" onClose={() => {}}><button type="button">b</button></Sheet>
+      </>,
+    );
+    const [one, two] = screen.getAllByRole('dialog');
+    const ids = [one!, two!].map((d) => d.getAttribute('aria-labelledby'));
+    expect(ids[0]).not.toBe(ids[1]);
+    expect(screen.getByRole('dialog', { name: 'First' })).toBe(one);
+    expect(screen.getByRole('dialog', { name: 'Second' })).toBe(two);
+  });
+
+  it('keeps a textarea, a tabindex and a summary inside the Tab loop, and skips disabled and hidden ones', async () => {
+    render(
+      <>
+        <button type="button">outside</button>
+        <Sheet open title="Note" onClose={() => {}}>
+          <input aria-label="off" disabled />
+          <input type="hidden" />
+          <textarea aria-label="note" />
+          <div tabIndex={0} aria-label="custom" role="button" />
+          <div hidden><button type="button">ghost</button></div>
+        </Sheet>
+      </>,
+    );
+    expect(document.activeElement).toBe(screen.getByLabelText('note'));
+    await userEvent.tab();
+    expect(document.activeElement).toBe(screen.getByLabelText('custom'));
+    await userEvent.tab();
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Close' }));
+    await userEvent.tab();
+    expect(document.activeElement).toBe(screen.getByLabelText('note'));
+    await userEvent.tab({ shift: true });
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Close' }));
+  });
+
+  it('does not start on a destructive control, and honours data-autofocus', () => {
+    const { unmount } = render(
+      <Sheet open title="Delete?" onClose={() => {}}>
+        <Button variant="danger">Delete</Button>
+      </Sheet>,
+    );
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Close' }));
+    unmount();
+    render(
+      <Sheet open title="Pick" onClose={() => {}}>
+        <button type="button">first</button>
+        <button type="button" data-autofocus>chosen</button>
+      </Sheet>,
+    );
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'chosen' }));
   });
 
   it('has no serious axe violations', async () => {
@@ -86,15 +146,65 @@ describe('Toast', () => {
     );
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     await user.click(screen.getByRole('button', { name: 'Save' }));
-    expect(screen.getByRole('status').textContent).toContain('Saved');
+    expect(screen.getByTestId('toast-success').textContent).toContain('Saved');
     await user.click(screen.getByRole('button', { name: 'Fail' }));
-    expect(screen.getByRole('alert').textContent).toContain('Could not save');
+    expect(screen.getByTestId('toast-error').textContent).toContain('Could not save');
     await user.click(screen.getByTestId('toast-action'));
-    expect(screen.queryByRole('alert')).toBeNull();
+    expect(screen.queryByTestId('toast-error')).toBeNull();
     act(() => {
       vi.advanceTimersByTime(7000);
     });
     expect(screen.queryByTestId('toast-success')).toBeNull();
+    vi.useRealTimers();
+  });
+
+  it('pauses on hover and on focus, resumes on leave, and gives an action at least 10 seconds', async () => {
+    vi.useFakeTimers();
+    render(
+      <ToastProvider>
+        <ToastButtons />
+      </ToastProvider>,
+    );
+    click('Save');
+    const plain = screen.getByTestId('toast-success');
+    act(() => { vi.advanceTimersByTime(3000); });
+    fireEvent.mouseEnter(plain);
+    act(() => { vi.advanceTimersByTime(20000); });
+    expect(screen.queryByTestId('toast-success')).not.toBeNull();
+    fireEvent.mouseLeave(plain);
+    act(() => { vi.advanceTimersByTime(1100); });
+    expect(screen.queryByTestId('toast-success')).toBeNull();
+
+    click('Fail');
+    const withAction = screen.getByTestId('toast-error');
+    act(() => { vi.advanceTimersByTime(9000); });
+    expect(screen.queryByTestId('toast-error')).not.toBeNull();
+    fireEvent.focus(screen.getByTestId('toast-action'));
+    act(() => { vi.advanceTimersByTime(30000); });
+    expect(screen.queryByTestId('toast-error')).not.toBeNull();
+    fireEvent.blur(screen.getByTestId('toast-action'), { relatedTarget: document.body });
+    act(() => { vi.advanceTimersByTime(1100); });
+    expect(withAction.isConnected).toBe(false);
+    vi.useRealTimers();
+  });
+
+  it('announces through one live region, with no role nested inside it, and clears timers on unmount', () => {
+    vi.useFakeTimers();
+    const clear = vi.spyOn(globalThis, 'clearTimeout');
+    const { container, unmount } = render(
+      <ToastProvider>
+        <ToastButtons />
+      </ToastProvider>,
+    );
+    act(() => { screen.getByRole('button', { name: 'Fail' }).click(); });
+    const live = container.ownerDocument.querySelectorAll('[aria-live]');
+    expect(live.length).toBe(1);
+    expect(live[0]!.querySelector('[role="alert"], [role="status"], [aria-live]')).toBeNull();
+    const before = clear.mock.calls.length;
+    unmount();
+    expect(clear.mock.calls.length).toBeGreaterThan(before);
+    expect(vi.getTimerCount()).toBe(0);
+    clear.mockRestore();
     vi.useRealTimers();
   });
 

@@ -14,7 +14,7 @@
  * announced. A pointer resting on the list does not take the row back while
  * you arrow. On a phone it fills the screen.
  */
-import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type MouseEvent as ReactMouseEvent, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type MouseEvent as ReactMouseEvent, type ReactNode } from 'react';
 
 import { moveChip, moveIndex } from '../command-keys/commandKeys.ts';
 
@@ -116,6 +116,7 @@ function SearchGlyph() {
 }
 
 export function CommandPalette({ labels, placeholder, query, onQuery, items, onRun, onClose, empty, testIdPrefix = 'cmdk', testKey = (id) => id, autoCapitalize = 'off' }: Props) {
+  const listId = useId();
   const [index, setIndex] = useState(0);
   const [chip, setChip] = useState(0);
   const [said, setSaid] = useState('');
@@ -206,7 +207,7 @@ export function CommandPalette({ labels, placeholder, query, onQuery, items, onR
             ref={input}
             role="combobox"
             aria-expanded="true"
-            aria-controls="kit-cmd-list"
+            aria-controls={listId}
             aria-autocomplete="list"
             aria-activedescendant={activeItem ? domId(activeItem.id) : undefined}
             aria-label={labels.dialog}
@@ -230,7 +231,7 @@ export function CommandPalette({ labels, placeholder, query, onQuery, items, onR
             Esc
           </button>
         </div>
-        <div className="kit-cmd-list" id="kit-cmd-list" role="listbox" aria-label={labels.dialog} ref={list}>
+        <div className="kit-cmd-list" id={listId} role="listbox" aria-label={labels.dialog} ref={list}>
           {empty && (
             <p className="kit-cmd-none" role="status" data-testid={tid('none')}>
               {empty}

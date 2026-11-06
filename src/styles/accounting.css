@@ -2,7 +2,7 @@
    Styles for DebitCredit, LedgerTable, JournalEntryView, TrialBalance, StatementTable, PaymentStatus and FinancialPeriodSelector.
    Needs tokens.css, base.css, table.css, money.css, status-pill.css, states.css, choice-group.css and select.css (styles.css has everything). */
 @layer punji.components {
-  .pu-dc { display: inline-flex; align-items: baseline; justify-content: flex-end; gap: 0.35em; font-variant-numeric: tabular-nums; white-space: nowrap }
+  .pu-dc { display: inline-flex; align-items: baseline; justify-content: flex-end; gap: 0.35em; font-variant-numeric: var(--pu-font-numeric); white-space: nowrap }
   .pu-dc-side { min-width: 1.6em; text-align: start; font: 600 var(--pu-text-xs) / 1 var(--pu-font-body); letter-spacing: 0.04em; color: var(--pu-color-text-muted) }
   .pu-dc-blank { display: inline-block; min-width: 1px }
 
@@ -106,7 +106,7 @@
     :is(.pu-trial, .pu-journal) .pu-dc-side { min-width: 0 }
   }
   .pu-ledger-desc { display: inline-block; min-width: 12rem; max-width: 24rem; white-space: normal }
-  .pu-ledger .kit-table tbody th[scope='row']:not(.pu-ledger-label) { font-variant-numeric: tabular-nums }
+  .pu-ledger .kit-table tbody th[scope='row']:not(.pu-ledger-label) { font-variant-numeric: var(--pu-font-numeric) }
   .pu-ledger-label { color: var(--pu-color-text-muted) }
   .pu-ledger-total, .pu-ledger-closing { font-weight: 700; color: var(--pu-color-text) }
   :is(.pu-ledger, .pu-trial, .pu-journal) .kit-table tbody th:is(.pu-ledger-total, .pu-ledger-closing) { font-weight: 700; color: var(--pu-color-text) }
@@ -123,7 +123,7 @@
   .pu-balance { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; font: 600 var(--pu-text-sm) / 1.4 var(--pu-font-body); color: var(--pu-color-text) }
   .pu-balance-icon { flex: none }
   .pu-balance[data-balanced='true'] .pu-balance-icon { color: var(--pu-color-gain) }
-  .pu-balance[data-balanced='false'] { padding: 6px 10px; border-radius: var(--pu-radius-lg); background: var(--pu-color-loss-soft); color: var(--pu-color-loss); outline: 1px solid currentColor; outline-offset: -1px }
+  .pu-balance[data-balanced='false'] { padding: 6px 10px; border-radius: var(--pu-radius-16); background: var(--pu-color-loss-soft); color: var(--pu-color-loss); outline: 1px solid currentColor; outline-offset: -1px }
   .pu-balance-amount { font-weight: 700 }
 
   /* Statement: sections indent by depth; subtotals take a rule above, the grand total a double rule. */

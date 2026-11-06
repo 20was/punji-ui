@@ -26,7 +26,7 @@
   .kit-crow-trail { display: flex; align-items: center; justify-content: flex-end; min-width: 0 }
   .kit-crow-trail > * { flex: 1 1 auto; min-width: 0 }
   .kit-crow-end { display: flex; align-items: center; justify-content: flex-end; gap: 14px; min-width: 0 }
-  .kit-crow-fig { display: flex; flex-direction: column; align-items: flex-end; text-align: end; white-space: nowrap; font-variant-numeric: tabular-nums }
+  .kit-crow-fig { display: flex; flex-direction: column; align-items: flex-end; text-align: end; white-space: nowrap; font-variant-numeric: var(--pu-font-numeric) }
   .kit-crow-fig > b { font-size: 16px; line-height: 20px; font-weight: 600 }
   .kit-crow.is-report .kit-crow-fig > b { font-size: 14px; font-weight: 500 }
   .kit-crow-fig > small { font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }

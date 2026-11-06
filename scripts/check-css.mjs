@@ -19,6 +19,18 @@ for (const file of readdirSync(dir)) {
   for (const m of css.matchAll(/var\((--pu-[\w-]+)/g)) if (!defined.has(m[1])) problems.push(`${file}: ${m[1]} is not defined in tokens.css`);
 }
 
+// Scales must be monotonic: --pu-radius-<px> and --pu-space-<n> (4px steps) in document order of value.
+const light = tokens.slice(0, tokens.indexOf("[data-theme='dark']"));
+const px = (v) => (v.endsWith('rem') ? parseFloat(v) * 16 : parseFloat(v));
+for (const [name, re] of [['radius', /--pu-radius-(\d+)\s*:\s*([\d.]+(?:px|rem))/g], ['space', /--pu-space-(\d+(?:-5)?)\s*:\s*([\d.]+(?:px|rem))/g]]) {
+  const steps = [...light.matchAll(re)].map((m) => [m[1], px(m[2])]);
+  for (const [step, value] of steps) if (name === 'radius' && value !== Number(step)) problems.push(`tokens.css: --pu-radius-${step} is ${value}px, expected ${step}px`);
+  for (let i = 1; i < steps.length; i++) if (steps[i][1] <= steps[i - 1][1]) problems.push(`tokens.css: --pu-${name}-${steps[i][0]} (${steps[i][1]}px) is not larger than --pu-${name}-${steps[i - 1][0]}`);
+  if (steps.length < 5) problems.push(`tokens.css: found only ${steps.length} --pu-${name} scale steps`);
+}
+const full = /--pu-radius-full\s*:\s*([\d.]+)px/.exec(light);
+if (!full || Number(full[1]) < 999) problems.push('tokens.css: --pu-radius-full must be a very large px value');
+
 if (problems.length) {
   console.error(problems.join('\n'));
   process.exit(1);

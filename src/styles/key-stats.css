@@ -5,7 +5,7 @@
   .kit-kstats.c3 { grid-template-columns: repeat(auto-fit, minmax(max(96px, calc((100% - 32px) / 3)), 1fr)) }
   .kit-kstat { display: grid; align-content: start; gap: 2px; min-width: 0 }
   .kit-kstat dt { font-size: 13px; line-height: 18px; color: var(--pu-color-text-muted) }
-  .kit-kstat dd { margin: 0; font: 700 15px / 20px var(--pu-font-body); font-variant-numeric: tabular-nums; color: var(--pu-color-text); white-space: nowrap }
+  .kit-kstat dd { margin: 0; font: 700 15px / 20px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); color: var(--pu-color-text); white-space: nowrap }
   .kit-kstat dd.up { color: var(--pu-color-gain) }
   .kit-kstat dd.down { color: var(--pu-color-loss) }
   .kit-kstat dd.none { font-weight: 500; font-size: 13px; color: var(--pu-color-text-muted); white-space: normal }

@@ -6,7 +6,7 @@
   /* ConfirmAmount */
   .pu-confirm-amount { display: grid; gap: var(--pu-space-1); min-width: 0 }
   .pu-confirm-amount-label { font: 500 13px / 16px var(--pu-font-body); color: var(--pu-color-text-muted) }
-  .pu-confirm-amount-figure { font: 700 clamp(28px, 7vw, 40px) / 1.15 var(--pu-font-display); font-variant-numeric: tabular-nums; color: var(--pu-color-text); overflow-wrap: anywhere }
+  .pu-confirm-amount-figure { font: 700 clamp(28px, 7vw, 40px) / 1.15 var(--pu-font-display); font-variant-numeric: var(--pu-font-numeric); color: var(--pu-color-text); overflow-wrap: anywhere }
   .pu-confirm-amount-words { font: 500 var(--pu-text-sm) / 1.45 var(--pu-font-body); color: var(--pu-color-text-muted) }
   .pu-review-changed { display: inline-flex; flex-wrap: wrap; gap: 0 4px; padding: 1px 8px; border-radius: var(--pu-radius-full); background: var(--pu-color-tag-bg); color: var(--pu-color-tag-text); font: 600 12px / 18px var(--pu-font-body) }
   .pu-review-was { font-weight: 500; text-decoration: line-through }
@@ -23,8 +23,8 @@
   .pu-review-row.total > dd, .pu-review-row.total > dt { font-weight: 700; color: var(--pu-color-text) }
   .pu-review-row[data-risk='high'] .pu-review-name { color: var(--pu-color-loss); text-decoration: underline wavy var(--pu-color-loss); text-underline-offset: 4px }
   .pu-review-name { font-weight: 700 }
-  .pu-review-num, .pu-review-mono { font-variant-numeric: tabular-nums; text-align: end }
-  .pu-review-warning { display: grid; gap: var(--pu-space-2); padding: var(--pu-space-3) var(--pu-space-4); border: 1px solid var(--pu-color-warn-accent); border-inline-start-width: 4px; border-radius: var(--pu-radius-sm); background: var(--pu-color-surface-tint) }
+  .pu-review-num, .pu-review-mono { font-variant-numeric: var(--pu-font-numeric); text-align: end }
+  .pu-review-warning { display: grid; gap: var(--pu-space-2); padding: var(--pu-space-3) var(--pu-space-4); border: 1px solid var(--pu-color-warn-accent); border-inline-start-width: 4px; border-radius: var(--pu-radius-8); background: var(--pu-color-surface-tint) }
   .pu-review-warning[data-risk='high'] { border-color: var(--pu-color-loss); background: var(--pu-color-loss-soft) }
   .pu-review-warning-title { margin: 0; font: 700 var(--pu-text-sm) / 1.4 var(--pu-font-body); color: var(--pu-color-text) }
   .pu-review-warning ul { margin: 0; padding-inline-start: 1.2em; font: 400 var(--pu-text-sm) / 1.45 var(--pu-font-body); color: var(--pu-color-text) }
@@ -32,7 +32,7 @@
   .kit-btn[aria-disabled='true'] { opacity: 0.5; cursor: not-allowed }
 
   /* PayeeVerification */
-  .pu-payee { display: grid; gap: var(--pu-space-2); padding: var(--pu-space-3) var(--pu-space-4); border: 1px solid var(--pu-color-border); border-inline-start-width: 4px; border-radius: var(--pu-radius-sm); background: var(--pu-color-surface); min-width: 0 }
+  .pu-payee { display: grid; gap: var(--pu-space-2); padding: var(--pu-space-3) var(--pu-space-4); border: 1px solid var(--pu-color-border); border-inline-start-width: 4px; border-radius: var(--pu-radius-8); background: var(--pu-color-surface); min-width: 0 }
   .pu-payee[data-result='checking'] { display: flex; align-items: center; gap: var(--pu-space-2) }
   .pu-payee[data-result='match'] { border-inline-start-color: var(--pu-color-gain) }
   .pu-payee[data-result='close-match'], .pu-payee[data-result='unavailable'] { border-inline-start-color: var(--pu-color-warn-accent) }
@@ -58,12 +58,12 @@
   .pu-hold-btn:dir(rtl) .pu-hold-fill { transform-origin: right center }
   .pu-hold-btn[data-holding='true'] { box-shadow: 0 0 0 2px var(--pu-color-accent) }
   .pu-hold-label { position: relative; display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 0 4px }
-  .pu-hold-wait { font-weight: 500; font-variant-numeric: tabular-nums }
+  .pu-hold-wait { font-weight: 500; font-variant-numeric: var(--pu-font-numeric) }
   @media (prefers-reduced-motion: reduce) { .pu-hold-fill { transition: none } }
 
   /* SessionTimeoutWarning: on top of the sheet styles from overlay.css. */
   .pu-session { text-align: start }
-  .pu-session-clock { margin: var(--pu-space-2) 0; font: 700 40px / 1 var(--pu-font-display); font-variant-numeric: tabular-nums; color: var(--pu-color-text) }
+  .pu-session-clock { margin: var(--pu-space-2) 0; font: 700 40px / 1 var(--pu-font-display); font-variant-numeric: var(--pu-font-numeric); color: var(--pu-color-text) }
 
   /* ScamWarning */
   .pu-scam { display: grid; gap: var(--pu-space-3); max-width: 36rem; padding: calc(var(--pu-space-4) + var(--pu-space-1)); border: 2px solid var(--pu-color-loss); border-radius: var(--pu-radius-card); background: var(--pu-color-surface); min-width: 0 }
@@ -71,7 +71,7 @@
   .pu-scam-icon { flex: none; width: 32px; height: 32px; fill: none; stroke: var(--pu-color-loss); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round }
   .pu-scam-title { margin: 0; font: 700 22px / 1.25 var(--pu-font-display); color: var(--pu-color-text) }
   .pu-scam-title:focus { outline: none }
-  .pu-scam-title:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 4px }
+  .pu-scam-title:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 4px }
   .pu-scam-summary { margin: 0; font: 500 var(--pu-text-base) / 1.5 var(--pu-font-body); color: var(--pu-color-text) }
   .pu-scam-qtitle { margin: 0; font: 700 var(--pu-text-sm) / 1.4 var(--pu-font-body); color: var(--pu-color-text) }
   .pu-scam-questions { margin: 0; padding-inline-start: 1.2em; display: grid; gap: var(--pu-space-1); font: 400 var(--pu-text-sm) / 1.5 var(--pu-font-body); color: var(--pu-color-text) }

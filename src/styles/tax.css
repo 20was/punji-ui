@@ -3,7 +3,7 @@
    Needs tokens.css, base.css, fields.css, table.css, money.css, button.css, checkbox.css, choice-group.css and states.css (styles.css has everything). */
 @layer punji.components {
   /* PanInput */
-  .kit-field input.pu-pan-input { font-variant-numeric: tabular-nums; letter-spacing: 0.08em }
+  .kit-field input.pu-pan-input { font-variant-numeric: var(--pu-font-numeric); letter-spacing: 0.08em }
 
   /* Shared document shell: TaxInvoice and Payslip */
   .pu-inv, .pu-slip { container: pu-doc / inline-size; display: grid; gap: var(--pu-space-4); min-width: 0; padding: var(--pu-space-4); background: var(--pu-color-surface); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-card); color: var(--pu-color-text); font: 400 var(--pu-text-sm) / 1.45 var(--pu-font-body) }
@@ -17,10 +17,10 @@
   .pu-inv-seller-name, .pu-slip-name { font: 700 var(--pu-text-base) / 1.3 var(--pu-font-display); overflow-wrap: anywhere }
   .pu-inv-titlebox, .pu-slip-titlebox { display: grid; justify-items: end; gap: 2px; text-align: end }
   .pu-inv-title, .pu-slip-title { margin: 0; font: 700 var(--pu-text-lg) / 1.2 var(--pu-font-display); letter-spacing: 0.02em }
-  .pu-inv-copy { font-size: var(--pu-text-xs); font-weight: 600; padding: 1px 6px; border: 1px solid var(--pu-color-border-strong); border-radius: var(--pu-radius-sm) }
+  .pu-inv-copy { font-size: var(--pu-text-xs); font-weight: 600; padding: 1px 6px; border: 1px solid var(--pu-color-border-strong); border-radius: var(--pu-radius-8) }
   .pu-inv-pan { font-size: var(--pu-text-xs) }
   .pu-inv-pan > span:first-child { color: var(--pu-color-text-muted) }
-  .pu-inv-pan-no, .pu-inv-no, .pu-slip-num { font-variant-numeric: tabular-nums; font-weight: 600; letter-spacing: 0.04em }
+  .pu-inv-pan-no, .pu-inv-no, .pu-slip-num { font-variant-numeric: var(--pu-font-numeric); font-weight: 600; letter-spacing: 0.04em }
   .pu-inv-meta { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--pu-space-4); align-items: start }
   .pu-inv-party { display: grid; gap: 2px; min-width: 0 }
   .pu-inv-name { font-weight: 600; overflow-wrap: anywhere }
@@ -28,12 +28,12 @@
   .pu-inv-facts > div, .pu-slip-facts > div { display: flex; justify-content: space-between; gap: var(--pu-space-3) }
   .pu-inv-facts dt, .pu-slip-facts dt { color: var(--pu-color-text-muted); font-size: var(--pu-text-xs); padding-top: 1px }
   .pu-inv-facts dd, .pu-slip-facts dd { margin: 0; display: grid; justify-items: end; text-align: end }
-  .pu-inv-date { font-variant-numeric: tabular-nums; white-space: nowrap }
+  .pu-inv-date { font-variant-numeric: var(--pu-font-numeric); white-space: nowrap }
   .pu-inv-cal { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); text-decoration: none }
 
   /* The items table: a plain document table, not a data grid. */
   .pu-inv-tablebox, .pu-lie-tablebox { overflow-x: auto; min-width: 0 }
-  .pu-inv-table, .pu-slip-table, .pu-itax-table, .pu-lie-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums }
+  .pu-inv-table, .pu-slip-table, .pu-itax-table, .pu-lie-table { width: 100%; border-collapse: collapse; font-variant-numeric: var(--pu-font-numeric) }
   .pu-inv-table th, .pu-inv-table td { padding: var(--pu-space-2) var(--pu-space-2); text-align: start; vertical-align: top; border-bottom: 1px solid var(--pu-color-border) }
   .pu-inv-table thead th { font: 600 var(--pu-text-xs) / 1.3 var(--pu-font-body); color: var(--pu-color-text-muted); border-bottom: 1px solid var(--pu-color-border-strong); white-space: nowrap }
   .pu-inv-table .num, .pu-slip-table .num, .pu-itax-table .num, .pu-lie-table .num { text-align: end; white-space: nowrap }
@@ -47,7 +47,7 @@
   .pu-inv-currency { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
   .pu-inv-words { display: grid; gap: 2px; font-weight: 600; overflow-wrap: anywhere }
   .pu-inv-notes { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
-  .pu-inv-sum, .pu-lie-sum { display: grid; gap: var(--pu-space-1); margin: 0; font-variant-numeric: tabular-nums }
+  .pu-inv-sum, .pu-lie-sum { display: grid; gap: var(--pu-space-1); margin: 0; font-variant-numeric: var(--pu-font-numeric) }
   .pu-inv-sum > div, .pu-lie-sum > div { display: flex; justify-content: space-between; gap: var(--pu-space-4) }
   .pu-inv-sum dt, .pu-lie-sum dt { color: var(--pu-color-text-muted) }
   .pu-inv-sum dd, .pu-lie-sum dd { margin: 0; text-align: end }
@@ -98,13 +98,13 @@
   .pu-itax-form, .pu-itax-result { flex: 1 1 320px }
   .pu-itax-form { display: grid; gap: var(--pu-space-3); align-content: start; min-width: 0 }
   .pu-itax-fy { margin: 0; font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body) }
-  .pu-itax-group { display: grid; gap: var(--pu-space-2); margin: 0; padding: var(--pu-space-3); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-lg); min-width: 0 }
+  .pu-itax-group { display: grid; gap: var(--pu-space-2); margin: 0; padding: var(--pu-space-3); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-16); min-width: 0 }
   .pu-itax-group legend { padding: 0 var(--pu-space-1); font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body) }
   .pu-itax-hint { margin: 0; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
   .pu-itax-result { display: grid; gap: var(--pu-space-3); align-content: start; min-width: 0; padding: var(--pu-space-4); background: var(--pu-color-surface-subtle); border-radius: var(--pu-radius-card) }
-  .pu-itax-headline { margin: 0; display: grid; gap: 2px; font: 700 24px / 1.2 var(--pu-font-display); font-variant-numeric: tabular-nums }
+  .pu-itax-headline { margin: 0; display: grid; gap: 2px; font: 700 24px / 1.2 var(--pu-font-display); font-variant-numeric: var(--pu-font-numeric) }
   .pu-itax-label { font: 400 var(--pu-text-xs) / 1.3 var(--pu-font-body); color: var(--pu-color-text-muted) }
-  .pu-itax-facts { display: grid; gap: var(--pu-space-1); margin: 0; font-variant-numeric: tabular-nums }
+  .pu-itax-facts { display: grid; gap: var(--pu-space-1); margin: 0; font-variant-numeric: var(--pu-font-numeric) }
   .pu-itax-facts > div { display: flex; justify-content: space-between; gap: var(--pu-space-3) }
   .pu-itax-facts dt { color: var(--pu-color-text-muted) }
   .pu-itax-facts dd { margin: 0; text-align: end }
@@ -126,8 +126,8 @@
   .pu-slip-table tbody th { font-weight: 400 }
   .pu-slip-table tfoot :is(th, td) { font-weight: 700; border-bottom: 0 }
   .pu-slip-none { color: var(--pu-color-text-muted) }
-  .pu-slip-net { display: grid; gap: var(--pu-space-1); padding: var(--pu-space-3); background: var(--pu-color-surface-subtle); border-radius: var(--pu-radius-lg) }
-  .pu-slip-net-row { display: flex; justify-content: space-between; align-items: baseline; gap: var(--pu-space-3); font: 700 var(--pu-text-lg) / 1.3 var(--pu-font-display); font-variant-numeric: tabular-nums }
+  .pu-slip-net { display: grid; gap: var(--pu-space-1); padding: var(--pu-space-3); background: var(--pu-color-surface-subtle); border-radius: var(--pu-radius-16) }
+  .pu-slip-net-row { display: flex; justify-content: space-between; align-items: baseline; gap: var(--pu-space-3); font: 700 var(--pu-text-lg) / 1.3 var(--pu-font-display); font-variant-numeric: var(--pu-font-numeric) }
   .pu-slip-net[data-negative] .pu-slip-net-row { color: var(--pu-color-loss) }
   .pu-slip-words { display: grid; gap: 2px; font-weight: 600; overflow-wrap: anywhere }
   .pu-slip-notes { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
@@ -144,7 +144,7 @@
   .pu-aging-rowtotal { font-weight: 600 }
   .pu-aging .kit-table .pu-aging-total, .pu-tds .kit-table .pu-tds-total { font-weight: 700; border-top: 1px solid var(--pu-color-border-strong) }
   .pu-aging .kit-table .pu-aging-share { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
-  .pu-tds-pan { font-variant-numeric: tabular-nums; letter-spacing: 0.04em }
+  .pu-tds-pan { font-variant-numeric: var(--pu-font-numeric); letter-spacing: 0.04em }
 
   @media print {
     .pu-inv, .pu-slip { border: 1px solid currentColor; border-radius: 0; background: none; color: CanvasText; break-inside: avoid; page-break-inside: avoid }

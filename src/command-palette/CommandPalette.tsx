@@ -17,6 +17,7 @@
 import { useEffect, useId, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type MouseEvent as ReactMouseEvent, type ReactNode } from 'react';
 
 import { moveChip, moveIndex } from '../command-keys/commandKeys.ts';
+import { useScrollLock } from '../internal/scrollLock.ts';
 
 export interface CommandAction {
   /** Stable id of the action ("open", "watch"), passed back to onRun. */
@@ -127,15 +128,12 @@ export function CommandPalette({ labels, placeholder, query, onQuery, items, onR
   const list = useRef<HTMLDivElement>(null);
   const tid = (s: string) => `${testIdPrefix}-${s}`;
 
-  // Focus in, page still, focus back out on close.
+  // Focus in (the field), page still, focus back out on close.
+  useScrollLock(true);
   useEffect(() => {
     const prev = document.activeElement as HTMLElement | null;
     input.current?.focus();
-    const html = document.documentElement;
-    const was = html.style.overflow;
-    html.style.overflow = 'hidden';
     return () => {
-      html.style.overflow = was;
       if (prev && document.contains(prev)) prev.focus({ preventScroll: true });
     };
   }, []);

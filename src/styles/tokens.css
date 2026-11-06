@@ -27,6 +27,14 @@
   [data-theme='light'] {
     color-scheme: light;
     --pu-ambient: none;
+    --pu-color-btn-line: #7a7e78;
+    --pu-color-chart-fill: rgba(200, 242, 61, 0.3);
+    --pu-color-focus-ring: #3f6a00;
+    --pu-color-info: #2a62c4;
+    --pu-color-inverse-shimmer: rgba(255, 255, 255, 0.07);
+    --pu-color-inverse-shimmer-hi: rgba(255, 255, 255, 0.12);
+    --pu-color-on-accent: #ffffff;
+    --pu-color-surface-elevated: #ffffff;
     --pu-color-accent: #3f6a00;
     --pu-color-accent-fill: #c8f23d;
     --pu-color-accent-fill-hover: #b9e62a;
@@ -86,31 +94,70 @@
     --pu-color-warn-accent: #d08a10;
     --pu-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     --pu-font-body: 'Geist', 'Mukta', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --pu-font-mono: 'Geist', 'Mukta', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --pu-font-code: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --pu-font-weight-regular: 400;
+    --pu-font-weight-medium: 500;
+    --pu-font-weight-semibold: 600;
+    --pu-font-weight-bold: 700;
+    --pu-line-height-tight: 1.2;
+    --pu-line-height-normal: 1.5;
+    --pu-font-numeric: tabular-nums;
+    --pu-tracking-display: -0.032em;
+    --pu-tracking-label: 0.11em;
+    --pu-nav-height: 72px;
+    --pu-content-default: 1440px;
     --pu-font-display: 'Geist', 'Mukta', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --pu-motion-base: 220ms;
     --pu-motion-fast: 140ms;
+    /* Radius scale, monotonic: 4 < 6 < 8 < 12 < 16 < 24 < full. Named by pixel size. */
+    --pu-radius-4: 4px;
+    --pu-radius-6: 6px;
+    --pu-radius-8: 8px;
+    --pu-radius-12: 12px;
+    --pu-radius-16: 16px;
+    --pu-radius-24: 24px;
+    --pu-radius-full: 9999px;
+    /* Semantic aliases: override these to retheme every card or control. */
+    --pu-radius-card: var(--pu-radius-24);
+    --pu-radius-control: var(--pu-radius-12);
+    /* DEPRECATED aliases, kept at their original values so consumer overrides and reads keep
+       working. Out of order by design (md = lg = 16px, xl = 2xl = 3xl = 8px). Components no
+       longer read them. Use the scale above. Removed in the next major. */
+    --pu-radius-sm: 0.5rem;
+    --pu-radius-md: 16px;
+    --pu-radius-lg: 16px;
+    --pu-radius-xl: 8px;
     --pu-radius-2xl: 8px;
     --pu-radius-3xl: 8px;
-    --pu-radius-card: 24px;
-    --pu-radius-control: 12px;
-    --pu-radius-full: 9999px;
-    --pu-radius-lg: 16px;
-    --pu-radius-md: 16px;
-    --pu-radius-sm: 0.5rem;
-    --pu-radius-xl: 8px;
     --pu-seg-thumb: #ffffff;
     --pu-seg-thumb-shadow: 0 1px 2px rgba(18, 19, 20, 0.1);
     --pu-shadow-lg: 0 24px 60px -16px rgba(17, 18, 20, 0.22), 0 0 0 1px rgba(17, 18, 20, 0.04);
     --pu-shadow-sm: none;
+    --pu-shadow-md: none;
+    --pu-shadow-card: 0 1px 2px rgba(18, 19, 20, 0.05), 0 8px 24px -16px rgba(18, 19, 20, 0.18);
+    /* Spacing, a 4px grid. The number is the step (4px each); 0-5 is 2px. */
+    --pu-space-0-5: 0.125rem;
     --pu-space-1: 0.25rem;
-    --pu-space-16: 4rem;
     --pu-space-2: 0.5rem;
     --pu-space-3: 0.75rem;
     --pu-space-4: 1rem;
+    --pu-space-5: 1.25rem;
+    --pu-space-6: 1.5rem;
+    --pu-space-7: 1.75rem;
+    --pu-space-8: 2rem;
+    --pu-space-9: 2.25rem;
+    --pu-space-10: 2.5rem;
+    --pu-space-11: 2.75rem;
+    --pu-space-12: 3rem;
+    --pu-space-16: 4rem;
+    --pu-space-20: 5rem;
+    --pu-space-24: 6rem;
     --pu-tap-min: 44px;
     --pu-text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
     --pu-text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
     --pu-text-sm: clamp(0.8125rem, 0.77rem + 0.22vw, 0.9375rem);
+    --pu-text-xl: clamp(1.3125rem, 1.05rem + 0.85vw, 1.75rem);
     --pu-text-xs: clamp(0.6875rem, 0.65rem + 0.16vw, 0.75rem);
   }
 
@@ -168,6 +215,14 @@
 
   [data-theme='dark'] {
     color-scheme: dark;
+    --pu-color-btn-line: #6e7480;
+    --pu-color-chart-fill: rgba(200, 242, 61, 0.1);
+    --pu-color-focus-ring: #c8f23d;
+    --pu-color-info: #8fb8ff;
+    --pu-color-inverse-shimmer: rgba(18, 19, 20, 0.07);
+    --pu-color-inverse-shimmer-hi: rgba(18, 19, 20, 0.12);
+    --pu-color-on-accent: #0d0e10;
+    --pu-color-surface-elevated: #1f2226;
     --pu-color-accent: #c8f23d;
     --pu-color-accent-fill-hover: #d6ff5a;
     --pu-color-bg: #0d0e10;
@@ -226,11 +281,20 @@
     --pu-seg-thumb: #2e3237;
     --pu-seg-thumb-shadow: none;
     --pu-shadow-lg: 0 24px 60px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    --pu-shadow-card: none;
   }
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme='light']) {
       color-scheme: dark;
+      --pu-color-btn-line: #6e7480;
+      --pu-color-chart-fill: rgba(200, 242, 61, 0.1);
+      --pu-color-focus-ring: #c8f23d;
+      --pu-color-info: #8fb8ff;
+      --pu-color-inverse-shimmer: rgba(18, 19, 20, 0.07);
+      --pu-color-inverse-shimmer-hi: rgba(18, 19, 20, 0.12);
+      --pu-color-on-accent: #0d0e10;
+      --pu-color-surface-elevated: #1f2226;
       --pu-color-accent: #c8f23d;
       --pu-color-accent-fill-hover: #d6ff5a;
       --pu-color-bg: #0d0e10;
@@ -289,6 +353,7 @@
       --pu-seg-thumb: #2e3237;
       --pu-seg-thumb-shadow: none;
       --pu-shadow-lg: 0 24px 60px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      --pu-shadow-card: none;
     }
   }
 

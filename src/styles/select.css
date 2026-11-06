@@ -14,7 +14,7 @@
   .kit-sel.lg > select { padding-block: 0; padding-inline: 14px 42px; font-size: var(--pu-text-base) }
   .kit-sel > select:hover:not(:disabled) { border-color: var(--pu-color-text-tertiary) }
   .kit-sel > select:focus { outline: none }
-  .kit-sel > select:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+  .kit-sel > select:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
   .kit-sel > select:disabled { opacity: 0.55; cursor: not-allowed }
   .kit-sel > select:is([aria-invalid='true'], :user-invalid) { border-color: var(--pu-color-loss); }
   .kit-sel > select:is([aria-invalid='true'], :user-invalid):focus-visible { outline-color: var(--pu-color-loss); }
@@ -60,7 +60,7 @@
         margin: 0;
         padding: var(--pu-space-2) var(--pu-space-3);
         border: 0;
-        border-radius: var(--pu-radius-sm);
+        border-radius: var(--pu-radius-8);
         background: transparent;
         color: var(--pu-color-text);
         font: 400 var(--pu-text-sm) / 1.4 var(--pu-font-body);
@@ -69,7 +69,7 @@
         cursor: pointer;
       }
       .kit-sel > select:not([data-native]):not([multiple]):not([size]) option:checked { background: var(--pu-color-gain-soft); font-weight: 500; }
-      .kit-sel > select:not([data-native]):not([multiple]):not([size]) option:is(:hover, :focus-visible):not(:disabled) { background: var(--pu-color-surface-tint); outline: 2px solid var(--pu-color-accent); outline-offset: -2px; }
+      .kit-sel > select:not([data-native]):not([multiple]):not([size]) option:is(:hover, :focus-visible):not(:disabled) { background: var(--pu-color-surface-tint); outline: 2px solid var(--pu-color-focus-ring); outline-offset: -2px; }
       .kit-sel > select:not([data-native]):not([multiple]):not([size]) option:disabled { color: var(--pu-color-text-tertiary); opacity: .55; cursor: not-allowed; }
       .kit-sel > select:not([data-native]):not([multiple]):not([size]) option::checkmark { order: 1; margin-inline-start: auto; color: var(--pu-color-accent); }
       .kit-sel > select:not([data-native]):not([multiple]):not([size]) optgroup { padding-block: var(--pu-space-1); color: var(--pu-color-text-muted); font: 600 var(--pu-text-xs) / 1.5 var(--pu-font-body); }

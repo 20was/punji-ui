@@ -169,6 +169,7 @@ Each module is its own subpath, and its documentation is on [design.punji.app](h
 | `CommandPalette` | `@punji/ui/command-palette` | [Command palette](https://design.punji.app/components/command-palette) |
 | `CompanySearch` | `@punji/ui/company-search` | [Company search](https://design.punji.app/components/company-search) |
 | `Chip`, `ChipRow`, `SegmentedControl`, `SegmentedSwitch` | `@punji/ui/controls` | [Segmented control](https://design.punji.app/components/segmented-control) · [Chip](https://design.punji.app/components/chip) |
+| `Dialog`, `AlertDialog` | `@punji/ui/dialog` | [Dialog](https://design.punji.app/components/dialog) |
 | `Drawer` | `@punji/ui/drawer` | [Drawer](https://design.punji.app/components/drawer) |
 | `DrawerScreen`, `DrawerHeader`, `DrawerBody`, `DrawerFooter` | `@punji/ui/drawer-screen` | [Drawer screen](https://design.punji.app/components/drawer-screen) |
 | `Field`, `NumberField`, `TextAreaField`, `DateField`, `SelectField`, `SymbolField`, `PriceField` | `@punji/ui/fields` | [Field](https://design.punji.app/components/field) |

@@ -107,6 +107,7 @@ export const LEADS: Readonly<Record<string, string>> = {
   'link-table': 'A short list where every row opens something, with figures aligned on the right.',
   pagination: 'Page through a long list with a range label, page numbers and previous and next buttons.',
   popover: 'A small panel that opens under its button and closes on Escape or a click outside.',
+  dialog: 'A modal Dialog and an AlertDialog that must be answered, with focus kept inside, the page behind inert and focus returned on close.',
   drawer: 'A side panel that slides over the page for a form or details, keeping focus inside until it closes.',
   'command-palette': 'A Command-K search dialog with grouped results, run entirely from the keyboard. This site\'s search uses it.',
   'page-layout': 'The page frame: a header with title, meta line and actions, and section headers below it.',

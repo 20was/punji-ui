@@ -784,7 +784,37 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       'Name the buttons for what they do ("Confirm sale"), and state the amount in the body.',
     ],
     responsive: ['At most 28rem wide: pinned to the bottom edge on a phone, centred from 640px. Dock is sticky at the bottom of its scroll container.'],
-    related: ['drawer', 'inline-confirm', 'toast', 'button', 'drawer-screen'],
+    related: ['dialog', 'drawer', 'inline-confirm', 'toast', 'button', 'drawer-screen'],
+  },
+  {
+    slug: 'dialog',
+    stability: 'beta',
+    title: 'Dialog and AlertDialog',
+    description: 'A modal Dialog and an AlertDialog that must be answered: named by the title, described by the body, Tab trapped, page behind inert, focus returned.',
+    group: 'layout',
+    kind: 'component',
+    summary:
+      'Dialog holds a short task or some information and closes on Esc, the scrim or its close button. AlertDialog interrupts with a question that must be answered: it starts on the safe button, Esc means Cancel and the scrim does nothing. Both render in a portal, keep the page behind still and inert, and give focus back to the control that opened them. They share one overlay layer with Sheet and Drawer, so one can open over another.',
+    use: ['Dialog: terms, a short form, details the reader opened on purpose.', 'AlertDialog: closing an account, removing a saved beneficiary, anything the reader must answer before going on.', 'Name the confirm for what it does ("Close account"), and say what is lost in the body.'],
+    avoid: ['A decision made on a phone with a thumb: Sheet rises from the bottom.', 'A long form or a panel next to the page: use Drawer.', 'A reversible action: do it and offer Undo in a Toast.'],
+    api: [...ui('dialog', 'Dialog', 'AlertDialog')],
+    examples: [
+      { id: 'basic', title: 'A Dialog', note: 'Open it, press Tab, Esc or click outside; focus returns to the button.' },
+      { id: 'alert', title: 'An AlertDialog', note: 'Focus starts on Cancel; Esc cancels; clicking outside does nothing.' },
+    ],
+    keyboard: [
+      'Opening moves focus inside: an element marked `data-autofocus`, else the first control that is not destructive. An AlertDialog starts on Cancel when the confirm is destructive.',
+      'Tab and Shift+Tab cycle inside it and never reach the page behind.',
+      'Dialog: Esc and a click on the scrim close it. AlertDialog: Esc is Cancel; the scrim does nothing.',
+    ],
+    accessibility: [
+      '`role="dialog"` or `role="alertdialog"`, `aria-modal="true"`, named by the title (`aria-labelledby`) and described by the body (`aria-describedby`).',
+      'Everything else in the document body is `inert` while it is open, and put back exactly as it was when it closes, also with several dialogs stacked.',
+      'The page does not scroll while it is open; the width of the scrollbar is kept so nothing shifts.',
+      'Dialog has a screen-reader-only close button; set `closeLabel` in the language of the reader.',
+    ],
+    responsive: ['At most 28rem wide: pinned to the bottom edge on a phone, centred from 640px. They render nothing during server rendering.'],
+    related: ['sheet', 'drawer', 'inline-confirm', 'toast', 'button'],
   },
   {
     slug: 'drawer-screen',

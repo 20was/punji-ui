@@ -1,7 +1,7 @@
 import { createElement, lazy, Suspense, useEffect, useMemo, useReducer, useRef, useState } from 'react';
-import { headFor, NPM_URL, pagePath, REPO } from '../paths.ts';
+import { NPM_URL, pagePath, REPO } from '../paths.ts';
 import { applyHead } from './head.ts';
-import { appView, homeView, loadedApp, loadRoute, pageData, pageView, routeReady } from './load.ts';
+import { appView, headData, homeView, loadedApp, loadRoute, pageData, pageView, routeReady } from './load.ts';
 import { groupTitleOf, type ClientRoute } from './nav.ts';
 import { BASE, Link, useRoute } from './router.tsx';
 import { NotFound } from './NotFound.tsx';
@@ -54,6 +54,9 @@ function Footer() {
 
 /** The route's head: a page's description comes with its page data, which is loaded before the route shows. */
 function headOf(route: ClientRoute) {
+  // Loaded by the navigation that brought us here (load.ts); the first load's head is already in the HTML.
+  const headFor = headData()?.headFor;
+  if (!headFor) return undefined;
   if (route.kind !== 'page') return headFor(route, SITE_ORIGIN, BASE);
   const data = pageData(route.page.slug);
   return data
@@ -92,7 +95,8 @@ export function App({ path }: { path: string }) {
       first.current = false;
       return;
     }
-    applyHead(headOf(route));
+    const head = headOf(route);
+    if (head) applyHead(head);
     // A link to a section of a page (the breadcrumb's "/#domain-banking") lands on that section; any other at the top.
     const hash = window.location.hash.slice(1);
     const target = hash && !hash.startsWith('/') ? document.getElementById(decodeURIComponent(hash)) : null;

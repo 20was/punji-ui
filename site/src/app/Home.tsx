@@ -21,7 +21,7 @@ import { quotes, sectorShares } from '../sample.ts';
 import { Link } from './router.tsx';
 import { CopyButton } from './Code.tsx';
 import { tokenize } from './highlight.ts';
-import { HomeDashboard } from './HomeDashboard.tsx';
+import { Late } from './Late.tsx';
 import { formatBytes } from './format.ts';
 import { ArrowRightIcon, ExternalIcon } from './icons.tsx';
 
@@ -411,7 +411,7 @@ export function Home() {
             .
           </p>
         </div>
-        <HomeDashboard />
+        <Late id="./HomeDashboard.tsx" />
       </section>
 
       <section className="home-section" id="apps" aria-labelledby="apps-h">

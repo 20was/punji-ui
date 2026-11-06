@@ -169,6 +169,9 @@ try {
         for (const variant of variants.slice(1)) {
           await page.getByRole('group', { name: `${route.title} variants` }).getByRole('button', { name: variant.title, exact: true }).click();
           await page.getByLabel(`${variant.title} example code`, { exact: true }).waitFor();
+          // A variant after the first arrives as its own chunk; let charts take their measured width (a ResizeObserver
+          // runs a frame after mount) before the layout is judged.
+          await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done))));
           checked.variants += 1;
           await audit(`${label} [${variant.id}]`, '[data-testid=preview]');
         }

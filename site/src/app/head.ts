@@ -1,4 +1,4 @@
-import type { HeadData } from '../seo.ts';
+import type { HeadData } from '../head-data.ts';
 
 // Keeps the document head in step with the route after client navigation. The first render already
 // carries the right head (prerendered), so this only changes what differs.

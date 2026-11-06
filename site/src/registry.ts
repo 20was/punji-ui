@@ -255,7 +255,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['Not interactive; it renders text.'],
     accessibility: ['Renders a <data> element whose value attribute holds the exact decimal, with the full currency name spoken when the symbol is shared.', 'A missing value is announced as "No value" (override with `missingLabel`).', 'Sign is text, not colour.'],
     responsive: ['Never truncates. Use compact where a column is narrow; the exact amount stays in the spoken text.'],
-    related: ['price-change', 'currency-input', 'formatters', 'metric-tile'],
+    related: ['price-change', 'currency-input', 'formatters', 'metric-tile', 'fx-rate'],
   },
   {
     slug: 'price-change',
@@ -894,7 +894,7 @@ export const PAGES: readonly PageDef[] = [
         '`getMarketSession` throws `RangeError` for an unknown zone, a malformed time or date, a window ending before it starts, or an invalid now.',
       ],
     },
-    related: ['market-indices', 'stock-table', 'price-limit'],
+    related: ['market-indices', 'stock-table', 'price-limit', 'data-freshness'],
   },
   {
     slug: 'price-limit',
@@ -1184,7 +1184,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['The retry button is a native button: Tab, then Enter or Space.'],
     accessibility: ['`role="alert"`, so a failure that appears is announced.', 'The retry action has your words (`retryLabel`).'],
     responsive: ['The message wraps; the button stays on its own line when narrow.'],
-    related: ['inline-state', 'empty-skeleton', 'data-table'],
+    related: ['inline-state', 'empty-skeleton', 'data-table', 'status-banner'],
   },
   {
     slug: 'empty-skeleton',

@@ -607,6 +607,18 @@
       "types": "./dist/tokens.css.d.ts",
       "default": "./dist/tokens.css"
     },
+    "./fx-rate": {
+      "types": "./dist/fx-rate/FxRate.d.ts",
+      "default": "./dist/fx-rate/FxRate.js"
+    },
+    "./data-freshness": {
+      "types": "./dist/data-freshness/DataFreshness.d.ts",
+      "default": "./dist/data-freshness/DataFreshness.js"
+    },
+    "./status-banner": {
+      "types": "./dist/status-banner/StatusBanner.d.ts",
+      "default": "./dist/status-banner/StatusBanner.js"
+    },
     "./css/*.css": {
       "types": "./dist/css/*.css.d.ts",
       "default": "./dist/css/*.css"

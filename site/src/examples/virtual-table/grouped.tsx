@@ -43,6 +43,7 @@ export default function Example() {
         rowKey={rowKey}
         emptyTitle="No trades"
         height={420}
+       
         groupBy={bySymbol}
         collapsedGroups={collapsed}
         onCollapsedGroupsChange={setCollapsed}

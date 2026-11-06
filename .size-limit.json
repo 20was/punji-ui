@@ -255,14 +255,28 @@
     "name": "virtual-table (import from '@punji/ui/virtual-table')",
     "path": "dist/virtual-table/VirtualFinancialTable.js",
     "import": "*",
-    "limit": "7.55 kB",
+    "limit": "7.71 kB",
     "gzip": true
   },
   {
     "name": "table-core (import from @punji/ui/table-core)",
     "path": "dist/table-core/tableCore.js",
     "import": "*",
-    "limit": "1.95 kB",
+    "limit": "2.04 kB",
+    "gzip": true
+  },
+  {
+    "name": "table-totals (import from @punji/ui/table-totals)",
+    "path": "dist/table-totals/tableTotals.js",
+    "import": "*",
+    "limit": "1.76 kB",
+    "gzip": true
+  },
+  {
+    "name": "table-presets (import from @punji/ui/table-presets)",
+    "path": "dist/table-presets/tablePresets.js",
+    "import": "*",
+    "limit": "5.45 kB",
     "gzip": true
   },
   {
@@ -381,7 +395,7 @@
     "name": "Financial compositions",
     "path": "dist/financial/financial.js",
     "import": "*",
-    "limit": "7.00 kB",
+    "limit": "7.17 kB",
     "gzip": true
   },
   {
@@ -500,7 +514,7 @@
     "name": "statement-upload (import from '@punji/ui/statement-upload')",
     "path": "dist/statement-upload/StatementUpload.js",
     "import": "*",
-    "limit": "2.50 kB",
+    "limit": "2.47 kB",
     "gzip": true
   },
   {

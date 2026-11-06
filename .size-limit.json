@@ -331,7 +331,7 @@
   {
     "name": "tokens.css",
     "path": "dist/tokens.css",
-    "limit": "1.72 kB",
+    "limit": "2.0 kB",
     "rolldown": false,
     "gzip": true
   },

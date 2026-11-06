@@ -140,6 +140,10 @@ orange, so the prop re-points to those.)
 Never rely on colour alone: every figure also carries a sign, arrow or word, and gain and loss differ in lightness as well
 as hue (at least 1.4:1, asserted by `scripts/check-contrast.mjs`).
 
+## Radius, spacing and type scales
+
+Radius (`--pu-radius-4` to `-24`, plus `-card` and `-control`), spacing (`--pu-space-*`, 4px grid) and type (`--pu-font-weight-*`, `--pu-line-height-*`, `--pu-font-numeric`) are tokens you can override like colours. `--pu-radius-sm/md/lg/xl/2xl/3xl` are deprecated and no longer read by components; see the scales section of [tokens.md](tokens.md).
+
 ## Brand theming
 
 `createTheme` from `@punji/ui/theme` builds a typed, validated brand:

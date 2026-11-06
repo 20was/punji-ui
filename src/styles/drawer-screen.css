@@ -1,11 +1,11 @@
 /* Punji UI styles.
    Styles for drawer-screen. Needs tokens.css and base.css (styles.css has everything). */
 @layer punji.components {
-  .kit-drawer-screen { display: flex; flex-direction: column; min-height: 100%; color: var(--pu-color-text); font-variant-numeric: tabular-nums }
+  .kit-drawer-screen { display: flex; flex-direction: column; min-height: 100%; color: var(--pu-color-text); font-variant-numeric: var(--pu-font-numeric) }
   .kit-drawer-head { position: sticky; top: 0; z-index: var(--pu-z-sticky); display: flex; align-items: center; gap: 8px; min-height: 56px; padding-block: 12px; padding-inline: 8px 12px; border-bottom: 1px solid var(--pu-color-border); background: var(--pu-color-surface-solid) }
   .kit-drawer-head.noback { padding-inline-start: 20px }
   .kit-drawer-head h2 { flex: 1; min-width: 0; margin: 0; font: 700 16px / 22px var(--pu-font-display); overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
-  .kit-drawer-x { flex: none; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; border: 0; border-radius: var(--pu-radius-sm); background: none; color: var(--pu-color-text-muted); cursor: pointer }
+  .kit-drawer-x { flex: none; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; border: 0; border-radius: var(--pu-radius-8); background: none; color: var(--pu-color-text-muted); cursor: pointer }
   .kit-drawer-x:hover { background: var(--pu-color-surface-tint); color: var(--pu-color-text) }
   .kit-drawer-x path { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round }
   .kit-drawer-x:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 1px }

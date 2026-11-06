@@ -5,7 +5,7 @@
   .kit-col-empty { margin: 0; padding: 24px 0; text-align: center; font-size: 13px; line-height: 20px; color: var(--pu-color-text-muted) }
   /* Time runs left to right in every direction: the plot keeps LTR. */
   .kit-col-frame { display: grid; column-gap: 8px; min-width: 0; direction: ltr }
-  .kit-col-y { position: relative; grid-column: 1; grid-row: 1; padding-top: 22px; font: 500 11px / 14px var(--pu-font-body); color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums; text-align: right }
+  .kit-col-y { position: relative; grid-column: 1; grid-row: 1; padding-top: 22px; font: 500 11px / 14px var(--pu-font-body); color: var(--pu-color-text-muted); font-variant-numeric: var(--pu-font-numeric); text-align: right }
   .kit-col-y-in { position: relative; height: 100%; min-width: 1.5ch }
   .kit-col-y-w { display: block; height: 0; overflow: hidden; visibility: hidden; white-space: nowrap }
   .kit-col-y-in > span:not(.kit-col-y-w) { position: absolute; right: 0; transform: translateY(50%); white-space: nowrap }
@@ -19,8 +19,8 @@
   .kit-col-up { flex-direction: column-reverse }
   .kit-col-dn { flex-direction: column }
   .kit-col-up > i, .kit-col-dn > i { display: block; flex: 1 1 0; min-height: 2px; border-radius: 4px }
-  .kit-col-v { position: absolute; left: 50%; bottom: 100%; transform: translateX(-50%); margin-bottom: 4px; font: 600 12px / 16px var(--pu-font-body); font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--pu-color-text); pointer-events: none }
-  .kit-col-x { display: grid; grid-column: -2 / -1; grid-row: 2; margin-top: 12px; font: 500 12px / 16px var(--pu-font-body); color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums; text-align: center }
+  .kit-col-v { position: absolute; left: 50%; bottom: 100%; transform: translateX(-50%); margin-bottom: 4px; font: 600 12px / 16px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); white-space: nowrap; color: var(--pu-color-text); pointer-events: none }
+  .kit-col-x { display: grid; grid-column: -2 / -1; grid-row: 2; margin-top: 12px; font: 500 12px / 16px var(--pu-font-body); color: var(--pu-color-text-muted); font-variant-numeric: var(--pu-font-numeric); text-align: center }
   .kit-col-x > span { display: flex; justify-content: center; min-width: 0; white-space: nowrap }
   .kit-col-x > span.first { justify-content: flex-start }
   .kit-col-x > span.last { justify-content: flex-end }

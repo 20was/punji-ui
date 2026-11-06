@@ -1,7 +1,7 @@
 /* Punji UI styles.
    Styles for breakdown. Needs tokens.css and base.css (styles.css has everything). */
 @layer punji.components {
-  .kit-bd { margin: 0; padding: 6px 16px; border-radius: var(--pu-radius-xl); background: var(--pu-color-surface-tint); color: var(--pu-color-text); font-variant-numeric: tabular-nums }
+  .kit-bd { margin: 0; padding: 6px 16px; border-radius: var(--pu-radius-8); background: var(--pu-color-surface-tint); color: var(--pu-color-text); font-variant-numeric: var(--pu-font-numeric) }
   .kit-bd.kit-inv { background: var(--pu-color-surface-inverse) }
   .kit-bd-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 8px 0 }
   .kit-bd-row + .kit-bd-row { border-top: 1px solid var(--pu-color-border) }

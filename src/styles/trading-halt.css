@@ -1,7 +1,7 @@
 /* Punji UI styles.
    Styles for TradingHaltBanner. Needs tokens.css, base.css and states.css (styles.css has everything). */
 @layer punji.components {
-  .pu-halt { display: flex; align-items: flex-start; gap: var(--pu-space-3); padding: 12px 16px; border: 1px solid var(--pu-color-border-strong); border-radius: var(--pu-radius-lg); background: var(--pu-color-surface-tint); color: var(--pu-color-text); font-size: var(--pu-text-sm); line-height: 1.5 }
+  .pu-halt { display: flex; align-items: flex-start; gap: var(--pu-space-3); padding: 12px 16px; border: 1px solid var(--pu-color-border-strong); border-radius: var(--pu-radius-16); background: var(--pu-color-surface-tint); color: var(--pu-color-text); font-size: var(--pu-text-sm); line-height: 1.5 }
   .pu-halt[data-kind='resumed'] { border-color: var(--pu-color-border) }
   .pu-halt-body { flex: 1 1 auto; display: grid; gap: 2px; min-width: 0 }
   .pu-halt-title { font-weight: 600 }

@@ -81,31 +81,78 @@ Both are documented in [THEMING.md](THEMING.md).
 | `--pu-ease-out` | `cubic-bezier(0.16, 1, 0.3, 1)` | - |
 | `--pu-font-body` | `'Geist', 'Mukta', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif` | - |
 | `--pu-font-display` | `'Geist', 'Mukta', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif` | - |
+| `--pu-font-mono` | same stack as body | - |
+| `--pu-font-code` | `ui-monospace, 'SFMono-Regular', Menlo, monospace` | - |
+| `--pu-font-weight-regular` | `400` | - |
+| `--pu-font-weight-medium` | `500` | - |
+| `--pu-font-weight-semibold` | `600` | - |
+| `--pu-font-weight-bold` | `700` | - |
+| `--pu-line-height-tight` | `1.2` | - |
+| `--pu-line-height-normal` | `1.5` | - |
+| `--pu-font-numeric` | `tabular-nums` | - |
+| `--pu-tracking-display` | `-0.032em` | - |
+| `--pu-tracking-label` | `0.11em` | - |
+| `--pu-nav-height` | `72px` | - |
+| `--pu-content-default` | `1440px` | - |
+| `--pu-text-xl` | `clamp(1.3125rem, 1.05rem + 0.85vw, 1.75rem)` | - |
+| `--pu-shadow-md` | `none` | - |
+| `--pu-shadow-card` | `0 1px 2px rgba(18, 19, 20, 0.05), 0 8px 24px -16px rgba(18, 19, 20, 0.18)` | `none` |
 | `--pu-motion-base` | `220ms` | - |
 | `--pu-motion-fast` | `140ms` | - |
-| `--pu-radius-2xl` | `8px` | - |
-| `--pu-radius-3xl` | `8px` | - |
-| `--pu-radius-card` | `24px` | - |
-| `--pu-radius-control` | `12px` | - |
+| `--pu-radius-4` | `4px` | - |
+| `--pu-radius-6` | `6px` | - |
+| `--pu-radius-8` | `8px` | - |
+| `--pu-radius-12` | `12px` | - |
+| `--pu-radius-16` | `16px` | - |
+| `--pu-radius-24` | `24px` | - |
 | `--pu-radius-full` | `9999px` | - |
-| `--pu-radius-lg` | `16px` | - |
-| `--pu-radius-md` | `16px` | - |
-| `--pu-radius-sm` | `0.5rem` | - |
-| `--pu-radius-xl` | `8px` | - |
+| `--pu-radius-card` | `var(--pu-radius-24)` | - |
+| `--pu-radius-control` | `var(--pu-radius-12)` | - |
 | `--pu-seg-thumb` | `#ffffff` | `#2e3237` |
 | `--pu-seg-thumb-shadow` | `0 1px 2px rgba(18, 19, 20, 0.1)` | `none` |
 | `--pu-shadow-lg` | `0 24px 60px -16px rgba(17, 18, 20, 0.22), 0 0 0 1px rgba(17, 18, 20, 0.04)` | `0 24px 60px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.1)` |
 | `--pu-shadow-sm` | `none` | - |
+| `--pu-space-0-5` | `0.125rem` | - |
 | `--pu-space-1` | `0.25rem` | - |
-| `--pu-space-16` | `4rem` | - |
 | `--pu-space-2` | `0.5rem` | - |
 | `--pu-space-3` | `0.75rem` | - |
 | `--pu-space-4` | `1rem` | - |
+| `--pu-space-5` | `1.25rem` | - |
+| `--pu-space-6` | `1.5rem` | - |
+| `--pu-space-7` | `1.75rem` | - |
+| `--pu-space-8` | `2rem` | - |
+| `--pu-space-9` | `2.25rem` | - |
+| `--pu-space-10` | `2.5rem` | - |
+| `--pu-space-11` | `2.75rem` | - |
+| `--pu-space-12` | `3rem` | - |
+| `--pu-space-16` | `4rem` | - |
+| `--pu-space-20` | `5rem` | - |
+| `--pu-space-24` | `6rem` | - |
 | `--pu-tap-min` | `44px` | - |
 | `--pu-text-base` | `clamp(1rem, 0.95rem + 0.25vw, 1.125rem)` | - |
 | `--pu-text-lg` | `clamp(1.125rem, 1rem + 0.75vw, 1.5rem)` | - |
 | `--pu-text-sm` | `clamp(0.8125rem, 0.77rem + 0.22vw, 0.9375rem)` | - |
 | `--pu-text-xs` | `clamp(0.6875rem, 0.65rem + 0.16vw, 0.75rem)` | - |
+
+## Scales and deprecated aliases
+
+- **Radius** is `4, 6, 8, 12, 16, 24, full` (`--pu-radius-<px>`). A card takes `--pu-radius-card`, a button, chip or field takes `--pu-radius-control`; override those two to retheme (`createTheme` does).
+- **Space** is a 4px grid, `--pu-space-<n>` is `n * 4px`; `--pu-space-0-5` is 2px. Existing `1` to `4` and `16` are unchanged.
+- **Type**: weights `regular/medium/semibold/bold` (400/500/600/700), line heights `tight` 1.2 and `normal` 1.5. `--pu-font-numeric` is the `font-variant-numeric` for figures; override it to `normal` to turn tabular figures off everywhere.
+- `scripts/check-css.mjs` (part of `npm run lint`) fails if a scale is not strictly increasing or a `var(--pu-*)` has no definition.
+
+**Deprecated** (still defined with their original, non-monotonic values; components no longer read them; removed in the next major):
+
+| Deprecated | Value | Use instead |
+| --- | --- | --- |
+| `--pu-radius-sm` | `0.5rem` | `--pu-radius-8` |
+| `--pu-radius-md` | `16px` | `--pu-radius-16` |
+| `--pu-radius-lg` | `16px` | `--pu-radius-16` |
+| `--pu-radius-xl` | `8px` | `--pu-radius-8` |
+| `--pu-radius-2xl` | `8px` | `--pu-radius-8` |
+| `--pu-radius-3xl` | `8px` | `--pu-radius-8` |
+
+Note: overriding a deprecated name no longer restyles components. Override the scale step or the card and control aliases.
 
 ## Stacking (z-index)
 

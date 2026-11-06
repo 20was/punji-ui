@@ -60,7 +60,7 @@
         margin: 0;
         padding: var(--pu-space-2) var(--pu-space-3);
         border: 0;
-        border-radius: var(--pu-radius-sm);
+        border-radius: var(--pu-radius-8);
         background: transparent;
         color: var(--pu-color-text);
         font: 400 var(--pu-text-sm) / 1.4 var(--pu-font-body);

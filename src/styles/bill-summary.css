@@ -12,16 +12,16 @@
   .pu-bill-facts dt { color: var(--pu-color-text-muted); font-size: var(--pu-text-xs) }
   .pu-bill-facts dd { margin: 0; min-width: 0; font-size: var(--pu-text-sm); text-align: right; overflow-wrap: anywhere }
   .pu-bill-customer { font-weight: 600; unicode-bidi: isolate }
-  .pu-bill-id { font-variant-numeric: tabular-nums }
+  .pu-bill-id { font-variant-numeric: var(--pu-font-numeric) }
   .pu-bill-lines { display: grid; gap: var(--pu-space-2); margin: 0; padding-top: var(--pu-space-3); border-top: 1px solid var(--pu-color-border) }
   .pu-bill-group { margin-top: var(--pu-space-1); color: var(--pu-color-text-muted); font-size: var(--pu-text-xs); font-weight: 600 }
-  .pu-bill-line { display: flex; align-items: baseline; justify-content: space-between; gap: var(--pu-space-3); margin: 0; font-size: var(--pu-text-sm); font-variant-numeric: tabular-nums }
+  .pu-bill-line { display: flex; align-items: baseline; justify-content: space-between; gap: var(--pu-space-3); margin: 0; font-size: var(--pu-text-sm); font-variant-numeric: var(--pu-font-numeric) }
   .pu-bill-line[data-negative] { color: var(--pu-color-gain) }
   .pu-bill-label { display: grid; min-width: 0; color: var(--pu-color-text); overflow-wrap: anywhere }
   .pu-bill-detail { color: var(--pu-color-text-muted); font-size: var(--pu-text-xs) }
   .pu-bill-total { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--pu-space-2); margin: 0; padding-top: var(--pu-space-3); border-top: 1px solid var(--pu-color-border) }
   .pu-bill-total > span { font-weight: 600 }
-  .pu-bill-total strong { font: 700 22px / 1.2 var(--pu-font-display); font-variant-numeric: tabular-nums }
+  .pu-bill-total strong { font: 700 22px / 1.2 var(--pu-font-display); font-variant-numeric: var(--pu-font-numeric) }
   .pu-bill-wait { display: grid; gap: var(--pu-space-2) }
   .pu-bill-problem, .pu-bill-empty { display: flex; align-items: flex-start; gap: var(--pu-space-2); margin: 0; font-size: var(--pu-text-sm); line-height: 1.5 }
   .pu-bill-problem .kit-tone-ico { color: var(--pu-color-loss); flex: none; margin-top: 2px }

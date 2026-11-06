@@ -79,6 +79,10 @@
       "types": "./dist/controls/Controls.d.ts",
       "default": "./dist/controls/Controls.js"
     },
+    "./dialog": {
+      "types": "./dist/dialog/Dialog.d.ts",
+      "default": "./dist/dialog/Dialog.js"
+    },
     "./drawer": {
       "types": "./dist/drawer/Drawer.d.ts",
       "default": "./dist/drawer/Drawer.js"

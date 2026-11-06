@@ -24,6 +24,7 @@
 import { useEffect, useId, useMemo, useLayoutEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
+import { useScrollLock } from '../internal/scrollLock.ts';
 import { searchSymbols, type SymbolOption } from '../format/format.ts';
 import { comboClosed, comboStep, type ComboEvent, type ComboState } from '../combo-step/comboStep.ts';
 
@@ -95,6 +96,7 @@ export function CompanySearch<T extends SymbolOption>({ options, label, placehol
   const input = useRef<HTMLInputElement>(null);
   const sheetIn = useRef<HTMLInputElement>(null);
   const selectAll = useRef(false);
+  useScrollLock(sheet);
   const shown = !!query.trim() && (dirty || !picker);
   const hits = useMemo(() => (shown && !loading ? (searchSymbols(options, query, 8) as T[]) : []), [options, query, shown, loading]);
   const active = hits.length ? Math.min(st.index, hits.length - 1) : -1;

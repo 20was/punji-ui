@@ -13,11 +13,12 @@
  * A screen inside it is a DrawerScreen (@punji/ui/drawer-screen), with its
  * header and its footer docked at the drawer's foot.
  */
-import { useEffect, useRef, type ReactNode } from 'react';
-import { createPortal } from 'react-dom';
+import { useRef, type ReactNode } from 'react';
 
-import { FOCUSABLE } from '../internal/focusable.ts';
-
+import { useFocusScope } from '../internal/focusScope.ts';
+import { useInertOthers } from '../internal/inert.ts';
+import { Portal } from '../internal/Portal.tsx';
+import { useScrollLock } from '../internal/scrollLock.ts';
 
 export interface DrawerProps {
   /** Whether the drawer is shown. You own this state. Nothing renders while it is false or during server rendering. */
@@ -32,55 +33,26 @@ export interface DrawerProps {
   testId?: string;
 }
 
-export function Drawer({ open, label, onClose, children, testId }: DrawerProps) {
+export function Drawer(props: DrawerProps) {
+  return props.open ? (
+    <Portal>
+      <DrawerLayer {...props} />
+    </Portal>
+  ) : null;
+}
+
+function DrawerLayer({ label, onClose, children, testId }: DrawerProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const close = useRef(onClose);
-  useEffect(() => {
-    close.current = onClose;
-  }, [onClose]);
-
-  useEffect(() => {
-    if (!open) return;
-    const back = document.activeElement as HTMLElement | null;
-    const panel = ref.current;
-    // The form's own first field takes focus (autoFocus); else the panel itself, so Tab starts inside.
-    if (panel && !panel.contains(document.activeElement)) panel.focus({ preventScroll: true });
-    const html = document.documentElement;
-    const was = html.style.overflow;
-    html.style.overflow = 'hidden';
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && !e.defaultPrevented) {
-        e.preventDefault();
-        close.current();
-        return;
-      }
-      if (e.key !== 'Tab' || !panel) return;
-      const items = [...panel.querySelectorAll<HTMLElement>(FOCUSABLE)].filter((el) => el.offsetParent !== null);
-      if (!items.length) return;
-      const [a, z] = [items[0]!, items[items.length - 1]!];
-      if (e.shiftKey && (document.activeElement === a || document.activeElement === panel)) {
-        e.preventDefault();
-        z.focus();
-      } else if (!e.shiftKey && document.activeElement === z) {
-        e.preventDefault();
-        a.focus();
-      }
-    };
-    document.addEventListener('keydown', onKey);
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      html.style.overflow = was;
-      if (back && document.contains(back)) back.focus({ preventScroll: true });
-    };
-  }, [open]);
-
-  if (!open || typeof document === 'undefined') return null;
-  return createPortal(
-    <div className="kit-drawer-back" onMouseDown={(e) => e.target === e.currentTarget && close.current()} data-testid={testId ? `${testId}-scrim` : undefined}>
+  // The form's own first field takes focus (autoFocus); else the panel itself, so Tab starts inside.
+  // Inert first: effect cleanups run in this order, so the page is live again before focus goes back into it.
+  useInertOthers(ref, true);
+  useScrollLock(true);
+  useFocusScope(ref, { initialFocus: 'container', onEscape: onClose });
+  return (
+    <div className="kit-drawer-back" onMouseDown={(e) => e.target === e.currentTarget && onClose()} data-testid={testId ? `${testId}-scrim` : undefined}>
       <div ref={ref} className="kit-drawer" role="dialog" aria-modal="true" aria-label={label} tabIndex={-1} data-testid={testId}>
         {children}
       </div>
-    </div>,
-    document.body,
+    </div>
   );
 }

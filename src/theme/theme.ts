@@ -172,7 +172,7 @@ const SURFACES = {
  */
 const FINANCE: Record<Exclude<FinancePalette, 'green-up'>, Record<'light' | 'dark', { gain: string; loss: string; gainSoft: string; lossSoft: string }>> = {
   'red-up': {
-    light: { gain: '#b23a26', loss: '#2f5300', gainSoft: 'rgba(178, 58, 38, 0.1)', lossSoft: 'rgba(47, 83, 0, 0.1)' },
+    light: { gain: '#a3321f', loss: '#284800', gainSoft: 'rgba(163, 50, 31, 0.1)', lossSoft: 'rgba(40, 72, 0, 0.1)' },
     dark: { gain: '#ff8a78', loss: '#c8f23d', gainSoft: 'rgba(255, 122, 102, 0.14)', lossSoft: 'rgba(200, 242, 61, 0.12)' },
   },
   'blue-orange': {

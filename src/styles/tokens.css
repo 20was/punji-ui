@@ -37,8 +37,8 @@
     --pu-color-border-strong: rgba(18, 19, 20, 0.18);
     --pu-color-card-border: #d9dcd2;
     --pu-color-chart: #5e8c00;
-    --pu-color-gain: #2f5300;
-    --pu-color-gain-soft: rgba(47, 83, 0, 0.1);
+    --pu-color-gain: #284800;
+    --pu-color-gain-soft: rgba(40, 72, 0, 0.1);
     --pu-color-inverse-gain: #c8f23d;
     --pu-color-inverse-line: #2a2e33;
     --pu-color-inverse-loss: #ff8a78;
@@ -47,8 +47,8 @@
     --pu-color-inverse-row: #1f2226;
     --pu-color-inverse-warn: #f5b84b;
     --pu-color-link: #3f6a00;
-    --pu-color-loss: #b23a26;
-    --pu-color-loss-soft: rgba(178, 58, 38, 0.1);
+    --pu-color-loss: #a3321f;
+    --pu-color-loss-soft: rgba(163, 50, 31, 0.1);
     --pu-hue-green: var(--pu-color-gain);
     --pu-hue-green-soft: var(--pu-color-gain-soft);
     --pu-hue-red: var(--pu-color-loss);
@@ -179,9 +179,9 @@
     --pu-color-chart: #c8f23d;
     --pu-color-gain: #c8f23d;
     --pu-color-gain-soft: rgba(200, 242, 61, 0.12);
-    --pu-color-inverse-gain: #2f5300;
+    --pu-color-inverse-gain: #284800;
     --pu-color-inverse-line: #dcded6;
-    --pu-color-inverse-loss: #b23a26;
+    --pu-color-inverse-loss: #a3321f;
     --pu-color-inverse-muted: #4f5358;
     --pu-color-inverse-nepse: #3552c8;
     --pu-color-inverse-row: #ffffff;
@@ -242,9 +242,9 @@
       --pu-color-chart: #c8f23d;
       --pu-color-gain: #c8f23d;
       --pu-color-gain-soft: rgba(200, 242, 61, 0.12);
-      --pu-color-inverse-gain: #2f5300;
+      --pu-color-inverse-gain: #284800;
       --pu-color-inverse-line: #dcded6;
-      --pu-color-inverse-loss: #b23a26;
+      --pu-color-inverse-loss: #a3321f;
       --pu-color-inverse-muted: #4f5358;
       --pu-color-inverse-nepse: #3552c8;
       --pu-color-inverse-row: #ffffff;

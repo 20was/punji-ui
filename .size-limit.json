@@ -255,14 +255,31 @@
     "name": "virtual-table (import from '@punji/ui/virtual-table')",
     "path": "dist/virtual-table/VirtualFinancialTable.js",
     "import": "*",
-    "limit": "7.55 kB",
-    "gzip": true
+    "limit": "6.97 kB",
+    "gzip": true,
+    "entry": [
+      "index"
+    ]
   },
   {
     "name": "table-core (import from @punji/ui/table-core)",
     "path": "dist/table-core/tableCore.js",
     "import": "*",
-    "limit": "1.95 kB",
+    "limit": "2.04 kB",
+    "gzip": true
+  },
+  {
+    "name": "table-totals (import from @punji/ui/table-totals; loaded on demand by the tables)",
+    "path": "dist/table-totals/tableTotals.js",
+    "import": "*",
+    "limit": "1.76 kB",
+    "gzip": true
+  },
+  {
+    "name": "table-presets (import from @punji/ui/table-presets)",
+    "path": "dist/table-presets/tablePresets.js",
+    "import": "*",
+    "limit": "5.45 kB",
     "gzip": true
   },
   {
@@ -360,8 +377,11 @@
     "name": "Financial compositions",
     "path": "dist/financial/financial.js",
     "import": "*",
-    "limit": "7.00 kB",
-    "gzip": true
+    "limit": "6.37 kB",
+    "gzip": true,
+    "entry": [
+      "index"
+    ]
   },
   {
     "name": "Button from root (tree-shaking regression)",
@@ -479,7 +499,7 @@
     "name": "statement-upload (import from '@punji/ui/statement-upload')",
     "path": "dist/statement-upload/StatementUpload.js",
     "import": "*",
-    "limit": "2.50 kB",
+    "limit": "1.76 kB",
     "gzip": true
   },
   {

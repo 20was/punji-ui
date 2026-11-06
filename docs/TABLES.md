@@ -7,7 +7,7 @@
 | A page of records (up to a few hundred rows) you lay out cell by cell | `DataTable` + `DataListRow` (`@punji/ui/table`) | Plain semantic `<table>`; you write the cells. |
 | Typed records and per-column render callbacks; groups, subtotals or a totals row | `FinancialTable` (`@punji/ui/financial`) | The same table driven by columns, with phone stacking, states, `groupBy`, `totals` and `expectedTotals`. |
 | Thousands of rows (floorsheet, blotter, statement lines) | `VirtualFinancialTable` (`@punji/ui/virtual-table`) | Draws only the rows in view; pinning, resizing, multi-sort, virtual group headers and a sticky totals row. |
-| A known financial document (holdings, ledger, statement, aging, trial balance, amortisation, stock list) | The domain table (`HoldingsTable`, `LedgerTable`, ...) | Fixed columns and finance rules already wired. These become `ColumnDef` presets in a later release. |
+| A known financial document (holdings, ledger, statement, aging, trial balance, amortisation, stock list) | The domain table (`HoldingsTable`, `LedgerTable`, ...) | Fixed columns and finance rules already wired. Or the column presets in `@punji/ui/table-presets` (`holdingsColumns`, `ledgerColumns`, ...) on a `FinancialTable`. |
 | Sorting, grouping, totals or reconciliation without a UI (server, worker, export) | `@punji/ui/table-core` | Pure functions, no React. |
 
 Every table is controlled: you filter and sort, the table draws. None of them fetches data.
@@ -61,6 +61,8 @@ const columns: FinancialColumn<Invoice>[] = [
   expectedTotals={{ amount: statementTotal }} // a totals row, and a badge: "Reconciles" or "Off by …"
 />
 ```
+
+Grouping, subtotals, totals and reconciliation are not in the tables' own code: without `totalsEngine={tableTotals}` (from `@punji/ui/table-totals`) a table loads them on first use, so the first draw is the plain rows; pass the engine for server output and the first paint. A table that never uses them does not ship them.
 
 Totals are over the `rows` you pass: with pagination that is the current page. To check a whole data set, compute `footerTotals` over it and pass a control total in `expectedTotals`.
 

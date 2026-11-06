@@ -4,7 +4,8 @@
  */
 import type { ReactNode } from 'react';
 import type { Money } from '../money/money.ts';
-import { plainValue, reconcileTotals, type CellValue, type ColumnDef, type Reconciliation, type ColumnTotals } from '../table-core/tableCore.ts';
+import { plainValue, type CellValue, type ColumnDef } from '../table-core/tableModel.ts';
+import { footerTotals, groupRows, reconcileTotals, type Reconciliation, type ColumnTotals } from '../table-core/tableAggregate.ts';
 
 /** Words for grouped rows, the totals row and the reconciliation badge. Pass them in the reader's language. @stability beta */
 export interface TableTotalsLabels {
@@ -20,7 +21,7 @@ export interface TableTotalsLabels {
   expected: string;
 }
 
-export const DEFAULT_TOTALS_LABELS: TableTotalsLabels = {
+const DEFAULT_TOTALS_LABELS: TableTotalsLabels = {
   total: 'Total',
   groupCount: (count) => `${count} ${count === 1 ? 'row' : 'rows'}`,
   reconciled: 'Reconciles',
@@ -29,17 +30,17 @@ export const DEFAULT_TOTALS_LABELS: TableTotalsLabels = {
 };
 
 /** An aggregate drawn by the column's `formatAggregate`, else plainly and exactly. */
-export function aggregateNode<Row>(def: ColumnDef<Row, ReactNode>, value: CellValue, rows: readonly Row[]): ReactNode {
+function aggregateNode<Row>(def: ColumnDef<Row, ReactNode>, value: CellValue, rows: readonly Row[]): ReactNode {
   if (value === undefined) return null;
   return def.formatAggregate ? def.formatAggregate(value, rows) : plainValue(value);
 }
 
-export function reconcileOrEmpty(totals: ColumnTotals, expected: Readonly<Record<string, Money>> | undefined): Record<string, Reconciliation> {
+function reconcileOrEmpty(totals: ColumnTotals, expected: Readonly<Record<string, Money>> | undefined): Record<string, Reconciliation> {
   return expected ? reconcileTotals(totals, expected) : {};
 }
 
 /** A visible word and icon (never colour alone): "Reconciles", or "Off by NPR 1.00, expected NPR 100.00". */
-export function ReconcileBadge<Row>({ result, def, rows, labels }: { result: Reconciliation; def: ColumnDef<Row, ReactNode>; rows: readonly Row[]; labels: TableTotalsLabels }) {
+function ReconcileBadge<Row>({ result, def, rows, labels }: { result: Reconciliation; def: ColumnDef<Row, ReactNode>; rows: readonly Row[]; labels: TableTotalsLabels }) {
   const ok = result.status === 'ok';
   return (
     <span className={`kit-recon ${ok ? 'ok' : 'mismatch'}`}>
@@ -48,3 +49,29 @@ export function ReconcileBadge<Row>({ result, def, rows, labels }: { result: Rec
     </span>
   );
 }
+
+/**
+ * Everything grouping, subtotals, totals and reconciliation need, in one object.
+ * FinancialTable and VirtualFinancialTable load it on demand when `groupBy`,
+ * `totals` or `expectedTotals` is used (the first draw is the plain rows); pass
+ * it as `totalsEngine` (from `@punji/ui/table-totals`) to have it in the first
+ * paint and in server output. A table that never groups or totals never loads it.
+ * @stability beta
+ */
+export interface TableTotalsEngine {
+  /** The default words for groups, totals and reconciliation. */
+  defaultLabels: TableTotalsLabels;
+  /** Groups rows by key, with subtotals. */
+  groupRows: typeof groupRows;
+  /** Totals each aggregate column over rows. */
+  footerTotals: typeof footerTotals;
+  /** Reconciles totals against expected ones (none given: nothing). */
+  reconcileOrEmpty: typeof reconcileOrEmpty;
+  /** Draws an aggregate with the column's formatter. */
+  aggregateNode: typeof aggregateNode;
+  /** The word-and-icon reconciliation badge. */
+  ReconcileBadge: typeof ReconcileBadge;
+}
+
+/** The engine. Importing it is what bundles grouping and totals. @stability beta */
+export const tableTotals: TableTotalsEngine = { defaultLabels: DEFAULT_TOTALS_LABELS, groupRows, footerTotals, reconcileOrEmpty, aggregateNode, ReconcileBadge };

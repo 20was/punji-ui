@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Button } from '@punji/ui/button';
 import { VirtualFinancialTable, type VirtualColumn } from '@punji/ui/virtual-table';
+import { tableTotals } from "@punji/ui/table-totals";
 import { sortRows, type ColumnDef } from '@punji/ui/table-core';
 import { createMoneyFormatter, isMoney, money, nepalMoneyConfig } from '@punji/ui/money';
 import { sampleTrades, type SampleTrade } from '../../sample.ts';
@@ -43,6 +44,7 @@ export default function Example() {
         rowKey={rowKey}
         emptyTitle="No trades"
         height={420}
+        totalsEngine={tableTotals}
         groupBy={bySymbol}
         collapsedGroups={collapsed}
         onCollapsedGroupsChange={setCollapsed}

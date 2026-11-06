@@ -8,7 +8,7 @@ export default function Example() {
     <div style={{ display: 'grid', gap: 8, width: 'min(100%, 480px)' }}>
       <Accordion
         type="multiple"
-        headingLevel={4}
+        headingLevel={3}
         value={open}
         onValueChange={setOpen}
         items={[

@@ -78,6 +78,7 @@ export const COMMUNITY_PAGES: readonly PageDef[] = [
       'Pages three or more levels deep: Accounts, Savings, Statement for Kartik.',
       'Above a page title when a reader may arrive from a search or a shared link and needs to go up a level.',
       'maxItems (for example 3 on a phone) to fold the middle levels into a "..." menu.',
+      'Several breadcrumbs on one page (a site header trail and a panel trail) each need a unique `labels.nav`, or the landmarks share a name.',
     ],
     avoid: [
       'Flat sites with one or two levels: a back link or the page title is enough.',
@@ -119,7 +120,7 @@ export const COMMUNITY_PAGES: readonly PageDef[] = [
     use: [
       'An FAQ, a loan product\'s fees and eligibility, a statement\'s sections: long content a reader scans by heading.',
       'type="multiple" when readers compare sections; type="single" to keep the page short.',
-      'Set headingLevel so the headers sit correctly in the page outline.',
+      'Set headingLevel one level below the section heading the accordion sits under (3 under an h2), so the outline has no skipped level.',
     ],
     avoid: [
       'Content every reader needs (a transfer\'s fee and total): show it.',

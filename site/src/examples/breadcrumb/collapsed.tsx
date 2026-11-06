@@ -6,6 +6,7 @@ export default function Example() {
   return (
     <Breadcrumb
       maxItems={3}
+      labels={{ nav: 'Example: collapsed account path' }}
       items={[
         { label: 'Accounts', href: '#accounts' },
         { label: 'Savings', href: '#savings' },

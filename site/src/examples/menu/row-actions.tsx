@@ -19,7 +19,7 @@ export default function Example() {
           <tr>
             <th scope="col" style={{ textAlign: 'start' }}>Symbol</th>
             <th scope="col" style={{ textAlign: 'end' }}>Units</th>
-            <th scope="col"><span style={{ position: 'absolute', insetInlineStart: -9999 }}>Actions</span></th>
+            <th scope="col" style={{ textAlign: 'end' }}>Actions</th>
           </tr>
         </thead>
         <tbody>

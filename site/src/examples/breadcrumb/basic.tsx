@@ -5,6 +5,7 @@ import { Breadcrumb } from '@punji/ui/breadcrumb';
 export default function Example() {
   return (
     <Breadcrumb
+      labels={{ nav: 'Example: account path' }}
       items={[
         { label: 'Accounts', href: '#accounts' },
         { label: 'Savings', href: '#savings' },

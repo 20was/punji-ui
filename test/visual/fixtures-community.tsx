@@ -22,8 +22,8 @@ function BreadcrumbFixture() {
   const trail = [{ label: "Accounts", href: "/accounts" }, { label: "Savings", href: "/accounts/savings" }, { label: "Joint", href: "/accounts/savings/joint" }, { label: "Kartik 2082" }];
   return (
     <div style={{ display: "grid", gap: 12 }}>
-      <Breadcrumb items={trail} />
-      <Breadcrumb items={trail} maxItems={3} />
+      <Breadcrumb items={trail} labels={{ nav: "Fixture path" }} />
+      <Breadcrumb items={trail} maxItems={3} labels={{ nav: "Fixture collapsed path" }} />
     </div>
   );
 }

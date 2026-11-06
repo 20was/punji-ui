@@ -14,6 +14,7 @@
  * DataTable instead.
  */
 import { createContext, useContext, type CSSProperties, type ReactNode } from 'react';
+import { AppLink } from '../internal/link.tsx';
 import type { LinkComponent } from '../internal/link.tsx';
 
 import { ChevronRight } from '../layout/Layout.tsx';
@@ -105,13 +106,12 @@ export function LinkTableRow({ cells, compact, href, ariaLabel, testId }: LinkTa
     </>
   );
   const cls = `kit-lt-row${compact ? ' has-cp' : ''}`;
-  const L = linkComponent && href && !/^https?:/.test(href) ? linkComponent : 'a';
   return (
     <li>
       {href ? (
-        <L className={cls} href={href} aria-label={ariaLabel} data-testid={testId}>
+        <AppLink linkComponent={linkComponent} className={cls} href={href} aria-label={ariaLabel} data-testid={testId}>
           {body}
-        </L>
+        </AppLink>
       ) : (
         <div className={cls} data-testid={testId}>
           {body}

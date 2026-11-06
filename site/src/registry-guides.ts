@@ -9,7 +9,7 @@ const STACKBLITZ = 'https://stackblitz.com/github/20was/punji-ui/tree/main/templ
 const TREE = 'https://github.com/20was/punji-ui/tree/main/templates';
 
 /** A guide page: the component-template fields are empty, the content is in `guide`. */
-const guide = (page: Pick<PageDef, 'slug' | 'title' | 'description' | 'summary' | 'related'> & Partial<Pick<PageDef, 'navTitle' | 'lead' | 'examples'>> & { guide: NonNullable<PageDef['guide']> }): PageDef => ({
+const guide = (page: Pick<PageDef, 'slug' | 'title' | 'description' | 'summary' | 'related'> & Partial<Pick<PageDef, 'navTitle' | 'lead' | 'examples' | 'api'>> & { guide: NonNullable<PageDef['guide']> }): PageDef => ({
   group: 'get-started',
   kind: 'guide',
   use: [],
@@ -30,7 +30,7 @@ export const GUIDES: readonly PageDef[] = [
     description: 'Install @punji/ui from npm, load the stylesheet once and render an exact NPR or USD amount in React. Who Punji UI is for, and how it differs from a generic kit.',
     summary:
       'Punji UI is a finance-first React component library: exact money, stock-market tables, ledgers and a Nepal-first locale layer (NPR, lakh and crore, Devanagari digits, Bikram Sambat dates, NEPSE) that works for any currency. Install it from npm, import one stylesheet and show your first exact amount in a few lines.',
-    related: ['nextjs', 'vite', 'theming', 'money-display'],
+    related: ['nextjs', 'vite', 'router', 'theming', 'money-display'],
     guide: [
       {
         id: 'who',
@@ -105,7 +105,7 @@ export const GUIDES: readonly PageDef[] = [
         title: 'Where to go next',
         paragraphs: ['Set it up in your framework, then make it yours.'],
         points: [
-          '[Next.js App Router](/get-started/nextjs/) and [Vite](/get-started/vite/) setup.',
+          '[Next.js App Router](/get-started/nextjs/) and [Vite](/get-started/vite/) setup, and [using your router for links](/get-started/router/).',
           '[Theming and custom tokens](/get-started/theming/), [server rendering and hydration](/get-started/ssr/) and [Tailwind interop](/get-started/tailwind/).',
           '[Live data adapters](/get-started/live-data/) and [Security](/get-started/security/).',
           'Take a whole screen with [Copy a pattern](/get-started/copy-a-pattern/): one command writes a Showcase pattern into your app.',
@@ -221,6 +221,71 @@ export const GUIDES: readonly PageDef[] = [
           'The package ships ES modules and `.d.ts` files; TypeScript with `moduleResolution` set to `bundler` (the Vite template) or `nodenext` resolves every subpath.',
           'The clean-consumer check (`npm run check:consumer`) installs the packed tarball into a fresh app, runs strict `tsc`, a server render and a Vite production build before every release.',
           'Server rendering with Vite: see [Server rendering and hydration](/get-started/ssr/).',
+        ],
+      },
+    ],
+  }),
+  guide({
+    slug: 'router',
+    navTitle: 'Using with a router',
+    lead: 'Wrap your router link once and every Punji link and button uses it: React Router, Next.js and TanStack Router.',
+    title: 'Using with a router',
+    description: 'Wrap your router link once with LinkProvider and every Punji link, button and row routes through it: React Router, Next.js Link and TanStack Router.',
+    summary:
+      'Punji has no router dependency. Components that take an `href` render a plain `<a>` unless you give them a link component. Wrap your router\'s link once in `LinkProvider` and Button, CardLink, StatusPill, CheckRow, ValueRow, LinkTable and PageHeader all use it for in-app paths. A `linkComponent` prop on one component still wins, and absolute web, mailto and tel addresses always stay a plain `<a>`.',
+    related: ['using', 'nextjs', 'vite', 'card-link', 'button'],
+    api: [{ name: 'LinkProvider', module: 'link' }, { name: 'LinkProviderProps', module: 'link' }, { name: 'useLinkComponent', module: 'link' }, { name: 'safeHref', module: 'link' }, { name: 'LinkComponent', module: 'link' }, { name: 'LinkProps', module: 'link' }],
+    guide: [
+      {
+        id: 'contract',
+        title: 'The link contract',
+        paragraphs: [
+          'A link component receives `href` (always a string path), `children`, `className`, `target`, `rel`, `aria-*` attributes, `data-testid`, `onClick` and a `ref`. React 19 passes `ref` as an ordinary prop, so a wrapper only has to spread what it gets. The type is `LinkComponent`, exported from `@punji/ui/link` and the root.',
+          'Which link is used, in order: the component\'s own `linkComponent` prop, then the nearest `LinkProvider`, then a plain `<a>`. Nothing is renamed or removed: code that passes `linkComponent` today keeps working.',
+        ],
+      },
+      {
+        id: 'react-router',
+        title: 'React Router',
+        paragraphs: ['React Router\'s `Link` takes `to` where Punji gives `href`, so map one onto the other. Put the provider inside the router.'],
+        code: [
+          {
+            label: 'app.tsx (React Router)',
+            text: "import { Link } from 'react-router';\nimport { LinkProvider } from '@punji/ui/link';\nimport type { LinkComponent } from '@punji/ui/link';\n\nconst RouterLink: LinkComponent = ({ href, ...rest }) => <Link to={href} {...rest} />;\n\nexport function Providers({ children }: { children: React.ReactNode }) {\n  return <LinkProvider component={RouterLink}>{children}</LinkProvider>;\n}",
+          },
+        ],
+      },
+      {
+        id: 'nextjs',
+        title: 'Next.js',
+        paragraphs: [
+          '`next/link` accepts `href` directly, with `prefetch` and `replace` if you want them on every link. The provider is a client component, so put it in a small `\'use client\'` file and render it in the root layout (see [Next.js App Router](/get-started/nextjs/)).',
+        ],
+        code: [
+          {
+            label: 'app/providers.tsx (Next.js)',
+            text: "'use client';\n\nimport Link from 'next/link';\nimport { LinkProvider } from '@punji/ui/link';\nimport type { LinkComponent } from '@punji/ui/link';\n\nconst NextLink: LinkComponent = ({ href, ...rest }) => <Link href={href} {...rest} />;\n\nexport function Providers({ children }: { children: React.ReactNode }) {\n  return <LinkProvider component={NextLink}>{children}</LinkProvider>;\n}",
+          },
+        ],
+      },
+      {
+        id: 'tanstack',
+        title: 'TanStack Router',
+        paragraphs: ['TanStack Router\'s `Link` takes `to`. Its types are strict about known routes, so the wrapper accepts any string path and casts once.'],
+        code: [
+          {
+            label: 'providers.tsx (TanStack Router)',
+            text: "import { Link } from '@tanstack/react-router';\nimport { LinkProvider } from '@punji/ui/link';\nimport type { LinkComponent } from '@punji/ui/link';\n\nconst RouterLink: LinkComponent = ({ href, ...rest }) => <Link to={href as string} {...rest} />;\n\nexport function Providers({ children }: { children: React.ReactNode }) {\n  return <LinkProvider component={RouterLink}>{children}</LinkProvider>;\n}",
+          },
+        ],
+      },
+      {
+        id: 'safe',
+        title: 'Which addresses are blocked',
+        paragraphs: [
+          'Every `href` goes through `safeHref` before it reaches a plain `<a>` or your link component. Relative paths, `#fragments`, `?queries`, `http:`, `https:`, `mailto:` and `tel:` pass. Any other scheme, including `javascript:`, `vbscript:` and `data:` (also with capitals, spaces or line breaks inside the scheme), is blocked: the component renders an `<a>` with no `href` and `aria-disabled="true"`, your link component is never called, and in development a warning names the scheme. Empty addresses are blocked the same way.',
+          'Absolute `http(s)`, `mailto:` and `tel:` addresses always render a plain `<a>`, never the router link. A link with `target="_blank"` always gets `rel="noopener noreferrer"`, also through your link component.',
+          'Call `safeHref(value)` yourself when you build your own anchors from data: it returns the address, or `undefined` when it is blocked.',
         ],
       },
     ],

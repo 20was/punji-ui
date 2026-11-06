@@ -14,6 +14,7 @@
  * the side of. Never pick the icon by hand.
  */
 import type { ReactNode } from 'react';
+import { AppLink } from '../internal/link.tsx';
 import type { LinkComponent } from '../internal/link.tsx';
 
 import { ChevronRight } from '../layout/Layout.tsx';
@@ -51,17 +52,16 @@ export function CardLink({ href, children, external, linkComponent, newTabLabel 
   const cls = `kit-cardlink${out ? ' out' : ''}${className ? ` ${className}` : ''}`;
   if (out)
     return (
-      <a className={cls} href={href} target="_blank" rel="noopener noreferrer" aria-label={ariaLabel ? `${ariaLabel} ${newTabLabel}` : undefined} data-testid={testId} data-link="out">
+      <AppLink external className={cls} href={href} target="_blank" aria-label={ariaLabel ? `${ariaLabel} ${newTabLabel}` : undefined} data-testid={testId} data-link="out">
         {children}
         <ExternalIcon />
         {!ariaLabel && <span className="kit-sr"> {newTabLabel}</span>}
-      </a>
+      </AppLink>
     );
-  const L = linkComponent ?? 'a';
   return (
-    <L className={cls} href={href} aria-label={ariaLabel} data-testid={testId} data-link="in">
+    <AppLink linkComponent={linkComponent} className={cls} href={href} aria-label={ariaLabel} data-testid={testId} data-link="in">
       {children}
       <ChevronRight />
-    </L>
+    </AppLink>
   );
 }

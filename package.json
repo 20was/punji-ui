@@ -111,6 +111,10 @@
       "types": "./dist/inline-confirm/InlineConfirm.d.ts",
       "default": "./dist/inline-confirm/InlineConfirm.js"
     },
+    "./link": {
+      "types": "./dist/link/Link.d.ts",
+      "default": "./dist/link/Link.js"
+    },
     "./stack": {
       "types": "./dist/stack/Stack.d.ts",
       "default": "./dist/stack/Stack.js"

@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { TOPICS, getComponent, getGuide, indexSnapshot, listComponents, listResources, readResource, reviewUsage } from '../src/handlers.mjs';
+import { TOPICS, componentMarkdown, getComponent, getGuide, indexSnapshot, listComponents, listResources, readResource, reviewUsage } from '../src/handlers.mjs';
 
 const snapshot = JSON.parse(readFileSync(new URL('./fixture/snapshot.json', import.meta.url), 'utf8'));
 const index = indexSnapshot(snapshot);

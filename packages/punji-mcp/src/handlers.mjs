@@ -49,7 +49,7 @@ export function listComponents(snapshot, args = {}) {
 }
 
 const propTable = (props) => ['| Prop | Type | Default | Description |', '| --- | --- | --- | --- |', ...props.map((p) => `| ${p.name}${p.required ? ' (required)' : ''} | \`${cell(p.type)}\` | ${p.default ? `\`${cell(p.default)}\`` : ''} | ${cell(p.description)} |`)];
-const cell = (t) => String(t ?? '').replace(/\|/g, '\\|').replace(/\s*\n\s*/g, ' ');
+const cell = (t) => String(t ?? '').replace(/[\\|]/g, '\\$&').replace(/\s*\n\s*/g, ' ');
 const bullets = (a) => (a ?? []).map((x) => `- ${x}`);
 const fence = (lang, code) => [`\`\`\`${lang}`, code.replace(/\n+$/, ''), '```'];
 

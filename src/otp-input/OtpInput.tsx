@@ -59,6 +59,9 @@ function clean(text: string, type: 'numeric' | 'alphanumeric'): string {
   return ascii.replace(type === 'numeric' ? /[^0-9]/g : /[^A-Za-z0-9]/g, '');
 }
 
+/**
+ * @remarks UX safeguard only. It does not enforce authorisation, step-up authentication, limits, payee checks, session expiry or validation; do all of that on the server. Hidden or disabled controls are not access control.
+ */
 export function OtpInput({
   label, hint, error, length = 6, value, defaultValue = '', onChange, onComplete, type = 'numeric', mask = false,
   disabled = false, autoFocus = false, name, id: idProp, testId, size = 'lg', cellLabel,

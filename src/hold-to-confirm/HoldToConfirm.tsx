@@ -54,6 +54,9 @@ export interface HoldToConfirmProps {
 
 const KEYS = new Set([' ', 'Enter']);
 
+/**
+ * @remarks UX safeguard only. It does not enforce authorisation, step-up authentication, limits, payee checks, session expiry or validation; do all of that on the server. Hidden or disabled controls are not access control.
+ */
 export function HoldToConfirm({
   children, onConfirm, mode = 'hold', holdMs = 1500, delaySeconds = 5, tone = 'danger', disabled = false, block, labels = {}, className, testId,
 }: HoldToConfirmProps) {

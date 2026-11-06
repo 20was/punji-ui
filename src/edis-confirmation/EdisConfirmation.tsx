@@ -87,6 +87,9 @@ export interface EdisConfirmationProps {
   testId?: string;
 }
 
+/**
+ * @remarks UX safeguard only. It does not enforce authorisation, step-up authentication, limits, payee checks, session expiry or validation; do all of that on the server. Hidden or disabled controls are not access control.
+ */
 export function EdisConfirmation({
   transfers, onConfirm, pinLength = 4, error, submitting: submittingProp, primaryCalendar = 'bs', language, digits = 'latn', headingLevel = 2, labels, className, testId,
 }: EdisConfirmationProps) {

@@ -101,6 +101,9 @@ function Name({ name }: { name: string }) {
   return <bdi className="pu-payee-name">{detectSpoofing(name).display}</bdi>;
 }
 
+/**
+ * @remarks UX safeguard only. It does not enforce authorisation, step-up authentication, limits, payee checks, session expiry or validation; do all of that on the server. Hidden or disabled controls are not access control.
+ */
 export function PayeeVerification({ result, enteredName, accountName, onUseAccountName, onEdit, onProceed, labels = {}, className, testId }: PayeeVerificationProps) {
   const words = { ...DEFAULTS, ...useLocaleMessages().messages.payeeVerification, ...labels };
   const id = useId();

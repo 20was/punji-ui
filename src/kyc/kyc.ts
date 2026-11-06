@@ -32,6 +32,8 @@ export function idNumberToDevanagari(text: string): string {
  * Check a PAN: exactly nine digits once spaces, dashes and dots are dropped. The canonical value is the nine digits.
  * The same rules as `checkPan` in `@punji/ui/tax` (one implementation); here a short number is `invalid` with reason
  * 'length' rather than `partial`, because a KYC form checks a finished value.
+ *
+ * @remarks Typing-slip checks only. UX safeguard only. It does not enforce authorisation, step-up authentication, limits, payee checks, session expiry or validation; do all of that on the server. Hidden or disabled controls are not access control.
  */
 export function validatePan(text: string): IdNumberResult {
   const check = checkPan(String(text ?? '').replace(/[‐-―−]/g, '-'));

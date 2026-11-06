@@ -167,3 +167,12 @@ implements.
 - EU Verification of Payee: https://www.ecb.europa.eu/paym/retail/instant_payments/html/instant_payments_regulation.so.html and https://corporates.db.com/in-focus/Focus-topics/instant-payments-vop
 - WCAG 2.2.1 Timing Adjustable: https://github.com/alphagov/guide-to-wcag/wiki/2.2.1
 - Unicode UTS #39: https://unicode.org/reports/tr39/
+
+## Update 2026-11-07
+
+Everything in this section comes from third-party announcements and project pages. We have not verified it independently, so check the linked source before relying on a detail.
+
+- **MUI X licensing (third-party claim).** MUI X Pro and Premium moved to application-based licensing on 2026-04-08, and indirect use through a wrapper component counts toward the licence. Source: [MUI X price changes](https://mui.com/blog/2026-mui-x-price-changes/). Implication: a team that wraps MUI X to build a finance UI should read the new terms. Punji UI has no licence fee to count.
+- **Mantine 9 (third-party claim).** Mantine 9 requires React 19 and Recharts 3. A team on React 18 cannot adopt it without upgrading first.
+- **Base UI (third-party claim).** Base UI is stable and is now the default primitive layer in shadcn/ui. Headless primitives are becoming the common base, which is the direction Punji UI's own primitives already take.
+- **Lightweight Charts v5 (third-party claim).** Lightweight Charts v5 is Apache-2.0 licensed and requires attribution (the `attributionLogo` option). Anyone embedding it for price charts needs to keep that attribution visible. Punji UI's own `PriceChart` has no such requirement.

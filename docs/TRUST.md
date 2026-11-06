@@ -1,5 +1,7 @@
 # Trust and safety
 
+> **UI is not enforcement.** The components here (and `OtpInput`, `PinPad`, `AccountNumber`, `LockedNote`, `EdisConfirmation` and the KYC helpers) are UX safeguards only. They do not enforce anything. Authorisation, step-up authentication, limits, payee checks, session expiry and validation must be enforced on the server. Hidden or disabled controls are not access control, and masking an account number only changes what is shown.
+
 Money-movement patterns that most design systems leave to each bank: reading the amount back, checking the payee's
 name, deliberate friction for risky actions, session timeouts, scam warnings and secret fields. Built for the fraud
 that actually happens on payment screens (authorised push payment scams, look-alike payee names, coached victims)

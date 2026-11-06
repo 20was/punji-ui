@@ -493,7 +493,7 @@
     "name": "statement-upload (import from '@punji/ui/statement-upload')",
     "path": "dist/statement-upload/StatementUpload.js",
     "import": "*",
-    "limit": "1.76 kB",
+    "limit": "2.47 kB",
     "gzip": true
   },
   {

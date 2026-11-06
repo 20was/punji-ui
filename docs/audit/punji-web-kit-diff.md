@@ -143,6 +143,27 @@ Not exhaustively read: `meter` (71 changed lines, guards and logical properties)
 
 Keep in punji-web (not generic): `SiteHeader`, `SiteFooter`, `AppTabBar`, `Logo*`, `StoreButtons`, `ProductShot`, `LandingSection`, `FeatureCard`, `TmsAnatomy/Address`, `Broker*`, `Rotation*`, `Season*` and anything calling `lib/*` market data.
 
+## 4a. Upstreamed (feat/upstream-kit-gaps)
+
+- **Reader-language mark.** `@punji/ui/format` now exports `rs(n, lang?)`, `cr(n, lang?)`, `rsMark(lang?)`, `unitWords(lang?)`, `readerLangOf`, and the shim `setReaderLang` / `readerLang` (same names as the kit's `lib/readerLang`). Default is English and identical to before. `Figure` and `Delta` (`kind="rs"`) take the mark from `PunjiLocaleProvider` (or a `mark` prop). `formatFigure(value, 'rs', dp, mark)` takes a 4th `mark`. For `compactRs` pass `unitWords(lang)` and `rsMark(lang)`. Replace the kit's `import { rs, cr } from 'lib/format'` with the `@punji/ui/format` ones and call `setReaderLang` from the same `LangProvider`. Kit month names (`monthName`, `dayMonthText`) are not upstreamed.
+- **ColumnChart inspection.** Hover/touch tooltip, keyboard cursor (arrows, Home, End, Escape), live region, `lit` column, and `mirror` / `net` / `mirrorScaleTop`, using the same cursor as `CandlestickChart`. The plot is now one focus stop (the drawing inside is still `aria-hidden`). The kit's `ChartInspect` itself is not extracted; `CandleChart`, `ReturnBars`, `TwoLineChart` are still pending.
+- **`shortCompanyName`.** Not a regression: the single `\s` plus `.trim()` gives the same result as the kit's `\s+` for every input (the trim takes the rest of a run), and avoids `\s+` backtracking on long whitespace runs. A test pins the equivalence.
+
+### Migrating from punji-web kit: Pagination
+
+Do not rename `page` alone: the kit is 0-based, `@punji/ui` is 1-based.
+
+| punji-web kit | `@punji/ui` |
+|---|---|
+| `page={page}` (0-based) | `page={page + 1}` |
+| `onPage={(p) => setPage(p)}` | `onPageChange={(p) => setPage(p - 1)}` |
+| `prevLabel` | `previousLabel` |
+| `nextLabel`, `pageLabel`, `rangeLabel`, `maxNumbers`, `total`, `pageSize`, `label`, `testId` | unchanged |
+| `pageCount(total, size)` | `paginate(total, 1, size).pageCount` |
+| `pageOf(index, size)` (0-based page) | `pageOfIndex(index, size) - 1` |
+
+Or keep your state 1-based and drop the `+ 1` / `- 1`, using `usePagination` and `<Pagination {...pager} onPageChange={pager.setPage} />`. Out-of-range pages are clamped on both sides. The same table is on the Pagination docs page.
+
 ## 5. Proposed migration order, blockers
 
 **Order** (each group is one PR in punji-web, behind the alias until the last step):

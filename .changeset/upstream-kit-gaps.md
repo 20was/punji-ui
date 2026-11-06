@@ -1,0 +1,5 @@
+---
+'@punji/ui': minor
+---
+
+Upstream gaps found moving punji-web onto the package. Reader-language rupee mark: `@punji/ui/format` exports `rs(n, lang?)`, `cr(n, lang?)`, `rsMark`, `unitWords`, `readerLangOf` and a documented `setReaderLang` / `readerLang` shim for code outside React; `formatFigure` takes a `mark`; `Figure` and `Delta` print "रु." for `kind="rs"` under a Nepali `PunjiLocaleProvider` (a `mark` prop overrides). English output is unchanged. `ColumnChart` gains inspection (hover and touch tooltip, keyboard cursor with arrows, Home, End and Escape, a live region, `labels.hint`) and a `mirror` mode with `net` and `mirrorScaleTop`; the plot is now one focus stop and its `title` tooltips are gone. New `interactive={false}` removes the tab stop, readout and live region for a chart inside an `aria-hidden` wrapper whose figures a table already carries (DividendHistory uses it). Pagination docs gain a "Migrating from punji-web kit" section (0-based to 1-based mapping); no 0-based props were added.

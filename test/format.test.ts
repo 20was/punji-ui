@@ -113,3 +113,11 @@ describe('shortCompanyName', () => {
     expect(shortCompanyName(spaces)).toBe('');
   });
 });
+
+describe("shortCompanyName whitespace", () => {
+  it("drops a legal tail after any run of whitespace, as the punji-web kit did", () => {
+    expect(shortCompanyName("Alpha \t  Company Limited")).toBe("Alpha");
+    expect(shortCompanyName("Alpha\u00a0\u00a0Ltd.")).toBe("Alpha");
+    expect(shortCompanyName("Alpha   Co., Ltd")).toBe("Alpha");
+  });
+});

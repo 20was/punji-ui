@@ -273,6 +273,12 @@ describe('DividendHistory', () => {
     expect(screen.getAllByRole('table')).toHaveLength(1);
   });
 
+  it('has no focusable element inside its aria-hidden chart (the table is the accessible form)', () => {
+    const { container } = render(<DividendHistory entries={entries} caption="Dividends" testId="d" />);
+    const hidden = container.querySelector('.pu-dividends-chart')!;
+    expect(hidden.querySelectorAll('[tabindex], a[href], button, input, select, textarea, [role="status"]')).toHaveLength(0);
+  });
+
   it('adds cash yield columns only for the bases given, null as a dash', () => {
     const { rerender } = render(<DividendHistory entries={entries} caption="D" marketValue={100_000_00n} testId="d" />);
     expect(screen.getAllByRole('columnheader').map((h) => h.textContent)).toContain('Yield on value');

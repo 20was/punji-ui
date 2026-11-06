@@ -196,7 +196,7 @@ describe('ColumnChart', () => {
         columns={[col('2080/81', [12000, 4000]), col('2081/82', [18000, 0]), col('2082/83', [9000, 9000])]} />,
     );
     expect(screen.getByRole('figure', { name: 'Dividends received' })).toBeTruthy();
-    expect(container.querySelector('.kit-col-frame')?.getAttribute('aria-hidden')).toBe('true');
+    expect(container.querySelector('.kit-col-area')?.getAttribute('aria-hidden')).toBe('true');
     const table = screen.getByRole('table', { name: 'Dividends received' });
     const rows = within(table).getAllByRole('row').map((r) => [...r.querySelectorAll('th,td')].map((c) => c.textContent));
     expect(rows[0]).toEqual(['Period', 'Cash dividend', 'Bonus shares', 'Total']);

@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Figure and Delta: every number on a kit page goes through one of these.
  * Tabular numerals, never truncated (a figure has its own element and
@@ -6,8 +8,9 @@
  * that prints as 0.00% is no move: grey, no arrow (the app's changeV2).
  */
 import { fixed, rs } from '../internal/number.ts';
+import { useLocaleMessages } from '../locale/context.tsx';
 import type { Money, MoneyFormatter } from '../money/money.ts';
-import { formatFigure, isNum, toneOf, type DeltaWords, type FigureKind } from '../format/format.ts';
+import { formatFigure, isNum, rsMark, toneOf, type DeltaWords, type FigureKind } from '../format/format.ts';
 
 const EN_WORDS: DeltaWords = { up: 'up', down: 'down', flat: 'unchanged' };
 
@@ -27,8 +30,16 @@ export interface FigureProps {
   formatter?: MoneyFormatter;
   /** Decimals to print (default 2). */
   dp?: number;
+  /** The rupee mark for the deprecated `kind: 'rs'`. Default: "रु." under a Nepali `PunjiLocaleProvider`, else "Rs". */
+  mark?: string;
   /** Becomes data-testid on the figure. */
   testId?: string;
+}
+
+/** The rupee mark the provider's locale asks for ("Rs" without a provider). */
+function useRsMark(mark: string | undefined): string {
+  const { locale } = useLocaleMessages();
+  return mark ?? rsMark(locale);
 }
 
 const isMoney = (v: unknown): v is Money => typeof v === 'object' && v !== null && typeof (v as Money).minor === 'bigint';
@@ -51,9 +62,10 @@ function printMoney(value: Money, formatter: MoneyFormatter | undefined, absolut
 /**
  * @stability stable
  */
-export function Figure({ value, kind = 'num', dp = 2, formatter, testId }: FigureProps) {
+export function Figure({ value, kind = 'num', dp = 2, formatter, mark, testId }: FigureProps) {
+  const rupee = useRsMark(mark);
   if (isMoney(value)) return <span className="kit-fig" data-testid={testId}>{printMoney(value, formatter)}</span>;
-  return <span className="kit-fig" data-testid={testId}>{formatFigure(value, kind, dp)}</span>;
+  return <span className="kit-fig" data-testid={testId}>{formatFigure(value, kind, dp, rupee)}</span>;
 }
 
 export interface DeltaProps {
@@ -68,6 +80,8 @@ export interface DeltaProps {
   formatter?: MoneyFormatter;
   /** Decimals to print (default 2). */
   dp?: number;
+  /** The rupee mark for the deprecated `kind: 'rs'`. Default: "रु." under a Nepali `PunjiLocaleProvider`, else "Rs". */
+  mark?: string;
   /** Show the up or down arrow (default true). Sign, colour and the spoken word remain. */
   arrow?: boolean;
   /** The spoken words for up, down and unchanged, in the reader's language. Default English. */
@@ -86,8 +100,10 @@ export function Delta({
   words = EN_WORDS,
   size,
   formatter,
+  mark,
   testId,
 }: DeltaProps) {
+  const rupee = useRsMark(mark);
   if (isMoney(value)) {
     const tone = value.minor > 0n ? 'up' : value.minor < 0n ? 'down' : 'flat';
     const text = printMoney(value, formatter, true);
@@ -96,7 +112,7 @@ export function Delta({
   if (!isNum(value)) return <span className="kit-fig kit-flat" data-testid={testId}>-</span>;
   const tone = toneOf(value, dp);
   const abs = Math.abs(value);
-  const body = kind === 'rs' ? rs(abs) : kind === 'pct' ? `${fixed(abs, dp)}%` : fixed(abs, dp);
+  const body = kind === 'rs' ? rs(abs, rupee) : kind === 'pct' ? `${fixed(abs, dp)}%` : fixed(abs, dp);
   return <DeltaBody tone={tone} arrow={arrow} words={words} size={size} testId={testId} body={body} />;
 }
 

@@ -106,6 +106,7 @@ export const bn: PunjiLocalePack = {
       'unusual-space': 'এতে অস্বাভাবিক, দ্বিগুণ বা শুরু ও শেষে ফাঁকা জায়গা আছে।',
       lookalike: (name) => `এটি "${name}"-এর মতো দেখায়, কিন্তু আলাদা নাম।`,
     },
+    breadcrumb: { nav: 'পৃষ্ঠা পথ', more: 'লুকানো স্তর দেখান' },
     pagination: { previous: 'আগের পৃষ্ঠা', next: 'পরের পৃষ্ঠা', page: (p) => `পৃষ্ঠা ${b(p)}`, range: (r, t) => `${t}-এর মধ্যে ${r}` },
     table: {
       empty: 'দেখানোর মতো কোনো রেকর্ড নেই।', loading: 'রেকর্ড লোড হচ্ছে…', clearSearch: 'খোঁজ মুছুন', selectPage: 'এই পৃষ্ঠার সব সারি বেছে নিন',

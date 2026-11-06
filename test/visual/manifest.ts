@@ -155,6 +155,9 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'amount-keypad', title: 'AmountKeypad empty, grouped, error, Devanagari', layout: true },
   { id: 'pin-pad', title: 'PinPad empty, partial, error, shuffled', layout: true },
   { id: 'mobile-number-input', title: 'MobileNumberInput operators and states' },
+  { id: 'menu', title: 'Menu', pending: true },
+  { id: 'breadcrumb', title: 'Breadcrumb', pending: true },
+  { id: 'accordion', title: 'Accordion', pending: true },
   // new:component inserts fixtures above this line
 ];
 

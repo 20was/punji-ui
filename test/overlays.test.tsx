@@ -146,8 +146,10 @@ describe('Toast', () => {
     );
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     await user.click(screen.getByRole('button', { name: 'Save' }));
+    expect(screen.getByRole('status').textContent).toContain('Saved');
     expect(screen.getByTestId('toast-success').textContent).toContain('Saved');
     await user.click(screen.getByRole('button', { name: 'Fail' }));
+    expect(screen.getByRole('alert').textContent).toBe('Could not save. Try again.');
     expect(screen.getByTestId('toast-error').textContent).toContain('Could not save');
     await user.click(screen.getByTestId('toast-action'));
     expect(screen.queryByTestId('toast-error')).toBeNull();
@@ -188,7 +190,24 @@ describe('Toast', () => {
     vi.useRealTimers();
   });
 
-  it('announces through one live region, with no role nested inside it, and clears timers on unmount', () => {
+  it('announces errors assertively and the rest politely, once each, and again when the message repeats', () => {
+    render(
+      <ToastProvider>
+        <ToastButtons />
+      </ToastProvider>,
+    );
+    click('Save');
+    expect(screen.getByRole('status').textContent).toBe('Saved');
+    expect(screen.getByRole('alert').textContent).toBe('');
+    const first = screen.getByRole('status').firstElementChild;
+    click('Save');
+    expect(screen.getByRole('status').firstElementChild).not.toBe(first);
+    click('Fail');
+    expect(screen.getByRole('alert').textContent).toBe('Could not save. Try again.');
+    expect(screen.getByRole('status').textContent).toBe('Saved');
+  });
+
+  it('keeps the visible stack non-live with no roles inside, and clears timers on unmount', () => {
     vi.useFakeTimers();
     const clear = vi.spyOn(globalThis, 'clearTimeout');
     const { container, unmount } = render(
@@ -197,9 +216,10 @@ describe('Toast', () => {
       </ToastProvider>,
     );
     act(() => { screen.getByRole('button', { name: 'Fail' }).click(); });
-    const live = container.ownerDocument.querySelectorAll('[aria-live]');
-    expect(live.length).toBe(1);
-    expect(live[0]!.querySelector('[role="alert"], [role="status"], [aria-live]')).toBeNull();
+    const stack = container.ownerDocument.querySelector('.kit-toasts')!;
+    expect(stack.getAttribute('aria-live')).toBeNull();
+    expect(stack.querySelector('[role="alert"], [role="status"], [aria-live]')).toBeNull();
+    expect(container.ownerDocument.querySelectorAll('[aria-live]').length).toBe(2);
     const before = clear.mock.calls.length;
     unmount();
     expect(clear.mock.calls.length).toBeGreaterThan(before);

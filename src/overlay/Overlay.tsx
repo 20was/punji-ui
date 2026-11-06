@@ -96,10 +96,12 @@ export interface ToastProviderProps {
   children: ReactNode;
 }
 
-/** Provides useToast to everything below it and renders the polite live region that holds the toasts (three at most; the one live region, so each is announced once, and hover or focus pauses its countdown). */
+/** Provides useToast to everything below it and renders the polite live region that holds the toasts (three at most; the stack itself is not live, two hidden regions announce each toast once, errors assertively, and hover or focus pauses its countdown). */
 export function ToastProvider({ children }: ToastProviderProps) {
   const [items, setItems] = useState<ToastItem[]>([]);
   const seq = useRef(0);
+  // What the two hidden live regions say. The keyed span is replaced on every toast, so an identical message announces again.
+  const [said, setSaid] = useState<{ polite: { n: number; text: string }; assertive: { n: number; text: string } }>({ polite: { n: 0, text: '' }, assertive: { n: 0, text: '' } });
   // One timer per toast, with what is left of its time, so hover and focus can pause it (WCAG 2.2.1).
   const timers = useRef(new Map<number, { handle: ReturnType<typeof setTimeout> | null; left: number; since: number }>());
   const clear = useCallback((id: number) => {
@@ -138,6 +140,8 @@ export function ToastProvider({ children }: ToastProviderProps) {
     (kind, title, opts) => {
       const id = ++seq.current;
       setItems((xs) => [{ id, kind, title, ...opts }, ...xs].slice(0, 3));
+      const tone = kind === 'error' ? 'assertive' : 'polite';
+      setSaid((c) => ({ ...c, [tone]: { n: id, text: opts?.body ? `${title}. ${opts.body}` : title } }));
       arm(id, opts?.action ? ACTION_MS : PLAIN_MS);
     },
     [arm],
@@ -153,7 +157,11 @@ export function ToastProvider({ children }: ToastProviderProps) {
   return (
     <ToastContext.Provider value={api}>
       {children}
-      <div className="kit-toasts" aria-live="polite">
+      <div className="kit-sr">
+        <div role="status" aria-live="polite" aria-atomic="true"><span key={said.polite.n}>{said.polite.text}</span></div>
+        <div role="alert" aria-live="assertive" aria-atomic="true"><span key={said.assertive.n}>{said.assertive.text}</span></div>
+      </div>
+      <div className="kit-toasts">
         {items.map((t) => (
           <div
             key={t.id}

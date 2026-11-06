@@ -24,10 +24,11 @@
  * ("Bid 546.50, quantity 920, cumulative 2,760"). A visually hidden table lists
  * every level with its running total.
  */
-import { useId, useMemo, type CSSProperties, type PointerEvent, type ReactNode } from 'react';
+import { useMemo, type CSSProperties, type PointerEvent, type ReactNode } from 'react';
 
 import { cumulativeDepth, niceTicks } from '../chart-math/chartMath.ts';
-import { ChartTooltip, clamp, isNum, nprPrice, quantity, useChartCursor, useMeasuredWidth } from '../internal/chartFrame.tsx';
+import { ChartA11yShell, ChartDataTable } from '../chart-a11y/ChartA11yShell.tsx';
+import { ChartTooltip, clamp, isNum, nprPrice, quantity, useMeasuredWidth } from '../internal/chartFrame.tsx';
 import type { BookLevel } from '../order-book/OrderBookDepth.tsx';
 
 export interface DepthChartLabels {
@@ -97,7 +98,6 @@ export function DepthChart(props: DepthChartProps) {
 
 function Plot({ bids, asks, label, height = 240, formatPrice = nprPrice, formatQuantity = quantity, labels, testId }: Omit<DepthChartProps, 'bids' | 'asks'> & { bids: ReturnType<typeof cumulativeDepth>; asks: ReturnType<typeof cumulativeDepth> }) {
   const { ref, width } = useMeasuredWidth(640);
-  const hintId = useId();
   const plotH = clamp(isNum(height) ? height : 240, 140, 520);
   const top = 8;
   const svgH = top + plotH + AXIS_H;
@@ -136,11 +136,9 @@ function Plot({ bids, asks, label, height = 240, formatPrice = nprPrice, formatQ
     return `${d} L${edge.toFixed(1)},${yOf(pts.at(-1)!.cumulative).toFixed(1)} L${edge.toFixed(1)},${baseY} Z`;
   };
 
-  const cursor = useChartCursor(rows.length);
-  const active = cursor.index === null ? null : rows[cursor.index]!;
   const sideName = (r: Row) => (r.side === 'bid' ? L.bid : L.ask);
   const spoken = (r: Row) => `${sideName(r)} ${formatPrice(r.price)}, ${L.quantity.toLowerCase()} ${formatQuantity(r.quantity)}, ${L.cumulative.toLowerCase()} ${formatQuantity(r.cumulative)}`;
-  const onPointer = (e: PointerEvent<HTMLDivElement>) => {
+  const indexAt = (e: PointerEvent<HTMLDivElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
     const px = e.clientX - r.left;
     let best = 0;
@@ -149,27 +147,42 @@ function Plot({ bids, asks, label, height = 240, formatPrice = nprPrice, formatQ
       const dd = Math.abs(xOf(row.price) - px);
       if (dd < dist) { dist = dd; best = i; }
     });
-    cursor.pointerTo(best);
+    return best;
   };
   const style: CSSProperties = { height: svgH };
   const spread = bestBid !== undefined && bestAsk !== undefined ? bestAsk - bestBid : null;
   return (
-    <figure className="kit-ct" data-testid={testId} aria-label={label}>
+    <ChartA11yShell
+      className="kit-ct"
+      testId={testId}
+      label={label}
+      roleDescription="depth chart"
+      count={rows.length}
+      speak={(i) => spoken(rows[i]!)}
+      hint={labels?.hint ?? 'Use the left and right arrow keys to move between price levels, Home and End to jump to the lowest and highest price.'}
+      footer={
+        (spread !== null || crossed) && (
+          <p className="kit-ct-note">
+            {crossed ? (labels?.crossed ?? 'The best bid is not below the best ask: check the data.') : `${labels?.spread ?? 'Spread'} ${formatPrice(spread!)}`}
+          </p>
+        )
+      }
+      table={
+        <ChartDataTable
+          caption={label}
+          head={[L.side, L.price, L.quantity, L.cumulative]}
+          rows={rows.map((r) => ({ key: `${r.side}-${r.price}`, head: sideName(r), cells: [formatPrice(r.price), formatQuantity(r.quantity), formatQuantity(r.cumulative)] }))}
+        />
+      }
+    >
+      {({ index, pointerTo, plotProps }) => {
+        const active = index === null ? null : rows[index]!;
+        return (
+    <>
       <div ref={ref} className="kit-ct-area" style={style}>
         {/* The plot is the one focus stop: arrow keys move through the data, the pointer reads it. */}
         {/* oxlint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/no-noninteractive-tabindex */}
-        <div className="kit-ct-plot" tabIndex={0}
-          role="group"
-          aria-label={label}
-          aria-roledescription="depth chart"
-          aria-describedby={hintId}
-          onKeyDown={cursor.onKeyDown}
-          onFocus={cursor.onFocus}
-          onBlur={cursor.clear}
-          onPointerMove={onPointer}
-          onPointerDown={onPointer}
-          onPointerLeave={() => cursor.pointerTo(null)}
-        >
+        <div className="kit-ct-plot" {...plotProps((e) => pointerTo(indexAt(e)))}>
           <svg width={width} height={svgH} viewBox={`0 0 ${width} ${svgH}`} aria-hidden="true" focusable="false">
             {yTicks.ticks.map((t, k) => (
               <g key={t}>
@@ -206,36 +219,9 @@ function Plot({ bids, asks, label, height = 240, formatPrice = nprPrice, formatQ
           )}
         </div>
       </div>
-      {(spread !== null || crossed) && (
-        <p className="kit-ct-note">
-          {crossed ? (labels?.crossed ?? 'The best bid is not below the best ask: check the data.') : `${labels?.spread ?? 'Spread'} ${formatPrice(spread!)}`}
-        </p>
-      )}
-      <p className="kit-sr" id={hintId}>{labels?.hint ?? 'Use the left and right arrow keys to move between price levels, Home and End to jump to the lowest and highest price.'}</p>
-      <div className="kit-sr" role="status" aria-live="polite" aria-atomic="true">{active ? spoken(active) : ''}</div>
-      <div className="kit-sr">
-        <table>
-          <caption>{label}</caption>
-          <thead>
-            <tr>
-              <th scope="col">{L.side}</th>
-              <th scope="col">{L.price}</th>
-              <th scope="col">{L.quantity}</th>
-              <th scope="col">{L.cumulative}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((r) => (
-              <tr key={`${r.side}-${r.price}`}>
-                <th scope="row">{sideName(r)}</th>
-                <td>{formatPrice(r.price)}</td>
-                <td>{formatQuantity(r.quantity)}</td>
-                <td>{formatQuantity(r.cumulative)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </figure>
+    </>
+        );
+      }}
+    </ChartA11yShell>
   );
 }

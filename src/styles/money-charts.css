@@ -1,0 +1,24 @@
+/* Punji UI styles.
+   Styles for waterfall-chart, cash-flow-chart, net-worth-chart and range-selector. Needs tokens.css and base.css (styles.css has everything).
+   The frame, grid, axis, tooltip and legend come from financial-charts.css (.kit-ct). Colours from --pu-* tokens only. */
+@layer punji.components {
+  .pu-mc-lit { fill: color-mix(in srgb, var(--pu-color-text) 6%, transparent) }
+  .pu-mc-bar.increase { fill: var(--pu-color-gain) }
+  .pu-mc-bar.decrease { fill: var(--pu-color-loss) }
+  .pu-mc-bar.total { fill: var(--pu-color-chart) }
+  .pu-mc-bar.unchanged { fill: var(--pu-color-text-muted) }
+  .pu-mc-hatch { stroke: var(--pu-color-surface); stroke-width: 2; opacity: 0.55 }
+  .pu-mc-link { stroke: var(--pu-color-border-strong); stroke-width: 1; stroke-dasharray: 2 2 }
+  .pu-mc-val { fill: var(--pu-color-text); font: 600 11px / 14px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric) }
+  .pu-mc-net { fill: none; stroke: var(--pu-color-text); stroke-width: 2; stroke-linejoin: round }
+  .pu-mc-dot { fill: var(--pu-color-surface); stroke: var(--pu-color-text); stroke-width: 2 }
+  .pu-mc-area.assets { fill: var(--pu-color-series-nepse) }
+  .pu-mc-area.liabilities { fill: var(--pu-color-series-3) }
+  .pu-mc-legend .pu-mc-sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px }
+  .pu-mc-legend .pu-mc-sw.gain { background: var(--pu-color-gain) }
+  .pu-mc-legend .pu-mc-sw.loss { background: repeating-linear-gradient(45deg, transparent 0 3px, color-mix(in srgb, var(--pu-color-surface) 55%, transparent) 3px 5px), var(--pu-color-loss) }
+  .pu-mc-legend .pu-mc-sw.total { background: var(--pu-color-chart) }
+  .pu-mc-legend .pu-mc-sw.assets { background: var(--pu-color-series-nepse) }
+  .pu-mc-legend .pu-mc-sw.liabilities { background: repeating-linear-gradient(45deg, transparent 0 3px, color-mix(in srgb, var(--pu-color-surface) 55%, transparent) 3px 5px), var(--pu-color-series-3) }
+  .pu-mc-legend .pu-mc-sw.net { width: 16px; height: 3px; border-radius: 2px; background: var(--pu-color-text) }
+}

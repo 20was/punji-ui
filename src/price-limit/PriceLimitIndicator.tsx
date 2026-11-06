@@ -49,6 +49,9 @@ export interface PriceLimitIndicatorProps {
   testId?: string;
 }
 
+/**
+ * @stability stable
+ */
 export function PriceLimitIndicator({ ltp, lowerLimit, upperLimit, previousClose, bandRate, symbol, money = nepalQuoteMoney, labels, showFigures = true, testId }: PriceLimitIndicatorProps) {
   const words = { ...EN, ...labels };
   const derived = lowerLimit == null && upperLimit == null && previousClose != null && bandRate ? circuitLimits(previousClose, bandRate) : null;

@@ -80,6 +80,9 @@ export interface IssueCardProps {
   testId?: string;
 }
 
+/**
+ * @stability composition
+ */
 export function IssueCard({
   issue, today, status: statusProp, primaryCalendar = 'bs', language, digits = 'latn', money, action, kindLabels, statusLabels, labels,
   headingLevel = 3, className, testId,

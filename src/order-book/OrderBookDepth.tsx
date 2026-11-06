@@ -43,6 +43,9 @@ export interface OrderBookDepthLabels {
   sellTotal: (pct: string, qty: string) => string;
 }
 
+/**
+ * @stability stable
+ */
 export function OrderBookDepth({ bids, asks, levels = 5, totals, labels, testId }: {
   /** Best first (highest bid first). */
   bids: readonly BookLevel[];

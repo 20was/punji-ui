@@ -119,6 +119,9 @@ const ALL: readonly CompoundingFrequency[] = ['monthly', 'quarterly', 'half-year
 /** How long typing must pause before the new maturity amount is announced. */
 const ANNOUNCE_DELAY_MS = 700;
 
+/**
+ * @stability composition
+ */
 export function DepositCalculator({
   defaultKind = 'fixed', defaultAmount = '', defaultRatePercent = '', defaultMonths = 12, defaultCompounding = 'quarterly', defaultTdsPercent = '6',
   maxMonths = 120, maxRatePercent = '20', frequencies = ALL, rounding = 'half-up', money = nepalMoneyPreset, digits = 'latn', onResultChange, labels, title, headingLevel = 2, className, testId,

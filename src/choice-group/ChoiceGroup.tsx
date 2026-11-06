@@ -27,7 +27,9 @@ export interface ChoiceGroupProps<T extends string = string> {
   appearance?: 'underline' | 'compact';
 }
 
-/** Native exclusive choices: the browser provides arrow keys, focus and disabled handling. */
+/** Native exclusive choices: the browser provides arrow keys, focus and disabled handling. *
+ * @stability stable
+ */
 export function ChoiceGroup<T extends string>({ options, value, onChange, label, testId, size = 'lg', appearance = 'underline' }: ChoiceGroupProps<T>) {
   return <fieldset className={`kit-choice kit-choice-${appearance} ${size}`} data-testid={testId} aria-label={label}>
     {options.map(({ value: optionValue, label: optionLabel, disabled }) => <label key={optionValue}>

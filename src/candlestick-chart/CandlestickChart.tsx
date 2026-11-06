@@ -174,6 +174,9 @@ function smaAt(values: readonly number[], w: number, i: number): number | null {
   return sum / w;
 }
 
+/**
+ * @stability beta
+ */
 export function CandlestickChart(props: CandlestickChartProps) {
   const { candles, label, labels, testId } = props;
   const checked = useMemo(() => candles.map((c, i) => {

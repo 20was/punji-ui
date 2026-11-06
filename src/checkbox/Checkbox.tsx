@@ -29,6 +29,9 @@ export interface CheckboxProps {
   rowTestId?: string;
 }
 
+/**
+ * @stability stable
+ */
 export function Checkbox({ checked, onChange, children, lead, end, disabled, testId, rowTestId }: CheckboxProps) {
   return (
     <label className={`kit-check${disabled ? ' off' : ''}`} data-testid={rowTestId}>

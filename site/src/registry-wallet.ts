@@ -11,6 +11,7 @@ export const WALLET_PAGES: readonly PageDef[] = [
     navTitle: 'EMVCo QR',
     group: 'banking',
     kind: 'utility',
+    stability: 'beta',
     description: 'Build and parse EMVCo merchant QR payloads (the NepalPay and Fonepay scan-to-pay format): TLV, CRC-16 check, bigint amounts, clear errors.',
     lead: 'Build the text inside a scan-to-pay code, or read a scanned one back, with an exact amount and a checked CRC.',
     summary:
@@ -47,6 +48,7 @@ export const WALLET_PAGES: readonly PageDef[] = [
     title: 'QrCode',
     group: 'banking',
     kind: 'component',
+    stability: 'experimental',
     description: 'A dependency-free QR code in one SVG path: byte mode, versions 1 to 40, four error correction levels. Dark on light in both themes; renders on the server.',
     lead: 'Draw any text as a QR code, with no dependency, in about 3 kB.',
     summary:
@@ -65,6 +67,7 @@ export const WALLET_PAGES: readonly PageDef[] = [
     title: 'PaymentQrCard',
     group: 'banking',
     kind: 'component',
+    stability: 'composition',
     description: 'A scan-to-pay card that shows what its EMVCo payload says: merchant, city and amount. Refuses a damaged code, hides an expired one, and can add an amount.',
     lead: 'The receive-money screen: the code, the merchant and the amount, which can never disagree because all three come from the payload.',
     summary:
@@ -102,6 +105,7 @@ export const WALLET_PAGES: readonly PageDef[] = [
     title: 'AmountKeypad',
     group: 'banking',
     kind: 'component',
+    stability: 'beta',
     description: 'An on-screen amount keypad for wallets: exact decimal entry in paisa, lakh and crore grouping, quick amounts, a max that refuses keys and says why.',
     lead: 'The enter-amount screen of a wallet app: big figure, exact paisa, and keys that refuse what the limit or the currency does not allow.',
     summary:
@@ -131,6 +135,7 @@ export const WALLET_PAGES: readonly PageDef[] = [
     title: 'PinPad',
     group: 'banking',
     kind: 'component',
+    stability: 'beta',
     description: 'A transaction PIN pad that never writes the digits to the page: dots, a spoken count, an optional crypto-random key order and a fingerprint slot.',
     lead: 'Enter a wallet MPIN on screen without the digits ever reaching the DOM, with an optional shuffled layout.',
     summary:
@@ -159,6 +164,7 @@ export const WALLET_PAGES: readonly PageDef[] = [
     title: 'MobileNumberInput',
     group: 'banking',
     kind: 'component',
+    stability: 'beta',
     description: 'A Nepal mobile number field: +977 prefix, pasted country codes and Devanagari digits, 984-1234567 grouping and NTC, Ncell or SmartCell detection.',
     lead: 'Type or paste a Nepal mobile number and see the operator as soon as three digits are in, for top-ups and send-to-mobile.',
     summary:
@@ -191,6 +197,7 @@ export const WALLET_PAGES: readonly PageDef[] = [
     title: 'BillSummary',
     group: 'banking',
     kind: 'component',
+    stability: 'composition',
     description: 'A utility bill fetched for a customer ID before it is paid: biller, customer, charges, rebates and fines, an exact total and a due date in AD or BS.',
     lead: 'Show the electricity, water or internet bill a biller returned, so the payer sees whose bill and how much before paying it.',
     summary:

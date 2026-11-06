@@ -35,6 +35,9 @@ export type MeterTone = 'neutral' | 'gain' | 'loss' | 'chart' | 'series2' | 'ser
 const clamp = (v: number) => Math.max(0, Math.min(100, v));
 const finite = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
 
+/**
+ * @stability stable
+ */
 export function MeterBar({ parts, max, marker, label, testId }: {
   /** The segments laid end to end: each a `value` on the scale and a `tone`. */
   parts: readonly { value: number; tone: MeterTone }[];
@@ -198,6 +201,9 @@ export function ShareLegend({ items, layout = 'columns', label }: {
   );
 }
 
+/**
+ * @stability stable
+ */
 export function ShareBar({ items, label, legend = 'columns', foot, testId }: {
   /** The shares, in bar and legend order. Each `pct` is 0 to 100. */
   items: readonly ShareItem[];

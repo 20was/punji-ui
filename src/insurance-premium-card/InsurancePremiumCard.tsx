@@ -94,6 +94,9 @@ const STATUS_ICONS: Record<PolicyStatus, ReactNode> = {
   matured: <><circle cx="8" cy="8" r="5.5" /><path d="M5.5 8.2 7.3 10l3.2-3.6" /></>,
 };
 
+/**
+ * @stability composition
+ */
 export function InsurancePremiumCard({
   plan, insurer, policyNumber, status, premium, frequency, breakdown, nextDueDate, nextDueLabel, sumAssured, termYears, money = nepalMoneyPreset,
   language = 'en', digits = 'latn', actions, headingLevel = 3, labels, className, testId,

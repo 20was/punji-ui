@@ -163,6 +163,9 @@ function percentOf(rate: string): string {
   return places ? text.replace(/\.?0+$/, '') : text;
 }
 
+/**
+ * @stability composition
+ */
 export function OrderTicket({
   symbol, side: sideProp, defaultSide = 'buy', onSideChange, defaultQuantity, defaultPrice, ltp, lowerLimit, upperLimit, previousClose, bandRate,
   tickSize = 10n, lotSize = 1n, minQuantity, maxQuantity, feeSchedule = nepseFeeSchedule, costPerUnit, holdingDays, investor,

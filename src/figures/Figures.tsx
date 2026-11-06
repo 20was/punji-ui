@@ -48,6 +48,9 @@ function printMoney(value: Money, formatter: MoneyFormatter | undefined, absolut
   return intl.format(`${negative ? '-' : ''}${decimal}` as `${number}`);
 }
 
+/**
+ * @stability stable
+ */
 export function Figure({ value, kind = 'num', dp = 2, formatter, testId }: FigureProps) {
   if (isMoney(value)) return <span className="kit-fig" data-testid={testId}>{printMoney(value, formatter)}</span>;
   return <span className="kit-fig" data-testid={testId}>{formatFigure(value, kind, dp)}</span>;

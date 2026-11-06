@@ -97,6 +97,9 @@ function dateText(value: string, calendar: 'ad' | 'bs', language: 'en' | 'ne', d
 
 const ARROWS = { up: 'M8 13V3m0 0L4 7m4-4 4 4', down: 'M8 3v10m0 0-4-4m4 4 4-4', same: 'M3 8h10' };
 
+/**
+ * @stability composition
+ */
 export function InterestRateTable({ rates, caption, description, calendar = 'ad', language = 'en', digits = 'latn', showChange = true, labels, className, testId }: InterestRateTableProps) {
   const captionId = useId();
   const words = { ...DEFAULT_INTEREST_RATE_TABLE_LABELS, ...labels };

@@ -86,6 +86,9 @@ function Person({ person, words, testId }: { person: PayslipPerson; words: Paysl
   );
 }
 
+/**
+ * @stability composition
+ */
 export function Payslip({
   employer, employee, period, payDate, earnings, deductions, money = nepalLedgerMoney, currencyNote, words: wordsOption, notes, printable, labels,
   headingLevel = 2, className, testId,

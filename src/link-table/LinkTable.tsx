@@ -32,6 +32,9 @@ export interface LinkColumn {
 
 const Ctx = createContext<{ ends: readonly boolean[]; linkComponent?: LinkComponent }>({ ends: [] });
 
+/**
+ * @stability beta
+ */
 export function LinkTable({ label, columns, children, chevron = true, heads = true, compactAt = 560, linkComponent, testId }: {
   /** Names the list for screen readers. */
   label: string;

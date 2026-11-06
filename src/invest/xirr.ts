@@ -137,7 +137,9 @@ export function xnpv(flows: readonly CashFlow[], rate: string, rounding: 'half-e
   return divideRounded(npvAtLog(prepared, ln(SCALE + r)), SCALE, rounding);
 }
 
-/** The XIRR of dated cash flows, or null when they have no rate (all one sign, or no root in range). */
+/** The XIRR of dated cash flows, or null when they have no rate (all one sign, or no root in range). *
+ * @stability beta
+ */
 export function xirr(flows: readonly CashFlow[], options: XirrOptions = {}): XirrResult | null {
   const digits = options.digits ?? 8;
   if (!Number.isInteger(digits) || digits < 2 || digits > 12) throw new RangeError('digits must be a whole number from 2 to 12');

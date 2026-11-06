@@ -6,15 +6,20 @@ import { DataRow, DataRows } from '@punji/ui/rows';
 // moneyColDef() returns the ColDef fields AG Grid reads. Here they are called by hand (AG Grid is not loaded on this
 // page): in your app, spread them into a column, for example { field: 'balance', ...moneyColDef({ locale: 'en-IN' }) }.
 const col = moneyColDef({ locale: 'en-IN' });
-const values = [money(9007199254740993n, 'NPR'), money(9007199254740992n, 'NPR'), money(-4500n, 'NPR'), money(1234567890n, 'USD')];
-const sorted = values.toSorted((a, b) => col.comparator(a, b));
+const values = [
+  { name: 'Reserve', v: money(9007199254740993n, 'NPR') },
+  { name: 'Operating', v: money(9007199254740992n, 'NPR') },
+  { name: 'Refund', v: money(-4500n, 'NPR') },
+  { name: 'US wire', v: money(1234567890n, 'USD') },
+];
+const sorted = values.toSorted((a, b) => col.comparator(a.v, b.v));
 
 export default function Example() {
   return (
-    <Card title="valueFormatter and comparator" description="Sorted by currency, then exact minor units. The column type is right-aligned." headingLevel={3}>
-      <DataRows label="Values through the AG Grid helpers">
-        {sorted.map((v) => (
-          <DataRow key={`${v.currency}${v.minor}`} label={`${v.currency} ${v.minor}`} value={col.valueFormatter({ value: v })} />
+    <Card title="Formatter and comparator" description="Sorted by currency, then exact minor units." headingLevel={3}>
+      <DataRows label="Values through the AG Grid helpers" flush>
+        {sorted.map(({ name, v }) => (
+          <DataRow key={name} label={name} value={col.valueFormatter({ value: v })} />
         ))}
       </DataRows>
     </Card>

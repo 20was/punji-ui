@@ -22,8 +22,8 @@ const sorted = rows.toSorted((a, b) => moneySortFn(rowOf(a), rowOf(b), 'balance'
 
 export default function Example() {
   return (
-    <Card title="Balance, ascending" description="Two balances differ by one paisa past 2^53: Number() would call them equal" headingLevel={3}>
-      <DataRows label="Accounts sorted by exact minor units">
+    <Card title="Balance, ascending" description="Two balances one paisa apart, past 2^53" headingLevel={3}>
+      <DataRows label="Accounts sorted by exact minor units" flush>
         {sorted.map((a) => (
           <DataRow key={a.name} label={a.name} value={String(balance!.cell({ row: rowOf(a), getValue: rowOf(a).getValue }))} />
         ))}

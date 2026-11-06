@@ -859,6 +859,8 @@
     "sync": "node scripts/sync-from-web.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:types": "vitest run --typecheck.only",
     "test:deep": "FC_NUM_RUNS=2000 vitest run",
     "size": "size-limit",
     "check:publint": "publint --strict",
@@ -892,11 +894,11 @@
     "typecheck:visual": "tsc -p test/visual/tsconfig.json --noEmit",
     "site:gen": "node scripts/site-gen.mjs",
     "site:dev": "npm run build && npm run site:gen && vite site",
-    "site:build": "npm run site:gen && vite build site && vite build site --ssr src/entry-server.tsx --outDir dist-server && node scripts/site-prerender.mjs && node scripts/site-registry.mjs",
+    "site:build": "npm run site:gen && vite build site && vite build site --ssr src/entry-server.tsx --outDir dist-server && node scripts/site-prerender.mjs && node scripts/site-registry.mjs && node scripts/site-headers.mjs",
     "site:preview": "vite preview site",
     "typecheck:site": "npm run site:gen && tsc -p site/tsconfig.json --noEmit",
     "check:site": "node scripts/check-site.mjs",
-    "check:seo": "node scripts/check-seo.mjs && node scripts/check-registry.mjs",
+    "check:seo": "node scripts/check-seo.mjs && node scripts/check-registry.mjs && node scripts/check-headers.mjs",
     "site:brand": "node scripts/site-brand.mjs",
     "check:consumer": "node scripts/check-consumer.mjs",
     "check:nextjs": "node scripts/check-nextjs.mjs",
@@ -923,6 +925,7 @@
     "@testing-library/user-event": "14.6.8",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "@vitest/coverage-v8": "5.0.5",
     "axe-core": "4.14.0",
     "fast-check": "4.10.2",
     "jsdom": "30.1.3",
@@ -936,7 +939,8 @@
     "size-limit": "14.3.0",
     "typescript": "7.0.2",
     "vite": "8.3.5",
-    "vitest": "5.0.5"
+    "vitest": "5.0.5",
+    "wrangler": "4.156.0"
   },
   "dependencies": {
     "@remotemerge/nepali-date-converter": "1.2.5"

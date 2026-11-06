@@ -1268,7 +1268,7 @@ export const PAGES: readonly PageDef[] = [
     group: 'layout',
     kind: 'component',
     summary: "The one text link of a card's header (\"Open portfolio\", \"Markets\"), in the link colour. An in-app path stays in the same tab with a chevron (through your router's linkComponent or a plain <a>); an absolute http(s) address opens a new tab with rel=\"noopener noreferrer\", an arrow, and the new-tab words spoken after the label.",
-    use: ['The single header link of a Card.', '`linkComponent` to wrap your router link once; `newTabLabel` in the reader\'s language.'],
+    use: ['The single header link of a Card.', '`linkComponent` to wrap your router link for one link, or [LinkProvider](/get-started/router/) once for the whole app; `newTabLabel` in the reader\'s language.'],
     avoid: ['Several links in a header, or a link that looks like a button.', 'Choosing the icon by hand: href (or external) decides it.', 'An `ariaLabel` that does not contain the visible words (WCAG 2.5.3).'],
     api: [...ui('card-link', 'CardLink')],
     examples: [

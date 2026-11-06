@@ -4,6 +4,7 @@
  * and note, DataRow a flat label/value fact. Rows never carry their own card.
  */
 import { Children, isValidElement, type ReactNode } from 'react';
+import { AppLink } from '../internal/link.tsx';
 import type { LinkComponent } from '../internal/link.tsx';
 
 import { ChevronRight } from '../layout/Layout.tsx';
@@ -109,9 +110,8 @@ function ValueRowBody({ lead, symbol, title, name, pill, line, figure, note, hre
     </>
   );
   if (href) {
-    const L = linkComponent && !/^https?:/.test(href) ? linkComponent : 'a';
     return (
-      <L className="kit-value-row" href={href} data-testid={testId} aria-label={ariaLabel}>{body}</L>
+      <AppLink linkComponent={linkComponent} className="kit-value-row" href={href} data-testid={testId} aria-label={ariaLabel}>{body}</AppLink>
     );
   }
   if (onClick) {

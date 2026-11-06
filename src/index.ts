@@ -48,7 +48,7 @@ export * from './table/Table.tsx';
 export * from './tabs/Tabs.tsx';
 export * from './format/format.ts';
 export * from './live/live.ts';
-export type { LinkComponent, LinkProps } from './internal/link.tsx';
+export * from './link/Link.tsx';
 export * from './use-media-query/useMediaQuery.ts';
 export * from './use-hydrated/useHydrated.ts';
 export * from './stable-order/useStableOrder.ts';

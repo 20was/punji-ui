@@ -5,6 +5,7 @@
  * controls only where a page draws them.
  */
 import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
+import { AppLink } from '../internal/link.tsx';
 import type { LinkComponent } from '../internal/link.tsx';
 
 import type { ControlSize } from '../select/Select.tsx';
@@ -75,12 +76,11 @@ export function Button({ variant = 'primary', size = 'md', block, loading, icon,
   if (href) {
     const absolute = /^https?:/.test(href);
     const newTab = external ?? absolute;
-    const L = linkComponent && !absolute && !newTab ? linkComponent : 'a';
     return (
-      <L className={cls} href={href} {...(newTab ? { target: '_blank', rel: 'noopener noreferrer' } : null)} aria-label={name && newTab ? `${name} ${newTabLabel}` : name} data-testid={testId}>
+      <AppLink linkComponent={linkComponent} external={newTab || absolute} className={cls} href={href} {...(newTab ? { target: '_blank', rel: 'noopener noreferrer' } : null)} aria-label={name && newTab ? `${name} ${newTabLabel}` : name} data-testid={testId}>
         {body}
         {newTab && !name ? <>{' '}<span className="kit-sr">{newTabLabel}</span></> : null}
-      </L>
+      </AppLink>
     );
   }
   return (

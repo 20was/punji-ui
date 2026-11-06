@@ -15,6 +15,7 @@
  * CheckList.
  */
 import type { AriaAttributes, KeyboardEvent, ReactNode } from 'react';
+import { AppLink } from '../internal/link.tsx';
 import type { LinkComponent } from '../internal/link.tsx';
 
 import { StatusPill } from '../status-pill/StatusPill.tsx';
@@ -187,12 +188,11 @@ export function CheckRow({ icon, tone = 'neutral', title, line, trail, figure, f
   );
   const common = { className: cls, 'aria-label': ariaLabel, 'data-row': dataRow, 'data-testid': testId, 'data-tone': tone };
   if (href && !action) {
-    const L = linkComponent && !external && !/^https?:/.test(href) ? linkComponent : 'a';
     return (
       <li>
-        <L {...common} href={href} target={target} rel={target === '_blank' ? 'noopener noreferrer' : undefined}>
+        <AppLink {...common} linkComponent={linkComponent} external={external} href={href} target={target}>
           {body}
-        </L>
+        </AppLink>
       </li>
     );
   }

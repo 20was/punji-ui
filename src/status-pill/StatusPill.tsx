@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { AppLink } from '../internal/link.tsx';
 import type { LinkComponent } from '../internal/link.tsx';
 
 
@@ -43,11 +44,10 @@ export function StatusPill({ children, tone, dot, swatch, size, href, linkCompon
       {children}
     </>
   );
-  const L = linkComponent && !/^https?:/.test(href ?? '') ? linkComponent : 'a';
   return href ? (
-    <L className={cls} href={href} data-testid={testId}>
+    <AppLink linkComponent={linkComponent} className={cls} href={href} data-testid={testId}>
       {body}
-    </L>
+    </AppLink>
   ) : (
     <span className={cls} data-testid={testId}>
       {body}

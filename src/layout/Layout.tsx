@@ -5,6 +5,7 @@
  * meta line under it (what is on the page), up to three actions on the right.
  */
 import type { ReactNode } from 'react';
+import { AppLink } from '../internal/link.tsx';
 import type { LinkComponent } from '../internal/link.tsx';
 
 
@@ -53,14 +54,13 @@ interface HeaderProps {
 
 export function PageHeader({ title, backTo, linkComponent, backLabel = 'Back', meta, actions, eyebrow, compact, stamp, headingLevel = 1, testId }: HeaderProps) {
   const H = `h${headingLevel}` as const;
-  const L = linkComponent ?? 'a';
   return (
     <header className={`kit-header${backTo ? '' : ' no-back'}${compact ? ' compact' : ''}${eyebrow ? ' has-eyebrow' : ''}`} data-testid={testId}>
       {eyebrow && <p className="kit-header-k">{eyebrow}</p>}
       {backTo && (
-        <L className="kit-circle kit-back" href={backTo} aria-label={backLabel} data-testid="back-button">
+        <AppLink linkComponent={linkComponent} className="kit-circle kit-back" href={backTo} aria-label={backLabel} data-testid="back-button">
           <ChevronLeft />
-        </L>
+        </AppLink>
       )}
       {stamp ? (
         <div className="kit-header-title">

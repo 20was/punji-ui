@@ -50,7 +50,7 @@ Both are documented in [THEMING.md](THEMING.md).
 | `--pu-color-series-10` | `#8a5a2b` | `#d6a77a` |
 | `--pu-color-series-11` | `#a336b8` | `#e07cf0` |
 | `--pu-color-series-12` | `#77700f` | `#e8dc6a` |
-| `--pu-color-series-3` | `#d08a10` | `#f5b84b` |
+| `--pu-color-series-3` | `#b07300` | `#f5b84b` |
 | `--pu-color-series-4` | `#7e4fd6` | `#c9a7ff` |
 | `--pu-color-series-5` | `#0b7f75` | `#3fd0c0` |
 | `--pu-color-series-6` | `#b8326f` | `#ff7eb6` |
@@ -106,6 +106,32 @@ Both are documented in [THEMING.md](THEMING.md).
 | `--pu-text-lg` | `clamp(1.125rem, 1rem + 0.75vw, 1.5rem)` | - |
 | `--pu-text-sm` | `clamp(0.8125rem, 0.77rem + 0.22vw, 0.9375rem)` | - |
 | `--pu-text-xs` | `clamp(0.6875rem, 0.65rem + 0.16vw, 0.75rem)` | - |
+
+## Stacking (z-index)
+
+Components read one scale, so layers never collide. Low to high, with gaps for
+your own layers in between. A popover or tooltip opened inside a drawer or
+sheet sits above it, and toasts sit above modals.
+
+| Token | Value | Used by |
+| --- | --- | --- |
+| `--pu-z-base` | `0` | page content |
+| `--pu-z-raised` | `1` | a lifted element inside one component |
+| `--pu-z-sticky` | `100` | dock, drawer header and footer |
+| `--pu-z-dropdown` | `200` | option lists, suggestions |
+| `--pu-z-overlay` | `1000` | drawer, sheet and command palette backdrops |
+| `--pu-z-modal` | `1100` | full-screen company search sheet |
+| `--pu-z-popover` | `1200` | popovers, including their full-screen form on phones |
+| `--pu-z-toast` | `1300` | toasts |
+| `--pu-z-tooltip` | `1400` | tooltips |
+| `--pu-z-skip-link` | `1500` | skip links |
+
+## Reduced motion
+
+With `prefers-reduced-motion: reduce`, every element whose class starts with
+`kit-` or `pu-` (and its `::before` and `::after`) gets near-instant animations
+and transitions, from the `punji.components` layer. The loading spinner keeps
+turning, and progress that JS drives (the hold-to-confirm fill) still updates.
 
 ## Density and direction
 

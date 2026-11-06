@@ -112,7 +112,8 @@ test.describe('overlays', () => {
     // The assertive live region is persistent; the visible toast is what goes away.
     await expect(page.getByTestId('toast-error')).toHaveCount(0);
     await page.getByRole('button', { name: 'Success' }).click();
-    await expect(page.getByText('Order placed')).toBeVisible();
+    await expect(page.getByTestId('toast-success').getByText('Order placed')).toBeVisible();
+    await expect(page.getByRole('status').filter({ hasText: 'Order placed' })).toHaveCount(1);
   });
 });
 

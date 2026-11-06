@@ -43,7 +43,7 @@ export default function Example() {
             line={`${entries.length} payouts since 2079/80, cash, bonus and rights together.`}
           >
             {latest?.yieldOnCost != null && (
-              <FigureChip tone="up">
+              <FigureChip tone="gain">
                 {latest.yieldOnCost.toFixed(2)}% on cost in {latest.label}
               </FigureChip>
             )}

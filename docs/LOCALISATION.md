@@ -4,7 +4,8 @@
 > review by native speakers. Have the text you use reviewed, and adapted to your product's voice, before customers
 > see it. Each pack says so in its file header and in `pack.review === 'machine-drafted'`. Corrections are welcome.
 
-Components ship English words and take `labels` or `messages` props. The locale layer gives them all their words at
+Components ship English words and take a `labels` prop (the payment fields' `messages` and `Delta`'s `words` are
+deprecated aliases of it; see [API-CONVENTIONS.md](API-CONVENTIONS.md)). The locale layer gives them all their words at
 once.
 
 | Export | Subpath | What it is |
@@ -22,7 +23,7 @@ about 5 kB gzip; the provider and helpers about 2 kB.
 ## Order of precedence
 
 For every string: the component's English default, then the provider's pack, then the provider's `messages`, then
-the component's own `labels` or `messages` prop. A key missing anywhere falls back to the step before. Without a
+the component's own `labels` prop. A key missing anywhere falls back to the step before. Without a
 provider nothing changes.
 
 ```tsx

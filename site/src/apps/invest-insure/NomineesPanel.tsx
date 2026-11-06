@@ -67,7 +67,7 @@ export function NomineesPanel() {
           <p className="app-small" data-testid="ii-nominee-total" data-ok={total === 100 || undefined}>
             Total share: <strong>{total}%</strong> {total === 100 ? '(complete)' : 'of 100%'}
           </p>
-          {tried && totalError && <Note tone="error">{totalError}</Note>}
+          {tried && totalError && <Note tone="danger">{totalError}</Note>}
           <div className="ii-buttons">
             <Button
               variant="secondary"

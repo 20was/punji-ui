@@ -124,7 +124,7 @@ export function ReconciliationMatcher({
 
   if (state === 'error') return <RetryNote retryLabel={retryLabel} onRetry={onRetry} testId={testId}>{errorLabel}</RetryNote>;
   if (state === 'loading') return <div className={`pu-recon${className ? ` ${className}` : ''}`} data-testid={testId} aria-busy="true"><Note>{<span role="status">{loadingLabel}</span>}</Note></div>;
-  if (!computed) return <div role="alert" data-testid={testId}><Note tone="error">{words.invalid}</Note></div>;
+  if (!computed) return <div role="alert" data-testid={testId}><Note tone="danger">{words.invalid}</Note></div>;
   const { summary, suggestions } = computed;
 
   const open = { statement: new Set(summary.unmatchedStatement.map((i) => i.id)), ledger: new Set(summary.unmatchedLedger.map((i) => i.id)) };

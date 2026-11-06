@@ -50,7 +50,7 @@ characters are removed. None of them throws.
 ## The inputs
 
 Each input takes `label`, `value` (the canonical value from the last result), `onValueChange(result)`, `hint`
-(default: an example of the format), `error` (yours, replacing the built-in message), `fieldName`, `messages`,
+(default: an example of the format), `error` (yours, replacing the built-in message), `fieldName`, `labels` (formerly `messages`),
 `size`, `hideLabel`, `id`, `name`, `required`, `disabled`, `onBlur`, `className`, `testId` and `ref`, plus the
 options of their check (`countries`, `accept`, `today`, `brand`, `providers`, `padShort`, `rule`).
 

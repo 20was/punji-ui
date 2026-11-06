@@ -17,7 +17,7 @@ export default function Example() {
       />
       <InlineState
         icon="error"
-        tone="error"
+        tone="danger"
         layout="row"
         role="alert"
         title="Your watchlist did not load"

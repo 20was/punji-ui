@@ -14,6 +14,8 @@
  */
 import type { ReactNode } from 'react';
 
+import { directionClass } from '../internal/tone.ts';
+
 export interface SummaryFigureProps {
   /** What the figure is (a short name above it). */
   label: ReactNode;
@@ -99,8 +101,8 @@ export function HeadlineFigure({ label, labelAction, value, currency, aside, lin
 }
 
 export interface FigureChipProps {
-  /** `up` and `down` tint the chip as a gain or a loss; `flat` is quiet. */
-  tone: 'up' | 'down' | 'flat';
+  /** `gain` and `loss` tint the chip as a gain or a loss; `flat` is quiet. Deprecated: 'up' and 'down', use `gain` and `loss`. */
+  tone: 'gain' | 'loss' | 'flat' | 'up' | 'down';
   /** The change as words and figures. Put the sign in the text ("+Rs 320 (+2.6%)"): the tint never carries it alone. */
   children: ReactNode;
   /** Spoken before the text and not shown ("Gain", "Loss"), for a change whose text has no sign or word. */
@@ -112,7 +114,7 @@ export interface FigureChipProps {
 /** One change as a soft pill under a HeadlineFigure. */
 export function FigureChip({ tone, children, srLabel, testId }: FigureChipProps) {
   return (
-    <span className={`kit-figchip ${tone}`} data-testid={testId}>
+    <span className={`kit-figchip ${directionClass(tone)}`} data-testid={testId}>
       {srLabel && <span className="kit-sr">{srLabel}: </span>}
       {children}
     </span>

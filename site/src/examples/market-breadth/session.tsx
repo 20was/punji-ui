@@ -21,8 +21,8 @@ export default function Example() {
         {...(view === 'empty' ? { advances: 0, declines: 0, unchanged: 0 } : b)}
         loading={view === 'loading'}
         extra={[
-          { id: 'upper', label: 'At upper circuit', value: 1, tone: 'up' },
-          { id: 'lower', label: 'At lower circuit', value: 0, tone: 'down' },
+          { id: 'upper', label: 'At upper circuit', value: 1, tone: 'gain' },
+          { id: 'lower', label: 'At lower circuit', value: 0, tone: 'loss' },
           { id: 'traded', label: 'Scrips traded', value: quotes.length },
         ]}
       />

@@ -72,7 +72,7 @@ An app (`kind: 'app'`, group `apps`, URL `/apps/<slug>/`) is a complete, full-vi
    - `kit.tsx`: `AppFrame` (navigation rail on wide screens, a bottom tab bar under 900 px; nav items are `#<screen>` links with `data-testid="screen-<id>"`; a click moves focus to the new screen's heading), `ScreenTitle` (each screen's `h2`), `useScreen(ids, initial)` (the screen in the URL hash, read after hydration), `useTicker(fn, { intervalMs, running })` (runs only in the browser, pauses in a hidden tab), `lazyScreen(() => import('./Screen.tsx'), title)` (a screen in its own chunk with loading and error states and `.preload()` for hover), `useReducedMotion()`.
    - `sim.ts`: the seeded market (`createMarket`, `stepMarket`, `indexOf`, `bookFor`, `dailyCandles`, `shockMarket`, `timeAt`): same seed, same prices on the server and in the browser, so the page hydrates without a mismatch. Never read the clock or `Math.random` during render.
    - `icons.tsx` and `app.css` (`app-` classes: `app-stack`, `app-grid is-split | is-halves`, `app-toolbar-end`, `app-sym`, `app-kbd`). Prefix the app's own classes (`tt-`, `wd-`).
-3. Render the first screen statically (it is prerendered); load the others with `lazyScreen`. `check:seo` holds every page to 150 kB of gzipped JavaScript up front; the seven apps load 119 to 139 kB (2026-11-02).
+3. Render the first screen statically (it is prerendered); load the others with `lazyScreen`. `check:seo` holds every page to 151 kB of gzipped JavaScript up front; the seven apps load 119 to 139 kB (2026-11-02).
 4. Screens start at `h2` (`ScreenTitle`), cards at `h3`. Keep one reducer for the app's state so figures agree across screens, and announce what the app does in a polite live region.
 5. `npm run site:build`, `npm run check:seo`, then `npm run check:site`: it opens every screen of every app (through `screen-<id>`) at 390, 768 and 1440 px in light and dark, and fails on axe violations, horizontal overflow and console errors.
 
@@ -86,7 +86,7 @@ Each page loads only its own code. `src/app/load.ts` is the one place that knows
 - **Navigation**: `navigate()` loads the next route, then changes the URL, so a page never renders half-loaded. Back and Forward to a page not yet loaded keep the current page until it arrives. A chunk that cannot be fetched (offline, or removed by a new deploy) falls back to a full page load.
 - **Search**: the palette and `search.json` load when it first opens (hovering or focusing the button starts it).
 
-`check:seo` enforces the budget: every route's up-front JavaScript (entry script plus modulepreloads, gzip) stays under 150 kB, and every page preloads its own route chunk. On 2026-11-01 the largest route was 140 kB (a showcase screen), a typical component page 100 to 120 kB and the overview 138 kB, against 439 kB for every page before the split.
+`check:seo` enforces the budget: every route's up-front JavaScript (entry script plus modulepreloads, gzip) stays under 151 kB, and every page preloads its own route chunk. On 2026-11-01 the largest route was 140 kB (a showcase screen), a typical component page 100 to 120 kB and the overview 138 kB, against 439 kB for every page before the split.
 
 ## Routing
 

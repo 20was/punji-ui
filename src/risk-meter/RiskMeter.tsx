@@ -38,6 +38,9 @@ const CX = 50;
 const CY = 48;
 const point = (angle: number, radius = R) => `${(CX + radius * Math.cos(angle)).toFixed(2)} ${(CY - radius * Math.sin(angle)).toFixed(2)}`;
 
+/**
+ * @stability composition
+ */
 export function RiskMeter({ level, levels = riskLevelLabels, variant = 'gauge', label = 'Risk', position = defaultPosition, caption, className, testId }: RiskMeterProps) {
   const count = levels.length;
   if (count < 3 || count > 8) throw new RangeError('RiskMeter needs 3 to 8 levels');

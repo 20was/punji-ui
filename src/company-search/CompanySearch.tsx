@@ -86,6 +86,9 @@ export interface CompanySearchProps<T extends SymbolOption> {
 }
 
 
+/**
+ * @stability stable
+ */
 export function CompanySearch<T extends SymbolOption>({ options, label, placeholder, onOpen: open, sub, tags, none, testId, optionTestId, listTestId, hideLabel, size = 'lg', inputId, shortcut = '/', clearOnOpen = true, value, valueName, meta, valueTestId, readOnly, error, loading, initialQuery, closeLabel = 'Close' }: CompanySearchProps<T>) {
   const auto = useId();
   const id = inputId ?? `${auto}-in`;

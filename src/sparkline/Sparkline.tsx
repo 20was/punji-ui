@@ -114,5 +114,7 @@ function SparklineBase({ values, width = 88, height = 28, tone, fluid = false, m
  * Memoised: a watchlist row that re-renders with a new price but the same
  * closes array skips the line (no reduce, no path). Safe in a Server
  * Component (memo is part of React's server build); no hooks, no client code.
+ *
+ * @stability stable
  */
 export const Sparkline = memo(SparklineBase);

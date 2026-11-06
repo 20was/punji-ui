@@ -61,6 +61,9 @@ export interface TdsSummaryProps {
 
 const pct = (rate: string) => `${ratePercent(rate)}%`;
 
+/**
+ * @stability composition
+ */
 export function TdsSummary({
   caption, entries, view = 'category', rounding = 'half-up', money = nepalLedgerMoney, labels, bare, state = 'ready', emptyLabel = 'No tax deducted in this period.',
   loadingLabel = 'Loading TDS…', errorLabel = 'The TDS summary could not be loaded.', retryLabel = 'Try again', onRetry, testId,

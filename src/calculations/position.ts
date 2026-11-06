@@ -46,7 +46,9 @@ function check(trade: Trade, index: number): bigint {
   return fees;
 }
 
-/** Replay trades in order and return the open position. Throws when a sell exceeds the units held. */
+/** Replay trades in order and return the open position. Throws when a sell exceeds the units held. *
+ * @stability stable
+ */
 export function computePosition(trades: readonly Trade[], options: PositionOptions): Position {
   const { method, rounding } = options;
   if (method !== 'average' && method !== 'fifo') throw new TypeError('method must be "average" or "fifo"');

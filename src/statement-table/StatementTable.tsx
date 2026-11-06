@@ -86,6 +86,9 @@ export interface StatementTableProps {
 
 const MISSING = <span className="pu-money pu-money-missing"><span aria-hidden="true">—</span><span className="kit-sr">No value</span></span>;
 
+/**
+ * @stability stable
+ */
 export function StatementTable({
   caption, periods, rows, variance, negative = 'parentheses', money = nepalLedgerMoney, labels, percentDigits = 1, bare, maxHeight, state = 'ready',
   emptyLabel = 'No statement lines to show.', loadingLabel = 'Loading statement…', errorLabel = 'The statement could not be loaded.', retryLabel = 'Try again', onRetry, testId,

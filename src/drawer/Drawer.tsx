@@ -32,6 +32,9 @@ export interface DrawerProps {
   testId?: string;
 }
 
+/**
+ * @stability beta
+ */
 export function Drawer({ open, label, onClose, children, testId }: DrawerProps) {
   const ref = useRef<HTMLDivElement>(null);
   const close = useRef(onClose);

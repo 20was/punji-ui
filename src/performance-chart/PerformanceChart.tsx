@@ -104,6 +104,9 @@ const VALUE = new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2, maximum
 const defaultValue = (v: number) => VALUE.format(v);
 const defaultPercent = (p: number) => `${p > 0 ? '+' : p < 0 ? '−' : ''}${Math.abs(p).toFixed(2)}%`;
 
+/**
+ * @stability beta
+ */
 export function PerformanceChart(props: PerformanceChartProps) {
   const { dates, series, label, labels, testId } = props;
   const real = series.some((s) => s.values.some(isNum));

@@ -157,6 +157,8 @@ const ALLOWED_SETS: readonly (readonly string[])[] = [
  * detectSpoofing('Ram Bahadur Thapa').risk;            // 'none'
  * detectSpoofing('Paypa1', { known: ['Paypal'] }).lookalikeOf; // 'Paypal'
  * ```
+ *
+ * @stability experimental
  */
 export function detectSpoofing(name: string, options: SpoofOptions = {}): SpoofCheck {
   if (typeof name !== 'string') throw new TypeError('detectSpoofing expects a string');

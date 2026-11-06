@@ -45,6 +45,9 @@ export interface FinancialPeriodSelectorProps {
 
 const order = (date: CalendarDate) => date.year * 10000 + date.month * 100 + date.day;
 
+/**
+ * @stability stable
+ */
 export function FinancialPeriodSelector({ periods, value, onChange, label, kindLabels, kindGroupLabel, showDetail = true, size = 'md', testId }: FinancialPeriodSelectorProps) {
   const auto = useId();
   const id = testId ?? auto;

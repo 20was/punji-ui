@@ -115,6 +115,9 @@ function SearchGlyph() {
   );
 }
 
+/**
+ * @stability beta
+ */
 export function CommandPalette({ labels, placeholder, query, onQuery, items, onRun, onClose, empty, testIdPrefix = 'cmdk', testKey = (id) => id, autoCapitalize = 'off' }: Props) {
   const listId = useId();
   const [index, setIndex] = useState(0);

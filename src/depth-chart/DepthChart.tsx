@@ -79,6 +79,9 @@ interface Row {
   cumulative: number;
 }
 
+/**
+ * @stability experimental
+ */
 export function DepthChart(props: DepthChartProps) {
   const bids = useMemo(() => cumulativeDepth(props.bids, 'bid'), [props.bids]);
   const asks = useMemo(() => cumulativeDepth(props.asks, 'ask'), [props.asks]);

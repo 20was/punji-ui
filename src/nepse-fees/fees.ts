@@ -194,7 +194,9 @@ export interface NepseTradeEstimate {
   perUnit: bigint;
 }
 
-/** Every cost of one order, exact: commission, SEBON fee, DP charge and, on a sell with a cost basis, capital gains tax. */
+/** Every cost of one order, exact: commission, SEBON fee, DP charge and, on a sell with a cost basis, capital gains tax. *
+ * @stability beta
+ */
 export function estimateNepseTrade(input: NepseTradeInput, schedule: NepseFeeSchedule = nepseFeeSchedule): NepseTradeEstimate {
   const { side, quantity, price, dpScrips = 1, costBasis, holdingDays, investor = 'individual' } = input;
   if (side !== 'buy' && side !== 'sell') throw new TypeError('side must be "buy" or "sell"');

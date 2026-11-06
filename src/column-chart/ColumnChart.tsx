@@ -136,6 +136,9 @@ export function ColumnLegend({ series, testId }: { series: readonly ColumnSeries
   );
 }
 
+/**
+ * @stability stable
+ */
 export function ColumnChart(props: ColumnChartProps) {
   if (props.columns.length === 0 || props.series.length === 0) {
     return (

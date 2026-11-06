@@ -77,6 +77,9 @@ function changeOf(value: string, exponent: number): AmountKeypadChange {
   return { value, minorUnits: parseMinorUnits(value.replace(/\.$/, '') || '0', exponent), state: value.endsWith('.') ? 'partial' : 'valid' };
 }
 
+/**
+ * @stability beta
+ */
 export function AmountKeypad({
   label = 'Amount', value, onValueChange, max, maxIntegerDigits = 9, allowDecimal, quickAmounts, digits, hint, error, disabled,
   labels = {}, className, testId, currency, preset, locale, numberingSystem,

@@ -65,6 +65,9 @@ export interface BeneficiarySelectorProps {
 
 const norm = (s: string) => s.normalize('NFKD').toLocaleLowerCase();
 
+/**
+ * @stability stable
+ */
 export function BeneficiarySelector({ beneficiaries, value, onChange, label, visible = 4, loading, error, labels, className, testId }: BeneficiarySelectorProps) {
   const words = { ...DEFAULT_BENEFICIARY_SELECTOR_LABELS, ...labels };
   const uid = useId();

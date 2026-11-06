@@ -23,6 +23,9 @@ export interface BreakdownProps {
   testId?: string;
 }
 
+/**
+ * @stability stable
+ */
 export function Breakdown({ children, tone = 'inverse', live, testId }: BreakdownProps) {
   return (
     <dl className={`kit-bd${tone === 'inverse' ? ' kit-inv' : ''}`} aria-live={live ? 'polite' : undefined} data-testid={testId}>

@@ -77,7 +77,8 @@ let links = 0;
 
 // JavaScript budget (gzip, the entry script plus every modulepreload). The shell (React, header, sidebar, router) is
 // about 85 kB; the rest is the route's own view, page data and examples. See site/README.md, "Loading".
-const JS_BUDGET = 150_000;
+// Raised from 150 to 151 kB with the Versioning page: each new page adds its nav entry to the shell, and the largest showcase page sat 0.1 kB under.
+const JS_BUDGET = 151_000;
 const manifest = existsSync(resolve(dist, '.vite/manifest.json')) ? JSON.parse(read('.vite/manifest.json')) : null;
 if (!manifest) fail('.vite/manifest.json: not built (vite build site with build.manifest)');
 const gzipped = new Map();

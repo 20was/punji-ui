@@ -55,6 +55,9 @@ export interface PanInputProps extends Omit<InputHTMLAttributes<HTMLInputElement
   ref?: Ref<HTMLInputElement>;
 }
 
+/**
+ * @stability beta
+ */
 export function PanInput({ label, hint = '9 digits', error, value, onValueChange, digits = 'latn', labels, onBlur, className, ...rest }: PanInputProps) {
   const words = { ...DEFAULT_PAN_INPUT_LABELS, ...useLocaleMessages().messages.panInput, ...labels };
   const [left, setLeft] = useState(false);

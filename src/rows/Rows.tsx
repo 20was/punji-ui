@@ -20,6 +20,9 @@ export interface GroupedCellProps {
   testId?: string;
 }
 
+/**
+ * @stability stable
+ */
 export function GroupedCell({ children, label, pad, testId }: GroupedCellProps) {
   return (
     <section className={`kit-group${pad ? ' pad' : ''}`} aria-label={label} data-testid={testId}>

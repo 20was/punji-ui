@@ -85,6 +85,9 @@ function byYear(rows: readonly AmortisationRow[]): Line[] {
 }
 
 
+/**
+ * @stability composition
+ */
 export function AmortisationTable({ schedule, money = nepalMoneyPreset, view, defaultView, onViewChange, hideViewSwitch, labels, digits = 'latn', footnote, className, testId }: AmortisationTableProps) {
   const words = { ...DEFAULT_AMORTISATION_TABLE_LABELS, ...labels };
   const uid = useId();

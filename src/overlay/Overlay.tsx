@@ -26,6 +26,9 @@ export interface SheetProps {
   closeLabel?: string;
 }
 
+/**
+ * @stability beta
+ */
 export function Sheet({ open, title, body, children, onClose, testId, closeLabel = 'Close' }: SheetProps) {
   const ref = useRef<HTMLDivElement>(null);
   const titleId = useId();
@@ -96,7 +99,9 @@ export interface ToastProviderProps {
   children: ReactNode;
 }
 
-/** Provides useToast to everything below it and renders the polite live region that holds the toasts (three at most; the stack itself is not live, two hidden regions announce each toast once, errors assertively, and hover or focus pauses its countdown). */
+/** Provides useToast to everything below it and renders the polite live region that holds the toasts (three at most; the stack itself is not live, two hidden regions announce each toast once, errors assertively, and hover or focus pauses its countdown). *
+ * @stability beta
+ */
 export function ToastProvider({ children }: ToastProviderProps) {
   const [items, setItems] = useState<ToastItem[]>([]);
   const seq = useRef(0);

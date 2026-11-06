@@ -66,6 +66,9 @@ export interface IdNumberInputProps extends Omit<InputHTMLAttributes<HTMLInputEl
 
 const HINTS: Record<IdNumberKind, string> = { pan: '9 digits, for example 301234567', citizenship: 'As printed, for example 27-01-71-02345' };
 
+/**
+ * @stability beta
+ */
 export function IdNumberInput({ kind, label, hint, error, value, onValueChange, digits = 'latn', labels, onBlur, testId, ...rest }: IdNumberInputProps) {
   const [left, setLeft] = useState(false);
   const words = { ...DEFAULT_ID_NUMBER_INPUT_LABELS, ...useLocaleMessages().messages.idNumberInput, ...labels };

@@ -107,6 +107,9 @@ export interface DematAccountCardProps {
   testId?: string;
 }
 
+/**
+ * @stability composition
+ */
 export function DematAccountCard({
   holder, boid, dpName, crn, bankName, bankAccount, status, dematExpiry, onlineExpiry, today, warnWithinDays = 30, maskBoid = false,
   primaryCalendar = 'bs', language, digits, actions, loading, error, onRetry, headingLevel = 3, statusLabels, labels, className, testId,

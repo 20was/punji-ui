@@ -13,8 +13,8 @@ export default function Example() {
           { label: 'P/E', value: '12.8' },
           { label: 'Book value', value: 'Rs 214.10' },
           { label: 'Dividend yield', value: null },
-          { label: 'Net position', value: '+Rs 4,200', tone: 'up' },
-          { label: 'Net change', value: '-Rs 1,150', tone: 'down' },
+          { label: 'Net position', value: '+Rs 4,200', tone: 'gain' },
+          { label: 'Net change', value: '-Rs 1,150', tone: 'loss' },
         ]}
       />
       <KeyStats

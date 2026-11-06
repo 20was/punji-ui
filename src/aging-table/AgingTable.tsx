@@ -88,7 +88,7 @@ export function AgingTable({
   if (state === 'error') return <RetryNote retryLabel={retryLabel} onRetry={onRetry} testId={testId}>{errorLabel}</RetryNote>;
   let result: ReturnType<typeof ageItems>;
   try { result = ageItems(state === 'ready' ? items : [], asOf, { ...(limits ? { limits } : {}), notDue: notDue !== false }); } catch {
-    return <div role="alert" data-testid={testId}><Note tone="error">{words.invalid}</Note></div>;
+    return <div role="alert" data-testid={testId}><Note tone="danger">{words.invalid}</Note></div>;
   }
   const hideNotDue = notDue === 'auto' && result.totals[0] === 0n && result.rows.every((row) => row.amounts[0] === 0n);
   const visible = result.buckets.map((bucket, index) => ({ bucket, index })).filter(({ index }) => !(hideNotDue && index === 0));

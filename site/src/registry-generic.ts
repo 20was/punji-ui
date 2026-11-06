@@ -229,7 +229,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     use: ['Exclusive filters that should all be visible: All, Buy, Sell.', 'A form choice where a screen reader should hear "radio button, 2 of 3".'],
     avoid: ['More than about five options: use Select.', 'A choice that changes the view of a panel: use Tabs or `SegmentedControl`.'],
     api: [...ui('choice-group', 'ChoiceGroup', 'ChoiceOption', 'ChoiceGroupProps')],
-    examples: [{ id: 'basic', title: 'Underline and compact', note: 'One disabled option; the compact appearance at the md height.' }],
+    examples: [{ id: 'basic', title: 'Underline and compact', note: 'One disabled option; the compact variant at the md height.' }],
     keyboard: ['Tab moves to the chosen radio (or the first); the arrow keys move and choose within the group; a disabled option is skipped. This is the browser\'s radio behaviour.'],
     accessibility: [
       'A <fieldset> named by label, with native radios that share a name (`testId`).',

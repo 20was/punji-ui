@@ -41,6 +41,11 @@ export interface PaymentFieldProps<R extends PaymentCheck = PaymentCheck> {
   /** The field's name inside messages ("IBAN", "card number"). Default from the locale pack, else English. */
   fieldName?: string;
   /** Replace any built-in message, for translation or tone. Merged over the locale pack. */
+  labels?: Partial<PaymentFieldMessages>;
+  /**
+   * The former name of `labels`, still honoured.
+   * @deprecated Use `labels`; same keys. Kept until the next major.
+   */
   messages?: Partial<PaymentFieldMessages>;
   /** The box: 'lg' 44 (default) or 'md' 36. */
   size?: 'md' | 'lg';
@@ -95,13 +100,13 @@ function countSignificant(text: string): number {
 
 function PaymentInput<R extends PaymentCheck>({
   kind, parse, inputMode, autoComplete, example, badge, detected, mask, sensitive, warning, digits = 'latn', autoCapitalize = 'none',
-  label, value, onValueChange, hint, error, fieldName, messages, size = 'lg', hideLabel, id: idProp, name, required, disabled,
+  label, value, onValueChange, hint, error, fieldName, labels, messages, size = 'lg', hideLabel, id: idProp, name, required, disabled,
   onBlur, className, testId, ref,
 }: InternalProps<R>) {
   const auto = useId();
   const id = idProp ?? auto;
   const pack = useLocaleMessages().messages.paymentFields;
-  const words: PaymentFieldMessages = { ...PAYMENT_FIELD_MESSAGES, ...pack?.messages, ...messages };
+  const words: PaymentFieldMessages = { ...PAYMENT_FIELD_MESSAGES, ...pack?.messages, ...messages, ...labels };
   const field = fieldName ?? pack?.fieldNames?.[kind] ?? PAYMENT_FIELD_NAMES[kind];
   const result = parse(value);
   const [focused, setFocused] = useState(false);
@@ -271,12 +276,12 @@ export interface UpiInputProps extends PaymentFieldProps<UpiCheck>, UpiOptions {
 }
 
 /** A UPI ID (VPA) field: name@bank, a pasted upi:// link read for its address, look-alikes of saved payees flagged. */
-export function UpiInput({ providers, knownPayees, messages, ...props }: UpiInputProps) {
+export function UpiInput({ providers, knownPayees, ...props }: UpiInputProps) {
   const pack = useLocaleMessages().messages.paymentFields?.messages;
-  const lookalike = messages?.lookalike ?? pack?.lookalike ?? PAYMENT_FIELD_MESSAGES.lookalike;
+  const lookalike = props.labels?.lookalike ?? props.messages?.lookalike ?? pack?.lookalike ?? PAYMENT_FIELD_MESSAGES.lookalike;
   return (
     <PaymentInput<UpiCheck>
-      {...props} messages={messages} kind="upi" parse={(text) => parseUpiVpa(text, { providers })} inputMode="email" autoComplete="off" example="ram.sharma@okaxis"
+      {...props} kind="upi" parse={(text) => parseUpiVpa(text, { providers })} inputMode="email" autoComplete="off" example="ram.sharma@okaxis"
       warning={(r) => {
         if (!knownPayees?.length || r.state !== 'valid') return null;
         const found = detectSpoofing(r.value, { known: knownPayees.map((p) => p.toLowerCase()) }).lookalikeOf;

@@ -104,7 +104,7 @@ function KycWizard({ onDone }: { onDone: () => void }) {
               {errors.consent}
             </p>
           )}
-          {problem && <Note tone="error">{problem}</Note>}
+          {problem && <Note tone="danger">{problem}</Note>}
         </div>
       )}
     </OnboardingWizard>

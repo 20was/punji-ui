@@ -7,6 +7,7 @@
  */
 import type { ReactNode } from 'react';
 
+import { directionClass } from '../internal/tone.ts';
 import { Skeleton } from '../states/States.tsx';
 
 export interface Breadth {
@@ -76,8 +77,8 @@ export interface BreadthExtra {
   label: ReactNode;
   /** The count; null when not known. */
   value: number | null;
-  /** Tone of the figure: up or down, said by the label too. */
-  tone?: 'up' | 'down';
+  /** Tone of the figure: a gain or a loss, said by the label too. Deprecated: 'up' and 'down', use `gain` and `loss`. */
+  tone?: 'gain' | 'loss' | 'up' | 'down';
 }
 
 export interface MarketBreadthProps extends Partial<Breadth> {
@@ -156,7 +157,7 @@ export function MarketBreadth({
           {extra && extra.length > 0 && (
             <dl className="pu-breadth-extra">
               {extra.map((e) => (
-                <div key={e.id} data-tone={e.tone}>
+                <div key={e.id} data-tone={directionClass(e.tone)}>
                   <dt>{e.label}</dt>
                   <dd>{e.value === null || !Number.isFinite(e.value) ? <><span aria-hidden="true">—</span><span className="kit-sr">Not known</span></> : formatCount(e.value)}</dd>
                 </div>

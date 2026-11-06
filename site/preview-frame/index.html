@@ -11,7 +11,9 @@
       // first paint already has it; later changes are set on this document by the page.
       try {
         var t = new URLSearchParams(location.search).get('theme');
-        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+        if (t === 'light' || t === 'dark' || t === 'light-hc' || t === 'dark-hc') document.documentElement.setAttribute('data-theme', t);
+        var d = new URLSearchParams(location.search).get('density');
+        if (d === 'compact' || d === 'comfortable' || d === 'spacious') document.documentElement.setAttribute('data-pu-density', d);
       } catch (e) {}
     </script>
   </head>

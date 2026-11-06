@@ -125,7 +125,7 @@ function Pay() {
         {scanned === null ? (
           <p className="app-muted">Scan a code to see the merchant and the amount it carries before you pay.</p>
         ) : !scanned.ok ? (
-          <Note tone="error">
+          <Note tone="danger">
             <span data-testid="dw-qr-error">{scanned.message}</span>
           </Note>
         ) : (
@@ -160,7 +160,7 @@ function Pay() {
                 testId="dw-qr-keypad"
               />
             )}
-            {error && <Note tone="error">{error}</Note>}
+            {error && <Note tone="danger">{error}</Note>}
             <Button size="lg" block onClick={toPin} disabled={amount === null || amount <= 0n || state.locked} testId="dw-qr-pay">
               {amount ? `Pay ${rs(amount)}` : 'Pay'}
             </Button>

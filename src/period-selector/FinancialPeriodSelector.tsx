@@ -73,7 +73,7 @@ export function FinancialPeriodSelector({ periods, value, onChange, label, kindL
           label={kindGroupLabel ?? `${label} type`}
           testId={`${id}-kind`}
           size="md"
-          appearance="compact"
+          variant="compact"
           value={kind}
           onChange={switchKind}
           options={kinds.map(item => ({ value: item, label: kindLabels?.[item] ?? item }))}

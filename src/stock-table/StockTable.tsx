@@ -48,7 +48,7 @@ export interface StockTableProps<T extends Quote = Quote> {
   onSortChange?: (sort: QuoteSort) => void;
   /** Currency and locale of prices and turnover. Default NPR, en-IN, no currency mark. */
   money?: MoneyFormatConfig;
-  /** Which colour means up. Default green-up. */
+  /** Per-instance override of which hue means up: 'green-up' or 'red-up' (absolute, never a second swap on top of the theme). Default: follow the theme's gain and loss colours (`createTheme({ finance })`), which is the one place to set the convention. */
   convention?: 'green-up' | 'red-up';
   /** Spoken direction words for the change. */
   changeLabels?: PriceChangeLabels;
@@ -89,7 +89,7 @@ export interface StockTableProps<T extends Quote = Quote> {
 }
 
 export function StockTable<T extends Quote = Quote>({
-  caption, quotes, columns = DEFAULT_STOCK_COLUMNS, labels, sort, onSortChange, money = nepalQuoteMoney, convention = 'green-up', changeLabels,
+  caption, quotes, columns = DEFAULT_STOCK_COLUMNS, labels, sort, onSortChange, money = nepalQuoteMoney, convention, changeLabels,
   selectedSymbols, onSelectedSymbolsChange, selectLabel = (symbol) => `Select ${symbol}`, density = 'comfortable', bare, maxHeight, stickToPage,
   stack = true, live, renderSymbol, state = 'ready', emptyLabel = 'No quotes to show.', loadingLabel = 'Loading quotes…', errorLabel = 'Quotes could not be loaded.',
   retryLabel = 'Try again', onRetry, testId,

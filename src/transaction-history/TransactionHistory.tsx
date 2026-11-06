@@ -79,7 +79,7 @@ export interface TransactionHistoryProps extends TransactionLedgerOptions {
   formatDate?: (iso: string) => string;
   /** Currency and locale. Default NPR, en-IN, no currency mark. */
   money?: MoneyFormatConfig;
-  /** Which colour means a gain. Default green-up. */
+  /** Per-instance override of which hue means up: 'green-up' or 'red-up' (absolute, never a second swap on top of the theme). Default: follow the theme's gain and loss colours (`createTheme({ finance })`), which is the one place to set the convention. */
   convention?: 'green-up' | 'red-up';
   /** Spoken direction words for the signed figures. */
   changeLabels?: PriceChangeLabels;
@@ -114,7 +114,7 @@ const blank = (value: unknown, render: () => ReactNode): ReactNode => (value ===
 
 export function TransactionHistory({
   transactions, caption, filters: controlled, defaultFilters = NO_FILTERS, onFiltersChange, pageSize = 10, order = 'newest', formatDate = (iso) => formatCalendarDate(iso),
-  money = nepalQuoteMoney, convention = 'green-up', changeLabels, labels, minDate, maxDate, state = 'ready', emptyLabel = 'No transactions yet.',
+  money = nepalQuoteMoney, convention, changeLabels, labels, minDate, maxDate, state = 'ready', emptyLabel = 'No transactions yet.',
   noMatchLabel = 'No transactions match these filters.', loadingLabel = 'Loading transactions…', errorLabel = 'Transactions could not be loaded.', retryLabel = 'Try again',
   onRetry, testId, method, rounding,
 }: TransactionHistoryProps) {

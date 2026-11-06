@@ -50,7 +50,7 @@ export interface PortfolioOverviewProps {
   asOf?: ReactNode;
   /** Currency and locale. Default NPR with the currency code (en-IN). */
   money?: MoneyFormatConfig;
-  /** Which colour means up. Default green-up. */
+  /** Per-instance override of which hue means up: 'green-up' or 'red-up' (absolute, never a second swap on top of the theme). Default: follow the theme's gain and loss colours (`createTheme({ finance })`), which is the one place to set the convention. */
   convention?: 'green-up' | 'red-up';
   /** Spoken direction words. */
   changeLabels?: PriceChangeLabels;
@@ -71,7 +71,7 @@ export interface PortfolioOverviewProps {
 const defaultMoney: MoneyFormatConfig = { currency: 'NPR', locale: 'en-IN', display: 'code' };
 
 export function PortfolioOverview({
-  totals, label = 'Portfolio summary', asOf, money = defaultMoney, convention = 'green-up', changeLabels, labels, state = 'ready',
+  totals, label = 'Portfolio summary', asOf, money = defaultMoney, convention, changeLabels, labels, state = 'ready',
   errorLabel = 'The portfolio could not be loaded.', retryLabel = 'Try again', onRetry, testId,
 }: PortfolioOverviewProps) {
   if (state === 'error') return <RetryNote retryLabel={retryLabel} onRetry={onRetry} testId={testId}>{errorLabel}</RetryNote>;

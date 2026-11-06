@@ -27,7 +27,7 @@ export interface PriceChangeOptions extends Omit<MoneyDisplayOptions, 'value' | 
   showPercent?: boolean;
   /** Fraction digits of the percent. Default 2. */
   percentDigits?: number;
-  /** Which colour means up. 'green-up' (default) or 'red-up'. Down is always the other one. */
+  /** Per-instance override of which hue means up: 'green-up' or 'red-up' (absolute, never a second swap on top of the theme). Default: follow the theme's gain and loss colours (`createTheme({ finance })`), which is the one place to set the convention. */
   convention?: 'green-up' | 'red-up';
   /** Spoken direction words, in the reader's language. */
   labels?: PriceChangeLabels;
@@ -46,7 +46,7 @@ const ICONS = {
 } as const;
 
 export function PriceChange({
-  current, previous, change, showAbsolute = true, showPercent = true, percentDigits = 2, convention = 'green-up',
+  current, previous, change, showAbsolute = true, showPercent = true, percentDigits = 2, convention,
   labels = EN_LABELS, size, missing = '—', missingLabel = 'No value', preset, className, testId, ref,
   currency, locale, display, numberingSystem,
 }: PriceChangeProps) {

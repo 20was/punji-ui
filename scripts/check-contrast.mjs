@@ -3,6 +3,7 @@
 // translucent colours over the surface they sit on, and checks every pair
 // below against WCAG 2.2:
 //   light, dark          text 4.5:1 (1.4.3 AA), UI and large text 3:1 (1.4.11)
+//   all themes           gain vs loss luminance ratio 1.4:1 (not hue alone)
 //   light-hc, dark-hc    text 7:1   (1.4.6 AAA), UI 4.5:1 (stricter than 1.4.11)
 // Also fails when the prefers-color-scheme dark block drifts from
 // [data-theme='dark'], or a high-contrast theme leaves a colour token unset.
@@ -82,6 +83,7 @@ const PAIRS = [
   ...Array.from({ length: 12 }, (_, i) => `series-${i + 1}`).filter((n) => vars0.has(`--pu-color-${n}`)).map((n) => [n, 'surface', 'ui']),
 ];
 
+const GAIN_LOSS_APART = 1.4;
 const problems = [];
 const report = {};
 const colour = (vars, name, base) => {
@@ -100,6 +102,11 @@ for (const [theme, { vars, text, ui, own }] of Object.entries(themes)) {
     report[theme].push({ fg, bg, kind, ratio: Math.round(r * 100) / 100, min });
     if (r < min) problems.push(`${theme}: --pu-color-${fg} on --pu-color-${bg} is ${r.toFixed(2)}:1, needs ${min}:1 (${kind})`);
   }
+  // Gain and loss must differ in lightness as well as hue, so they stay apart without colour vision (hue-only pairs sat near 1.08:1).
+  const [gain, loss] = [colour(vars, 'gain', page), colour(vars, 'loss', page)];
+  const apart = ratio(gain, loss);
+  report[theme].push({ fg: 'gain', bg: 'loss', kind: 'apart', ratio: Math.round(apart * 100) / 100, min: GAIN_LOSS_APART });
+  if (apart < GAIN_LOSS_APART) problems.push(`${theme}: --pu-color-gain vs --pu-color-loss is ${apart.toFixed(2)}:1 in luminance, needs ${GAIN_LOSS_APART}:1 (colour must not be the only difference)`);
   if (own) for (const name of light.keys()) if (name.startsWith('--pu-color-') && !own.has(name)) problems.push(`${theme}: ${name} is not set (a high-contrast theme sets every colour)`);
 }
 // The prefers-contrast blocks copy their theme's values; the dark one covers every token the light one sets.

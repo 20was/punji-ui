@@ -51,7 +51,7 @@ export interface WatchlistProps<T extends Quote = Quote> {
   labels?: Partial<WatchlistLabels>;
   /** Currency and locale of the prices. Default NPR, en-IN, no currency mark. */
   money?: MoneyFormatConfig;
-  /** Which colour means up. Default green-up. */
+  /** Per-instance override of which hue means up: 'green-up' or 'red-up' (absolute, never a second swap on top of the theme). Default: follow the theme's gain and loss colours (`createTheme({ finance })`), which is the one place to set the convention. */
   convention?: 'green-up' | 'red-up';
   /** Spoken direction words for the change. */
   changeLabels?: PriceChangeLabels;
@@ -72,7 +72,7 @@ export interface WatchlistProps<T extends Quote = Quote> {
 }
 
 export function Watchlist<T extends Quote = Quote>({
-  quotes, label, onReorder, onRemove, labels, money = nepalQuoteMoney, convention = 'green-up', changeLabels, showTrend = true, live, renderSymbol,
+  quotes, label, onReorder, onRemove, labels, money = nepalQuoteMoney, convention, changeLabels, showTrend = true, live, renderSymbol,
   emptyTitle = 'Your watchlist is empty', emptyBody, emptyAction, testId,
 }: WatchlistProps<T>) {
   const words = { ...EN, ...labels };

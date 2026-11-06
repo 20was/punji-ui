@@ -64,7 +64,7 @@ export interface HoldingsTableProps<T extends Holding = Holding> {
   onSortChange?: (sort: HoldingSort) => void;
   /** Currency and locale of the money. Default NPR, en-IN, no currency mark. */
   money?: MoneyFormatConfig;
-  /** Which colour means up. Default green-up. */
+  /** Per-instance override of which hue means up: 'green-up' or 'red-up' (absolute, never a second swap on top of the theme). Default: follow the theme's gain and loss colours (`createTheme({ finance })`), which is the one place to set the convention. */
   convention?: 'green-up' | 'red-up';
   /** Spoken direction words for the P&L and day change. */
   changeLabels?: PriceChangeLabels;
@@ -106,7 +106,7 @@ const defaultIncomplete = (unpriced: readonly string[], noPreviousClose: readonl
 );
 
 export function HoldingsTable<T extends Holding = Holding>({
-  caption, holdings, totals, columns = DEFAULT_HOLDING_COLUMNS, columnLabels, labels, sort, onSortChange, money = nepalQuoteMoney, convention = 'green-up',
+  caption, holdings, totals, columns = DEFAULT_HOLDING_COLUMNS, columnLabels, labels, sort, onSortChange, money = nepalQuoteMoney, convention,
   changeLabels, weightDigits = 2, density = 'comfortable', bare, maxHeight, stack = true, renderSymbol, exportFilename, state = 'ready',
   emptyLabel = 'No holdings to show.', loadingLabel = 'Loading holdings…', errorLabel = 'Holdings could not be loaded.', retryLabel = 'Try again', onRetry, testId,
 }: HoldingsTableProps<T>) {

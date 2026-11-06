@@ -32,9 +32,9 @@ Both are documented in [THEMING.md](THEMING.md).
 | `--pu-color-border-strong` | `rgba(18, 19, 20, 0.18)` | `rgba(255, 255, 255, 0.18)` |
 | `--pu-color-card-border` | `#d9dcd2` | `#24272b` |
 | `--pu-color-chart` | `#5e8c00` | `#c8f23d` |
-| `--pu-color-gain` | `#3f6a00` | `#c8f23d` |
-| `--pu-color-gain-soft` | `rgba(63, 106, 0, 0.1)` | `rgba(200, 242, 61, 0.12)` |
-| `--pu-color-inverse-gain` | `#c8f23d` | `#3f6a00` |
+| `--pu-color-gain` | `#284800` | `#c8f23d` |
+| `--pu-color-gain-soft` | `rgba(40, 72, 0, 0.1)` | `rgba(200, 242, 61, 0.12)` |
+| `--pu-color-inverse-gain` | `#c8f23d` | `#284800` |
 | `--pu-color-inverse-line` | `#2a2e33` | `#dcded6` |
 | `--pu-color-inverse-loss` | `#ff8a78` | `#a3321f` |
 | `--pu-color-inverse-muted` | `#a3a8ae` | `#4f5358` |
@@ -148,3 +148,12 @@ follows `dir`. Full table and touch-target rules: [THEMING.md](THEMING.md#densit
 | `--pu-row-lg` | `72px` | `56px` | `80px` |
 | `--pu-row-min` | `48px` | `36px` | `56px` |
 | `--pu-dir` | `1` | `-1` under `dir="rtl"` | - |
+
+## Gain and loss colour convention
+
+`--pu-color-gain` and `--pu-color-loss` are what a rise and a fall look like; components read only these. The theme sets
+them (`createTheme({ finance: 'red-up' })` swaps them). The fixed hues `--pu-hue-green`, `--pu-hue-green-soft`,
+`--pu-hue-red` and `--pu-hue-red-soft` do not swap: they are what a component's `convention` prop points gain and loss at
+(`[data-convention='red-up']` or `'green-up']`). `createTheme` writes `--pu-finance-convention` (absent means `green-up`).
+In the light theme gain (`#284800`) and loss (`#a3321f`) differ in lightness by 1.50:1 as well as hue; the contrast gate
+requires 1.4:1 in every theme. See [THEMING.md](THEMING.md#gain-and-loss-colour-convention).

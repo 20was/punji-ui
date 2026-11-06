@@ -81,6 +81,11 @@ describe('PriceChange', () => {
     expect(screen.getByTestId('r').dataset.convention).toBe('red-up');
     expect(screen.getByTestId('r').querySelector('[aria-hidden="true"]:not(svg)')?.textContent).toBe('+1');
   });
+  it('follows the theme by default: no convention attribute, so a red-up theme is applied once', () => {
+    render(<PriceChange current={2n} previous={1n} currency="JPY" testId="d" />);
+    expect(screen.getByTestId('d').hasAttribute('data-convention')).toBe(false);
+    expect(screen.getByTestId('d').dataset.tone).toBe('up');
+  });
   it('shows a dash when a price is missing', () => {
     render(<PriceChange current={null} previous={1n} currency="USD" testId="m" />);
     expect(screen.getByTestId('m').textContent).toBe('—No value');

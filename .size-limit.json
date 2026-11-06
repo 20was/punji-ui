@@ -331,7 +331,7 @@
   {
     "name": "tokens.css",
     "path": "dist/tokens.css",
-    "limit": "1.62 kB",
+    "limit": "1.72 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -1097,7 +1097,7 @@
   {
     "name": "theme (import from '@punji/ui/theme')",
     "path": "dist/theme/theme.js",
-    "limit": "2.47 kB",
+    "limit": "2.6 kB",
     "import": "*",
     "gzip": true
   },

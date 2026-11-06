@@ -37,8 +37,8 @@
     --pu-color-border-strong: rgba(18, 19, 20, 0.18);
     --pu-color-card-border: #d9dcd2;
     --pu-color-chart: #5e8c00;
-    --pu-color-gain: #3f6a00;
-    --pu-color-gain-soft: rgba(63, 106, 0, 0.1);
+    --pu-color-gain: #284800;
+    --pu-color-gain-soft: rgba(40, 72, 0, 0.1);
     --pu-color-inverse-gain: #c8f23d;
     --pu-color-inverse-line: #2a2e33;
     --pu-color-inverse-loss: #ff8a78;
@@ -49,6 +49,10 @@
     --pu-color-link: #3f6a00;
     --pu-color-loss: #a3321f;
     --pu-color-loss-soft: rgba(163, 50, 31, 0.1);
+    --pu-hue-green: var(--pu-color-gain);
+    --pu-hue-green-soft: var(--pu-color-gain-soft);
+    --pu-hue-red: var(--pu-color-loss);
+    --pu-hue-red-soft: var(--pu-color-loss-soft);
     --pu-color-on-accent-fill: #0d0e10;
     --pu-color-on-loss: #ffffff;
     --pu-color-scrim: rgba(17, 18, 20, 0.45);
@@ -175,7 +179,7 @@
     --pu-color-chart: #c8f23d;
     --pu-color-gain: #c8f23d;
     --pu-color-gain-soft: rgba(200, 242, 61, 0.12);
-    --pu-color-inverse-gain: #3f6a00;
+    --pu-color-inverse-gain: #284800;
     --pu-color-inverse-line: #dcded6;
     --pu-color-inverse-loss: #a3321f;
     --pu-color-inverse-muted: #4f5358;
@@ -185,6 +189,10 @@
     --pu-color-link: #c8f23d;
     --pu-color-loss: #ff8a78;
     --pu-color-loss-soft: rgba(255, 122, 102, 0.14);
+    --pu-hue-green: var(--pu-color-gain);
+    --pu-hue-green-soft: var(--pu-color-gain-soft);
+    --pu-hue-red: var(--pu-color-loss);
+    --pu-hue-red-soft: var(--pu-color-loss-soft);
     --pu-color-on-loss: #1c0806;
     --pu-color-scrim: rgba(0, 0, 0, 0.6);
     --pu-color-series-10: #d6a77a;
@@ -234,7 +242,7 @@
       --pu-color-chart: #c8f23d;
       --pu-color-gain: #c8f23d;
       --pu-color-gain-soft: rgba(200, 242, 61, 0.12);
-      --pu-color-inverse-gain: #3f6a00;
+      --pu-color-inverse-gain: #284800;
       --pu-color-inverse-line: #dcded6;
       --pu-color-inverse-loss: #a3321f;
       --pu-color-inverse-muted: #4f5358;
@@ -244,6 +252,10 @@
       --pu-color-link: #c8f23d;
       --pu-color-loss: #ff8a78;
       --pu-color-loss-soft: rgba(255, 122, 102, 0.14);
+      --pu-hue-green: var(--pu-color-gain);
+      --pu-hue-green-soft: var(--pu-color-gain-soft);
+      --pu-hue-red: var(--pu-color-loss);
+      --pu-hue-red-soft: var(--pu-color-loss-soft);
       --pu-color-on-loss: #1c0806;
       --pu-color-scrim: rgba(0, 0, 0, 0.6);
       --pu-color-series-10: #d6a77a;
@@ -278,5 +290,21 @@
       --pu-seg-thumb-shadow: none;
       --pu-shadow-lg: 0 24px 60px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.1);
     }
+  }
+
+  /* One convention for gain and loss: the theme (createTheme({ finance })) sets --pu-color-gain and --pu-color-loss, and
+     components read only those. A component's own `convention` prop is an absolute per-instance override: it re-points
+     gain and loss at the fixed green and red hues, so it can never swap a second time on top of the theme. */
+  [data-convention='green-up'] {
+    --pu-color-gain: var(--pu-hue-green);
+    --pu-color-gain-soft: var(--pu-hue-green-soft);
+    --pu-color-loss: var(--pu-hue-red);
+    --pu-color-loss-soft: var(--pu-hue-red-soft);
+  }
+  [data-convention='red-up'] {
+    --pu-color-gain: var(--pu-hue-red);
+    --pu-color-gain-soft: var(--pu-hue-red-soft);
+    --pu-color-loss: var(--pu-hue-green);
+    --pu-color-loss-soft: var(--pu-hue-green-soft);
   }
 }

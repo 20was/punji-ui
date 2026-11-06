@@ -71,7 +71,7 @@ export interface MarketHeatmapProps {
   scaleMax?: number;
   /** Width over height of the map. Default 1.5; use about 1 on a phone. */
   aspect?: number;
-  /** Which colour means up. Default green-up. */
+  /** Per-instance override of which hue means up: 'green-up' or 'red-up' (absolute, never a second swap on top of the theme). Default: follow the theme's gain and loss colours (`createTheme({ finance })`), which is the one place to set the convention. */
   convention?: 'green-up' | 'red-up';
   /** Tiles become buttons that call this with the item's id. */
   onSelect?: (id: string) => void;
@@ -86,7 +86,7 @@ const SIZE = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 });
 const defaultSize = (n: number) => SIZE.format(n);
 const trim = (n: number) => String(Math.round(n * 10) / 10);
 
-export function MarketHeatmap({ items, label, sizeLabel = 'Size', formatSize = defaultSize, scaleMax = 3, aspect = 1.5, convention = 'green-up', onSelect, labels, testId }: MarketHeatmapProps) {
+export function MarketHeatmap({ items, label, sizeLabel = 'Size', formatSize = defaultSize, scaleMax = 3, aspect = 1.5, convention, onSelect, labels, testId }: MarketHeatmapProps) {
   const words = { ...EN, ...labels };
   const W = 100;
   const H = W / aspect;

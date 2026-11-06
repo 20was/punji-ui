@@ -201,3 +201,41 @@ Or keep your state 1-based and drop the `+ 1` / `- 1`, using `usePagination` and
 
 - Module map and counts: the rule in `punji-web/scripts/punji-ui-alias.mjs`; imports via `grep "@punji/ui"` on `punji-web/src`.
 - Re-run `npm run audit:web -- /path/to/punji-web` for the root-export matrix.
+
+## 7. punji-web → @punji/ui token mapping
+
+Date: 2026-11-07. Updates item 7 of section 4 now that the colour tokens (this change) and the radius, space and type scales (#70) exist. Rule: a punji-web `--name` is `--pu-name` in `@punji/ui` (`--color-text` is `--pu-color-text`). Source: `punji-web/src/styles/tokens.css`, `me-theme.css` (light and dark values). Values below are the `@punji/ui` ones; where they differ from punji-web, the reason is given.
+
+### Colour tokens added for parity
+
+| punji-web | @punji/ui | Light | Dark | Notes |
+|---|---|---|---|---|
+| `--color-btn-line` | `--pu-color-btn-line` | `#7a7e78` | `#6e7480` | Outlined button edge. punji-web: `#c5c9bd` / `#2e3237`, which are 1.5:1 and 1.3:1 on `surface`. Raised to the `border-control` values so the edge is 3:1 (WCAG 1.4.11) |
+| `--color-chart-fill` | `--pu-color-chart-fill` | `rgba(200, 242, 61, 0.3)` | `rgba(200, 242, 61, 0.1)` | Area under a chart line. Same as punji-web. Decoration, not contrast-checked; `createTheme` derives it from the brand chart colour |
+| `--color-focus-ring` | `--pu-color-focus-ring` | `#3f6a00` | `#c8f23d` | punji-web reads it with a `--color-text` fallback and never defines it. Here it equals `accent`, which the focus outlines used before, so all 56 `outline: Npx solid var(--pu-color-accent)` rules now read this token with no visual change. 3:1 or more on `bg`, `surface`, `surface-tint`, `surface-elevated` |
+| `--color-inverse-shimmer`, `-hi` | `--pu-color-inverse-shimmer`, `-shimmer-hi` | `rgba(255, 255, 255, 0.07)`, `0.12` | `rgba(18, 19, 20, 0.07)`, `0.12` | Skeleton shimmer on inverse surfaces. Same as punji-web |
+| `--color-on-accent` | `--pu-color-on-accent` | `#ffffff` | `#0d0e10` | Text on `--pu-color-accent` itself. Not the same as `on-accent-fill` (text on the lime fill). Same as punji-web. 6.42:1 and 14.92:1 |
+| `--color-surface-elevated` | `--pu-color-surface-elevated` | `#ffffff` | `#1f2226` | Same as the punji-web theme (`me-theme.css`); its generated token is `--v2-color-sheet-float` |
+| `--v2-color-info` | `--pu-color-info` | `#2a62c4` | `#8fb8ff` | Info text and icons. punji-web light is `#2f6fd6`, 3.84:1 on `bg`; darkened to reach 4.5:1 on `bg`, `surface` and `surface-tint`. Dark is the same |
+
+High-contrast values (`light-hc`, `dark-hc`) are in `src/styles/contrast.css` and `docs/tokens.md`.
+
+### All punji-web tokens
+
+| punji-web | @punji/ui | Status |
+|---|---|---|
+| `--color-accent`, `-accent-fill`, `-accent-fill-hover`, `-bg`, `-border`, `-border-control`, `-border-default`, `-border-strong`, `-card-border`, `-chart`, `-gain`, `-gain-soft`, `-link`, `-loss`, `-loss-soft`, `-on-accent-fill`, `-on-loss`, `-scrim`, `-series-3` to `-series-12`, `-series-nepse(-soft)`, `-shimmer-base`, `-shimmer-highlight`, `-surface`, `-surface-inverse`, `-surface-solid`, `-surface-subtle`, `-surface-tint`, `-tag-bg`, `-tag-text`, `-text`, `-text-inverse`, `-text-muted`, `-text-tertiary`, `-track`, `-warn`, `-warn-accent`, `-inverse-gain`, `-inverse-line`, `-inverse-loss`, `-inverse-muted`, `-inverse-nepse`, `-inverse-row`, `-inverse-warn` | same name under `--pu-` | Present (light gain and loss differ by design: PR #68) |
+| `--color-btn-line`, `-chart-fill`, `-focus-ring`, `-inverse-shimmer(-hi)`, `-on-accent`, `-surface-elevated`; `--v2-color-info` | `--pu-color-*` as above | Added here |
+| `--seg-thumb`, `--seg-thumb-shadow`, `--ambient` | `--pu-seg-thumb`, `--pu-seg-thumb-shadow`, `--pu-ambient` | Present |
+| `--shadow-sm`, `--shadow-md`, `--shadow-lg`, `--shadow-card` | `--pu-shadow-*` | Present (`-md`, `-card` from #70) |
+| `--radius-sm`, `-md`, `-lg`, `-xl`, `-2xl`, `-3xl`, `-card`, `-control`, `-full` | `--pu-radius-*` | Present. `sm` to `3xl` are deprecated aliases (#70); the scale is `--pu-radius-4/6/8/12/16/24/full` |
+| `--space-1` to `-4`, `-5`, `-6`, `-8`, `-10`, `-12`, `-16`, `-20`, `-24` | `--pu-space-*` | Present (4px scale, #70) |
+| `--text-xs`, `-sm`, `-base`, `-lg`, `-xl` | `--pu-text-*` | Present (`-xl` from #70). `--text-2xl`, `--text-3xl` have no equivalent |
+| `--font-body`, `--font-display`, `--font-mono`, `--font-code` | `--pu-font-*` | Present (#70) |
+| `--tracking-display`, `--tracking-label`, `--nav-height`, `--content-default` | `--pu-tracking-*`, `--pu-nav-height`, `--pu-content-default` | Present (#70) |
+| `--motion-fast`, `--motion-base`, `--ease-out` | `--pu-motion-*`, `--pu-ease-out` | Present. `--ease-in-out` has no equivalent |
+| `--control-sm`, `-md`, `-lg`, `--tap-min` | `--pu-control-*`, `--pu-tap-min` | Present |
+| `--radius-tile` | none | Not added: a single punji-web use; map to `--pu-radius-16` or `--pu-radius-card` |
+| `--color-gain-strong`, `--color-loss-strong`, `--color-accent-hover`, `--color-primary*`, `--color-brand*`, `--color-lime-*`, `--color-text-on-brand` | none | App or brand palette: stay in punji-web (use `--pu-color-gain`, `-loss`, `-accent-fill-hover`) |
+| `--color-sel-*`, `--color-inv-*`, `--color-on-fill-*` | none | Holdings-card and inverted-card specifics; keep in punji-web or use `--pu-color-inverse-*` |
+| `--mk-*`, `--measure-*`, `--rhythm-*`, `--section-pad-block`, `--gap-*`, `--content-narrow`, `--scroll-offset`, `--faq-index` | none | Marketing site layout: keep in punji-web |

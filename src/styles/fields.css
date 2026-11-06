@@ -5,13 +5,13 @@
   .kit-field .kit-field-control input { padding-inline-end: calc(var(--pu-control-lg) + var(--pu-space-3)); }
   .kit-field-action { position: absolute; inset-block: 3px; inset-inline-end: 3px; display: flex; align-items: center; border-radius: calc(var(--pu-radius-control) - 3px); overflow: hidden; }
   .kit-field-action > .kit-btn { height: 100%; max-height: 100%; min-height: 0; background: transparent; }
-  .kit-field-action:has(:focus-visible) { outline: 2px solid var(--pu-color-accent); outline-offset: 0; }
+  .kit-field-action:has(:focus-visible) { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 0; }
   .kit-field .kit-field-control input.pu-has-stepper { padding-inline-end: calc(var(--pu-control-md) * 2 + var(--pu-space-3)); }
   .pu-stepper { display: flex; height: 100%; }
   .pu-stepper-btn { display: inline-flex; align-items: center; justify-content: center; width: var(--pu-control-md); height: 100%; margin: 0; padding: 0; border: 0; background: transparent; color: var(--pu-color-text); cursor: pointer; }
   .pu-stepper-btn:hover:not(:disabled) { background: var(--pu-color-surface-solid); }
   .pu-stepper-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .pu-stepper-btn:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: -2px; }
+  .pu-stepper-btn:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: -2px; }
   @media (pointer: coarse) { .pu-stepper-btn { width: var(--pu-tap-min); } .kit-field .kit-field-control input.pu-has-stepper { padding-inline-end: calc(var(--pu-tap-min) * 2 + var(--pu-space-3)); } }
   .kit-symbol-control { position: relative; min-width: 0; }
   .kit-symbol-control > .kit-options { top: 100%; inset-inline: 0; z-index: var(--pu-z-dropdown); max-height: min(18rem, calc(100dvh - 2rem)); border: 1px solid var(--pu-color-card-border); }
@@ -25,15 +25,15 @@
   .kit-field input::placeholder, .kit-field textarea::placeholder { color: var(--pu-color-text-tertiary) }
   .kit-field input { text-overflow: ellipsis }
   .kit-field input:hover:not(:disabled), .kit-field textarea:hover:not(:disabled), .kit-field .kit-sel > select:hover:not(:disabled) { border-color: var(--pu-color-text-tertiary) }
-  .kit-field :is(input, textarea, .kit-sel > select):is(:focus, :focus-visible) { outline: 2px solid var(--pu-color-accent); outline-offset: -1px; border-color: transparent }
-  .kit-field input[inputmode='decimal'], .kit-field input[inputmode='numeric'] { font-variant-numeric: tabular-nums }
+  .kit-field :is(input, textarea, .kit-sel > select):is(:focus, :focus-visible) { outline: 2px solid var(--pu-color-focus-ring); outline-offset: -1px; border-color: transparent }
+  .kit-field input[inputmode='decimal'], .kit-field input[inputmode='numeric'] { font-variant-numeric: var(--pu-font-numeric) }
   .kit-field input:disabled, .kit-field textarea:disabled { opacity: 0.5; cursor: not-allowed }
   .kit-field .hint { font: 400 12px / 16px var(--pu-font-body); color: var(--pu-color-text-tertiary) }
   .kit-field .err { font: 600 12px / 16px var(--pu-font-body); color: var(--pu-color-loss) }
   .kit-field[data-invalid='true'] > label { color: var(--pu-color-loss) }
   .kit-field[data-invalid='true'] input, .kit-field[data-invalid='true'] textarea, .kit-field[data-invalid='true'] .kit-sel > select { border-color: var(--pu-color-loss) }
   .kit-field[data-invalid='true'] :is(input, textarea, .kit-sel > select):is(:focus, :focus-visible) { outline-color: var(--pu-color-loss) }
-  .kit-options { position: absolute; inset-inline-start: 0; inset-inline-end: 0; top: 100%; z-index: var(--pu-z-dropdown); margin: 4px 0 0; padding: 4px; list-style: none; max-height: 18rem; overflow-y: auto; background: var(--pu-color-surface-solid); border-radius: var(--pu-radius-lg); box-shadow: var(--pu-shadow-lg) }
+  .kit-options { position: absolute; inset-inline-start: 0; inset-inline-end: 0; top: 100%; z-index: var(--pu-z-dropdown); margin: 4px 0 0; padding: 4px; list-style: none; max-height: 18rem; overflow-y: auto; background: var(--pu-color-surface-solid); border-radius: var(--pu-radius-16); box-shadow: var(--pu-shadow-lg) }
   .kit-options li { display: flex; gap: 10px; align-items: baseline; padding: 10px 12px; border-radius: var(--pu-radius-card); cursor: pointer; min-height: 44px }
   .kit-options li[aria-selected='true'] { background: var(--pu-color-surface-tint) }
   .kit-options b { flex-shrink: 0 }

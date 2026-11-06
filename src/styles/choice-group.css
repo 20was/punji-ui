@@ -9,7 +9,7 @@
   .kit-choice.md label { min-height: 36px }
   .kit-choice label:has(input:checked) { border-bottom-color: var(--pu-color-accent); color: var(--pu-color-text) }
   .kit-choice label:hover { background: var(--pu-color-surface-tint); color: var(--pu-color-text) }
-  .kit-choice label:has(input:focus-visible) { outline: 2px solid var(--pu-color-accent); outline-offset: -2px }
+  .kit-choice label:has(input:focus-visible) { outline: 2px solid var(--pu-color-focus-ring); outline-offset: -2px }
   .kit-choice input:disabled { cursor: default }
   .kit-choice label:has(input:disabled) { opacity: .5 }
   .kit-choice-compact { width: fit-content; padding: var(--pu-space-1); gap: var(--pu-space-1) }

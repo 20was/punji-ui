@@ -7,7 +7,7 @@
   .kit-stat { display: grid; align-content: start; gap: 4px; min-height: 72px; padding: 12px 0; border-top: 1px solid var(--pu-color-card-border); min-width: 0 }
   .kit-stat dt { font-size: var(--pu-text-xs); font-weight: 600; letter-spacing: 0.02em; color: var(--pu-color-text-muted) }
   .kit-stat dd { margin: 0 }
-  .kit-stat .v { display: block; font: 700 clamp(1.125rem, 1rem + 0.5vw, 1.375rem) / 1.2 var(--pu-font-display); letter-spacing: -0.015em; font-variant-numeric: tabular-nums; overflow-wrap: anywhere }
-  .kit-stat .n { display: block; font-size: var(--pu-text-xs); line-height: 1.4; color: var(--pu-color-text-muted); font-variant-numeric: tabular-nums }
+  .kit-stat .v { display: block; font: 700 clamp(1.125rem, 1rem + 0.5vw, 1.375rem) / 1.2 var(--pu-font-display); letter-spacing: -0.015em; font-variant-numeric: var(--pu-font-numeric); overflow-wrap: anywhere }
+  .kit-stat .n { display: block; font-size: var(--pu-text-xs); line-height: 1.4; color: var(--pu-color-text-muted); font-variant-numeric: var(--pu-font-numeric) }
   button.kit-stat { text-align: start; font: inherit; color: inherit; cursor: pointer }
 }

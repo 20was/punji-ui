@@ -37,7 +37,7 @@
   .kit-cs-v { flex: 1; display: flex; align-items: baseline; gap: 8px; min-width: 0; color: var(--pu-color-text) }
   .kit-cs-v b { flex: none; font-size: 15px; font-weight: 700; white-space: nowrap }
   .kit-cs-v span { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; color: var(--pu-color-text-muted) }
-  .kit-cs-v span.m { flex: none; margin-inline-start: auto; padding-inline-start: 8px; color: var(--pu-color-text); font-variant-numeric: tabular-nums }
+  .kit-cs-v span.m { flex: none; margin-inline-start: auto; padding-inline-start: 8px; color: var(--pu-color-text); font-variant-numeric: var(--pu-font-numeric) }
   .kit-cs-w.sm .kit-cs-v b { font-size: 14px }
   .kit-cs-w.sm .kit-cs-v span { font-size: 12px }
   .kit-cs-w.ro .kit-cs, .kit-cs-w.ro .kit-cs input { cursor: default }
@@ -49,8 +49,8 @@
   .kit-cs-sheet-h { flex: none; display: flex; align-items: center; gap: 4px; padding-block: 10px; padding-inline: 4px 16px; border-bottom: 1px solid var(--pu-color-border) }
   .kit-cs-sheet .kit-cs { flex: 1; min-width: 0; height: var(--pu-control-lg); gap: 10px; padding: 0 12px; background: var(--pu-color-surface) }
   .kit-cs-sheet .kit-cs input { font-size: 16px; font-weight: 400 }
-  .kit-cs-back { appearance: none; flex: none; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: var(--pu-radius-lg); background: none; color: var(--pu-color-text); cursor: pointer }
-  .kit-cs-back:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: -2px }
+  .kit-cs-back { appearance: none; flex: none; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: var(--pu-radius-16); background: none; color: var(--pu-color-text); cursor: pointer }
+  .kit-cs-back:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: -2px }
   .kit-cs-sheet .kit-cs-sugg { position: static; flex: 1; min-height: 0; max-height: none; margin: 0; padding: 8px 8px calc(8px + env(safe-area-inset-bottom)); border: 0; border-radius: 0; background: none; box-shadow: none; overscroll-behavior: contain }
   .kit-cs-sheet .kit-cs-opt { min-height: 52px }
   :root:has(.kit-cs-sheet) .app-tabbar { display: none }

@@ -9,7 +9,7 @@
   .kit-ct-legend li { display: inline-flex; align-items: center; gap: 6px }
   .kit-ct-legend i { width: 14px; height: 3px; border-radius: 2px }
   .kit-ct-toggle { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 4px 10px; border: 1px solid var(--pu-color-border-default); border-radius: 999px; background: var(--pu-color-surface); color: var(--pu-color-text); font: 500 12px / 16px var(--pu-font-body); cursor: pointer }
-  .kit-ct-toggle b { font-weight: 600; font-variant-numeric: tabular-nums }
+  .kit-ct-toggle b { font-weight: 600; font-variant-numeric: var(--pu-font-numeric) }
   .kit-ct-toggle[aria-pressed='false'] { color: var(--pu-color-text-muted); text-decoration: line-through; background: transparent }
   .kit-ct-toggle[aria-pressed='false'] svg { opacity: 0.4 }
   .kit-ct-toggle:focus-visible { outline: 2px solid var(--pu-color-link); outline-offset: 2px }
@@ -20,7 +20,7 @@
   .kit-ct-plot svg { display: block; overflow: visible; font-family: var(--pu-font-body) }
   .kit-ct-grid { stroke: color-mix(in srgb, var(--pu-color-border-strong) 80%, transparent); stroke-dasharray: 3 3; stroke-width: 1 }
   .kit-ct-grid.base { stroke: var(--pu-color-border-strong); stroke-dasharray: none }
-  .kit-ct-axis { fill: var(--pu-color-text-muted); font-size: 11px; font-variant-numeric: tabular-nums }
+  .kit-ct-axis { fill: var(--pu-color-text-muted); font-size: 11px; font-variant-numeric: var(--pu-font-numeric) }
   .kit-ct-c line, .kit-ct-c rect { stroke-width: 1.5 }
   .kit-ct-c.gain line { stroke: var(--pu-color-gain) }
   .kit-ct-c.gain rect { fill: var(--pu-color-gain); stroke: var(--pu-color-gain) }
@@ -42,14 +42,14 @@
   .kit-ct-mid text { fill: var(--pu-color-text); font-size: 11px; font-weight: 600; paint-order: stroke; stroke: var(--pu-color-surface); stroke-width: 4px }
   .kit-ct-cross line { stroke: var(--pu-color-text-muted); stroke-width: 1; stroke-dasharray: 2 2 }
   .kit-ct-cross rect { fill: var(--pu-color-text) }
-  .kit-ct-cross text { fill: var(--pu-color-surface); font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums }
+  .kit-ct-cross text { fill: var(--pu-color-surface); font-size: 11px; font-weight: 600; font-variant-numeric: var(--pu-font-numeric) }
   .kit-ct-cross circle { fill: var(--pu-color-surface); stroke: currentColor; stroke-width: 2 }
   .kit-ct-tip { position: absolute; top: 8px; z-index: var(--pu-z-raised); min-width: 150px; max-width: 240px; padding: 8px 10px; border: 1px solid var(--pu-color-border-default); border-radius: 8px; background: var(--pu-color-surface); box-shadow: 0 4px 16px color-mix(in srgb, var(--pu-color-text) 14%, transparent); font: 500 12px / 16px var(--pu-font-body); color: var(--pu-color-text); pointer-events: none }
   .kit-ct-tip b { display: block; margin-bottom: 4px }
   .kit-ct-tip dl { display: grid; grid-template-columns: auto auto; gap: 2px 14px; margin: 0 }
   .kit-ct-tip dl > div { display: contents }
   .kit-ct-tip dt { color: var(--pu-color-text-muted) }
-  .kit-ct-tip dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums }
+  .kit-ct-tip dd { margin: 0; text-align: right; font-variant-numeric: var(--pu-font-numeric) }
   .kit-ct-tip .kit-ct-gain { color: var(--pu-color-gain) }
   .kit-ct-tip .kit-ct-loss { color: var(--pu-color-loss) }
   .kit-ct-note { margin: 0; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }

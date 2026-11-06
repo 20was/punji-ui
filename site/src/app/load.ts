@@ -1,5 +1,6 @@
-import type { ComponentType } from 'react';
+import { use, type ComponentType } from 'react';
 import type { PageDef } from '../registry.ts';
+import type * as HeadData from '../head-data.ts';
 import type { ApiEntry } from './api.ts';
 import type { ClientRoute, PageCard } from './nav.ts';
 
@@ -20,12 +21,17 @@ export interface PageData {
   related: PageCard[];
   /** Showcase screens whose "Built from" lists this page. */
   usedIn: PageCard[];
+  /** The gzip size of the page's first export (generated/sizes.json, by size-limit), for the size badge. */
+  size?: number;
   /** When the page's own sources last changed (YYYY-MM-DD), for the JSON-LD dateModified. */
   modified?: string;
 }
 
 export interface LoadedExample {
-  Component: ComponentType;
+  /** The example, when it ships with the route chunk. */
+  Component?: ComponentType;
+  /** Or a loader for it: a showcase screen is a chunk of its own, fetched after the first render (see "Late"). */
+  load?: () => Promise<{ default: ComponentType }>;
   /** The file's text: one source for the preview and the code shown and copied, so they cannot drift. */
   source: string;
   /** A showcase screen's layout CSS (site/src/examples/<slug>/<id>.css), shown beside the TSX. */
@@ -48,6 +54,43 @@ const views = {
   './PageView.tsx': () => import('./PageView.tsx').then((m) => m.PageView),
   './AppView.tsx': () => import('./AppView.tsx').then((m) => m.AppView),
 };
+
+// "Late" chunks: below-the-fold parts a page needs only once it has hydrated (the homepage's dashboard, a showcase
+// screen). The prerender renders them from the same cache, so the HTML is complete; the browser's first load leaves
+// them out of the modulepreload list and out of the wait before hydrateRoot, so React keeps their server HTML and
+// hydrates each when its chunk arrives. A navigation waits for them, so a page never shows half-loaded.
+const lateViews: Record<string, () => Promise<ComponentType>> = {
+  './HomeDashboard.tsx': () => import('./HomeDashboard.tsx').then((m) => m.HomeDashboard),
+};
+const exampleKey = (slug: string, id: string) => `example:${slug}/${id}`;
+
+function lateLoader(key: string): () => Promise<ComponentType> {
+  const view = lateViews[key];
+  if (view) return view;
+  const [slug = '', id = ''] = key.slice('example:'.length).split('/');
+  const load = routeOf(slug)?.examples[id]?.load;
+  if (!load) throw new Error(`No late chunk for ${key}.`);
+  return () => load().then((m) => m.default);
+}
+
+/** The component of a late chunk: now if it is loaded, else suspends until it is (use inside <Late>). */
+export function useLateView(key: string): ComponentType {
+  return (values.get(key) as ComponentType | undefined) ?? (use(fetchInto(key, lateLoader(key))) as ComponentType);
+}
+
+/** The late chunks a route shows at first, once its route module is loaded (a page's other examples load when picked). */
+function lateKeys(route: ClientRoute): string[] {
+  if (route.kind === 'home') return ['./HomeDashboard.tsx'];
+  if (route.kind !== 'page') return [];
+  const first = route.page.slug && routeOf(route.page.slug)?.data.page.examples[0]?.id;
+  return first && routeOf(route.page.slug)?.examples[first]?.load ? [exampleKey(route.page.slug, first)] : [];
+}
+
+/** Load one of a page's examples that ships as its own chunk (a variant picked from the chips); resolves at once if it is in. */
+export function loadExample(slug: string, id: string): Promise<unknown> {
+  const key = exampleKey(slug, id);
+  return routeOf(slug)?.examples[id]?.load ? fetchInto(key, lateLoader(key)) : Promise.resolve();
+}
 
 /** The view a page renders with: apps get the full-viewport app frame, every other page the docs template. */
 const viewOf = (page: { kind: string }) => (page.kind === 'app' ? './AppView.tsx' : './PageView.tsx');
@@ -77,12 +120,13 @@ function fetchInto(key: string, loader: () => Promise<unknown>): Promise<unknown
 }
 
 const routeKey = (slug: string) => `../generated/routes/${slug}.ts`;
+const routeOf = (slug: string) => values.get(routeKey(slug)) as RouteModule | undefined;
 
 /**
  * Load everything a route renders. Resolves with the modules it needed as paths under site/ ('src/app/PageView.tsx',
  * 'src/generated/routes/button.ts'), which the prerender maps to chunk files through Vite's manifest.
  */
-export async function loadRoute(route: ClientRoute): Promise<string[]> {
+export async function loadRoute(route: ClientRoute, { hydrating = false }: { hydrating?: boolean } = {}): Promise<string[]> {
   const jobs: [string, () => Promise<unknown>][] = [];
   if (route.kind === 'home') jobs.push(['./Home.tsx', views['./Home.tsx']]);
   if (route.kind === 'page') {
@@ -92,6 +136,10 @@ export async function loadRoute(route: ClientRoute): Promise<string[]> {
     jobs.push([routeKey(route.page.slug), loader], [view, views[view]]);
   }
   await Promise.all(jobs.map(([key, loader]) => fetchInto(key, loader)));
+  // The late chunks start now either way; only the first hydration goes on without them (and the preload list never names them).
+  const late = lateKeys(route).map((key) => fetchInto(key, lateLoader(key)));
+  if (hydrating) for (const job of late) job.catch(() => undefined);
+  else await Promise.all([...late, fetchInto('head', () => import('../head-data.ts'))]);
   return jobs.map(([key]) => (key.startsWith('../') ? `src/${key.slice(3)}` : `src/app/${key.slice(2)}`));
 }
 
@@ -102,7 +150,6 @@ export function routeReady(route: ClientRoute): boolean {
   return true;
 }
 
-const routeOf = (slug: string) => values.get(routeKey(slug)) as RouteModule | undefined;
 
 export const homeView = () => values.get('./Home.tsx') as ComponentType;
 export const pageView = () => values.get('./PageView.tsx') as ComponentType<{ data: PageData }>;
@@ -111,6 +158,10 @@ export const appView = () => values.get('./AppView.tsx') as ComponentType<{ data
 export const loadedApp = (slug: string): ComponentType | undefined => routeOf(slug)?.app;
 export const pageData = (slug: string): PageData | undefined => routeOf(slug)?.data;
 export const loadedExample = (slug: string, id: string): LoadedExample | undefined => routeOf(slug)?.examples[id];
+/** The head data (head-data.ts), once a navigation has loaded it: the first load's head is already in the HTML. */
+export const headData = () => values.get('head') as typeof HeadData | undefined;
+/** The key <Late> takes for a route's late example. */
+export { exampleKey };
 /** The text of an example's CSS file (site/src/examples/<slug>/<id>.css), if it has one. */
 export const exampleCss = (slug: string, id: string): string | undefined => routeOf(slug)?.examples[id]?.css;
 /** The text of a guide's code file (site/src/guides/<slug>/<file>.tsx). */

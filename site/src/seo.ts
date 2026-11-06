@@ -2,8 +2,10 @@
 // script and the SEO check all use the same answer. The registry-free half lives in paths.ts (the browser shell
 // imports that one); this file adds the routes backed by the full page registry, for the build scripts.
 import { GROUPS, PAGES, pageBySlug, type PageDef } from './registry.ts';
-import { parseRouteWith, type HeadExtra, type Route } from './paths.ts';
+import type { HeadExtra } from './head-data.ts';
+import { parseRouteWith, type Route } from './paths.ts';
 
+export * from './head-data.ts';
 export * from './paths.ts';
 
 /** Resolve a path relative to the base ('/components/button' with or without the trailing slash). */

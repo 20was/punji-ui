@@ -30,7 +30,10 @@ export function fixed(n: number, dp: number): string {
 }
 
 /** A rupee amount, always two decimals: `Rs 8,42,610.00`. */
-export const rs = (n: Maybe): string => (isNum(n) ? `Rs ${DECIMAL.format(n)}` : DASH);
+export const rs = (n: Maybe, mark = 'Rs'): string => (isNum(n) ? `${mark} ${DECIMAL.format(n)}` : DASH);
+
+/** An amount in crore with the rupee mark and the word for crore: `Rs 4.20 crore`. */
+export const cr = (n: Maybe, mark = 'Rs', word = 'crore'): string => (isNum(n) ? `${mark} ${DECIMAL.format(n)} ${word}` : DASH);
 
 /** A count, rounded and grouped: `12,34,567`. */
 export const int = (n: Maybe): string => (isNum(n) ? INTEGER.format(Math.round(n)) : DASH);

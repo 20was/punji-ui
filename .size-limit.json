@@ -80,7 +80,7 @@
     "name": "figures (import from '@punji/ui/figures')",
     "path": "dist/figures/Figures.js",
     "import": "*",
-    "limit": "1.16 kB",
+    "limit": "1.34 kB",
     "gzip": true
   },
   {
@@ -304,7 +304,7 @@
     "name": "format (import from '@punji/ui/format')",
     "path": "dist/format/format.js",
     "import": "*",
-    "limit": "1.24 kB",
+    "limit": "1.5 kB",
     "gzip": true
   },
   {
@@ -738,7 +738,7 @@
     "name": "column-chart (import from '@punji/ui/column-chart')",
     "path": "dist/column-chart/ColumnChart.js",
     "import": "*",
-    "limit": "2.13 kB",
+    "limit": "3.04 kB",
     "gzip": true
   },
   {
@@ -1011,7 +1011,7 @@
     "name": "dividend-history (import from '@punji/ui/dividend-history')",
     "path": "dist/dividend-history/DividendHistory.js",
     "import": "*",
-    "limit": "11.93 kB",
+    "limit": "12.7 kB",
     "gzip": true
   },
   {

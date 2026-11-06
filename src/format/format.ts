@@ -1,5 +1,5 @@
 /** Pure helpers behind the kit (formatting, parsing, search); no React. */
-import { fixed, int, rs } from '../internal/number.ts';
+import { cr as crOf, fixed, int, rs as rsOf } from '../internal/number.ts';
 import { toAsciiDigits } from '../nepal/decimal.ts';
 
 export const isNum = (n: unknown): n is number => typeof n === 'number' && Number.isFinite(n);
@@ -7,11 +7,14 @@ export const isNum = (n: unknown): n is number => typeof n === 'number' && Numbe
 /** `'rs'` is rupee-only and en-IN fixed; for money pass a `Money` value (see `Figure`) so the currency and formatter are explicit. */
 export type FigureKind = 'rs' | 'int' | 'pct' | 'num';
 
-export function formatFigure(value: number | null | undefined, kind: FigureKind = 'num', dp = 2): string {
+/**
+ * `mark` is the rupee prefix for `kind: 'rs'` ("Rs" by default; `rsMark('ne')` gives "रु.").
+ */
+export function formatFigure(value: number | null | undefined, kind: FigureKind = 'num', dp = 2, mark = 'Rs'): string {
   if (!isNum(value)) return '-';
   switch (kind) {
     case 'rs':
-      return rs(value);
+      return rsOf(value, mark);
     case 'int':
       return int(value);
     case 'pct':
@@ -20,6 +23,43 @@ export function formatFigure(value: number | null | undefined, kind: FigureKind 
       return fixed(value, dp);
   }
 }
+
+/** The reader's language for the rupee formatters. Only `ne` differs; every other value reads English. */
+export type ReaderLang = 'en' | 'ne';
+
+let reader: ReaderLang = 'en';
+
+/**
+ * Sets the language the plain formatters (`rs`, `cr`, `rsMark`, `unitWords`) use when they are not handed one. A shim for
+ * code that formats outside React (a migration from a module-global setter); in components prefer `PunjiLocaleProvider`,
+ * which `Figure`, `Delta` and the charts read, or pass the language to the formatter. It is process-wide: on a server
+ * shared between requests, pass the language explicitly instead of calling this. Default 'en'.
+ */
+export function setReaderLang(lang: ReaderLang | string): void {
+  reader = readerLangOf(lang);
+}
+
+/** The language `setReaderLang` last set ('en' until then). */
+export const readerLang = (): ReaderLang => reader;
+
+/** A locale tag as a reader language: 'ne', 'ne-NP' and 'NE' are 'ne'; anything else is 'en'. */
+export function readerLangOf(locale: string | null | undefined): ReaderLang {
+  return typeof locale === 'string' && /^ne(?:[-_]|$)/i.test(locale.trim()) ? 'ne' : 'en';
+}
+
+/** The rupee mark: "Rs" in English, "रु." in Nepali. With no argument, the language `setReaderLang` set. */
+export const rsMark = (lang: ReaderLang | string = reader): string => (readerLangOf(lang) === 'ne' ? 'रु.' : 'Rs');
+
+/** The compact amount words for `compactRs`: L, Cr, Arba / लाख, करोड, अर्ब. */
+export function unitWords(lang: ReaderLang | string = reader): { lakh: string; crore: string; arba: string } {
+  return readerLangOf(lang) === 'ne' ? { lakh: 'लाख', crore: 'करोड', arba: 'अर्ब' } : { lakh: 'L', crore: 'Cr', arba: 'Arba' };
+}
+
+/** A rupee amount with two decimals and the language's mark: `Rs 8,42,610.00` / `रु. 8,42,610.00` (Western digits in both). A missing value prints '-'. */
+export const rs = (n: number | null | undefined, lang: ReaderLang | string = reader): string => rsOf(n, rsMark(lang));
+
+/** An amount already in crore: `Rs 4.20 crore` / `रु. 4.20 करोड`. A missing value prints '-'. */
+export const cr = (n: number | null | undefined, lang: ReaderLang | string = reader): string => crOf(n, rsMark(lang), readerLangOf(lang) === 'ne' ? 'करोड' : 'crore');
 
 export interface DeltaWords {
   up: string;
@@ -30,6 +70,7 @@ export interface DeltaWords {
 
 /** Tone of a change after rounding to what is printed. */
 /** A company's name without its legal tail ("Chilime Hydropower Company Limited" → "Chilime Hydropower"), as stock rows print it. */
+// One whitespace char, then trim: same result as the kit's \s+ (the trim takes the rest of a run), without the quadratic backtracking \s+ has on a long run of spaces.
 export function shortCompanyName(name: string): string {
   return name.replace(/\s(company limited|co\.?,? ltd\.?|limited|ltd\.?)$/i, '').trim();
 }

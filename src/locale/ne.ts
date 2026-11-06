@@ -94,6 +94,7 @@ export const ne: PunjiLocalePack = {
       'unusual-space': 'यसमा असामान्य, दोहोरो वा सुरु र अन्त्यमा खाली ठाउँ छ।',
       lookalike: (name) => `यो "${name}" जस्तै देखिन्छ तर फरक नाम हो।`,
     },
+    breadcrumb: { nav: 'पृष्ठ मार्ग', more: 'लुकेका तह देखाउनुहोस्' },
     pagination: { previous: 'अघिल्लो पृष्ठ', next: 'अर्को पृष्ठ', page: (p) => `पृष्ठ ${n(p)}`, range: (r, t) => `${t} मध्ये ${r}` },
     table: {
       empty: 'देखाउने कुनै विवरण छैन।', loading: 'विवरण लोड हुँदैछ…', clearSearch: 'खोज हटाउनुहोस्', selectPage: 'यो पृष्ठका सबै पङ्क्ति छान्नुहोस्',

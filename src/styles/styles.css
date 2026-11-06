@@ -95,4 +95,7 @@
 @import './split-pane.css';
 @import './trust.css';
 @import './payment-fields.css';
+@import './menu.css';
+@import './breadcrumb.css';
+@import './accordion.css';
 @import './contrast.css';

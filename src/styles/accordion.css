@@ -1,0 +1,18 @@
+/* Punji UI styles.
+   Styles for Accordion. Needs tokens.css and base.css (styles.css has everything). Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  .pu-accordion { border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-lg); background: var(--pu-color-surface); color: var(--pu-color-text); overflow: hidden }
+  .pu-accordion-item + .pu-accordion-item { border-block-start: 1px solid var(--pu-color-border-default) }
+  .pu-accordion-heading { margin: 0; font: inherit }
+  .pu-accordion-trigger { appearance: none; display: flex; align-items: center; justify-content: space-between; gap: var(--pu-space-3); inline-size: 100%; min-block-size: var(--pu-control-lg); padding-block: var(--pu-space-3); padding-inline: var(--pu-space-4); border: 0; background: transparent; color: inherit; font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body); text-align: start; cursor: pointer; transition: background-color var(--pu-motion-fast) var(--pu-ease-out) }
+  .pu-accordion-trigger:hover:not(:disabled) { background: var(--pu-color-surface-subtle) }
+  .pu-accordion-trigger:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: -2px }
+  .pu-accordion-trigger:disabled { opacity: 0.5; cursor: not-allowed }
+  .pu-accordion-trigger[aria-disabled='true'] { cursor: default }
+  .pu-accordion-chevron { flex: none; color: var(--pu-color-text-muted); transition: transform var(--pu-motion-fast) var(--pu-ease-out) }
+  .pu-accordion-trigger[aria-expanded='true'] .pu-accordion-chevron { transform: rotate(180deg) }
+  .pu-accordion-panel { padding-block: 0 var(--pu-space-4); padding-inline: var(--pu-space-4); color: var(--pu-color-text-muted); font-size: var(--pu-text-sm); line-height: 1.5; animation: pu-accordion-in var(--pu-motion-base) var(--pu-ease-out) }
+  .pu-accordion-panel[hidden] { display: none }
+  @keyframes pu-accordion-in { from { opacity: 0; transform: translateY(-4px) } to { opacity: 1; transform: none } }
+  @media (prefers-reduced-motion: reduce) { .pu-accordion-panel { animation: none } .pu-accordion-chevron, .pu-accordion-trigger { transition: none } }
+}

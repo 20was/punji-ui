@@ -1,8 +1,8 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { useState } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { beforeAll, describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it, vi } from 'vitest';
 
 import { FloatingTooltip, IconHint } from '../src/floating-tooltip/FloatingTooltip.tsx';
 import { EmptyState, Note, RangeSlider, Skeleton, SkeletonText, ToneIcon } from '../src/index.ts';
@@ -145,5 +145,58 @@ describe('EmptyState headingLevel', () => {
     rerender(<EmptyState title="Nothing yet" headingLevel={3} />);
     expect(container.querySelector('h2')).toBeNull();
     expect(container.querySelector('h3')?.textContent).toBe('Nothing yet');
+  });
+});
+
+describe('InfoTip and Tooltip: hoverable and dismissible (WCAG 1.4.13)', () => {
+  it('InfoTip stays open while the pointer moves from the button onto the bubble, and closes after it leaves both', () => {
+    vi.useFakeTimers();
+    render(<InfoTip label="What yield means" testId="yt">Cash paid over a year.</InfoTip>);
+    const button = screen.getByTestId('yt');
+    fireEvent.pointerEnter(button, { pointerType: 'mouse' });
+    const bubble = screen.getByTestId('yt-tip');
+    fireEvent.pointerLeave(button, { pointerType: 'mouse' });
+    fireEvent.pointerEnter(bubble, { pointerType: 'mouse' });
+    act(() => { vi.advanceTimersByTime(1000); });
+    expect(screen.queryByTestId('yt-tip')).not.toBeNull();
+    fireEvent.pointerLeave(bubble, { pointerType: 'mouse' });
+    act(() => { vi.advanceTimersByTime(1000); });
+    expect(screen.queryByTestId('yt-tip')).toBeNull();
+    vi.useRealTimers();
+  });
+
+  it('InfoTip closes on Esc even when the pointer, not focus, opened it, and a scroll keeps it while the button is in view', () => {
+    render(<InfoTip label="What yield means" testId="yt">Cash paid over a year.</InfoTip>);
+    const button = screen.getByTestId('yt');
+    fireEvent.pointerEnter(button, { pointerType: 'mouse' });
+    fireEvent.scroll(window);
+    expect(screen.queryByTestId('yt-tip')).not.toBeNull();
+    fireEvent.keyDown(document.body, { key: 'Escape' });
+    expect(screen.queryByTestId('yt-tip')).toBeNull();
+  });
+
+  it('InfoTip closes on scroll once the button is out of the window', () => {
+    render(<InfoTip label="What yield means" testId="yt">Cash paid over a year.</InfoTip>);
+    const button = screen.getByTestId('yt');
+    fireEvent.pointerEnter(button, { pointerType: 'mouse' });
+    vi.spyOn(button, 'getBoundingClientRect').mockReturnValue({ top: -100, bottom: -80, left: 0, right: 20, width: 20, height: 20, x: 0, y: -100, toJSON() {} });
+    fireEvent.scroll(window);
+    expect(screen.queryByTestId('yt-tip')).toBeNull();
+  });
+
+  it('Tooltip stays open while the pointer is on its bubble', () => {
+    vi.useFakeTimers();
+    render(<Tooltip content="Buy more" testId="tt"><button type="button">Buy</button></Tooltip>);
+    const trigger = screen.getByRole('button', { name: 'Buy' });
+    fireEvent.pointerEnter(trigger, { pointerType: 'mouse' });
+    act(() => { vi.advanceTimersByTime(400); });
+    const bubble = screen.getByTestId('tt');
+    fireEvent.pointerLeave(trigger, { pointerType: 'mouse' });
+    fireEvent.pointerEnter(bubble, { pointerType: 'mouse' });
+    act(() => { vi.advanceTimersByTime(1000); });
+    expect(screen.queryByTestId('tt')).not.toBeNull();
+    fireEvent.keyDown(document.body, { key: 'Escape' });
+    expect(screen.queryByTestId('tt')).toBeNull();
+    vi.useRealTimers();
   });
 });

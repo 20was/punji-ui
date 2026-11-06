@@ -9,7 +9,7 @@ import { createPortal } from 'react-dom';
  * hint on a label never covers the figure below the label. Its own file, not FloatingTooltip's: the
  * public pages' charts load that one and need none of this.
  */
-function Bubble({ anchor, id, testId, children, compact, hidden }: { anchor: DOMRect; id: string; testId?: string; children: ReactNode; compact?: boolean; hidden?: boolean }) {
+function Bubble({ anchor, id, testId, children, compact, hidden, onPointerEnter, onPointerLeave }: { anchor: DOMRect; id: string; testId?: string; children: ReactNode; compact?: boolean; hidden?: boolean; onPointerEnter?: () => void; onPointerLeave?: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const [at, setAt] = useState<{ left: number; top: number } | null>(null);
   useLayoutEffect(() => {
@@ -22,17 +22,26 @@ function Bubble({ anchor, id, testId, children, compact, hidden }: { anchor: DOM
     setAt({ left, top: over >= 8 ? over : Math.min(anchor.bottom + gap, window.innerHeight - height - 8) });
   }, [anchor]);
   return createPortal(
-    <div ref={ref} id={id} role={hidden ? undefined : 'tooltip'} aria-hidden={hidden || undefined} className={`kit-floating-tip ${compact ? 'kit-icon-tip' : 'kit-info-tip'}`} style={at ? { left: at.left, top: at.top } : { left: 0, top: 0, visibility: 'hidden' }} data-testid={testId}>
+    <div ref={ref} id={id} role={hidden ? undefined : 'tooltip'} aria-hidden={hidden || undefined} className={`kit-floating-tip ${compact ? 'kit-icon-tip' : 'kit-info-tip'}`} style={at ? { left: at.left, top: at.top } : { left: 0, top: 0, visibility: 'hidden' }} data-testid={testId} onPointerEnter={onPointerEnter} onPointerLeave={onPointerLeave}>
       {children}
     </div>,
     document.body,
   );
 }
 
+/** WCAG 1.4.13: how long the bubble waits after the pointer leaves, so the pointer can cross onto it (hoverable). */
+const GRACE_MS = 150;
+
+/** True while any part of the trigger is still in the window: a scroll then moves the bubble's anchor instead of closing it. */
+function inView(r: DOMRect): boolean {
+  return r.bottom >= 0 && r.right >= 0 && r.top < window.innerHeight && r.left < window.innerWidth;
+}
+
 /**
  * What a label means, on a visible ⓘ beside it (never a native title, which waits a second, never
  * shows on a phone and gives no sign it is there). Hover or keyboard focus shows it at once; a click
- * or tap keeps it open until Esc, a second tap, a tap elsewhere or a scroll. The button names what it
+ * or tap keeps it open until Esc, a second tap, a tap elsewhere or the button leaving the window. The pointer can move
+ * onto the bubble without it closing (WCAG 1.4.13), and Esc closes it wherever focus is. The button names what it
  * explains (`label`); the text is its description while shown. Clicks stay inside, so a hint in a
  * clickable row never opens the row.
  */
@@ -52,25 +61,47 @@ export function InfoTip({ label, children, testId, trigger }: InfoTipProps) {
   const ref = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState<null | 'peek' | 'pinned'>(null);
   const [anchor, setAnchor] = useState<DOMRect | null>(null);
+  const grace = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cancel = () => {
+    if (grace.current) clearTimeout(grace.current);
+    grace.current = null;
+  };
+  const later = () => {
+    cancel();
+    grace.current = setTimeout(() => setOpen((o) => (o === 'peek' ? null : o)), GRACE_MS);
+  };
+  useEffect(() => cancel, []);
   const show = (how: 'peek' | 'pinned') => {
     const r = ref.current?.getBoundingClientRect();
     if (!r) return;
+    cancel();
     setAnchor(r);
     setOpen(how);
   };
   useEffect(() => {
     if (!open) return;
-    const away = (e: PointerEvent) => { if (!ref.current?.contains(e.target as Node)) setOpen(null); };
-    const scrolled = () => setOpen(null);
+    const away = (e: PointerEvent) => {
+      const t = e.target as Node;
+      if (!ref.current?.contains(t) && !(t instanceof Element && t.closest(`[id="${CSS.escape(id)}"]`))) setOpen(null);
+    };
+    const scrolled = () => {
+      const r = ref.current?.getBoundingClientRect();
+      if (!r || !inView(r)) setOpen(null);
+      else setAnchor(r);
+    };
+    const resized = () => setOpen(null);
+    const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(null); };
     document.addEventListener('pointerdown', away);
+    document.addEventListener('keydown', esc);
     window.addEventListener('scroll', scrolled, { capture: true, passive: true });
-    window.addEventListener('resize', scrolled);
+    window.addEventListener('resize', resized);
     return () => {
       document.removeEventListener('pointerdown', away);
+      document.removeEventListener('keydown', esc);
       window.removeEventListener('scroll', scrolled, { capture: true });
-      window.removeEventListener('resize', scrolled);
+      window.removeEventListener('resize', resized);
     };
-  }, [open]);
+  }, [open, id]);
   return (
     <>
       <button
@@ -81,7 +112,7 @@ export function InfoTip({ label, children, testId, trigger }: InfoTipProps) {
         aria-expanded={open !== null}
         aria-describedby={open ? id : undefined}
         onPointerEnter={(e) => { if (e.pointerType === 'mouse' && !open) show('peek'); }}
-        onPointerLeave={(e) => { if (e.pointerType === 'mouse' && open === 'peek') setOpen(null); }}
+        onPointerLeave={(e) => { if (e.pointerType === 'mouse' && open === 'peek') later(); }}
         onFocus={() => { if (!open) show('peek'); }}
         onBlur={() => setOpen(null)}
         onClick={(e) => {
@@ -102,7 +133,7 @@ export function InfoTip({ label, children, testId, trigger }: InfoTipProps) {
         </svg>}
       </button>
       {open && anchor && (
-        <Bubble id={id} anchor={anchor} testId={testId ? `${testId}-tip` : undefined}>
+        <Bubble id={id} anchor={anchor} testId={testId ? `${testId}-tip` : undefined} onPointerEnter={cancel} onPointerLeave={later}>
           {children}
         </Bubble>
       )}
@@ -113,7 +144,8 @@ export function InfoTip({ label, children, testId, trigger }: InfoTipProps) {
 /**
  * Tooltip (design.punji.app/components/tooltip): a short name for a control,
  * on hover after 300 ms and at once on keyboard focus; Esc, blur or leaving
- * hides it. For an icon-only button it repeats the button's own name, so it
+ * hides it. The pointer can move onto the bubble without it closing, and a scroll
+ * only closes it when the control leaves the window (WCAG 1.4.13). For an icon-only button it repeats the button's own name, so it
  * is hidden from screen readers (the name already says it); with `describe`
  * it adds a description instead. Never the only place a fact lives: a
  * phone has no hover. A label that needs explaining gets an InfoTip.
@@ -142,6 +174,11 @@ export function Tooltip({ content, children, describe, testId }: TooltipProps) {
     stop();
     setAnchor(null);
   };
+  // Leaving the control waits a moment so the pointer can reach the bubble (WCAG 1.4.13).
+  const leave = () => {
+    stop();
+    timer.current = setTimeout(() => setAnchor(null), GRACE_MS);
+  };
   const show = () => {
     const el = ref.current?.firstElementChild ?? ref.current;
     if (el) setAnchor(el.getBoundingClientRect());
@@ -150,9 +187,19 @@ export function Tooltip({ content, children, describe, testId }: TooltipProps) {
   const open = anchor !== null;
   useEffect(() => {
     if (!open) return;
-    const away = () => setAnchor(null);
-    window.addEventListener('scroll', away, { capture: true, passive: true });
-    return () => window.removeEventListener('scroll', away, { capture: true });
+    const scrolled = () => {
+      const el = ref.current?.firstElementChild ?? ref.current;
+      const r = el?.getBoundingClientRect();
+      if (!r || !inView(r)) setAnchor(null);
+      else setAnchor(r);
+    };
+    const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') setAnchor(null); };
+    window.addEventListener('scroll', scrolled, { capture: true, passive: true });
+    document.addEventListener('keydown', esc);
+    return () => {
+      window.removeEventListener('scroll', scrolled, { capture: true });
+      document.removeEventListener('keydown', esc);
+    };
   }, [open]);
   const child = describe && anchor ? cloneElement(children, { 'aria-describedby': id }) : children;
   return (
@@ -164,7 +211,7 @@ export function Tooltip({ content, children, describe, testId }: TooltipProps) {
         stop();
         timer.current = setTimeout(show, 300);
       }}
-      onPointerLeave={hide}
+      onPointerLeave={(e) => { if (e.pointerType === 'mouse') leave(); else hide(); }}
       onFocus={(e) => { if ((e.target as HTMLElement).matches(':focus-visible')) show(); }}
       onBlur={hide}
       onPointerDown={hide}
@@ -172,7 +219,7 @@ export function Tooltip({ content, children, describe, testId }: TooltipProps) {
     >
       {child}
       {anchor && (
-        <Bubble id={id} anchor={anchor} compact hidden={!describe} testId={testId}>
+        <Bubble id={id} anchor={anchor} compact hidden={!describe} testId={testId} onPointerEnter={stop} onPointerLeave={leave}>
           {content}
         </Bubble>
       )}

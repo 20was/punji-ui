@@ -4,8 +4,9 @@
  * Sheet (a short confirm: two fields at most; long forms are pages) and
  * Toast (what happened: saved, failed, undo). The app's BrandSheet and toast.
  */
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react';
 
+import { isDestructive, tabbables } from '../internal/focusable.ts';
 import { ToneIcon } from '../states/States.tsx';
 
 export interface SheetProps {
@@ -27,15 +28,18 @@ export interface SheetProps {
 
 export function Sheet({ open, title, body, children, onClose, testId, closeLabel = 'Close' }: SheetProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const titleId = useId();
   useEffect(() => {
     if (!open) return;
     const prev = document.activeElement as HTMLElement | null;
-    const first = ref.current?.querySelector<HTMLElement>('button, input, select, [href]');
+    // Focus lands on the safest control: an explicit [data-autofocus], else the first one that is not destructive (Keep, Cancel, Close), else the first.
+    const all = ref.current ? tabbables(ref.current) : [];
+    const first = all.find((el) => el.hasAttribute('data-autofocus')) ?? all.find((el) => !isDestructive(el)) ?? all[0];
     first?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
       if (e.key === 'Tab' && ref.current) {
-        const items = [...ref.current.querySelectorAll<HTMLElement>('button, input, select, [href]')].filter((el) => !el.hasAttribute('disabled'));
+        const items = tabbables(ref.current);
         if (!items.length) return;
         const [a, z] = [items[0]!, items[items.length - 1]!];
         if (e.shiftKey && document.activeElement === a) {
@@ -56,8 +60,8 @@ export function Sheet({ open, title, body, children, onClose, testId, closeLabel
   if (!open) return null;
   return (
     <div className="kit-sheet-back" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="kit-sheet" role="dialog" aria-modal="true" aria-labelledby="kit-sheet-title" ref={ref} data-testid={testId}>
-        <h2 id="kit-sheet-title">{title}</h2>
+      <div className="kit-sheet" role="dialog" aria-modal="true" aria-labelledby={titleId} ref={ref} data-testid={testId}>
+        <h2 id={titleId}>{title}</h2>
         {body && <p>{body}</p>}
         {children}
         <span className="kit-sr"><button type="button" onClick={onClose}>{closeLabel}</button></span>
@@ -81,6 +85,10 @@ interface ToastApi {
   dismiss: (id: number) => void;
 }
 
+/** How long a toast stays. One with an action (Undo) gets 10 s (WCAG 2.2.1). Hover or focus inside pauses it. */
+const PLAIN_MS = 4000;
+const ACTION_MS = 10000;
+
 const ToastContext = createContext<ToastApi | null>(null);
 
 export interface ToastProviderProps {
@@ -88,26 +96,82 @@ export interface ToastProviderProps {
   children: ReactNode;
 }
 
-/** Provides useToast to everything below it and renders the polite live region that holds the toasts (three at most). */
+/** Provides useToast to everything below it and renders the polite live region that holds the toasts (three at most; the stack itself is not live, two hidden regions announce each toast once, errors assertively, and hover or focus pauses its countdown). */
 export function ToastProvider({ children }: ToastProviderProps) {
   const [items, setItems] = useState<ToastItem[]>([]);
   const seq = useRef(0);
-  const dismiss = useCallback((id: number) => setItems((xs) => xs.filter((x) => x.id !== id)), []);
+  // What the two hidden live regions say. The keyed span is replaced on every toast, so an identical message announces again.
+  const [said, setSaid] = useState<{ polite: { n: number; text: string }; assertive: { n: number; text: string } }>({ polite: { n: 0, text: '' }, assertive: { n: 0, text: '' } });
+  // One timer per toast, with what is left of its time, so hover and focus can pause it (WCAG 2.2.1).
+  const timers = useRef(new Map<number, { handle: ReturnType<typeof setTimeout> | null; left: number; since: number }>());
+  const clear = useCallback((id: number) => {
+    const t = timers.current.get(id);
+    if (t?.handle) clearTimeout(t.handle);
+    timers.current.delete(id);
+  }, []);
+  const dismiss = useCallback(
+    (id: number) => {
+      clear(id);
+      setItems((xs) => xs.filter((x) => x.id !== id));
+    },
+    [clear],
+  );
+  const arm = useCallback(
+    (id: number, ms: number) => {
+      timers.current.set(id, { handle: setTimeout(() => dismiss(id), ms), left: ms, since: Date.now() });
+    },
+    [dismiss],
+  );
+  const pause = useCallback((id: number) => {
+    const t = timers.current.get(id);
+    if (!t?.handle) return;
+    clearTimeout(t.handle);
+    t.handle = null;
+    t.left = Math.max(t.left - (Date.now() - t.since), 1000);
+  }, []);
+  const resume = useCallback(
+    (id: number) => {
+      const t = timers.current.get(id);
+      if (t && !t.handle) arm(id, t.left);
+    },
+    [arm],
+  );
   const show = useCallback<ToastApi['show']>(
     (kind, title, opts) => {
       const id = ++seq.current;
       setItems((xs) => [{ id, kind, title, ...opts }, ...xs].slice(0, 3));
-      setTimeout(() => dismiss(id), opts?.action ? 6000 : 4000);
+      const tone = kind === 'error' ? 'assertive' : 'polite';
+      setSaid((c) => ({ ...c, [tone]: { n: id, text: opts?.body ? `${title}. ${opts.body}` : title } }));
+      arm(id, opts?.action ? ACTION_MS : PLAIN_MS);
     },
-    [dismiss],
+    [arm],
   );
+  useEffect(() => {
+    const all = timers.current;
+    return () => {
+      for (const t of all.values()) if (t.handle) clearTimeout(t.handle);
+      all.clear();
+    };
+  }, []);
   const api = useMemo(() => ({ show, dismiss }), [show, dismiss]);
   return (
     <ToastContext.Provider value={api}>
       {children}
-      <div className="kit-toasts" aria-live="polite">
+      <div className="kit-sr">
+        <div role="status" aria-live="polite" aria-atomic="true"><span key={said.polite.n}>{said.polite.text}</span></div>
+        <div role="alert" aria-live="assertive" aria-atomic="true"><span key={said.assertive.n}>{said.assertive.text}</span></div>
+      </div>
+      <div className="kit-toasts">
         {items.map((t) => (
-          <div key={t.id} className={`kit-toast ${t.kind}`} role={t.kind === 'error' ? 'alert' : 'status'} data-testid={`toast-${t.kind}`}>
+          <div
+            key={t.id}
+            className={`kit-toast ${t.kind}`}
+            data-testid={`toast-${t.kind}`}
+            onMouseEnter={() => pause(t.id)}
+            onMouseLeave={(e) => { if (!e.currentTarget.contains(document.activeElement)) resume(t.id); }}
+            onFocus={() => pause(t.id)}
+            onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node | null) && !e.currentTarget.matches(':hover')) resume(t.id); }}
+          >
             {(t.kind === 'error' || t.kind === 'success') && <ToneIcon tone={t.kind} />}
             <span className="msg">
               <b>{t.title}</b>

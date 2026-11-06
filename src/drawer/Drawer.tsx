@@ -16,8 +16,8 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
+import { FOCUSABLE } from '../internal/focusable.ts';
 
-const FOCUSABLE = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 export interface DrawerProps {
   /** Whether the drawer is shown. You own this state. Nothing renders while it is false or during server rendering. */

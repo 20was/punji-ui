@@ -60,6 +60,10 @@ function Separator() {
   );
 }
 
+/**
+ * A breadcrumb trail (WAI-ARIA Breadcrumb).
+ * @stability beta
+ */
 export function Breadcrumb({ items, maxItems, labels, linkComponent, testId, className }: BreadcrumbProps) {
   const text = { nav: 'Breadcrumb', more: 'Show hidden levels', ...useLocaleMessages().messages.breadcrumb, ...labels };
   const limit = maxItems === undefined ? Infinity : Math.max(3, maxItems);

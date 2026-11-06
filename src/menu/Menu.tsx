@@ -129,6 +129,10 @@ function Caret() {
   );
 }
 
+/**
+ * A button that opens a menu of actions (WAI-ARIA Menu Button).
+ * @stability beta
+ */
 export function MenuButton({ label, items, iconOnly = false, icon, align = 'start', disabled, onOpenChange, linkComponent, testId, className }: MenuButtonProps) {
   const [open, setOpenState] = useState(false);
   const [start, setStart] = useState<'first' | 'last'>('first');

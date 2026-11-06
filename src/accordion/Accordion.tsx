@@ -69,6 +69,10 @@ const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
   heads[next]?.focus();
 };
 
+/**
+ * Stacked sections that expand and collapse (WAI-ARIA Accordion).
+ * @stability beta
+ */
 export function Accordion({ items, type = 'single', collapsible = true, value, defaultValue, onValueChange, headingLevel = 3, testId, className }: AccordionProps) {
   const base = useId();
   const [open, setOpen] = useControllableState<readonly string[]>({ value, defaultValue: defaultValue ?? [], onChange: onValueChange as (v: readonly string[]) => void, name: 'Accordion value' });

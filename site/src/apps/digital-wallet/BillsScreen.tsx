@@ -144,7 +144,7 @@ function BillerFlow({ service }: { service: Service }) {
               }
               testId={`dw-${service}-bill`}
             />
-            {problem && <Note tone="error">{problem}</Note>}
+            {problem && <Note tone="danger">{problem}</Note>}
           </>
         )}
       </div>
@@ -249,7 +249,7 @@ function TopUp() {
             hint="From Rs 10 to Rs 5,000."
             testId="dw-topup-amount"
           />
-          {error && <Note tone="error">{error}</Note>}
+          {error && <Note tone="danger">{error}</Note>}
           <Button size="lg" block onClick={next} disabled={state.locked} testId="dw-topup-next">
             {amount && operator ? `Top up ${rs(amount)}` : 'Continue'}
           </Button>

@@ -18,7 +18,7 @@ export default function Example() {
       </label>
       <Breakdown tone="tint" live>
         <BreakdownRow label="Sale amount" note={`${shares} shares at Rs 1,240`} value={rs(amount)} />
-        <BreakdownRow label="Broker commission" note="0.40% of the amount" value={`- ${rs(commission)}`} tone="down" />
+        <BreakdownRow label="Broker commission" note="0.40% of the amount" value={`- ${rs(commission)}`} tone="loss" />
         <BreakdownRow label="You receive" total value={rs(amount - commission)} />
       </Breakdown>
     </Stack>

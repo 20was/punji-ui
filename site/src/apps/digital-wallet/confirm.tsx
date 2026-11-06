@@ -60,7 +60,7 @@ export function PinConfirm({ title, amount, facts, onConfirmed, onCancel, verb =
         </p>
         <FactList facts={facts} testId="dw-confirm-facts" />
         {state.locked ? (
-          <Note tone="error">Payments are locked after {MAX_PIN_TRIES} wrong PINs. In a real wallet you would reset the PIN with an OTP; reload the page to reset the demo.</Note>
+          <Note tone="danger">Payments are locked after {MAX_PIN_TRIES} wrong PINs. In a real wallet you would reset the PIN with an OTP; reload the page to reset the demo.</Note>
         ) : (
           <PinPad
             key={attempt}

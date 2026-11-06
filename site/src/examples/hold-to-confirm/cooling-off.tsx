@@ -8,7 +8,7 @@ export default function Example() {
   const [done, setDone] = useState(false);
   return (
     <Stack className="ex-narrow">
-      <HoldToConfirm key={round} mode="cooling-off" delaySeconds={5} tone="primary" onConfirm={() => setDone(true)}>Add new payee</HoldToConfirm>
+      <HoldToConfirm key={round} mode="cooling-off" delaySeconds={5} variant="primary" onConfirm={() => setDone(true)}>Add new payee</HoldToConfirm>
       <p>{done ? 'Payee added.' : 'Take a moment: is this someone you know?'}</p>
       <Button variant="secondary" size="sm" onClick={() => { setRound((n) => n + 1); setDone(false); }}>Restart</Button>
     </Stack>

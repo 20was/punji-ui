@@ -153,7 +153,7 @@ export function ClaimsPanel() {
         ) : (
           <form className="ii-form" noValidate onSubmit={submit}>
             <DocumentUpload slots={SLOTS[group]} value={files} onChange={setFiles} errors={docErrors} title="Documents" headingLevel={4} testId="ii-claim-docs" />
-            {failed && <Note tone="error">The claim could not be sent (demo failure). Your details and documents are kept; try again.</Note>}
+            {failed && <Note tone="danger">The claim could not be sent (demo failure). Your details and documents are kept; try again.</Note>}
             <div className="ii-buttons">
               <Button type="submit" testId="ii-claim-submit">Submit claim for {amount ? rs(amount) : ''}</Button>
               <Button variant="ghost" onClick={() => setStep('details')}>Back</Button>

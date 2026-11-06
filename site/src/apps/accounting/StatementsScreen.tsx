@@ -68,7 +68,7 @@ export default function StatementsScreen() {
       {assets === le ? (
         <Note>✓ Assets equal liabilities and equity: {rs(assets)}. The profit for the year on the balance sheet is the net profit of the fiscal year to {shortDate(range.to)}.</Note>
       ) : (
-        <Note tone="error">The balance sheet is out by {rs(assets - le)}.</Note>
+        <Note tone="danger">The balance sheet is out by {rs(assets - le)}.</Note>
       )}
     </div>
   );

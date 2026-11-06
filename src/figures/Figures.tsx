@@ -85,6 +85,11 @@ export interface DeltaProps {
   /** Show the up or down arrow (default true). Sign, colour and the spoken word remain. */
   arrow?: boolean;
   /** The spoken words for up, down and unchanged, in the reader's language. Default English. */
+  labels?: Partial<DeltaWords>;
+  /**
+   * The former name of `labels`, still honoured.
+   * @deprecated Use `labels`; same keys. Kept until the next major.
+   */
   words?: DeltaWords;
   /** sm: the 12px line under a price in a table row. */
   size?: 'sm';
@@ -97,13 +102,15 @@ export function Delta({
   kind = 'pct',
   dp = 2,
   arrow = true,
-  words = EN_WORDS,
+  labels,
+  words: wordsProp,
   size,
   formatter,
   mark,
   testId,
 }: DeltaProps) {
   const rupee = useRsMark(mark);
+  const words: DeltaWords = { ...EN_WORDS, ...wordsProp, ...labels };
   if (isMoney(value)) {
     const tone = value.minor > 0n ? 'up' : value.minor < 0n ? 'down' : 'flat';
     const text = printMoney(value, formatter, true);

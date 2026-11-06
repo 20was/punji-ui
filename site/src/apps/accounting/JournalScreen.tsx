@@ -124,7 +124,7 @@ export default function JournalScreen() {
           </p>
           {tried && problems.length > 0 && (
             <div id="ac-journal-problems">
-              <Note tone="error">
+              <Note tone="danger">
                 <ul className="ac-problems">{problems.map((p) => <li key={p}>{p}</li>)}</ul>
               </Note>
             </div>

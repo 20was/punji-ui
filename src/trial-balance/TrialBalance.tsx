@@ -84,7 +84,7 @@ export function TrialBalance({
     try { return trialBalance(data); } catch { return 'invalid' as const; }
   }, [data, state]);
   if (state === 'error') return <RetryNote retryLabel={retryLabel} onRetry={onRetry} testId={testId}>{errorLabel}</RetryNote>;
-  if (result === 'invalid') return <div role="alert" data-testid={testId}><Note tone="error">{words.invalid}</Note></div>;
+  if (result === 'invalid') return <div role="alert" data-testid={testId}><Note tone="danger">{words.invalid}</Note></div>;
   const columns: Column<Key>[] = [
     { key: 'account', label: words.account },
     { key: 'debit', label: words.debit, num: true },

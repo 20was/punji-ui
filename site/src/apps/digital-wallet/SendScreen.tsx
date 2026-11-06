@@ -127,7 +127,7 @@ export default function SendScreen() {
                   </span>
                 )}
                 {lookup.state === 'missing' && <Note tone="warn">No wallet is registered to this number. Ask them to sign up, or send to their bank account.</Note>}
-                {lookup.state === 'error' && <Note tone="error">Could not look the number up. You are offline.</Note>}
+                {lookup.state === 'error' && <Note tone="danger">Could not look the number up. You are offline.</Note>}
               </div>
               <AmountKeypad
                 label="Amount"
@@ -145,7 +145,7 @@ export default function SendScreen() {
               />
               <Select label="Purpose" labelPlacement="above" value={purpose} onChange={setPurpose} options={PURPOSES.map((p) => ({ value: p, label: p }))} block />
               <Field label="Remark (optional)" value={remark} onChange={(v) => setRemark(v.slice(0, 40))} hint="The receiver sees it." testId="dw-send-remark" />
-              {error && <Note tone="error">{error}</Note>}
+              {error && <Note tone="danger">{error}</Note>}
               <Button size="lg" block onClick={toPin} disabled={state.locked} testId="dw-send-next">
                 {amount && lookup.state === 'found' ? `Send ${rs(amount)} to ${lookup.name.split(' ')[0]}` : 'Continue'}
               </Button>

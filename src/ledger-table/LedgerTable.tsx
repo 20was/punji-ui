@@ -107,7 +107,7 @@ export function LedgerTable({
   }, [entries, normal, opening, state]);
 
   if (state === 'error') return <RetryNote retryLabel={retryLabel} onRetry={onRetry} testId={testId}>{errorLabel}</RetryNote>;
-  if (computed === 'invalid') return <div role="alert" data-testid={testId}><Note tone="error">{words.invalid}</Note></div>;
+  if (computed === 'invalid') return <div role="alert" data-testid={testId}><Note tone="danger">{words.invalid}</Note></div>;
 
   const columns: Column<Key>[] = ([
     { key: 'date', label: words.date },

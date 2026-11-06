@@ -86,7 +86,7 @@ function CardPanel({ card }: { card: BankCard }) {
             <dd className="app-muted">Never shown in the app</dd>
           </div>
         </dl>
-        {problem && <Note tone="error">{problem}</Note>}
+        {problem && <Note tone="danger">{problem}</Note>}
 
         {blocked ? (
           <div className="app-stack">

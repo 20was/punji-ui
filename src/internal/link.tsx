@@ -10,10 +10,10 @@
  *
  * Absolute http(s), mailto and tel addresses always render a plain <a>.
  */
-import { createElement } from 'react';
+import { createElement, useContext } from 'react';
 import type { AnchorHTMLAttributes, ComponentType, Ref } from 'react';
 
-import { useLinkComponent } from '../link/Link.tsx';
+import { LinkContext } from './linkContext.ts';
 import { safeHref } from '../link/safeHref.ts';
 
 /** Props a link component receives: an anchor's attributes with `href` set, and a `ref` (React 19: a ref is a prop). */
@@ -29,16 +29,7 @@ export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
 /** A component that renders a link, such as a wrapped router link. */
 export type LinkComponent = ComponentType<LinkProps>;
 
-/** True for a path the app routes itself: no scheme, not `//host`. */
-const isInApp = (href: string) => !/^\s*(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(href);
-
-/** `rel` with noopener and noreferrer added for a new tab. */
-const relFor = (target: string | undefined, rel: string | undefined) => {
-  if (target !== '_blank') return rel;
-  return [...new Set([...(rel?.split(/\s+/) ?? []), 'noopener', 'noreferrer'].filter(Boolean))].join(' ');
-};
-
-type AppLinkProps = Omit<LinkProps, 'href'> & {
+type AppLinkProps = Omit<LinkProps, 'href' | 'rel'> & {
   href: string;
   /** The component's own `linkComponent` prop: it wins over the provider. */
   linkComponent?: LinkComponent;
@@ -51,11 +42,10 @@ type AppLinkProps = Omit<LinkProps, 'href'> & {
  * else the provider's, else a plain <a>. A blocked `href` (safeHref) renders
  * an <a> without `href` and with aria-disabled, so nothing can navigate.
  */
-export function AppLink({ href, linkComponent, external, target, rel, ...rest }: AppLinkProps) {
-  const fromContext = useLinkComponent();
+export function AppLink({ href, linkComponent, external, target, ...rest }: AppLinkProps) {
+  const fromContext = useContext(LinkContext);
   const safe = safeHref(href);
-  const relValue = relFor(target, rel);
-  if (safe === undefined) return createElement('a', { ...rest, target, rel: relValue, 'aria-disabled': true });
-  const custom = !external && isInApp(safe) ? (linkComponent ?? fromContext) : undefined;
-  return createElement(custom ?? 'a', { ...rest, href: safe, target, rel: relValue });
+  // A custom link only for an in-app path: no scheme and not `//host`.
+  const custom = !external && safe && !/^([\w.+-]+:|\/\/)/.test(safe) && (linkComponent ?? fromContext);
+  return createElement(custom || 'a', { ...rest, href: safe as string, target, rel: target === '_blank' ? 'noopener noreferrer' : undefined, 'aria-disabled': safe ? undefined : true });
 }

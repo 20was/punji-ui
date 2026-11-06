@@ -77,7 +77,7 @@ export function Button({ variant = 'primary', size = 'md', block, loading, icon,
     const absolute = /^https?:/.test(href);
     const newTab = external ?? absolute;
     return (
-      <AppLink linkComponent={linkComponent} external={newTab || absolute} className={cls} href={href} {...(newTab ? { target: '_blank', rel: 'noopener noreferrer' } : null)} aria-label={name && newTab ? `${name} ${newTabLabel}` : name} data-testid={testId}>
+      <AppLink linkComponent={linkComponent} external={newTab || absolute} className={cls} href={href} target={newTab ? '_blank' : undefined} aria-label={name && newTab ? `${name} ${newTabLabel}` : name} data-testid={testId}>
         {body}
         {newTab && !name ? <>{' '}<span className="kit-sr">{newTabLabel}</span></> : null}
       </AppLink>

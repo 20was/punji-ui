@@ -9,16 +9,16 @@
  * `LinkProvider`, then a plain <a>. Absolute http(s), mailto and tel
  * addresses are always a plain <a>. Every `href` passes `safeHref` first.
  */
-import { createContext, useContext } from 'react';
+import { useContext } from 'react';
 import type { ReactNode } from 'react';
 
 import type { LinkComponent } from '../internal/link.tsx';
+import { LinkContext } from '../internal/linkContext.ts';
 import { safeHref } from './safeHref.ts';
 
 export type { LinkComponent, LinkProps } from '../internal/link.tsx';
 export { safeHref };
 
-const LinkContext = createContext<LinkComponent | undefined>(undefined);
 
 export interface LinkProviderProps {
   /** Your router's link, wrapped once. It receives `href` (a path), `className`, `children`, `target`, `rel`, aria-* attributes, `onClick` and a `ref`. */

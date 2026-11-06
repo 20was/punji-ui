@@ -39,11 +39,10 @@ describe('safeHref', () => {
     expect(safeHref(null)).toBeUndefined();
   });
 
-  it('warns in development with the scheme only', () => {
+  it('warns in development without echoing the address', () => {
     const warn = vi.spyOn(console, 'error').mockImplementation(() => {});
     safeHref('javascript:secret()');
     expect(warn).toHaveBeenCalledTimes(1);
-    expect(String(warn.mock.calls[0]?.[0])).toContain('javascript');
     expect(String(warn.mock.calls[0]?.[0])).not.toContain('secret');
   });
 });

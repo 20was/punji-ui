@@ -52,7 +52,7 @@ export function CardLink({ href, children, external, linkComponent, newTabLabel 
   const cls = `kit-cardlink${out ? ' out' : ''}${className ? ` ${className}` : ''}`;
   if (out)
     return (
-      <AppLink external className={cls} href={href} target="_blank" rel="noopener noreferrer" aria-label={ariaLabel ? `${ariaLabel} ${newTabLabel}` : undefined} data-testid={testId} data-link="out">
+      <AppLink external className={cls} href={href} target="_blank" aria-label={ariaLabel ? `${ariaLabel} ${newTabLabel}` : undefined} data-testid={testId} data-link="out">
         {children}
         <ExternalIcon />
         {!ariaLabel && <span className="kit-sr"> {newTabLabel}</span>}

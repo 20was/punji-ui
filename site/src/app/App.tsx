@@ -1,5 +1,4 @@
-import { createElement, useEffect, useMemo, useReducer, useRef, useState } from 'react';
-import { Drawer } from '@punji/ui/drawer';
+import { createElement, lazy, Suspense, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { headFor, NPM_URL, pagePath, REPO } from '../paths.ts';
 import { applyHead } from './head.ts';
 import { appView, homeView, loadedApp, loadRoute, pageData, pageView, routeReady } from './load.ts';
@@ -10,6 +9,9 @@ import { Sidebar } from './Sidebar.tsx';
 import { Search } from './Search.tsx';
 import { ThemeSwitch } from './ThemeSwitch.tsx';
 import { CloseIcon, ExternalIcon, GitHubIcon, MenuIcon, Wordmark } from './icons.tsx';
+
+// The page menu is the package Drawer, opened on a tap: its overlay layer stays out of the first load.
+const Drawer = lazy(() => import('@punji/ui/drawer').then((m) => ({ default: m.Drawer })));
 
 function Brand() {
   return (
@@ -157,7 +159,9 @@ export function App({ path }: { path: string }) {
           <Footer />
         </main>
       </div>
-      <Drawer open={menu} label="Documentation pages" onClose={() => setMenu(false)}>
+      {menu && (
+      <Suspense fallback={null}>
+      <Drawer open label="Documentation pages" onClose={() => setMenu(false)}>
         <div className="doc-drawer">
           <div className="doc-drawer-bar">
             <Brand />
@@ -171,6 +175,8 @@ export function App({ path }: { path: string }) {
           </a>
         </div>
       </Drawer>
+      </Suspense>
+      )}
     </div>
   );
 }

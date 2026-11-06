@@ -155,8 +155,8 @@ the direction: write the sign in the text.
 
 ```tsx
 <HeadlineFigure label="Worth now" currency="Rs" value="12,48,000" line="Across 14 holdings.">
-  <FigureChip tone="up">+Rs 8,240 (+0.7%) today</FigureChip>
-  <FigureChip tone="down">-Rs 21,400 (-1.7%) this week</FigureChip>
+  <FigureChip tone="gain">+Rs 8,240 (+0.7%) today</FigureChip>
+  <FigureChip tone="loss">-Rs 21,400 (-1.7%) this week</FigureChip>
 </HeadlineFigure>
 ```
 
@@ -253,7 +253,7 @@ filled), `testId`. `BreakdownRow`: `label`, `note`, `value`, `total`, `tone`, `t
 ```tsx
 <Breakdown live>
   <BreakdownRow label="Sale amount" note="100 shares at Rs 1,240" value="Rs 1,24,000.00" />
-  <BreakdownRow label="Broker commission" note="0.40% of the amount" value="- Rs 497.00" tone="down" />
+  <BreakdownRow label="Broker commission" note="0.40% of the amount" value="- Rs 497.00" tone="loss" />
   <BreakdownRow label="You receive" total value={<MoneyDisplay value="123503.00" preset={nepalMoneyConfig()} />} />
 </Breakdown>
 ```

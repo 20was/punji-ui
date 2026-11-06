@@ -20,10 +20,10 @@ export default function Example() {
           </Button>
         }
         value={hidden ? 'Hidden' : <MoneyDisplay value={26_800_000n} preset={preset} />}
-        aside={<FigureChip tone="up">+27.3% on cost</FigureChip>}
+        aside={<FigureChip tone="gain">+27.3% on cost</FigureChip>}
       />
       <HeadlineFigure label="Realised loss" value={<MoneyDisplay value={-1_250_000n} preset={preset} />}>
-        <FigureChip tone="down" srLabel="Loss">
+        <FigureChip tone="loss" srLabel="Loss">
           Rs 12,500
         </FigureChip>
       </HeadlineFigure>

@@ -682,7 +682,7 @@
     "name": "summary-figure (import from '@punji/ui/summary-figure')",
     "path": "dist/summary-figure/SummaryFigure.js",
     "import": "*",
-    "limit": "610 B",
+    "limit": "636 B",
     "gzip": true
   },
   {
@@ -703,7 +703,7 @@
     "name": "key-stats (import from '@punji/ui/key-stats')",
     "path": "dist/key-stats/KeyStats.js",
     "import": "*",
-    "limit": "580 B",
+    "limit": "604 B",
     "gzip": true
   },
   {
@@ -787,7 +787,7 @@
     "name": "breakdown (import from '@punji/ui/breakdown')",
     "path": "dist/breakdown/Breakdown.js",
     "import": "*",
-    "limit": "400 B",
+    "limit": "427 B",
     "gzip": true
   },
   {

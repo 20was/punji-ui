@@ -65,7 +65,7 @@ export default function CreateScreen() {
             <Field label="Notes on the bill" value={draft.notes} onChange={(notes) => setDraft({ notes })} placeholder="Terms, bank details or a reference" testId="bz-create-notes" />
           </Card>
           {tried && problems.length > 0 && (
-            <Note tone="error">
+            <Note tone="danger">
               <ul className="bz-problems">{problems.map((p) => <li key={p}>{p}</li>)}</ul>
             </Note>
           )}

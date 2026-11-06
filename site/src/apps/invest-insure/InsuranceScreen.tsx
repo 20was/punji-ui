@@ -98,7 +98,7 @@ function Policies() {
                 ) : (
                   <>
                     <Button size="sm" variant={p.status === 'grace' ? 'primary' : 'secondary'} onClick={() => setPaying(p.id)} testId={`ii-pay-${p.id}`}>Pay premium</Button>
-                    {failed === p.id && <Note tone="error">The payment did not go through. Nothing was charged; try again.</Note>}
+                    {failed === p.id && <Note tone="danger">The payment did not go through. Nothing was charged; try again.</Note>}
                   </>
                 )
               }

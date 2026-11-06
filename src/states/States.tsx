@@ -69,8 +69,8 @@ export function ToneIcon({ tone }: { tone: 'warn' | 'error' | 'success' }) {
 export function Note({ children, tone, quiet, plain, testId }: {
   /** The qualifying line. */
   children: ReactNode;
-  /** 'warn' or 'error': an icon in the tone's colour before the words. */
-  tone?: 'warn' | 'error';
+  /** 'warn' or 'danger': an icon in the tone's colour before the words. Deprecated: 'error', use `danger`. */
+  tone?: 'warn' | 'danger' | 'error';
   /** A small line on the surface itself (a source, a caveat under a figure), no tint. */
   quiet?: boolean;
   /** A quiet line with no box (a footnote under a list or a card). */
@@ -79,9 +79,10 @@ export function Note({ children, tone, quiet, plain, testId }: {
   testId?: string;
 }) {
   if (!tone) return <p className={`kit-note${quiet ? ' quiet' : ''}${plain ? ' plain' : ''}`} data-testid={testId}>{children}</p>;
+  const icon = tone === 'danger' ? 'error' : tone;
   return (
-    <p className={`kit-note ${tone}`} data-testid={testId}>
-      <ToneIcon tone={tone} />
+    <p className={`kit-note ${icon}`} data-testid={testId}>
+      <ToneIcon tone={icon} />
       <span>{children}</span>
     </p>
   );

@@ -175,7 +175,7 @@ export function DepositCalculator({
           <SelectField label={words.compounding} value={compounding} onChange={(v) => setCompounding(v as CompoundingFrequency)} options={frequencies.map((f) => ({ value: f, label: words.frequency[f] }))} testId={testId && `${testId}-compounding`} />
           <PercentageInput label={words.tds} hint={words.tdsHint} value={tds} onValueChange={(c) => setTds(c.value)} min="0" max="100" digits={digits} testId={testId && `${testId}-tds`} />
           {kind === 'fixed' && (
-            <ChoiceGroup label={words.payout} testId={`${testId ?? uid}-payout`} size="md" appearance="compact" value={payout} onChange={setPayout}
+            <ChoiceGroup label={words.payout} testId={`${testId ?? uid}-payout`} size="md" variant="compact" value={payout} onChange={setPayout}
               options={[{ value: 'compound', label: words.compound }, { value: 'pay-out', label: words.payOut }]} />
           )}
         </div>

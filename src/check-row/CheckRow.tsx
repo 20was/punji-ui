@@ -122,6 +122,11 @@ export interface CheckRowProps {
   /** The status in words ("OK", "Watch", "Below minimum"), as a pill of the tone. */
   status?: { label: ReactNode; tone?: 'gain' | 'warn' | 'loss' } | null;
   /** 'check' (default): a check with a verdict; 'report': a quieter row of what a report holds. */
+  variant?: 'check' | 'report';
+  /**
+   * The former name of `variant`, still honoured.
+   * @deprecated Use `variant`; same values. Kept until the next major.
+   */
   kind?: 'check' | 'report';
   /** Makes the row a button (when it has no `action`). With `tab` it is a tab. */
   onClick?: () => void;
@@ -147,8 +152,8 @@ export interface CheckRowProps {
   testId?: string;
 }
 
-export function CheckRow({ icon, tone = 'neutral', title, line, trail, figure, figureSub, figureSubTone, status, action, kind = 'check', onClick, href, linkComponent, external, target, pressed, tab, ariaLabel, ariaHasPopup, dataRow, testId }: CheckRowProps) {
-  const cls = `kit-crow${kind === 'report' ? ' is-report' : ''}${trail ? ' has-trail' : ''}${status ? ' has-status' : ''}${action ? ' has-action' : ''}`;
+export function CheckRow({ icon, tone = 'neutral', title, line, trail, figure, figureSub, figureSubTone, status, action, variant, kind, onClick, href, linkComponent, external, target, pressed, tab, ariaLabel, ariaHasPopup, dataRow, testId }: CheckRowProps) {
+  const cls = `kit-crow${(variant ?? kind) === 'report' ? ' is-report' : ''}${trail ? ' has-trail' : ''}${status ? ' has-status' : ''}${action ? ' has-action' : ''}`;
   const pressable = !!(onClick || href);
   const body = (
     <>

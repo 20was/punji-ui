@@ -132,7 +132,7 @@ export function ScamWarning({ scenario, copy, onCancel, onProceed, coolingOffSec
         <div className="pu-scam-continue">
           <Checkbox checked={acknowledged} onChange={setAcknowledged}>{acknowledge}</Checkbox>
           {coolingOffSeconds > 0 && acknowledged ? (
-            <HoldToConfirm mode="cooling-off" delaySeconds={coolingOffSeconds} tone="primary" onConfirm={onProceed}>{proceed}</HoldToConfirm>
+            <HoldToConfirm mode="cooling-off" delaySeconds={coolingOffSeconds} variant="primary" onConfirm={onProceed}>{proceed}</HoldToConfirm>
           ) : (
             <button type="button" className="kit-btn secondary" aria-disabled={!acknowledged || undefined} onClick={() => { if (acknowledged) onProceed(); }}>{proceed}</button>
           )}

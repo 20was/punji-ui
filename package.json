@@ -965,5 +965,10 @@
   },
   "dependencies": {
     "@remotemerge/nepali-date-converter": "1.2.5"
+  },
+  "overrides": {
+    "eslint": {
+      "minimatch": "11.0.1"
+    }
   }
 }

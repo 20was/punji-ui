@@ -34,6 +34,8 @@ Completed in this branch:
 - [x] Document architecture, upstream source/licence review and release boundary.
 - [x] Implement Calendar, DatePicker and DateRangePicker with AD/BS display, strict date-only form contracts, keyboard interaction, full portal examples and responsive theme checks. See [calendar scope and remaining release checks](../CALENDAR.md).
 
+Kit-to-package migration diff: [punji-web-kit-diff.md](punji-web-kit-diff.md) (module map, usage weight, upstream-first list, migration order).
+
 Next, in order:
 1. Complete manual per-component and per-page audit using the generated matrix. Record exact API/CSS/keyboard differences, not only names.
 2. Build a full local documentation gallery for every public export, preserving working web examples without importing web business logic. Document sizes, variants, states and props.

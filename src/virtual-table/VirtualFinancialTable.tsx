@@ -17,8 +17,9 @@ import type { FinancialColumn, TableTotalsLabels } from '../financial/financial.
 import type { DataTableSearch, DataTableSelection } from '../table/Table.tsx';
 import type { Money } from '../money/money.ts';
 import { EmptyState, Skeleton } from '../states/States.tsx';
-import { columnAlign, footerTotals, fromFinancialColumn, groupRows, plainValue, type ColumnDef, type ColumnTotals } from '../table-core/tableCore.ts';
-import { DEFAULT_TOTALS_LABELS, ReconcileBadge, aggregateNode, reconcileOrEmpty } from '../internal/tableTotals.tsx';
+import { columnAlign, fromFinancialColumn, plainValue, type ColumnDef } from '../table-core/tableModel.ts';
+import type { ColumnTotals } from '../table-core/tableAggregate.ts';
+import { tableTotals as kit } from '../internal/tableTotals.tsx';
 import { clampWidth, fixedLayout, measuredLayout, nextSortRules, placeColumns, renderedIndices, visibleRange, type PlacedColumn, type SortRule } from './layout.ts';
 
 export { nextSortRules, compareByRules } from './layout.ts';
@@ -177,7 +178,7 @@ export function VirtualFinancialTable<T>({
 
   // Row keys (selection) and drawn lines (records plus group headers): one pass per new `rows` array.
   const rowKeys = useMemo(() => rows.map(rowKey), [rows, rowKey]);
-  const groups = useMemo(() => (groupBy ? groupRows(rows.map((_, i) => i), (i) => groupBy(rows[i]!)) : null), [rows, groupBy]);
+  const groups = useMemo(() => (groupBy ? kit.groupRows(rows.map((_, i) => i), (i) => groupBy(rows[i]!)) : null), [rows, groupBy]);
   const items = useMemo<Item[]>(() => {
     if (!groups) return rowKeys.map((key, index) => ({ kind: 'row', key, index }));
     const closed = new Set(collapsedList);
@@ -191,7 +192,7 @@ export function VirtualFinancialTable<T>({
   const keys = useMemo(() => items.map((item) => item.key), [items]);
   const defs = useMemo(() => columns.map((column) => fromFinancialColumn<T, ReactNode>(column)), [columns]);
   const showTotals = Boolean(totals || expectedTotals);
-  const sums = useMemo<ColumnTotals>(() => (showTotals ? footerTotals(rows, defs) : {}), [showTotals, rows, defs]);
+  const sums = useMemo<ColumnTotals>(() => (showTotals ? kit.footerTotals(rows, defs) : {}), [showTotals, rows, defs]);
   const indexOf = useMemo(() => {
     const map = new Map<string, number>();
     keys.forEach((key, i) => map.set(key, i));
@@ -283,7 +284,7 @@ export function VirtualFinancialTable<T>({
   if (state === 'loading') return <div aria-busy="true"><Skeleton label={loadingLabel} height={160} /></div>;
   if (state === 'error') return <EmptyState title={errorTitle} action={errorAction} role="alert" />;
   if (!rows.length && !search) return <EmptyState title={emptyTitle} body={emptyBody} />;
-  const words = { ...DEFAULT_TOTALS_LABELS, ...totalsLabels };
+  const words = { ...kit.defaultLabels, ...totalsLabels } as TableTotalsLabels;
   const setExpanded = (group: string, expanded: boolean) => {
     const next = expanded ? collapsedList.filter((k) => k !== group) : [...collapsedList, group];
     if (!collapsedGroups) setOwnCollapsed(next);
@@ -486,7 +487,7 @@ export function VirtualFinancialTable<T>({
   const aggregateCells = (values: ColumnTotals, members: readonly T[], extra?: (def: ColumnDef<T, ReactNode>) => ReactNode) => placed.slice(1).map((place) => {
     const def = defOf.get(place.key)!;
     const cls = [isNum(place.key) && 'num', pinClass(place)].filter(Boolean).join(' ') || undefined;
-    return <td key={place.key} className={cls} style={pinStyle(place)}>{def.aggregate ? aggregateNode(def, values[def.id], members) : null}{extra?.(def)}</td>;
+    return <td key={place.key} className={cls} style={pinStyle(place)}>{def.aggregate ? kit.aggregateNode(def, values[def.id], members) : null}{extra?.(def)}</td>;
   });
   const firstCell = (content: ReactNode) => {
     const place = placed[0]!;
@@ -518,7 +519,7 @@ export function VirtualFinancialTable<T>({
             <span className="kit-table-group-count">{words.groupCount(members.length)}</span>
           </button>,
         )}
-        {aggregateCells(footerTotals(members, defs), members)}
+        {aggregateCells(kit.footerTotals(members, defs), members)}
       </tr>
     );
   };
@@ -612,13 +613,14 @@ export function VirtualFinancialTable<T>({
               : body}
           </tbody>
           {showTotals && rowKeys.length > 0 && (() => {
-            const checks = reconcileOrEmpty(sums, expectedTotals);
+            const checks = kit.reconcileOrEmpty(sums, expectedTotals);
+            const Badge = kit.ReconcileBadge;
             return <tfoot><tr className="pu-vt-total" aria-rowindex={keys.length + 2} style={{ height: rowHeight }}>
               {/* The selection column has no control on a group or totals line. */}
               {/* oxlint-disable-next-line jsx-a11y/control-has-associated-label */}
               {selection && <td className="kit-table-selection-cell pin-l" style={{ insetInlineStart: 0 }} />}
               {firstCell(words.total)}
-              {aggregateCells(sums, rows, (def) => checks[def.id] && <ReconcileBadge result={checks[def.id]!} def={def} rows={rows} labels={words} />)}
+              {aggregateCells(sums, rows, (def) => checks[def.id] && <Badge result={checks[def.id]!} def={def} rows={rows} labels={words} />)}
             </tr></tfoot>;
           })()}
         </table>

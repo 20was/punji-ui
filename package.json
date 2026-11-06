@@ -808,6 +808,14 @@
       "types": "./dist/table-core/tableCore.d.ts",
       "default": "./dist/table-core/tableCore.js"
     },
+    "./table-totals": {
+      "types": "./dist/table-totals/tableTotals.d.ts",
+      "default": "./dist/table-totals/tableTotals.js"
+    },
+    "./table-presets": {
+      "types": "./dist/table-presets/tablePresets.d.ts",
+      "default": "./dist/table-presets/tablePresets.js"
+    },
     "./table-export": {
       "types": "./dist/table-export/TableExport.d.ts",
       "default": "./dist/table-export/TableExport.js"

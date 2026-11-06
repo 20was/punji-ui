@@ -190,6 +190,9 @@ const wrap = (list: string[], from: string) => {
   return one.length <= 90 ? one : `import {\n  ${list.join(',\n  ')},\n} from '${from}';`;
 };
 
+// Optional adapter subpaths are not re-exported from the root (opt-in, so the root never loads a grid library).
+const OFF_ROOT = new Set(['tanstack-table', 'ag-grid', 'mui-x-grid']);
+
 function importLines({ page, api }: PageData): { subpath: string; root: string } {
   const byModule = new Map<string, string[]>();
   const all: string[] = [];
@@ -472,6 +475,7 @@ function ComponentPage({ data }: { data: PageData }) {
     [page.slug],
   );
   const imports = useMemo(() => (page.api.length > 0 ? importLines(data) : undefined), [page, data]);
+  const offRoot = page.api.length > 0 && page.api.every((ref) => OFF_ROOT.has(ref.module));
   const entries = useMemo(() => [...new Set(page.api.map((a) => a.name))].map((name) => apiEntryIn(data.api, name)), [page, data]);
   const styled = page.kind === 'component' || page.kind === 'foundation';
 
@@ -566,9 +570,9 @@ function ComponentPage({ data }: { data: PageData }) {
           {imports && (
             <section aria-labelledby="import" className="doc-section">
               <h3 id="import">Import</h3>
-              <p className="doc-p">Each export has its own subpath, so you only ship what you import. Everything is also available from the package root.</p>
+              <p className="doc-p">{offRoot ? 'These exports are opt-in subpaths and are not part of the package root, so the core bundle never loads them.' : 'Each export has its own subpath, so you only ship what you import. Everything is also available from the package root.'}</p>
               <Code label="Subpath import" title="Subpath import (smallest bundle)" lang="ts" code={imports.subpath} />
-              <Code label="Root import" title="Root import" lang="ts" code={imports.root} />
+              {!offRoot && <Code label="Root import" title="Root import" lang="ts" code={imports.root} />}
               {styled && (
                 <p className="doc-p">
                   Load the styles once, in your app’s entry file: <code>import '@punji/ui/styles.css';</code>

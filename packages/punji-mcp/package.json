@@ -1,0 +1,19 @@
+{
+  "name": "punji-mcp",
+  "version": "0.0.0",
+  "private": true,
+  "description": "MCP server (stdio) that helps AI coding agents use @punji/ui correctly. Not published yet.",
+  "license": "MIT",
+  "type": "module",
+  "bin": { "punji-mcp": "./bin/punji-mcp.mjs" },
+  "files": ["bin", "src", "data", "README.md"],
+  "engines": { "node": ">=22.12" },
+  "scripts": {
+    "build": "node scripts/build-data.mjs",
+    "prepack": "node scripts/build-data.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "zod": "4.6.7"
+  }
+}

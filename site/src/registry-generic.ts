@@ -143,7 +143,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       '`PanelTabs` icons are decorative (`aria-hidden`); the label carries the name. Keep labels to one short word: five fit a 432px panel.',
     ],
     responsive: ['Tabs scroll or fill their container; fill shares the width. `PanelTabs` always fills and fits five labels in a phone sheet.'],
-    related: ['segmented-control', 'card', 'page-layout'],
+    related: ['segmented-control', 'card', 'page-layout', 'breadcrumb', 'accordion'],
   },
   {
     slug: 'checkbox',
@@ -291,7 +291,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       '`onClose` says why: "escape", "outside" or "blur".',
     ],
     responsive: ['Portal panels are clamped to the viewport and use the visual viewport. With `fullScreenPhone`, under 768px the panel fills the screen and the content brings its own back button.'],
-    related: ['drawer', 'tooltip', 'command-palette', 'button'],
+    related: ['drawer', 'tooltip', 'command-palette', 'button', 'menu'],
   },
   {
     slug: 'drawer',

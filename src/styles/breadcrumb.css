@@ -1,0 +1,14 @@
+/* Punji UI styles.
+   Styles for Breadcrumb. Needs tokens.css and base.css (styles.css has everything). Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  .pu-breadcrumb { color: var(--pu-color-text-muted); font-size: var(--pu-text-sm) }
+  .pu-breadcrumb ol { display: flex; flex-wrap: wrap; align-items: center; gap: var(--pu-space-1); margin: 0; padding: 0; list-style: none }
+  .pu-breadcrumb-item { display: inline-flex; align-items: center; gap: var(--pu-space-1); min-inline-size: 0 }
+  .pu-breadcrumb-item a { display: inline-flex; align-items: center; min-block-size: 24px; color: var(--pu-color-link); text-decoration: underline; text-underline-offset: 2px; border-radius: var(--pu-radius-sm) }
+  .pu-breadcrumb-item a:hover { color: var(--pu-color-text) }
+  .pu-breadcrumb-item a:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+  .pu-breadcrumb-item [aria-current='page'] { color: var(--pu-color-text); font-weight: 600; text-decoration: none }
+  .pu-breadcrumb-sep { display: inline-flex; color: var(--pu-color-text-tertiary) }
+  .pu-breadcrumb .pu-breadcrumb-more { min-block-size: 24px; inline-size: 24px; border-radius: var(--pu-radius-sm) }
+  @media (pointer: coarse) { .pu-breadcrumb-item a { min-block-size: var(--pu-control-lg) } .pu-breadcrumb .pu-breadcrumb-more { min-block-size: var(--pu-control-lg); inline-size: var(--pu-control-lg) } }
+}

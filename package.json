@@ -707,6 +707,18 @@
       "types": "./dist/range-selector/RangeSelector.d.ts",
       "default": "./dist/range-selector/RangeSelector.js"
     },
+    "./sankey-chart": {
+      "types": "./dist/sankey-chart/SankeyChart.d.ts",
+      "default": "./dist/sankey-chart/SankeyChart.js"
+    },
+    "./earnings-chart": {
+      "types": "./dist/earnings-chart/EarningsChart.d.ts",
+      "default": "./dist/earnings-chart/EarningsChart.js"
+    },
+    "./balance-history-chart": {
+      "types": "./dist/balance-history-chart/BalanceHistoryChart.d.ts",
+      "default": "./dist/balance-history-chart/BalanceHistoryChart.js"
+    },
     "./css/*.css": {
       "types": "./dist/css/*.css.d.ts",
       "default": "./dist/css/*.css"

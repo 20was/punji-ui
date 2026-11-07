@@ -271,6 +271,29 @@ try {
     const printed = await t.evaluate(() => ({ nav: getComputedStyle(document.querySelector('.app-nav')).display, brk: getComputedStyle(document.querySelector('.st-break')).breakBefore, ink: getComputedStyle(document.querySelector('.st-title')).color }));
     if (printed.nav !== 'none' || printed.brk !== 'page' || printed.ink !== 'rgb(0, 0, 0)') fail(`account statements: print styles not applied (${JSON.stringify(printed)})`);
     await t.emulateMedia({ media: 'screen' });
+    // Treasury desk: the base case warns (under target, above the minimum); S (stress: customers pay late) breaches the
+    // buffer; deferring the Sagarmatha Logistics payment cures it. Personal finance: paying the three utility bills
+    // pushes Utilities over its budget, which the budget screen then says.
+    await t.goto(`${base}/apps/treasury-desk/`);
+    await t.getByTestId('td-alert-warn').waitFor({ timeout: 5000 }).catch(() => fail('treasury desk: the base case does not warn about the target buffer'));
+    await t.keyboard.press('s');
+    await t.getByTestId('td-alert-danger').waitFor({ timeout: 5000 }).catch(() => fail('treasury desk: the stress case (S) did not breach the buffer'));
+    await t.getByTestId('screen-payments').click();
+    await t.locator('[data-screen="payments"] [data-screen-title]').waitFor();
+    await t.getByTestId('td-defer-P-14').click();
+    await t.getByTestId('screen-position').click();
+    await t.locator('[data-screen="position"] [data-screen-title]').waitFor();
+    if ((await t.getByTestId('td-alert-danger').count()) !== 0) fail('treasury desk: deferring a payment did not cure the breach');
+    await t.getByTestId('screen-forecast').click();
+    await t.locator('[data-screen="forecast"] [data-screen-title]').waitFor();
+    if ((await t.getByText('Reconciles').count()) < 2) fail('treasury desk: the forecast totals do not reconcile with the items');
+    await t.goto(`${base}/apps/personal-finance/#bills`);
+    await t.locator('[data-screen="bills"] [data-screen-title]').waitFor();
+    for (const id of ['power', 'internet', 'mobile']) await t.getByTestId(`pf-pay-${id}`).click();
+    await t.getByTestId('screen-budget').click();
+    await t.locator('[data-screen="budget"] [data-screen-title]').waitFor();
+    await t.getByTestId('pf-over-utilities').waitFor({ timeout: 5000 }).catch(() => fail('personal finance: paying the bills did not put Utilities over budget'));
+    if ((await t.getByText('Reconciles').count()) < 2) fail('personal finance: the budget totals do not reconcile');
     // Retail banking: a transfer to a saved payee passes the payee check, the one-time code and lands on a receipt,
     // and Home's total drops by exactly the amount. The wallet pays an electricity bill with the PIN, and the balance
     // on Home is the old balance less the bill plus its cashback.

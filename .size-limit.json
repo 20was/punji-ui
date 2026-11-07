@@ -486,14 +486,14 @@
     "name": "date-range-presets (import from '@punji/ui/date-range-presets')",
     "path": "dist/date-range-presets/presets.js",
     "import": "*",
-    "limit": "1.58 kB",
+    "limit": "1.59 kB",
     "gzip": true
   },
   {
     "name": "date-range-presets Nepal (import from '@punji/ui/date-range-presets/nepal')",
     "path": "dist/date-range-presets/nepal.js",
     "import": "*",
-    "limit": "3.72 kB",
+    "limit": "3.75 kB",
     "gzip": true
   },
   {
@@ -2299,6 +2299,34 @@
     "path": "dist/css/heat-tables.css",
     "limit": "2.08 kB",
     "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "Nepal formatting without calendar or React",
+    "path": "dist/nepal/format.js",
+    "import": "*",
+    "limit": "0.89 kB",
+    "gzip": true
+  },
+  {
+    "name": "Exact minor-unit calculations without calendar or React",
+    "path": "dist/nepal/money.js",
+    "import": "*",
+    "limit": "510 B",
+    "gzip": true
+  },
+  {
+    "name": "Gregorian date-only utilities without converter or React",
+    "path": "dist/nepal/date-only.js",
+    "import": "*",
+    "limit": "0.72 kB",
+    "gzip": true
+  },
+  {
+    "name": "Market display formatters without converter or React",
+    "path": "dist/nepal/market-format.js",
+    "import": "*",
+    "limit": "570 B",
     "gzip": true
   }
 ]

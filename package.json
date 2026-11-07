@@ -1,6 +1,6 @@
 {
   "name": "@punji/ui",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Finance-first React design system: exact bigint money, stock-market tables, ledgers and Nepal-first locale (NPR, BS calendar), any currency.",
   "license": "MIT",
   "author": "Punji",
@@ -106,6 +106,10 @@
     "./floating-tooltip": {
       "types": "./dist/floating-tooltip/FloatingTooltip.d.ts",
       "default": "./dist/floating-tooltip/FloatingTooltip.js"
+    },
+    "./icons": {
+      "types": "./dist/icons/Icons.d.ts",
+      "default": "./dist/icons/Icons.js"
     },
     "./info-tip": {
       "types": "./dist/info-tip/InfoTip.d.ts",
@@ -635,6 +639,54 @@
       "types": "./dist/accordion/Accordion.d.ts",
       "default": "./dist/accordion/Accordion.js"
     },
+    "./instrument-header": {
+      "types": "./dist/instrument-header/InstrumentHeader.d.ts",
+      "default": "./dist/instrument-header/InstrumentHeader.js"
+    },
+    "./broker-badge": {
+      "types": "./dist/broker-badge/BrokerBadge.d.ts",
+      "default": "./dist/broker-badge/BrokerBadge.js"
+    },
+    "./headline-list": {
+      "types": "./dist/headline-list/HeadlineList.d.ts",
+      "default": "./dist/headline-list/HeadlineList.js"
+    },
+    "./rating-scale": {
+      "types": "./dist/rating-scale/RatingScale.d.ts",
+      "default": "./dist/rating-scale/RatingScale.js"
+    },
+    "./rating-chip": {
+      "types": "./dist/rating-chip/RatingChip.d.ts",
+      "default": "./dist/rating-chip/RatingChip.js"
+    },
+    "./rating-change-row": {
+      "types": "./dist/rating-change-row/RatingChangeRow.d.ts",
+      "default": "./dist/rating-change-row/RatingChangeRow.js"
+    },
+    "./month-strip": {
+      "types": "./dist/month-strip/MonthStrip.d.ts",
+      "default": "./dist/month-strip/MonthStrip.js"
+    },
+    "./bar-list": {
+      "types": "./dist/bar-list/BarList.d.ts",
+      "default": "./dist/bar-list/BarList.js"
+    },
+    "./alert-row": {
+      "types": "./dist/alert-row/AlertRow.d.ts",
+      "default": "./dist/alert-row/AlertRow.js"
+    },
+    "./alert-summary": {
+      "types": "./dist/alert-summary/AlertSummary.d.ts",
+      "default": "./dist/alert-summary/AlertSummary.js"
+    },
+    "./alert-distance": {
+      "types": "./dist/alert-distance/alertDistance.d.ts",
+      "default": "./dist/alert-distance/alertDistance.js"
+    },
+    "./alert-target": {
+      "types": "./dist/alert-target/alertTarget.d.ts",
+      "default": "./dist/alert-target/alertTarget.js"
+    },
     "./chart-a11y": {
       "types": "./dist/chart-a11y/ChartA11yShell.d.ts",
       "default": "./dist/chart-a11y/ChartA11yShell.js"
@@ -840,6 +892,18 @@
       "types": "./dist/table-core/tableCore.d.ts",
       "default": "./dist/table-core/tableCore.js"
     },
+    "./tanstack-table": {
+      "types": "./dist/tanstack-table/tanstackTable.d.ts",
+      "default": "./dist/tanstack-table/tanstackTable.js"
+    },
+    "./ag-grid": {
+      "types": "./dist/ag-grid/agGrid.d.ts",
+      "default": "./dist/ag-grid/agGrid.js"
+    },
+    "./mui-x-grid": {
+      "types": "./dist/mui-x-grid/muiXGrid.d.ts",
+      "default": "./dist/mui-x-grid/muiXGrid.js"
+    },
     "./table-totals": {
       "types": "./dist/table-totals/tableTotals.d.ts",
       "default": "./dist/table-totals/tableTotals.js"
@@ -992,20 +1056,26 @@
   },
   "peerDependencies": {
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "@tanstack/react-table": "^9.3.1",
+    "ag-grid-community": "^36.0.0",
+    "@mui/x-data-grid": "^9.0.0"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
     "@changesets/changelog-github": "1.0.1",
     "@changesets/cli": "3.0.3",
+    "@mui/x-data-grid": "9.17.0",
     "@playwright/test": "1.64.1",
     "@size-limit/preset-small-lib": "14.3.0",
+    "@tanstack/react-table": "9.3.1",
     "@testing-library/dom": "10.4.2",
     "@testing-library/react": "16.3.3",
     "@testing-library/user-event": "14.6.8",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitest/coverage-v8": "5.0.5",
+    "ag-grid-community": "36.3.0",
     "axe-core": "4.14.0",
     "eslint": "10.14.0",
     "fast-check": "4.10.2",
@@ -1029,6 +1099,17 @@
   "overrides": {
     "eslint": {
       "minimatch": "11.0.1"
+    }
+  },
+  "peerDependenciesMeta": {
+    "@tanstack/react-table": {
+      "optional": true
+    },
+    "ag-grid-community": {
+      "optional": true
+    },
+    "@mui/x-data-grid": {
+      "optional": true
     }
   }
 }

@@ -10,7 +10,8 @@
  * earlier offset; real exchanges do not schedule sessions in those hours.
  */
 
-export type MarketState = 'open' | 'pre-open' | 'closed' | 'halted' | 'holiday';
+/** `offline` is a connection state, not the exchange's: the device lost its feed, so the figures are the last it had. `getMarketSession` never returns it; a feed or a connectivity hook supplies it. */
+export type MarketState = 'open' | 'pre-open' | 'closed' | 'halted' | 'holiday' | 'offline';
 
 export interface SessionWindow {
   /** What the market is doing inside the window. */
@@ -49,7 +50,7 @@ export interface MarketSession {
   /** The time on the exchange's clock at `now`, 'HH:mm'. */
   localTime: string;
   /** The next instant the market changes between open, pre-open and closed (within 10 days), or null. A halt is not predictable, so it never appears here. */
-  next: { state: Exclude<MarketState, 'halted' | 'holiday'>; at: Date } | null;
+  next: { state: Exclude<MarketState, 'halted' | 'holiday' | 'offline'>; at: Date } | null;
 }
 
 const formatters = new Map<string, Intl.DateTimeFormat>();

@@ -1,0 +1,98 @@
+/* Punji UI styles.
+   Styles for AlertRow, AlertRowList, AlertRowCompact, AlertRowSkeleton, AlertListEmpty, AlertGlyph and AlertBar. Needs tokens.css, base.css and states.css (styles.css has everything). Colours, type and space from --pu-* tokens only.
+   The list is its own container: a row picks its layout from the list's width (two lines under 520px), not the viewport. */
+@layer punji.components {
+  /* One colour per alert state, also different in lightness. */
+  .pu-alert-glyph, .pu-alert-bar, .pu-alert-dist, .pu-alert-narrow-dist, .pu-alert-mini-aside { --alert-tone: var(--pu-color-series-nepse); --alert-fill: var(--pu-color-series-nepse) }
+  :is(.pu-alert-glyph, .pu-alert-bar, .pu-alert-dist, .pu-alert-narrow-dist, .pu-alert-mini-aside)[data-status='crossed'] { --alert-tone: var(--pu-color-warn); --alert-fill: var(--pu-color-warn-accent) }
+  :is(.pu-alert-glyph, .pu-alert-bar, .pu-alert-dist, .pu-alert-narrow-dist, .pu-alert-mini-aside)[data-status='fired'] { --alert-tone: var(--pu-color-loss); --alert-fill: var(--pu-color-loss) }
+  :is(.pu-alert-glyph, .pu-alert-bar, .pu-alert-dist, .pu-alert-narrow-dist, .pu-alert-mini-aside)[data-status='paused'], :is(.pu-alert-glyph, .pu-alert-bar, .pu-alert-dist, .pu-alert-narrow-dist, .pu-alert-mini-aside)[data-status='readonly'] { --alert-tone: var(--pu-color-text-muted); --alert-fill: var(--pu-color-text-tertiary) }
+
+  .pu-alert-glyph { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 11px; color: var(--alert-tone); background: color-mix(in srgb, var(--alert-tone) 14%, transparent) }
+  .pu-alert-glyph[data-status='paused'], .pu-alert-glyph[data-status='readonly'] { background: var(--pu-color-surface-tint) }
+  .pu-alert-glyph[data-size='sm'] { width: 24px; height: 24px; border-radius: var(--pu-radius-md) }
+  .pu-alert-glyph svg { display: block }
+  .pu-alert-glyph path { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round }
+
+  /* The distance bar: full at the target, empty 10% away. */
+  .pu-alert-bar { position: relative; display: block; width: 100%; height: 4px; border-radius: 2px; background: var(--pu-color-track); overflow: hidden }
+  .pu-alert-bar[data-size='lg'] { height: 6px; border-radius: 3px }
+  .pu-alert-bar i { position: absolute; inset-inline-start: 0; top: 0; bottom: 0; border-radius: inherit; background: var(--alert-fill); transition: width var(--pu-motion-base) var(--pu-ease-out) }
+
+  .pu-alert-list { container-type: inline-size; min-width: 0 }
+  .pu-alert-list-items { list-style: none; margin: 0; padding: 0 }
+  .pu-alert-row { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 0.7fr) minmax(0, 1.1fr) 78px; align-items: center; column-gap: 28px }
+  .pu-alert-head { padding: 0 var(--pu-space-2) var(--pu-space-2); font-size: var(--pu-text-xs); line-height: 16px; color: var(--pu-color-text-tertiary) }
+  .pu-alert-head [data-end] { text-align: end }
+  .pu-alert-item { position: relative; min-height: 60px; padding: 6px var(--pu-space-2); border-top: 1px solid var(--pu-color-border); border-radius: 14px; font-variant-numeric: var(--pu-font-numeric); transition: background-color var(--pu-motion-fast) linear }
+  .pu-alert-item:hover { background: var(--pu-color-surface-subtle) }
+  .pu-alert-item[data-selected] { background: var(--pu-color-surface-tint) }
+  .pu-alert-item[data-selected], .pu-alert-item[data-selected] + .pu-alert-item, .pu-alert-item:hover, .pu-alert-item:hover + .pu-alert-item { border-top-color: transparent }
+  .pu-alert-open { appearance: none; display: flex; align-items: center; gap: var(--pu-space-3); min-width: 0; min-height: 44px; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: start; cursor: pointer }
+  .pu-alert-open::after { content: ''; position: absolute; inset: 0; border-radius: 14px }
+  .pu-alert-open:focus-visible { outline: none }
+  .pu-alert-open:focus-visible::after { box-shadow: inset 0 0 0 2px var(--pu-color-focus-ring) }
+  .pu-alert-symbol { display: flex; flex-direction: column; min-width: 0 }
+  .pu-alert-symbol b, .pu-alert-narrow-title b { flex: none; font-size: 15px; line-height: 20px; font-weight: var(--pu-font-weight-semibold); white-space: nowrap; color: var(--pu-color-text) }
+  .pu-alert-name { font-size: var(--pu-text-xs); line-height: 16px; color: var(--pu-color-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+  .pu-alert-badge { display: inline-flex; align-items: center; height: 18px; margin-inline-start: 6px; padding: 0 6px; border-radius: var(--pu-radius-full); vertical-align: 2px; background: var(--pu-color-surface-tint); color: var(--pu-color-text-muted); font-size: 11px; line-height: 1; font-weight: var(--pu-font-weight-semibold) }
+  .pu-alert-cond, .pu-alert-price, .pu-alert-dist { display: flex; flex-direction: column; min-width: 0 }
+  .pu-alert-cond [data-line='1'] { font-size: 14px; line-height: 20px; color: var(--pu-color-text) }
+  .pu-alert-cond [data-line='2'], .pu-alert-price [data-line='2'], .pu-alert-narrow-price [data-line='2'] { font-size: var(--pu-text-xs); line-height: 16px; color: var(--pu-color-text-muted); white-space: nowrap }
+  .pu-alert-price { align-items: flex-end; text-align: end }
+  .pu-alert-price [data-line='1'], .pu-alert-narrow-price [data-line='1'] { font-size: 14px; line-height: 20px; white-space: nowrap; color: var(--pu-color-text) }
+  .pu-alert-dist { gap: 6px }
+  .pu-alert-dist [data-line='1'], .pu-alert-narrow-dist [data-line='1'] { font-size: var(--pu-text-sm); line-height: 18px; font-weight: var(--pu-font-weight-medium); color: var(--alert-tone); white-space: normal; overflow-wrap: anywhere }
+  .pu-alert-acts { position: relative; z-index: 1; display: flex; justify-content: flex-end; gap: 6px }
+  .pu-alert-narrow { display: none }
+  .pu-alert-skeleton .pu-alert-symbol, .pu-alert-skeleton .pu-alert-cond, .pu-alert-skeleton .pu-alert-price, .pu-alert-skeleton .pu-alert-dist { gap: 6px }
+
+  @container (max-width: 699px) { .pu-alert-row { column-gap: 18px; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) minmax(0, 0.75fr) minmax(0, 1fr) 78px } }
+  @container (max-width: 519px) {
+    .pu-alert-head { display: none }
+    .pu-alert-item { display: block; min-height: 64px; padding: 10px 0; border-radius: 0 }
+    .pu-alert-item:hover, .pu-alert-item[data-selected] { background: none }
+    .pu-alert-item[data-selected], .pu-alert-item[data-selected] + .pu-alert-item, .pu-alert-item:hover, .pu-alert-item:hover + .pu-alert-item { border-top-color: var(--pu-color-border) }
+    .pu-alert-item > :not(.pu-alert-narrow):not(.pu-alert-open) { display: none }
+    .pu-alert-open { position: absolute; inset: 0; min-height: 0 }
+    /* The button keeps its name (the symbol and company) for screen readers; the narrow lines draw what is seen. */
+    .pu-alert-open > * { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap }
+    .pu-alert-open::after { border-radius: var(--pu-radius-md) }
+    .pu-alert-narrow { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; grid-template-areas: 'g t p' 'g s p' '. d d'; column-gap: var(--pu-space-3); row-gap: 2px; align-items: center }
+    .pu-alert-narrow > :first-child { grid-area: g }
+    .pu-alert-narrow-title { grid-area: t; min-width: 0; font-size: 14px; line-height: 20px; color: var(--pu-color-text) }
+    .pu-alert-narrow-title b { margin-inline-end: 4px }
+    .pu-alert-narrow-sub { grid-area: s; min-width: 0; font-size: var(--pu-text-xs); line-height: 16px; color: var(--pu-color-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+    .pu-alert-narrow-price { grid-area: p; display: flex; flex-direction: column; align-items: flex-end }
+    .pu-alert-narrow-dist { grid-area: d; display: grid; gap: 6px; margin-top: var(--pu-space-2) }
+    /* A placeholder line is as tall as the line it holds, so nothing moves when the alerts land. */
+    .pu-alert-skeleton .pu-alert-narrow-title { display: flex; align-items: center; height: 20px }
+    .pu-alert-skeleton .pu-alert-narrow-sub { display: flex; align-items: center; height: 16px }
+    .pu-alert-skeleton .pu-alert-narrow-dist [data-line='1'] { display: flex; align-items: center; height: 18px }
+    /* A narrow alert keeps its one row menu; the quick actions remain on the wide row. */
+    .pu-alert-item[data-more] > .pu-alert-acts { display: flex; position: absolute; top: var(--pu-space-2); inset-inline-end: 0 }
+    .pu-alert-item[data-more] > .pu-alert-acts > :not([data-menu]) { display: none }
+    .pu-alert-item[data-more] .pu-alert-narrow { padding-inline-end: calc(var(--pu-control-lg) + var(--pu-space-2)) }
+  }
+
+  /* AlertRowCompact: one line and a bar. */
+  .pu-alert-mini { appearance: none; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 6px 10px; width: calc(100% + 16px); min-height: 44px; margin: 0 -8px; padding: 6px var(--pu-space-2); border: 0; border-radius: var(--pu-radius-lg); background: none; color: var(--pu-color-text); font: inherit; text-align: start; text-decoration: none; box-sizing: border-box; cursor: pointer }
+  .pu-alert-mini[data-still] { cursor: default }
+  .pu-alert-mini:not([data-still]):hover { background: var(--pu-color-surface-subtle) }
+  .pu-alert-mini:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: -2px }
+  .pu-alert-mini-title { min-width: 0; font-size: 14px; line-height: 20px }
+  .pu-alert-mini-title b { font-weight: var(--pu-font-weight-semibold) }
+  .pu-alert-mini-aside { justify-self: end; font-size: var(--pu-text-sm); line-height: 18px; font-weight: var(--pu-font-weight-medium); white-space: nowrap; color: var(--alert-tone); font-variant-numeric: var(--pu-font-numeric) }
+  .pu-alert-mini-sub { grid-column: 1 / -1; font-size: var(--pu-text-xs); line-height: 16px; color: var(--pu-color-text-muted); font-variant-numeric: var(--pu-font-numeric) }
+  .pu-alert-mini > .pu-alert-bar { grid-column: 1 / -1 }
+  .pu-alert-mini[data-stack] { grid-template-columns: minmax(0, 1fr); gap: 2px }
+  .pu-alert-mini[data-stack] .pu-alert-mini-aside { justify-self: start; white-space: normal }
+  .pu-alert-mini[data-stack] > .pu-alert-bar { margin-top: 6px }
+
+  /* AlertListEmpty: inside the list's own card. */
+  .pu-alert-empty { display: grid; justify-items: center; gap: var(--pu-space-2); padding: 28px var(--pu-space-4); border-top: 1px solid var(--pu-color-border); text-align: center }
+  .pu-alert-empty h2, .pu-alert-empty h3 { margin: 0; font-size: 16px; font-weight: var(--pu-font-weight-semibold) }
+  .pu-alert-empty p { margin: 0; max-width: 40ch; font-size: var(--pu-text-sm); line-height: 1.5; color: var(--pu-color-text-muted) }
+
+  @media (prefers-reduced-motion: reduce) { .pu-alert-bar i, .pu-alert-item { transition: none } }
+}

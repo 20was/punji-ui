@@ -1,0 +1,25 @@
+/* Punji UI styles.
+   Styles for StyleGrid. Needs tokens.css and base.css (styles.css has everything).
+   The frame comes from financial-charts.css (.kit-ct). Colours from --pu-* tokens only. */
+@layer punji.components {
+  .pu-sg-area { max-width: 460px }
+  .pu-sg-grid { display: grid; grid-template-columns: 56px repeat(3, minmax(0, 1fr)); grid-template-rows: 28px repeat(3, 76px); gap: 4px }
+  .pu-sg-row { display: contents }
+  .pu-sg-corner { align-self: end; font-size: 10px; line-height: 12px; color: var(--pu-color-text-muted) }
+  .pu-sg-head { align-self: center; justify-self: center; font: 600 12px / 16px var(--pu-font-body); color: var(--pu-color-text) }
+  .pu-sg-head.side { justify-self: start }
+  /* Weight shades the cell, but every weight is printed, so shade is only a repeat. A selected cell has a thick ring, a tick and a word. */
+  .pu-sg-cell { position: relative; display: grid; place-items: center; align-content: center; gap: 2px; padding: 4px; border: 1px solid var(--pu-color-border-strong); border-radius: 6px; background: var(--pu-color-surface); color: var(--pu-color-text); text-align: center }
+  .pu-sg-cell[data-band='1'] { background: color-mix(in srgb, var(--pu-color-chart) 6%, var(--pu-color-surface)) }
+  .pu-sg-cell[data-band='2'] { background: color-mix(in srgb, var(--pu-color-chart) 11%, var(--pu-color-surface)) }
+  .pu-sg-cell[data-band='3'] { background: color-mix(in srgb, var(--pu-color-chart) 16%, var(--pu-color-surface)) }
+  .pu-sg-cell[data-band='4'] { background: color-mix(in srgb, var(--pu-color-chart) 22%, var(--pu-color-surface)) }
+  .pu-sg-cell[data-band='5'] { background: color-mix(in srgb, var(--pu-color-chart) 28%, var(--pu-color-surface)) }
+  .pu-sg-cell.selected { border: 3px solid var(--pu-color-text); padding: 2px }
+  .pu-sg-cell.lit { outline: 2px solid var(--pu-color-link); outline-offset: 1px }
+  .pu-sg-weight { font: 600 15px / 20px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric) }
+  .pu-sg-tick { position: absolute; top: 3px; inset-inline-start: 5px; font: 700 12px / 14px var(--pu-font-body) }
+  .pu-sg-word { font: 600 11px / 14px var(--pu-font-body) }
+  .pu-sg-sel, .pu-sg-total { margin: 0; font-size: 13px; line-height: 20px; color: var(--pu-color-text-muted) }
+  .pu-sg-sel b, .pu-sg-total b { color: var(--pu-color-text); font-variant-numeric: var(--pu-font-numeric) }
+}

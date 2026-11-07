@@ -1,4 +1,4 @@
-import { BalanceHistoryChart, CashFlowChart, CorrelationMatrix, DataFreshness, EarningsChart, FairValueBar, FilterBar, FilterMenu, FilterMenuGroup, FilterMenuItem, FxRateDisplay, heatCell, Histogram, incomeStatementFlow, money, GroupedMarketHeatmap, MonthGrid, NetWorthChart, PerformanceChart, PresetRow, PresetTile, PriceTargetChart, ProfileRail, RangeEditor, RangeSelector, ReturnsHeatTable, SankeyChart, ScoreRadar, StatusBanner, VolumeProfile, type HeatmapItem, type FilterBarValues, type MonthGridData, WaterfallChart } from '../../src/index.ts';
+import { BalanceHistoryChart, CashFlowChart, CorrelationMatrix, DataFreshness, EarningsChart, FairValueBar, FanChart, FilterBar, FilterMenu, FilterMenuGroup, FilterMenuItem, FxRateDisplay, GroupedMarketHeatmap, heatCell, Histogram, incomeStatementFlow, money, MonthGrid, NetWorthChart, PerformanceChart, PresetRow, PresetTile, PriceTargetChart, ProfileRail, RangeEditor, RangeSelector, ReturnsHeatTable, RiskReturnScatter, RollingReturnsChart, SankeyChart, ScoreRadar, SeasonalityChart, StatusBanner, StyleGrid, type FilterBarValues, type HeatmapItem, type MonthGridData, VolumeProfile, WaterfallChart, YieldCurveChart } from '../../src/index.ts';
 import { Accordion, AlertListEmpty, AlertRow, AlertRowCompact, AlertRowList, AlertRowSkeleton, AlertSummary, AlertSummaryNote, AlertSummarySection, BarList, Breadcrumb, BrokerBadge, Card, CardSection, CardSectionRow, Figure, HeadlineList, InstrumentHeader, LinkRow, LinkRowList, MenuButton, MoneyDisplay, MonthStrip, PrivateAmount, RatingChangeList, RatingChangeRow, RatingChip, RatingScale, RouteAnnouncer, ScrollTable, SettingList, SettingRow, SkipLink, StatusTag, ThemeProvider, type ColumnDef, type WatchlistQuote, Watchlist } from '@punji/ui';
 import { performanceDates, performanceSeries } from '../../fixtures/market-data.ts';
 import { type ReactNode, useState } from 'react';
@@ -624,6 +624,83 @@ function BalanceHistoryChartFixture() {
 }
 
 
+function FanChartFixture() {
+  const rates = [0.02, 0.05, 0.08, 0.11, 0.14];
+  const steps = [5, 10, 15, 20, 25, 30].map((years) => ({ x: String(2026 + years), values: rates.map((r) => (500_000 * (1 + r) ** years).toFixed(2)) }));
+  const tight = [{ x: 'Y1', values: ['100.00', '100.10', '100.20', '100.30', '100.40'] }, { x: 'Y2', values: ['100.00', '100.20', '100.40', '100.60', '100.80'] }];
+  return (
+    <div style={{ display: 'grid', gap: 24, maxWidth: 640 }}>
+      <FanChart label="Retirement pot" start={{ x: 'Today', value: '500000' }} steps={steps} goal="2500000" />
+      <FanChart label="Percentiles close together" height={200} start={{ x: 'Now', value: '100' }} steps={tight} />
+      <FanChart label="Three levels in Money" levels={[10, 50, 90]} start={{ x: 'Now', value: money(25_000_000n, 'NPR') }} steps={[2, 4, 6].map((y) => ({ x: `Year ${y}`, values: [0.03, 0.07, 0.11].map((r) => money(BigInt(Math.round(25_000_000 * (1 + r) ** y)), 'NPR')) }))} />
+    </div>
+  );
+}
+
+function RollingReturnsChartFixture() {
+  const dates = Array.from({ length: 48 }, (_, i) => new Date(Date.UTC(2022, i, 28)).toISOString().slice(0, 10));
+  const fund = Array.from({ length: 48 }, (_, i) => 100 * 1.009 ** i * (1 + 0.04 * Math.sin(i / 3.2)));
+  const index = Array.from({ length: 48 }, (_, i) => 100 * 1.006 ** i * (1 + 0.015 * Math.sin(i / 4)));
+  return (
+    <div style={{ display: 'grid', gap: 24, maxWidth: 640 }}>
+      <RollingReturnsChart label="Rolling 12-month return" dates={dates} window={12} series={[{ key: 'fund', label: 'Growth fund', values: fund }]} />
+      <RollingReturnsChart label="Fund against index" dates={dates} window={6} series={[{ key: 'fund', label: 'Growth fund', values: fund }, { key: 'index', label: 'Index', values: index }]} />
+      <RollingReturnsChart label="Rolling 12-month drawdown" metric="drawdown" dates={dates} window={12} series={[{ key: 'fund', label: 'Growth fund', values: fund }]} />
+    </div>
+  );
+}
+
+function RiskReturnScatterFixture() {
+  const points = [
+    { key: 'eq', label: 'Equity fund', riskPct: 18.2, returnPct: 12.4, group: 'Equity' },
+    { key: 'sm', label: 'Small-cap fund', riskPct: 24.5, returnPct: 9.9, group: 'Equity' },
+    { key: 'bal', label: 'Balanced fund', riskPct: 9.8, returnPct: 8.0, group: 'Mixed' },
+    { key: 'bd', label: 'Bond fund', riskPct: 4.1, returnPct: 5.6, group: 'Bond' },
+    { key: 'mm', label: 'Money market', riskPct: 0.6, returnPct: 3.1, group: 'Cash' },
+  ];
+  const crowded = Array.from({ length: 6 }, (_, i) => ({ key: `p${i}`, label: `Fund number ${i + 1} with a long name`, riskPct: 10 + i * 0.1, returnPct: 8 + i * 0.05 }));
+  return (
+    <div style={{ display: 'grid', gap: 24, maxWidth: 640 }}>
+      <RiskReturnScatter label="Funds, risk against return" points={points} benchmark={{ label: 'NEPSE index', riskPct: 14, returnPct: 8 }} frontier={[{ riskPct: 1, returnPct: 3.5 }, { riskPct: 6, returnPct: 7 }, { riskPct: 12, returnPct: 10 }, { riskPct: 24, returnPct: 13 }]} />
+      <RiskReturnScatter label="Crowded labels" points={crowded} height={260} />
+    </div>
+  );
+}
+
+function YieldCurveChartFixture() {
+  const tenors = ['1M', '3M', '6M', '1Y', '2Y', '5Y', '10Y', '30Y'];
+  const curve = (key: string, label: string, v: number[]) => ({ key, label, points: tenors.map((maturity, i) => ({ maturity, value: v[i] })) });
+  const contracts = ['Dec 26', 'Jan 27', 'Mar 27', 'Jun 27', 'Sep 27', 'Dec 27'];
+  return (
+    <div style={{ display: 'grid', gap: 24, maxWidth: 640 }}>
+      <YieldCurveChart label="Inverted curve against a month and a year ago" curves={[curve('now', 'Today', [5.4, 5.5, 5.3, 4.9, 4.4, 4.2, 4.3, 4.5]), curve('m', '1 month ago', [5.3, 5.35, 5.2, 4.95, 4.55, 4.3, 4.4, 4.6]), curve('y', '1 year ago', [4.5, 4.7, 4.9, 4.9, 4.8, 4.5, 4.4, 4.5])]} />
+      <YieldCurveChart label="Normal curve" height={220} curves={[curve('now', 'Today', [3.1, 3.2, 3.4, 3.6, 3.9, 4.2, 4.5, 4.8])]} scale="time" />
+      <YieldCurveChart label="Crude oil futures curve" mode="term-structure" height={220} curves={[{ key: 'now', label: 'Today', points: contracts.map((maturity, i) => ({ maturity, value: [78.5, 77.9, 77.2, 76.9, 77.4, 77.8][i] })) }]} />
+    </div>
+  );
+}
+
+function StyleGridFixture() {
+  const cells = [14.5, 31.2, 22.1, 6.4, 9.3, 7.5, 3.1, 2.9, 3].map((w, i) => ({ size: (['large', 'mid', 'small'] as const)[Math.floor(i / 3)]!, style: (['value', 'blend', 'growth'] as const)[i % 3]!, weight: w.toFixed(1) }));
+  return (
+    <div style={{ display: 'grid', gap: 24, maxWidth: 460 }}>
+      <StyleGrid label="Portfolio by size and style" cells={cells} selected={{ size: 'large', style: 'blend' }} />
+      <StyleGrid label="Placement only" selected={{ size: 'small', style: 'growth' }} />
+    </div>
+  );
+}
+
+function SeasonalityChartFixture() {
+  const years = [2075, 2076, 2077, 2078, 2079, 2080, 2081].map((year, y) => ({ year, months: Array.from({ length: 12 }, (_, m) => Math.round(((((m * 5 + y * 3) % 11) - 4) * 1.1 + (m === 6 ? 3 : 0)) * 10) / 10) }));
+  return (
+    <div style={{ display: 'grid', gap: 24, maxWidth: 640 }}>
+      <SeasonalityChart label="NEPSE by Bikram Sambat month" calendar="bs" years={years} />
+      <SeasonalityChart label="By Gregorian month, short history" years={years.slice(0, 3).map((y, i) => ({ year: 2023 + i, months: y.months }))} minYears={3} height={200} />
+    </div>
+  );
+}
+
+
 // new:component inserts fixtures above this line
 
 export const communityRegistry: Record<string, () => ReactNode> = {
@@ -671,5 +748,11 @@ export const communityRegistry: Record<string, () => ReactNode> = {
   'balance-history-chart': BalanceHistoryChartFixture,
   'volume-profile': VolumeProfileFixture,
   'market-heatmap-grouped': MarketHeatmapGroupedFixture,
+  'fan-chart': FanChartFixture,
+  'rolling-returns-chart': RollingReturnsChartFixture,
+  'risk-return-scatter': RiskReturnScatterFixture,
+  'yield-curve-chart': YieldCurveChartFixture,
+  'style-grid': StyleGridFixture,
+  'seasonality-chart': SeasonalityChartFixture,
   // new:component inserts registry entries above this line
 };

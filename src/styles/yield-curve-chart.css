@@ -1,0 +1,32 @@
+/* Punji UI styles.
+   Styles for YieldCurveChart. Needs tokens.css and base.css (styles.css has everything).
+   The frame, grid, axis, tooltip and legend come from financial-charts.css (.kit-ct). Colours from --pu-* tokens only. */
+@layer punji.components {
+  /* The main curve is solid and heavy; comparison curves differ by dash and marker, not only by colour. */
+  .pu-yc-line { stroke-width: 2; stroke-linejoin: round; stroke-linecap: round }
+  .pu-yc-line.s0, .pu-yc-sw.s0 { stroke: var(--pu-color-chart); stroke-width: 3 }
+  .pu-yc-line.s1, .pu-yc-sw.s1 { stroke: var(--pu-color-series-nepse); stroke-dasharray: 7 4 }
+  .pu-yc-line.s2, .pu-yc-sw.s2 { stroke: var(--pu-color-series-3); stroke-dasharray: 2 4 }
+  .pu-yc-line.s3, .pu-yc-sw.s3 { stroke: var(--pu-color-series-4); stroke-dasharray: 10 3 2 3 }
+  .pu-yc-sw { stroke-width: 2 }
+  .pu-yc-pt { stroke: var(--pu-color-surface); stroke-width: 1 }
+  .pu-yc-pt.s0 { fill: var(--pu-color-chart) }
+  .pu-yc-pt.s1 { fill: var(--pu-color-series-nepse) }
+  .pu-yc-pt.s2 { fill: var(--pu-color-series-3) }
+  .pu-yc-pt.s3 { fill: var(--pu-color-series-4) }
+  .pu-yc-dot { fill: var(--pu-color-surface); stroke-width: 2 }
+  .pu-yc-dot.s0 { stroke: var(--pu-color-chart) }
+  .pu-yc-dot.s1 { stroke: var(--pu-color-series-nepse) }
+  .pu-yc-dot.s2 { stroke: var(--pu-color-series-3) }
+  .pu-yc-dot.s3 { stroke: var(--pu-color-series-4) }
+  .pu-yc-cross { stroke: var(--pu-color-text-muted); stroke-width: 1; stroke-dasharray: 2 2; pointer-events: none }
+  .pu-yc-hatch-line { stroke: var(--pu-color-loss); stroke-width: 1.5; opacity: 0.55 }
+  .pu-yc-inv-fill { stroke: var(--pu-color-loss); stroke-width: 1; stroke-dasharray: 3 3 }
+  .pu-yc-inv-word { fill: var(--pu-color-loss); font: 700 11px / 14px var(--pu-font-body) }
+  .pu-yc-legend li svg { flex: none }
+  .pu-yc-shape { margin: 0; font-size: 13px; line-height: 20px; color: var(--pu-color-text) }
+  .pu-yc-shape.falling { color: var(--pu-color-loss); font-weight: 600 }
+  .pu-yc-shape b { font-size: 11px }
+  .pu-yc-spreads { display: flex; flex-wrap: wrap; gap: 2px 20px; margin: 0; padding: 0; list-style: none; font: 500 13px / 20px var(--pu-font-body); color: var(--pu-color-text-muted); font-variant-numeric: var(--pu-font-numeric) }
+  .pu-yc-spreads li.falling { color: var(--pu-color-loss); font-weight: 600 }
+}

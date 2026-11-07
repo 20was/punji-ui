@@ -1,0 +1,31 @@
+import { Card } from '@punji/ui/card';
+import { MarketStatus, getMarketSession, marketSessionSentence, nepseSchedule, type MarketSchedule } from '@punji/ui/market-status';
+
+// nepseSchedule is an EXAMPLE of NEPSE's hours, not authority: supply the holidays from the exchange's notice.
+const schedule: MarketSchedule = { ...nepseSchedule, holidays: [{ date: '2026-10-20', name: 'Dashain' }] };
+
+// Instants in UTC; Kathmandu is UTC+5:45.
+const moments = [
+  { label: 'Sunday 10:45', at: '2026-10-18T05:00:00Z', lastCloseDate: '2026-10-15' },
+  { label: 'Sunday 12:00', at: '2026-10-18T06:15:00Z', lastCloseDate: '2026-10-15' },
+  { label: 'Friday', at: '2026-10-16T08:00:00Z', lastCloseDate: '2026-10-15' },
+  { label: 'Tuesday (holiday)', at: '2026-10-20T06:00:00Z', lastCloseDate: '2026-10-19' },
+];
+
+export default function Example() {
+  return (
+    <Card title="The session in one line" description="marketSessionSentence from getMarketSession" headingLevel={3}>
+      <ul style={{ display: 'grid', gap: 16, margin: 0, padding: 0, listStyle: 'none' }} aria-label="Session sentences">
+        {moments.map((m) => {
+          const session = getMarketSession(new Date(m.at), schedule);
+          return (
+            <li key={m.label} style={{ display: 'grid', gap: 4 }}>
+              <span style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8 }}><b>{m.label}</b><MarketStatus session={session} market="NEPSE" /></span>
+              <span style={{ overflowWrap: 'anywhere' }}>{marketSessionSentence(session, { schedule, lastCloseDate: m.lastCloseDate })}</span>
+            </li>
+          );
+        })}
+      </ul>
+    </Card>
+  );
+}

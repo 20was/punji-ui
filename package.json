@@ -291,6 +291,10 @@
       "types": "./dist/chart-math/indicators.d.ts",
       "default": "./dist/chart-math/indicators.js"
     },
+    "./chart-payoff": {
+      "types": "./dist/chart-math/payoff.d.ts",
+      "default": "./dist/chart-math/payoff.js"
+    },
     "./rsi-indicator": {
       "types": "./dist/candlestick-chart/indicators/rsi.d.ts",
       "default": "./dist/candlestick-chart/indicators/rsi.js"
@@ -799,6 +803,22 @@
       "types": "./dist/balance-history-chart/BalanceHistoryChart.d.ts",
       "default": "./dist/balance-history-chart/BalanceHistoryChart.js"
     },
+    "./payoff-chart": {
+      "types": "./dist/payoff-chart/PayoffChart.d.ts",
+      "default": "./dist/payoff-chart/PayoffChart.js"
+    },
+    "./volatility-smile": {
+      "types": "./dist/volatility-smile/VolatilitySmile.d.ts",
+      "default": "./dist/volatility-smile/VolatilitySmile.js"
+    },
+    "./economic-calendar": {
+      "types": "./dist/economic-calendar/EconomicCalendar.d.ts",
+      "default": "./dist/economic-calendar/EconomicCalendar.js"
+    },
+    "./earnings-calendar": {
+      "types": "./dist/earnings-calendar/EarningsCalendar.d.ts",
+      "default": "./dist/earnings-calendar/EarningsCalendar.js"
+    },
     "./css/*.css": {
       "types": "./dist/css/*.css.d.ts",
       "default": "./dist/css/*.css"
@@ -1108,6 +1128,10 @@
       "types": "./dist/echarts/echarts.d.ts",
       "default": "./dist/echarts/echarts.js"
     },
+    "./klinecharts": {
+      "types": "./dist/klinecharts/klinecharts.d.ts",
+      "default": "./dist/klinecharts/klinecharts.js"
+    },
     "./scroll-table": {
       "types": "./dist/scroll-table/ScrollTable.d.ts",
       "default": "./dist/scroll-table/ScrollTable.js"
@@ -1247,6 +1271,7 @@
     "@tanstack/react-table": "^9.3.1",
     "ag-grid-community": "^36.0.0",
     "echarts": "^6.0.0",
+    "klinecharts": "^10.1.0",
     "lightweight-charts": "^5.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
@@ -1271,6 +1296,7 @@
     "eslint": "10.14.0",
     "fast-check": "4.10.2",
     "jsdom": "30.1.3",
+    "klinecharts": "10.1.0",
     "lightningcss": "1.33.0",
     "lightweight-charts": "5.2.1",
     "lockfile-lint": "5.1.0",
@@ -1304,6 +1330,9 @@
       "optional": true
     },
     "echarts": {
+      "optional": true
+    },
+    "klinecharts": {
       "optional": true
     }
   }

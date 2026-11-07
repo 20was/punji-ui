@@ -1,0 +1,44 @@
+/* Punji UI styles.
+   Styles for PayoffChart. Needs tokens.css and base.css (styles.css has everything).
+   The frame, grid, axis, tooltip and legend come from financial-charts.css (.kit-ct). Colours from --pu-* tokens only.
+   Profit and loss never rely on colour: loss is hatched and both are named and signed. */
+@layer punji.components {
+  /* Before the container is measured the svg has its fallback width: never let that widen the page. */
+  .pu-pay .kit-ct-plot svg { max-width: 100% }
+  .pu-pay-area.profit { fill: color-mix(in srgb, var(--pu-color-gain) 24%, transparent) }
+  .pu-pay-area.loss { fill: color-mix(in srgb, var(--pu-color-loss) 18%, transparent) }
+  .pu-pay-hatch { stroke: color-mix(in srgb, var(--pu-color-loss) 55%, transparent); stroke-width: 1.5 }
+  .pu-pay-line { fill: none; stroke: var(--pu-color-text); stroke-width: 2.25; stroke-linejoin: round }
+  .pu-pay-today path { fill: none; stroke: var(--pu-color-chart); stroke-width: 2; stroke-dasharray: 6 4 }
+  .pu-pay-today rect { fill: var(--pu-color-chart); stroke: var(--pu-color-surface); stroke-width: 1 }
+  .pu-pay-spot line { stroke: var(--pu-color-text-muted); stroke-width: 1.5; stroke-dasharray: 3 3 }
+  .pu-pay-spot text, .pu-pay-be text, .pu-pay-zone { font: 600 10px / 12px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); paint-order: stroke; stroke: var(--pu-color-surface); stroke-width: 3px; stroke-linejoin: round }
+  .pu-pay-spot text { fill: var(--pu-color-text-muted) }
+  .pu-pay-be path { fill: var(--pu-color-surface); stroke: var(--pu-color-text); stroke-width: 2 }
+  .pu-pay-be text { fill: var(--pu-color-text) }
+  .pu-pay-zone.profit { fill: var(--pu-color-gain) }
+  .pu-pay-zone.loss { fill: var(--pu-color-loss) }
+  .pu-pay-cursor line { stroke: var(--pu-color-text); stroke-width: 1 }
+  .pu-pay-cursor circle { fill: var(--pu-color-surface); stroke: var(--pu-color-text); stroke-width: 2 }
+  .pu-pay-res.profit, .pu-pay-gain { color: var(--pu-color-gain) }
+  .pu-pay-res.loss, .pu-pay-loss-text { color: var(--pu-color-loss) }
+
+  .pu-pay-legend .pu-pay-sw { display: inline-block; width: 14px; height: 12px; vertical-align: -1px; border-radius: 3px }
+  .pu-pay-sw.line { height: 3px; margin-block: 4px; border-radius: 2px; background: var(--pu-color-text) }
+  .pu-pay-sw.today { height: 0; border-top: 3px dashed var(--pu-color-chart); border-radius: 0 }
+  .pu-pay-sw.profit { background: color-mix(in srgb, var(--pu-color-gain) 55%, transparent); border: 1px solid var(--pu-color-gain) }
+  .pu-pay-sw.loss { background: repeating-linear-gradient(45deg, transparent 0 3px, color-mix(in srgb, var(--pu-color-loss) 70%, transparent) 3px 5px); border: 1px solid var(--pu-color-loss) }
+  .pu-pay-sw.be { width: 10px; height: 10px; border: 2px solid var(--pu-color-text); border-radius: 1px; transform: rotate(45deg); background: var(--pu-color-surface) }
+  .pu-pay-sw.spot { width: 0; height: 12px; border-inline-start: 2px dashed var(--pu-color-text-muted); border-radius: 0 }
+
+  .pu-pay-facts { display: grid; gap: 8px; margin-top: 10px; min-width: 0 }
+  .pu-pay-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px 16px; margin: 0 }
+  .pu-pay-grid > div { min-width: 0; padding: 8px 10px; border: 1px solid var(--pu-color-border-default); border-radius: var(--pu-radius-8); background: var(--pu-color-surface) }
+  .pu-pay-grid dt { margin: 0; font: var(--pu-text-xs) / 1.3 var(--pu-font-body); color: var(--pu-color-text-muted) }
+  .pu-pay-grid dd { margin: 2px 0 0; font: 600 var(--pu-text-sm) / 1.3 var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); overflow-wrap: anywhere; color: var(--pu-color-text) }
+  .pu-pay-grid dd.pu-pay-gain { color: var(--pu-color-gain) }
+  .pu-pay-grid dd.pu-pay-loss-text { color: var(--pu-color-loss) }
+  .pu-pay-note { margin: 0; font: var(--pu-text-xs) / 1.4 var(--pu-font-body); color: var(--pu-color-text-muted) }
+  .pu-pay-legs-title { margin: 4px 0 0; font: 600 var(--pu-text-xs) / 1.3 var(--pu-font-body); color: var(--pu-color-text-muted) }
+  .pu-pay-legs { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; font: var(--pu-text-sm) / 1.4 var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); color: var(--pu-color-text) }
+}

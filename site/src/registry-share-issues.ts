@@ -147,7 +147,7 @@ export const SHARE_ISSUE_PAGES: readonly PageDef[] = [
     keyboard: ['Not interactive.'],
     accessibility: ['An ordered list with a name. Phase is a word and an icon shape, not colour alone. Each date is a <time> element.'],
     responsive: ['A single column that fits any width.'],
-    related: ['share-issue-helpers', 'issue-card'],
+    related: ['share-issue-helpers', 'issue-card', 'economic-calendar'],
   },
   {
     slug: 'edis-confirmation',

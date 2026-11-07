@@ -332,13 +332,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "267.67 kB",
+    "limit": "272.6 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "57.61 kB",
+    "limit": "58.5 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -2411,6 +2411,69 @@
     "path": "dist/nepal/market-format.js",
     "import": "*",
     "limit": "570 B",
+    "gzip": true
+  },
+  {
+    "name": "payoff-chart (import from '@punji/ui/payoff-chart')",
+    "path": "dist/payoff-chart/PayoffChart.js",
+    "import": "*",
+    "limit": "10.1 kB",
+    "gzip": true
+  },
+  {
+    "name": "PayoffChart CSS",
+    "path": "dist/css/payoff-chart.css",
+    "limit": "0.95 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "volatility-smile (import from '@punji/ui/volatility-smile')",
+    "path": "dist/volatility-smile/VolatilitySmile.js",
+    "import": "*",
+    "limit": "5.2 kB",
+    "gzip": true
+  },
+  {
+    "name": "VolatilitySmile CSS",
+    "path": "dist/css/volatility-smile.css",
+    "limit": "1.2 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "economic-calendar (import from '@punji/ui/economic-calendar')",
+    "path": "dist/economic-calendar/EconomicCalendar.js",
+    "import": "*",
+    "limit": "8.6 kB",
+    "gzip": true
+  },
+  {
+    "name": "earnings-calendar (import from '@punji/ui/earnings-calendar')",
+    "path": "dist/earnings-calendar/EarningsCalendar.js",
+    "import": "*",
+    "limit": "8.65 kB",
+    "gzip": true
+  },
+  {
+    "name": "chart-payoff (import from '@punji/ui/chart-payoff')",
+    "path": "dist/chart-math/payoff.js",
+    "import": "*",
+    "limit": "1.27 kB",
+    "gzip": true
+  },
+  {
+    "name": "klinecharts (import from '@punji/ui/klinecharts')",
+    "path": "dist/klinecharts/klinecharts.js",
+    "import": "*",
+    "limit": "8.65 kB",
+    "gzip": true
+  },
+  {
+    "name": "EventCalendars CSS",
+    "path": "dist/css/event-calendars.css",
+    "limit": "0.65 kB",
+    "rolldown": false,
     "gzip": true
   }
 ]

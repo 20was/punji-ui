@@ -200,6 +200,10 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'histogram', title: 'Histogram' },
   { id: 'correlation-matrix', title: 'CorrelationMatrix' },
   { id: 'performance-chart-layers', title: 'PerformanceChart reference, drawdown, contributions, rebase and quiet axis' },
+  { id: 'payoff-chart', title: 'PayoffChart bull spread, straddle with today line, naked call' },
+  { id: 'volatility-smile', title: 'VolatilitySmile three expiries with IV grid, by delta' },
+  { id: 'economic-calendar', title: 'EconomicCalendar beat, miss, awaiting, BS projected' },
+  { id: 'earnings-calendar', title: 'EarningsCalendar before open, after close, awaiting' },
   // new:component inserts fixtures above this line
 ];
 

@@ -137,4 +137,7 @@
 @import './preset-tile.css';
 @import './filter-bar.css';
 @import './heat-tables.css';
+@import './payoff-chart.css';
+@import './volatility-smile.css';
+@import './event-calendars.css';
 @import './contrast.css';

@@ -1,0 +1,37 @@
+/* Punji UI styles.
+   Styles for EconomicCalendar and EarningsCalendar. Needs tokens.css and base.css (styles.css has everything).
+   The day tables are ScrollTable (scroll-table.css). Importance and beat or miss are words first; the bars, arrows and
+   colour repeat them. Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  .pu-ecal, .pu-ern { display: grid; gap: var(--pu-space-4); min-width: 0 }
+  .pu-evt-zone { margin: 0; font: var(--pu-text-sm) / 1.4 var(--pu-font-body); color: var(--pu-color-text-muted) }
+  .pu-evt-empty { margin: 0; padding: 16px; border: 1px dashed var(--pu-color-border-default); border-radius: var(--pu-radius-8); color: var(--pu-color-text-muted) }
+  .pu-evt-day { display: grid; gap: 8px; min-width: 0 }
+  .pu-evt-head { margin: 0; font: 600 var(--pu-text-base) / 1.3 var(--pu-font-body); color: var(--pu-color-text) }
+  .pu-evt-head .pu-dual-date { display: inline-flex; flex-wrap: wrap; gap: 0 8px; font-weight: 600 }
+  .pu-evt-wd { margin-inline-end: 4px }
+
+  .pu-evt-what { display: inline-grid; justify-items: start; gap: 1px; min-width: 9rem; white-space: normal }
+  .pu-evt-time { font: 600 var(--pu-text-xs) / 1.3 var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); color: var(--pu-color-text-muted) }
+  .pu-evt-title { font-weight: 600; color: var(--pu-color-text) }
+  .pu-evt-title b { margin-inline-end: 4px }
+  .pu-evt-sub { font: var(--pu-text-xs) / 1.3 var(--pu-font-body); color: var(--pu-color-text-muted) }
+  .pu-evt-actual { font-weight: 700 }
+
+  .pu-evt-imp { display: inline-flex; align-items: center; gap: 6px; margin-top: 2px; font: 500 var(--pu-text-xs) / 1.3 var(--pu-font-body); color: var(--pu-color-text) }
+  .pu-evt-imp.high { font-weight: 700 }
+  .pu-evt-bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 12px }
+  .pu-evt-bars i { display: block; width: 4px; border-radius: 1px; border: 1px solid var(--pu-color-text); background: transparent }
+  .pu-evt-bars i:nth-child(1) { height: 5px }
+  .pu-evt-bars i:nth-child(2) { height: 8px }
+  .pu-evt-bars i:nth-child(3) { height: 12px }
+  .pu-evt-imp.low i:nth-child(1), .pu-evt-imp.medium i:nth-child(-n + 2), .pu-evt-imp.high i { background: var(--pu-color-text) }
+
+  .pu-evt-out { display: inline-block; font-weight: 600; white-space: nowrap }
+  .pu-evt-out.gain { color: var(--pu-color-gain) }
+  .pu-evt-out.loss { color: var(--pu-color-loss) }
+  .pu-evt-out.flat { color: var(--pu-color-text) }
+  .pu-evt-diff { font-weight: 500; font-variant-numeric: var(--pu-font-numeric) }
+  .pu-evt-pair { display: grid; gap: 2px }
+  .pu-evt-metric { display: inline-block; min-width: 4.5rem; font: var(--pu-text-xs) / 1.3 var(--pu-font-body); color: var(--pu-color-text-muted) }
+}

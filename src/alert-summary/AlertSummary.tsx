@@ -37,7 +37,8 @@ export interface AlertSummaryProps {
 export function AlertSummary({ label, value, sub, children, loading, headingId, testId, className }: AlertSummaryProps) {
   const generated = useId();
   const id = headingId ?? generated;
-  const named = loading || !!value;
+  // A heading is never empty: while loading (or with no count) the figure is a skeleton or absent and the card is named by its label.
+  const named = !loading && !!value;
   return (
     <section
       className={`pu-alert-summary kit-inv${className ? ` ${className}` : ''}`}
@@ -47,11 +48,8 @@ export function AlertSummary({ label, value, sub, children, loading, headingId, 
       data-testid={testId}
     >
       <p className="pu-alert-summary-label">{label}</p>
-      {named && (
-        <h2 className="pu-alert-summary-value" id={id}>
-          {loading ? <Skeleton width={150} height={32} radius={8} /> : value}
-        </h2>
-      )}
+      {named && <h2 className="pu-alert-summary-value" id={id}>{value}</h2>}
+      {loading && <div className="pu-alert-summary-value" aria-hidden="true"><Skeleton width={150} height={32} radius={8} /></div>}
       {(sub || loading) && <p className="pu-alert-summary-sub">{loading ? <Skeleton width={140} height={11} /> : sub}</p>}
       {children}
     </section>

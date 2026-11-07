@@ -38,6 +38,22 @@ describe('AlertSummary', () => {
     expect(screen.getByRole('heading', { level: 3, name: 'Closest to firing' })).toBeTruthy();
     expect(screen.getByText('Fills in when prices load')).toBeTruthy();
   });
+  it('never renders an empty heading, in any state, and axe finds no empty-heading', async () => {
+    const states = [
+      <AlertSummary key="a" label="Price alerts" value="" loading />,
+      <AlertSummary key="b" label="Price alerts" value="4 active" loading />,
+      <AlertSummary key="c" label="Price alerts" value="" sub="Prices could not load" />,
+      <AlertSummary key="d" label="Price alerts" value="4 active" />,
+    ];
+    for (const state of states) {
+      const { container, unmount } = render(state);
+      for (const h of container.querySelectorAll('h1,h2,h3,h4,h5,h6')) expect((h.textContent ?? '').trim()).not.toBe('');
+      const axe = (await import('axe-core')).default;
+      const result = await axe.run(container, { runOnly: ['empty-heading'] });
+      expect(result.violations).toEqual([]);
+      unmount();
+    }
+  });
   it('has no serious axe violations', async () => {
     const { container } = render(
       <AlertSummary label="Price alerts" value="2 active" sub="none paused">

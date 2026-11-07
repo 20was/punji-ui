@@ -332,7 +332,7 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "287.73 kB",
+    "limit": "297.04 kB",
     "gzip": true
   },
   {

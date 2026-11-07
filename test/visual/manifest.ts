@@ -161,6 +161,14 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'menu', title: 'Menu', pending: true },
   { id: 'breadcrumb', title: 'Breadcrumb', pending: true },
   { id: 'accordion', title: 'Accordion', pending: true },
+  { id: 'instrument-header', title: 'InstrumentHeader', pending: true },
+  { id: 'broker-badge', title: 'BrokerBadge', pending: true },
+  { id: 'headline-list', title: 'HeadlineList', pending: true },
+  { id: 'rating-scale', title: 'RatingScale, RatingChip and RatingChangeRow', pending: true },
+  { id: 'month-strip', title: 'MonthStrip', pending: true },
+  { id: 'bar-list', title: 'BarList', pending: true },
+  { id: 'alert-row', title: 'AlertRow, compact, skeleton and empty', pending: true },
+  { id: 'alert-summary', title: 'AlertSummary', pending: true },
   { id: 'waterfall-chart', title: 'WaterfallChart' },
   { id: 'cash-flow-chart', title: 'CashFlowChart' },
   { id: 'net-worth-chart', title: 'NetWorthChart' },
@@ -169,6 +177,11 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'filter-menu', title: 'FilterMenu', pending: true },
   { id: 'preset-tile', title: 'PresetTile', pending: true },
   { id: 'filter-bar', title: 'FilterBar', pending: true },
+  { id: 'month-grid', title: 'MonthGrid' },
+  { id: 'returns-heat-table', title: 'ReturnsHeatTable' },
+  { id: 'histogram', title: 'Histogram' },
+  { id: 'correlation-matrix', title: 'CorrelationMatrix' },
+  { id: 'performance-chart-layers', title: 'PerformanceChart reference, drawdown, contributions, rebase and quiet axis' },
   // new:component inserts fixtures above this line
 ];
 

@@ -75,6 +75,30 @@ export function shortCompanyName(name: string): string {
   return name.replace(/\s(company limited|co\.?,? ltd\.?|limited|ltd\.?)$/i, '').trim();
 }
 
+/** Short words a registered name keeps in capitals (NEPSE's own spellings: NIC Asia, NMB, Global IME, API Power). */
+const NAME_ACRONYMS = new Set(['NIC', 'NMB', 'IME', 'API', 'NCC', 'SBI', 'NLG', 'CEDB', 'RBB', 'NRN', 'NEPSE', 'NIDC', 'NEA', 'IHL', 'UNL', 'HRL', 'NTC', 'NHPC', 'CIT', 'ICFC', 'GBIME', 'ADBL', 'HIDCL']);
+const NAME_SMALL = new Set(['and', 'of', 'the', 'for', 'in', 'at', 'on', 'to']);
+
+/**
+ * A registered company name as a row prints it: an all-capitals name ("NEPAL LIFE INSURANCE COMPANY LIMITED") in
+ * normal case ("Nepal Life Insurance Company Limited"), keeping known acronyms (NIC, NMB, IME, API ...) and "and",
+ * "of" small. A name already in mixed case is returned as written. Compose with `shortCompanyName` where a row is
+ * narrow: `shortCompanyName(displayCompanyName(name))`.
+ */
+export function displayCompanyName(name: string): string {
+  const s = name.trim();
+  if (!/[A-Z]/.test(s) || /[a-z]/.test(s)) return s;
+  return s
+    .split(/(\s+|-|\/|\(|\))/)
+    .map((w, i) => {
+      if (!/[A-Z]/.test(w)) return w;
+      if (NAME_ACRONYMS.has(w.replace(/[.,&]/g, ''))) return w;
+      const lower = w.toLowerCase();
+      return i > 0 && NAME_SMALL.has(lower) ? lower : lower.charAt(0).toUpperCase() + lower.slice(1);
+    })
+    .join('');
+}
+
 export function toneOf(value: number | null | undefined, dp = 2): 'up' | 'down' | 'flat' {
   if (!isNum(value)) return 'flat';
   const r = Number(value.toFixed(dp));

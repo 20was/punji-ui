@@ -353,7 +353,7 @@
     "name": "format (import from '@punji/ui/format')",
     "path": "dist/format/format.js",
     "import": "*",
-    "limit": "1.5 kB",
+    "limit": "1.78 kB",
     "gzip": true
   },
   {
@@ -367,13 +367,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "214 kB",
+    "limit": "223.09 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "43.8 kB",
+    "limit": "48.62 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -514,7 +514,7 @@
     "name": "statement-upload (import from '@punji/ui/statement-upload')",
     "path": "dist/statement-upload/StatementUpload.js",
     "import": "*",
-    "limit": "2.47 kB",
+    "limit": "2.50 kB",
     "gzip": true
   },
   {
@@ -808,7 +808,7 @@
     "name": "performance-chart (import from '@punji/ui/performance-chart')",
     "path": "dist/performance-chart/PerformanceChart.js",
     "import": "*",
-    "limit": "4.7 kB",
+    "limit": "6.32 kB",
     "gzip": true
   },
   {
@@ -857,14 +857,14 @@
     "name": "market-indices (import from '@punji/ui/market-indices')",
     "path": "dist/market-indices/MarketIndices.js",
     "import": "*",
-    "limit": "6850 B",
+    "limit": "7.1 kB",
     "gzip": true
   },
   {
     "name": "market-status (import from '@punji/ui/market-status')",
     "path": "dist/market-status/MarketStatus.js",
     "import": "*",
-    "limit": "2580 B",
+    "limit": "3.4 kB",
     "gzip": true
   },
   {
@@ -1760,6 +1760,195 @@
     "path": "dist/use-url-filters/useUrlFilters.js",
     "import": "*",
     "limit": "2.26 kB",
+    "gzip": true
+  },
+  {
+    "name": "month-grid (import from '@punji/ui/month-grid')",
+    "path": "dist/month-grid/MonthGrid.js",
+    "import": "*",
+    "limit": "2.51 kB",
+    "gzip": true
+  },
+  {
+    "name": "returns-heat-table (import from '@punji/ui/returns-heat-table')",
+    "path": "dist/returns-heat-table/ReturnsHeatTable.js",
+    "import": "*",
+    "limit": "1.23 kB",
+    "gzip": true
+  },
+  {
+    "name": "histogram (import from '@punji/ui/histogram')",
+    "path": "dist/histogram/Histogram.js",
+    "import": "*",
+    "limit": "2.09 kB",
+    "gzip": true
+  },
+  {
+    "name": "correlation-matrix (import from '@punji/ui/correlation-matrix')",
+    "path": "dist/correlation-matrix/CorrelationMatrix.js",
+    "import": "*",
+    "limit": "1.36 kB",
+    "gzip": true
+  },
+  {
+    "name": "Heat tables CSS",
+    "path": "dist/css/heat-tables.css",
+    "limit": "2.08 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "instrument-header (import from '@punji/ui/instrument-header')",
+    "path": "dist/instrument-header/InstrumentHeader.js",
+    "import": "*",
+    "limit": "5.65 kB",
+    "gzip": true
+  },
+  {
+    "name": "InstrumentHeader CSS",
+    "path": "dist/css/instrument-header.css",
+    "limit": "0.65 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "broker-badge (import from '@punji/ui/broker-badge')",
+    "path": "dist/broker-badge/BrokerBadge.js",
+    "import": "*",
+    "limit": "0.42 kB",
+    "gzip": true
+  },
+  {
+    "name": "BrokerBadge CSS",
+    "path": "dist/css/broker-badge.css",
+    "limit": "0.55 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "headline-list (import from '@punji/ui/headline-list')",
+    "path": "dist/headline-list/HeadlineList.js",
+    "import": "*",
+    "limit": "0.95 kB",
+    "gzip": true
+  },
+  {
+    "name": "HeadlineList CSS",
+    "path": "dist/css/headline-list.css",
+    "limit": "0.5 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "rating-scale (import from '@punji/ui/rating-scale')",
+    "path": "dist/rating-scale/RatingScale.js",
+    "import": "*",
+    "limit": "0.64 kB",
+    "gzip": true
+  },
+  {
+    "name": "RatingScale CSS",
+    "path": "dist/css/rating-scale.css",
+    "limit": "0.6 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "rating-chip (import from '@punji/ui/rating-chip')",
+    "path": "dist/rating-chip/RatingChip.js",
+    "import": "*",
+    "limit": "0.44 kB",
+    "gzip": true
+  },
+  {
+    "name": "RatingChip CSS",
+    "path": "dist/css/rating-chip.css",
+    "limit": "0.55 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "rating-change-row (import from '@punji/ui/rating-change-row')",
+    "path": "dist/rating-change-row/RatingChangeRow.js",
+    "import": "*",
+    "limit": "1.95 kB",
+    "gzip": true
+  },
+  {
+    "name": "RatingChangeRow CSS",
+    "path": "dist/css/rating-change-row.css",
+    "limit": "1.28 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "month-strip (import from '@punji/ui/month-strip')",
+    "path": "dist/month-strip/MonthStrip.js",
+    "import": "*",
+    "limit": "0.47 kB",
+    "gzip": true
+  },
+  {
+    "name": "MonthStrip CSS",
+    "path": "dist/css/month-strip.css",
+    "limit": "0.52 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "bar-list (import from '@punji/ui/bar-list')",
+    "path": "dist/bar-list/BarList.js",
+    "import": "*",
+    "limit": "1.03 kB",
+    "gzip": true
+  },
+  {
+    "name": "BarList CSS",
+    "path": "dist/css/bar-list.css",
+    "limit": "0.72 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "alert-row (import from '@punji/ui/alert-row')",
+    "path": "dist/alert-row/AlertRow.js",
+    "import": "*",
+    "limit": "2.15 kB",
+    "gzip": true
+  },
+  {
+    "name": "AlertRow CSS",
+    "path": "dist/css/alert-row.css",
+    "limit": "2.15 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "alert-summary (import from '@punji/ui/alert-summary')",
+    "path": "dist/alert-summary/AlertSummary.js",
+    "import": "*",
+    "limit": "0.71 kB",
+    "gzip": true
+  },
+  {
+    "name": "AlertSummary CSS",
+    "path": "dist/css/alert-summary.css",
+    "limit": "0.5 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "alert-distance (import from '@punji/ui/alert-distance')",
+    "path": "dist/alert-distance/alertDistance.js",
+    "import": "*",
+    "limit": "0.4 kB",
+    "gzip": true
+  },
+  {
+    "name": "alert-target (import from '@punji/ui/alert-target')",
+    "path": "dist/alert-target/alertTarget.js",
+    "import": "*",
+    "limit": "0.45 kB",
     "gzip": true
   }
 ]

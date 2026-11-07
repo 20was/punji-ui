@@ -1,0 +1,13 @@
+/* Punji UI styles.
+   Styles for RatingChip. Needs tokens.css and base.css (styles.css has everything). Colours, type and space from --pu-* tokens only.
+   The five-tint palette is repeated in rating-scale.css so each file stands alone: amber on the low side, grey in the middle, blue on the high side. */
+@layer punji.components {
+  .pu-rating-chip[data-bucket='0'] { --rating-tone: var(--pu-color-series-3); --rating-ink: color-mix(in srgb, var(--pu-color-series-3) 60%, var(--pu-color-text)); --rating-bg: color-mix(in srgb, var(--pu-color-series-3) 22%, transparent) }
+  .pu-rating-chip[data-bucket='1'] { --rating-tone: color-mix(in srgb, var(--pu-color-series-3) 50%, var(--pu-color-surface-tint)); --rating-ink: color-mix(in srgb, var(--pu-color-series-3) 60%, var(--pu-color-text)); --rating-bg: color-mix(in srgb, var(--pu-color-series-3) 12%, transparent) }
+  .pu-rating-chip[data-bucket='2'] { --rating-tone: color-mix(in srgb, var(--pu-color-text-tertiary) 45%, var(--pu-color-surface-tint)); --rating-ink: var(--pu-color-text-muted); --rating-bg: var(--pu-color-surface-tint) }
+  .pu-rating-chip[data-bucket='3'] { --rating-tone: color-mix(in srgb, var(--pu-color-series-nepse) 55%, var(--pu-color-surface-tint)); --rating-ink: color-mix(in srgb, var(--pu-color-series-nepse) 75%, var(--pu-color-text)); --rating-bg: color-mix(in srgb, var(--pu-color-series-nepse) 12%, transparent) }
+  .pu-rating-chip[data-bucket='4'] { --rating-tone: var(--pu-color-series-nepse); --rating-ink: color-mix(in srgb, var(--pu-color-series-nepse) 75%, var(--pu-color-text)); --rating-bg: color-mix(in srgb, var(--pu-color-series-nepse) 22%, transparent) }
+  .pu-rating-chip { display: inline-flex; align-items: center; max-width: 100%; padding: 3px 10px; border-radius: var(--pu-radius-full); background: var(--rating-bg, var(--pu-color-surface-tint)); color: var(--rating-ink, var(--pu-color-text-muted)); font: var(--pu-font-weight-semibold) var(--pu-text-xs) / 1.3 var(--pu-font-body); white-space: nowrap }
+  .pu-rating-chip[data-quiet] { background: transparent; box-shadow: inset 0 0 0 1px var(--pu-color-card-border); color: var(--pu-color-text-muted) }
+  .pu-rating-chip[data-size='sm'] { min-height: 20px; padding: 0 8px; font-size: 11px; line-height: 1; overflow: hidden; text-overflow: ellipsis }
+}

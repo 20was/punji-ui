@@ -1781,12 +1781,13 @@ const BASE_PAGES: readonly PageDef[] = [
     api: [...ui('period-selector', 'FinancialPeriodSelector', 'FinancialPeriod', 'nepalFiscalYearPeriods', 'nepalFiscalQuarterPeriods', 'nepalFiscalMonthPeriods')],
     examples: [
       { id: 'fiscal', title: 'Nepal fiscal periods', note: 'Years, quarters and months; switching kind keeps the time span.' },
+      { id: 'projected', title: 'A projected fiscal year', note: 'FY 2083/84 ends in a month the calendar committee has not published, so it is marked "projected".' },
       { id: 'custom', title: 'Your own list', note: 'Calendar years, one kind, so no kind switch.' },
     ],
     keyboard: ['The period is a native select (arrows or type-ahead); the kind switch is a radio group (arrow keys move, Tab leaves).'],
-    accessibility: ['Both controls are named (label, and `kindGroupLabel` defaulting to "<label> type").', 'The detail line is tied to the select with `aria-describedby`.'],
+    accessibility: ['Both controls are named (label, and `kindGroupLabel` defaulting to "<label> type").', 'The detail line is tied to the select with `aria-describedby`. A projected period adds the word "projected" and its explanation to that description.'],
     responsive: ['The kind switch wraps above the select on a narrow screen.'],
-    notes: { title: 'Projected periods', points: ['The Nepal builders set `projected: true` on a period whose start or end falls in a Bikram Sambat month with no official publication yet (the end of FY 2083/84 today). The selector does not change; use the flag to mark the period. See the BS calendar guide.'] },
+    notes: { title: 'Projected periods', points: ['The Nepal builders set `projected: true` on a period whose start or end falls in a Bikram Sambat month with no official publication yet (the end of FY 2083/84 today). The selector prints a "projected" marker after the period\'s detail line (words in `labels`: `projected`, `projectedHint`), so keep `showDetail` on for those periods. See the BS calendar guide.'] },
     related: ['date-picker', 'statement-table', 'trial-balance'],
   },
   {

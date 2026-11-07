@@ -28,12 +28,13 @@ export const SHARE_ISSUE_PAGES: readonly PageDef[] = [
     api: [...ui('issue-card', 'IssueCard', 'IssueList'), ...ui('share-issues', 'ShareIssue')],
     examples: [
       { id: 'list', title: 'Issue list with filter', note: 'Open issues first, closing soonest first; the chips filter by kind and the count is announced.' },
+      { id: 'projected', title: 'Projected BS dates', note: 'A date in a Bikram Sambat month the calendar committee has not published carries a "projected" marker with an explanation.' },
       { id: 'cards', title: 'Each status', note: 'Closing today is a warning in words; an AD-first card and a Nepali card with Devanagari digits.' },
     ],
     keyboard: ['Filter chips are buttons in one group; Tab reaches each and Enter or Space presses it.', 'Your actions keep their own keyboard behaviour.'],
     accessibility: [
       'Each card is an article named by its company heading (h3 by default; `headingLevel` changes it).',
-      'Status is a word, never colour alone. Dates are <time> elements with the Gregorian value.',
+      'Status is a word, never colour alone. Dates are <time> elements with the Gregorian value. A projected BS date shows the word "projected" (tooltip and screen-reader text explain it; `labels.projected` and `labels.projectedHint` replace the words); an unverified one adds screen-reader text only.',
       'The list is a <ul> with a name; the filtered count is announced in a status region.',
     ],
     responsive: ['Cards sit in an auto-filling grid from 280px; a phone shows one column.'],

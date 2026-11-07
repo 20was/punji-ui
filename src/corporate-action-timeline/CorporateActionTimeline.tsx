@@ -6,11 +6,11 @@
  */
 import type { ReactNode } from 'react';
 
-import { DualDate } from '../internal/dualDate.tsx';
+import { DualDate, DEFAULT_BS_DATE_LABELS, type BsDateLabels } from '../internal/dualDate.tsx';
 import type { NepalLanguage } from '../nepal/locale.ts';
 import { CORPORATE_EVENT_LABELS, corporateTimeline, type CorporateEvent, type CorporateEventKind, type CorporateEventPhase } from '../share-issues/corporate-actions.ts';
 
-export interface CorporateActionTimelineLabels {
+export interface CorporateActionTimelineLabels extends BsDateLabels {
   /** Words for each phase, read after the date. */
   phase: Record<CorporateEventPhase, string>;
   /** Relative note: positive days ahead, negative days ago. Return '' to hide it. */
@@ -18,6 +18,7 @@ export interface CorporateActionTimelineLabels {
 }
 
 export const DEFAULT_CORPORATE_ACTION_TIMELINE_LABELS: CorporateActionTimelineLabels = {
+  ...DEFAULT_BS_DATE_LABELS,
   phase: { past: 'Done', today: 'Today', upcoming: 'Upcoming' },
   relative: (days) => (days === 0 ? '' : days === 1 ? 'Tomorrow' : days > 1 ? `In ${days} days` : ''),
 };
@@ -70,7 +71,7 @@ export function CorporateActionTimeline({
             </span>
             <span className="pu-ca-body">
               <span className="pu-ca-label">{e.label ?? kindLabels?.[e.kind] ?? CORPORATE_EVENT_LABELS[e.kind]}</span>
-              <DualDate value={e.date} primary={primaryCalendar} language={language} digits={digits} />
+              <DualDate value={e.date} primary={primaryCalendar} language={language} digits={digits} labels={words} />
               <span className="pu-ca-phase">{words.phase[e.phase]}{relative ? ` · ${relative}` : ''}</span>
               {e.detail && <span className="pu-ca-detail">{e.detail}</span>}
             </span>

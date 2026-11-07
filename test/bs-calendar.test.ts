@@ -163,68 +163,36 @@ describe('conversion', () => {
   });
 });
 
-// TEMPORARY (removed with the dependency in PR 4 of the BS calendar plan): our table must equal
-// @remotemerge/nepali-date-converter everywhere except the years the research documents.
-const expectedDiffYears = (year: number) => [1977, 1981, 1991, 1998].includes(year) || year >= 2084;
-const iso = (g: CalendarDate) => `${g.year}-${String(g.month).padStart(2, '0')}-${String(g.day).padStart(2, '0')}`;
-describe('parity with @remotemerge/nepali-date-converter (temporary)', () => {
-  it('differs only in the documented years', async () => {
-    const { default: DateConverter } = await import('@remotemerge/nepali-date-converter');
-    const differingYears = new Set<number>();
-    const unexpected: string[] = [];
-    const note = (year: number, label: string) => {
-      differingYears.add(year);
-      if (!expectedDiffYears(year)) unexpected.push(label);
-    };
-    // BS -> AD: a day they reject (a month we make longer) counts as a difference.
-    for (const bs of allBsDays()) {
-      let theirs: { year: number; month: number; date: number } | null = null;
-      try { theirs = new DateConverter(iso(bs)).toAd(); } catch { /* out of their table */ }
-      const ours = bsToGregorian(bs);
-      if (!theirs || theirs.year !== ours.year || theirs.month !== ours.month || theirs.date !== ours.day) note(bs.year, `bs ${iso(bs)}`);
-    }
-    // AD -> BS: catches a day only they have (a month they make longer).
-    const last = gregorianToEpochDay(bsToGregorian(BS_TABLE_RANGE.to));
-    for (let epoch = gregorianToEpochDay(bsToGregorian(BS_TABLE_RANGE.from)); epoch <= last; epoch++) {
-      const g = epochDayToGregorian(epoch), ours = gregorianToBS(g);
-      let theirs: { year: number; month: number; date: number } | null = null;
-      try { theirs = new DateConverter(iso(g)).toBs(); } catch { /* out of their table */ }
-      if (!theirs || theirs.year !== ours.year || theirs.month !== ours.month || theirs.date !== ours.day) note(ours.year, `ad ${iso(g)}`);
-    }
-    expect(unexpected.slice(0, 5)).toEqual([]);
-    // The exact record of where this table intentionally departs from the dependency.
-    expect([...differingYears].toSorted((a, b) => a - b)).toMatchInlineSnapshot(`
-      [
-        1977,
-        1981,
-        1991,
-        1998,
-        2084,
-        2085,
-        2086,
-        2087,
-        2088,
-        2089,
-        2090,
-        2091,
-        2092,
-        2093,
-        2094,
-        2095,
-        2096,
-        2097,
-        2098,
-        2099,
-      ]
-    `);
+// Frozen record of the years where this table deliberately departs from the earlier dependency
+// (@remotemerge/nepali-date-converter, removed). Changing any of these is a data decision: update docs/research/bs-calendar
+// and the changeset in the same change, not just this test.
+const FROZEN: Record<number, readonly number[]> = {
+  1977: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+  1981: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30],
+  1991: [31, 32, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+  1998: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+  2084: [31, 31, 32, 31, 31, 30, 30, 30, 29, 30, 30, 30],
+  2085: [31, 32, 31, 32, 30, 31, 30, 30, 29, 30, 30, 30],
+  2086: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30],
+  2087: [31, 31, 32, 31, 31, 31, 30, 30, 29, 30, 30, 30],
+  2088: [30, 31, 32, 32, 30, 31, 30, 30, 29, 30, 30, 30],
+  2089: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30],
+  2090: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30],
+  2091: [31, 31, 32, 31, 31, 31, 30, 30, 29, 30, 30, 30],
+  2092: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+  2093: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 29, 31],
+  2094: [31, 31, 32, 31, 31, 30, 30, 30, 29, 30, 30, 30],
+  2095: [31, 31, 32, 31, 31, 31, 30, 29, 30, 30, 30, 30],
+  2096: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+  2097: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30],
+  2098: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+  2099: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+};
+describe('frozen month lengths for the disputed and projected years', () => {
+  it.each(Object.entries(FROZEN))('%s', (year, months) => {
+    expect([...record(Number(year)).months]).toEqual(months);
   });
-  it('agrees on every Gregorian day for 2000 to 2083 BS', async () => {
-    const { default: DateConverter } = await import('@remotemerge/nepali-date-converter');
-    const first = gregorianToEpochDay(bsToGregorian(d(2000, 1, 1))), last = gregorianToEpochDay(bsToGregorian(d(2083, 12, 30)));
-    for (let epoch = first; epoch <= last; epoch++) {
-      const g = epochDayToGregorian(epoch), ours = gregorianToBS(g);
-      const theirs = new DateConverter(`${g.year}-${String(g.month).padStart(2, '0')}-${String(g.day).padStart(2, '0')}`).toBs();
-      expect([theirs.year, theirs.month, theirs.date]).toEqual([ours.year, ours.month, ours.day]);
-    }
+  it('keeps the last convertible Gregorian day pinned', () => {
+    expect(bsToGregorian(BS_TABLE_RANGE.to)).toEqual(d(2043, 4, 15));
   });
 });

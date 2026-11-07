@@ -559,7 +559,7 @@ export const GUIDES: readonly PageDef[] = [
         paragraphs: ['From [SECURITY.md](' + REPO + '/SECURITY.md).'],
         points: [
           'No HTML from data: no `dangerouslySetInnerHTML`, no `eval`, no inline event-handler strings. Components render text as text. `scripts/check-source.mjs` fails the build if one appears.',
-          'One reviewed runtime dependency. React is a peer; the only bundled dependency is `@remotemerge/nepali-date-converter` (MIT, pinned exactly, no transitive dependencies), loaded only by the Bikram Sambat calendar.',
+          'No runtime dependencies. React is a peer; nothing else is bundled. The Bikram Sambat calendar runs on our own audited table, and the build fails if a BS-calendar package is added.',
           'Releases you can verify: npm Trusted Publishing (OIDC, no stored token) with a provenance attestation and a CycloneDX SBOM per GitHub release. Check with `npm audit signatures` after you install.',
           'Hardened CI: pinned actions, least-privilege permissions, installs with `npm ci --ignore-scripts`, a registry-only lockfile, CodeQL, zizmor and dependency review.',
         ],
@@ -898,6 +898,14 @@ export const GUIDES: readonly PageDef[] = [
         title: 'The fiscal year and projected periods',
         paragraphs: [
           'The Nepal fiscal year runs from 1 Shrawan to the end of Asar, so a fiscal year\'s last month is in the next BS year. `getNepalFiscalPeriod` returns `projected: true` when the start or the end falls in a projected month. Today that is FY 2083/84, whose Asar 2084 end is projected until the 2084 calendar is published. `nepalFiscalYearPeriods`, `nepalFiscalQuarterPeriods` and `nepalFiscalMonthPeriods` (each `FinancialPeriod`) and the `nepalDateRangePresets` outputs carry the same `projected` flag so a screen can mark the period.',
+        ],
+      },
+      {
+        id: 'markers',
+        title: 'What the components show',
+        paragraphs: [
+          'A date in a projected BS month carries the word "projected" in DualDate (IssueCard, CorporateActionTimeline, DematAccountCard, EdisConfirmation) and in the Article Timeline, with a tooltip and screen-reader text saying the Nepal Panchanga Nirnayak Bikas Samiti has not published that month. The BS Calendar and DatePicker show a note under the heading while the visible month is projected; days stay selectable. FinancialPeriodSelector and the Nepal date-range presets mark a period or preset whose `projected` flag is set. Replace the words with `labels.projected` and `labels.projectedHint`.',
+          'An unverified month (old years where sources disagree) gets screen-reader text only. These dates are historic and rarely acted on, so a visible chip on each would be noise; official and cross-checked months show nothing.',
         ],
       },
       {

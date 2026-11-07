@@ -371,14 +371,14 @@
     "gzip": true
   },
   {
-    "name": "Nepal formatting without calendar or React",
+    "name": "Nepal formatting without React",
     "path": "dist/nepal/format.js",
     "import": "*",
     "limit": "0.89 kB",
     "gzip": true
   },
   {
-    "name": "Exact minor-unit calculations without calendar or React",
+    "name": "Exact minor-unit calculations without React",
     "path": "dist/nepal/money.js",
     "import": "*",
     "limit": "510 B",
@@ -427,14 +427,14 @@
     "gzip": true
   },
   {
-    "name": "Gregorian date-only utilities without converter or React",
+    "name": "Gregorian date-only utilities without React",
     "path": "dist/nepal/date-only.js",
     "import": "*",
     "limit": "0.72 kB",
     "gzip": true
   },
   {
-    "name": "Market display formatters without converter or React",
+    "name": "Market display formatters without React",
     "path": "dist/nepal/market-format.js",
     "import": "*",
     "limit": "570 B",
@@ -2299,6 +2299,34 @@
     "path": "dist/css/heat-tables.css",
     "limit": "2.08 kB",
     "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "Nepal formatting without calendar or React",
+    "path": "dist/nepal/format.js",
+    "import": "*",
+    "limit": "0.89 kB",
+    "gzip": true
+  },
+  {
+    "name": "Exact minor-unit calculations without calendar or React",
+    "path": "dist/nepal/money.js",
+    "import": "*",
+    "limit": "510 B",
+    "gzip": true
+  },
+  {
+    "name": "Gregorian date-only utilities without converter or React",
+    "path": "dist/nepal/date-only.js",
+    "import": "*",
+    "limit": "0.72 kB",
+    "gzip": true
+  },
+  {
+    "name": "Market display formatters without converter or React",
+    "path": "dist/nepal/market-format.js",
+    "import": "*",
+    "limit": "570 B",
     "gzip": true
   }
 ]

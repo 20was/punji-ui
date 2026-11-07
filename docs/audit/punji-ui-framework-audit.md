@@ -74,7 +74,7 @@ flowchart LR
 | Build | `tsc` emits one JS file per source file, with no bundler. CSS goes through lightningcss into cascade layers. | `tsconfig.build.json`, `scripts/build-css.mjs` |
 | TypeScript | `strict`, `noUncheckedIndexedAccess`, `noImplicitOverride`, `verbatimModuleSyntax` and `isolatedModules` are on. `exactOptionalPropertyTypes` is **off**. TypeScript 7.0.2. | `tsconfig.json` |
 | React | Peer dependency `react`/`react-dom ^19.0.0`, so React 18 apps cannot use it. 110 files carry `'use client'`, and no hook-using file is missing it. | `package.json`, grep |
-| Runtime dependencies | **One**: `@remotemerge/nepali-date-converter` 1.2.5 (pinned), imported only by `src/nepal/calendar.ts`. | `package.json` |
+| Runtime dependencies | **None** (at audit time one, `@remotemerge/nepali-date-converter`, since removed). | `package.json` |
 | Dev dependencies | 25, all pinned exactly. They include vitest 5, vite 8, playwright 1.64, axe-core, fast-check, size-limit, publint, attw and lockfile-lint. | `package.json` |
 | Exports | 200 entries, ESM only, `types` plus `default` for each. `sideEffects: ["**/*.css"]`. publint, attw and `check-exports` run in CI. | `package.json` |
 | CSS | Plain CSS variables with a `--pu-` prefix and `@layer punji.tokens`, with no CSS-in-JS. The consumer imports `styles.css` or individual per-component files. | `src/styles/` |

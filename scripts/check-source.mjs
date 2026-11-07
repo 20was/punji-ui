@@ -9,18 +9,28 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 const walk = (d) => readdirSync(d).flatMap((n) => (statSync(join(d, n)).isDirectory() ? walk(join(d, n)) : [join(d, n)]));
 const sources = walk(join(root, 'src')).filter((f) => /\.tsx?$/.test(f));
 const problems = [];
+// Bikram Sambat conversion runs on our own audited table. A BS-calendar package would silently bring back unverified data.
+const BS_PACKAGE = /nepali-date|nepali-datetime|nepali-calendar|bikram-sambat|bikram|ad-bs|bs-date|nepalidate/i;
+const BS_MESSAGE = 'BS conversion uses our own table, see docs/research/bs-calendar';
 const CLIENT = /\buse[A-Z]\w*\(|\bcreatePortal\b|\bon[A-Z]\w*=\{\s*\(|\bon[A-Z]\w*=\{\s*\w+\s*=>|\brequestAnimationFrame\b/;
 
 for (const f of sources) {
   const rel = f.slice(root.length);
   const text = readFileSync(f, 'utf8');
-  for (const m of text.matchAll(/from '([^']+)'/g)) if (!m[1].startsWith('.') && !['react', 'react-dom', '@remotemerge/nepali-date-converter'].includes(m[1])) problems.push(`${rel}: imports ${m[1]}`);
+  for (const m of text.matchAll(/(?:\bfrom |\bimport\()'([^']+)'/g)) {
+    if (m[1].startsWith('.') || m[1].startsWith('node:')) continue;
+    if (BS_PACKAGE.test(m[1])) problems.push(`${rel}: imports BS-calendar package ${m[1]}; ${BS_MESSAGE}`);
+    else if (!['react', 'react-dom'].includes(m[1])) problems.push(`${rel}: imports ${m[1]}`);
+  }
   if (/dangerouslySetInnerHTML|innerHTML\s*=|\beval\(|new Function\(|setTimeout\(\s*['"`]/.test(text)) problems.push(`${rel}: builds HTML from strings or runs a string as code`);
   if (!rel.endsWith('index.ts') && !rel.includes('/internal/') && text.startsWith("'use client'") !== CLIENT.test(text)) problems.push(`${rel}: 'use client' ${CLIENT.test(text) ? 'missing' : 'not needed'}`);
 }
 const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
+for (const field of ['dependencies', 'peerDependencies', 'optionalDependencies']) {
+  for (const name of Object.keys(pkg[field] ?? {})) if (BS_PACKAGE.test(name)) problems.push(`package.json: BS-calendar package ${name} in ${field}; ${BS_MESSAGE}`);
+}
 for (const [name, version] of Object.entries(pkg.dependencies ?? {})) {
-  if (name !== '@remotemerge/nepali-date-converter' || version !== '1.2.5') problems.push(`Unreviewed runtime dependency: ${name}@${version}`);
+  problems.push(BS_PACKAGE.test(name) ? `package.json: BS-calendar package ${name} added to dependencies; ${BS_MESSAGE}` : `Unreviewed runtime dependency: ${name}@${version}`);
 }
 
 // Optional peers (the table adapters' grid libraries) must stay optional, and no module may import them: the adapters

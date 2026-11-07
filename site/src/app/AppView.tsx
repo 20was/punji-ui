@@ -1,6 +1,7 @@
-import { Fragment, type ComponentType, type ReactNode } from 'react';
+import { Fragment, type ReactNode } from 'react';
 import { pagePath, REPO, SITE_NAME } from '../paths.ts';
-import type { PageData } from './load.ts';
+import { appKey, type PageData } from './load.ts';
+import { Late } from './Late.tsx';
 import { groupTitleOf } from './nav.ts';
 import { Code } from './Code.tsx';
 import { PageActions } from './PageActions.tsx';
@@ -42,7 +43,7 @@ function List({ id, title, items }: { id: string; title: string; items: readonly
   );
 }
 
-export function AppView({ data, App }: { data: PageData; App: ComponentType }): ReactNode {
+export function AppView({ data }: { data: PageData }): ReactNode {
   const { page, related } = data;
   const source = `${REPO}/tree/main/site/src/apps/${page.slug}`;
   const screens = page.app?.screens ?? [];
@@ -78,7 +79,7 @@ export function AppView({ data, App }: { data: PageData; App: ComponentType }): 
       </header>
 
       <div className="doc-app-stage">
-        <App />
+        <Late id={appKey(page.slug)} />
       </div>
 
       <section id="about" className="doc-app-about" aria-labelledby="about-h">

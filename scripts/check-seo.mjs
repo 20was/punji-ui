@@ -322,3 +322,5 @@ if (failures.length) {
 const [largest, where] = jsSizes.toSorted((a, b) => b[0] - a[0])[0] ?? [0, ''];
 console.log(`seo check: ${targets.length} pages (unique title ${TITLE_MIN}-${TITLE_MAX} chars, description ${DESCRIPTION_MIN}-${DESCRIPTION_MAX}, canonical; OG and Twitter; JSON-LD with BreadcrumbList and dateModified; visible breadcrumb; one h1, no skipped levels; img alt; no stale pre-release copy), ${links} internal links and assets resolve, no orphan pages, sitemap (with lastmod)/robots/llms agree with the ${ROUTES.length} routes`);
 console.log(`js budget: every page under ${JS_BUDGET / 1000} kB gzip up front and preloads its route chunk; largest ${(largest / 1000).toFixed(1)} kB (${where})`);
+// Drift stays visible in CI logs: the five heaviest pages and their headroom (information only; the gate is JS_BUDGET).
+for (const [size, page] of jsSizes.toSorted((a, b) => b[0] - a[0]).slice(0, 5)) console.log(`  ${(size / 1000).toFixed(1)} kB (${((JS_BUDGET - size) / 1000).toFixed(1)} kB headroom)  ${page}`);

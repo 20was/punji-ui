@@ -259,6 +259,54 @@
       "types": "./dist/candlestick-chart/CandlestickChart.d.ts",
       "default": "./dist/candlestick-chart/CandlestickChart.js"
     },
+    "./candlestick-trading": {
+      "types": "./dist/candlestick-chart/trading.d.ts",
+      "default": "./dist/candlestick-chart/trading.js"
+    },
+    "./candlestick-baseline": {
+      "types": "./dist/candlestick-chart/extensions/baseline.d.ts",
+      "default": "./dist/candlestick-chart/extensions/baseline.js"
+    },
+    "./heikin-ashi": {
+      "types": "./dist/candlestick-chart/extensions/heikinAshi.d.ts",
+      "default": "./dist/candlestick-chart/extensions/heikinAshi.js"
+    },
+    "./price-scales": {
+      "types": "./dist/candlestick-chart/extensions/priceScales.d.ts",
+      "default": "./dist/candlestick-chart/extensions/priceScales.js"
+    },
+    "./candlestick-events": {
+      "types": "./dist/candlestick-chart/extensions/events.d.ts",
+      "default": "./dist/candlestick-chart/extensions/events.js"
+    },
+    "./candlestick-levels": {
+      "types": "./dist/candlestick-chart/extensions/levels.d.ts",
+      "default": "./dist/candlestick-chart/extensions/levels.js"
+    },
+    "./indicator-pane-view": {
+      "types": "./dist/candlestick-chart/IndicatorPaneView.d.ts",
+      "default": "./dist/candlestick-chart/IndicatorPaneView.js"
+    },
+    "./chart-indicators": {
+      "types": "./dist/chart-math/indicators.d.ts",
+      "default": "./dist/chart-math/indicators.js"
+    },
+    "./rsi-indicator": {
+      "types": "./dist/candlestick-chart/indicators/rsi.d.ts",
+      "default": "./dist/candlestick-chart/indicators/rsi.js"
+    },
+    "./macd-indicator": {
+      "types": "./dist/candlestick-chart/indicators/macd.d.ts",
+      "default": "./dist/candlestick-chart/indicators/macd.js"
+    },
+    "./bollinger-indicator": {
+      "types": "./dist/candlestick-chart/indicators/bollinger.d.ts",
+      "default": "./dist/candlestick-chart/indicators/bollinger.js"
+    },
+    "./vwap-indicator": {
+      "types": "./dist/candlestick-chart/indicators/vwap.d.ts",
+      "default": "./dist/candlestick-chart/indicators/vwap.js"
+    },
     "./performance-chart": {
       "types": "./dist/performance-chart/PerformanceChart.d.ts",
       "default": "./dist/performance-chart/PerformanceChart.js"

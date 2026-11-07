@@ -49,7 +49,7 @@ Requirements:
 - Node 22.12 or later for tooling and server rendering.
 - ESM only, with bundled TypeScript declarations (written against strict mode).
 - Zero runtime dependencies (React and React DOM are peers). The Bikram Sambat calendar runs on our own month-length table with per-month provenance, and CI fails on any new dependency or BS-calendar package. See [DEPENDENCY-AUDIT.md](DEPENDENCY-AUDIT.md).
-- Optional peer dependencies, installed only if you use the matching adapter: `@tanstack/react-table`, `ag-grid-community`, `@mui/x-data-grid`, `lightweight-charts`, `echarts` (see [Optional integrations](#optional-integrations)). Nothing in the root export or the core bundle loads them.
+- Optional peer dependencies, installed only if you use the matching adapter: `@tanstack/react-table`, `ag-grid-community`, `@mui/x-data-grid`, `lightweight-charts`, `echarts`, `klinecharts` (see [Optional integrations](#optional-integrations)). Nothing in the root export or the core bundle loads them.
 
 ## Quick start
 
@@ -191,6 +191,7 @@ Charts are native SVG drawn by this package, with no chart library in the core b
 - **Statements and fundamentals (beta):** `WaterfallChart`, `CashFlowChart`, `NetWorthChart`, `SankeyChart`, `EarningsChart`, `BalanceHistoryChart`, `ScoreRadar`, `FairValueBar`, `PriceTargetChart`.
 - **Portfolio and macro (beta):** `FanChart`, `RollingReturnsChart`, `RiskReturnScatter`, `YieldCurveChart`, `StyleGrid`, `SeasonalityChart`.
 - **Grids (beta):** `ReturnsHeatTable`, `MonthGrid`, `Histogram`, `CorrelationMatrix`. Also `RangeSelector` for 1D to All windows.
+- **Derivatives (beta):** `PayoffChart` (options strategy payoff at expiry, exact breakevens) and `VolatilitySmile` (implied volatility by strike with its table; you supply the IVs). `EconomicCalendar` and `EarningsCalendar` are day-grouped tables, not charts.
 
 Guide: [CHARTS.md](docs/CHARTS.md).
 
@@ -203,8 +204,9 @@ All of these are experimental. They are opt-in subpaths that import nothing from
 | `@punji/ui/tanstack-table`, `@punji/ui/ag-grid`, `@punji/ui/mui-x-grid` | exact-money cell formatters and bigint comparators that turn a table-core `ColumnDef[]` into the grid's column defs | `@tanstack/react-table` `^9.3.1`, `ag-grid-community` `^36.0.0`, or `@mui/x-data-grid` `^9.0.0` |
 | `@punji/ui/lightweight-charts` | `LightweightChart`: TradingView Lightweight Charts v5 canvas inside `ChartA11yShell`, with streaming ticks | `lightweight-charts` `^5.2.0` |
 | `@punji/ui/echarts` | `EChart`, `punjiEChartsTheme`, money axis and tooltip formatters, for chart types Punji does not draw | `echarts` `^6.0.0` |
+| `@punji/ui/klinecharts` | `KLineChart` (experimental): KLineChart v10 canvas inside `ChartA11yShell`, exact money on every price, streaming ticks | `klinecharts` `^10.1.0` |
 
-Pages: [Table adapters](https://design.punji.app/utilities/table-adapters/), [Lightweight Charts](https://design.punji.app/utilities/lightweight-charts/), [ECharts](https://design.punji.app/utilities/echarts/).
+Pages: [Table adapters](https://design.punji.app/utilities/table-adapters/), [Lightweight Charts](https://design.punji.app/utilities/lightweight-charts/), [ECharts](https://design.punji.app/utilities/echarts/), [KLineChart](https://design.punji.app/utilities/klinecharts/).
 
 **TradingView attribution.** Lightweight Charts is Apache-2.0 with an attribution requirement: the licence asks for the notice from its NOTICE file (exported as `LIGHTWEIGHT_CHARTS_NOTICE`) and a link to <https://www.tradingview.com/> on a page your users can reach. The TradingView logo link is on by default and covers the link. Pass `attribution={false}` only if your app already links to TradingView and shows the notice elsewhere, for example on an About page.
 

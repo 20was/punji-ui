@@ -139,6 +139,9 @@
 @import './preset-tile.css';
 @import './filter-bar.css';
 @import './heat-tables.css';
+@import './payoff-chart.css';
+@import './volatility-smile.css';
+@import './event-calendars.css';
 @import './fan-chart.css';
 @import './rolling-returns-chart.css';
 @import './risk-return-scatter.css';

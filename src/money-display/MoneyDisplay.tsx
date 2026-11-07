@@ -6,6 +6,7 @@
  */
 import type { Ref } from 'react';
 
+import { maskText } from '../internal/mask.tsx';
 import { getMoneyFormatter, type MoneyCompactOptions, type MoneyFormatConfig } from '../money/money.ts';
 import { parseMinorUnits } from '../nepal/money.ts';
 
@@ -42,7 +43,15 @@ export interface MoneyDisplayOptions extends Partial<Omit<MoneyFormatConfig, 'cu
   ref?: Ref<HTMLElement>;
 }
 
-export type MoneyDisplayProps = MoneyDisplayOptions & MoneySource;
+/** Hiding the amount (see `PrivateAmount`): the digits are never put in the page. */
+export interface MoneyMaskOptions {
+  /** Show "Rs ••••••" in place of the amount. The amount is not rendered at all (no text, no `value`), and a screen reader hears `maskedLabel`. */
+  masked?: boolean;
+  /** Read out in place of the amount while it is masked. Default 'Amount hidden'. */
+  maskedLabel?: string;
+}
+
+export type MoneyDisplayProps = MoneyDisplayOptions & MoneySource & MoneyMaskOptions;
 
 export function resolveMoneyConfig(props: Partial<MoneyFormatConfig>, preset?: MoneyFormatConfig): MoneyFormatConfig {
   const config = { ...preset } as Partial<MoneyFormatConfig>;
@@ -56,8 +65,15 @@ export function resolveMoneyConfig(props: Partial<MoneyFormatConfig>, preset?: M
 /**
  * @stability beta
  */
-export function MoneyDisplay({ value, compact, missing = '—', missingLabel = 'No value', preset, className, testId, ref, currency, locale, display, accounting, signDisplay, numberingSystem }: MoneyDisplayProps) {
+export function MoneyDisplay({ value, compact, missing = '—', missingLabel = 'No value', preset, className, testId, ref, currency, locale, display, accounting, signDisplay, numberingSystem, masked, maskedLabel = 'Amount hidden' }: MoneyDisplayProps) {
   const config = resolveMoneyConfig({ currency, locale, display, accounting, signDisplay, numberingSystem }, preset);
+  if (masked) {
+    return (
+      <span ref={ref as Ref<HTMLSpanElement>} className={`${className ? `pu-money ${className}` : 'pu-money'} pu-money-masked`} role="img" aria-label={maskedLabel} data-masked="true" data-testid={testId}>
+        <span aria-hidden="true">{maskText(config.currency)}</span>
+      </span>
+    );
+  }
   const formatter = getMoneyFormatter(config);
   let minor: bigint | null = null;
   if (typeof value === 'bigint') minor = value;

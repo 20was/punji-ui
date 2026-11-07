@@ -28,3 +28,10 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+## TradingView Lightweight Charts (optional peer, not bundled)
+
+`@punji/ui/lightweight-charts` is an adapter for `lightweight-charts`, which this package does not ship or install. That library is Apache-2.0 and its licence requires the following notice and a link to https://www.tradingview.com/ on a page of an app that uses it (the chart's `attributionLogo`, on by default in the adapter, provides the link):
+
+> TradingView Lightweight Charts™
+> Copyright (с) 2025 TradingView, Inc. https://www.tradingview.com/

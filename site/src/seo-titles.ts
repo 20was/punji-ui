@@ -16,6 +16,8 @@ export const SEO_TITLES: Readonly<Record<string, string>> = {
   business: 'Invoicing and payroll app in React: VAT bills | Punji UI',
   'reconciliation-desk': 'Bank reconciliation app in React: match, exceptions | Punji UI',
   'account-statements': 'Account statement in React: running balance, print | Punji UI',
+  'treasury-desk': 'Treasury app in React: 13-week cash forecast, FX | Punji UI',
+  'personal-finance': 'Personal finance app in React: net worth, budget | Punji UI',
   'invest-insure': 'Mutual fund, SIP and insurance app in React | Punji UI',
   'risk-meter': 'Mutual fund riskometer in React: RiskMeter | Punji UI',
   'invest-helpers': 'XIRR, SIP and lump sum calculators in TypeScript | Punji UI',

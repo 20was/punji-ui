@@ -1,0 +1,24 @@
+/* Punji UI styles.
+   Styles for CardSection and CardSectionRow. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .pu-card-sec { display: grid; align-content: start; gap: var(--pu-space-3); min-width: 0; padding: 20px 24px }
+  .pu-card-sec + .pu-card-sec { border-block-start: 1px solid var(--pu-color-border) }
+  .pu-card-sec-h { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; min-height: var(--pu-control-sm) }
+  .pu-card-sec-h :is(h2, h3) { margin: 0; font: 600 16px / 22px var(--pu-font-display); color: var(--pu-color-text) }
+  .pu-card-sec-h :is(h2, h3) > span { margin-inline-start: 8px; font: 400 13px / 18px var(--pu-font-body); color: var(--pu-color-text-muted) }
+  .pu-card-sec .kit-tablebox { border: 0; border-radius: 0; background: transparent }
+  .pu-card-sec.foot { padding-block-start: 0; font-size: 12px; line-height: 18px; color: var(--pu-color-text-muted) }
+  .pu-card-sec + .pu-card-sec.foot { border-block-start: 0 }
+  .pu-card-sec.foot p { margin: 0 }
+  @media (max-width: 699px) { .pu-card-sec { padding: 16px } }
+
+  /* Two sections side by side from 880px of the row's own width, a hairline between; stacked under it. */
+  .pu-card-row { container-type: inline-size; min-width: 0 }
+  .pu-card-sec + .pu-card-row, .pu-card-row + .pu-card-sec:not(.foot), .pu-card-row + .pu-card-row { border-block-start: 1px solid var(--pu-color-border) }
+  .pu-card-row-i { display: grid; grid-template-columns: minmax(0, 1fr); min-width: 0 }
+  .pu-card-row-i > .pu-card-sec + .pu-card-sec { border-block-start: 1px solid var(--pu-color-border) }
+  @container (min-width: 880px) {
+    .pu-card-row-i { grid-template-columns: var(--card-row-cols, minmax(0, 1fr) minmax(0, 1fr)) }
+    .pu-card-row-i > .pu-card-sec + .pu-card-sec { border-block-start: 0; border-inline-start: 1px solid var(--pu-color-border) }
+  }
+}

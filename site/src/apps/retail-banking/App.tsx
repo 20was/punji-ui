@@ -66,8 +66,18 @@ export default function RetailBanking() {
               </span>
             </p>
             <div className="app-toolbar-end rb-switches">
-              <Switch label="Hide balances" checked={state.hideBalances} onChange={(hide) => dispatch({ type: 'hide-balances', hide })} testId="rb-hide" />
-              <Switch label="Offline (demo)" checked={state.offline} onChange={(offline) => dispatch({ type: 'offline', offline })} testId="rb-offline" />
+              <span className="rb-switch">
+                <span id="rb-hide-label" className="app-small">
+                  Hide balances
+                </span>
+                <Switch labelledBy="rb-hide-label" checked={state.hideBalances} onChange={(hide) => dispatch({ type: 'hide-balances', hide })} testId="rb-hide" />
+              </span>
+              <span className="rb-switch">
+                <span id="rb-offline-label" className="app-small">
+                  Offline (demo)
+                </span>
+                <Switch labelledBy="rb-offline-label" checked={state.offline} onChange={(offline) => dispatch({ type: 'offline', offline })} testId="rb-offline" />
+              </span>
             </div>
           </>
         }

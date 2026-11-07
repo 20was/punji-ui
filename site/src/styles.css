@@ -257,10 +257,18 @@ h1:focus, main:focus { outline: none; }
 .doc-phone-frame { display: block; width: 375px; max-width: 100%; border: 0; outline: 1px solid var(--pu-color-card-border); background: var(--pu-color-bg); }
 .doc-frame .doc-stage-in { min-height: 0; padding: 20px 16px; }
 .doc-frame.is-showcase .doc-stage-in { align-content: start; padding: 16px 12px; }
-/* Global preview controls (locale, density, theme) above the example frame, and the props playground. */
-.doc-preview-bar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 12px; margin: 0 0 12px; }
-.doc-preview-bar label, .doc-play-field { display: grid; gap: 4px; min-width: 0; font: 500 12px/1.2 var(--pu-font-body); color: var(--doc-ink-2); }
-.doc-preview-bar select, .doc-play-field select, .doc-play-field input[type='text'], .doc-play-field input[type='number'] { height: 32px; max-width: 100%; padding: 0 8px; border: 1px solid var(--doc-rule); border-radius: 8px; background: var(--doc-raised); color: var(--pu-color-text); font: 400 13px/1 var(--pu-font-body); }
+/* Preview settings menu (locale, density, contrast) in the stage toolbar, and the props playground. */
+.doc-pref { position: relative; display: inline-flex; }
+.doc-pref-btn { display: grid; place-items: center; position: relative; width: 32px; height: 30px; padding: 0; border: 1px solid var(--doc-rule); border-radius: 8px; background: transparent; color: var(--doc-ink-3); cursor: pointer; }
+.doc-pref-btn:hover, .doc-pref-btn[aria-expanded='true'] { color: var(--pu-color-text); background: var(--doc-hover); }
+.doc-pref-btn[data-changed]::after { content: ''; position: absolute; top: 4px; right: 4px; width: 6px; height: 6px; border-radius: 50%; background: var(--pu-color-accent, currentColor); }
+.doc-pref-panel { position: absolute; z-index: 5; top: calc(100% + 6px); right: 0; display: grid; gap: 10px; width: 220px; padding: 12px; border: 1px solid var(--pu-color-card-border); border-radius: 12px; background: var(--doc-raised); box-shadow: var(--doc-shadow); }
+.doc-pref-panel label { display: grid; gap: 4px; min-width: 0; font: 500 12px/1.2 var(--pu-font-body); color: var(--doc-ink-2); }
+.doc-pref-panel label.doc-pref-check { display: flex; align-items: center; gap: 8px; min-height: 28px; font-size: 13px; color: var(--pu-color-text); }
+.doc-pref-panel label.doc-pref-check input { width: 16px; height: 16px; margin: 0; }
+.doc-pref-panel .doc-preview-reset { justify-self: start; height: 30px; }
+.doc-pref-panel select, .doc-play-field select, .doc-play-field input[type='text'], .doc-play-field input[type='number'] { height: 32px; max-width: 100%; padding: 0 8px; border: 1px solid var(--doc-rule); border-radius: 8px; background: var(--doc-raised); color: var(--pu-color-text); font: 400 13px/1 var(--pu-font-body); }
+.doc-play-field { display: grid; gap: 4px; min-width: 0; font: 500 12px/1.2 var(--pu-font-body); color: var(--doc-ink-2); }
 .doc-preview-reset, .doc-play-open { height: 32px; padding: 0 12px; border: 1px solid var(--doc-rule); border-radius: 8px; background: transparent; color: var(--pu-color-text); font: 500 13px/1 var(--pu-font-body); cursor: pointer; }
 .doc-preview-reset:hover:not(:disabled), .doc-play-open:hover { border-color: var(--pu-color-border-strong); }
 .doc-preview-reset:disabled { color: var(--doc-ink-3); cursor: default; }

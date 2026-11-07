@@ -12,7 +12,7 @@ import { PageActions } from './PageActions.tsx';
 import { PhoneFrame } from './PhoneFrame.tsx';
 import { PLAYGROUNDS } from '../playground.ts';
 import { LocaleScope } from './PreviewScope.tsx';
-import { PreviewControls } from './PreviewControls.tsx';
+import { PreviewSettings } from './PreviewControls.tsx';
 import { setPreviewPrefs, usePreviewPrefs } from './preview.ts';
 import { useResolvedTheme } from './theme.ts';
 import { ChevronIcon, CodeIcon, DoIcon, DontIcon, MonitorIcon, MoonIcon, PhoneIcon, SunIcon } from './icons.tsx';
@@ -272,6 +272,8 @@ function Demo({ page, def, onPick }: { page: Page; def: ExampleDef; onPick: (id:
   if (!loaded) return null;
   const { Component, source } = loaded;
   const shown = theme ?? resolved;
+  const base = shown.startsWith('dark') ? 'dark' : 'light';
+  const hc = shown.endsWith('-hc');
   const lines = source.replace(/\n+$/, '').split('\n').length;
   const long = lines > PEEK_LINES;
   return (
@@ -285,7 +287,6 @@ function Demo({ page, def, onPick }: { page: Page; def: ExampleDef; onPick: (id:
           ))}
         </div>
       )}
-      <PreviewControls />
       <div className="doc-demo" id={`ex-${def.id}`}>
         <div className="doc-demo-bar">
           {/* With variant chips above, the active chip already names the example: on wide screens the bar shows only its note
@@ -304,13 +305,14 @@ function Demo({ page, def, onPick }: { page: Page; def: ExampleDef; onPick: (id:
               </button>
             </div>
             <div className="doc-seg" role="group" aria-label="Preview theme">
-              <button type="button" aria-pressed={shown === 'light'} onClick={() => setPreviewPrefs({ theme: 'light' })} aria-label="Light preview" title="Light preview">
+              <button type="button" aria-pressed={base === 'light'} onClick={() => setPreviewPrefs({ theme: hc ? 'light-hc' : 'light' })} aria-label="Light preview" title="Light preview">
                 <SunIcon />
               </button>
-              <button type="button" aria-pressed={shown === 'dark'} onClick={() => setPreviewPrefs({ theme: 'dark' })} aria-label="Dark preview" title="Dark preview">
+              <button type="button" aria-pressed={base === 'dark'} onClick={() => setPreviewPrefs({ theme: hc ? 'dark-hc' : 'dark' })} aria-label="Dark preview" title="Dark preview">
                 <MoonIcon />
               </button>
             </div>
+            <PreviewSettings shown={base} />
           </div>
         </div>
         <div className={`doc-stage${phone ? ' is-phone' : ''}`} data-theme={theme ?? undefined} data-pu-density={prefs.density}>

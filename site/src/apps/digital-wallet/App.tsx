@@ -59,8 +59,18 @@ export default function DigitalWallet() {
               <span className="app-muted">KYC verified · 9802000021</span>
             </p>
             <div className="app-toolbar-end dw-switches">
-              <Switch label="Hide balance" checked={state.hideBalance} onChange={(hide) => dispatch({ type: 'hide', hide })} testId="dw-hide" />
-              <Switch label="Offline (demo)" checked={state.offline} onChange={(offline) => dispatch({ type: 'offline', offline })} testId="dw-offline" />
+              <span className="dw-switch">
+                <span id="dw-hide-label" className="app-small">
+                  Hide balance
+                </span>
+                <Switch labelledBy="dw-hide-label" checked={state.hideBalance} onChange={(hide) => dispatch({ type: 'hide', hide })} testId="dw-hide" />
+              </span>
+              <span className="dw-switch">
+                <span id="dw-offline-label" className="app-small">
+                  Offline (demo)
+                </span>
+                <Switch labelledBy="dw-offline-label" checked={state.offline} onChange={(offline) => dispatch({ type: 'offline', offline })} testId="dw-offline" />
+              </span>
             </div>
           </>
         }

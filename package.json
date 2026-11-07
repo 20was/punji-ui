@@ -639,6 +639,26 @@
       "types": "./dist/accordion/Accordion.d.ts",
       "default": "./dist/accordion/Accordion.js"
     },
+    "./chart-a11y": {
+      "types": "./dist/chart-a11y/ChartA11yShell.d.ts",
+      "default": "./dist/chart-a11y/ChartA11yShell.js"
+    },
+    "./waterfall-chart": {
+      "types": "./dist/waterfall-chart/WaterfallChart.d.ts",
+      "default": "./dist/waterfall-chart/WaterfallChart.js"
+    },
+    "./cash-flow-chart": {
+      "types": "./dist/cash-flow-chart/CashFlowChart.d.ts",
+      "default": "./dist/cash-flow-chart/CashFlowChart.js"
+    },
+    "./net-worth-chart": {
+      "types": "./dist/net-worth-chart/NetWorthChart.d.ts",
+      "default": "./dist/net-worth-chart/NetWorthChart.js"
+    },
+    "./range-selector": {
+      "types": "./dist/range-selector/RangeSelector.d.ts",
+      "default": "./dist/range-selector/RangeSelector.js"
+    },
     "./css/*.css": {
       "types": "./dist/css/*.css.d.ts",
       "default": "./dist/css/*.css"

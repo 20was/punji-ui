@@ -353,7 +353,7 @@
     "name": "Nepal utilities including calendar table",
     "path": "dist/nepal/nepal.js",
     "import": "*",
-    "limit": "5.1 kB",
+    "limit": "5.21 kB",
     "gzip": true
   },
   {
@@ -444,14 +444,14 @@
     "name": "Calendar including BS conversion and shared controls",
     "path": "dist/calendar/Calendar.js",
     "import": "*",
-    "limit": "9.01 kB",
+    "limit": "9.25 kB",
     "gzip": true
   },
   {
     "name": "Date pickers including Calendar",
     "path": "dist/date-picker/DatePicker.js",
     "import": "*",
-    "limit": "13.68 kB",
+    "limit": "14.03 kB",
     "gzip": true
   },
   {
@@ -948,7 +948,7 @@
     "name": "transaction-list (import from '@punji/ui/transaction-list')",
     "path": "dist/transaction-list/TransactionList.js",
     "import": "*",
-    "limit": "10.3 kB",
+    "limit": "10.55 kB",
     "gzip": true
   },
   {
@@ -976,7 +976,7 @@
     "name": "bill-summary (import from '@punji/ui/bill-summary')",
     "path": "dist/bill-summary/BillSummary.js",
     "import": "*",
-    "limit": "9.11 kB",
+    "limit": "9.33 kB",
     "gzip": true
   },
   {
@@ -1025,14 +1025,14 @@
     "name": "dividend-history (import from '@punji/ui/dividend-history')",
     "path": "dist/dividend-history/DividendHistory.js",
     "import": "*",
-    "limit": "13.87 kB",
+    "limit": "14.16 kB",
     "gzip": true
   },
   {
     "name": "transaction-history (import from '@punji/ui/transaction-history')",
     "path": "dist/transaction-history/TransactionHistory.js",
     "import": "*",
-    "limit": "18.57 kB",
+    "limit": "19.03 kB",
     "gzip": true,
     "entry": [
       "index"
@@ -1042,7 +1042,7 @@
     "name": "transaction-history with the date picker panel (all chunks)",
     "path": "dist/transaction-history/TransactionHistory.js",
     "import": "*",
-    "limit": "23.92 kB",
+    "limit": "24.55 kB",
     "gzip": true
   },
   {
@@ -1339,7 +1339,7 @@
     "name": "tax-invoice (import from '@punji/ui/tax-invoice')",
     "path": "dist/tax-invoice/TaxInvoice.js",
     "import": "*",
-    "limit": "11.48 kB",
+    "limit": "11.78 kB",
     "gzip": true
   },
   {

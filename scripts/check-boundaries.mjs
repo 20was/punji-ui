@@ -9,6 +9,8 @@ const PURE = { nepal: {}, calculations: {}, money: {}, export: {}, ledger: {}, b
 // Pure modules may reuse these other pure modules (never components): the exact decimal parser, minor-unit helpers and rounding.
 // The ledger helpers also reuse the calendar-date type, currency exponent and the CSV writer (all pure).
 const SHARED = {
+  // Volume profile: exact decimal and bigint ratio helpers (internal/exactMath.ts is pure: no React, no browser).
+  'chart-math': new Set(['../internal/exactMath.ts']),
   money: new Set(['../nepal/decimal.ts', '../nepal/money.ts', '../calculations/rounding.ts']),
   banking: new Set(['../export/csv.ts', '../money/money.ts', '../nepal/money.ts']),
   'date-range-presets': new Set(['../nepal/date-only.ts', '../nepal/calendar.ts']),

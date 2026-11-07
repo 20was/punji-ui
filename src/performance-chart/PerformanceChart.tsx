@@ -47,12 +47,11 @@
  */
 import { memo, useEffect, useId, useMemo, useState, type CSSProperties, type PointerEvent, type ReactNode } from 'react';
 
-import { downsampleIndices, niceTicks, rebase, rebaseOnto, spreadLabels } from '../chart-math/chartMath.ts';
+import { downsampleIndices, drawdownOf, niceTicks, rebase, rebaseOnto, spreadLabels } from '../chart-math/chartMath.ts';
 import { ChartA11yShell } from '../chart-a11y/ChartA11yShell.tsx';
 import { ChartTooltip, clamp, isNum, shortDate, thinned, useMeasuredWidth } from '../internal/chartFrame.tsx';
 
 /** Still importable from here: it moved to chart-math, which the candlestick chart shares. */
-export { spreadLabels } from '../chart-math/chartMath.ts';
 
 export interface PerformanceSeries {
   /** Stable key (the React key and the legend's identity). */
@@ -158,18 +157,8 @@ const defaultValue = (v: number) => VALUE.format(v);
 const defaultPercent = (p: number) => `${p > 0 ? '+' : p < 0 ? '−' : ''}${Math.abs(p).toFixed(2)}%`;
 const defaultIndex = (v: number) => v.toFixed(1);
 
-/**
- * The fall from the running high, in percent (0 or negative), one value per input. A gap carries the high and
- * stays `null`; a high of zero or below cannot be a base, so the point is `null`.
- */
-export function drawdownOf(values: readonly (number | null | undefined)[]): (number | null)[] {
-  let peak = -Infinity;
-  return values.map((v) => {
-    if (!isNum(v)) return null;
-    peak = Math.max(peak, v);
-    return peak > 0 ? Math.min(0, (v / peak - 1) * 100) : null;
-  });
-}
+// Re-exported so the `performance-chart` subpath keeps these names; they live in chart-math so other charts do not pull this file in.
+export { drawdownOf, spreadLabels };
 
 /**
  * @stability beta

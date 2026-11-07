@@ -768,7 +768,7 @@ const BASE_PAGES: readonly PageDef[] = [
       title: 'Data rules',
       points: ['Dates are "YYYY-MM-DD", oldest first. The default axis is by session so non-trading days leave no hole; `axis="time"` spaces by date.', 'low must not exceed open or close and high must not be below them; every price must be a finite number.', 'convention is the same as `PriceChange`: green-up (default) or red-up.', 'Default prices read NPR with two decimals from the platform currency formatter; pass `formatPrice` for anything else.', 'Opt-in features ride on the module you import: pass `transform={heikinAshiTransform}` with `mode="heikin-ashi"`, `scales={priceScales}` with `scale` and `compare`, `layers={[eventsLayer(events), levelsLayer(levels), baselineLayer()]}`, and indicators from their own modules. Importing any of them brings the shared engine (about 3 kB gzipped); a chart that imports none is the plain chart. Without its module a prop is ignored: `mode="heikin-ashi"` draws candles, `scale` stays linear, `mode="baseline"` draws a line.', 'Heikin Ashi follows TradingView\'s construction rules (`heikinAshi` in chart-math). Its values are printed to two more decimals than the prices were written with, never rounded to the currency\'s two, and the readout also gives the actual close.', '`mode="hollow"` follows TradingView: hollow when the close is above the open, coloured by the close against the previous close.', 'A scale that cannot hold the prices (log with a price at or below zero, percent or indexed with a first close at or below zero) falls back to linear and says so. With `compare`, a linear or log axis becomes percent; each compared series starts level with the price on its first shared date.', 'Indicators are descriptors built by their own modules (`rsiIndicator` from `@punji/ui/rsi-indicator`, and so on), so a chart that draws none does not ship their maths, the pane drawing or the engine. Bollinger and VWAP default to a line over the price (`placement: "pane"` for a pane of their own); RSI and MACD are panes. A pane indicator you write yourself passes `view: IndicatorPaneView`.', 'A level outside the price range shown, and an event outside the sessions shown, are not drawn; both stay in their tables and are counted under the chart.'],
     },
-    related: ['price-chart', 'depth-chart', 'performance-chart', 'chart-math', 'chart-a11y-shell', 'payoff-chart', 'klinecharts'],
+    related: ['price-chart', 'depth-chart', 'performance-chart', 'chart-math', 'chart-a11y-shell', 'payoff-chart', 'klinecharts', 'price-only-chart'],
   },
   {
     slug: 'performance-chart',
@@ -796,7 +796,7 @@ const BASE_PAGES: readonly PageDef[] = [
       title: 'Data rules',
       points: ['dates and every series.values are the same length; slice them together for a period.', 'Optional layers, all off by default so existing charts do not change: `reference` (a dashed labelled line in the portfolio\'s unit; a value far outside the data is pinned to the edge and labelled "above the range" or "below the range"), `drawdown` (the portfolio\'s fall from its running high, 0 at the band\'s top edge), `contributions` (the money put in, dotted, on the same scale; a gap is `null`), `endLabels` (each visible series\' last value at the right edge, spread by `spreadLabels` so they never overlap), `rebase={100}` (every series an index from 100 at its own first value; overrides `normalize`) and `axis="quiet"`. `onActiveChange(index | null)` reports the scrubbed date.', 'Values are plain numbers, not exact Money: an index, NAV or percent series is not money. Format with `formatValue`; for exact bigint amounts use `NetWorthChart` or `CashFlowChart`.', 'Migrating from the web kit: `EquityChart` is `normalize={false}` with `contributions` and `drawdown` (its `base` is `contributions`, `compare` is a second series, `ddLabel` is `labels.drawdown`, `EquityLegend` is the built-in legend of toggles with end values). `TwoLineChart` is two series with `endLabels` (the dashed one is the second). `TrendChart` is `axis="quiet"` with `area` and a dashed second series. `TargetChart` is one series with `reference` (its `targetAbove` and `targetBelow` are `labels.referenceAbove` and `referenceBelow`; `firedAt` and the retry state are not carried over). Web\'s `frame` readout is `onActiveChange` plus your own readout; its `positions` are not exposed.', 'A gap breaks that series\' line: missing data is never bridged, drawn as zero or interpolated, and the table reads "none" there. Only the series with the missing value breaks; the others stay one line, and a benchmark rebased from a later start (`rebaseOnto`) adds no gaps of its own. A series whose first value is zero cannot be normalised and is not drawn.', 'A benchmark that starts later begins level with the portfolio\'s percent change on its first date (`rebaseOnto`), not at 0%.', 'The first series is the portfolio; convention sets the colour of the gain area.'],
     },
-    related: ['candlestick-chart', 'price-chart', 'column-chart'],
+    related: ['candlestick-chart', 'price-chart', 'column-chart', 'rolling-returns-chart', 'fan-chart'],
   },
   {
     slug: 'depth-chart',
@@ -816,7 +816,7 @@ const BASE_PAGES: readonly PageDef[] = [
     keyboard: ['Tab focuses the plot. Left and Right move one price level, Home and End jump to the lowest and highest price.'],
     accessibility: ['The focused level is announced: side, price, quantity and cumulative size.', 'Sides are named in the readout and table, not only coloured.', 'A visually hidden table lists every level with its running total.'],
     responsive: ['The plot is as wide as its container.'],
-    related: ['order-book', 'candlestick-chart'],
+    related: ['order-book', 'candlestick-chart', 'volume-profile'],
   },
   {
     slug: 'chart-math',
@@ -824,11 +824,11 @@ const BASE_PAGES: readonly PageDef[] = [
     group: 'data',
     kind: 'utility',
     stability: 'stable',
-    description: 'Pure chart maths: ticks, scales, OHLC checks, candle aggregation, SMA, EMA, rebasing, Heikin Ashi, log scales, RSI, MACD, Bollinger and VWAP.',
+    description: 'Pure chart maths: ticks, scales, OHLC checks, candles, averages, Heikin Ashi, log scales, indicators, Renko, Kagi, Point and Figure, Line Break and breadth.',
     summary: 'The pure helpers behind the financial charts, usable on their own: round ticks, category and time scales, OHLC validation, candle aggregation, extreme-preserving downsampling, moving averages, rebasing and cumulative depth. No React and no browser.',
     use: ['Drawing your own chart with the same rules.', 'Validating candles before they reach a chart.'],
     avoid: ['Rendering: these return numbers only.'],
-    api: [...ui('chart-math', 'niceTicks', 'bandScale', 'timeScale', 'validateOhlc', 'reduceCandles', 'downsampleIndices', 'sma', 'ema', 'rebase', 'rebaseOnto', 'aggregateByPeriod', 'cumulativeDepth', 'heikinAshi', 'priceTransform', 'logTicks', 'spreadLabels', 'exactText', 'decimalsOf'), ...ui('chart-indicators', 'rsi', 'macd', 'bollinger', 'vwap')],
+    api: [...ui('chart-math', 'niceTicks', 'bandScale', 'timeScale', 'validateOhlc', 'reduceCandles', 'downsampleIndices', 'sma', 'ema', 'rebase', 'rebaseOnto', 'aggregateByPeriod', 'cumulativeDepth', 'heikinAshi', 'priceTransform', 'logTicks', 'spreadLabels', 'exactText', 'decimalsOf'), ...ui('chart-indicators', 'rsi', 'macd', 'bollinger', 'vwap'), ...ui('chart-price-only', 'renkoBricks', 'kagiLines', 'pointAndFigure', 'lineBreak', 'rangeBars'), ...ui('chart-breadth', 'advanceDeclineLine', 'percentAboveMA')],
     examples: [{ id: 'math', title: 'A chart of your own', note: 'Ticks, averages, percent change and data checks from chart-math; the drawing is plain SVG.' }],
     keyboard: ['Not a UI module.'],
     accessibility: ['Nothing to render.'],
@@ -1293,7 +1293,7 @@ const BASE_PAGES: readonly PageDef[] = [
     keyboard: ['With `onSelect` each tile is a button in tab order: Enter or Space selects.', 'The "View data as a table" disclosure is a native details element; its table region is focusable and scrolls.'],
     accessibility: ['Every tile has a full spoken name (symbol, name, size, direction, percent), including tiles too small to show text.', 'The legend lists every step including "Unchanged" and "No change data".', 'The data table lists every item, including unsized ones.'],
     responsive: ['aspect is width over height (default 1.5); use about 1 on a phone.', 'Tiles are placed in percent of the container.'],
-    related: ['stock-table', 'market-movers', 'column-chart'],
+    related: ['stock-table', 'market-movers', 'column-chart', 'grouped-market-heatmap'],
   },
   {
     slug: 'market-breadth',
@@ -1310,7 +1310,7 @@ const BASE_PAGES: readonly PageDef[] = [
     keyboard: ['Not interactive: nothing takes focus.'],
     accessibility: ['The bar is an image named with every count ("45 advances, 30 declines, 5 unchanged of 80"); the counts are also printed as a description list.', 'Arrows and words carry direction; `convention="red-up"` swaps the colours only.', 'Loading is a status with a spoken name; the empty state says why there is nothing.'],
     responsive: ['The bar fills its container; the counts wrap onto more lines when narrow.'],
-    related: ['market-indices', 'market-movers', 'market-heatmap', 'market-status'],
+    related: ['market-indices', 'market-movers', 'market-heatmap', 'market-status', 'breadth-chart'],
   },
   {
     slug: 'price-chart',
@@ -2110,7 +2110,7 @@ const BASE_PAGES: readonly PageDef[] = [
     keyboard: ['Not interactive.'],
     accessibility: ['A table with a caption; groups are `colgroup` header rows; each product is a row header. The change is words plus an arrow; colour only reinforces it.', 'Dates are <time> elements with the ISO date.'],
     responsive: ['Scrolls sideways inside its frame on a narrow screen; products wrap.'],
-    related: ['deposit-calculator', 'loan-calculator'],
+    related: ['deposit-calculator', 'loan-calculator', 'yield-curve-chart'],
   },
   {
     slug: 'nepal-address-picker',

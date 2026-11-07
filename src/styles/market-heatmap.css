@@ -32,4 +32,57 @@
   .pu-heat-data > summary { cursor: pointer; font-size: var(--pu-text-sm); color: var(--pu-color-text) }
   .pu-heat-data > summary:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
   .pu-heat-data .kit-tablebox { margin-top: 8px; max-height: 320px }
+
+  /* Grouped map (items with a `group` path). Everything below is new; the flat map above is unchanged. */
+  .pu-heat-grouped .pu-heat-measure { min-width: 0 }
+  .pu-heat-crumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; margin: 0; padding: 0; list-style: none; font-size: var(--pu-text-sm); line-height: 20px }
+  .pu-heat-crumbs li { display: inline-flex; align-items: center; color: var(--pu-color-text) }
+  .pu-heat-crumbs li + li::before { content: '›'; margin-inline: 4px; color: var(--pu-color-text-muted) }
+  .pu-heat-crumbs button { appearance: none; min-height: 32px; padding: 4px 8px; border: 0; border-radius: var(--pu-radius-8); background: transparent; color: var(--pu-color-link); font: inherit; text-decoration: underline; cursor: pointer }
+  .pu-heat-crumbs button:hover { background: var(--pu-color-surface-tint) }
+  .pu-heat-crumbs button:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
+  .pu-heat-crumbs [aria-current] { padding: 4px 8px; font-weight: 600 }
+  .pu-heat-group { position: absolute; box-sizing: border-box; border: 1px solid var(--pu-color-border-strong); border-radius: 2px; pointer-events: none }
+  .pu-heat-ghead { appearance: none; pointer-events: auto; position: absolute; inset: 0 0 auto 0; display: flex; align-items: center; justify-content: space-between; gap: 6px; box-sizing: border-box; margin: 0; padding: 0 6px; border: 0; border-bottom: 1px solid var(--pu-color-border-strong); background: var(--pu-color-surface-tint); color: var(--pu-color-text); font: 600 12px / 1.1 var(--pu-font-body); text-align: start; cursor: pointer; overflow: hidden; white-space: nowrap }
+  .pu-heat-ghead > b { overflow: hidden; text-overflow: ellipsis; font-weight: 700 }
+  .pu-heat-ghead > span { flex: none; font-weight: 600; font-variant-numeric: var(--pu-font-numeric) }
+  .pu-heat-group[data-header='off'] .pu-heat-ghead { inset: 0; height: 100%; opacity: 0; border: 0 }
+  .pu-heat-group[data-header='off'] .pu-heat-ghead:focus-visible { opacity: 1 }
+  .pu-heat-ghead:hover { background: color-mix(in srgb, var(--pu-color-text) 8%, var(--pu-color-surface-tint)) }
+  .pu-heat-ghead:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: -3px }
+  .pu-heat-group[data-step='1'] .pu-heat-ghead { background: color-mix(in srgb, var(--heat-up) 12%, var(--pu-color-surface)) }
+  .pu-heat-group[data-step='2'] .pu-heat-ghead { background: color-mix(in srgb, var(--heat-up) 24%, var(--pu-color-surface)) }
+  .pu-heat-group[data-step='3'] .pu-heat-ghead { background: color-mix(in srgb, var(--heat-up) 38%, var(--pu-color-surface)) }
+  .pu-heat-group[data-step='-1'] .pu-heat-ghead { background: color-mix(in srgb, var(--heat-down) 12%, var(--pu-color-surface)) }
+  .pu-heat-group[data-step='-2'] .pu-heat-ghead { background: color-mix(in srgb, var(--heat-down) 24%, var(--pu-color-surface)) }
+  .pu-heat-group[data-step='-3'] .pu-heat-ghead { background: color-mix(in srgb, var(--heat-down) 38%, var(--pu-color-surface)) }
+  /* A host page may colour every link; the words inside a tile keep the text colour so they stay readable on the tint. */
+  .pu-heat-grouped :is(.pu-heat-tile > a, .pu-heat-row-main:is(a)) > :is(.pu-heat-sym, .pu-heat-chg, .pu-heat-row-sub, .kit-sr) { color: var(--pu-color-text) }
+  .pu-heat-tile > a { appearance: none; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 2px; width: 100%; height: 100%; margin: 0; padding: 4px 6px; box-sizing: border-box; text-decoration: none; overflow: hidden }
+  .pu-heat-tile > a:hover { background: color-mix(in srgb, var(--pu-color-text) 8%, transparent) }
+  .pu-heat-tile > a:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: -3px }
+  .pu-heat-tile[data-size='sm'] > a { padding: 2px 4px }
+  .pu-heat-tile[data-size='xs'] > a > * { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap }
+  .pu-heat-tile > a > .kit-sr { white-space: nowrap }
+  .pu-heat-grouped .pu-heat-tile[data-size='xs'] > :is(a, button, div) { padding: 0 }
+  .pu-heat-more > button .pu-heat-sym { font-style: italic }
+  .pu-heat-list { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none }
+  .pu-heat-row { border: 1px solid var(--pu-color-border-default); border-radius: var(--pu-radius-8); overflow: hidden; background: var(--pu-color-surface-tint) }
+  .pu-heat-row-main { appearance: none; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'sym chg' 'sub chg'; column-gap: 12px; align-items: center; box-sizing: border-box; width: 100%; min-height: 48px; margin: 0; padding: 6px 12px; border: 0; background: transparent; color: var(--pu-color-text); font: inherit; text-align: start; text-decoration: none; cursor: pointer }
+  .pu-heat-row-main:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: -3px }
+  .pu-heat-row-main .pu-heat-sym { grid-area: sym }
+  .pu-heat-row-main .pu-heat-chg { grid-area: chg; font-size: 13px }
+  .pu-heat-row-main .pu-heat-row-sub { grid-area: sub; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: var(--pu-color-text) }
+  .pu-heat-row-main .kit-sr { grid-area: sub }
+  .pu-heat-row[data-step='1'] { background: color-mix(in srgb, var(--heat-up) 12%, var(--pu-color-surface)) }
+  .pu-heat-row[data-step='2'] { background: color-mix(in srgb, var(--heat-up) 24%, var(--pu-color-surface)) }
+  .pu-heat-row[data-step='3'] { background: color-mix(in srgb, var(--heat-up) 38%, var(--pu-color-surface)) }
+  .pu-heat-row[data-step='-1'] { background: color-mix(in srgb, var(--heat-down) 12%, var(--pu-color-surface)) }
+  .pu-heat-row[data-step='-2'] { background: color-mix(in srgb, var(--heat-down) 24%, var(--pu-color-surface)) }
+  .pu-heat-row[data-step='-3'] { background: color-mix(in srgb, var(--heat-down) 38%, var(--pu-color-surface)) }
+  .pu-heat-subtotal th, .pu-heat-subtotal td { font-weight: 600; background: var(--pu-color-surface-tint) }
+  @media (prefers-reduced-motion: no-preference) {
+    .pu-heat-level { animation: pu-heat-in 140ms ease-out }
+    @keyframes pu-heat-in { from { opacity: 0 } to { opacity: 1 } }
+  }
 }

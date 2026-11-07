@@ -1195,6 +1195,74 @@
     "./correlation-matrix": {
       "types": "./dist/correlation-matrix/CorrelationMatrix.d.ts",
       "default": "./dist/correlation-matrix/CorrelationMatrix.js"
+    },
+    "./chart-price-only": {
+      "types": "./dist/chart-math/priceOnly.d.ts",
+      "default": "./dist/chart-math/priceOnly.js"
+    },
+    "./chart-breadth": {
+      "types": "./dist/chart-math/breadth.d.ts",
+      "default": "./dist/chart-math/breadth.js"
+    },
+    "./price-only-chart": {
+      "types": "./dist/price-only-chart/PriceOnlyChart.d.ts",
+      "default": "./dist/price-only-chart/PriceOnlyChart.js"
+    },
+    "./renko-type": {
+      "types": "./dist/price-only-chart/types/renko.d.ts",
+      "default": "./dist/price-only-chart/types/renko.js"
+    },
+    "./kagi-type": {
+      "types": "./dist/price-only-chart/types/kagi.d.ts",
+      "default": "./dist/price-only-chart/types/kagi.js"
+    },
+    "./point-figure-type": {
+      "types": "./dist/price-only-chart/types/pointFigure.d.ts",
+      "default": "./dist/price-only-chart/types/pointFigure.js"
+    },
+    "./line-break-type": {
+      "types": "./dist/price-only-chart/types/lineBreak.d.ts",
+      "default": "./dist/price-only-chart/types/lineBreak.js"
+    },
+    "./range-bars-type": {
+      "types": "./dist/price-only-chart/types/rangeBars.d.ts",
+      "default": "./dist/price-only-chart/types/rangeBars.js"
+    },
+    "./breadth-chart": {
+      "types": "./dist/breadth-chart/BreadthChart.d.ts",
+      "default": "./dist/breadth-chart/BreadthChart.js"
+    },
+    "./fan-chart": {
+      "types": "./dist/fan-chart/FanChart.d.ts",
+      "default": "./dist/fan-chart/FanChart.js"
+    },
+    "./rolling-returns-chart": {
+      "types": "./dist/rolling-returns-chart/RollingReturnsChart.d.ts",
+      "default": "./dist/rolling-returns-chart/RollingReturnsChart.js"
+    },
+    "./risk-return-scatter": {
+      "types": "./dist/risk-return-scatter/RiskReturnScatter.d.ts",
+      "default": "./dist/risk-return-scatter/RiskReturnScatter.js"
+    },
+    "./yield-curve-chart": {
+      "types": "./dist/yield-curve-chart/YieldCurveChart.d.ts",
+      "default": "./dist/yield-curve-chart/YieldCurveChart.js"
+    },
+    "./style-grid": {
+      "types": "./dist/style-grid/StyleGrid.d.ts",
+      "default": "./dist/style-grid/StyleGrid.js"
+    },
+    "./seasonality-chart": {
+      "types": "./dist/seasonality-chart/SeasonalityChart.d.ts",
+      "default": "./dist/seasonality-chart/SeasonalityChart.js"
+    },
+    "./market-heatmap-grouped": {
+      "types": "./dist/market-heatmap/GroupedMarketHeatmap.d.ts",
+      "default": "./dist/market-heatmap/GroupedMarketHeatmap.js"
+    },
+    "./volume-profile": {
+      "types": "./dist/volume-profile/VolumeProfile.d.ts",
+      "default": "./dist/volume-profile/VolumeProfile.js"
     }
   },
   "files": [

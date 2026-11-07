@@ -218,6 +218,23 @@
     .kit-ct-cross text { fill: Canvas }
     .kit-ct-cross circle { fill: Canvas; stroke: CanvasText }
     .kit-ct-legend i { forced-color-adjust: none; background: CanvasText }
+    :is(.pu-po-brick.up rect, .pu-po-keys .pu-po-sw.brick.up) { fill: Canvas; background: Canvas; border-color: CanvasText; stroke: CanvasText }
+    :is(.pu-po-brick.down rect, .pu-po-keys .pu-po-sw.brick.down) { fill: CanvasText; background: CanvasText; border-color: CanvasText; stroke: CanvasText }
+    .pu-po-brick.up text { fill: CanvasText }
+    .pu-po-brick.down text { fill: Canvas }
+    .pu-po-brick.active rect { stroke-width: 3.5 }
+    .pu-po-kagi, .pu-po-col { stroke: CanvasText }
+    .pu-po-kagi.yin { stroke-dasharray: none }
+    .pu-po-kagi-join { stroke: GrayText }
+    .pu-po-lit { fill: none; stroke: GrayText }
+    .pu-po-keys .pu-po-sw.kagi { background: none; border-top-color: CanvasText }
+    .pu-po-keys .pu-po-sw.col { background: Canvas; color: CanvasText }
+    .pu-br-line { stroke: CanvasText }
+    .pu-br-dot { fill: CanvasText }
+    .pu-br-dot.active { fill: Canvas; stroke: CanvasText }
+    .pu-br-cursor { stroke: GrayText }
+    .pu-br-ref line { stroke: CanvasText }
+    .pu-br-ref text { fill: CanvasText; stroke: Canvas }
   }
 }
 

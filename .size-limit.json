@@ -373,7 +373,7 @@
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "49.62 kB",
+    "limit": "51.20 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -1591,6 +1591,69 @@
     "name": "Accordion CSS",
     "path": "dist/css/accordion.css",
     "limit": "800 B",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "article: Callout (import { Callout } from '@punji/ui/article')",
+    "path": "dist/article/Article.js",
+    "import": "{ Callout }",
+    "limit": "720 B",
+    "gzip": true
+  },
+  {
+    "name": "article (import * from '@punji/ui/article')",
+    "path": "dist/article/Article.js",
+    "import": "*",
+    "limit": "5.5 kB",
+    "gzip": true
+  },
+  {
+    "name": "article-toc (import * from '@punji/ui/article-toc')",
+    "path": "dist/article/extractToc.js",
+    "import": "*",
+    "limit": "570 B",
+    "gzip": true
+  },
+  {
+    "name": "faq (import * from '@punji/ui/faq')",
+    "path": "dist/faq/Faq.js",
+    "import": "*",
+    "limit": "1.7 kB",
+    "gzip": true
+  },
+  {
+    "name": "faq-json-ld (import * from '@punji/ui/faq-json-ld')",
+    "path": "dist/faq/jsonLd.js",
+    "import": "*",
+    "limit": "440 B",
+    "gzip": true
+  },
+  {
+    "name": "prompt-card (import * from '@punji/ui/prompt-card')",
+    "path": "dist/prompt-card/PromptCard.js",
+    "import": "*",
+    "limit": "560 B",
+    "gzip": true
+  },
+  {
+    "name": "Article kit CSS",
+    "path": "dist/css/article.css",
+    "limit": "1.8 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "Faq CSS",
+    "path": "dist/css/faq.css",
+    "limit": "480 B",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "PromptCard CSS",
+    "path": "dist/css/prompt-card.css",
+    "limit": "600 B",
     "rolldown": false,
     "gzip": true
   },

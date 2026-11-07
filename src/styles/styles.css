@@ -101,6 +101,9 @@
 @import './menu.css';
 @import './breadcrumb.css';
 @import './accordion.css';
+@import './article.css';
+@import './faq.css';
+@import './prompt-card.css';
 @import './instrument-header.css';
 @import './broker-badge.css';
 @import './headline-list.css';

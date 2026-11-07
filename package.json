@@ -639,6 +639,26 @@
       "types": "./dist/accordion/Accordion.d.ts",
       "default": "./dist/accordion/Accordion.js"
     },
+    "./article": {
+      "types": "./dist/article/Article.d.ts",
+      "default": "./dist/article/Article.js"
+    },
+    "./article-toc": {
+      "types": "./dist/article/extractToc.d.ts",
+      "default": "./dist/article/extractToc.js"
+    },
+    "./faq-json-ld": {
+      "types": "./dist/faq/jsonLd.d.ts",
+      "default": "./dist/faq/jsonLd.js"
+    },
+    "./faq": {
+      "types": "./dist/faq/Faq.d.ts",
+      "default": "./dist/faq/Faq.js"
+    },
+    "./prompt-card": {
+      "types": "./dist/prompt-card/PromptCard.d.ts",
+      "default": "./dist/prompt-card/PromptCard.js"
+    },
     "./chart-a11y": {
       "types": "./dist/chart-a11y/ChartA11yShell.d.ts",
       "default": "./dist/chart-a11y/ChartA11yShell.js"

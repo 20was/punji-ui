@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { BreadthChart, PriceOnlyChart, kagiType, lineBreakType, pointFigureType, rangeBarsType, renkoType, type PriceBar, type PriceOnlyType } from '../src/index.ts';
 import { seriousViolations } from './axe.ts';
 
-const norm = (s: string | null) => (s ?? '').replace(/ /g, ' ');
+const norm = (s: string | null) => (s ?? '').replace(/[\u00a0\u202f]/g, ' '); // Intl uses no-break spaces
 const live = (c: HTMLElement) => norm(c.querySelector('[role="status"]')!.textContent);
 const plot = (c: HTMLElement) => c.querySelector<HTMLElement>('[role="group"][tabindex="0"]')!;
 const heads = (c: HTMLElement) => [...c.querySelectorAll('thead th')].map((h) => norm(h.textContent));

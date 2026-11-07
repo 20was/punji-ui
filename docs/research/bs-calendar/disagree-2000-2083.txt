@@ -1,0 +1,15 @@
+2055
+    31,31,32,31,31,31,30,29,30,29,30,30 =365 <- remotemerge@1.2.5, bikram-sambat@1.8.1, nepali-date-converter@3.4.2, ad-bs-converter@0.5.0, nepali-date@0.1.4, nepali-date-library@1.1.16, nepali-datetime@2.0.0, @sbmdkl/nepali-date-converter@2.0.5, nepali-date-picker@2.0.2, nepali-datetime[py], nepali[py-nepali], remotemerge@1.2.7, hamropatro.com
+    31,31,32,31,31,31,30,29,30,30,29,30 =365 <- nepalicalendar.rat32.com
+2062
+    30,32,31,32,31,31,29,30,29,30,29,31 =365 <- remotemerge@1.2.5, bikram-sambat@1.8.1, nepali-date-converter@3.4.2, ad-bs-converter@0.5.0, nepali-date@0.1.4, nepali-date-library@1.1.16, nepali-datetime@2.0.0, @sbmdkl/nepali-date-converter@2.0.5, nepali-date-picker@2.0.2, nepali[py-nepali], remotemerge@1.2.7, nepalicalendar.rat32.com
+    31,31,31,32,31,31,29,30,29,30,29,31 =365 <- nepali-datetime[py], hamropatro.com
+2081
+    31,32,31,32,31,30,30,30,29,30,29,31 =366 <- remotemerge@1.2.5, bikram-sambat@1.8.1, nepali-date-converter@3.4.2, nepali-date@0.1.4, nepali-date-library@1.1.16, nepali-datetime@2.0.0, @sbmdkl/nepali-date-converter@2.0.5, nepali-date-picker@2.0.2, nepali-datetime[py], nepali[py-nepali], remotemerge@1.2.7, hamropatro.com, nepalicalendar.rat32.com
+    31,31,32,32,31,30,30,30,29,30,30,30 =366 <- ad-bs-converter@0.5.0
+2082
+    31,31,32,31,31,31,30,29,30,29,30,30 =365 <- remotemerge@1.2.5, bikram-sambat@1.8.1, nepali-date-converter@3.4.2, nepali-date@0.1.4, nepali-date-library@1.1.16, nepali-datetime@2.0.0, @sbmdkl/nepali-date-converter@2.0.5, nepali-datetime[py], nepali[py-nepali], remotemerge@1.2.7, hamropatro.com, nepalicalendar.rat32.com
+    30,32,31,32,31,30,30,30,29,30,30,30 =365 <- ad-bs-converter@0.5.0, nepali-date-picker@2.0.2
+2083
+    31,31,32,31,31,31,30,29,30,29,30,30 =365 <- remotemerge@1.2.5, bikram-sambat@1.8.1, nepali-date-converter@3.4.2, nepali-date@0.1.4, nepali-date-library@1.1.16, nepali-datetime@2.0.0, @sbmdkl/nepali-date-converter@2.0.5, nepali-datetime[py], nepali[py-nepali], remotemerge@1.2.7, hamropatro.com, nepalicalendar.rat32.com
+    31,31,32,31,31,30,30,30,29,30,30,30 =365 <- ad-bs-converter@0.5.0, nepali-date-picker@2.0.2

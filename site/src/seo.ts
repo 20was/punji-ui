@@ -78,7 +78,6 @@ export const PORTAL_RENAMES: Readonly<Record<string, string>> = {
   '/shell/sidebar': 'app-shell',
   '/components/logo': 'app-header',
   '/components/mark-toggle-list': 'check-list',
-  '/components/filter-menu': 'list-filter',
   '/components/range-editor': 'range-slider',
   '/components/preset-tile': 'date-range-presets',
   '/components/selectable-month-grid': 'date-picker',

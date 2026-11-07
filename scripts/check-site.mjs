@@ -250,6 +250,27 @@ try {
     await t.getByTestId('wd-allot-check').click();
     await t.getByText('Added to your holdings.').or(t.getByText(/unblocked\./)).first().waitFor({ timeout: 5000 }).catch(() => fail('wealth dashboard: the allotment check did not settle the application'));
     if (!(await t.getByTestId('wd-applications').textContent())?.match(/Allotted|Not allotted/)) fail('wealth dashboard: the application status did not change after the allotment check');
+    // Reconciliation desk: payroll paid as three transfers matches the one ledger entry once both sides are ticked, and
+    // the report's control totals reconcile. Statements: the header drifting by a rupee disables printing, and in print
+    // the app chrome is gone, sections start a page and the text is black.
+    await t.goto(`${base}/apps/reconciliation-desk/#queue`);
+    await t.locator('[data-screen="queue"] [data-screen-title]').waitFor();
+    for (const n of ['1', '2', '3']) await t.getByRole('checkbox', { name: new RegExp(`Select Salary transfer ${n} of 3`) }).check();
+    await t.getByRole('checkbox', { name: /Select Staff salary batch/ }).check();
+    await t.getByTestId('rc-match').click();
+    await t.getByText(/Matched 3 statement lines with 1 ledger entry/).waitFor({ timeout: 5000 }).catch(() => fail('reconciliation desk: the payroll did not match many-to-one'));
+    await t.getByTestId('screen-report').click();
+    await t.locator('[data-screen="report"] [data-screen-title]').waitFor();
+    if ((await t.getByText('Reconciles').count()) < 2) fail('reconciliation desk: the report totals do not reconcile with the closing balances');
+    await t.goto(`${base}/apps/account-statements/`);
+    await t.getByTestId('st-paper').waitFor();
+    await t.getByTestId('st-drift').click();
+    if (!(await t.getByTestId('st-print').isDisabled())) fail('account statements: a statement that does not reconcile can be printed');
+    await t.getByTestId('st-drift').click();
+    await t.emulateMedia({ media: 'print' });
+    const printed = await t.evaluate(() => ({ nav: getComputedStyle(document.querySelector('.app-nav')).display, brk: getComputedStyle(document.querySelector('.st-break')).breakBefore, ink: getComputedStyle(document.querySelector('.st-title')).color }));
+    if (printed.nav !== 'none' || printed.brk !== 'page' || printed.ink !== 'rgb(0, 0, 0)') fail(`account statements: print styles not applied (${JSON.stringify(printed)})`);
+    await t.emulateMedia({ media: 'screen' });
     // Retail banking: a transfer to a saved payee passes the payee check, the one-time code and lands on a receipt,
     // and Home's total drops by exactly the amount. The wallet pays an electricity bill with the PIN, and the balance
     // on Home is the old balance less the bill plus its cashback.

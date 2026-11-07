@@ -280,6 +280,27 @@
     "gzip": true
   },
   {
+    "name": "tanstack-table (import from '@punji/ui/tanstack-table')",
+    "path": "dist/tanstack-table/tanstackTable.js",
+    "import": "*",
+    "limit": "4.45 kB",
+    "gzip": true
+  },
+  {
+    "name": "ag-grid (import from '@punji/ui/ag-grid')",
+    "path": "dist/ag-grid/agGrid.js",
+    "import": "*",
+    "limit": "4.5 kB",
+    "gzip": true
+  },
+  {
+    "name": "mui-x-grid (import from '@punji/ui/mui-x-grid')",
+    "path": "dist/mui-x-grid/muiXGrid.js",
+    "import": "*",
+    "limit": "4.55 kB",
+    "gzip": true
+  },
+  {
     "name": "table-export (import from '@punji/ui/table-export')",
     "path": "dist/table-export/TableExport.js",
     "import": "*",

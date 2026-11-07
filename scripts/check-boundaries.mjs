@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const problems = [];
 // Pure directories and the one external dependency each may use per file.
-const PURE = { nepal: { 'calendar.ts': '@remotemerge/nepali-date-converter' }, calculations: {}, money: {}, export: {}, ledger: {}, banking: {}, 'chart-math': {}, 'date-range-presets': {}, 'nepse-fees': {}, 'share-issues': {}, 'emvco-qr': {}, lending: {}, invest: {}, kyc: {}, 'nepal-address-data': {}, 'table-core': {}, 'table-presets': {}, tax: {}, trust: {}, theme: {}, payments: {} };
+const PURE = { nepal: { 'calendar.ts': '@remotemerge/nepali-date-converter' }, calculations: {}, money: {}, export: {}, ledger: {}, banking: {}, 'chart-math': {}, 'date-range-presets': {}, 'nepse-fees': {}, 'share-issues': {}, 'emvco-qr': {}, lending: {}, invest: {}, kyc: {}, 'nepal-address-data': {}, 'table-core': {}, 'table-presets': {}, 'table-adapters': {}, 'tanstack-table': {}, 'ag-grid': {}, 'mui-x-grid': {}, tax: {}, trust: {}, theme: {}, payments: {} };
 // Pure modules may reuse these other pure modules (never components): the exact decimal parser, minor-unit helpers and rounding.
 // The ledger helpers also reuse the calendar-date type, currency exponent and the CSV writer (all pure).
 const SHARED = {
@@ -29,6 +29,11 @@ const SHARED = {
   tax: new Set(['../calculations/rounding.ts', '../nepal/date-only.ts', '../nepal/money.ts', '../export/csv.ts', '../internal/digits.ts']),
   // The table column model uses the Money type (a type-only import).
   'table-core': new Set(['../money/money.ts']),
+  // The optional table adapters import no grid library (those are optional peers the app installs): only the money and table-core modules.
+  'table-adapters': new Set(['../money/money.ts', '../table-core/tableCore.ts']),
+  'tanstack-table': new Set(['../table-core/tableCore.ts', '../table-adapters/adapterMoney.ts']),
+  'ag-grid': new Set(['../table-core/tableCore.ts', '../table-adapters/adapterMoney.ts']),
+  'mui-x-grid': new Set(['../table-core/tableCore.ts', '../table-adapters/adapterMoney.ts']),
   'table-presets': new Set(['../money/money.ts', '../table-core/tableModel.ts']),
   // Payment identifiers read every script's digits through the shared parser.
   payments: new Set(['../nepal/decimal.ts']),

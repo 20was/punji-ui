@@ -155,7 +155,7 @@ function SkipLinkFixture() {
     <div style={{ display: 'grid', gap: 8 }}>
       <SkipLink href="#fixture-main" />
       <p>The link is off screen until it takes focus. This fixture focuses it.</p>
-      <main id="fixture-main">Main content</main>
+      <div id="fixture-main" role="region" aria-label="Main content">Main content</div>
     </div>
   );
 }

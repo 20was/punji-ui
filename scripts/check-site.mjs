@@ -45,6 +45,7 @@ const EDGE = 8;
 const EDGE_ALLOW = {
   // 'slug' or 'slug/example': 'why the component is intentionally edge to edge',
   'app-shell': 'the skip link is position: fixed and parked above the viewport until it takes focus',
+  'skip-link': 'the skip link is position: fixed and parked above the viewport until it takes focus',
 };
 /* oxlint-disable unicorn/consistent-function-scoping, no-shadow -- the probe is serialised into the page, so it must be self-contained. */
 const layoutProbe = ({ edge }) => {

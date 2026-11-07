@@ -39,7 +39,10 @@
   .kit-recon-expected { font-weight: 400; color: var(--pu-color-text-muted) }
   @media (prefers-reduced-motion: reduce) { .kit-table-group-i { transition: none } }
   .kit-tablebox.bare { border: 0; border-radius: 0; background: transparent }
-  .kit-tablebox.bare .kit-table thead th { background: var(--pu-color-surface) }
+  /* A bare table sits on its container's background: its head row must not paint a different surface (it showed as
+     a white strip on tinted cards and stages). Only a bare table that scrolls under a sticky head needs a solid fill. */
+  .kit-tablebox.bare .kit-table thead th { background: transparent }
+  .kit-tablebox.bare.page-sticky .kit-table thead th { background: var(--pu-color-bg) }
   .kit-sort-i { display: inline-block; width: 1ch; margin-inline-start: 2px }
   .kit-tablebox.page-sticky { overflow: auto }
   @media (max-width: 759px) { .kit-table .wide { display: none } }

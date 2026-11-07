@@ -10,7 +10,10 @@
   .pu-lcalc-grid { display: grid; gap: var(--pu-space-4); grid-template-columns: minmax(0, 1fr); align-items: start }
   @media (min-width: 720px) { .pu-lcalc-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) } }
   .pu-lcalc-inputs { display: grid; gap: var(--pu-space-3); min-width: 0 }
-  .pu-lcalc-tenure { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--pu-space-2); align-items: end }
+  .pu-lcalc-tenure { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--pu-space-2); align-items: start }
+  /* The hint or error under the tenure field must not push the unit toggle down: start-align, then centre the toggle on the
+     input (label line 16px + 6px gap = input top; the toggle's own 4px padding sits above its buttons, so 18px). */
+  .pu-lcalc-tenure > .kit-choice { margin-block-start: calc(22px - var(--pu-space-1)) }
   .pu-lcalc-prepay { display: grid; gap: var(--pu-space-2); margin: 0; padding: var(--pu-space-3); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-card); min-width: 0 }
   .pu-lcalc-prepay legend { padding: 0 4px; font-size: var(--pu-text-sm); font-weight: 600 }
   .pu-lcalc-result { display: grid; gap: var(--pu-space-3); padding: var(--pu-space-4); border-radius: var(--pu-radius-card); background: var(--pu-color-surface-subtle); border: 1px solid var(--pu-color-card-border); min-width: 0 }
@@ -50,7 +53,10 @@
   .pu-rates-table thead th { font-size: var(--pu-text-xs); font-weight: 600; color: var(--pu-color-text-muted) }
   .pu-rates-table tbody th { font-weight: 500 }
   .pu-rates-group th { padding-top: 14px; font-size: var(--pu-text-xs); font-weight: 600; letter-spacing: 0.04em; color: var(--pu-color-text-muted); background: var(--pu-color-surface-subtle) }
-  .pu-rates-product { display: block; overflow-wrap: anywhere }
+  /* Product names wrap between words; the column keeps room for the longest word, and the table scrolls sideways before
+     a word is ever broken. A very long unbroken string is the only thing that may break (overflow-wrap: break-word). */
+  .pu-rates-table tbody th { min-width: 8.5rem }
+  .pu-rates-product { display: block; overflow-wrap: break-word; hyphens: manual }
   .pu-rates-note { display: block; margin-top: 2px; font-size: var(--pu-text-xs); font-weight: 400; color: var(--pu-color-text-muted) }
   .pu-rates-rate { font: 600 var(--pu-text-base) / 1.3 var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); white-space: nowrap }
   .pu-rates-delta { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; font-variant-numeric: var(--pu-font-numeric) }
@@ -113,7 +119,7 @@
   /* RemittanceTracker */
   .pu-remit { display: grid; gap: var(--pu-space-4); min-width: 0 }
   .pu-remit-form { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--pu-space-2); align-items: start }
-  .pu-remit-form > .kit-btn { margin-top: 26px }
+  .pu-remit-form > .kit-btn { height: var(--pu-control-lg); margin-top: 22px }
   .pu-remit-msg { margin: 0; font-size: var(--pu-text-sm); color: var(--pu-color-text-muted) }
   .pu-remit-error { color: var(--pu-color-loss) }
   .pu-remit-result { display: grid; gap: var(--pu-space-3); padding: var(--pu-space-4); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-card); background: var(--pu-color-surface); min-width: 0 }

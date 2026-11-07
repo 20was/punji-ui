@@ -61,6 +61,20 @@
     --pu-hue-green-soft: var(--pu-color-gain-soft);
     --pu-hue-red: var(--pu-color-loss);
     --pu-hue-red-soft: var(--pu-color-loss-soft);
+    /* Heat scale: dark themes only (set below); initial leaves the heat colours on their light-theme mix. */
+    --pu-heat-gain-1: initial;
+    --pu-heat-gain-2: initial;
+    --pu-heat-gain-3: initial;
+    --pu-heat-gain-4: initial;
+    --pu-heat-loss-1: initial;
+    --pu-heat-loss-2: initial;
+    --pu-heat-loss-3: initial;
+    --pu-heat-loss-4: initial;
+    --pu-heat-band: initial;
+    --pu-heat-risk-1: initial;
+    --pu-heat-risk-3: initial;
+    --pu-heat-risk-4: initial;
+    --pu-heat-seg-opacity: initial;
     --pu-color-on-accent-fill: #0d0e10;
     --pu-color-on-loss: #ffffff;
     --pu-color-scrim: rgba(17, 18, 20, 0.45);
@@ -357,6 +371,60 @@
     }
   }
 
+  /* Dark-theme heat scale (MarketHeatmap, MonthGrid, ReturnsHeatTable, RiskMeter, the PerformanceChart drawdown band): a
+     diverging scale from a neutral grey (--pu-color-surface-tint) out to a clear green and a clear red, derived from the
+     gain and loss hues in OKLCH (fixed lightness per step, chroma rising to the extremes) so mid steps stay green and red
+     instead of olive and brown. --pu-color-text on every step is checked at 4.5:1 by scripts/check-contrast.mjs. */
+  :root[data-theme='dark'],
+  [data-theme='dark'] {
+    --pu-hue-green-heat-1: #263918;
+    --pu-hue-green-heat-2: #2d500f;
+    --pu-hue-green-heat-3: #336800;
+    --pu-hue-green-heat-4: #327a00;
+    --pu-hue-red-heat-1: #442725;
+    --pu-hue-red-heat-2: #632d29;
+    --pu-hue-red-heat-3: #84302c;
+    --pu-hue-red-heat-4: #9e312d;
+    --pu-heat-gain-1: var(--pu-hue-green-heat-1);
+    --pu-heat-gain-2: var(--pu-hue-green-heat-2);
+    --pu-heat-gain-3: var(--pu-hue-green-heat-3);
+    --pu-heat-gain-4: var(--pu-hue-green-heat-4);
+    --pu-heat-loss-1: var(--pu-hue-red-heat-1);
+    --pu-heat-loss-2: var(--pu-hue-red-heat-2);
+    --pu-heat-loss-3: var(--pu-hue-red-heat-3);
+    --pu-heat-loss-4: var(--pu-hue-red-heat-4);
+    --pu-heat-band: rgba(190, 56, 50, 0.45);
+    --pu-heat-risk-1: #e0d945;
+    --pu-heat-risk-3: #fba265;
+    --pu-heat-risk-4: #fd9471;
+    --pu-heat-seg-opacity: 0.8;
+  }
+  @media (prefers-color-scheme: dark) and (not (prefers-contrast: more)) {
+    :root:not([data-theme]) {
+      --pu-hue-green-heat-1: #263918;
+      --pu-hue-green-heat-2: #2d500f;
+      --pu-hue-green-heat-3: #336800;
+      --pu-hue-green-heat-4: #327a00;
+      --pu-hue-red-heat-1: #442725;
+      --pu-hue-red-heat-2: #632d29;
+      --pu-hue-red-heat-3: #84302c;
+      --pu-hue-red-heat-4: #9e312d;
+      --pu-heat-gain-1: var(--pu-hue-green-heat-1);
+      --pu-heat-gain-2: var(--pu-hue-green-heat-2);
+      --pu-heat-gain-3: var(--pu-hue-green-heat-3);
+      --pu-heat-gain-4: var(--pu-hue-green-heat-4);
+      --pu-heat-loss-1: var(--pu-hue-red-heat-1);
+      --pu-heat-loss-2: var(--pu-hue-red-heat-2);
+      --pu-heat-loss-3: var(--pu-hue-red-heat-3);
+      --pu-heat-loss-4: var(--pu-hue-red-heat-4);
+      --pu-heat-band: rgba(190, 56, 50, 0.45);
+      --pu-heat-risk-1: #e0d945;
+      --pu-heat-risk-3: #fba265;
+      --pu-heat-risk-4: #fd9471;
+      --pu-heat-seg-opacity: 0.8;
+    }
+  }
+
   /* One convention for gain and loss: the theme (createTheme({ finance })) sets --pu-color-gain and --pu-color-loss, and
      components read only those. A component's own `convention` prop is an absolute per-instance override: it re-points
      gain and loss at the fixed green and red hues, so it can never swap a second time on top of the theme. */
@@ -365,11 +433,27 @@
     --pu-color-gain-soft: var(--pu-hue-green-soft);
     --pu-color-loss: var(--pu-hue-red);
     --pu-color-loss-soft: var(--pu-hue-red-soft);
+    --pu-heat-gain-1: var(--pu-hue-green-heat-1);
+    --pu-heat-gain-2: var(--pu-hue-green-heat-2);
+    --pu-heat-gain-3: var(--pu-hue-green-heat-3);
+    --pu-heat-gain-4: var(--pu-hue-green-heat-4);
+    --pu-heat-loss-1: var(--pu-hue-red-heat-1);
+    --pu-heat-loss-2: var(--pu-hue-red-heat-2);
+    --pu-heat-loss-3: var(--pu-hue-red-heat-3);
+    --pu-heat-loss-4: var(--pu-hue-red-heat-4);
   }
   [data-convention='red-up'] {
     --pu-color-gain: var(--pu-hue-red);
     --pu-color-gain-soft: var(--pu-hue-red-soft);
     --pu-color-loss: var(--pu-hue-green);
     --pu-color-loss-soft: var(--pu-hue-green-soft);
+    --pu-heat-gain-1: var(--pu-hue-red-heat-1);
+    --pu-heat-gain-2: var(--pu-hue-red-heat-2);
+    --pu-heat-gain-3: var(--pu-hue-red-heat-3);
+    --pu-heat-gain-4: var(--pu-hue-red-heat-4);
+    --pu-heat-loss-1: var(--pu-hue-green-heat-1);
+    --pu-heat-loss-2: var(--pu-hue-green-heat-2);
+    --pu-heat-loss-3: var(--pu-hue-green-heat-3);
+    --pu-heat-loss-4: var(--pu-hue-green-heat-4);
   }
 }

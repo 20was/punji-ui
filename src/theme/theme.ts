@@ -276,6 +276,14 @@ export function createTheme(brand: BrandTheme, options: CreateThemeOptions = {})
         '--pu-color-gain': p.gain, '--pu-color-gain-soft': p.gainSoft, '--pu-color-loss': p.loss, '--pu-color-loss-soft': p.lossSoft,
         '--pu-hue-green': green, '--pu-hue-green-soft': greenSoft, '--pu-hue-red': red, '--pu-hue-red-soft': redSoft,
       });
+      // The dark heat scale (tokens.css) is a fixed green and red. red-up swaps its gain and loss steps; any other palette
+      // and the single-hue extras (drawdown band, risk dial) go back to mixing the theme's own gain and loss colours.
+      for (let step = 1; step <= 4; step++) {
+        Object.assign(vars, finance === 'red-up'
+          ? { [`--pu-heat-gain-${step}`]: `var(--pu-hue-red-heat-${step})`, [`--pu-heat-loss-${step}`]: `var(--pu-hue-green-heat-${step})` }
+          : { [`--pu-heat-gain-${step}`]: 'initial', [`--pu-heat-loss-${step}`]: 'initial' });
+      }
+      for (const token of ['--pu-heat-band', '--pu-heat-risk-1', '--pu-heat-risk-3', '--pu-heat-risk-4', '--pu-heat-seg-opacity']) vars[token] = 'initial';
     }
   }
   const issues = [...check(light, 'light'), ...check(dark, 'dark')];

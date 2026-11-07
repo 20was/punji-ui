@@ -15,5 +15,6 @@
   .pu-rating-scale-legend { display: grid; gap: var(--pu-space-2); min-width: 0 }
   .pu-rating-scale-legend .pu-rating-scale { gap: 6px }
   .pu-rating-scale-legend ol { display: grid; grid-template-columns: repeat(var(--rating-steps, 5), minmax(0, 1fr)); gap: 6px; margin: 0; padding: 0; list-style: none }
-  .pu-rating-scale-legend li { min-width: 0; font-size: var(--pu-text-xs); line-height: 16px; color: var(--pu-color-text-muted); text-align: center; overflow-wrap: anywhere }
+  .pu-rating-scale-legend li { min-width: 0; font-size: var(--pu-text-xs); line-height: 16px; color: var(--pu-color-text-muted); text-align: center; margin-inline: -8px; overflow-wrap: break-word }
+  @media (max-width: 480px) { .pu-rating-scale-legend li { font-size: 11px } }
 }

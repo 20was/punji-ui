@@ -1,7 +1,7 @@
 import { createElement, lazy, Suspense, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { NPM_URL, pagePath, REPO } from '../paths.ts';
 import { applyHead } from './head.ts';
-import { appView, headData, homeView, loadedApp, loadRoute, pageData, pageView, routeReady } from './load.ts';
+import { appView, headData, homeView, loadRoute, pageData, pageView, routeReady } from './load.ts';
 import { groupTitleOf, type ClientRoute } from './nav.ts';
 import { BASE, Link, useRoute } from './router.tsx';
 import { NotFound } from './NotFound.tsx';
@@ -109,7 +109,7 @@ export function App({ path }: { path: string }) {
     if (route.kind === 'notfound') return <NotFound />;
     // The views are module-level components from their own chunks (load.ts), looked up once they are loaded.
     if (route.kind === 'home') return createElement(homeView());
-    if (route.page.kind === 'app') return createElement(appView(), { key: route.page.slug, data: pageData(route.page.slug)!, App: loadedApp(route.page.slug)! });
+    if (route.page.kind === 'app') return createElement(appView(), { key: route.page.slug, data: pageData(route.page.slug)! });
     return createElement(pageView(), { key: route.page.slug, data: pageData(route.page.slug)! });
   }, [route]);
 

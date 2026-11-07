@@ -323,7 +323,11 @@ try {
     // pushes Utilities over its budget, which the budget screen then says.
     await t.goto(`${base}/apps/treasury-desk/`);
     await t.getByTestId('td-alert-warn').waitFor({ timeout: 5000 }).catch(() => fail('treasury desk: the base case does not warn about the target buffer'));
-    await t.keyboard.press('s');
+    // The app is a late chunk: its server HTML shows at once and a key pressed before it hydrates is lost, so press until it takes.
+    for (let i = 0; i < 20 && !(await t.getByTestId('td-alert-danger').isVisible()); i++) {
+      await t.keyboard.press('s');
+      await t.waitForTimeout(250);
+    }
     await t.getByTestId('td-alert-danger').waitFor({ timeout: 5000 }).catch(() => fail('treasury desk: the stress case (S) did not breach the buffer'));
     await t.getByTestId('screen-payments').click();
     await t.locator('[data-screen="payments"] [data-screen-title]').waitFor();

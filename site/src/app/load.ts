@@ -44,8 +44,8 @@ export interface RouteModule {
   examples: Record<string, LoadedExample>;
   /** Guide code files' text by file name (site/src/guides/<slug>/<file>.tsx). Shown, never executed. */
   guides: Record<string, string>;
-  /** An app page's app (site/src/apps/<slug>/App.tsx). */
-  app?: ComponentType;
+  /** An app page's app (site/src/apps/<slug>/App.tsx): a late chunk, like an example. */
+  loadApp?: () => Promise<{ default: ComponentType }>;
 }
 
 const routeModules = import.meta.glob<RouteModule>('../generated/routes/*.ts', { import: 'default' });
@@ -63,10 +63,16 @@ const lateViews: Record<string, () => Promise<ComponentType>> = {
   './HomeDashboard.tsx': () => import('./HomeDashboard.tsx').then((m) => m.HomeDashboard),
 };
 const exampleKey = (slug: string, id: string) => `example:${slug}/${id}`;
+const appKey = (slug: string) => `app:${slug}`;
 
 function lateLoader(key: string): () => Promise<ComponentType> {
   const view = lateViews[key];
   if (view) return view;
+  if (key.startsWith('app:')) {
+    const loadApp = routeOf(key.slice('app:'.length))?.loadApp;
+    if (!loadApp) throw new Error(`No late chunk for ${key}.`);
+    return () => loadApp().then((m) => m.default);
+  }
   const [slug = '', id = ''] = key.slice('example:'.length).split('/');
   const load = routeOf(slug)?.examples[id]?.load;
   if (!load) throw new Error(`No late chunk for ${key}.`);
@@ -82,6 +88,7 @@ export function useLateView(key: string): ComponentType {
 function lateKeys(route: ClientRoute): string[] {
   if (route.kind === 'home') return ['./HomeDashboard.tsx'];
   if (route.kind !== 'page') return [];
+  if (route.page.kind === 'app') return [appKey(route.page.slug)];
   const first = route.page.slug && routeOf(route.page.slug)?.data.page.examples[0]?.id;
   return first && routeOf(route.page.slug)?.examples[first]?.load ? [exampleKey(route.page.slug, first)] : [];
 }
@@ -153,15 +160,13 @@ export function routeReady(route: ClientRoute): boolean {
 
 export const homeView = () => values.get('./Home.tsx') as ComponentType;
 export const pageView = () => values.get('./PageView.tsx') as ComponentType<{ data: PageData }>;
-export const appView = () => values.get('./AppView.tsx') as ComponentType<{ data: PageData; App: ComponentType }>;
-/** An app page's app component, once its route is loaded. */
-export const loadedApp = (slug: string): ComponentType | undefined => routeOf(slug)?.app;
+export const appView = () => values.get('./AppView.tsx') as ComponentType<{ data: PageData }>;
 export const pageData = (slug: string): PageData | undefined => routeOf(slug)?.data;
 export const loadedExample = (slug: string, id: string): LoadedExample | undefined => routeOf(slug)?.examples[id];
 /** The head data (head-data.ts), once a navigation has loaded it: the first load's head is already in the HTML. */
 export const headData = () => values.get('head') as typeof HeadData | undefined;
 /** The key <Late> takes for a route's late example. */
-export { exampleKey };
+export { appKey, exampleKey };
 /** The text of an example's CSS file (site/src/examples/<slug>/<id>.css), if it has one. */
 export const exampleCss = (slug: string, id: string): string | undefined => routeOf(slug)?.examples[id]?.css;
 /** The text of a guide's code file (site/src/guides/<slug>/<file>.tsx). */

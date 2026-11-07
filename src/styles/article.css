@@ -1,0 +1,102 @@
+/* Punji UI styles.
+   Styles for the article kit (Callout, KeyFacts, Timeline, StepFlow, Sources, CaveatList, TableOfContents). Needs tokens.css and base.css (styles.css has everything). Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  /* Callout: an icon in the tone's colour and a title in words; the box itself is neutral. */
+  .pu-callout { --_callout-tone: var(--pu-color-text-muted); display: flex; align-items: flex-start; gap: var(--pu-space-3); min-inline-size: 0; padding: var(--pu-space-4); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-lg); background: var(--pu-color-surface-subtle); color: var(--pu-color-text); font-size: var(--pu-text-sm); line-height: 1.55 }
+  .pu-callout[data-tone='info'] { --_callout-tone: var(--pu-color-info) }
+  .pu-callout[data-tone='accent'] { --_callout-tone: var(--pu-color-accent) }
+  .pu-callout[data-tone='warn'] { --_callout-tone: var(--pu-color-warn) }
+  .pu-callout[data-tone='danger'] { --_callout-tone: var(--pu-color-loss) }
+  .pu-callout-icon { flex: none; margin-block-start: 1px; color: var(--_callout-tone) }
+  .pu-callout-main { min-inline-size: 0; flex: 1 }
+  .pu-callout-title { margin: 0 0 var(--pu-space-1); font-weight: var(--pu-font-weight-semibold) }
+  .pu-callout-body { max-inline-size: 70ch; overflow-wrap: anywhere }
+  .pu-callout-body > :first-child { margin-block-start: 0 }
+  .pu-callout-body > :last-child { margin-block-end: 0 }
+
+  /* KeyFacts: label over value; a second line for the qualifier. */
+  .pu-keyfacts { container-type: inline-size; min-inline-size: 0; padding: var(--pu-space-4); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-lg); background: var(--pu-color-surface); color: var(--pu-color-text) }
+  .pu-keyfacts-title { margin: 0 0 var(--pu-space-3); color: var(--pu-color-text-muted); font-size: var(--pu-text-xs); font-weight: var(--pu-font-weight-medium); letter-spacing: 0.04em; text-transform: uppercase }
+  .pu-keyfacts-list { display: grid; gap: var(--pu-space-3); margin: 0 }
+  .pu-keyfacts-row { display: grid; gap: var(--pu-space-0-5); min-inline-size: 0; padding-block-end: var(--pu-space-3); border-block-end: 1px solid var(--pu-color-border-default) }
+  .pu-keyfacts-row:last-child { padding-block-end: 0; border-block-end: 0 }
+  .pu-keyfacts dt { color: var(--pu-color-text-muted); font-size: var(--pu-text-xs) }
+  .pu-keyfacts dd { margin: 0; font-size: var(--pu-text-sm); font-weight: var(--pu-font-weight-semibold); font-variant-numeric: var(--pu-font-numeric); overflow-wrap: anywhere }
+  .pu-keyfacts-note { display: block; margin-block-start: var(--pu-space-0-5); color: var(--pu-color-text-muted); font-weight: var(--pu-font-weight-regular); font-size: var(--pu-text-xs) }
+  @container (min-width: 28rem) { .pu-keyfacts-row { grid-template-columns: minmax(8rem, 2fr) 3fr; align-items: baseline; column-gap: var(--pu-space-4) } }
+
+  /* Timeline: an ordered list on a spine; the dot and line are decoration, the tag says now or later in words. */
+  .pu-timeline { list-style: none; margin: 0; padding: 0; color: var(--pu-color-text) }
+  .pu-timeline-item { position: relative; min-inline-size: 0; padding-block-end: var(--pu-space-5); padding-inline-start: var(--pu-space-6) }
+  .pu-timeline-item::before { content: ''; position: absolute; inset-block: var(--pu-space-2) 0; inset-inline-start: 5px; inline-size: 2px; background: var(--pu-color-border-strong) }
+  .pu-timeline-item::after { content: ''; position: absolute; inset-block-start: var(--pu-space-1); inset-inline-start: 0; inline-size: 12px; block-size: 12px; border: 2px solid var(--pu-color-text); border-radius: var(--pu-radius-full); background: var(--pu-color-surface) }
+  .pu-timeline-item:last-child { padding-block-end: 0 }
+  .pu-timeline-item:last-child::before { display: none }
+  .pu-timeline-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--pu-space-1) var(--pu-space-3) }
+  .pu-timeline-date { font-weight: var(--pu-font-weight-semibold); font-variant-numeric: var(--pu-font-numeric) }
+  .pu-timeline-alt { color: var(--pu-color-text-muted); font-size: var(--pu-text-sm); font-weight: var(--pu-font-weight-regular) }
+  .pu-timeline-tag { padding: 0 var(--pu-space-2); border: 1px solid var(--pu-color-border-strong); border-radius: var(--pu-radius-full); color: var(--pu-color-text-muted); font-size: var(--pu-text-xs); line-height: 1.6 }
+  .pu-timeline-events { margin: var(--pu-space-1) 0 0; padding-inline-start: var(--pu-space-4); max-inline-size: 70ch; font-size: var(--pu-text-sm); line-height: 1.55 }
+  .pu-timeline-events li { overflow-wrap: anywhere }
+
+  /* StepFlow: real list numbers (the marker), so the order survives being read aloud. */
+  .pu-stepflow { min-inline-size: 0; color: var(--pu-color-text) }
+  .pu-stepflow-label { margin: 0 0 var(--pu-space-3); color: var(--pu-color-text-muted); font-size: var(--pu-text-xs); font-weight: var(--pu-font-weight-medium); letter-spacing: 0.04em; text-transform: uppercase }
+  .pu-stepflow-steps { display: grid; gap: var(--pu-space-4); margin: 0; padding-inline-start: var(--pu-space-6) }
+  .pu-stepflow-steps > li { padding-inline-start: var(--pu-space-1) }
+  .pu-stepflow-steps > li::marker { color: var(--pu-color-text-muted); font-weight: var(--pu-font-weight-semibold); font-variant-numeric: var(--pu-font-numeric) }
+  .pu-stepflow-title { margin: 0; font-weight: var(--pu-font-weight-semibold) }
+  .pu-stepflow-detail { margin: var(--pu-space-1) 0 0; max-inline-size: 70ch; color: var(--pu-color-text-muted); font-size: var(--pu-text-sm); line-height: 1.55 }
+
+  /* Sources */
+  .pu-sources { min-inline-size: 0; color: var(--pu-color-text) }
+  .pu-sources-title { margin: 0 0 var(--pu-space-3) }
+  .pu-sources-list { display: grid; gap: var(--pu-space-2); margin: 0; padding-inline-start: var(--pu-space-4); font-size: var(--pu-text-sm); line-height: 1.5 }
+  .pu-sources-list li { overflow-wrap: anywhere }
+  .pu-sources-link { color: var(--pu-color-link); text-underline-offset: 0.15em }
+  .pu-sources-link:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px; border-radius: var(--pu-radius-sm) }
+  .pu-sources-meta { color: var(--pu-color-text-muted) }
+  .pu-sources-sr { position: absolute; inline-size: 1px; block-size: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0 }
+
+  /* CaveatList: its own card on the inverse surface. */
+  .pu-caveat { min-inline-size: 0; padding: var(--pu-space-5); border-radius: var(--pu-radius-lg); background: var(--pu-color-surface-inverse); color: var(--pu-color-text-inverse) }
+  .pu-caveat-title { margin: 0 0 var(--pu-space-3); font-size: var(--pu-text-lg); line-height: 1.25 }
+  .pu-caveat-notes { list-style: none; margin: 0; padding: 0 }
+  .pu-caveat-notes li { display: flex; gap: var(--pu-space-3); padding-block: var(--pu-space-3); border-block-start: 1px solid var(--pu-color-inverse-line); font-size: var(--pu-text-sm); line-height: 1.5 }
+  .pu-caveat-notes li:first-child { border-block-start: 0; padding-block-start: 0 }
+  .pu-caveat-notes svg { flex: none; margin-block-start: 1px; color: var(--pu-color-inverse-muted) }
+  .pu-caveat-notes span { min-inline-size: 0; max-inline-size: 70ch; overflow-wrap: anywhere }
+  .pu-caveat-facts { margin: var(--pu-space-3) 0 0; border-block-start: 1px solid var(--pu-color-inverse-line) }
+  .pu-caveat-facts > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--pu-space-0-5) var(--pu-space-3); padding-block: var(--pu-space-2); border-block-end: 1px solid var(--pu-color-inverse-line); font-size: var(--pu-text-sm) }
+  .pu-caveat-facts dt { color: var(--pu-color-inverse-muted) }
+  .pu-caveat-facts dd { margin: 0; font-weight: var(--pu-font-weight-semibold); font-variant-numeric: var(--pu-font-numeric); text-align: end }
+  .pu-caveat-foot { margin: var(--pu-space-3) 0 0; color: var(--pu-color-inverse-muted); font-size: var(--pu-text-xs); line-height: 1.5 }
+
+  /* TableOfContents */
+  .pu-toc { min-inline-size: 0; color: var(--pu-color-text) }
+  .pu-toc-title { margin: 0 0 var(--pu-space-2); color: var(--pu-color-text-muted); font-size: var(--pu-text-xs); font-weight: var(--pu-font-weight-medium); letter-spacing: 0.04em; text-transform: uppercase }
+  .pu-toc-list { list-style: none; margin: 0; padding: 0; border-block-start: 1px solid var(--pu-color-border-default) }
+  .pu-toc-item { border-block-end: 1px solid var(--pu-color-border) }
+  .pu-toc-item[data-depth='1'] { padding-inline-start: var(--pu-space-4) }
+  .pu-toc-item[data-depth='2'] { padding-inline-start: var(--pu-space-8) }
+  .pu-toc-item[data-depth='3'] { padding-inline-start: var(--pu-space-12) }
+  .pu-toc-link { display: flex; align-items: center; gap: var(--pu-space-2); min-block-size: var(--pu-control-md); padding-block: var(--pu-space-2); padding-inline: var(--pu-space-2); color: var(--pu-color-text-muted); font-size: var(--pu-text-sm); line-height: 1.35; text-decoration: none; overflow-wrap: anywhere }
+  .pu-toc-link:hover { color: var(--pu-color-text); text-decoration: underline }
+  .pu-toc-link:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: -2px }
+  /* The current section is bold, has a marker and is aria-current; colour is not the only cue. */
+  .pu-toc-link[aria-current='location'] { color: var(--pu-color-text); font-weight: var(--pu-font-weight-semibold) }
+  .pu-toc-link[aria-current='location']::before { content: ''; flex: none; inline-size: 6px; block-size: 6px; border-radius: var(--pu-radius-full); background: var(--pu-color-accent) }
+  @media (pointer: coarse) { .pu-toc-link { min-block-size: 44px } }
+
+  /* Print: no backgrounds, no spine, black on white; an external link's address is printed after it. */
+  @media print {
+    .pu-callout, .pu-keyfacts, .pu-caveat { background: none; color: inherit; border: 1px solid currentColor; break-inside: avoid }
+    .pu-caveat-notes li, .pu-caveat-facts, .pu-caveat-facts > div { border-color: currentColor }
+    .pu-caveat-notes svg, .pu-caveat-facts dt, .pu-caveat-foot { color: inherit }
+    .pu-timeline-item { break-inside: avoid; padding-inline-start: 0 }
+    .pu-timeline-item::before, .pu-timeline-item::after { display: none }
+    .pu-sources-link { color: inherit }
+    .pu-sources-link[href^='http']::after { content: ' (' attr(href) ')'; overflow-wrap: anywhere }
+    .pu-toc { display: none }
+  }
+}

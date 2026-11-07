@@ -252,9 +252,12 @@ describe('squarify', () => {
     expect(squarify([{ id: 'x', size: 0 }], bounds)).toEqual({ rects: [], skipped: ['x'] });
     expect(squarify([], bounds).rects).toEqual([]);
   });
-  it('rejects bounds with no area', () => {
-    expect(() => squarify([], { width: 0, height: 5 })).toThrow(RangeError);
-    expect(() => squarify([], { width: 5, height: Number.NaN })).toThrow(RangeError);
+  it('draws nothing, and does not throw, for bounds with no area or no items', () => {
+    const items = [{ id: 'a', size: 4 }, { id: 'b', size: 0 }];
+    expect(squarify(items, { width: 0, height: 5 })).toEqual({ rects: [], skipped: ['b'] });
+    expect(squarify(items, { width: 5, height: Number.NaN })).toEqual({ rects: [], skipped: ['b'] });
+    expect(squarify(items, { width: -1, height: 5 }).rects).toEqual([]);
+    expect(squarify([], { width: 0, height: 0 })).toEqual({ rects: [], skipped: [] });
   });
   it('breaks equal sizes by input order', () => {
     const r = squarify([{ id: 'b', size: 1 }, { id: 'a', size: 1 }, { id: 'c', size: 1 }], bounds);

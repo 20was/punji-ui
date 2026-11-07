@@ -7,10 +7,20 @@
  * what goes, and the way back. The confirm takes focus; Esc backs out
  * before anything around it reacts. A decision that needs the whole screen
  * is a Sheet.
+ *
+ * `strength` says how final it is: `danger` (default) removes something for
+ * good, `caution` ends something the reader can start again (sign out of every
+ * device) with the primary button. `match` adds a typed confirmation: the
+ * confirm stays off until the reader types that word (case and outer spaces
+ * ignored), and the field, not the button, takes focus.
  */
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 
 import { Button } from '../button/Button.tsx';
+import { confirmMatches } from '../internal/confirmMatch.ts';
+import { ConfirmField } from '../internal/ConfirmField.tsx';
+
+export { confirmMatches };
 
 export interface InlineConfirmProps {
   /** The question, as a short heading ("Remove NABIL?"). It names the group for screen readers. */
@@ -25,6 +35,14 @@ export interface InlineConfirmProps {
   onConfirm: () => void;
   /** Called by the way-back button and by Esc, before anything around it reacts. */
   onCancel: () => void;
+  /** How final it is. `danger` (default): removes something for good, the danger button. `caution`: ends something the reader can start again, the primary button. */
+  strength?: 'caution' | 'danger';
+  /** A typed confirmation: the word the reader must type before the confirm works (case and outer spaces ignored). The field takes focus when it opens; Enter in it confirms. */
+  match?: string;
+  /** The field's label with `match` ("Type DELETE to confirm"). Default: the `match` text. */
+  matchLabel?: string;
+  /** Becomes data-testid on the typed-confirmation field. */
+  fieldTestId?: string;
   /** The confirm is working (loading, not pressable twice). */
   busy?: boolean;
   /** Button size: sm (default) or md. */
@@ -56,6 +74,10 @@ export function InlineConfirm({
   onConfirm,
   onCancel,
   busy,
+  strength = 'danger',
+  match,
+  matchLabel,
+  fieldTestId,
   size = 'sm',
   as = 'div',
   role = 'group',
@@ -66,10 +88,16 @@ export function InlineConfirm({
   className,
 }: InlineConfirmProps) {
   const own = useRef<HTMLButtonElement>(null);
+  const auto = useId();
   const titleId = id ? `${id}-t` : undefined;
+  const fieldId = `${id ?? auto}-f`;
+  const [typed, setTyped] = useState('');
+  const typedOk = match === undefined || confirmMatches(typed, match);
+  const typing = match !== undefined;
   useEffect(() => {
-    own.current?.focus();
-  }, []);
+    if (typing) document.getElementById(fieldId)?.focus();
+    else own.current?.focus();
+  }, [typing, fieldId]);
   const Tag = as;
   return (
     <Tag
@@ -84,6 +112,7 @@ export function InlineConfirm({
         e.stopPropagation();
         onCancel();
       }}
+      data-strength={strength}
       data-testid={testId}
     >
       {(title || body) && (
@@ -92,12 +121,28 @@ export function InlineConfirm({
           {body && <span>{body}</span>}
         </div>
       )}
+      {typing && (
+        <div className="pu-confirm-match">
+          <ConfirmField
+            id={fieldId}
+            label={matchLabel ?? match}
+            value={typed}
+            onChange={setTyped}
+            size={size === 'sm' ? 'md' : size}
+            testId={fieldTestId}
+            onEnter={() => {
+              if (typedOk && !busy) onConfirm();
+            }}
+          />
+        </div>
+      )}
       <div className="kit-confirm-b">
         <Button
-          variant="danger"
+          variant={strength === 'caution' ? 'primary' : 'danger'}
           size={size}
           ref={own}
           loading={busy}
+          disabled={!typedOk}
           onClick={onConfirm}
           testId={confirmTestId}
         >

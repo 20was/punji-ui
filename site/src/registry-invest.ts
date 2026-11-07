@@ -23,7 +23,7 @@ export const INVEST_PAGES: readonly PageDef[] = [
     accessibility: ['The level is text: the label, the level\'s name and "4 of 6" (visually hidden in the bar variant). The dial and steps are `aria-hidden`.', 'Forced colours: segments are drawn in CanvasText and the current one in Highlight.'],
     responsive: ['The dial fills its column up to 220px; the bar is inline and wraps its words.'],
     notes: { title: 'Scale', points: ['A level off the scale or fewer than 3 or more than 8 levels throws a RangeError: a wrong risk label is worse than none.'] },
-    related: ['invest-helpers', 'meter-range', 'invest-insure'],
+    related: ['invest-helpers', 'meter-range', 'invest-insure', 'rating-scale'],
   },
   {
     slug: 'invest-helpers',

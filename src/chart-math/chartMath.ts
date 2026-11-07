@@ -21,6 +21,9 @@
  *   seasonalityStats   per calendar month across years: mean, range, hit rate
  *   parseMaturity      '3M', '10Y', '52W' as years
  *   curveSlopes        the segments of a curve that fall as maturity grows
+ *   heikinAshi         Heikin Ashi candles (TradingView help, "Heikin Ashi")
+ *   priceTransform     a price on the linear, log, percent-from-first or indexed-to-100 axis; logTicks, round ticks for a log axis
+ *   exactText          a number as plain decimal text at a stated precision; decimalsOf, the decimals a price is written with
  *
  * Missing, null and non-finite numbers are "no value" everywhere. They are
  * never read as zero.
@@ -432,6 +435,79 @@ export function drawdownOf(values: readonly (number | null | undefined)[]): (num
     peak = Math.max(peak, v);
     return peak > 0 ? Math.min(0, (v / peak - 1) * 100) : null;
   });
+
+export interface HeikinAshiCandle {
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume?: number | null;
+}
+
+/**
+ * Heikin Ashi candles, from TradingView's help ("Heikin Ashi", the construction rules):
+ *   HA close = (open + high + low + close) / 4
+ *   HA open  = (previous HA open + previous HA close) / 2
+ *   HA high  = max(high, HA open, HA close)
+ *   HA low   = min(low, HA open, HA close)
+ * The first candle has no previous one: its HA open is (open + close) / 2, the usual seed. Volume is carried
+ * through unchanged. Only pass valid candles (see validateOhlc); the result has one candle per input.
+ *
+ * @stability beta
+ */
+export function heikinAshi(candles: readonly Ohlc[]): HeikinAshiCandle[] {
+  const out: HeikinAshiCandle[] = [];
+  let prevOpen = 0;
+  let prevClose = 0;
+  candles.forEach((c, i) => {
+    const close = (c.open + c.high + c.low + c.close) / 4;
+    const open = i === 0 ? (c.open + c.close) / 2 : (prevOpen + prevClose) / 2;
+    out.push({ open, high: Math.max(c.high, open, close), low: Math.min(c.low, open, close), close, volume: c.volume ?? null });
+    prevOpen = open;
+    prevClose = close;
+  });
+  return out;
+}
+
+export type PriceScaleMode = 'linear' | 'log' | 'percent' | 'indexed';
+
+/**
+ * A price on the chosen axis, as Lightweight Charts' price scale modes define them (Normal, Logarithmic,
+ * Percentage, IndexedTo100): linear is the price, log its base-10 logarithm, percent the change from `base` in
+ * percent, indexed the price as a share of `base` times 100 (the base is 100). Every mode is increasing in the price
+ * for a positive `base`, so highs stay above lows. Log needs a positive price; percent and indexed need a positive
+ * `base`: the caller checks, a bad input gives NaN here.
+ *
+ * @stability beta
+ */
+export function priceTransform(mode: PriceScaleMode, base: number): (price: number) => number {
+  if (mode === 'log') return (v) => (v > 0 ? Math.log10(v) : NaN);
+  if (mode === 'percent') return (v) => (base > 0 ? (v / base - 1) * 100 : NaN);
+  if (mode === 'indexed') return (v) => (base > 0 ? (v / base) * 100 : NaN);
+  return (v) => v;
+}
+
+/**
+ * Round ticks for a log axis that cover [min, max] (both positive). A range under a factor of two is nearly
+ * linear: it gets `niceTicks`. Wider ranges get 1, 2, 5 of each power of ten (or fewer when that is too many).
+ * `lo` and `hi` are the first and last tick, at or beyond the data.
+ */
+export function logTicks(min: number, max: number, count = 5): NiceTicks {
+  const a = Math.max(Number.MIN_VALUE, Math.min(min, max));
+  const b = Math.max(a, max);
+  if (!(b / a >= 2)) return niceTicks(a, b, count);
+  const want = Math.max(2, count);
+  for (const mantissas of [[1, 2, 5], [1, 3], [1]]) {
+    const ticks: number[] = [];
+    for (let e = Math.floor(Math.log10(a)); e <= Math.ceil(Math.log10(b)); e += 1) {
+      for (const m of mantissas) ticks.push(Number((m * Math.pow(10, e)).toPrecision(12)));
+    }
+    const lo = Math.max(...ticks.filter((t) => t <= a * (1 + 1e-12)));
+    const hi = Math.min(...ticks.filter((t) => t >= b * (1 - 1e-12)));
+    const shown = ticks.filter((t) => t >= lo && t <= hi);
+    if (shown.length <= want * 2 || mantissas.length === 1) return { ticks: shown, lo, hi, step: NaN };
+  }
+  return niceTicks(a, b, count);
 }
 
 /**
@@ -597,4 +673,32 @@ export function curveSlopes(values: readonly (number | null | undefined)[]): Cur
     if (isNum(a) && isNum(b) && b < a) out.push({ from: i - 1, to: i, change: b - a });
   }
   return out;
+
+/** How many decimals a price is written with (0.5 is 1, 487.25 is 2, 3 is 0), up to `cap`. Float noise past 12 significant digits is ignored. */
+export function decimalsOf(value: number, cap = 8): number {
+  if (!isNum(value)) return 0;
+  const text = Number(value.toPrecision(12)).toString();
+  if (/e/i.test(text)) return Math.min(cap, Math.max(0, -Math.floor(Math.log10(Math.abs(value)))));
+  const at = text.indexOf('.');
+  return at < 0 ? 0 : Math.min(cap, text.length - at - 1);
+}
+
+/**
+ * A number as plain decimal text with at most `decimals` places, trailing zeros kept down to `minDecimals` (default
+ * 0): no exponent, no locale, no `0.30000000000000004`, no "-0". The same text on every machine, for tables and
+ * spoken values that must be exact rather than rounded to a currency's two places.
+ */
+export function exactText(value: number, decimals: number, minDecimals = 0): string {
+  if (!isNum(value)) return String(value);
+  const d = Math.min(20, Math.max(0, Math.floor(decimals)));
+  let text = Math.abs(value) >= 1e21 ? BigInt(value).toString() : value.toFixed(d);
+  if (text.includes('.')) {
+    const keep = Math.max(0, Math.floor(minDecimals));
+    const at = text.indexOf('.');
+    let end = text.length;
+    while (end > at + 1 + keep && text[end - 1] === '0') end -= 1;
+    text = text.slice(0, end);
+    if (text.endsWith('.')) text = text.slice(0, -1);
+  }
+  return /^-0(\.0*)?$/.test(text) ? text.slice(1) : text;
 }

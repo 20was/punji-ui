@@ -1,0 +1,29 @@
+/* Punji UI styles.
+   Styles for VolumeProfile and ProfileRail. Needs tokens.css and base.css (styles.css has everything).
+   The frame, axis and legend come from financial-charts.css (.kit-ct). Colours from --pu-* tokens only. */
+@layer punji.components {
+  .pu-vp-area { position: relative; width: 100%; min-width: 0 }
+  .pu-vp-plot svg { display: block }
+  .pu-vp-va { fill: color-mix(in srgb, var(--pu-color-chart) 14%, transparent) }
+  .pu-vp-bar { fill: var(--pu-color-text-muted); opacity: 0.45 }
+  .pu-vp-bar.in { opacity: 1 }
+  .pu-vp-total { fill: color-mix(in srgb, var(--pu-color-text-muted) 55%, var(--pu-color-surface)) }
+  .pu-vp-total.in { fill: var(--pu-color-chart) }
+  .pu-vp-total.poc { fill: var(--pu-color-chart); stroke: var(--pu-color-text); stroke-width: 1.5 }
+  .pu-vp-buy { fill: var(--pu-color-gain) }
+  .pu-vp-sell { stroke: var(--pu-color-loss); stroke-width: 1 }
+  .pu-vp-hatch-bg { fill: color-mix(in srgb, var(--pu-color-loss) 12%, var(--pu-color-surface)) }
+  .pu-vp-hatch { stroke: var(--pu-color-loss); stroke-width: 2 }
+  .pu-vp-bar.poc .pu-vp-buy, .pu-vp-bar.poc .pu-vp-sell { stroke: var(--pu-color-text); stroke-width: 1.5 }
+  .pu-vp-bar.on { opacity: 1 }
+  .pu-vp-edge { stroke: var(--pu-color-text-muted); stroke-width: 1; stroke-dasharray: 5 4 }
+  .pu-vp-poc-line { stroke: var(--pu-color-text); stroke-width: 2 }
+  .pu-vp-tags text { fill: var(--pu-color-text-muted); font: 600 10px / 12px var(--pu-font-body); letter-spacing: 0.04em; paint-order: stroke; stroke: var(--pu-color-surface); stroke-width: 3px; stroke-linejoin: round }
+  .pu-vp-tags text.strong { fill: var(--pu-color-text) }
+  .pu-vp-cursor { fill: none; stroke: var(--pu-color-text); stroke-width: 1.5 }
+  .pu-vp-read { min-height: 20px; margin: 6px 0 0; font-size: 13px; line-height: 20px; color: var(--pu-color-text-muted); font-variant-numeric: var(--pu-font-numeric) }
+  .pu-vp-legend svg { flex: none; overflow: visible }
+  .pu-vp-legend .pu-vp-poc-line { stroke-width: 2 }
+  .pu-vp-rail { width: 100%; min-width: 0 }
+  .pu-vp-rail .pu-vp-plot { border-radius: 0 }
+}

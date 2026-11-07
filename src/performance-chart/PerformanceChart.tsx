@@ -51,6 +51,8 @@ import { downsampleIndices, drawdownOf, niceTicks, rebase, rebaseOnto, spreadLab
 import { ChartA11yShell } from '../chart-a11y/ChartA11yShell.tsx';
 import { ChartTooltip, clamp, isNum, shortDate, thinned, useMeasuredWidth } from '../internal/chartFrame.tsx';
 
+/** Still importable from here: it moved to chart-math, which the candlestick chart shares. */
+
 export interface PerformanceSeries {
   /** Stable key (the React key and the legend's identity). */
   key: string;

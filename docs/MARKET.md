@@ -160,6 +160,12 @@ scale, with a legend. Props: `items` (`{ id, label, name?, size, change }`, chan
 on a phone), `convention`, `onSelect` (tiles become buttons), `labels`. `heatmapItemsFromQuotes(quotes, 'turnover' |
 'volume')` builds items from quotes.
 
+Groups live in a separate module, `GroupedMarketHeatmap` (`@punji/ui/market-heatmap-grouped`), so this flat map stays
+small. Give items a `group` path (`['Banking', 'Commercial banks']`) and optionally an `href`: sector, industry, stock with
+header strips showing the size-weighted change, drill-in (`path`, `defaultPath`, `onPathChange`) with breadcrumbs, stocks as
+real links through `LinkProvider` or `linkComponent`, "+N more" for stocks under `collapseBelow` (1.2%) of their group, and
+a sorted list under `listBelow` (560px). Escape or Backspace goes up a level.
+
 Pure helpers: `squarify(items, { width, height, x?, y? })` returns `{ rects, skipped }`. It is deterministic (largest
 first, ties by input position); rectangle areas are proportional to size and tile the bounds with no overlap or gap; sizes
 that are missing, zero, negative or not finite are not drawn and are listed in `skipped` (and under the map). `heatStep(change,

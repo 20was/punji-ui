@@ -7,27 +7,20 @@
  * signal. Beneath it a "View data" table lists every item, including those too
  * small to label and those with no usable size. The layout is a pure function
  * (`squarify`), so the same data draws the same map.
+ *
+ * For sector, industry and stock groups with drill-in, use `GroupedMarketHeatmap` from `@punji/ui/market-heatmap-grouped`;
+ * it is a separate module so this flat map does not carry its code.
  */
 import { useMemo, type CSSProperties, type ReactNode } from 'react';
 
 import { quoteChangePercent, type Quote } from '../stock-table/quotes.ts';
+import { defaultSize, EN, heatLegend, signed, type HeatmapItem, type HeatmapLabels } from './common.ts';
 import { heatStep, squarify, type TreemapRect } from './treemap.ts';
+
+export type { HeatmapItem, HeatmapLabels } from './common.ts';
 
 export { heatStep, squarify } from './treemap.ts';
 export type { TreemapBounds, TreemapItem, TreemapLayout, TreemapRect } from './treemap.ts';
-
-export interface HeatmapItem {
-  /** Unique, stable key (the symbol). */
-  id: string;
-  /** Printed on the tile. */
-  label: string;
-  /** The company's name, used in the tile's spoken name and in the data table. */
-  name?: string;
-  /** Area weight: turnover, market cap. Missing, zero and negative sizes are not drawn. */
-  size: number | null;
-  /** Change in percent (1.25 is +1.25%). Null draws a neutral tile marked "no change data". */
-  change: number | null;
-}
 
 /** Items for the map from quotes, sized by turnover or volume (display scale: minor units become a float). */
 export function heatmapItemsFromQuotes(quotes: readonly Quote[], by: 'turnover' | 'volume' = 'turnover'): HeatmapItem[] {
@@ -39,24 +32,6 @@ export function heatmapItemsFromQuotes(quotes: readonly Quote[], by: 'turnover' 
     change: quoteChangePercent(q),
   }));
 }
-
-export interface HeatmapLabels {
-  unchanged: string;
-  noChange: string;
-  notSized: (count: number) => string;
-  legend: string;
-  dataSummary: string;
-  symbol: string;
-  name: string;
-  size: string;
-  change: string;
-  noSize: string;
-  areaNote: (sizeLabel: string) => string;
-}
-const EN: HeatmapLabels = {
-  unchanged: 'Unchanged', noChange: 'No change data', notSized: (n) => `${n} not drawn: no size`, legend: 'Colour scale: change since the previous close',
-  dataSummary: 'View data as a table', symbol: 'Symbol', name: 'Name', size: 'Size', change: 'Change', noSize: 'No size', areaNote: (s) => `Tile area shows ${s}.`,
-};
 
 export interface MarketHeatmapProps {
   /** What to draw. The layout orders tiles by size; items without a positive size are listed under the map and in the table but not drawn. */
@@ -81,11 +56,6 @@ export interface MarketHeatmapProps {
   testId?: string;
 }
 
-const signed = (c: number) => `${c > 0 ? '+' : c < 0 ? '−' : ''}${Math.abs(c).toFixed(2)}%`;
-const SIZE = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 });
-const defaultSize = (n: number) => SIZE.format(n);
-const trim = (n: number) => String(Math.round(n * 10) / 10);
-
 /**
  * @stability experimental
  */
@@ -95,14 +65,7 @@ export function MarketHeatmap({ items, label, sizeLabel = 'Size', formatSize = d
   const H = W / aspect;
   const layout = useMemo(() => squarify(items.map((i) => ({ id: i.id, size: i.size })), { width: W, height: H }), [items, H]);
   const byId = new Map(items.map((i) => [i.id, i]));
-  const e1 = scaleMax / 3;
-  const e2 = (2 * scaleMax) / 3;
-  const legend: { step: number | 'none'; text: string }[] = [
-    { step: -3, text: `< −${trim(e2)}%` }, { step: -2, text: `−${trim(e2)} to −${trim(e1)}%` }, { step: -1, text: `−${trim(e1)} to 0%` },
-    { step: 0, text: words.unchanged },
-    { step: 1, text: `0 to +${trim(e1)}%` }, { step: 2, text: `+${trim(e1)} to +${trim(e2)}%` }, { step: 3, text: `> +${trim(e2)}%` },
-    { step: 'none', text: words.noChange },
-  ];
+  const legend = heatLegend(words, scaleMax);
   const tileStyle = (r: TreemapRect): CSSProperties => ({ left: `${(r.x / W) * 100}%`, top: `${(r.y / H) * 100}%`, width: `${(r.width / W) * 100}%`, height: `${(r.height / H) * 100}%` });
   // Share of the map's width and height decides how much a tile can print: nothing, the symbol, or the symbol and change.
   const sizeClass = (r: TreemapRect) => {

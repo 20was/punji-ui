@@ -190,6 +190,21 @@
     .kit-ct-c.gain rect:not(.kit-ct-vol), .kit-ct-c.flat rect:not(.kit-ct-vol) { fill: Canvas }
     .kit-ct-c.loss rect { fill: CanvasText }
     .kit-ct-c.gain rect.kit-ct-vol { fill: Canvas; stroke: CanvasText }
+    .kit-ct-c rect.hollow:not(.kit-ct-vol) { fill: Canvas }
+    .kit-ct-c rect.solid { fill: CanvasText }
+    .kit-ct-c.neutral rect.pu-ct-range { fill: CanvasText }
+    :is(.pu-ct-price, .pu-ct-dot) { stroke: CanvasText; fill: none }
+    .pu-ct-dot { fill: CanvasText }
+    :is(.pu-ct-fill, .pu-ct-band) { fill: none }
+    :is(.pu-ct-baseline, .pu-ct-level line, .pu-ct-pane-bg) { stroke: CanvasText }
+    :is(.pu-ct-baseline-label, .pu-ct-level text, .pu-ct-pane-title) { fill: CanvasText; stroke: Canvas }
+    .pu-ct-hist rect { stroke: CanvasText }
+    .pu-ct-hist rect.pos { fill: Canvas }
+    .pu-ct-hist rect.neg { fill: CanvasText }
+    :is(.pu-ct-ev circle, .pu-ct-ev rect, .pu-ct-ev polygon) { fill: Canvas; stroke: CanvasText }
+    .pu-ct-ev text { fill: CanvasText }
+    :is(.pu-ct-ev.active circle, .pu-ct-ev.active rect, .pu-ct-ev.active polygon) { fill: CanvasText }
+    .pu-ct-ev.active text { fill: Canvas }
     .kit-ct-line, .kit-ct-ma, .kit-spark { color: CanvasText }
     .kit-ct-line:nth-of-type(2) > path, .kit-ct-ma:nth-of-type(2n) { stroke-dasharray: 6 3 }
     .kit-ct-line:nth-of-type(3) > path, .kit-ct-ma:nth-of-type(3n) { stroke-dasharray: 2 3 }

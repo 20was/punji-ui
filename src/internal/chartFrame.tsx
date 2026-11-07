@@ -50,9 +50,11 @@ export function useChartCursor(count: number) {
     setState({ index: next, source: 'keyboard' });
   };
   const clear = () => setState({ index: null, source: 'pointer' });
+  /** Put the position somewhere on behalf of a keyboard shortcut the chart adds (jump to the next event): it stays when the pointer leaves. */
+  const moveTo = (i: number) => setState({ index: i, source: 'keyboard' });
   /** On focus with no position yet, start on the latest observation. */
   const onFocus = () => setState((s) => (s.index === null ? { index: count - 1, source: 'keyboard' } : s));
-  return { index, pointerTo, onKeyDown, onFocus, clear };
+  return { index, pointerTo, moveTo, onKeyDown, onFocus, clear };
 }
 
 /** A readout that sits inside the figure, flipped to the other side of the cursor near the edge. Hidden from assistive tech: the live region says the same words. */

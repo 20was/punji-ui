@@ -17,7 +17,8 @@
   .kit-ct-area { position: relative; width: 100%; min-width: 0; direction: ltr }
   .kit-ct-plot { position: relative; width: 100%; height: 100%; touch-action: pan-y; border-radius: 6px }
   .kit-ct-plot:focus-visible { outline: 2px solid var(--pu-color-link); outline-offset: 2px }
-  .kit-ct-plot svg { display: block; overflow: visible; font-family: var(--pu-font-body) }
+  /* max-width: the first commit draws at a fallback width until the container is measured (a lazy chart mounts before it has a layout): the svg scales down to fit for those frames instead of overflowing the page. */
+  .kit-ct-plot svg { display: block; max-width: 100%; overflow: visible; font-family: var(--pu-font-body) }
   .kit-ct-grid { stroke: color-mix(in srgb, var(--pu-color-border-strong) 80%, transparent); stroke-dasharray: 3 3; stroke-width: 1 }
   .kit-ct-grid.base { stroke: var(--pu-color-border-strong); stroke-dasharray: none }
   .kit-ct-axis { fill: var(--pu-color-text-muted); font-size: 11px; font-variant-numeric: var(--pu-font-numeric) }
@@ -52,6 +53,28 @@
   .kit-ct-tip dd { margin: 0; text-align: right; font-variant-numeric: var(--pu-font-numeric) }
   .kit-ct-tip .kit-ct-gain { color: var(--pu-color-gain) }
   .kit-ct-tip .kit-ct-loss { color: var(--pu-color-loss) }
+  /* CandlestickChart: price modes, scales, events, levels, indicator panes. */
+  .kit-ct-c.neutral line { stroke: var(--pu-color-chart) }
+  .kit-ct-c.neutral rect.pu-ct-range { fill: var(--pu-color-chart); stroke: var(--pu-color-chart) }
+  .pu-ct-price { fill: none; stroke: var(--pu-color-chart); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round }
+  .pu-ct-dot { fill: var(--pu-color-chart) }
+  .pu-ct-fill { fill: var(--pu-color-chart-fill); stroke: none }
+  .pu-ct-fill.gain { fill: var(--pu-color-gain-soft) }
+  .pu-ct-fill.loss { fill: var(--pu-color-loss-soft) }
+  .pu-ct-baseline { stroke: var(--pu-color-text-muted); stroke-width: 1.5; stroke-dasharray: 6 4 }
+  .pu-ct-baseline-label { fill: var(--pu-color-text); font: 600 11px / 14px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); paint-order: stroke; stroke: var(--pu-color-surface); stroke-width: 3px; stroke-linejoin: round }
+  .pu-ct-band { fill: var(--pu-color-chart-fill); stroke: none; pointer-events: none }
+  .pu-ct-level line { stroke: var(--pu-color-text-muted); stroke-width: 1.25; pointer-events: none }
+  .pu-ct-level text { fill: var(--pu-color-text); font: 600 11px / 14px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); paint-order: stroke; stroke: var(--pu-color-surface); stroke-width: 3px; stroke-linejoin: round; pointer-events: none }
+  .pu-ct-pane-bg { fill: none; stroke: var(--pu-color-border-default); stroke-width: 1 }
+  .pu-ct-pane-title { fill: var(--pu-color-text); font: 600 11px / 14px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric) }
+  .pu-ct-hist rect.pos { fill: var(--pu-color-gain-soft); stroke: var(--pu-color-gain); stroke-width: 1 }
+  .pu-ct-hist rect.neg { fill: var(--pu-color-loss-soft); stroke: var(--pu-color-loss); stroke-width: 1 }
+  .pu-ct-ev { pointer-events: none }
+  .pu-ct-ev circle, .pu-ct-ev rect, .pu-ct-ev polygon { fill: var(--pu-color-surface); stroke: var(--pu-color-text); stroke-width: 1.5 }
+  .pu-ct-ev text { fill: var(--pu-color-text); font: 700 9px / 12px var(--pu-font-body) }
+  .pu-ct-ev.active circle, .pu-ct-ev.active rect, .pu-ct-ev.active polygon { fill: var(--pu-color-text) }
+  .pu-ct-ev.active text { fill: var(--pu-color-surface) }
   .kit-ct-note { margin: 0; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }
   /* PerformanceChart layers: reference line, drawdown band, quiet axis, end labels. Off by default. */
   .pu-ct-axis-in { paint-order: stroke; stroke: var(--pu-color-surface); stroke-width: 3px; stroke-linejoin: round }

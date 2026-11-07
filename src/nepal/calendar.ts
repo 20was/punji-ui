@@ -2,6 +2,10 @@ import { bsToEpochDay, epochDayToBs, epochDayToGregorian, gregorianToEpochDay } 
 import { BS_MONTHS, NEPAL_TIME_ZONE, type NepalLanguage } from './locale.ts';
 import type { CalendarDate } from './date-only.ts';
 export type { CalendarDate } from './date-only.ts';
+import { bsDateStatus } from './bs-provenance.ts';
+export { toBS, toAD, bsDateStatus, BsProvenanceError } from './bs-provenance.ts';
+export type { BsConversion, BsConvertOptions, BsPolicy, BsProvenance } from './bs-provenance.ts';
+export { BS_TABLE_RANGE, BS_VERIFIED_RANGE, BS_OFFICIAL_THROUGH } from './bs-data.ts';
 export const BS_SUPPORTED_RANGE = { from: '1975-01-01', to: '2099-12-30' } as const;
 const assertIntegers = ({ year, month, day }: CalendarDate) => {
   if (![year, month, day].every(Number.isInteger)) throw new RangeError('Calendar fields must be integers');
@@ -40,6 +44,8 @@ export interface NepalFiscalPeriod {
   label: string;
   start: { bs: CalendarDate; gregorian: CalendarDate };
   end: { bs: CalendarDate; gregorian: CalendarDate };
+  /** True when the start or the end falls in a projected BS month (no official publication yet). */
+  projected: boolean;
 }
 /** Inclusive fiscal boundaries for a BS date; requires the entire year within converter coverage. */
 export function getNepalFiscalPeriod(bsDate: CalendarDate): NepalFiscalPeriod {
@@ -52,5 +58,7 @@ export function getNepalFiscalPeriod(bsDate: CalendarDate): NepalFiscalPeriod {
   // BS month lengths and conversion remain exclusively table-backed.
   const previous = new Date(Date.UTC(next.year, next.month - 1, next.day) - 86400000);
   const end = { year: previous.getUTCFullYear(), month: previous.getUTCMonth() + 1, day: previous.getUTCDate() };
-  return { ...year, start: { bs: startBS, gregorian: start }, end: { bs: gregorianToBS(end), gregorian: end } };
+  const endBS = gregorianToBS(end);
+  const projected = bsDateStatus(startBS) === 'projected' || bsDateStatus(endBS) === 'projected';
+  return { ...year, start: { bs: startBS, gregorian: start }, end: { bs: endBS, gregorian: end }, projected };
 }

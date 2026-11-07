@@ -353,7 +353,7 @@
     "name": "Nepal utilities including calendar table",
     "path": "dist/nepal/nepal.js",
     "import": "*",
-    "limit": "5.21 kB",
+    "limit": "5.6 kB",
     "gzip": true
   },
   {
@@ -493,7 +493,7 @@
     "name": "date-range-presets Nepal (import from '@punji/ui/date-range-presets/nepal')",
     "path": "dist/date-range-presets/nepal.js",
     "import": "*",
-    "limit": "3.29 kB",
+    "limit": "3.75 kB",
     "gzip": true
   },
   {
@@ -962,7 +962,7 @@
     "name": "period-selector (import from '@punji/ui/period-selector')",
     "path": "dist/period-selector/FinancialPeriodSelector.js",
     "import": "*",
-    "limit": "4.82 kB",
+    "limit": "5.25 kB",
     "gzip": true
   },
   {

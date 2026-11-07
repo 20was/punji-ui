@@ -7,7 +7,7 @@
  * own Bikram Sambat month starts (three consecutive months make a quarter).
  * Nothing here is a tax or filing calendar.
  */
-import { bsToGregorian, getNepalFiscalPeriod, gregorianToBS } from '../nepal/calendar.ts';
+import { bsToGregorian, getNepalFiscalPeriod, gregorianToBS, toBS } from '../nepal/calendar.ts';
 import { formatCalendarDate, type CalendarDate } from '../nepal/date-only.ts';
 import { formatBSDate } from '../nepal/calendar.ts';
 import type { NepalLanguage } from '../nepal/locale.ts';
@@ -25,6 +25,8 @@ export interface FinancialPeriod {
   start?: CalendarDate;
   /** Inclusive end, Gregorian. Used to keep the same time span when the kind changes. */
   end?: CalendarDate;
+  /** The Nepal builders set this: true when the start or end falls in a projected BS month (no official publication yet). */
+  projected?: boolean;
 }
 
 export interface NepalPeriodOptions {
@@ -41,6 +43,8 @@ const dayBefore = (date: CalendarDate): CalendarDate => {
   return { year: previous.getUTCFullYear(), month: previous.getUTCMonth() + 1, day: previous.getUTCDate() };
 };
 
+const projectedRange = (start: CalendarDate, end: CalendarDate) => toBS(start)!.projected || toBS(end)!.projected;
+
 function describe(start: CalendarDate, end: CalendarDate, options: NepalPeriodOptions): string {
   const format = { language: options.language, digits: options.digits } as const;
   return `${formatBSDate(gregorianToBS(start), format)} – ${formatBSDate(gregorianToBS(end), format)} ${options.bsLabel ?? 'BS'} · ${formatCalendarDate(start)} – ${formatCalendarDate(end)}`;
@@ -54,7 +58,7 @@ export function nepalFiscalYearPeriods(from: number, to: number, options: NepalP
     const period = getNepalFiscalPeriod({ year, month: 4, day: 1 });
     out.push({
       id: `fy-${period.startYear}`, kind: 'year', label: `${options.fiscalYearPrefix ?? 'FY'} ${period.label}`,
-      detail: describe(period.start.gregorian, period.end.gregorian, options), start: period.start.gregorian, end: period.end.gregorian,
+      detail: describe(period.start.gregorian, period.end.gregorian, options), start: period.start.gregorian, end: period.end.gregorian, projected: period.projected,
     });
   }
   return out;
@@ -79,7 +83,7 @@ export function nepalFiscalMonthPeriods(startYear: number, options: NepalPeriodO
     const name = formatBSDate(month.bs, { language: options.language, digits: options.digits }).split(' ');
     return {
       id: `m-${startYear}-${String(index + 1).padStart(2, '0')}`, kind: 'month', label: `${name[1]} ${name[2]}`,
-      detail: describe(month.gregorian, end, options), start: month.gregorian, end,
+      detail: describe(month.gregorian, end, options), start: month.gregorian, end, projected: projectedRange(month.gregorian, end),
     };
   });
 }
@@ -91,6 +95,6 @@ export function nepalFiscalQuarterPeriods(startYear: number, options: NepalPerio
   return [0, 1, 2, 3].map(quarter => {
     const start = starts[quarter * 3]!.gregorian;
     const end = dayBefore(starts[quarter * 3 + 3]!.gregorian);
-    return { id: `q-${startYear}-${quarter + 1}`, kind: 'quarter', label: `Q${quarter + 1} ${label}`, detail: describe(start, end, options), start, end };
+    return { id: `q-${startYear}-${quarter + 1}`, kind: 'quarter', label: `Q${quarter + 1} ${label}`, detail: describe(start, end, options), start, end, projected: projectedRange(start, end) };
   });
 }

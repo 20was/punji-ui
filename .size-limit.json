@@ -346,13 +346,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "202.45 kB",
+    "limit": "208.57 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "42.84 kB",
+    "limit": "44.83 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -787,7 +787,7 @@
     "name": "performance-chart (import from '@punji/ui/performance-chart')",
     "path": "dist/performance-chart/PerformanceChart.js",
     "import": "*",
-    "limit": "4.7 kB",
+    "limit": "6.32 kB",
     "gzip": true
   },
   {
@@ -1654,6 +1654,41 @@
     "name": "Money charts CSS",
     "path": "dist/css/money-charts.css",
     "limit": "0.6 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "month-grid (import from '@punji/ui/month-grid')",
+    "path": "dist/month-grid/MonthGrid.js",
+    "import": "*",
+    "limit": "2.51 kB",
+    "gzip": true
+  },
+  {
+    "name": "returns-heat-table (import from '@punji/ui/returns-heat-table')",
+    "path": "dist/returns-heat-table/ReturnsHeatTable.js",
+    "import": "*",
+    "limit": "1.23 kB",
+    "gzip": true
+  },
+  {
+    "name": "histogram (import from '@punji/ui/histogram')",
+    "path": "dist/histogram/Histogram.js",
+    "import": "*",
+    "limit": "2.09 kB",
+    "gzip": true
+  },
+  {
+    "name": "correlation-matrix (import from '@punji/ui/correlation-matrix')",
+    "path": "dist/correlation-matrix/CorrelationMatrix.js",
+    "import": "*",
+    "limit": "1.36 kB",
+    "gzip": true
+  },
+  {
+    "name": "Heat tables CSS",
+    "path": "dist/css/heat-tables.css",
+    "limit": "2.08 kB",
     "rolldown": false,
     "gzip": true
   }

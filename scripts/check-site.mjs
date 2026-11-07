@@ -6,7 +6,7 @@
 // exact example source on the clipboard, the theme switch forces and persists a theme, the Command-K
 // search finds and opens pages, sidebar groups collapse and persist, the mobile drawer opens and
 // navigates, tabs deep-link, path routing, the hash redirect, the 404 page and the no-JS render.
-// SITE_ONLY=slug,slug (home for the overview) limits the page sweep to those pages.
+// SITE_ONLY=slug,slug (home for the overview) limits the page sweep, and the app screens sweep, to those pages.
 // SITE_SHARD="i/n" (1-based) runs every n-th page-sweep cell (width x theme x route) and, on shard 1
 // only, the behaviour checks, so CI can split the sweep across jobs. Unset, everything runs.
 import { chromium } from 'playwright';
@@ -242,7 +242,7 @@ try {
   // horizontal overflow, no console errors. Screens after the first load on demand, so each is opened through the
   // app's navigation and audited once its heading has focus. Runs on the first shard.
   if (shardIndex === 1) {
-    for (const app of PAGES.filter((p) => p.kind === 'app')) {
+    for (const app of PAGES.filter((p) => p.kind === 'app' && (!process.env.SITE_ONLY || process.env.SITE_ONLY.split(',').includes(p.slug)))) {
       for (const width of [390, 768, 1440]) {
         for (const theme of ['light', 'dark']) {
           const context = await browser.newContext({ viewport: { width, height: 900 }, colorScheme: theme, reducedMotion: 'reduce' });
@@ -270,6 +270,28 @@ try {
           await context.close();
         }
       }
+    }
+
+    // A lazy screen with a chart mounts before its container has a layout, so the chart first draws at a fallback width:
+    // with the chunk held back, no frame from the click on may be wider than the phone viewport (the market portal's Compare chart).
+    {
+      const lazyCtx = await browser.newContext({ viewport: { width: 390, height: 900 }, reducedMotion: 'reduce' });
+      const lz = await lazyCtx.newPage();
+      await lz.route(/assets\/(Compare|Performance|ChartA11y)[^/]*\.js$/, async (route) => { await new Promise((done) => setTimeout(done, 400)); await route.continue(); });
+      await lz.goto(`${base}/apps/market-portal/`);
+      await lz.locator('#page-title').waitFor();
+      await lz.evaluate(() => {
+        window.widest = 0;
+        const frame = () => { window.widest = Math.max(window.widest, document.documentElement.scrollWidth - innerWidth); requestAnimationFrame(frame); };
+        requestAnimationFrame(frame);
+      });
+      await lz.getByTestId('screen-compare').click();
+      await lz.locator('[data-screen="compare"] [data-screen-title]').waitFor();
+      await lz.getByTestId('mp-cmp-chart').waitFor();
+      await lz.evaluate(() => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done))));
+      const wide = await lz.evaluate(() => window.widest);
+      if (wide > 0) fail(`app market-portal 390 #compare: a frame while the lazy chart mounted was wider than the viewport by ${wide}px`);
+      await lazyCtx.close();
     }
 
     // App behaviour: the trading terminal places an order that reaches the order list, and opens the command palette

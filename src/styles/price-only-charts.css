@@ -1,0 +1,48 @@
+/* Punji UI styles.
+   Styles for price-only-chart (Renko, Kagi, Point and Figure, Line Break, Range bars) and breadth-chart. The frame, grid, axis,
+   tooltip and legend come from financial-charts.css (.kit-ct). Colours from --pu-* tokens only. Up and down differ by shape
+   (hollow against solid, X against O, thin against thick) as well as by colour. */
+@layer punji.components {
+  .pu-po-note { margin: 0; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }
+  .pu-po-lit { fill: color-mix(in srgb, var(--pu-color-text) 6%, transparent) }
+  .pu-po-keys .pu-po-sw { display: inline-block; flex: none; width: 14px; height: 14px; box-sizing: border-box; border-radius: 2px }
+  .pu-po-keys .pu-po-sw.brick.up { border: 2px solid var(--pu-color-gain); background: var(--pu-color-surface) }
+  .pu-po-keys .pu-po-sw.brick.down { border: 2px solid var(--pu-color-loss); background: var(--pu-color-loss) }
+  .pu-po-keys .pu-po-sw.kagi { height: 0; border-radius: 0; border-top: 2px solid var(--pu-color-loss); align-self: center }
+  .pu-po-keys .pu-po-sw.kagi.yang { border-top: 5px solid var(--pu-color-gain) }
+  .pu-po-keys .pu-po-sw.col { position: relative; font: 700 13px / 14px var(--pu-font-body); text-align: center }
+  .pu-po-keys .pu-po-sw.col::before { position: absolute; inset: 0 }
+  .pu-po-keys .pu-po-sw.col.x { color: var(--pu-color-gain) }
+  .pu-po-keys .pu-po-sw.col.x::before { content: '\00d7'; font-size: 18px; line-height: 12px }
+  .pu-po-keys .pu-po-sw.col.o { color: var(--pu-color-loss) }
+  .pu-po-keys .pu-po-sw.col.o::before { content: ''; inset: 1px; border: 2px solid currentColor; border-radius: 50% }
+  /* Bricks (Renko, Line Break, Range bars): up hollow with a triangle up, down solid with a triangle down. */
+  .pu-po-brick rect { stroke-width: 2 }
+  .pu-po-brick.up rect { fill: var(--pu-color-surface); stroke: var(--pu-color-gain) }
+  .pu-po-brick.down rect { fill: var(--pu-color-loss); stroke: var(--pu-color-loss) }
+  .pu-po-brick text { font-size: 9px; pointer-events: none }
+  .pu-po-brick.up text { fill: var(--pu-color-gain) }
+  .pu-po-brick.down text { fill: var(--pu-color-on-loss) }
+  .pu-po-brick.active rect { stroke: var(--pu-color-text); stroke-width: 2.5 }
+  /* Kagi: yang is the thick line, yin the thin one. */
+  .pu-po-kagi { stroke-linecap: butt }
+  .pu-po-kagi.yang { stroke: var(--pu-color-gain); stroke-width: 4.5 }
+  .pu-po-kagi.yin { stroke: var(--pu-color-loss); stroke-width: 1.75 }
+  .pu-po-kagi.active { filter: drop-shadow(0 0 1px var(--pu-color-text)) }
+  .pu-po-kagi-join { stroke: var(--pu-color-text-muted); stroke-width: 1.25 }
+  /* Point and Figure: X rises, O falls. */
+  .pu-po-col { fill: none; stroke-width: 1.75; stroke-linecap: round }
+  .pu-po-col.x { stroke: var(--pu-color-gain) }
+  .pu-po-col.o { stroke: var(--pu-color-loss) }
+  .pu-po-col.thin { stroke-width: 3; stroke-linecap: butt }
+  .pu-po-col.o.thin { stroke-dasharray: 3 2 }
+  .pu-po-col.active { stroke-width: 2.5 }
+  .pu-po-col.thin.active { stroke-width: 4 }
+  /* Breadth lines: one series, so one tone; the 50 percent reference is dashed. */
+  .pu-br-line { fill: none; stroke: var(--pu-color-chart); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round }
+  .pu-br-dot { fill: var(--pu-color-chart) }
+  .pu-br-dot.active { fill: var(--pu-color-surface); stroke: var(--pu-color-chart); stroke-width: 2 }
+  .pu-br-cursor { stroke: var(--pu-color-text-muted); stroke-width: 1; stroke-dasharray: 2 2 }
+  .pu-br-ref line { stroke: var(--pu-color-text-muted); stroke-width: 1.25; stroke-dasharray: 6 4 }
+  .pu-br-ref text { fill: var(--pu-color-text); font: 600 11px / 14px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); paint-order: stroke; stroke: var(--pu-color-surface); stroke-width: 3px; stroke-linejoin: round }
+}

@@ -291,6 +291,42 @@
       "types": "./dist/chart-math/indicators.d.ts",
       "default": "./dist/chart-math/indicators.js"
     },
+    "./chart-price-only": {
+      "types": "./dist/chart-math/priceOnly.d.ts",
+      "default": "./dist/chart-math/priceOnly.js"
+    },
+    "./chart-breadth": {
+      "types": "./dist/chart-math/breadth.d.ts",
+      "default": "./dist/chart-math/breadth.js"
+    },
+    "./price-only-chart": {
+      "types": "./dist/price-only-chart/PriceOnlyChart.d.ts",
+      "default": "./dist/price-only-chart/PriceOnlyChart.js"
+    },
+    "./renko-type": {
+      "types": "./dist/price-only-chart/types/renko.d.ts",
+      "default": "./dist/price-only-chart/types/renko.js"
+    },
+    "./kagi-type": {
+      "types": "./dist/price-only-chart/types/kagi.d.ts",
+      "default": "./dist/price-only-chart/types/kagi.js"
+    },
+    "./point-figure-type": {
+      "types": "./dist/price-only-chart/types/pointFigure.d.ts",
+      "default": "./dist/price-only-chart/types/pointFigure.js"
+    },
+    "./line-break-type": {
+      "types": "./dist/price-only-chart/types/lineBreak.d.ts",
+      "default": "./dist/price-only-chart/types/lineBreak.js"
+    },
+    "./range-bars-type": {
+      "types": "./dist/price-only-chart/types/rangeBars.d.ts",
+      "default": "./dist/price-only-chart/types/rangeBars.js"
+    },
+    "./breadth-chart": {
+      "types": "./dist/breadth-chart/BreadthChart.d.ts",
+      "default": "./dist/breadth-chart/BreadthChart.js"
+    },
     "./rsi-indicator": {
       "types": "./dist/candlestick-chart/indicators/rsi.d.ts",
       "default": "./dist/candlestick-chart/indicators/rsi.js"

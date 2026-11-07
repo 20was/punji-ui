@@ -1,0 +1,20 @@
+/* Punji UI styles.
+   Styles for RiskReturnScatter. Needs tokens.css and base.css (styles.css has everything).
+   The frame, grid, axis, tooltip and legend come from financial-charts.css (.kit-ct). Colours from --pu-* tokens only. */
+@layer punji.components {
+  .pu-rrs-title { fill: var(--pu-color-text-muted); font-weight: 600 }
+  .pu-rrs-guide { stroke: var(--pu-color-text-muted); stroke-width: 1; stroke-dasharray: 6 4 }
+  .pu-rrs-quad { fill: var(--pu-color-text-muted); font: 500 10px / 12px var(--pu-font-body); opacity: 0.9 }
+  .pu-rrs-frontier { stroke: var(--pu-color-series-nepse); stroke-width: 2; stroke-dasharray: 7 4; stroke-linejoin: round }
+  .pu-rrs-sw { stroke: var(--pu-color-series-nepse); stroke-width: 2; stroke-dasharray: 7 4 }
+  .pu-rrs-pt { fill: var(--pu-color-chart); stroke: var(--pu-color-surface); stroke-width: 1.5 }
+  .pu-rrs-pt.stroke-only { fill: none; stroke: var(--pu-color-chart); stroke-width: 2.5; stroke-linecap: round }
+  .pu-rrs-pt.benchmark { fill: var(--pu-color-series-nepse) }
+  .pu-rrs-pt.lit { stroke: var(--pu-color-text); stroke-width: 2 }
+  .pu-rrs-name { fill: var(--pu-color-text); font: 500 11px / 13px var(--pu-font-body); paint-order: stroke; stroke: var(--pu-color-surface); stroke-width: 3px }
+  .pu-rrs-name.benchmark { font-style: italic }
+  .pu-rrs-name.lit { font-weight: 700 }
+  .pu-rrs-lead { stroke: var(--pu-color-border-strong); stroke-width: 1 }
+  .pu-rrs-legend li svg { flex: none }
+  .pu-rrs-note { margin: 0; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }
+}

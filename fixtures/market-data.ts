@@ -241,6 +241,49 @@ export function sampleCandles(length: number, seed = 1, last = 487.5, start = '2
 /** Sixty NABIL sessions ending at Rs 487.50. */
 export const nabilCandles: readonly SampleCandle[] = sampleCandles(60, 7, 487.5, '2025-08-24');
 
+/** A source bar for the price-only charts: prices are decimal strings. */
+export interface SampleBar {
+  date: string;
+  open: string;
+  high: string;
+  low: string;
+  close: string;
+}
+
+/** `sampleCandles` as decimal-string bars (two decimals), for Renko, Kagi, Point and Figure, Line Break and Range bars. */
+export function sampleBars(length: number, seed = 1, last = 487.5, start = '2025-06-01'): SampleBar[] {
+  return sampleCandles(length, seed, last, start).map((c) => ({ date: c.date, open: c.open.toFixed(2), high: c.high.toFixed(2), low: c.low.toFixed(2), close: c.close.toFixed(2) }));
+}
+
+/** Daily advances and declines for a 200-stock market over `length` sessions: a seeded drift with some strong days. Counts only, never live. */
+export function sampleBreadthDays(length: number, seed = 3, start = '2025-06-01'): { date: string; advances: number; declines: number; unchanged: number }[] {
+  let s = (seed * 2654435761) % 4294967296;
+  const rand = () => {
+    s = (s * 1664525 + 1013904223) % 4294967296;
+    return s / 4294967296;
+  };
+  let date = start;
+  return Array.from({ length }, (_, i) => {
+    const tilt = Math.sin(i / 9) * 0.22 + (rand() - 0.5) * 0.3;
+    const unchanged = 10 + Math.round(rand() * 12);
+    const advances = Math.max(0, Math.min(200 - unchanged, Math.round((200 - unchanged) * (0.5 + tilt))));
+    const day = { date, advances, declines: 200 - unchanged - advances, unchanged };
+    date = nextSession(date);
+    return day;
+  });
+}
+
+/** `count` constituents with `length` closes each (decimal strings) that share one market swing, so the share above an average moves with the market. */
+export function sampleConstituents(count: number, length: number, seed = 5, start = '2025-06-01'): { id: string; closes: { date: string; close: string }[] }[] {
+  return Array.from({ length: count }, (_, k) => {
+    const rows = sampleCandles(length, seed + k * 7, 100 + k * 13, start);
+    return {
+      id: `S${String(k + 1).padStart(2, '0')}`,
+      closes: rows.map((c, i) => ({ date: c.date, close: (c.close * (1 + Math.sin(i / 30) * 0.08)).toFixed(2) })),
+    };
+  });
+}
+
 /** Trading dates (Sunday to Thursday) for the performance chart. */
 export const performanceDates: readonly string[] = (() => {
   const out: string[] = [];

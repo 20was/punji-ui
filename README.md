@@ -6,7 +6,7 @@
 </a>
 
 > [!NOTE]
-> `@punji/ui` is at 0.4.0 on npm, published from CI with provenance. It is pre-1.0: a minor version can change APIs and styles, so pin an exact version and read the [changelog](./CHANGELOG.md) before you upgrade. Each page of the docs carries a [stability level](#stability-levels); several newer modules are beta or experimental.
+> `@punji/ui` is on npm, published from CI with provenance (the npm badge below shows the latest version). It is pre-1.0: a minor version can change APIs and styles, so pin an exact version and read the [changelog](./CHANGELOG.md) before you upgrade. Each page of the docs carries a [stability level](#stability-levels); several newer modules are beta or experimental.
 
 <p align="center">
   <a href="https://github.com/20was/punji-ui/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/20was/punji-ui/actions/workflows/ci.yml/badge.svg?branch=main"></a>
@@ -189,6 +189,7 @@ Charts are native SVG drawn by this package, with no chart library in the core b
 
 - **Market:** `CandlestickChart`, `PerformanceChart` (with optional reference line, drawdown, contributions, end labels and rebased comparison), `DepthChart`, `Sparkline`, `ColumnChart`, `MarketHeatmap`.
 - **Statements and fundamentals (beta):** `WaterfallChart`, `CashFlowChart`, `NetWorthChart`, `SankeyChart`, `EarningsChart`, `BalanceHistoryChart`, `ScoreRadar`, `FairValueBar`, `PriceTargetChart`.
+- **Portfolio and macro (beta):** `FanChart`, `RollingReturnsChart`, `RiskReturnScatter`, `YieldCurveChart`, `StyleGrid`, `SeasonalityChart`.
 - **Grids (beta):** `ReturnsHeatTable`, `MonthGrid`, `Histogram`, `CorrelationMatrix`. Also `RangeSelector` for 1D to All windows.
 
 Guide: [CHARTS.md](docs/CHARTS.md).

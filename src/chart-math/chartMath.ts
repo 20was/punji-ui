@@ -20,7 +20,16 @@
  *
  * Missing, null and non-finite numbers are "no value" everywhere. They are
  * never read as zero.
- */
+ 
+ *   drawdownOf         the fall from the running high, in percent
+ *   spreadLabels       label positions pushed apart so none is closer than a gap
+ *   labelClusters      which labels share horizontal space (so only those need spreading)
+ *   rollingReturns     return over each trailing N periods, optionally annualised
+ *   rollingDrawdown    the fall from the highest value in the trailing N periods
+ *   seasonalityStats   per calendar month across years: mean, range, hit rate
+ *   parseMaturity      '3M', '10Y', '52W' as years
+ *   curveSlopes        the segments of a curve that fall as maturity grows
+*/
 
 const isNum = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
 
@@ -536,4 +545,165 @@ export function exactText(value: number, decimals: number, minDecimals = 0): str
     if (text.endsWith('.')) text = text.slice(0, -1);
   }
   return /^-0(\.0*)?$/.test(text) ? text.slice(1) : text;
+}
+
+/**
+ * The fall from the running high, in percent (0 or negative), one value per input. A gap carries the high and
+ * stays `null`; a high of zero or below cannot be a base, so the point is `null`.
+ */
+export function drawdownOf(values: readonly (number | null | undefined)[]): (number | null)[] {
+  let peak = -Infinity;
+  return values.map((v) => {
+    if (!isNum(v)) return null;
+    peak = Math.max(peak, v);
+    return peak > 0 ? Math.min(0, (v / peak - 1) * 100) : null;
+  });
+}
+
+/**
+ * Groups labels that share horizontal space. `ranges` are each label's [left, right] in px; two labels are in one
+ * cluster when their ranges (widened by `pad`) overlap, directly or through a third. Returns clusters of indices,
+ * each ascending, clusters ordered by their first index. Only labels in one cluster can collide, so only they need
+ * `spreadLabels`.
+ */
+export function labelClusters(ranges: readonly (readonly [number, number])[], pad = 0): number[][] {
+  const order = ranges.map((_, i) => i).toSorted((a, b) => ranges[a]![0] - ranges[b]![0] || a - b);
+  const clusters: number[][] = [];
+  let right = -Infinity;
+  for (const i of order) {
+    const [l, r] = ranges[i]!;
+    if (clusters.length > 0 && l - pad <= right) {
+      clusters[clusters.length - 1]!.push(i);
+      right = Math.max(right, r);
+    } else {
+      clusters.push([i]);
+      right = r;
+    }
+  }
+  return clusters.map((c) => c.toSorted((a, b) => a - b)).toSorted((a, b) => a[0]! - b[0]!);
+}
+
+/**
+ * Return over each trailing `periods` periods, in percent: value / value `periods` periods earlier - 1. A point is
+ * `null` until `periods` earlier periods exist, when either value is missing, or when the earlier value is not above
+ * zero (it cannot be a base). With `periodsPerYear` the figure is annualised, (1 + r) ^ (periodsPerYear / periods) - 1.
+ * `periods` is rounded down to a whole number of at least 1.
+ */
+export function rollingReturns(values: readonly (number | null | undefined)[], periods: number, periodsPerYear?: number): (number | null)[] {
+  const w = Math.max(1, Math.floor(isNum(periods) ? periods : 1));
+  const power = isNum(periodsPerYear) && periodsPerYear > 0 ? periodsPerYear / w : 1;
+  return values.map((v, i) => {
+    const base = i >= w ? values[i - w] : undefined;
+    if (!isNum(v) || !isNum(base) || base <= 0 || v < 0) return null;
+    const ratio = v / base;
+    return (power === 1 ? ratio - 1 : ratio ** power - 1) * 100;
+  });
+}
+
+/**
+ * The fall from the highest value in the trailing `periods` periods (the current one included), in percent: 0 or
+ * negative. `null` for a missing value, or when that high is not above zero. Missing values inside the span are
+ * skipped. `periods` counts periods before the current one (a value of 12 looks at 13 values), rounded down, at least 1.
+ */
+export function rollingDrawdown(values: readonly (number | null | undefined)[], periods: number): (number | null)[] {
+  const w = Math.max(1, Math.floor(isNum(periods) ? periods : 1));
+  return values.map((v, i) => {
+    if (!isNum(v)) return null;
+    let peak = v;
+    for (let k = Math.max(0, i - w); k < i; k += 1) {
+      const u = values[k];
+      if (isNum(u) && u > peak) peak = u;
+    }
+    return peak > 0 ? Math.min(0, (v / peak - 1) * 100) : null;
+  });
+}
+
+export interface SeasonalityStat {
+  /** 1 to 12. */
+  month: number;
+  /** Years with a figure for the month. */
+  years: number;
+  /** Mean across those years; `null` until `minYears` years are in. A float mean, display only. */
+  mean: number | null;
+  /** The lowest and highest figure, and the year each came from; `null` with no years. */
+  min: number | null;
+  max: number | null;
+  minYear: number | null;
+  maxYear: number | null;
+  /** Years in which the month rose (above zero). */
+  positive: number;
+  /** Share of those years that rose, in percent; `null` with no years. */
+  hitRate: number | null;
+}
+
+/**
+ * Per calendar month across years: mean, lowest and highest, and how often it rose. `months` has 12 values per year
+ * (index 0 is January, or Baisakh on the BS calendar); missing and non-finite values are skipped, never zero. The
+ * mean waits for `minYears` years (default 1); the range and hit rate use every year there is.
+ */
+export function seasonalityStats(years: readonly { year: number; months: readonly (number | null | undefined)[] }[], minYears = 1): SeasonalityStat[] {
+  return Array.from({ length: 12 }, (_, m) => {
+    const vals: { year: number; v: number }[] = [];
+    for (const y of years) {
+      const v = y.months[m];
+      if (isNum(v)) vals.push({ year: y.year, v });
+    }
+    let lo: { year: number; v: number } | null = null;
+    let hi: { year: number; v: number } | null = null;
+    for (const x of vals) {
+      if (lo === null || x.v < lo.v) lo = x;
+      if (hi === null || x.v > hi.v) hi = x;
+    }
+    const positive = vals.filter((x) => x.v > 0).length;
+    return {
+      month: m + 1,
+      years: vals.length,
+      mean: vals.length >= Math.max(1, minYears) ? vals.reduce((s, x) => s + x.v, 0) / vals.length : null,
+      min: lo?.v ?? null,
+      max: hi?.v ?? null,
+      minYear: lo?.year ?? null,
+      maxYear: hi?.year ?? null,
+      positive,
+      hitRate: vals.length ? (positive / vals.length) * 100 : null,
+    };
+  });
+}
+
+const MATURITY = /^\s*(\d+(?:\.\d+)?)\s*([DWMY])\s*$/i;
+
+/**
+ * A maturity as years: '1M' is 1/12, '52W' is 1, '30Y' is 30, '90D' is 90/365. A plain number is already years.
+ * `null` for anything else (including zero and negatives).
+ */
+export function parseMaturity(maturity: string | number): number | null {
+  if (typeof maturity === 'number') return isNum(maturity) && maturity > 0 ? maturity : null;
+  const m = MATURITY.exec(maturity);
+  if (!m) return null;
+  const n = Number(m[1]);
+  if (!(n > 0)) return null;
+  const unit = m[2]!.toUpperCase();
+  return unit === 'Y' ? n : unit === 'M' ? n / 12 : unit === 'W' ? n / 52 : n / 365;
+}
+
+export interface CurveSlope {
+  /** Index of the shorter point and the longer point it falls to (adjacent in the input order). */
+  from: number;
+  to: number;
+  /** The change in value across the segment, negative. */
+  change: number;
+}
+
+/**
+ * The segments of a curve (values in maturity order) that fall as maturity grows: an inverted yield curve, or
+ * backwardation in a futures curve. Adjacent real values only; a missing value breaks the chain. Equal values are
+ * flat, not falling.
+ */
+export function curveSlopes(values: readonly (number | null | undefined)[]): CurveSlope[] {
+  const out: CurveSlope[] = [];
+  for (let i = 1; i < values.length; i += 1) {
+    const a = values[i - 1];
+    const b = values[i];
+    if (isNum(a) && isNum(b) && b < a) out.push({ from: i - 1, to: i, change: b - a });
+  }
+  return out;
 }

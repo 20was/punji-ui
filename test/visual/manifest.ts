@@ -179,6 +179,8 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'sankey-chart', title: 'SankeyChart' },
   { id: 'earnings-chart', title: 'EarningsChart' },
   { id: 'balance-history-chart', title: 'BalanceHistoryChart' },
+  { id: 'volume-profile', title: 'VolumeProfile split, 80% value area and ProfileRail' },
+  { id: 'market-heatmap-grouped', title: 'MarketHeatmap grouped: sectors and drilled-in banking' },
   { id: 'score-radar', title: 'ScoreRadar five axes, eight long names at 320px, weak total' },
   { id: 'fair-value-bar', title: 'FairValueBar under, fair, over, far above' },
   { id: 'price-target-chart', title: 'PriceTargetChart fan and close targets' },
@@ -200,6 +202,14 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'histogram', title: 'Histogram' },
   { id: 'correlation-matrix', title: 'CorrelationMatrix' },
   { id: 'performance-chart-layers', title: 'PerformanceChart reference, drawdown, contributions, rebase and quiet axis' },
+  { id: 'price-only-chart', title: 'PriceOnlyChart: Renko, Kagi, Point and Figure, Line Break and Range bars', layout: true },
+  { id: 'breadth-chart', title: 'BreadthChart: advance-decline and percent above a moving average', layout: true },
+  { id: 'fan-chart', title: 'FanChart percentile bands, goal, close percentiles and Money' },
+  { id: 'rolling-returns-chart', title: 'RollingReturnsChart return, two series and drawdown' },
+  { id: 'risk-return-scatter', title: 'RiskReturnScatter benchmark, frontier and crowded labels' },
+  { id: 'yield-curve-chart', title: 'YieldCurveChart inverted, normal time-scale and term structure' },
+  { id: 'style-grid', title: 'StyleGrid weights and placement only' },
+  { id: 'seasonality-chart', title: 'SeasonalityChart BS months and short history' },
   // new:component inserts fixtures above this line
 ];
 

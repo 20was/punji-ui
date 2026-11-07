@@ -17,7 +17,7 @@
 import { useId } from 'react';
 import type { ReactNode } from 'react';
 
-import { dualDateText } from '../internal/dualDate.tsx';
+import { BsStatusMark, DEFAULT_BS_DATE_LABELS, dualDateText, type BsDateLabels } from '../internal/dualDate.tsx';
 import { AppLink } from '../internal/link.tsx';
 import type { LinkComponent } from '../internal/link.tsx';
 
@@ -155,7 +155,7 @@ export function KeyFacts({ facts, heading: title, testId, className }: KeyFactsP
 /* Timeline ------------------------------------------------------------ */
 
 /** Timeline's words. */
-export interface TimelineLabels {
+export interface TimelineLabels extends Partial<BsDateLabels> {
   /** Printed after a Bikram Sambat date. Default "BS". */
   bs?: string;
   /** Printed after a Gregorian date. Default "AD". */
@@ -197,12 +197,14 @@ const ISO_DAY = /^\d{4}-\d{2}-\d{2}$/;
  * @stability beta
  */
 export function Timeline({ milestones, primary = 'bs', language, digits, label, labels, testId, className }: TimelineProps) {
-  const words = { bs: 'BS', ad: 'AD', ...labels };
+  const words = { bs: 'BS', ad: 'AD', ...DEFAULT_BS_DATE_LABELS, ...labels };
   return (
     <ol className={`pu-timeline${className ? ` ${className}` : ''}`} aria-label={label} data-testid={testId}>
       {milestones.map((m, i) => {
         const parts = ISO_DAY.test(m.date) ? dualDateText(m.date, { language, digits }) : null;
-        const day = parts?.ad ? (primary === 'bs' && parts.bs ? [`${parts.bs} ${words.bs}`, `${parts.ad} ${words.ad}`] : [`${parts.ad} ${words.ad}`, parts.bs ? `${parts.bs} ${words.bs}` : null]) : null;
+        const mark = <BsStatusMark status={parts?.bsStatus} labels={words} />;
+        const bsText = parts?.bs ? <>{parts.bs} {words.bs}{mark}</> : null;
+        const day = parts?.ad ? (primary === 'bs' && parts.bs ? [bsText, `${parts.ad} ${words.ad}`] : [`${parts.ad} ${words.ad}`, bsText]) : null;
         return (
           <li key={`${m.date}-${i}`} className="pu-timeline-item">
             <div className="pu-timeline-head">

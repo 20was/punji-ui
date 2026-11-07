@@ -113,6 +113,7 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'beneficiary-selector-open', title: 'BeneficiarySelector open list' },
   // Share issues and corporate actions.
   { id: 'issue-card', title: 'IssueCard open, closing today, upcoming and closed', layout: true },
+  { id: 'bs-projected', title: 'Projected BS dates: IssueCard, Timeline, period selector and Calendar', layout: true },
   { id: 'issue-list', title: 'IssueList with kind filter', layout: true },
   { id: 'apply-issue-form', title: 'ApplyIssueForm details step' },
   { id: 'apply-issue-form-errors', title: 'ApplyIssueForm with every error shown' },

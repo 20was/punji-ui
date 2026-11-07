@@ -7,6 +7,8 @@
   .pu-cal-caption .kit-field { gap: 0; }
   .pu-cal-caption input { text-align: center; font-variant-numeric: var(--pu-font-numeric); }
   .pu-cal-caption .err { position: absolute; top: 100%; min-width: 160px; z-index: var(--pu-z-raised); padding: var(--pu-space-2); background: var(--pu-color-surface-solid); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-8); }
+  .pu-cal-note { margin: 0 0 var(--pu-space-2); font-size: var(--pu-text-xs); line-height: 1.4; color: var(--pu-color-text-muted); overflow-wrap: anywhere; }
+  .pu-cal-note .pu-bs-flag { margin-inline-start: 0; }
   .pu-cal-grid { width: 100%; table-layout: fixed; border-collapse: collapse; }
   .pu-cal-grid th { height: 28px; padding: 0; color: var(--pu-color-text-muted); font-size: var(--pu-text-xs); font-weight: 400; text-align: center; }
   .pu-cal-grid td { height: calc(var(--day-size) + 2px); padding: 0; text-align: center; }

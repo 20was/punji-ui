@@ -9,7 +9,7 @@
 import { useId, useMemo, useState, type ReactNode } from 'react';
 
 import { ChipRow } from '../controls/Controls.tsx';
-import { DualDate, formatUnits } from '../internal/dualDate.tsx';
+import { DualDate, DEFAULT_BS_DATE_LABELS, formatUnits, type BsDateLabels } from '../internal/dualDate.tsx';
 import { MoneyDisplay } from '../money-display/MoneyDisplay.tsx';
 import { nepalMoneyConfig, type MoneyFormatConfig } from '../money/money.ts';
 import type { NepalLanguage } from '../nepal/locale.ts';
@@ -21,7 +21,7 @@ import { StatusPill } from '../status-pill/StatusPill.tsx';
 
 const TONES: Record<IssueStatus, 'gain' | 'warn' | 'info' | undefined> = { open: 'gain', 'closing-today': 'warn', upcoming: 'info', closed: undefined };
 
-export interface IssueCardLabels {
+export interface IssueCardLabels extends BsDateLabels {
   opens: string;
   closes: string;
   units: string;
@@ -37,6 +37,7 @@ export interface IssueCardLabels {
 const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
 export const DEFAULT_ISSUE_CARD_LABELS: IssueCardLabels = {
+  ...DEFAULT_BS_DATE_LABELS,
   opens: 'Opens',
   closes: 'Closes',
   units: 'Units on offer',
@@ -94,7 +95,7 @@ export function IssueCard({
   const preset = money ?? nepalMoneyConfig({ language, digits });
   const days = today && status ? (status === 'upcoming' ? daysBetween(today, issue.openDate) : status === 'closed' ? daysBetween(issue.closeDate, today) : daysBetween(today, issue.closeDate)) : null;
   const multiple = issue.kittaMultiple ?? 10n;
-  const dateProps = { primary: primaryCalendar, language, digits } as const;
+  const dateProps = { primary: primaryCalendar, language, digits, labels: words } as const;
   return (
     <article className={`pu-issue kit-card${className ? ` ${className}` : ''}`} aria-labelledby={`${uid}-name`} data-status={status ?? undefined} data-testid={testId}>
       <div className="pu-issue-head">

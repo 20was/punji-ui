@@ -22,6 +22,8 @@ export interface DateRangePreset {
   label: string;
   /** The inclusive range, as Gregorian civil dates. */
   range: PresetRange;
+  /** Set by the Nepal builders: true when the range starts or ends in a projected BS month. */
+  projected?: boolean;
 }
 
 export interface DateRangePresetOptions {

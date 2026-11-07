@@ -901,6 +901,14 @@ export const GUIDES: readonly PageDef[] = [
         ],
       },
       {
+        id: 'markers',
+        title: 'What the components show',
+        paragraphs: [
+          'A date in a projected BS month carries the word "projected" in DualDate (IssueCard, CorporateActionTimeline, DematAccountCard, EdisConfirmation) and in the Article Timeline, with a tooltip and screen-reader text saying the Nepal Panchanga Nirnayak Bikas Samiti has not published that month. The BS Calendar and DatePicker show a note under the heading while the visible month is projected; days stay selectable. FinancialPeriodSelector and the Nepal date-range presets mark a period or preset whose `projected` flag is set. Replace the words with `labels.projected` and `labels.projectedHint`.',
+          'An unverified month (old years where sources disagree) gets screen-reader text only. These dates are historic and rarely acted on, so a visible chip on each would be noise; official and cross-checked months show nothing.',
+        ],
+      },
+      {
         id: 'update',
         title: 'The yearly Rajpatra update',
         paragraphs: ['The table changes once a year, when the next year\'s holiday notice appears in Nepal Rajpatra Part 5 (between Magh 29 and Chaitra 2 in recent years). The research and the full process are in [docs/research/bs-calendar](' + REPO + '/docs/research/bs-calendar/README.md).'],

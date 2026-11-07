@@ -1,5 +1,0 @@
----
-'@punji/ui': minor
----
-
-Table parity with the web app. New `@punji/ui/scroll-table` (beta): `ScrollTable`, a read-only sortable table in a focusable, named scroll region, built on the table-core `ColumnDef` (sortable heads with `aria-sort`, first column as a sticky row header, end-aligned tabular figures, exact footer totals, `hideUnder` for phones). It replaces the hand-rolled `k-tablebox` tables. `FinancialTable` gains `groupActions(key, rows)` (beta): real buttons in each group header, in tab order, outside the collapse button (`DataRowGroup` takes `actions`). Tables now have a documented print stylesheet (`table-print.css`, in `styles.css`): the scroll region carries `pu-print-table`, and in print the head repeats, rows stay whole, scroll clipping and folded columns go, and text is black on white; `pu-no-print` leaves a control out and `data-print="off"` opts a table out. `Watchlist` gains `showMonth`, `showSinceAdded` (from `monthAgo` and `addedPrice` on each quote, exact bigint), an `actions` slot and `loading`; `WatchlistRow` and `WatchlistRowSkeleton` are exported standalone (beta). Existing usage is unchanged.

@@ -6,6 +6,7 @@
 // exact example source on the clipboard, the theme switch forces and persists a theme, the Command-K
 // search finds and opens pages, sidebar groups collapse and persist, the mobile drawer opens and
 // navigates, tabs deep-link, path routing, the hash redirect, the 404 page and the no-JS render.
+// SITE_ONLY=slug,slug (home for the overview) limits the page sweep to those pages.
 // SITE_SHARD="i/n" (1-based) runs every n-th page-sweep cell (width x theme x route) and, on shard 1
 // only, the behaviour checks, so CI can split the sweep across jobs. Unset, everything runs.
 import { chromium } from 'playwright';
@@ -33,24 +34,68 @@ const checked = { variants: 0, tabs: 0 };
 const fail = (message) => { failures.push(message); console.error(`FAIL ${message}`); };
 const routes = [{ slug: '', title: 'Overview', path: '/' }, ...PAGES.map((p) => ({ ...p, path: pagePath(p) }))];
 const HOME_H1 = 'React components for money, markets and ledgers.';
-const flagCounts = { edge: 0, clip: 0, dup: 0, icon: 0, edgeAllowed: 0 };
+const flagCounts = { edge: 0, clip: 0, dup: 0, icon: 0, card: 0, edgeAllowed: 0, cardAllowed: 0 };
 
 // Layout defects a plain axe/overflow pass misses, probed inside every example preview (the stage).
 //  edge  content within EDGE px of the stage's border box, or past it: missing padding, content flush to the frame.
 //  clip  content cut off by an overflow:hidden ancestor (the stage, its frame, or a clipping box inside it).
 //  dup   the same caption or note text twice in one example.
 //  icon  an inline link whose icon sits alone on its own line.
-// `edge` is allowlisted per page slug (and optional example id) with a reason; `clip`, `dup` and `icon` always fail.
+//  card  text within CARD_EDGE px of the inner border edge of a card (or other bordered box) at phone width: a stacked table
+//        or any child that forgot the card's inset. Checked over the whole page, and over the stage for a variant audit.
+// `edge` and `card` are allowlisted per page slug (and optional example id) with a reason; `clip`, `dup` and `icon` always fail.
 const EDGE = 8;
+const CARD_EDGE = 4;
 const EDGE_ALLOW = {
   // 'slug' or 'slug/example': 'why the component is intentionally edge to edge',
   'app-shell': 'the skip link is position: fixed and parked above the viewport until it takes focus',
 };
+const CARD_ALLOW = {
+  // 'slug' or 'slug/example': 'why text intentionally touches the box edge',
+};
 /* oxlint-disable unicorn/consistent-function-scoping, no-shadow -- the probe is serialised into the page, so it must be self-contained. */
-const layoutProbe = ({ edge }) => {
+const layoutProbe = ({ edge, cardEdge, scoped, narrow }) => {
   const stage = document.querySelector('[data-testid=preview]');
-  if (!stage) return [];
   const out = [];
+  const cardProbe = () => {
+    const root = scoped ? stage : document.body;
+    if (!root || !narrow) return;
+    const boxes = [...root.querySelectorAll('*')].filter((el) => {
+      if (el.closest('svg')) return false;
+      const c = getComputedStyle(el); const r = el.getBoundingClientRect();
+      const bordered = parseFloat(c.borderLeftWidth) >= 1 && parseFloat(c.borderRightWidth) >= 1 && c.borderLeftStyle !== 'none' && c.borderRightStyle !== 'none';
+      return r.width >= 200 && r.height >= 48 && (el.classList.contains('kit-card') || (bordered && parseFloat(c.borderTopLeftRadius) > 0));
+    });
+    const range = document.createRange();
+    const seenCard = new Set();
+    for (const box of boxes) {
+      const br = box.getBoundingClientRect(); const bc = getComputedStyle(box);
+      const innerLeft = br.left + parseFloat(bc.borderLeftWidth); const innerRight = br.right - parseFloat(bc.borderRightWidth);
+      const walker = document.createTreeWalker(box, NodeFilter.SHOW_TEXT);
+      for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+        if (!n.textContent.trim()) continue;
+        const host = n.parentElement;
+        if (!host || host.closest('svg, .kit-sr, [aria-hidden=true]')) continue;
+        const hc = getComputedStyle(host); const hr = host.getBoundingClientRect();
+        if (hc.display === 'none' || hc.visibility === 'hidden' || hr.width <= 1 || hr.height <= 1) continue;
+        // Text scrolled or clipped inside its own scroller (a wide table, a code block) is judged by that scroller, not the box.
+        let scrolled = false;
+        for (let a = host; a; a = a === box ? null : a.parentElement) { const c = getComputedStyle(a); if (c.overflowX !== 'visible' && a.scrollWidth > a.clientWidth + 1) { scrolled = true; break; } }
+        if (scrolled) continue;
+        range.selectNodeContents(n);
+        const sides = [];
+        for (const q of range.getClientRects()) {
+          if (q.width < 1) continue;
+          if (q.left < innerLeft + cardEdge && q.left > innerLeft - 1000) sides.push('left');
+          if (q.right > innerRight - cardEdge && q.right < innerRight + 1000) sides.push('right');
+        }
+        if (sides.length) { const side = [...new Set(sides)].join('+'); const key = `${describe(box)}>${describe(host)}:${side}`; if (!seenCard.has(key)) { seenCard.add(key); out.push({ kind: 'card', text: `text "${n.textContent.trim().slice(0, 30)}" in ${describe(host)} is within ${cardEdge}px of the ${side} inner edge of ${describe(box)}` }); } }
+      }
+    }
+  };
+  const describe = (el) => `${el.tagName.toLowerCase()}${el.className && typeof el.className === 'string' ? `.${el.className.trim().split(/\s+/)[0]}` : ''}`;
+  cardProbe();
+  if (!stage) return out;
   const box = stage.getBoundingClientRect();
   // Not drawn: display none, a closed <details> body, a visually hidden (1px) box such as a stacked table's head.
   const visible = (el) => {
@@ -59,7 +104,6 @@ const layoutProbe = ({ edge }) => {
     for (let d = el.closest('details'); d; d = d.parentElement?.closest('details')) if (!d.open && !el.closest('summary')) return false;
     return true;
   };
-  const describe = (el) => `${el.tagName.toLowerCase()}${el.className && typeof el.className === 'string' ? `.${el.className.trim().split(/\s+/)[0]}` : ''}`;
   const clipsInside = (el) => { for (let a = el.parentElement; a && a !== stage; a = a.parentElement) { const c = getComputedStyle(a); if (c.overflowX !== 'visible' || c.overflowY !== 'visible') return true; } return false; };
   // (a) edge
   const seen = new Set();
@@ -134,6 +178,7 @@ try {
       const context = await browser.newContext({ viewport: { width, height: 900 }, colorScheme: theme, reducedMotion: 'reduce' });
       await context.addInitScript((t) => localStorage.setItem('punji-docs-theme', JSON.stringify(t)), theme);
       for (const route of routes) {
+        if (process.env.SITE_ONLY && !process.env.SITE_ONLY.split(',').includes(route.slug || 'home')) continue;
         if (cell++ % shardCount !== shardIndex - 1) continue;
         const page = await context.newPage();
         const errors = [];
@@ -156,8 +201,9 @@ try {
           const clipped = await page.evaluate(() => { const box = document.querySelector('[data-testid=preview]'); return box ? box.scrollWidth - box.clientWidth : 0; });
           if (clipped > 1) fail(`${name}: the preview scrolls sideways by ${clipped}px`);
           const exampleId = name.includes('[') ? name.slice(name.indexOf('[') + 1, -1) : route.examples?.[0]?.id;
-          for (const flag of await page.evaluate(layoutProbe, { edge: EDGE })) {
+          for (const flag of await page.evaluate(layoutProbe, { edge: EDGE, cardEdge: CARD_EDGE, scoped: Boolean(scope), narrow: width <= 480 })) {
             if (flag.kind === 'edge' && (EDGE_ALLOW[route.slug] || EDGE_ALLOW[`${route.slug}/${exampleId}`])) { flagCounts.edgeAllowed += 1; continue; }
+            if (flag.kind === 'card' && (CARD_ALLOW[route.slug] || CARD_ALLOW[`${route.slug}/${exampleId}`])) { flagCounts.cardAllowed += 1; continue; }
             flagCounts[flag.kind] += 1;
             fail(`${name}: layout ${flag.kind}: ${flag.text}`);
           }
@@ -577,10 +623,10 @@ try {
 }
 
 if (failures.length) {
-  console.error(`\nlayout flags: edge ${flagCounts.edge} (+${flagCounts.edgeAllowed} allowlisted), clip ${flagCounts.clip}, dup ${flagCounts.dup}, icon ${flagCounts.icon}`);
+  console.error(`\nlayout flags: edge ${flagCounts.edge} (+${flagCounts.edgeAllowed} allowlisted), clip ${flagCounts.clip}, dup ${flagCounts.dup}, icon ${flagCounts.icon}, card ${flagCounts.card} (+${flagCounts.cardAllowed} allowlisted)`);
   console.error(`site check: ${failures.length} failure(s)`);
   process.exit(1);
 }
-console.log(`layout flags: edge ${flagCounts.edge} (+${flagCounts.edgeAllowed} allowlisted), clip ${flagCounts.clip}, dup ${flagCounts.dup}, icon ${flagCounts.icon}`);
+console.log(`layout flags: edge ${flagCounts.edge} (+${flagCounts.edgeAllowed} allowlisted), clip ${flagCounts.clip}, dup ${flagCounts.dup}, icon ${flagCounts.icon}, card ${flagCounts.card} (+${flagCounts.cardAllowed} allowlisted)`);
 console.log(`apps: every screen of ${PAGES.filter((p) => p.kind === 'app').length} apps at 390, 768 and 1440 px, light and dark, plus order entry, the command palette, the allotment flow, posting a journal, reconciling, issuing an invoice, a bank transfer, a wallet bill payment and the market portal screener, floorsheet and alerts`);
 console.log(`site check${shardCount > 1 ? ` (shard ${shardIndex}/${shardCount})` : ''}: ${routes.length} routes x 2 widths x 2 themes, ${checked.variants} example variants and ${checked.tabs} page tabs (axe, overflow, console, layout) and the copy, variant, preview theme, phone-width frame, tabs, theme, search, sidebar, drawer, path routing, hash redirect, 404 and no-JS behaviours passed`);

@@ -193,7 +193,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       'On and off are shown by position as well as colour.',
     ],
     responsive: ['The hit area is at least 44px on touch screens. Lay the title and the switch out in a row that wraps.'],
-    related: ['checkbox', 'choice-group', 'toast'],
+    related: ['checkbox', 'choice-group', 'toast', 'setting-row'],
   },
   {
     slug: 'range-slider',
@@ -215,7 +215,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       'Show the chosen range as text too, near the slider.',
     ],
     responsive: ['The slider fills its container; the thumbs are large enough for touch.'],
-    related: ['field', 'select', 'meter-range'],
+    related: ['field', 'select', 'meter-range', 'range-editor', 'histogram'],
   },
   {
     slug: 'choice-group',
@@ -554,7 +554,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       'Navigation is always in the document; it wraps rather than hiding behind a menu button. If you add a menu button, make the open menu a dialog or a disclosure with proper state.',
     ],
     responsive: ['The sidebar layout is your CSS: `AppShell` gives the structure (.pu-shell-*) and the navigation wraps by default; this site turns the navigation into a sidebar at 900px and a drawer below it.'],
-    related: ['page-layout', 'drawer', 'tabs', 'financial-summary'],
+    related: ['page-layout', 'drawer', 'tabs', 'financial-summary', 'skip-link'],
   },
   {
     slug: 'rows',
@@ -648,7 +648,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       'The error ring is extra: the editor must say what is wrong in words.',
     ],
     responsive: ['A 36px box that wraps with its neighbours; the x keeps a 44px tap area on touch.'],
-    related: ['chip', 'popover', 'list-filter', 'status-pill'],
+    related: ['chip', 'popover', 'list-filter', 'status-pill', 'filter-bar', 'filter-menu', 'preset-tile'],
   },
   {
     slug: 'show-more',
@@ -684,14 +684,26 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     use: ['Removing a symbol from a watchlist or a beneficiary from a saved list.', 'Replacing a row (`as="li"`) or a toolbar with the question.'],
     avoid: ['Money moving or anything hard to undo: use a Sheet that repeats the amount.', 'A reversible action: do it and offer Undo in a Toast.', 'A generic "OK" on the danger button: name what goes.'],
     api: [...ui('inline-confirm', 'InlineConfirm')],
-    examples: [{ id: 'remove', title: 'Remove from a watchlist', note: 'Press Remove, then Esc or Keep it; Remove NTC deletes the row.' }],
-    keyboard: ['Focus moves to the danger button when it appears.', 'Tab moves between the two buttons. Esc cancels and stops there, so a drawer or popover around it stays open.'],
+    examples: [
+      { id: 'remove', title: 'Remove from a watchlist', note: 'Press Remove, then Esc or Keep it; Remove NTC deletes the row.' },
+      { id: 'typed', title: 'Typed confirmation and strength', note: 'strength="caution" for something the reader can start again; match asks them to type a word before the danger button works.' },
+    ],
+    keyboard: ['Focus moves to the danger button when it appears (to the field with `match`; Enter in the field confirms once the word matches).', 'Tab moves between the two buttons. Esc cancels and stops there, so a drawer or popover around it stays open.'],
     accessibility: [
       'A `role="group"` named by the title (`aria-labelledby` from id); `role="alertdialog"` when it interrupts.',
       'busy shows the confirm as loading and keeps it from being pressed twice.',
       'Pass an id so the title is linked; without a string title the group has no name.',
+      'With `match` the confirm is disabled until the typed text equals the word (case and outer spaces ignored); the field is labelled by `matchLabel`.',
     ],
     responsive: ['The two buttons sit side by side and wrap under the question on a narrow row.'],
+    notes: {
+      title: 'Migrating from the web kit',
+      points: [
+        'Web\'s `DangerConfirm` is `InlineConfirm` here: `tone="caution" | "danger"` is `strength`, `match`, `matchLabel`, `busy`, `confirm`, `cancel`, `onConfirm`, `onCancel`, `id`, `testId`, `confirmTestId`, `cancelTestId` and `fieldTestId` keep their names. `confirmMatches(typed, match)` is exported too.',
+        'Not carried over: web\'s tinted box around the question and holding Cancel while `busy`. Both are layout and can be done with `className`.',
+        '`strength` defaults to `danger`, so existing `InlineConfirm` calls are unchanged.',
+      ],
+    },
     related: ['sheet', 'toast', 'button', 'drawer'],
   },
   {
@@ -736,7 +748,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       'Tone adds contrast but never the meaning: "On" and "Off" differ in words.',
     ],
     responsive: ['Does not shrink below its text; the row it ends should let the name wrap.'],
-    related: ['status-pill', 'switch', 'locked-note', 'rows'],
+    related: ['status-pill', 'switch', 'locked-note', 'rows', 'icons'],
   },
   {
     slug: 'stat-grid',
@@ -801,9 +813,10 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     examples: [
       { id: 'basic', title: 'A Dialog', note: 'Open it, press Tab, Esc or click outside; focus returns to the button.' },
       { id: 'alert', title: 'An AlertDialog', note: 'Focus starts on Cancel; Esc cancels; clicking outside does nothing.' },
+      { id: 'typed', title: 'Typed confirmation', note: 'match asks the reader to type a word first; the field takes focus and the confirm waits.' },
     ],
     keyboard: [
-      'Opening moves focus inside: an element marked `data-autofocus`, else the first control that is not destructive. An AlertDialog starts on Cancel when the confirm is destructive.',
+      'Opening moves focus inside: an element marked `data-autofocus`, else the first control that is not destructive. An AlertDialog starts on Cancel when the confirm is destructive, and on the field when it has `match`.',
       'Tab and Shift+Tab cycle inside it and never reach the page behind.',
       'Dialog: Esc and a click on the scrim close it. AlertDialog: Esc is Cancel; the scrim does nothing.',
     ],
@@ -934,5 +947,43 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     accessibility: ['`role="separator"` with `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, a percent `aria-valuetext`, `aria-controls` on the start pane and a required `label`.', 'When the panes stack the separator is hidden, so it leaves the tab order.'],
     responsive: ['Stacks below 640 px of container width (a container query), so it adapts to the space it is given, not the viewport. `stack={false}` keeps the split.'],
     related: ['page-layout', 'stack', 'candlestick-chart', 'order-ticket', 'trading-terminal'],
+  },
+  {
+    slug: 'icons',
+    title: 'Icons',
+    description: 'One icon set for finance screens: 150+ stroke glyphs in currentColor, an Icon by name or one tree-shaken import per glyph, decorative unless you give a label.',
+    lead: "One icon set on a shared stroke, by name or as a single import of about 400 bytes, with web's names kept.",
+    group: 'foundations',
+    kind: 'component',
+    stability: 'beta',
+    summary:
+      'Stroke icons that take the colour of the text beside them. Use `Icon` with a name for a gallery or a data-driven menu, or import one glyph (`IconBell`) so a page carries only what it draws: one icon is about 400 bytes gzipped. An icon is decorative (`aria-hidden`) unless it has a `label`, which makes it an image with that name. Sizes are `sm` 16, `md` 20 and `lg` 24 px. Most glyphs sit on a 24 grid with a 1.8 stroke; a few legacy glyphs keep the 20 or 18 grid they were drawn on so they look as they did in the web app.',
+    use: ['An icon beside a visible word: leave it decorative.', 'An icon alone in a button: name the button (`aria-label`) and keep the icon decorative, or give the icon a `label`.', '`NavIcon` and `SettingIcon` when moving punji-web screens over: they take the same props and draw the same output.'],
+    avoid: ['Meaning carried by an icon alone: pair it with a word or give it a `label`.', 'Importing `Icon` for one glyph: it carries all of them (about 7 kB gzipped). Import the glyph instead.'],
+    api: [...ui('icons', 'Icon', 'IconByNameProps', 'IconProps', 'IconSize', 'IconName', 'iconNames', 'resolveIconName', 'ICON_ALIASES', 'NavIcon', 'NavIconProps', 'SettingIcon', 'SettingIconProps')],
+    examples: [
+      { id: 'basic', title: 'Decorative and labelled', note: 'Three single-glyph imports; the last has a label, so it is an image with a name.' },
+      { id: 'gallery', title: 'Gallery', note: 'Search every name, aliases included; click one to copy it.' },
+    ],
+    keyboard: ['Icons are not interactive and not focusable.'],
+    accessibility: [
+      'Without `label` the svg is `aria-hidden="true"` and `focusable="false"`: the visible word or the button name carries the meaning.',
+      'With `label` the svg has `role="img"` and `aria-label`.',
+      'Strokes use `currentColor`, so forced-colours and dark themes follow the text colour.',
+    ],
+    responsive: ['Icons are a fixed pixel size (16, 20 or 24); the gallery wraps to the width it is given.'],
+    notes: {
+      title: 'Migrating from the web kit',
+      points: [
+        'Import from `@punji/ui/icons`. `kit/NavIcon` becomes `NavIcon` (same props, `app-ico` classes and sizes); `kit/SettingIcon` becomes `SettingIcon`. Neither needs a screen edit beyond the import.',
+        '`ui/icons.tsx`: `IconChartLine`, `IconWallet`, `IconBell` and the rest, and every `Lucide*` component, keep their names and take the same `size` number.',
+        'The second `ui/NavIcon` (CSS masks) draws as inline svg here. Its names are prefixed `site-`: `<NavIcon name="today" />` becomes `<Icon name="site-today" />`. `site-phone` is an alias of `site-features`.',
+        "Same name, different drawing in two web sets: the later one is prefixed. `SettingIcon` glyphs are `setting-<name>` (`setting-moon`, `setting-eye-off`); `ui/icons` `IconCalculator` is `calculator-keys` (the kit nav `calculator` keeps its name, exported as `IconCalculatorNav`); the inbox list's `gift` and `ticket` are `inbox-gift` and `inbox-ticket`.",
+        'Same name, same drawing: aliases. The inbox glyphs `star`, `bell` and `pulse` are `watchlist`, `alerts` and `signals` (`star`, `inbox-bell` and `pulse` resolve to them); inbox `sun`, `moon` and `eyeOff` are the nav glyphs of the same name.',
+        'Notice glyphs: `StatusNotice` is `notice-warn` and `notice-info`; `ActionNotice` rows are `notice-gift`, `notice-cash`, `notice-rights`, `notice-done`; the small close is `close-sm`; the inbox back chevron is `chev-left`.',
+        "Not included: the stock, chart and watchlist pages' own icon files (`me/pages/*/icons.tsx`), which draw product-specific marks.",
+      ],
+    },
+    related: ['status-tag', 'list-filter'],
   },
 ];

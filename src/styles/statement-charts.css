@@ -1,0 +1,89 @@
+/* Punji UI styles.
+   Styles for sankey-chart, earnings-chart and balance-history-chart. Needs tokens.css and base.css (styles.css has everything).
+   The frame, grid, axis, tooltip and legend come from financial-charts.css (.kit-ct); hatching from money-charts.css. Colours from --pu-* tokens only. */
+@layer punji.components {
+  .pu-st-legend .pu-st-sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px }
+  .pu-st-sw.nepse, .pu-st-sw.equity { background: var(--pu-color-series-nepse) }
+  .pu-st-sw.chart { background: var(--pu-color-chart) }
+  .pu-st-sw.gain { background: var(--pu-color-gain) }
+  .pu-st-sw.rest { background: var(--pu-color-text-muted) }
+  .pu-st-sw.series3, .pu-st-sw.debt { background: repeating-linear-gradient(45deg, transparent 0 3px, color-mix(in srgb, var(--pu-color-surface) 55%, transparent) 3px 5px), var(--pu-color-series-3) }
+  .pu-st-sw.loss { background: repeating-linear-gradient(45deg, transparent 0 3px, color-mix(in srgb, var(--pu-color-surface) 55%, transparent) 3px 5px), var(--pu-color-loss) }
+  .pu-st-sw.actual { border-radius: 50%; background: var(--pu-color-text) }
+  .pu-st-sw.est { border-radius: 50%; border: 2px solid var(--pu-color-text); background: var(--pu-color-surface) }
+  .pu-st-sw.cash { width: 12px; height: 12px; border-radius: 0; background: var(--pu-color-series-5) }
+  .pu-st-sw.ratio { width: 16px; height: 3px; border-radius: 2px; background: var(--pu-color-text) }
+
+  /* SankeyChart */
+  .pu-sk-node.nepse { fill: var(--pu-color-series-nepse) }
+  .pu-sk-node.chart { fill: var(--pu-color-chart) }
+  .pu-sk-node.series3 { fill: var(--pu-color-series-3) }
+  .pu-sk-node.gain { fill: var(--pu-color-gain) }
+  .pu-sk-node.loss { fill: var(--pu-color-loss) }
+  .pu-sk-node.rest { fill: var(--pu-color-text-muted) }
+  .pu-sk-node.on { stroke: var(--pu-color-text); stroke-width: 2 }
+  .pu-sk-link { fill: none; stroke-opacity: 0.3 }
+  .pu-sk-link.nepse { stroke: var(--pu-color-series-nepse) }
+  .pu-sk-link.chart { stroke: var(--pu-color-chart) }
+  .pu-sk-link.series3 { stroke: var(--pu-color-series-3) }
+  .pu-sk-link.gain { stroke: var(--pu-color-gain) }
+  .pu-sk-link.loss { stroke: var(--pu-color-loss) }
+  .pu-sk-link.rest { stroke: var(--pu-color-text-muted) }
+  .pu-sk-link.on { stroke-opacity: 0.6 }
+  .pu-sk-link.off { stroke-opacity: 0.1 }
+  .pu-sk-text { fill: var(--pu-color-text); font: 500 11px / 13px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); paint-order: stroke; stroke: var(--pu-color-surface); stroke-width: 3px; stroke-linejoin: round }
+  .pu-sk-name { font-weight: 600 }
+  .pu-sk-groups { display: grid; gap: 14px }
+  .pu-sk-group { display: grid; gap: 6px; min-width: 0; padding: 8px 10px; border: 1px solid var(--pu-color-border-default); border-radius: 8px }
+  .pu-sk-group.on { border-color: var(--pu-color-text); box-shadow: inset 0 0 0 1px var(--pu-color-text) }
+  .pu-sk-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 12px; margin: 0; font: 600 13px / 18px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); color: var(--pu-color-text) }
+  .pu-sk-rows { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none }
+  .pu-sk-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 0 10px; align-items: baseline; padding: 2px 4px; border-radius: 4px; font: 500 12px / 16px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); color: var(--pu-color-text) }
+  .pu-sk-row.on { outline: 2px solid var(--pu-color-text); outline-offset: 1px }
+  .pu-sk-row-name { min-width: 0; overflow-wrap: anywhere }
+  .pu-sk-row-amt { text-align: right }
+  .pu-sk-row-pct { min-width: 4.5ch; text-align: right; color: var(--pu-color-text-muted) }
+  .pu-sk-row-bar { grid-column: 1 / -1; display: block; height: 6px; margin-top: 3px; border-radius: 3px; background: color-mix(in srgb, var(--pu-color-text) 8%, transparent) }
+  .pu-sk-row-bar i { display: block; height: 100%; border-radius: 3px; background: var(--pu-color-text-muted) }
+  .pu-sk-row-bar i.nepse { background: var(--pu-color-series-nepse) }
+  .pu-sk-row-bar i.chart { background: var(--pu-color-chart) }
+  .pu-sk-row-bar i.gain { background: var(--pu-color-gain) }
+  .pu-sk-row-bar i.series3 { background: repeating-linear-gradient(45deg, transparent 0 3px, color-mix(in srgb, var(--pu-color-surface) 55%, transparent) 3px 5px), var(--pu-color-series-3) }
+  .pu-sk-row-bar i.loss { background: repeating-linear-gradient(45deg, transparent 0 3px, color-mix(in srgb, var(--pu-color-surface) 55%, transparent) 3px 5px), var(--pu-color-loss) }
+  .pu-sk-row-word { grid-column: 1 / -1; font-weight: 600 }
+  .pu-sk-stack:focus-visible { outline-offset: 4px }
+
+  /* EarningsChart */
+  .pu-ec-next { fill: color-mix(in srgb, var(--pu-color-text) 5%, transparent); stroke: var(--pu-color-border-strong); stroke-dasharray: 3 3 }
+  .pu-ec-gap { stroke-width: 2 }
+  .pu-ec-gap.gain { stroke: var(--pu-color-gain) }
+  .pu-ec-gap.loss { stroke: var(--pu-color-loss) }
+  .pu-ec-gap.flat { stroke: var(--pu-color-text-muted) }
+  .pu-ec-est { fill: var(--pu-color-surface); stroke: var(--pu-color-text); stroke-width: 2 }
+  .pu-ec-est.next { stroke-dasharray: 3 2 }
+  .pu-ec-act { stroke: var(--pu-color-surface); stroke-width: 1.5 }
+  .pu-ec-act.gain { fill: var(--pu-color-gain) }
+  .pu-ec-act.loss { fill: var(--pu-color-loss) }
+  .pu-ec-act.flat { fill: var(--pu-color-text) }
+  .pu-ec-bar.gain { fill: var(--pu-color-gain) }
+  .pu-ec-bar.loss { fill: var(--pu-color-loss) }
+  .pu-ec-bar.flat { fill: var(--pu-color-text-muted) }
+  .pu-ec-bar-next { fill: none; stroke: var(--pu-color-text); stroke-width: 1.5; stroke-dasharray: 3 2 }
+  .pu-ec-tick { stroke: var(--pu-color-text); stroke-width: 2.5; stroke-linecap: round }
+  .pu-ec-note { font: 600 10px / 12px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); paint-order: stroke; stroke: var(--pu-color-surface); stroke-width: 3px; stroke-linejoin: round }
+  .pu-ec-note.gain, .pu-ec-result.gain { fill: var(--pu-color-gain); color: var(--pu-color-gain) }
+  .pu-ec-note.loss, .pu-ec-result.loss { fill: var(--pu-color-loss); color: var(--pu-color-loss) }
+  .pu-ec-note.flat { fill: var(--pu-color-text) }
+
+  /* BalanceHistoryChart */
+  .pu-bh-equity { fill: var(--pu-color-series-nepse) }
+  .pu-bh-debt { fill: var(--pu-color-series-3) }
+  .pu-bh-cash { fill: none; stroke: var(--pu-color-series-5); stroke-width: 2; stroke-linejoin: round }
+  .pu-bh-cash-dot { fill: var(--pu-color-series-5); stroke: var(--pu-color-surface); stroke-width: 1 }
+  .pu-bh-ratio { fill: none; stroke: var(--pu-color-text); stroke-width: 2; stroke-linejoin: round }
+  .pu-bh-label { fill: var(--pu-color-text); font: 600 10px / 12px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); paint-order: stroke; stroke: var(--pu-color-surface); stroke-width: 3px; stroke-linejoin: round }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .pu-sk-link, .pu-sk-node { transition: stroke-opacity 120ms ease, stroke-width 120ms ease }
+  }
+}

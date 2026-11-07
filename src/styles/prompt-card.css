@@ -1,0 +1,17 @@
+/* Punji UI styles.
+   Styles for PromptCard and OutlineTile. Needs tokens.css and base.css (styles.css has everything). Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  .pu-prompt { display: grid; justify-items: start; gap: var(--pu-space-3); min-inline-size: 0; padding: var(--pu-space-6); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-xl); background: var(--pu-color-surface); color: var(--pu-color-text) }
+  .pu-prompt-eyebrow { margin: 0; color: var(--pu-color-text-muted); font-size: var(--pu-text-xs); font-weight: var(--pu-font-weight-medium); letter-spacing: 0.04em; text-transform: uppercase }
+  .pu-prompt-title { margin: 0; max-inline-size: 20ch; font-family: var(--pu-font-display); font-size: var(--pu-text-xl); font-weight: var(--pu-font-weight-semibold); line-height: 1.15; overflow-wrap: anywhere; text-wrap: balance }
+  .pu-prompt-body { margin: 0; max-inline-size: 60ch; color: var(--pu-color-text-muted); font-size: var(--pu-text-base); line-height: 1.5 }
+  .pu-prompt-actions { display: flex; flex-wrap: wrap; gap: var(--pu-space-3); margin-block-start: var(--pu-space-2) }
+  @media (min-width: 40rem) { .pu-prompt { padding: var(--pu-space-10) } .pu-prompt-title { max-inline-size: 24ch; font-size: calc(var(--pu-text-xl) * 1.4) } }
+
+  .pu-outline-tile { display: grid; gap: var(--pu-space-1); min-inline-size: 0; padding: var(--pu-space-4); border: 2px dashed var(--pu-color-border-strong); border-radius: var(--pu-radius-lg); color: var(--pu-color-text-muted); font-size: var(--pu-text-sm); line-height: 1.4 }
+  .pu-outline-tile-drawing { inline-size: 100%; max-inline-size: 200px; block-size: auto; margin-block-end: var(--pu-space-2); color: var(--pu-color-border-strong) }
+  .pu-outline-tile-title { color: var(--pu-color-text); font-weight: var(--pu-font-weight-semibold); overflow-wrap: anywhere }
+  .pu-outline-tile-body { overflow-wrap: anywhere }
+
+  @media print { .pu-prompt { border-color: currentColor; background: none } .pu-prompt-actions { display: none } .pu-outline-tile { border-color: currentColor } }
+}

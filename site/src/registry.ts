@@ -5,6 +5,7 @@
 // Adding a page = one entry here + one example file per variant in
 // site/src/examples/<slug>/<id>.tsx. See site/README.md.
 
+import { buildMatrix, matrixNote } from './a11y-matrix.ts';
 import { GUIDES } from './registry-guides.ts';
 import { GENERIC_PAGES } from './registry-generic.ts';
 import { FORMS_PAGES } from './registry-forms.ts';
@@ -165,6 +166,13 @@ export interface GuideCode {
   text?: string;
 }
 
+/** A table in a guide. Cells take the same inline `code` and [link](/path/) markup as paragraphs. */
+export interface GuideTable {
+  caption: string;
+  head: readonly string[];
+  rows: readonly (readonly string[])[];
+}
+
 export interface GuideSection {
   id: string;
   title: string;
@@ -173,11 +181,14 @@ export interface GuideSection {
   /** A bulleted list under the paragraphs, same inline markup. */
   points?: readonly string[];
   code?: readonly GuideCode[];
+  /** A table after the list. A section with `generated: 'a11y-matrix'` gets its table and a note from the component pages (a11y-matrix.ts). */
+  table?: GuideTable;
+  generated?: 'a11y-matrix';
 }
 
 const ui = (module: string, ...names: string[]): ApiRef[] => names.map((name) => ({ name, module }));
 
-export const PAGES: readonly PageDef[] = [
+const BASE_PAGES: readonly PageDef[] = [
   ...GUIDES,
   {
     slug: 'colour-tokens',
@@ -276,7 +287,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['Not interactive; it renders text.'],
     accessibility: ['Renders a <data> element whose value attribute holds the exact decimal, with the full currency name spoken when the symbol is shared.', 'A missing value is announced as "No value" (override with `missingLabel`).', 'Sign is text, not colour.'],
     responsive: ['Never truncates. Use compact where a column is narrow; the exact amount stays in the spoken text.'],
-    related: ['price-change', 'currency-input', 'formatters', 'metric-tile', 'fx-rate', 'money-correctness-lab'],
+    related: ['price-change', 'currency-input', 'formatters', 'metric-tile', 'fx-rate', 'money-correctness-lab', 'private-amount'],
   },
   {
     slug: 'price-change',
@@ -297,7 +308,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['Not interactive.'],
     accessibility: ['Spoken as "up 5.50 (5.50%)" using the labels you pass; translate them with `labels`.', 'The arrow is decorative; the sign is in the text.'],
     responsive: ['Wraps its percent under the amount if the container is too narrow.'],
-    related: ['money-display', 'financial-calculations', 'data-table'],
+    related: ['money-display', 'financial-calculations', 'data-table', 'instrument-header'],
   },
   {
     slug: 'currency-input',
@@ -357,14 +368,15 @@ export const PAGES: readonly PageDef[] = [
     kind: 'utility',
     stability: 'beta',
     summary: 'Generic money formatting (any currency, from Intl) beside the Nepal helpers (lakh/crore, Devanagari, BS dates). All accept exact inputs and never round silently.',
-    use: ['`formatMoney` for any currency from bigint minor units.', '`formatNPR`, `formatMinorUnits` and the market formatters for Nepal screens.', '`parseMoney` as the strict inverse for input.', 'The reader-language rupee mark: `rs(n, lang)` and `cr(n, lang)` print "Rs" or "रु." (`rsMark`), `unitWords(lang)` gives the compact words for `compactRs`. `Figure` and `Delta` follow the `PunjiLocaleProvider` locale. Outside React, `setReaderLang(\'ne\')` sets the default for calls that pass no language (process-wide: pass the language explicitly on a shared server).'],
+    use: ['`formatMoney` for any currency from bigint minor units.', '`formatNPR`, `formatMinorUnits` and the market formatters for Nepal screens.', '`parseMoney` as the strict inverse for input.', '`displayCompanyName` writes an all-capitals registered name in normal case ("NEPAL LIFE INSURANCE COMPANY LIMITED" to "Nepal Life Insurance Company Limited") keeping NEPSE acronyms (NIC, NMB, IME); `shortCompanyName(displayCompanyName(name))` drops the legal tail for a narrow row. The web kit\'s `displayCompanyName` is the same function.',
+      'The reader-language rupee mark: `rs(n, lang)` and `cr(n, lang)` print "Rs" or "रु." (`rsMark`), `unitWords(lang)` gives the compact words for `compactRs`. `Figure` and `Delta` follow the `PunjiLocaleProvider` locale. Outside React, `setReaderLang(\'ne\')` sets the default for calls that pass no language (process-wide: pass the language explicitly on a shared server).'],
     avoid: ['`formatNPR` on ledger values: its number input is a display value, not exact.', 'Parsing decorated display text: the parsers accept input, not receipts.'],
     api: [
       ...ui('money', 'formatMoney', 'formatCompactMoney', 'parseMoney', 'createMoneyFormatter', 'nepalMoneyConfig'),
       ...ui('nepal/format', 'formatNPR', 'formatPercent', 'formatNepalNumber'),
       ...ui('nepal/financial-format', 'formatMinorUnits'),
       ...ui('nepal/market-format', 'formatChange', 'formatBasisPoints', 'formatQuantity', 'formatPrice'),
-      ...ui('format', 'rs', 'cr', 'rsMark', 'unitWords', 'setReaderLang', 'readerLang', 'readerLangOf', 'ReaderLang'),
+      ...ui('format', 'rs', 'cr', 'rsMark', 'unitWords', 'setReaderLang', 'readerLang', 'readerLangOf', 'ReaderLang', 'displayCompanyName', 'shortCompanyName'),
     ],
     examples: [
       { id: 'generic', title: 'Any currency', note: 'Amounts in prose, four currencies with their own decimals, a compact total and an amount parsed from typed text.' },
@@ -614,12 +626,22 @@ export const PAGES: readonly PageDef[] = [
       { id: 'holdings', title: 'Holdings', note: 'Sortable columns, money and price change in cells.' },
       { id: 'states', title: 'States', note: 'Loading, error and empty are built in.' },
       { id: 'paged', title: 'Search and pages', note: 'Controlled search and pagination with usePagination.' },
+      { id: 'group-actions', title: 'Group actions and print (beta)', note: 'A button in each group header, and the print stylesheet: the head repeats, rows stay whole, black on white.' },
       { id: 'grouped', title: 'Groups, totals and reconciliation (beta)', note: 'Receivables grouped by customer with exact subtotals, a totals row, and a badge that checks the total against the statement.' },
     ],
     keyboard: ['Sort headers are buttons: Tab to one, Enter or Space to sort.', 'Search, pagination and selection controls are native controls in tab order.', 'Each group header holds a native disclosure button: Tab to it, Enter or Space opens or closes the group.'],
     accessibility: ['A real <table> with a caption, scoped headers and `aria-sort` on the sorted column.', 'The first column can be a row header for screen-reader navigation.', 'Loading is announced with a status label; errors with `role="alert"`.', 'Each group is its own row group (<tbody>) whose header cell has `scope="rowgroup"`, so every cell in the group is related to the group name; the toggle carries `aria-expanded`. This is a data table, not a treegrid: no grid keyboard model is imposed.', 'The totals row is a <tfoot> with a "Total" row header. The reconciliation badge is a word and an icon ("Reconciles", or "Off by" the exact difference and the expected value), never colour alone.'],
     responsive: ['Wide tables scroll horizontally inside their container; columns can fold away under set widths (`hideUnder`).'],
-    related: ['virtual-table', 'table-adapters', 'table-presets', 'money-display', 'price-change', 'hooks', 'csv-export'],
+    notes: {
+      title: 'Printing, group actions and the web kit',
+      points: [
+        'Print is on by default and needs no code. The scroll region of DataTable, FinancialTable and ScrollTable carries the class `pu-print-table`; under `@media print` the stylesheet (`table-print.css`, in `styles.css`) repeats the head on every page, keeps each row whole, removes scroll clipping, shows folded columns, drops the sort arrows and prints black on white with the system `CanvasText` and `Canvas` colours.',
+        'Public hooks, stable across releases: `.pu-print-table` (the region), `.pu-no-print` (leave your own toolbar button or link out of print) and `data-print="off"` on the region to opt a table out. Do not target `.kit-*` classes from your own print CSS; they are internals.',
+        '`groupActions(key, rows)` (FinancialTable) and `actions` (DataRowGroup) draw your controls in the group header, after the collapse button and outside it. Give real buttons or links: they follow the toggle in tab order, pressing one does not collapse the group, and they are hidden in print.',
+        'Migrating from the web kit: `kit/Table`\'s group header menu becomes `groupActions`; a hand-written `@media print` block on `.k-table` becomes nothing (delete it); a read-only sortable page table becomes ScrollTable.',
+      ],
+    },
+    related: ['scroll-table', 'virtual-table', 'table-adapters', 'table-presets', 'money-display', 'price-change', 'hooks', 'csv-export'],
   },
   {
     slug: 'virtual-table',
@@ -716,7 +738,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['The plot is one focus stop. Left and Right move the cursor one column, Home and End jump to the first and last, Escape clears it. Hover or touch reads one column out.', 'The same figures are in the data table, which a screen reader can read by row.'],
     accessibility: ['The drawing is `aria-hidden`; the plot is a named group with a hint, and a polite live region says the active column and its figures.', 'A visually hidden table (period, each series, total) carries every value.', 'Series are told apart by the legend and table, not by colour alone.'],
     responsive: ['The plot is as wide as its container; labels shorten and thin out (latest always shown) before anything overlaps. Height is clamped to 96 to 480px.'],
-    related: ['metric-tile', 'data-table', 'money-display'],
+    related: ['metric-tile', 'data-table', 'money-display', 'histogram', 'month-strip'],
   },
   {
     slug: 'candlestick-chart',
@@ -755,17 +777,20 @@ export const PAGES: readonly PageDef[] = [
     summary: 'A portfolio against one or more benchmarks over time. By default every series is percent change from its own first value, so a rupee portfolio and an index in points share one scale. The portfolio gets a gain and loss area against its start; a legend of toggle buttons hides and shows series.',
     use: ['Portfolio against NEPSE or a sector index.', 'Raw value over time with normalize={false}.', 'Your own period selector (1M, 3M, 1Y, All) in the periods slot.'],
     avoid: ['More than about five series: colour and dash stop telling them apart.', 'Candles: use `CandlestickChart`.'],
-    api: [...ui('performance-chart', 'PerformanceChart', 'PerformanceSeries')],
+    api: [...ui('performance-chart', 'PerformanceChart', 'PerformanceSeries', 'PerformanceReference', 'PerformanceChartLabels', 'drawdownOf', 'spreadLabels')],
     examples: [
       { id: 'benchmark', title: 'Against benchmarks', note: 'Normalised to 0%; NEPSE has two missing days; the period selector is a SegmentedControl that slices the data.' },
       { id: 'raw', title: 'Raw value', note: 'normalize={false} with a rupee formatter.' },
+      { id: 'layers', title: 'Goal, money put in and drawdown', note: 'A dashed labelled goal line, the dotted money put in (a top-up on the 30th date) and the fall from each high as a band underneath.' },
+      { id: 'compare', title: 'Rebased to 100 with end labels', note: 'rebase={100}: three series as indices from 100; each last level at the right edge, spread apart where they finish close.' },
+      { id: 'quiet', title: 'Compact quiet axis', note: 'axis="quiet": three levels inside the plot and only the first and last dates, for a small card.' },
     ],
     keyboard: ['Tab focuses the plot. Left and Right move one date, Home and End jump to the ends, Escape clears.', 'Each legend entry is a toggle button (Enter or Space); the last visible series cannot be hidden.'],
     accessibility: ['The focused date and every visible series value are announced through a polite live region.', 'Series differ by colour and dash, and the legend prints each latest value.', 'A visually hidden table lists every date and series; a gap reads "none", never zero.'],
     responsive: ['The plot is as wide as its container; a line with more points than 2px each is reduced to its extremes per bucket.'],
     notes: {
       title: 'Data rules',
-      points: ['dates and every series.values are the same length; slice them together for a period.', 'A gap breaks that series\' line: missing data is never bridged, drawn as zero or interpolated, and the table reads "none" there. Only the series with the missing value breaks; the others stay one line, and a benchmark rebased from a later start (`rebaseOnto`) adds no gaps of its own. A series whose first value is zero cannot be normalised and is not drawn.', 'A benchmark that starts later begins level with the portfolio\'s percent change on its first date (`rebaseOnto`), not at 0%.', 'The first series is the portfolio; convention sets the colour of the gain area.'],
+      points: ['dates and every series.values are the same length; slice them together for a period.', 'Optional layers, all off by default so existing charts do not change: `reference` (a dashed labelled line in the portfolio\'s unit; a value far outside the data is pinned to the edge and labelled "above the range" or "below the range"), `drawdown` (the portfolio\'s fall from its running high, 0 at the band\'s top edge), `contributions` (the money put in, dotted, on the same scale; a gap is `null`), `endLabels` (each visible series\' last value at the right edge, spread by `spreadLabels` so they never overlap), `rebase={100}` (every series an index from 100 at its own first value; overrides `normalize`) and `axis="quiet"`. `onActiveChange(index | null)` reports the scrubbed date.', 'Values are plain numbers, not exact Money: an index, NAV or percent series is not money. Format with `formatValue`; for exact bigint amounts use `NetWorthChart` or `CashFlowChart`.', 'Migrating from the web kit: `EquityChart` is `normalize={false}` with `contributions` and `drawdown` (its `base` is `contributions`, `compare` is a second series, `ddLabel` is `labels.drawdown`, `EquityLegend` is the built-in legend of toggles with end values). `TwoLineChart` is two series with `endLabels` (the dashed one is the second). `TrendChart` is `axis="quiet"` with `area` and a dashed second series. `TargetChart` is one series with `reference` (its `targetAbove` and `targetBelow` are `labels.referenceAbove` and `referenceBelow`; `firedAt` and the retry state are not carried over). Web\'s `frame` readout is `onActiveChange` plus your own readout; its `positions` are not exposed.', 'A gap breaks that series\' line: missing data is never bridged, drawn as zero or interpolated, and the table reads "none" there. Only the series with the missing value breaks; the others stay one line, and a benchmark rebased from a later start (`rebaseOnto`) adds no gaps of its own. A series whose first value is zero cannot be normalised and is not drawn.', 'A benchmark that starts later begins level with the portfolio\'s percent change on its first date (`rebaseOnto`), not at 0%.', 'The first series is the portfolio; convention sets the colour of the gain area.'],
     },
     related: ['candlestick-chart', 'price-chart', 'column-chart'],
   },
@@ -876,6 +901,96 @@ export const PAGES: readonly PageDef[] = [
     related: ['data-table', 'virtual-table', 'formatters'],
   },
   {
+    slug: 'lightweight-charts',
+    title: 'Lightweight Charts adapter',
+    navTitle: 'Lightweight Charts',
+    lead: 'A TradingView Lightweight Charts canvas inside ChartA11yShell: Punji colours, exact money, streaming ticks, attribution on.',
+    description: 'Optional TradingView Lightweight Charts v5 adapter: accessible React wrapper, Punji theme tokens, exact bigint prices, streaming ticks.',
+    group: 'data',
+    kind: 'utility',
+    stability: 'experimental',
+    summary: 'An opt-in subpath for real-time candles and lines at tick rates. `LightweightChart` mounts a Lightweight Charts v5 chart inside `ChartA11yShell`, so the canvas (which has no DOM semantics) gets a named figure, one focus stop with an arrow-key cursor that drives the crosshair, a live region and a hidden data table built from your exact bigint prices. Colours come from the Punji CSS variables and are re-applied when the theme changes (light, dark, high contrast). The adapter imports nothing from the library: you pass it in, `lightweight-charts` is an optional peer dependency, and the core bundle never loads it.',
+    use: [
+      'Streaming candles or a live line where the owned SVG charts would redraw too often: call `ref.current.tick({ time, price }, 60)` for each trade, or `ref.current.update(point)` with a finished candle.',
+      'Pass the library lazily so it stays out of your first load: `library={() => import(\'lightweight-charts\')}`.',
+      'Keep prices as bigint minor units in your data. The chart plots them as numbers; the table, the spoken text and the price formatter use the bigints.',
+      'Pair it with a visible table or the owned `CandlestickChart` where a user needs every figure on screen: the hidden table is for assistive technology.',
+    ],
+    avoid: [
+      'Turning `attribution` off without linking to TradingView and showing the notice elsewhere: the library\'s licence requires both (see the Licence note below).',
+      'Treating the plotted number as the price past 2^53 minor units. The canvas draws it as a float; the exact figure is in the table, the live region and your data.',
+      'Reading values back from the chart for display: format the bigint you already hold.',
+    ],
+    api: [...ui('lightweight-charts', 'LightweightChart', 'lightweightChartOptions', 'lightweightSeriesOptions', 'moneyPriceFormat', 'toLightweightCandles', 'toLightweightLine', 'mergeTickIntoCandle', 'createMoneyChartFormatter', 'readChartTokens', 'watchChartTheme', 'defaultTimeLabel', 'LIGHTWEIGHT_CHARTS_NOTICE')],
+    examples: [
+      { id: 'prices-and-ticks', title: 'Prices and ticks', note: 'The price formatter and tick merge, called by hand: no chart library is loaded on this page.' },
+      { id: 'theme-options', title: 'Theme to options', note: 'The chart options read from this page\'s tokens; change the theme and they follow.' },
+    ],
+    keyboard: ['Tab focuses the plot. Left and Right move through the bars and the chart\'s crosshair follows; Home and End jump to the first and last; Escape clears.', 'The pointer moves the same cursor, so the live region speaks what the crosshair shows.'],
+    accessibility: [
+      'The canvas is `aria-hidden`. The figure is named by `label`, the plot is one focus stop, and a polite live region speaks each bar with its exact prices.',
+      'A visually hidden table lists every bar (the latest 500 by default, with a note) from your bigint data.',
+      'During streaming the table and live region refresh on a timer (`a11yRefreshMs`, default 1 second) so a screen reader is not flooded by tick-rate updates.',
+      'Up and down candles differ by colour only on the canvas; the live region and the table state every price, so direction is never colour alone for assistive technology.',
+    ],
+    responsive: ['The chart follows its container\'s width (`autoSize`) and takes `height` in px.'],
+    notes: {
+      title: 'Install, wire and licence',
+      points: [
+        'Install the library yourself: `npm i lightweight-charts` (v5). It is an optional peer; this package installs none of it. Tested with 5.2.1.',
+        '`<LightweightChart library={() => import(\'lightweight-charts\')} label="NEPSE" money={{ currency: \'NPR\', locale: \'en-IN\' }} data={candles} />`. Candles are `{ time, open, high, low, close }` with bigint prices and a `YYYY-MM-DD` or UTC-seconds time. Use `kind="line"` or `kind="area"` with `{ time, value }`.',
+        'Streaming: keep a `ref` (`LightweightChartHandle`) and call `ref.current.tick(...)`. Ticks older than the newest bar are dropped, because Lightweight Charts rejects an update behind its last point.',
+        'Theme: tokens are read with `getComputedStyle` at the chart, so a brand scope or `data-theme` above it applies. A change to `data-theme`, class or style on any ancestor, or to the system colour scheme or contrast, re-applies the options without rebuilding the chart.',
+        'Licence: Lightweight Charts is Apache-2.0 with an attribution requirement. The licence asks you to add the notice from its NOTICE file (exported here as `LIGHTWEIGHT_CHARTS_NOTICE`) and a link to https://www.tradingview.com/ on a page your users can reach. The chart\'s `attributionLogo` is that link and satisfies the linking part; this wrapper leaves it ON. Pass `attribution={false}` only if your app already links to TradingView and shows the notice, for example on an About page.',
+        'Experimental: the shapes may change in a minor while Lightweight Charts v5 settles. Not legal advice: read the library\'s LICENSE and NOTICE.',
+      ],
+    },
+    related: ['chart-a11y-shell', 'candlestick-chart', 'echarts', 'money-display'],
+  },
+  {
+    slug: 'echarts',
+    title: 'ECharts adapter',
+    navTitle: 'ECharts',
+    lead: 'A Punji ECharts theme, exact money axis and tooltip formatters, and a wrapper that puts an ECharts canvas inside ChartA11yShell.',
+    description: 'Optional Apache ECharts adapter: Punji theme from tokens, exact bigint money axis and tooltip formatters, accessible React wrapper.',
+    group: 'data',
+    kind: 'utility',
+    stability: 'experimental',
+    summary: 'An opt-in subpath for the chart types Punji does not draw itself (sankey, radar, calendar heatmaps, many-series dashboards). `punjiEChartsTheme(tokens)` turns the Punji tokens into an ECharts theme; `moneyAxisFormatter` and `moneyTooltipFormatter` print minor units as exact money (and escape names in the tooltip HTML); `EChart` mounts the chart inside `ChartA11yShell` with a named figure, an arrow-key cursor that shows the tooltip, a live region and a hidden table from your bigint data. ECharts\' own `aria` is switched off so the shell is the one description. The adapter imports nothing from ECharts: it is an optional peer and never in the core bundle.',
+    use: [
+      'Chart types outside Punji\'s owned set. Prefer the owned SVG charts for performance, allocation, depth, column and candles.',
+      'Import only the ECharts parts you use (`echarts/core` with `use([...])`) and pass `{ init }` as `library`, or load it lazily with a function.',
+      'Plot minor units as numbers and set `axisLabel.formatter` to `moneyAxisFormatter(cfg)` and `tooltip.formatter` to `moneyTooltipFormatter(cfg)`.',
+      'Give `points` and `seriesNames` the same data as exact bigints: they feed the table, the live region and the summary.',
+    ],
+    avoid: [
+      'Turning ECharts\' `aria.enabled` back on: its generated sentence would compete with the shell\'s. The wrapper forces it off.',
+      'Reading amounts back from the chart for display. Past 2^53 minor units a plotted number is a float; your bigints stay exact.',
+      'Putting a user-provided string in a tooltip yourself without escaping: ECharts renders the formatter\'s string as HTML.',
+    ],
+    api: [...ui('echarts', 'EChart', 'punjiEChartsTheme', 'moneyAxisFormatter', 'moneyTooltipFormatter', 'createMoneyChartFormatter', 'readChartTokens', 'watchChartTheme')],
+    examples: [{ id: 'theme-and-money', title: 'Theme and money formatters', note: 'The theme and formatters, called by hand: ECharts is not loaded on this page.' }],
+    keyboard: ['Tab focuses the plot. Left and Right move through the positions and the tooltip follows; Home and End jump to the first and last; Escape clears.', 'Hovering a point moves the same cursor.'],
+    accessibility: [
+      'The canvas is `aria-hidden` and ECharts\' own aria is off. The figure is named by `label`; a polite live region speaks each position with every series\' exact value.',
+      'A visually hidden table lists every position (the latest 500 by default, with a note) from your bigint data.',
+      'Series are told apart by colour on the canvas; the table and live region name every series, so nothing depends on colour for assistive technology. Add ECharts decals if sighted users need a non-colour cue.',
+    ],
+    responsive: ['The chart resizes with its container (a ResizeObserver calls `resize()`) and takes `height` in px.'],
+    notes: {
+      title: 'Install and wire',
+      points: [
+        'Install the library yourself: `npm i echarts` (v6). It is an optional peer; this package installs none of it. Tested with 6.1.0.',
+        '`<EChart library={() => import(\'echarts\')} option={option} label="Revenue" money={cfg} points={points} seriesNames={[\'Gross\', \'Net\']} />`.',
+        'An ECharts theme is fixed when the chart is created, so a change of Punji theme (light, dark, high contrast) re-creates the instance with the new theme and the same option.',
+        'Under reduced motion, set `animation: false` in your option; the wrapper does not change your animation settings.',
+        'Apache-2.0: if you redistribute ECharts, keep its LICENSE and NOTICE. It has no on-screen attribution requirement.',
+        'Experimental: the shapes may change in a minor while the adapters settle.',
+      ],
+    },
+    related: ['chart-a11y-shell', 'lightweight-charts', 'money-display', 'performance-chart'],
+  },
+  {
     slug: 'date-picker',
     title: 'DatePicker',
     description: "A Nepali date picker for React: Bikram Sambat (BS) and Gregorian (AD) calendars, Nepali or English labels, strict typed input, bounds and keyboard support.",
@@ -976,7 +1091,7 @@ export const PAGES: readonly PageDef[] = [
       title: 'Data rules',
       points: ['`sortQuotes` is stable (ties keep input order in both directions), puts null last in both directions, compares symbols by upper-cased code units (not locale) and never mutates.', '`nextQuoteSort`(current, key) is the click rule: the symbol starts ascending, figures descending, a repeat click flips.', 'The change is derived from ltp and `previousClose`; a previous close of zero gives no percent.'],
     },
-    related: ['market-movers', 'watchlist', 'data-table', 'virtual-table', 'price-change', 'sparkline'],
+    related: ['market-movers', 'watchlist', 'data-table', 'virtual-table', 'price-change', 'sparkline', 'broker-badge'],
   },
   {
     slug: 'market-movers',
@@ -1023,33 +1138,37 @@ export const PAGES: readonly PageDef[] = [
   {
     slug: 'market-status',
     title: 'MarketStatus and getMarketSession',
-    description: "Show whether a market is open, pre-open, closed, halted or on holiday, as a word and a distinct icon, from a known state or getMarketSession.",
+    description: "Show whether a market is open, pre-open, closed, halted, on holiday or offline, as a word and a distinct icon, with an index slot and a session sentence.",
     group: 'stock-market',
     kind: 'component',
     stability: 'stable',
     summary:
-      'Whether a market is open, in pre-open, closed, halted or on a holiday, as a word and an icon whose shape is different for every state. Give it a state you know, or the result of getMarketSession(now, schedule). The schedule is data you own: nepseSchedule is an example, not authority.',
+      'Whether a market is open, in pre-open, closed, halted, on a holiday or offline, as a word and an icon whose shape is different for every state. Give it a state you know, or the result of getMarketSession(now, schedule). The schedule is data you own: nepseSchedule is an example, not authority. `offline` is the device\'s connection (the figures are the last it had), supplied by your feed, never by the clock. An optional `index` slot prints the index value and its published change beside the state, and `marketSessionSentence` writes the whole session as one line.',
     use: ['A header badge or a line beside the indices.', "`getMarketSession` to derive the state and the next change from a schedule, in the exchange's own time zone."],
     avoid: ["Relying on `nepseSchedule` as the truth: NEPSE changes its hours and announces holidays by notice. Check the current notice and pass your own holidays.", 'Predicting halts from the clock: a halt comes from the exchange, so pass { halted: true } from your feed.'],
-    api: [...ui('market-status', 'MarketStatus', 'getMarketSession', 'nepseSchedule', 'MarketSchedule', 'MarketSession')],
+    api: [...ui('market-status', 'MarketStatus', 'getMarketSession', 'nepseSchedule', 'MarketSchedule', 'MarketSession', 'marketSessionSentence', 'MarketSentenceOptions', 'MarketStatusIndex')],
     examples: [
       { id: 'states', title: 'States', note: 'All five states, a detail note, the small size and translated words.' },
       { id: 'session', title: 'getMarketSession', note: 'Pick a moment and a halt flag; the result is printed under the badge. Uses nepseSchedule with one made-up holiday.' },
       { id: 'schedule', title: 'Your own schedule', note: 'An America/New_York schedule with a holiday: windows, time zone and the next change.' },
+      { id: 'offline', title: 'Offline and the index', note: 'The offline state, and the index value and change beside the state, with an arrow, a sign and a word.' },
+      { id: 'sentence', title: 'The session in one line', note: 'marketSessionSentence: "Closed for Dashain · prices of 19 Oct · opens Wed 21 Oct, 11:00".' },
     ],
     keyboard: ['Not interactive.'],
     accessibility: ['A `role="status"` region, so a change of state is announced.', 'Each state has a different icon shape and its own word: never colour alone.', 'market names the market for screen readers and is spoken before the state.'],
     responsive: ['Inline and small; it wraps with its detail on narrow widths. `size="sm"` for tight rows.'],
     notes: {
-      title: 'Schedule caveats',
+      title: 'Schedule caveats and migrating from the web kit',
       points: [
         "`nepseSchedule` encodes pre-open 10:30 to 11:00 and continuous trading 11:00 to 15:00, Sunday to Thursday, Asia/Kathmandu, with no holidays. It is an example. Verify against NEPSE's current notice and supply holidays: { ...`nepseSchedule`, holidays }.",
         "Times are read in the schedule's IANA zone with Intl, so daylight saving is the platform's. days are 0 (Sunday) to 6; a window includes its start and excludes its end; a date in holidays is \"holiday\" all day.",
         'halted: true turns open or pre-open into halted. next is the next change among open, pre-open and closed within ten days; a halt is never predicted.',
         '`getMarketSession` throws `RangeError` for an unknown zone, a malformed time or date, a window ending before it starts, or an invalid now.',
+        'Migrating from the web kit: MarketMark\'s `session` \'pre\' is `state="pre-open"`, and \'offline\' is `state="offline"` (drawn in the warn tone here, not the loss red). Its `value` and `change` numbers become the `index` slot with the text you print and a `direction`; `sessionLabel` is `labels`. The link, the compact dot-only form and the two-bar loading shape stay in web; the whole-line tooltip or tap panel is `marketSessionSentence` in your own Tooltip or Popover.',
+        '`marketSessionSentence(session, { lastCloseDate, schedule, labels, locale, note, state })` is pure. Without a name a holiday reads "Closed for a holiday"; without a known close date or next open those parts are left out, never invented. A closed market follows the pre-open to the trading open, so it says when trading begins.',
       ],
     },
-    related: ['market-indices', 'stock-table', 'price-limit', 'data-freshness'],
+    related: ['market-indices', 'stock-table', 'price-limit', 'data-freshness', 'instrument-header', 'alert-row'],
   },
   {
     slug: 'price-limit',
@@ -1082,15 +1201,26 @@ export const PAGES: readonly PageDef[] = [
     summary: 'The stocks a person follows, in their own order. Rows are keyed by symbol and rendered in the order you pass, so live prices change in place and nothing jumps. Move and remove are real buttons that appear only when you give the callbacks; the callbacks only request, you apply them.',
     use: ['A "my stocks" card or page with reorder and remove.', 'With `useStableOrder` when you offer sorting, so the order holds still while prices tick.'],
     avoid: ['A large sortable board: use `StockTable`.', 'Mutating inside the component: `onReorder` and `onRemove` change nothing here.'],
-    api: [...ui('watchlist', 'Watchlist', 'moveItem')],
+    api: [...ui('watchlist', 'Watchlist', 'moveItem', 'WatchlistRow', 'WatchlistRowSkeleton', 'WatchlistQuote', 'WatchlistColumnLabels')],
     examples: [
       { id: 'manage', title: 'Reorder and remove', note: 'Move buttons, remove buttons and Alt+Arrow keys; the list is local state.' },
       { id: 'readonly', title: 'Read only', note: 'No callbacks, so no buttons. Gaps show dashes and no trend.' },
       { id: 'empty', title: 'Empty', note: 'A title, a line and an action.' },
+      { id: 'columns', title: 'Month, since added, actions, loading (beta)', note: 'Two change columns from reference prices, an alert button per row, skeleton rows, and WatchlistRow on its own.' },
     ],
     keyboard: ['Every control is a real button in tab order.', "Alt+`ArrowUp` and Alt+`ArrowDown` on any of a row's buttons move that row; focus stays on the control you used.", "After a removal focus moves to the neighbouring row's remove button, or to the list when it was the last."],
     accessibility: ['Each change is announced ("HDL moved to position 2 of 3", "NABIL removed").', 'Buttons have names that include the symbol; change is sign, arrow and word.', 'The list is named by label.'],
     responsive: ['Rows reflow to fit a phone; `showTrend`={false} drops the trend line where space is tight.'],
+    notes: {
+      title: 'Migrating from the web kit',
+      points: [
+        '`kit/WatchlistRow` becomes `WatchlistRow` (beta, exported standalone): pass the `quote` instead of four finished figure nodes. The row prints the price with MoneyDisplay and the day, month and since-added moves with PriceChange, each as a sign, an arrow and a word.',
+        'Web\'s `month` and `since` cells are `showMonth` and `showSinceAdded`: give each quote `monthAgo` and `addedPrice` in minor units (bigint). Exact money stays exact; a missing reference price prints a dash and speaks "No value". The two figures sit on a second line of the row so a phone needs no extra width.',
+        'Web\'s `actions` (one icon button) is the `actions` slot, before the built-in move and remove buttons; give real `<button>`s with an accessible name as direct children. Web\'s `more` menu: put a `RowMenu` button in the slot.',
+        'Web\'s `WatchlistRowSkeleton` is `WatchlistRowSkeleton`; the list prop is `loading` (with `skeletonRows`), which marks the list busy and announces `labels.loading`.',
+        'Not carried over: the whole-row open button, `selected`, `fresh`, the inline `confirm` row and the wide-screen column head. Wrap the symbol in your own link with `renderSymbol`. Existing `Watchlist` usage is unchanged.',
+      ],
+    },
     related: ['stock-table', 'market-movers', 'company-search', 'reorder-list'],
   },
   {
@@ -1209,7 +1339,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['Not interactive.'],
     accessibility: ['A <dl>: each label is read with its amount.', 'Put the sign in the amount ("- Rs 496.00"); tone only tints it.', 'live announces changes politely as the form is filled.'],
     responsive: ['Rows hold label and amount on one line where there is room and wrap under the label when there is not; amounts never truncate.'],
-    related: ['money-display', 'metric-tile', 'key-stats'],
+    related: ['money-display', 'metric-tile', 'key-stats', 'bar-list'],
   },
   {
     slug: 'share-bars',
@@ -1435,7 +1565,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['A card is not interactive; what you put in the header action or footer is.'],
     accessibility: ['A <section> named by its title (an h2 unless `headingLevel` says 3) or by label when there is no title.', 'The description should state what the section shows or as of when.'],
     responsive: ['Cards fill their grid cell; with stretch they share a height so footers align.', '`clipDescription` keeps a long description on one line beside the header action.'],
-    related: ['card-link', 'metric-tile', 'inline-state', 'link-table'],
+    related: ['card-link', 'metric-tile', 'inline-state', 'link-table', 'card-section'],
   },
   {
     slug: 'card-link',
@@ -1455,7 +1585,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['A native link: Tab, then Enter.'],
     accessibility: ['An outgoing link says "(opens in a new tab)" after its words (`newTabLabel` overrides, for other languages).', 'The icon is decorative; the words carry the meaning.', '`ariaLabel` gives a fuller name when the words alone are vague, and must contain the visible words.'],
     responsive: ['Inline in the card header; wraps with the header on narrow widths.'],
-    related: ['card', 'link-table', 'inline-state'],
+    related: ['card', 'link-table', 'inline-state', 'link-row', 'headline-list'],
   },
   {
     slug: 'link-table',
@@ -2101,6 +2231,13 @@ export const PAGES: readonly PageDef[] = [
   // App shells and menu parity (web migration wave 2).
   ...SHELL_PAGES,
 ];
+
+/** The accessibility statement's generated table and note come from the pages above, so they cannot drift (a11y-matrix.ts). */
+export const PAGES: readonly PageDef[] = BASE_PAGES.map((page) =>
+  page.guide?.some((s) => s.generated)
+    ? { ...page, guide: page.guide.map((s) => (s.generated === 'a11y-matrix' ? { ...s, paragraphs: [...s.paragraphs, matrixNote(BASE_PAGES)], table: buildMatrix(BASE_PAGES) } : s)) }
+    : page,
+);
 
 /** The page's one-line lead: its own `lead`, else LEADS[slug], else the first sentence of `description`. */
 export const leadOf = (page: PageDef): string => page.lead ?? LEADS[page.slug] ?? (page.description.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? page.description);

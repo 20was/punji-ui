@@ -1,0 +1,6 @@
+/* Punji UI styles.
+   Styles for SkipLink. Needs tokens.css and base.css (styles.css has everything). Off screen until it takes focus. */
+@layer punji.components {
+  .pu-skip-link { position: fixed; inset-block-start: -100px; inset-inline-start: var(--pu-space-4); z-index: var(--pu-z-skip-link); padding: var(--pu-space-3) var(--pu-space-4); border-radius: var(--pu-radius-control); background: var(--pu-color-surface-inverse); color: var(--pu-color-text-inverse); font: 600 var(--pu-text-sm) / 1.4 var(--pu-font-body); text-decoration: none }
+  .pu-skip-link:focus, .pu-skip-link:focus-visible { inset-block-start: var(--pu-space-4); outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
+}

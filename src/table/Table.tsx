@@ -18,7 +18,7 @@
  * the row's head and the first figure on one line, then up to four figures in
  * fixed columns, each its column's label over its value (Cell `label`).
  */
-import { Children, createContext, isValidElement, useContext, useId, type ReactNode } from 'react';
+import { Children, createContext, isValidElement, useContext, useEffect, useId, useRef, useState, type ReactNode } from 'react';
 
 import { useLocaleMessages } from '../locale/context.tsx';
 import { paginate } from '../use-pagination/usePagination.ts';
@@ -40,6 +40,22 @@ export interface Column<K extends string> {
   /** On the head cell. */
   testId?: string;
 }
+
+/** Words DataTable announces after a user sorts. */
+export interface DataTableSortLabels {
+  /** Default 'ascending'. */
+  ascending: string;
+  /** Default 'descending'. */
+  descending: string;
+  /** The announcement, from the column's text and the direction word. Default "Sorted by Amount, ascending". */
+  sorted: (column: string, direction: string) => string;
+}
+
+export const DEFAULT_SORT_LABELS: DataTableSortLabels = {
+  ascending: 'ascending',
+  descending: 'descending',
+  sorted: (column, direction) => `Sorted by ${column}, ${direction}`,
+};
 
 export type SortDir = 'asc' | 'desc';
 
@@ -99,6 +115,7 @@ export function DataTable<K extends string>({
   stickToPage,
   stack,
   sortTestIdPrefix = 'sort',
+  sortLabels,
   testId,
   search,
   pagination,
@@ -128,6 +145,8 @@ export function DataTable<K extends string>({
   stack?: boolean;
   /** Sort buttons are `${prefix}-${key}`. */
   sortTestIdPrefix?: string;
+  /** Words for the polite announcement after a user sort. */
+  sortLabels?: Partial<DataTableSortLabels>;
   /** Test id on the table element. */
   testId?: string;
   /** Optional controlled search UI. Search the complete data set in the caller, before sorting and pagination. */
@@ -148,6 +167,17 @@ export function DataTable<K extends string>({
   const t = useLocaleMessages().messages.table ?? {};
   const auto = useId();
   const tableId = `${auto}-table`;
+  // Announce a sort only when the user asked for it: a press arms this, and the next `sort` change from the parent consumes it.
+  const [sortNote, setSortNote] = useState('');
+  const armed = useRef(0);
+  useEffect(() => {
+    if (!sort || Date.now() - armed.current > 1000) return;
+    armed.current = 0;
+    const column = columns.find((c) => c.key === sort.key);
+    const words = { ...DEFAULT_SORT_LABELS, ...sortLabels };
+    setSortNote(words.sorted(typeof column?.label === 'string' || typeof column?.label === 'number' ? String(column.label) : sort.key, sort.dir === 'asc' ? words.ascending : words.descending));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sort?.key, sort?.dir]);
   const rows = Children.toArray(children);
   // Grouped tables pass DataRowGroup children: each renders its own <tbody>. Their rows (collapsed ones too) stay selectable.
   const grouped = rows.some((row) => isValidElement(row) && row.type === DataRowGroup);
@@ -186,7 +216,7 @@ export function DataTable<K extends string>({
     search?.onChange(next);
     if (pagination && pageIndex > 0) pagination.onPageChange(0);
   };
-  const box = ['kit-tablebox', dense && 'dense', bare && 'bare', stickToPage && 'page-sticky', stack && 'stack', selection && 'selection'].filter(Boolean).join(' ');
+  const box = ['kit-tablebox', 'pu-print-table', dense && 'dense', bare && 'bare', stickToPage && 'page-sticky', stack && 'stack', selection && 'selection'].filter(Boolean).join(' ');
   return (
     <>
       {search && (
@@ -258,7 +288,7 @@ export function DataTable<K extends string>({
               return (
                 <th key={c.key} scope="col" className={cls} aria-sort={active ? (sort!.dir === 'asc' ? 'ascending' : 'descending') : undefined} data-testid={c.testId}>
                   {c.sortable && onSort ? (
-                    <button type="button" onClick={() => onSort(c.key)} data-testid={`${sortTestIdPrefix}-${c.key}`}>
+                    <button type="button" onClick={() => { armed.current = Date.now(); onSort(c.key); }} data-testid={`${sortTestIdPrefix}-${c.key}`}>
                       {c.label}
                       <span className="kit-sort-i" aria-hidden="true">
                         {active ? (sort!.dir === 'asc' ? '↑' : '↓') : ''}
@@ -301,6 +331,7 @@ export function DataTable<K extends string>({
           </nav>
         </div>
       )}
+      <div className="kit-sr" aria-live="polite" aria-atomic="true" data-sort-announcer>{sortNote}</div>
     </>
   );
 }
@@ -324,7 +355,7 @@ export function DataListRow({ children, testId, rowId, selectionDisabled = false
  * page checkbox. Pass as DataTable children, one per group.
  * @stability beta
  */
-export function DataRowGroup({ label, count, expanded, onExpandedChange, cells, children, testId }: {
+export function DataRowGroup({ label, count, expanded, onExpandedChange, cells, actions, children, testId }: {
   /** The group's name, printed in its header. */
   label: ReactNode;
   /** Words after the name, e.g. "3 rows"; part of the button's name. */
@@ -335,6 +366,8 @@ export function DataRowGroup({ label, count, expanded, onExpandedChange, cells, 
   onExpandedChange: (expanded: boolean) => void;
   /** The cells after the header (subtotals, or empty cells), one per remaining column. */
   cells?: ReactNode;
+  /** Controls for the whole group (export, select all), after the disclosure button in the header cell: real buttons or links in tab order, left out of print. @stability beta */
+  actions?: ReactNode;
   /** The group's DataListRows. */
   children: ReactNode;
   /** Test id on the tbody. */
@@ -352,6 +385,7 @@ export function DataRowGroup({ label, count, expanded, onExpandedChange, cells, 
           <span>{label}</span>
           {count !== undefined && <>{' '}<span className="kit-table-group-count">{count}</span></>}
         </button>
+        {actions && <span className="pu-table-group-actions pu-no-print">{actions}</span>}
       </th>
       {cells}
     </tr>

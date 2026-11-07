@@ -1,0 +1,5 @@
+/* Punji UI styles.
+   Styles for PrivateAmount, AmountsToggle and the masked state of MoneyDisplay and Figure. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .pu-private, .pu-money-masked, .pu-fig-masked { white-space: nowrap; font-variant-numeric: var(--pu-font-numeric); letter-spacing: 0.04em; color: var(--pu-color-text-muted) }
+}

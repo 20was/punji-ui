@@ -792,7 +792,7 @@ const BASE_PAGES: readonly PageDef[] = [
       title: 'Data rules',
       points: ['dates and every series.values are the same length; slice them together for a period.', 'Optional layers, all off by default so existing charts do not change: `reference` (a dashed labelled line in the portfolio\'s unit; a value far outside the data is pinned to the edge and labelled "above the range" or "below the range"), `drawdown` (the portfolio\'s fall from its running high, 0 at the band\'s top edge), `contributions` (the money put in, dotted, on the same scale; a gap is `null`), `endLabels` (each visible series\' last value at the right edge, spread by `spreadLabels` so they never overlap), `rebase={100}` (every series an index from 100 at its own first value; overrides `normalize`) and `axis="quiet"`. `onActiveChange(index | null)` reports the scrubbed date.', 'Values are plain numbers, not exact Money: an index, NAV or percent series is not money. Format with `formatValue`; for exact bigint amounts use `NetWorthChart` or `CashFlowChart`.', 'Migrating from the web kit: `EquityChart` is `normalize={false}` with `contributions` and `drawdown` (its `base` is `contributions`, `compare` is a second series, `ddLabel` is `labels.drawdown`, `EquityLegend` is the built-in legend of toggles with end values). `TwoLineChart` is two series with `endLabels` (the dashed one is the second). `TrendChart` is `axis="quiet"` with `area` and a dashed second series. `TargetChart` is one series with `reference` (its `targetAbove` and `targetBelow` are `labels.referenceAbove` and `referenceBelow`; `firedAt` and the retry state are not carried over). Web\'s `frame` readout is `onActiveChange` plus your own readout; its `positions` are not exposed.', 'A gap breaks that series\' line: missing data is never bridged, drawn as zero or interpolated, and the table reads "none" there. Only the series with the missing value breaks; the others stay one line, and a benchmark rebased from a later start (`rebaseOnto`) adds no gaps of its own. A series whose first value is zero cannot be normalised and is not drawn.', 'A benchmark that starts later begins level with the portfolio\'s percent change on its first date (`rebaseOnto`), not at 0%.', 'The first series is the portfolio; convention sets the colour of the gain area.'],
     },
-    related: ['candlestick-chart', 'price-chart', 'column-chart'],
+    related: ['candlestick-chart', 'price-chart', 'column-chart', 'rolling-returns-chart', 'fan-chart'],
   },
   {
     slug: 'depth-chart',
@@ -2058,7 +2058,7 @@ const BASE_PAGES: readonly PageDef[] = [
     keyboard: ['Not interactive.'],
     accessibility: ['A table with a caption; groups are `colgroup` header rows; each product is a row header. The change is words plus an arrow; colour only reinforces it.', 'Dates are <time> elements with the ISO date.'],
     responsive: ['Scrolls sideways inside its frame on a narrow screen; products wrap.'],
-    related: ['deposit-calculator', 'loan-calculator'],
+    related: ['deposit-calculator', 'loan-calculator', 'yield-curve-chart'],
   },
   {
     slug: 'nepal-address-picker',

@@ -332,13 +332,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "257.46 kB",
+    "limit": "271.00 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "57.61 kB",
+    "limit": "58.40 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -759,7 +759,7 @@
     "name": "chart-math (import from '@punji/ui/chart-math')",
     "path": "dist/chart-math/chartMath.js",
     "import": "*",
-    "limit": "2.31 kB",
+    "limit": "3.10 kB",
     "gzip": true
   },
   {
@@ -2327,6 +2327,90 @@
     "path": "dist/nepal/market-format.js",
     "import": "*",
     "limit": "570 B",
+    "gzip": true
+  },
+  {
+    "name": "fan-chart (import from '@punji/ui/fan-chart')",
+    "path": "dist/fan-chart/FanChart.js",
+    "import": "*",
+    "limit": "5.59 kB",
+    "gzip": true
+  },
+  {
+    "name": "FanChart CSS",
+    "path": "dist/css/fan-chart.css",
+    "limit": "0.51 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "rolling-returns-chart (import from '@punji/ui/rolling-returns-chart')",
+    "path": "dist/rolling-returns-chart/RollingReturnsChart.js",
+    "import": "*",
+    "limit": "5.06 kB",
+    "gzip": true
+  },
+  {
+    "name": "RollingReturnsChart CSS",
+    "path": "dist/css/rolling-returns-chart.css",
+    "limit": "0.54 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "risk-return-scatter (import from '@punji/ui/risk-return-scatter')",
+    "path": "dist/risk-return-scatter/RiskReturnScatter.js",
+    "import": "*",
+    "limit": "5.21 kB",
+    "gzip": true
+  },
+  {
+    "name": "RiskReturnScatter CSS",
+    "path": "dist/css/risk-return-scatter.css",
+    "limit": "0.42 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "yield-curve-chart (import from '@punji/ui/yield-curve-chart')",
+    "path": "dist/yield-curve-chart/YieldCurveChart.js",
+    "import": "*",
+    "limit": "5.05 kB",
+    "gzip": true
+  },
+  {
+    "name": "YieldCurveChart CSS",
+    "path": "dist/css/yield-curve-chart.css",
+    "limit": "0.56 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "style-grid (import from '@punji/ui/style-grid')",
+    "path": "dist/style-grid/StyleGrid.js",
+    "import": "*",
+    "limit": "3.09 kB",
+    "gzip": true
+  },
+  {
+    "name": "StyleGrid CSS",
+    "path": "dist/css/style-grid.css",
+    "limit": "0.63 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "seasonality-chart (import from '@punji/ui/seasonality-chart')",
+    "path": "dist/seasonality-chart/SeasonalityChart.js",
+    "import": "*",
+    "limit": "4.67 kB",
+    "gzip": true
+  },
+  {
+    "name": "SeasonalityChart CSS",
+    "path": "dist/css/seasonality-chart.css",
+    "limit": "0.32 kB",
+    "rolldown": false,
     "gzip": true
   }
 ]

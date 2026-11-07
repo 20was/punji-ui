@@ -137,4 +137,10 @@
 @import './preset-tile.css';
 @import './filter-bar.css';
 @import './heat-tables.css';
+@import './fan-chart.css';
+@import './rolling-returns-chart.css';
+@import './risk-return-scatter.css';
+@import './yield-curve-chart.css';
+@import './style-grid.css';
+@import './seasonality-chart.css';
 @import './contrast.css';

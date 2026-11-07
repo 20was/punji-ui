@@ -189,6 +189,7 @@ Charts are native SVG drawn by this package, with no chart library in the core b
 
 - **Market:** `CandlestickChart`, `PerformanceChart` (with optional reference line, drawdown, contributions, end labels and rebased comparison), `DepthChart`, `Sparkline`, `ColumnChart`, `MarketHeatmap`.
 - **Statements and fundamentals (beta):** `WaterfallChart`, `CashFlowChart`, `NetWorthChart`, `SankeyChart`, `EarningsChart`, `BalanceHistoryChart`, `ScoreRadar`, `FairValueBar`, `PriceTargetChart`.
+- **Portfolio and macro (beta):** `FanChart`, `RollingReturnsChart`, `RiskReturnScatter`, `YieldCurveChart`, `StyleGrid`, `SeasonalityChart`.
 - **Grids (beta):** `ReturnsHeatTable`, `MonthGrid`, `Histogram`, `CorrelationMatrix`. Also `RangeSelector` for 1D to All windows.
 
 Guide: [CHARTS.md](docs/CHARTS.md).

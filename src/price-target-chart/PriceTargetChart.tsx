@@ -104,7 +104,7 @@ const dateText = (t: number, year: boolean): string => {
  * Moves label centres apart so each is at least `gap` from the next, inside [lo, hi], keeping their order.
  * Returns the new centres in the order given.
  */
-export function spreadLabels(centres: readonly number[], gap: number, lo: number, hi: number): number[] {
+export function spreadTargetLabels(centres: readonly number[], gap: number, lo: number, hi: number): number[] {
   const order = centres.map((c, i) => ({ c, i })).toSorted((a, b) => a.c - b.c || a.i - b.i);
   const ys = order.map((o) => clamp(o.c, lo, hi));
   for (let k = 1; k < ys.length; k += 1) ys[k] = Math.max(ys[k]!, ys[k - 1]! + gap);
@@ -222,7 +222,7 @@ function Chart({ rows, code, targets, current, label, locale, height = 280, inte
   const xTicks = Array.from({ length: tickCount }, (_, k) => t0 + ((t1 - t0) * k) / (tickCount - 1));
   const keys: TargetKey[] = ['low', 'average', 'high'];
   const tipY = fanU ? keys.map((k) => y(plotValue(fanU[k], scale))) : [];
-  const labelY = fanU ? spreadLabels(tipY, 30, TOP + 14, TOP + plotH - 14) : [];
+  const labelY = fanU ? spreadTargetLabels(tipY, 30, TOP + 14, TOP + plotH - 14) : [];
   const idx = ctx.index;
   const xAt = (i: number) => (i < rows.length ? x(rows[i]!.t) : x(fan!.t));
   const onPointer = (e: PointerEvent<HTMLDivElement>) => {

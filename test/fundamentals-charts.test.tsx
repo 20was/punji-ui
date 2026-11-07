@@ -3,7 +3,7 @@ import { userEvent } from '@testing-library/user-event';
 import { useState } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { FairValueBar, fairValueReading, money, PriceTargetChart, ScoreRadar, scoreBand, scoreRadarReading, spreadLabels, type ScoreAxis } from '../src/index.ts';
+import { FairValueBar, fairValueReading, money, PriceTargetChart, ScoreRadar, scoreBand, scoreRadarReading, spreadTargetLabels, type ScoreAxis } from '../src/index.ts';
 import { boxesOverlap, radarLayout, wrapLabel } from '../src/score-radar/layout.ts';
 import { seriousViolations } from './axe.ts';
 
@@ -254,9 +254,9 @@ describe('PriceTargetChart', () => {
     const ys = (['high', 'average', 'low'] as const).map((k) => Number(container.querySelector(`[data-testid="p-${k}"] text`)!.getAttribute('y')));
     expect(ys[1]! - ys[0]!).toBeGreaterThanOrEqual(30);
     expect(ys[2]! - ys[1]!).toBeGreaterThanOrEqual(30);
-    expect(spreadLabels([100, 101, 102], 30, 0, 400)).toEqual([100, 130, 160]);
-    expect(spreadLabels([390, 395, 400], 30, 0, 400)).toEqual([340, 370, 400]);
-    expect(spreadLabels([200, 10, 100], 30, 0, 400)).toEqual([200, 10, 100]);
+    expect(spreadTargetLabels([100, 101, 102], 30, 0, 400)).toEqual([100, 130, 160]);
+    expect(spreadTargetLabels([390, 395, 400], 30, 0, 400)).toEqual([340, 370, 400]);
+    expect(spreadTargetLabels([200, 10, 100], 30, 0, 400)).toEqual([200, 10, 100]);
   });
 
   it('draws history alone without targets, skips bad rows, and shows an empty message', () => {

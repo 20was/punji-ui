@@ -688,7 +688,7 @@ export const COMMUNITY_PAGES: readonly PageDef[] = [
       'Several target dates: this draws one fan.',
       'Mixing currencies: it throws a TypeError. Convert first.',
     ],
-    api: [{ name: 'PriceTargetChart', module: 'price-target-chart' }, { name: 'PriceTargetPoint', module: 'price-target-chart' }, { name: 'PriceTargets', module: 'price-target-chart' }, { name: 'spreadLabels', module: 'price-target-chart' }],
+    api: [{ name: 'PriceTargetChart', module: 'price-target-chart' }, { name: 'PriceTargetPoint', module: 'price-target-chart' }, { name: 'PriceTargets', module: 'price-target-chart' }, { name: 'spreadTargetLabels', module: 'price-target-chart' }],
     examples: [{ id: 'basic', title: 'A year of closes and a fan', note: 'Twelve monthly closes, then low, average and high targets for a year ahead.' }],
     keyboard: ['Tab focuses the plot. Left and Right move through the closes and then the targets, Home and End jump to the first close and the targets, Escape clears.', 'Hover or touch reads one date in a tooltip.'],
     accessibility: [

@@ -143,6 +143,11 @@ import { CandlestickChart } from '@punji/ui/candlestick-chart';
 import { useHydrated } from '@punji/ui/use-hydrated';
 import { LightweightChart } from '@punji/ui/lightweight-charts';
 import { EChart } from '@punji/ui/echarts';
+import { KLineChart } from '@punji/ui/klinecharts';
+import { PayoffChart } from '@punji/ui/payoff-chart';
+import { VolatilitySmile } from '@punji/ui/volatility-smile';
+import { EconomicCalendar } from '@punji/ui/economic-calendar';
+import { EarningsCalendar } from '@punji/ui/earnings-calendar';
 
 interface Row { id: string; symbol: string; ltp: number }
 const rows: Row[] = Array.from({ length: 2000 }, (_, i) => ({ id: \`R\${i}\`, symbol: ['NABIL', 'NTC', 'NICA', 'HDL'][i % 4]!, ltp: 400 + (i % 97) }));
@@ -159,9 +164,14 @@ export function Watch() {
       <Live value={price} testId="price">{(n) => (n ?? 0).toFixed(2)}</Live>
       <span data-testid="debounced">{shown}</span>
       <Sparkline values={[1, 3, 2, price]} />
-      {/* The canvas chart adapters are opt-in subpaths: lightweight-charts and echarts are NOT installed in this app, and the build and hydration still pass (the library is passed in, never imported). */}
+      {/* The canvas chart adapters are opt-in subpaths: lightweight-charts, echarts and klinecharts are NOT installed in this app, and the build and hydration still pass (the library is passed in, never imported). */}
       <LightweightChart library={() => Promise.reject(new Error('peer not installed'))} onError={() => undefined} label="Adapter" money={{ currency: 'NPR' }} data={[{ time: '2025-01-01', open: 1n, high: 2n, low: 1n, close: 2n }]} />
       <EChart library={() => Promise.reject(new Error('peer not installed'))} onError={() => undefined} option={{}} label="Adapter 2" money={{ currency: 'NPR' }} points={[{ label: 'A', values: [1n] }]} seriesNames={['S']} />
+      <KLineChart library={() => Promise.reject(new Error('peer not installed'))} onError={() => undefined} label="Adapter 3" money={{ currency: 'NPR' }} data={[{ timestamp: 1735689600000, open: 1n, high: 2n, low: 1n, close: 2n }]} />
+      <PayoffChart label="Payoff" legs={[{ kind: 'call', side: 'long', quantity: 1, strike: { minor: 10000n, currency: 'NPR' }, premium: { minor: 500n, currency: 'NPR' } }]} />
+      <VolatilitySmile label="Smile" curves={[{ key: 'a', label: 'Nov', points: [{ x: '100', iv: '20.5' }, { x: '110', iv: '18.0' }] }]} />
+      <EconomicCalendar caption="Macro" timeZone="Asia/Kathmandu" events={[{ id: 'e', when: '2025-11-14T08:30:00Z', title: 'CPI', importance: 'high', actual: '3.1', forecast: '3.0' }]} />
+      <EarningsCalendar caption="Results" timeZone="Asia/Kathmandu" calendar="both" events={[{ id: 'r', when: '2025-11-14', symbol: 'NABIL', company: 'Nabil Bank', epsActual: '4.38', epsForecast: '4.10' }]} />
       <CandlestickChart candles={candles} label="Daily" formatPrice={(p) => p.toFixed(1)} />
       <VirtualFinancialTable caption="Quotes" rows={rows} rowKey={(r) => r.id} emptyTitle="None" height={300} columns={[
         { key: 'id', label: 'Id', rowHeader: true, render: (r) => r.id },

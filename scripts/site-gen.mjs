@@ -133,7 +133,7 @@ try {
   const rootNames = new Set(checker.getExportsOfModule(rootMod).map((s) => s.name));
   for (const group of GROUPS) for (const name of group.planned) if (!rootNames.has(name)) problems.push(`registry: planned ${name} (${group.id}) is not exported from @punji/ui`);
   // The optional table adapters are off the root on purpose (opt-in subpaths): their pages show the subpath import only.
-  const OFF_ROOT = new Set(['tanstack-table', 'ag-grid', 'mui-x-grid', 'lightweight-charts', 'echarts']);
+  const OFF_ROOT = new Set(['tanstack-table', 'ag-grid', 'mui-x-grid', 'lightweight-charts', 'echarts', 'klinecharts']);
   for (const { name, module } of targets.values()) {
     if (!OFF_ROOT.has(module) && !rootNames.has(name)) problems.push(`api: ${name} is not exported from the @punji/ui root, so the root import line would be wrong`);
   }

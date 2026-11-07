@@ -36,7 +36,8 @@
 import { memo, useId, useMemo, useState, type CSSProperties, type PointerEvent, type ReactNode } from 'react';
 
 import { downsampleIndices, niceTicks, rebase, rebaseOnto } from '../chart-math/chartMath.ts';
-import { ChartTooltip, clamp, isNum, shortDate, thinned, useChartCursor, useMeasuredWidth } from '../internal/chartFrame.tsx';
+import { ChartA11yShell } from '../chart-a11y/ChartA11yShell.tsx';
+import { ChartTooltip, clamp, isNum, shortDate, thinned, useMeasuredWidth } from '../internal/chartFrame.tsx';
 
 export interface PerformanceSeries {
   /** Stable key (the React key and the legend's identity). */
@@ -124,7 +125,6 @@ export function PerformanceChart(props: PerformanceChartProps) {
 function Plot({ dates, series, label, normalize = true, area = true, convention, height = 260, formatValue = defaultValue, formatPercent = defaultPercent, formatDate = shortDate, periods, labels, testId, tableLimit = 500 }: PerformanceChartProps) {
   const { ref, width } = useMeasuredWidth(640);
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
-  const hintId = `${uid}h`;
   const none = labels?.none ?? 'none';
   const [hidden, setHidden] = useState<ReadonlySet<string>>(new Set());
   const n = dates.length;
@@ -182,8 +182,6 @@ function Plot({ dates, series, label, normalize = true, area = true, convention,
     return runs;
   }), [shown, cap]);
 
-  const cursor = useChartCursor(n);
-  const idx = cursor.index;
   const words = labels?.legend ?? 'Series';
   const upTone = 'gain';
   const downTone = 'loss';
@@ -201,10 +199,10 @@ function Plot({ dates, series, label, normalize = true, area = true, convention,
     for (let i = n - 1; i >= 0; i -= 1) if (x.y[i] !== null) return normalize ? formatPercent(x.y[i] as number) : (x.s.format ?? formatValue)(x.raw[i] as number);
     return none;
   };
-  const onPointer = (e: PointerEvent<HTMLDivElement>) => {
+  const indexAt = (e: PointerEvent<HTMLDivElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
     const px = e.clientX - r.left;
-    cursor.pointerTo(n === 1 ? 0 : clamp(Math.round(((px - x0) / (x1 - x0)) * (n - 1)), 0, n - 1));
+    return n === 1 ? 0 : clamp(Math.round(((px - x0) / (x1 - x0)) * (n - 1)), 0, n - 1);
   };
   const toggle = (key: string) => setHidden((prev) => {
     const next = new Set(prev);
@@ -215,7 +213,38 @@ function Plot({ dates, series, label, normalize = true, area = true, convention,
   const style: CSSProperties = { height: svgH };
   const onlyOne = shown.length - hidden.size <= 1;
   return (
-    <figure className="kit-ct" data-convention={convention} data-testid={testId} aria-label={label}>
+    <ChartA11yShell
+      className="kit-ct"
+      dataAttrs={{ 'data-convention': convention }}
+      testId={testId}
+      label={label}
+      roleDescription="line chart"
+      count={n}
+      speak={spoken}
+      hint={labels?.hint ?? 'Use the left and right arrow keys to move between dates, Home and End to jump to the first and last.'}
+      table={
+        <>
+          <table>
+            <caption>{label}</caption>
+            <thead>
+              <tr>
+                <th scope="col">{labels?.date ?? 'Date'}</th>
+                {shown.map((x) => <th key={x.s.key} scope="col">{x.s.label}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {Array.from({ length: n - firstRow }, (_, j) => {
+                const i = firstRow + j;
+                return <TableRow key={`${dates[i]}-${i}`} i={i} date={dates[i]!} shown={shown} formatDate={formatDate} valueText={valueText} />;
+              })}
+            </tbody>
+          </table>
+          {firstRow > 0 && <p>{(labels?.truncated ?? ((s: number, t: number) => `Showing the latest ${s} of ${t} dates`))(n - firstRow, n)}</p>}
+        </>
+      }
+    >
+      {({ index: idx, pointerTo, plotProps }) => (
+    <>
       <div className="kit-ct-head">
         <div className="kit-ct-legend-row" role="group" aria-label={words}>
           {shown.map((x, k) => {
@@ -234,18 +263,7 @@ function Plot({ dates, series, label, normalize = true, area = true, convention,
       <div ref={ref} className="kit-ct-area" style={style}>
         {/* The plot is the one focus stop: arrow keys move through the data, the pointer reads it. */}
         {/* oxlint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/no-noninteractive-tabindex */}
-        <div className="kit-ct-plot" tabIndex={0}
-          role="group"
-          aria-label={label}
-          aria-roledescription="line chart"
-          aria-describedby={hintId}
-          onKeyDown={cursor.onKeyDown}
-          onFocus={cursor.onFocus}
-          onBlur={cursor.clear}
-          onPointerMove={onPointer}
-          onPointerDown={onPointer}
-          onPointerLeave={() => cursor.pointerTo(null)}
-        >
+        <div className="kit-ct-plot" {...plotProps((e) => pointerTo(indexAt(e)))}>
           <svg width={width} height={svgH} viewBox={`0 0 ${width} ${svgH}`} aria-hidden="true" focusable="false">
             <defs>
               <clipPath id={`${uid}u`}><rect x={0} y={0} width={width} height={Math.max(0, baseY)} /></clipPath>
@@ -307,27 +325,9 @@ function Plot({ dates, series, label, normalize = true, area = true, convention,
           )}
         </div>
       </div>
-      <p className="kit-sr" id={hintId}>{labels?.hint ?? 'Use the left and right arrow keys to move between dates, Home and End to jump to the first and last.'}</p>
-      <div className="kit-sr" role="status" aria-live="polite" aria-atomic="true">{idx === null ? '' : spoken(idx)}</div>
-      <div className="kit-sr">
-        <table>
-          <caption>{label}</caption>
-          <thead>
-            <tr>
-              <th scope="col">{labels?.date ?? 'Date'}</th>
-              {shown.map((x) => <th key={x.s.key} scope="col">{x.s.label}</th>)}
-            </tr>
-          </thead>
-          <tbody>
-            {Array.from({ length: n - firstRow }, (_, j) => {
-              const i = firstRow + j;
-              return <TableRow key={`${dates[i]}-${i}`} i={i} date={dates[i]!} shown={shown} formatDate={formatDate} valueText={valueText} />;
-            })}
-          </tbody>
-        </table>
-        {firstRow > 0 && <p>{(labels?.truncated ?? ((s: number, t: number) => `Showing the latest ${s} of ${t} dates`))(n - firstRow, n)}</p>}
-      </div>
-    </figure>
+    </>
+      )}
+    </ChartA11yShell>
   );
 }
 

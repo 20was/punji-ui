@@ -255,14 +255,14 @@
     "name": "virtual-table (import from '@punji/ui/virtual-table')",
     "path": "dist/virtual-table/VirtualFinancialTable.js",
     "import": "*",
-    "limit": "7.55 kB",
+    "limit": "7.71 kB",
     "gzip": true
   },
   {
     "name": "table-core (import from @punji/ui/table-core)",
     "path": "dist/table-core/tableCore.js",
     "import": "*",
-    "limit": "1.95 kB",
+    "limit": "2.04 kB",
     "gzip": true
   },
   {
@@ -332,7 +332,7 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "198.8 kB",
+    "limit": "202.45 kB",
     "gzip": true
   },
   {
@@ -360,7 +360,7 @@
     "name": "Financial compositions",
     "path": "dist/financial/financial.js",
     "import": "*",
-    "limit": "7.00 kB",
+    "limit": "7.17 kB",
     "gzip": true
   },
   {
@@ -752,7 +752,7 @@
     "name": "column-chart (import from '@punji/ui/column-chart')",
     "path": "dist/column-chart/ColumnChart.js",
     "import": "*",
-    "limit": "3.11 kB",
+    "limit": "3.4 kB",
     "gzip": true
   },
   {
@@ -773,14 +773,14 @@
     "name": "performance-chart (import from '@punji/ui/performance-chart')",
     "path": "dist/performance-chart/PerformanceChart.js",
     "import": "*",
-    "limit": "4.58 kB",
+    "limit": "4.7 kB",
     "gzip": true
   },
   {
     "name": "depth-chart (import from '@punji/ui/depth-chart')",
     "path": "dist/depth-chart/DepthChart.js",
     "import": "*",
-    "limit": "3.17 kB",
+    "limit": "3.5 kB",
     "gzip": true
   },
   {
@@ -1025,7 +1025,7 @@
     "name": "dividend-history (import from '@punji/ui/dividend-history')",
     "path": "dist/dividend-history/DividendHistory.js",
     "import": "*",
-    "limit": "13.02 kB",
+    "limit": "13.2 kB",
     "gzip": true
   },
   {
@@ -1753,6 +1753,83 @@
     "path": "dist/alert-target/alertTarget.js",
     "import": "*",
     "limit": "0.45 kB",
+    "gzip": true
+  },
+  {
+    "name": "table-totals (import from @punji/ui/table-totals)",
+    "path": "dist/table-totals/tableTotals.js",
+    "import": "*",
+    "limit": "1.76 kB",
+    "gzip": true
+  },
+  {
+    "name": "table-presets (import from @punji/ui/table-presets)",
+    "path": "dist/table-presets/tablePresets.js",
+    "import": "*",
+    "limit": "5.45 kB",
+    "gzip": true
+  },
+  {
+    "name": "tanstack-table (import from '@punji/ui/tanstack-table')",
+    "path": "dist/tanstack-table/tanstackTable.js",
+    "import": "*",
+    "limit": "4.45 kB",
+    "gzip": true
+  },
+  {
+    "name": "ag-grid (import from '@punji/ui/ag-grid')",
+    "path": "dist/ag-grid/agGrid.js",
+    "import": "*",
+    "limit": "4.5 kB",
+    "gzip": true
+  },
+  {
+    "name": "mui-x-grid (import from '@punji/ui/mui-x-grid')",
+    "path": "dist/mui-x-grid/muiXGrid.js",
+    "import": "*",
+    "limit": "4.55 kB",
+    "gzip": true
+  },
+  {
+    "name": "chart-a11y (import from '@punji/ui/chart-a11y')",
+    "path": "dist/chart-a11y/ChartA11yShell.js",
+    "import": "*",
+    "limit": "1.3 kB",
+    "gzip": true
+  },
+  {
+    "name": "waterfall-chart (import from '@punji/ui/waterfall-chart')",
+    "path": "dist/waterfall-chart/WaterfallChart.js",
+    "import": "*",
+    "limit": "7.7 kB",
+    "gzip": true
+  },
+  {
+    "name": "cash-flow-chart (import from '@punji/ui/cash-flow-chart')",
+    "path": "dist/cash-flow-chart/CashFlowChart.js",
+    "import": "*",
+    "limit": "7.7 kB",
+    "gzip": true
+  },
+  {
+    "name": "net-worth-chart (import from '@punji/ui/net-worth-chart')",
+    "path": "dist/net-worth-chart/NetWorthChart.js",
+    "import": "*",
+    "limit": "7.7 kB",
+    "gzip": true
+  },
+  {
+    "name": "range-selector (import from '@punji/ui/range-selector')",
+    "path": "dist/range-selector/RangeSelector.js",
+    "import": "*",
+    "limit": "1.6 kB",
+    "gzip": true
+  },
+  {
+    "name": "Money charts CSS",
+    "path": "dist/css/money-charts.css",
+    "limit": "0.6 kB",
+    "rolldown": false,
     "gzip": true
   }
 ]

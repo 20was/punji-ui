@@ -169,6 +169,10 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'bar-list', title: 'BarList', pending: true },
   { id: 'alert-row', title: 'AlertRow, compact, skeleton and empty', pending: true },
   { id: 'alert-summary', title: 'AlertSummary', pending: true },
+  { id: 'waterfall-chart', title: 'WaterfallChart' },
+  { id: 'cash-flow-chart', title: 'CashFlowChart' },
+  { id: 'net-worth-chart', title: 'NetWorthChart' },
+  { id: 'range-selector', title: 'RangeSelector' },
   // new:component inserts fixtures above this line
 ];
 

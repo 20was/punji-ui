@@ -23,6 +23,13 @@ for (const [name, version] of Object.entries(pkg.dependencies ?? {})) {
   if (name !== '@remotemerge/nepali-date-converter' || version !== '1.2.5') problems.push(`Unreviewed runtime dependency: ${name}@${version}`);
 }
 
+// Optional peers (the table adapters' grid libraries) must stay optional, and no module may import them: the adapters
+// are structural, so the core bundle and a consumer build never need them installed.
+for (const name of Object.keys(pkg.peerDependencies ?? {})) {
+  if (['react', 'react-dom'].includes(name)) continue;
+  if (!pkg.peerDependenciesMeta?.[name]?.optional) problems.push(`package.json: peer ${name} must be optional (peerDependenciesMeta)`);
+}
+
 for (const [sub, target] of Object.entries(pkg.exports)) {
   if (typeof target === 'string' || sub.endsWith('.css')) continue;
   const src = target.default.replace('./dist/', 'src/').replace(/\.js$/, '');

@@ -115,6 +115,15 @@ for (const [theme, { vars, text, ui, own }] of Object.entries(themes)) {
     report[theme].push({ fg, bg, kind, ratio: Math.round(r * 100) / 100, min });
     if (r < min) problems.push(`${theme}: --pu-color-${fg} on --pu-color-${bg} is ${r.toFixed(2)}:1, needs ${min}:1 (${kind})`);
   }
+  // Heat cells (MonthGrid, ReturnsHeatTable, CorrelationMatrix): the text colour on the darkest shade of each hue
+  // (src/styles/heat-tables.css mixes gain/loss up to 36% and the series hue up to 40% into the surface).
+  const surface = colour(vars, 'surface', page);
+  for (const [hue, pct] of [['gain', 36], ['loss', 36], ['series-nepse', 40]]) {
+    const cell = over([...colour(vars, hue, surface).slice(0, 3), pct / 100], surface);
+    const r = ratio(colour(vars, 'text', cell), cell);
+    report[theme].push({ fg: 'text', bg: `${hue} ${pct}% heat cell`, kind: 'text', ratio: Math.round(r * 100) / 100, min: text });
+    if (r < text) problems.push(`${theme}: --pu-color-text on ${pct}% --pu-color-${hue} is ${r.toFixed(2)}:1, needs ${text}:1 (heat cell)`);
+  }
   // Gain and loss must differ in lightness as well as hue, so they stay apart without colour vision (hue-only pairs sat near 1.08:1).
   const [gain, loss] = [colour(vars, 'gain', page), colour(vars, 'loss', page)];
   const apart = ratio(gain, loss);

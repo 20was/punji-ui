@@ -195,7 +195,7 @@ const wrap = (list: string[], from: string) => {
 };
 
 // Optional adapter subpaths are not re-exported from the root (opt-in, so the root never loads a grid library).
-const OFF_ROOT = new Set(['tanstack-table', 'ag-grid', 'mui-x-grid']);
+const OFF_ROOT = new Set(['tanstack-table', 'ag-grid', 'mui-x-grid', 'lightweight-charts', 'echarts']);
 
 function importLines({ page, api }: PageData): { subpath: string; root: string } {
   const byModule = new Map<string, string[]>();
@@ -718,6 +718,40 @@ function GuideBlock({ slug, section }: { slug: string; section: GuideSection }) 
             </li>
           ))}
         </ul>
+      )}
+      {section.table && (
+        // oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrollable region must be keyboard focusable
+        <div className="doc-table-wrap" role="region" aria-label={section.table.caption} tabIndex={0}>
+          <table className="doc-table doc-matrix">
+            <caption className="kit-sr">{section.table.caption}</caption>
+            <thead>
+              <tr>
+                {section.table.head.map((h) => (
+                  <th key={h} scope="col">
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {section.table.rows.map((row) => (
+                <tr key={row[0]}>
+                  {row.map((cell, i) =>
+                    i === 0 ? (
+                      <th key={i} scope="row">
+                        <Rich text={cell} />
+                      </th>
+                    ) : (
+                      <td key={i}>
+                        <Rich text={cell} />
+                      </td>
+                    ),
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
       {section.code?.map((block) => (
         <Code

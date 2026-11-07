@@ -7,6 +7,7 @@
  * arrow + colour + a spoken word, so colour never carries it alone. A move
  * that prints as 0.00% is no move: grey, no arrow (the app's changeV2).
  */
+import { maskText } from '../internal/mask.tsx';
 import { fixed, rs } from '../internal/number.ts';
 import { useLocaleMessages } from '../locale/context.tsx';
 import type { Money, MoneyFormatter } from '../money/money.ts';
@@ -32,6 +33,10 @@ export interface FigureProps {
   dp?: number;
   /** The rupee mark for the deprecated `kind: 'rs'`. Default: "रु." under a Nepali `PunjiLocaleProvider`, else "Rs". */
   mark?: string;
+  /** Show "••••••" (with the currency mark, for money) in place of the figure. The number is not rendered at all, and a screen reader hears `maskedLabel`. */
+  masked?: boolean;
+  /** Read out in place of the figure while it is masked. Default 'Amount hidden'. */
+  maskedLabel?: string;
   /** Becomes data-testid on the figure. */
   testId?: string;
 }
@@ -62,8 +67,16 @@ function printMoney(value: Money, formatter: MoneyFormatter | undefined, absolut
 /**
  * @stability stable
  */
-export function Figure({ value, kind = 'num', dp = 2, formatter, mark, testId }: FigureProps) {
+export function Figure({ value, kind = 'num', dp = 2, formatter, mark, masked, maskedLabel = 'Amount hidden', testId }: FigureProps) {
   const rupee = useRsMark(mark);
+  if (masked) {
+    const currency = isMoney(value) ? value.currency.toUpperCase() : kind === 'rs' ? rupee : undefined;
+    return (
+      <span className="kit-fig pu-fig-masked" role="img" aria-label={maskedLabel} data-masked="true" data-testid={testId}>
+        <span aria-hidden="true">{maskText(currency)}</span>
+      </span>
+    );
+  }
   if (isMoney(value)) return <span className="kit-fig" data-testid={testId}>{printMoney(value, formatter)}</span>;
   return <span className="kit-fig" data-testid={testId}>{formatFigure(value, kind, dp, rupee)}</span>;
 }

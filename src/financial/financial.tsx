@@ -121,6 +121,8 @@ export interface FinancialTableProps<T> {
   groupBy?: (row: T) => string;
   /** A group header's name. Default the key. @stability beta */
   groupLabel?: (key: string, rows: readonly T[]) => ReactNode;
+  /** Controls for a whole group (export its rows, add to a list), drawn in the group header after the collapse button. Real buttons or links: they are in tab order and are left out of print. Receives the group key and its rows. @stability beta */
+  groupActions?: (key: string, rows: readonly T[]) => ReactNode;
   /** Controlled collapsed group keys. Without it the table keeps them itself (all expanded at first). @stability beta */
   collapsedGroups?: readonly string[];
   /** Called with the next collapsed keys when a group header is pressed. @stability beta */
@@ -135,7 +137,7 @@ export interface FinancialTableProps<T> {
 /** Holdings, invoices, transactions and ledgers share semantic table behavior, not a business schema. Columns are normalised to `ColumnDef` (`@punji/ui/table-core`); grouping, subtotals and totals are opt-in.
  * @stability stable
  */
-export function FinancialTable<T>({ caption, columns, rows, rowKey, state = 'ready', emptyTitle, emptyBody, emptyAction, loadingLabel = 'Loading records', errorTitle = 'Records unavailable', errorAction, sort, onSort, sortLabels, search, pagination, selection, stack, groupBy, groupLabel, collapsedGroups, onCollapsedGroupsChange, totals, expectedTotals, totalsLabels }: FinancialTableProps<T>) {
+export function FinancialTable<T>({ caption, columns, rows, rowKey, state = 'ready', emptyTitle, emptyBody, emptyAction, loadingLabel = 'Loading records', errorTitle = 'Records unavailable', errorAction, sort, onSort, sortLabels, search, pagination, selection, stack, groupBy, groupLabel, groupActions, collapsedGroups, onCollapsedGroupsChange, totals, expectedTotals, totalsLabels }: FinancialTableProps<T>) {
   const [ownCollapsed, setOwnCollapsed] = useState<readonly string[]>([]);
   if (state === 'loading') return <div aria-busy="true"><Skeleton label={loadingLabel} height={160} /></div>;
   if (state === 'error') return <EmptyState title={errorTitle} action={errorAction} role="alert" />;
@@ -162,7 +164,7 @@ export function FinancialTable<T>({ caption, columns, rows, rowKey, state = 'rea
   };
   const body = groupBy
     ? kit.groupRows(rows, groupBy, defs).map(group => (
-      <DataRowGroup key={group.key} label={groupLabel?.(group.key, group.rows) ?? group.key} count={labels.groupCount(group.rows.length)}
+      <DataRowGroup key={group.key} label={groupLabel?.(group.key, group.rows) ?? group.key} count={labels.groupCount(group.rows.length)} actions={groupActions?.(group.key, group.rows)}
         expanded={!collapsed.has(group.key)} onExpandedChange={(expanded) => setExpanded(group.key, expanded)} cells={aggregateCells(group.subtotals, group.rows)}>
         {group.rows.map(rowOf)}
       </DataRowGroup>

@@ -1,10 +1,10 @@
 import { useState, type ReactNode } from 'react';
 import {
-  DebitCredit, FinancialPeriodSelector, JournalEntryView, LedgerTable, MarketHeatmap, MarketIndices, MarketMovers, MarketStatus, PaymentStatus, PriceLimitIndicator,
+  Card, DebitCredit, FinancialPeriodSelector, FinancialTable, JournalEntryView, LedgerTable, MarketHeatmap, MarketIndices, MarketMovers, MarketStatus, PaymentStatus, PriceLimitIndicator,
   StatementTable, StockTable, TrialBalance, Watchlist, getMarketSession, heatmapItemsFromQuotes, nepseSchedule, nepalFiscalMonthPeriods, nepalFiscalQuarterPeriods,
   nepalFiscalYearPeriods, rollUp, sortQuotes, type MarketState, type MoverKind, type QuoteSort,
 } from '@punji/ui';
-import { circuit, marketIndices, quotes, quotesWithGaps, sampleNow } from '../../fixtures/market-data.ts';
+import { circuit, holdings, marketIndices, quotes, quotesWithGaps, sampleNow } from '../../fixtures/market-data.ts';
 import {
   cashEntries, cashOpening, incomeStatement, journals, paymentStatuses, periods, periodSpec, saleJournal, unbalancedJournal,
 } from '../../fixtures/accounting-data.ts';
@@ -33,6 +33,23 @@ function StockTableFixture({ mode }: { mode: 'default' | 'loading' | 'empty' | '
     case 'stacked': return <StockTable {...common} quotes={quotesWithGaps} columns={['symbol', 'ltp', 'change', 'volume', 'turnover', 'trend']} selectedSymbols={selected} onSelectedSymbolsChange={setSelected} density="compact" />;
     default: return <StockTable {...common} quotes={rows} sort={sort} onSortChange={setSort} columns={['symbol', 'ltp', 'change', 'volume', 'turnover', 'trend']} />;
   }
+}
+
+// --- Tables set flush in a Card --------------------------------------------
+// On a phone the rows stack; their text must sit on the card header's 16px inset, never against the card border.
+
+function FlushCardTablesFixture() {
+  return <Stack>
+    <Card flush title="Top gainers" testId="vr-flush-stock"><StockTable caption="Top gainers · NPR" quotes={quotes.slice(0, 4)} columns={['symbol', 'ltp', 'change', 'volume']} bare /></Card>
+    <Card flush title="Holdings" testId="vr-flush-fin">
+      <FinancialTable caption="Holdings · NPR" rowKey={(h) => h.symbol} rows={holdings.slice(0, 3)} emptyTitle="No holdings" totals stack
+        columns={[
+          { key: 'symbol', label: 'Symbol', rowHeader: true, render: (h) => h.symbol },
+          { key: 'qty', label: 'Units', num: true, value: (h) => h.qty, aggregate: 'sum', render: (h) => h.qty },
+          { key: 'ltp', label: 'LTP', num: true, render: (h) => h.ltp },
+        ]} />
+    </Card>
+  </Stack>;
 }
 
 // --- Market components ----------------------------------------------------
@@ -165,6 +182,7 @@ function PeriodSelectorFixture() {
 }
 
 export const domainRegistry: Record<string, () => ReactNode> = {
+  'card-flush-tables': FlushCardTablesFixture,
   'stock-table': () => <StockTableFixture mode="default" />,
   'stock-table-loading': () => <StockTableFixture mode="loading" />,
   'stock-table-empty': () => <StockTableFixture mode="empty" />,

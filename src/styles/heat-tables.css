@@ -1,0 +1,111 @@
+/* Punji UI styles.
+   Styles for month-grid, returns-heat-table, histogram and correlation-matrix. Needs tokens.css and base.css (styles.css has everything).
+   Shade is gain/loss/series colour mixed into the surface; every cell also prints its signed figure, so colour is never alone.
+   The darkest mix (36% for gain and loss, 40% for the series hue) is checked against the text colour in scripts/check-contrast.mjs. */
+@layer punji.components {
+  /* MonthGrid */
+  .pu-mg-root { min-width: 0; max-width: 100% }
+  .pu-mg-box { position: relative; min-width: 0; max-width: 100%; overflow-x: auto; background: var(--pu-color-surface); border: 1px solid var(--pu-color-border-default); border-radius: var(--pu-radius-12) }
+  .pu-mg-box:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
+  .pu-mg { width: 100%; min-width: 640px; border-collapse: separate; border-spacing: 2px; font: var(--pu-text-sm) / 1.3 var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); color: var(--pu-color-text) }
+  .pu-mg th, .pu-mg td { padding: 8px 4px; text-align: center; white-space: nowrap }
+  .pu-mg thead th { font-weight: 600; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-mg td { border-radius: var(--pu-radius-4) }
+  .pu-mg .pu-mg-y { position: sticky; inset-inline-start: 0; z-index: 1; min-width: 4.5rem; padding-inline: 12px 8px; text-align: start; background: var(--pu-color-surface); font-weight: 600; color: var(--pu-color-text) }
+  .pu-mg thead .pu-mg-y { color: var(--pu-color-text-muted) }
+  .pu-mg .pu-mg-yr { min-width: 4.5rem; padding-inline-end: 12px; text-align: end; font-weight: 600 }
+  .pu-mg-c { font-weight: 600 }
+  .pu-mg-c[data-tone='gain'], .pu-mg-c[data-tone='loss'] { --mg-s: 10%; --mg-hue: var(--pu-color-gain); background: color-mix(in srgb, var(--mg-hue) var(--mg-s), var(--pu-color-surface)) }
+  .pu-mg-c[data-tone='loss'] { --mg-hue: var(--pu-color-loss) }
+  .pu-mg-c[data-band='2'] { --mg-s: 18% }
+  .pu-mg-c[data-band='3'] { --mg-s: 27% }
+  .pu-mg-c[data-band='4'] { --mg-s: 36% }
+  .pu-mg-c[data-tone='flat'] { background: var(--pu-color-surface-tint) }
+  .pu-mg-c[data-tone='none'] { background: transparent; box-shadow: inset 0 0 0 1px var(--pu-color-border-default) }
+  .pu-mg-none { color: var(--pu-color-text-tertiary); font-weight: 400 }
+  .pu-mg tfoot th, .pu-mg tfoot td { font-weight: 600 }
+  .pu-mg .pu-mg-avg > * { border-top: 1px solid var(--pu-color-border-strong); padding-top: 12px }
+  .pu-mg .pu-mg-rose td { vertical-align: top; line-height: 1.2; color: var(--pu-color-text-muted); font-weight: 500 }
+  .pu-mg .pu-mg-rose b { display: block; font-weight: 700; color: var(--pu-color-text) }
+  .pu-mg .pu-mg-rose small { display: block; margin-top: 2px; font-weight: 400; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-mg td.pu-mg-note { text-align: start; font-weight: 400; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); white-space: normal }
+  .pu-mg-fig[data-dir='gain']::before { content: '\25B2\00a0'; font-size: 0.7em }
+  .pu-mg-fig[data-dir='loss']::before { content: '\25BC\00a0'; font-size: 0.7em }
+  .pu-mg-pick { appearance: none; display: inline-flex; align-items: center; justify-content: center; width: 100%; min-height: 32px; padding: 0 4px; border: 0; border-radius: var(--pu-radius-4); background: transparent; color: var(--pu-color-text-muted); font: 600 var(--pu-text-xs) / 1.2 var(--pu-font-body); cursor: pointer; white-space: nowrap }
+  .pu-mg-pick:hover { color: var(--pu-color-text); background: var(--pu-color-surface-tint) }
+  .pu-mg-pick[aria-pressed='true'] { color: var(--pu-color-text); background: var(--pu-color-surface-tint); box-shadow: inset 0 -2px 0 var(--pu-color-text) }
+  .pu-mg-pick:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 1px }
+  .pu-mg td[data-selected] { box-shadow: inset 0 0 0 1.5px var(--pu-color-text) }
+  .pu-mg td.pu-mg-c[data-tone='none'][data-selected] { box-shadow: inset 0 0 0 1px var(--pu-color-border-strong) }
+  .pu-mg-key { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin: 12px 0 0; padding: 0; list-style: none; font-size: var(--pu-text-xs); line-height: 1.4; color: var(--pu-color-text-muted) }
+  .pu-mg-key li { display: inline-flex; align-items: center; gap: 6px }
+  .pu-mg-key i { display: inline-block; width: 14px; height: 10px; border-radius: 3px }
+
+  /* ReturnsHeatTable */
+  .pu-rht-box { min-width: 0; max-width: 100%; border: 1px solid var(--pu-color-border-default); border-radius: var(--pu-radius-12); background: var(--pu-color-surface) }
+  .pu-rht-scroll { overflow-x: auto; border-radius: inherit }
+  .pu-rht-scroll:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
+  .pu-rht { width: 100%; border-collapse: separate; border-spacing: 2px; font: var(--pu-text-sm) / 1.3 var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); color: var(--pu-color-text) }
+  .pu-rht th, .pu-rht td { padding: 8px 6px; white-space: nowrap }
+  .pu-rht thead th { font-size: var(--pu-text-xs); font-weight: 600; color: var(--pu-color-text-muted); text-align: center }
+  .pu-rht .pu-rht-n { position: sticky; inset-inline-start: 0; z-index: 1; min-width: 7rem; padding-inline: 12px 8px; text-align: start; background: var(--pu-color-surface); font-weight: 600 }
+  .pu-rht .pu-rht-n small { display: block; margin-top: 2px; font-weight: 400; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-rht-h button { appearance: none; min-height: 32px; padding: 0 8px; border: 0; border-radius: var(--pu-radius-4); background: transparent; color: inherit; font: inherit; cursor: pointer }
+  .pu-rht-h button:hover { background: var(--pu-color-surface-tint); color: var(--pu-color-text) }
+  .pu-rht-h[data-sorted] button { color: var(--pu-color-text) }
+  .pu-rht-h button:focus-visible, .pu-rht-name:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 1px }
+  button.pu-rht-name { appearance: none; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; font-weight: 600; text-align: start; cursor: pointer }
+  .pu-rht-c { min-width: 4.5rem; text-align: center; border-radius: var(--pu-radius-4); font-weight: 600 }
+  .pu-rht-c[data-tone='gain'], .pu-rht-c[data-tone='loss'] { --rht-hue: var(--pu-color-gain); background: color-mix(in srgb, var(--rht-hue) var(--rht-s, 0%), var(--pu-color-surface)) }
+  .pu-rht-c[data-tone='loss'] { --rht-hue: var(--pu-color-loss) }
+  .pu-rht-c[data-tone='flat'] { background: var(--pu-color-surface-tint) }
+  .pu-rht-c[data-tone='none'] { background: transparent; box-shadow: inset 0 0 0 1px var(--pu-color-border-default); color: var(--pu-color-text-muted); font-weight: 400; font-size: var(--pu-text-xs) }
+  .pu-rht-c[data-sorted] { box-shadow: inset 0 -2px 0 var(--pu-color-text) }
+  .pu-rht-avg > * { border-bottom: 1px solid var(--pu-color-border-strong) }
+  .pu-rht-r { cursor: default }
+  .pu-rht-r[data-selected] .pu-rht-n { box-shadow: inset 3px 0 0 var(--pu-color-text) }
+  .pu-rht-r[data-selected] .pu-rht-c { box-shadow: inset 0 0 0 1.5px var(--pu-color-text) }
+  @media (max-width: 640px) {
+    .pu-rht-box[data-phone='sorted'] .pu-rht-c:not([data-sorted]), .pu-rht-box[data-phone='sorted'] .pu-rht-h:not([data-sorted]) { display: none }
+  }
+
+  /* Histogram */
+  .pu-hist { position: relative; display: grid; gap: 6px; margin: 0; min-width: 0 }
+  .pu-hist-empty { margin: 0; padding: 16px 0; text-align: center; font-size: var(--pu-text-sm); color: var(--pu-color-text-muted) }
+  .pu-hist-wrap { position: relative }
+  .pu-hist-plot { position: relative; height: var(--hist-h, 104px); border-radius: var(--pu-radius-4); direction: ltr }
+  .pu-hist-plot:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
+  .pu-hist-bars { display: flex; align-items: flex-end; gap: 2px; height: 100%; border-bottom: 1px solid var(--pu-color-border-strong) }
+  .pu-hist-col { position: relative; flex: 1 1 0; display: flex; align-items: flex-end; height: 100%; min-width: 0 }
+  .pu-hist-col > i { display: block; width: 100%; min-height: 2px; border-radius: 2px 2px 0 0; box-sizing: border-box }
+  .pu-hist-col[data-kept='true'] > i { background: var(--pu-color-chart) }
+  .pu-hist-col[data-kept='false'] > i { background: transparent; border: 1.5px solid var(--pu-color-text-muted); border-bottom: 0 }
+  .pu-hist-col[data-at] { background: var(--pu-color-surface-tint) }
+  .pu-hist-tip { position: absolute; top: 4px; z-index: var(--pu-z-raised); transform: translateX(-50%); padding: 6px 8px; border: 1px solid var(--pu-color-border-default); border-radius: var(--pu-radius-8); background: var(--pu-color-surface); box-shadow: 0 4px 16px color-mix(in srgb, var(--pu-color-text) 14%, transparent); font: 500 12px / 16px var(--pu-font-body); color: var(--pu-color-text); white-space: nowrap; pointer-events: none }
+  .pu-hist-tip[data-align='start'] { transform: translateX(-12px) }
+  .pu-hist-tip[data-align='end'] { transform: translateX(calc(-100% + 12px)) }
+  .pu-hist-tip span { display: block; color: var(--pu-color-text-muted) }
+  .pu-hist-axis { position: relative; height: 18px; margin-top: 4px; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted); font-variant-numeric: var(--pu-font-numeric) }
+  .pu-hist-axis span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap }
+  .pu-hist-axis span[data-edge='start'] { transform: none }
+  .pu-hist-axis span[data-edge='end'] { transform: translateX(-100%) }
+
+  /* CorrelationMatrix */
+  .pu-corr-box { min-width: 0; max-width: 100% }
+  .pu-corr-scroll { overflow-x: auto; border: 1px solid var(--pu-color-border-default); border-radius: var(--pu-radius-12); background: var(--pu-color-surface) }
+  .pu-corr-scroll:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
+  .pu-corr { border-collapse: separate; border-spacing: 2px; margin: 4px; font: var(--pu-text-sm) / 1.3 var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); color: var(--pu-color-text) }
+  .pu-corr th button { appearance: none; min-width: 44px; min-height: 32px; padding: 0 6px; border: 0; border-radius: var(--pu-radius-4); background: transparent; color: var(--pu-color-text-muted); font: 600 var(--pu-text-xs) / 1.2 var(--pu-font-body); cursor: pointer; white-space: nowrap }
+  .pu-corr tbody th { text-align: start; position: sticky; inset-inline-start: 0; background: var(--pu-color-surface); z-index: 1 }
+  .pu-corr th button:hover { background: var(--pu-color-surface-tint); color: var(--pu-color-text) }
+  .pu-corr th button:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 1px }
+  .pu-corr th button[aria-pressed='true'] { color: var(--pu-color-text); box-shadow: inset 0 -2px 0 var(--pu-color-text) }
+  .pu-corr-c { min-width: 44px; padding: 8px 6px; text-align: center; border-radius: var(--pu-radius-4); font-weight: 600; cursor: pointer; background: color-mix(in srgb, var(--pu-color-series-nepse) var(--corr-s, 0%), var(--pu-color-surface)) }
+  .pu-corr-c[data-none] { background: transparent; box-shadow: inset 0 0 0 1px var(--pu-color-border-default); color: var(--pu-color-text-muted); font-weight: 400; font-size: var(--pu-text-xs) }
+  /* A faded cell keeps its text colour and halves its shade, so it stays readable (no opacity: contrast would fall). */
+  .pu-corr-c[data-dim] { background: color-mix(in srgb, var(--pu-color-series-nepse) calc(var(--corr-s, 0%) / 2), var(--pu-color-surface)) }
+  .pu-corr-self { background: var(--pu-color-surface-tint); border-radius: var(--pu-radius-4) }
+  .pu-corr-key { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 10px 0 0; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-corr-key i { display: inline-block; width: 72px; height: 10px; border-radius: 3px; border: 1px solid var(--pu-color-border-default); background: linear-gradient(90deg, color-mix(in srgb, var(--pu-color-series-nepse) 6%, var(--pu-color-surface)), color-mix(in srgb, var(--pu-color-series-nepse) 40%, var(--pu-color-surface))) }
+  .pu-corr-hint { margin-inline-start: auto }
+}

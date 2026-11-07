@@ -1,0 +1,22 @@
+/* Punji UI styles.
+   Styles for Faq (it sits on the Accordion: load accordion.css too; styles.css has everything). Needs tokens.css and base.css. Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  .pu-faq { container-type: inline-size; display: grid; gap: var(--pu-space-6); min-inline-size: 0; color: var(--pu-color-text) }
+  .pu-faq-head { min-inline-size: 0 }
+  .pu-faq-eyebrow { margin: 0 0 var(--pu-space-2); color: var(--pu-color-text-muted); font-size: var(--pu-text-xs); font-weight: var(--pu-font-weight-medium); letter-spacing: 0.04em; text-transform: uppercase }
+  .pu-faq-title { margin: 0; font-family: var(--pu-font-display); font-size: var(--pu-text-xl); line-height: 1.2; overflow-wrap: anywhere }
+  .pu-faq-action { margin-block-start: var(--pu-space-4) }
+  .pu-faq-list { min-inline-size: 0; max-inline-size: 75ch }
+  .pu-faq-list .pu-accordion-title { overflow-wrap: anywhere }
+  /* Wide enough: the heading beside the questions. The container decides, not the viewport. */
+  @container (min-width: 44rem) {
+    .pu-faq { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); column-gap: var(--pu-space-12); align-items: start }
+    .pu-faq-list { max-inline-size: none }
+  }
+  @media print {
+    .pu-faq { display: block }
+    .pu-faq .pu-accordion-panel[hidden] { display: block }
+    .pu-faq .pu-accordion-chevron, .pu-faq-action { display: none }
+    .pu-faq .pu-accordion-item { break-inside: avoid }
+  }
+}

@@ -215,7 +215,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       'Show the chosen range as text too, near the slider.',
     ],
     responsive: ['The slider fills its container; the thumbs are large enough for touch.'],
-    related: ['field', 'select', 'meter-range'],
+    related: ['field', 'select', 'meter-range', 'histogram'],
   },
   {
     slug: 'choice-group',

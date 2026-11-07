@@ -707,6 +707,22 @@
       "types": "./dist/range-selector/RangeSelector.d.ts",
       "default": "./dist/range-selector/RangeSelector.js"
     },
+    "./month-grid": {
+      "types": "./dist/month-grid/MonthGrid.d.ts",
+      "default": "./dist/month-grid/MonthGrid.js"
+    },
+    "./returns-heat-table": {
+      "types": "./dist/returns-heat-table/ReturnsHeatTable.d.ts",
+      "default": "./dist/returns-heat-table/ReturnsHeatTable.js"
+    },
+    "./histogram": {
+      "types": "./dist/histogram/Histogram.d.ts",
+      "default": "./dist/histogram/Histogram.js"
+    },
+    "./correlation-matrix": {
+      "types": "./dist/correlation-matrix/CorrelationMatrix.d.ts",
+      "default": "./dist/correlation-matrix/CorrelationMatrix.js"
+    },
     "./css/*.css": {
       "types": "./dist/css/*.css.d.ts",
       "default": "./dist/css/*.css"

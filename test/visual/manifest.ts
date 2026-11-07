@@ -173,6 +173,11 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'cash-flow-chart', title: 'CashFlowChart' },
   { id: 'net-worth-chart', title: 'NetWorthChart' },
   { id: 'range-selector', title: 'RangeSelector' },
+  { id: 'month-grid', title: 'MonthGrid' },
+  { id: 'returns-heat-table', title: 'ReturnsHeatTable' },
+  { id: 'histogram', title: 'Histogram' },
+  { id: 'correlation-matrix', title: 'CorrelationMatrix' },
+  { id: 'performance-chart-layers', title: 'PerformanceChart reference, drawdown, contributions, rebase and quiet axis' },
   // new:component inserts fixtures above this line
 ];
 

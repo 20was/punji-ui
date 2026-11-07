@@ -236,6 +236,7 @@ export * from './range-selector/RangeSelector.tsx';
 export * from './sankey-chart/SankeyChart.tsx';
 export * from './earnings-chart/EarningsChart.tsx';
 export * from './balance-history-chart/BalanceHistoryChart.tsx';
+export * from './market-heatmap/GroupedMarketHeatmap.tsx';
 export * from './volume-profile/VolumeProfile.tsx';
 export * from './score-radar/ScoreRadar.tsx';
 export * from './fair-value-bar/FairValueBar.tsx';

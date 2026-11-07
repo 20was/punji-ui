@@ -9,12 +9,12 @@
  *
  * Point of Control: the band with the most volume. Ties go to the band nearest the middle of the range, then the lower.
  *
- * Value area: built outward from the Point of Control one band at a time. Of the next band above and the next band
- * below, the one with more volume joins (a tie goes to the band nearer the Point of Control, then the upper); this
- * repeats until the area holds at least `valueArea` (default 0.7) of the total. That follows TradingView's documented
- * procedure for the value area
- * (https://www.tradingview.com/support/solutions/43000502040-volume-profile/); the stop rule here is "at least the
- * share", so the area never holds less than asked.
+ * Value area: starts at the Point of Control and adds one band at a time: the larger of the band just above and the band
+ * just below the area (a tie goes to the band nearer the Point of Control, then the upper), until the area holds at least
+ * `valueArea` (default 0.7) of the total. Market Profile practice often adds the larger adjacent pair of bands instead, and
+ * TradingView's Volume Profile help (https://www.tradingview.com/support/solutions/43000502040-volume-profile/) describes
+ * growing the area outward from the Point of Control. TradingView's exact stopping rule was not verified, so this is our
+ * documented rule, not a claim of TradingView parity.
  */
 import { decimalText, divRound, parseDecimal, percentText, pow10, type ScaledDecimal } from '../internal/exactMath.ts';
 

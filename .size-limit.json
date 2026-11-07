@@ -332,7 +332,7 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "260.2 kB",
+    "limit": "261.6 kB",
     "gzip": true
   },
   {
@@ -850,7 +850,7 @@
     "name": "market-heatmap (import from '@punji/ui/market-heatmap')",
     "path": "dist/market-heatmap/MarketHeatmap.js",
     "import": "*",
-    "limit": "6.4 kB",
+    "limit": "2.51 kB",
     "gzip": true
   },
   {
@@ -2334,6 +2334,13 @@
     "path": "dist/volume-profile/VolumeProfile.js",
     "import": "*",
     "limit": "5.25 kB",
+    "gzip": true
+  },
+  {
+    "name": "market-heatmap-grouped (import from '@punji/ui/market-heatmap-grouped')",
+    "path": "dist/market-heatmap/GroupedMarketHeatmap.js",
+    "import": "*",
+    "limit": "5.8 kB",
     "gzip": true
   }
 ]

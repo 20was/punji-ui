@@ -8,15 +8,13 @@
  * small to label and those with no usable size. The layout is a pure function
  * (`squarify`), so the same data draws the same map.
  *
- * Give items a `group` path (sector, industry) and the map becomes grouped: group headers, drill-in with breadcrumbs,
- * tiles as real links, tiny tiles folded into "+N more", and a sorted list on a phone. Without `group` nothing changes.
+ * For sector, industry and stock groups with drill-in, use `GroupedMarketHeatmap` from `@punji/ui/market-heatmap-grouped`;
+ * it is a separate module so this flat map does not carry its code.
  */
 import { useMemo, type CSSProperties, type ReactNode } from 'react';
 
-import type { LinkComponent } from '../internal/link.tsx';
 import { quoteChangePercent, type Quote } from '../stock-table/quotes.ts';
 import { defaultSize, EN, heatLegend, signed, type HeatmapItem, type HeatmapLabels } from './common.ts';
-import { GroupedHeatmap } from './GroupedHeatmap.tsx';
 import { heatStep, squarify, type TreemapRect } from './treemap.ts';
 
 export type { HeatmapItem, HeatmapLabels } from './common.ts';
@@ -54,18 +52,6 @@ export interface MarketHeatmapProps {
   onSelect?: (id: string) => void;
   /** Overrides for the legend, table and tile words, in the reader's language. */
   labels?: Partial<HeatmapLabels>;
-  /** Grouped map: the drilled-in level as names from the top (`['Banking']`, or `['Banking', 'Commercial banks']`); `[]` is the top. A path that does not exist stops where it leaves the tree. Controlled with `onPathChange`. */
-  path?: readonly string[];
-  /** Grouped map: the starting level when uncontrolled. Default the top. */
-  defaultPath?: readonly string[];
-  /** Grouped map: called with the new level when the reader drills in or out. */
-  onPathChange?: (path: string[]) => void;
-  /** Grouped map: the router link adapter for tiles with an `href`. Default: the nearest `LinkProvider`, else a plain `<a>`. */
-  linkComponent?: LinkComponent;
-  /** Grouped map: stocks under this share of their group fold into one "+N more" tile (two or more). Default 0.012. */
-  collapseBelow?: number;
-  /** Grouped map: below this container width in px the map is a sorted list instead of a treemap (a phone cannot print a header and a legible tile). Default 560. */
-  listBelow?: number;
   /** Sets `data-testid` on the figure. */
   testId?: string;
 }
@@ -73,11 +59,7 @@ export interface MarketHeatmapProps {
 /**
  * @stability experimental
  */
-export function MarketHeatmap(props: MarketHeatmapProps) {
-  return props.items.some((i) => i.group && i.group.length > 0) ? <GroupedHeatmap {...props} /> : <FlatHeatmap {...props} />;
-}
-
-function FlatHeatmap({ items, label, sizeLabel = 'Size', formatSize = defaultSize, scaleMax = 3, aspect = 1.5, convention, onSelect, labels, testId }: MarketHeatmapProps) {
+export function MarketHeatmap({ items, label, sizeLabel = 'Size', formatSize = defaultSize, scaleMax = 3, aspect = 1.5, convention, onSelect, labels, testId }: MarketHeatmapProps) {
   const words = { ...EN, ...labels };
   const W = 100;
   const H = W / aspect;

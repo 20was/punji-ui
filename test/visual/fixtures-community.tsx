@@ -1,4 +1,4 @@
-import { BalanceHistoryChart, CashFlowChart, CorrelationMatrix, DataFreshness, EarningsChart, FairValueBar, FilterBar, FilterMenu, FilterMenuGroup, FilterMenuItem, FxRateDisplay, heatCell, Histogram, incomeStatementFlow, money, MarketHeatmap, MonthGrid, NetWorthChart, PerformanceChart, PresetRow, PresetTile, PriceTargetChart, ProfileRail, RangeEditor, RangeSelector, ReturnsHeatTable, SankeyChart, ScoreRadar, StatusBanner, VolumeProfile, type HeatmapItem, type FilterBarValues, type MonthGridData, WaterfallChart } from '../../src/index.ts';
+import { BalanceHistoryChart, CashFlowChart, CorrelationMatrix, DataFreshness, EarningsChart, FairValueBar, FilterBar, FilterMenu, FilterMenuGroup, FilterMenuItem, FxRateDisplay, heatCell, Histogram, incomeStatementFlow, money, GroupedMarketHeatmap, MonthGrid, NetWorthChart, PerformanceChart, PresetRow, PresetTile, PriceTargetChart, ProfileRail, RangeEditor, RangeSelector, ReturnsHeatTable, SankeyChart, ScoreRadar, StatusBanner, VolumeProfile, type HeatmapItem, type FilterBarValues, type MonthGridData, WaterfallChart } from '../../src/index.ts';
 import { Accordion, AlertListEmpty, AlertRow, AlertRowCompact, AlertRowList, AlertRowSkeleton, AlertSummary, AlertSummaryNote, AlertSummarySection, BarList, Breadcrumb, BrokerBadge, Card, CardSection, CardSectionRow, Figure, HeadlineList, InstrumentHeader, LinkRow, LinkRowList, MenuButton, MoneyDisplay, MonthStrip, PrivateAmount, RatingChangeList, RatingChangeRow, RatingChip, RatingScale, RouteAnnouncer, ScrollTable, SettingList, SettingRow, SkipLink, StatusTag, ThemeProvider, type ColumnDef, type WatchlistQuote, Watchlist } from '@punji/ui';
 import { performanceDates, performanceSeries } from '../../fixtures/market-data.ts';
 import { type ReactNode, useState } from 'react';
@@ -591,8 +591,8 @@ const GROUPED: HeatmapItem[] = [
 function MarketHeatmapGroupedFixture() {
   return (
     <div style={{ display: 'grid', gap: 24, maxWidth: 960 }}>
-      <MarketHeatmap items={GROUPED} label="Sectors by market cap" sizeLabel="Market cap" />
-      <MarketHeatmap items={GROUPED} label="Banking, drilled in" sizeLabel="Market cap" defaultPath={['Banking']} />
+      <GroupedMarketHeatmap items={GROUPED} label="Sectors by market cap" sizeLabel="Market cap" />
+      <GroupedMarketHeatmap items={GROUPED} label="Banking, drilled in" sizeLabel="Market cap" defaultPath={['Banking']} />
     </div>
   );
 }

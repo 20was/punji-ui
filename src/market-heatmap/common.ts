@@ -11,9 +11,9 @@ export interface HeatmapItem {
   size: number | null;
   /** Change in percent (1.25 is +1.25%). Null draws a neutral tile marked "no change data". */
   change: number | null;
-  /** Sector, then industry (then deeper): where the stock sits in a grouped map. Any item with a group makes the map grouped. Leave it out for a flat map. */
+  /** Sector, then industry (then deeper): where the stock sits in a `GroupedMarketHeatmap`. The flat `MarketHeatmap` ignores it. */
   group?: readonly string[];
-  /** Where the stock's tile goes (a real link, through `LinkProvider` for an in-app path). In a grouped map it wins over `onSelect`. */
+  /** Where the stock's tile goes (a real link, through `LinkProvider` for an in-app path). In a `GroupedMarketHeatmap` it wins over `onSelect`; the flat map ignores it. */
   href?: string;
 }
 
@@ -29,32 +29,11 @@ export interface HeatmapLabels {
   change: string;
   noSize: string;
   areaNote: (sizeLabel: string) => string;
-  /** Grouped map: the top level of the breadcrumb. Default "All". */
-  all: string;
-  /** Grouped map: the breadcrumb's name. */
-  levelNav: string;
-  /** Grouped map: the name of the "+N more" tile. */
-  more: (count: number) => string;
-  /** Grouped map: what the "+N more" tile does, spoken. */
-  showMore: (count: number, names: string) => string;
-  /** Grouped map: what a group's header does, spoken. */
-  openGroup: (name: string) => string;
-  /** Grouped map: the keyboard hint. */
-  groupHint: string;
-  /** Grouped map: the table's group column and subtotal word. */
-  group: string;
-  total: string;
-  /** Grouped map: share of the whole, as in "weight 31%". */
-  weight: string;
-  stocks: (count: number) => string;
 }
 
 export const EN: HeatmapLabels = {
   unchanged: 'Unchanged', noChange: 'No change data', notSized: (n) => `${n} not drawn: no size`, legend: 'Colour scale: change since the previous close',
   dataSummary: 'View data as a table', symbol: 'Symbol', name: 'Name', size: 'Size', change: 'Change', noSize: 'No size', areaNote: (s) => `Tile area shows ${s}.`,
-  all: 'All', levelNav: 'Heat map level', more: (n) => `+${n} more`, showMore: (n, names) => `Show ${n} more: ${names}`, openGroup: (n) => `Open ${n}`,
-  groupHint: 'Arrow keys move between tiles, Enter opens a group or follows a link, Escape or Backspace goes up one level.',
-  group: 'Group', total: 'Total', weight: 'weight', stocks: (n) => (n === 1 ? '1 stock' : `${n} stocks`),
 };
 
 export const signed = (c: number) => `${c > 0 ? '+' : c < 0 ? '−' : ''}${Math.abs(c).toFixed(2)}%`;

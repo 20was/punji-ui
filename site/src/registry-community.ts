@@ -1722,7 +1722,7 @@ export const COMMUNITY_PAGES: readonly PageDef[] = [
     group: 'data',
     kind: 'component',
     summary:
-      'Pass `bars` (a low and high price as decimal strings, and an exact `bigint` or integer-string volume, optionally the buyer-initiated part) and the price range is cut into equal bands. Each bar\'s volume is spread over the bands it crosses in proportion to the overlap, by largest remainder, so the bands add back up to the volume you gave to the last unit. The Point of Control is the busiest band (ties go to the band nearest the middle, then the lower). The value area is built outward from it, one band at a time, taking the larger of the band above and the band below (a tie goes to the nearer band, then the upper) until it holds at least 70% of the volume. That follows the procedure in [TradingView\'s Volume Profile help](https://www.tradingview.com/support/solutions/43000502040-volume-profile/); our stop rule is "at least the share", and the 70% is a default you can change with `valueArea`. `ProfileRail` is the same drawing without an axis, cut from the `priceDomain` you pass, to sit beside a price chart so a band is level with the same price. The maths is `volumeProfile` in chart-math, pure and tested.',
+      'Pass `bars` (a low and high price as decimal strings, and an exact `bigint` or integer-string volume, optionally the buyer-initiated part) and the price range is cut into equal bands. Each bar\'s volume is spread over the bands it crosses in proportion to the overlap, by largest remainder, so the bands add back up to the volume you gave to the last unit. The Point of Control is the busiest band (ties go to the band nearest the middle, then the lower). The value area starts at the Point of Control and adds one band at a time: the larger of the band just above and the band just below the area (a tie goes to the nearer band, then the upper), until the area holds at least 70% of the total volume (a default you can change with `valueArea`). Market Profile practice often adds the larger adjacent pair of bands instead, and TradingView\'s [Volume Profile help](https://www.tradingview.com/support/solutions/43000502040-volume-profile/) describes growing the area outward from the Point of Control; we could not verify TradingView\'s exact stopping rule, so this is our documented rule and not a claim of TradingView parity. `ProfileRail` is the same drawing without an axis, cut from the `priceDomain` you pass, to sit beside a price chart so a band is level with the same price. The maths is `volumeProfile` in chart-math, pure and tested.',
     use: [
       'A stock page: where the volume traded, with the value area and Point of Control beside the price chart (`ProfileRail`).',
       'A session or a range on its own (`VolumeProfile`), with the buy and sell split when your feed has it.',
@@ -1759,6 +1759,29 @@ export const COMMUNITY_PAGES: readonly PageDef[] = [
     responsive: ['The plot is as wide as its container. The rail is as wide as its column (about 120px works) and drops its tags and legend under 96px; the table and live region keep every figure. On a phone, place the rail under the chart or beside a short one.'],
     uxOnly: true,
     related: ['candlestick-chart', 'depth-chart', 'histogram', 'chart-a11y-shell'],
+  },
+  {
+    slug: 'grouped-market-heatmap',
+    stability: 'beta',
+    title: 'GroupedMarketHeatmap',
+    lead: 'Sector, industry and stock as a nested treemap: size is market cap, colour and a printed number are the change, and a click drills in.',
+    description: 'Grouped stock market heatmap for React: sector, industry, stock treemap with headers, drill-in breadcrumbs, link tiles, +N more and a phone list.',
+    group: 'stock-market',
+    kind: 'component',
+    summary:
+      'Give each `HeatmapItem` a `group` path (`[\'Banking\', \'Commercial banks\']`), a market-cap `size`, a percent `change` and an `href`. Every group gets a header strip with its size-weighted change (the mean of its stocks\' changes weighted by size) and holds its stocks; Enter or a click on a header drills one level down, with breadcrumbs back up. Stock tiles are real links through `LinkProvider` (or `linkComponent`). Stocks under `collapseBelow` of their group fold into one "+N more" tile that opens them. Under `listBelow` (560px) it is a sorted list instead: a header strip and a legible tile do not both fit at 390px, and a list prints every change and size in 48px rows. It is a separate module, so the flat `MarketHeatmap` stays small.',
+    use: ['A market overview by sector and industry, sized by market cap.', 'Pair with `path` and `onPathChange` to keep the drilled-in level in the URL.'],
+    avoid: ['A flat list of symbols with no groups: use `MarketHeatmap`.', 'More than about 300 stocks: tiles get too small to read; filter first.'],
+    api: [{ name: 'GroupedMarketHeatmap', module: 'market-heatmap-grouped' }, { name: 'GroupedMarketHeatmapProps', module: 'market-heatmap-grouped' }],
+    examples: [{ id: 'basic', title: 'Sector, industry, stock', note: 'Drill in with Enter or a click; Escape goes up. Stocks are links, the tiny ones fold into "+N more", and under 560px it is a sorted list.' }],
+    keyboard: ['One tab stop. Arrow keys, Home and End move through headers and tiles in reading order; Enter opens a group or follows a link; Escape or Backspace goes up a level; breadcrumb buttons jump to any level.'],
+    accessibility: [
+      'Every header and tile prints the signed change with an arrow, never colour alone; the legend lists every step.',
+      'Each tile and header has a full spoken name including sector and industry; a spoken summary lists each sector with its weighted change and weight.',
+      'The data table adds a subtotal row per group. Reduced motion removes the level fade.',
+    ],
+    responsive: ['Under `listBelow` (default 560px container width) the map becomes a sorted list with 48px rows and the same drill-in, so nothing is a speck at 390px.'],
+    related: ['market-heatmap', 'market-movers', 'stock-table'],
   },
   // new:component inserts pages above this line
 ];

@@ -2,7 +2,7 @@ import { cleanup, render, screen, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { LinkProvider, MarketHeatmap, type HeatmapItem, type LinkProps } from '../src/index.ts';
+import { GroupedMarketHeatmap, LinkProvider, MarketHeatmap, type HeatmapItem, type LinkProps } from '../src/index.ts';
 import { buildHeatTree, collapseSmall, layoutLevel, resolvePath } from '../src/market-heatmap/groups.ts';
 import { seriousViolations } from './axe.ts';
 
@@ -93,20 +93,20 @@ describe('groups: layout', () => {
 
 const NavLink = ({ href, children, ...rest }: LinkProps) => <a data-router="yes" href={`/app${href}`} {...rest}>{children}</a>;
 
-const show = (extra: Partial<React.ComponentProps<typeof MarketHeatmap>> = {}) => {
+const show = (extra: Partial<React.ComponentProps<typeof GroupedMarketHeatmap>> = {}) => {
   widthOf(900);
   return render(
     <LinkProvider component={NavLink}>
-      <MarketHeatmap items={ITEMS} label="NEPSE by sector" sizeLabel="Market cap" testId="hm" {...extra} />
+      <GroupedMarketHeatmap items={ITEMS} label="NEPSE by sector" sizeLabel="Market cap" testId="hm" {...extra} />
     </LinkProvider>,
   );
 };
 
 describe('MarketHeatmap grouped', () => {
 
-  it('stays flat when no item has a group', () => {
+  it('keeps the flat map flat: it ignores groups and draws no breadcrumb', () => {
     widthOf(900);
-    const { container } = render(<MarketHeatmap items={ITEMS.map((i) => ({ ...i, group: undefined }))} label="flat" />);
+    const { container } = render(<MarketHeatmap items={ITEMS} label="flat" />);
     expect(container.querySelector('.pu-heat-grouped')).toBeNull();
     expect(container.querySelector('nav')).toBeNull();
   });
@@ -178,7 +178,7 @@ describe('MarketHeatmap grouped', () => {
     expect(container.querySelector('a[href="/app/s/NABIL"]')).toBeNull();
     rerender(
       <LinkProvider component={NavLink}>
-        <MarketHeatmap items={ITEMS} label="NEPSE by sector" path={[]} />
+        <GroupedMarketHeatmap items={ITEMS} label="NEPSE by sector" path={[]} />
       </LinkProvider>,
     );
     expect(container.querySelector('a[href="/app/s/NABIL"]')).not.toBeNull();
@@ -216,7 +216,7 @@ describe('MarketHeatmap grouped', () => {
     const user = userEvent.setup();
     const { container } = render(
       <LinkProvider component={NavLink}>
-        <MarketHeatmap items={ITEMS} label="NEPSE by sector" sizeLabel="Market cap" />
+        <GroupedMarketHeatmap items={ITEMS} label="NEPSE by sector" sizeLabel="Market cap" />
       </LinkProvider>,
     );
     expect(container.querySelector('.pu-heat-map')).toBeNull();
@@ -249,7 +249,7 @@ describe('MarketHeatmap grouped', () => {
     expect(await seriousViolations(a.container)).toEqual([]);
     cleanup();
     widthOf(390);
-    const b = render(<MarketHeatmap items={ITEMS} label="m" />);
+    const b = render(<GroupedMarketHeatmap items={ITEMS} label="m" />);
     expect(await seriousViolations(b.container)).toEqual([]);
   });
 });

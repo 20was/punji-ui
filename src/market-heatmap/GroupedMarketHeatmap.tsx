@@ -13,12 +13,75 @@ import { useEffect, useId, useMemo, useRef, useState, type CSSProperties, type K
 import { useMeasuredWidth } from '../internal/chartFrame.tsx';
 import { AppLink } from '../internal/link.tsx';
 import { useControllableState } from '../use-controllable-state/useControllableState.ts';
-import { arrow, defaultSize, EN, heatLegend, signed, spokenChange, type HeatmapItem } from './common.ts';
+import { arrow, defaultSize, EN, heatLegend, signed, spokenChange, type HeatmapItem, type HeatmapLabels } from './common.ts';
 import { buildHeatTree, headerHeight, layoutLevel, pathKey, resolvePath, type HeatCell, type HeatNode } from './groups.ts';
-import type { MarketHeatmapProps } from './MarketHeatmap.tsx';
+import type { LinkComponent } from '../internal/link.tsx';
 import { heatStep } from './treemap.ts';
 
 type Node = HeatNode<HeatmapItem>;
+
+export interface GroupedHeatmapLabels extends HeatmapLabels {
+  /** Grouped map: the top level of the breadcrumb. Default "All". */
+  all: string;
+  /** Grouped map: the breadcrumb's name. */
+  levelNav: string;
+  /** Grouped map: the name of the "+N more" tile. */
+  more: (count: number) => string;
+  /** Grouped map: what the "+N more" tile does, spoken. */
+  showMore: (count: number, names: string) => string;
+  /** Grouped map: what a group's header does, spoken. */
+  openGroup: (name: string) => string;
+  /** Grouped map: the keyboard hint. */
+  groupHint: string;
+  /** Grouped map: the table's group column and subtotal word. */
+  group: string;
+  total: string;
+  /** Grouped map: share of the whole, as in "weight 31%". */
+  weight: string;
+  stocks: (count: number) => string;
+}
+
+const GROUPED_EN: GroupedHeatmapLabels = {
+  ...EN,
+  all: 'All', levelNav: 'Heat map level', more: (n) => `+${n} more`, showMore: (n, names) => `Show ${n} more: ${names}`, openGroup: (n) => `Open ${n}`,
+  groupHint: 'Arrow keys move between tiles, Enter opens a group or follows a link, Escape or Backspace goes up one level.',
+  group: 'Group', total: 'Total', weight: 'weight', stocks: (n) => (n === 1 ? '1 stock' : `${n} stocks`),
+};
+
+export interface GroupedMarketHeatmapProps {
+  /** What to draw. Each item's `group` is its sector, then industry (then deeper); an item with no group sits at the top level. Items without a positive size are listed under the map and in the table but not drawn. */
+  items: readonly HeatmapItem[];
+  /** Names the map ("NEPSE by sector"). */
+  label: string;
+  /** What area means, printed in the legend and table head ("Market cap"). */
+  sizeLabel?: string;
+  /** Format a size for the table and spoken name. Default: grouped number. */
+  formatSize?: (size: number) => string;
+  /** Percent beyond which a tile has the deepest colour. Default 3. */
+  scaleMax?: number;
+  /** Width over height of the map. Default 1.5. */
+  aspect?: number;
+  /** Per-instance override of which hue means up: 'green-up' or 'red-up'. Default: follow the theme. */
+  convention?: 'green-up' | 'red-up';
+  /** Stocks without an `href` become buttons that call this with the item's id. */
+  onSelect?: (id: string) => void;
+  /** Overrides for the legend, table, breadcrumb and tile words. */
+  labels?: Partial<GroupedHeatmapLabels>;
+  /** The drilled-in level as names from the top (`['Banking']`, or `['Banking', 'Commercial banks']`); `[]` is the top. A path that does not exist stops where it leaves the tree. Controlled with `onPathChange`. */
+  path?: readonly string[];
+  /** The starting level when uncontrolled. Default the top. */
+  defaultPath?: readonly string[];
+  /** Called with the new level when the reader drills in or out. */
+  onPathChange?: (path: string[]) => void;
+  /** The router link adapter for tiles with an `href`. Default: the nearest `LinkProvider`, else a plain `<a>`. */
+  linkComponent?: LinkComponent;
+  /** Stocks under this share of their group fold into one "+N more" tile (two or more). Default 0.012. */
+  collapseBelow?: number;
+  /** Below this container width in px the map is a sorted list instead of a treemap (a phone cannot print a header and a legible tile). Default 560. */
+  listBelow?: number;
+  /** Sets `data-testid` on the figure. */
+  testId?: string;
+}
 
 const W = 100;
 const NONE: ReadonlySet<string> = new Set();
@@ -26,11 +89,15 @@ const changeText = (c: number | null) => (c === null ? '—' : `${arrow(c)} ${si
 const groupPath = (n: Node) => n.path.slice(0, n.item ? -1 : undefined);
 const sizeClass = (wp: number, hp: number) => (wp < 7 || hp < 10 ? 'xs' : wp < 13 || hp < 16 ? 'sm' : 'md');
 
-export function GroupedHeatmap({
+/**
+ * Sector, industry, stock as nested treemap cells, with drill-in. Its own module so the flat `MarketHeatmap` stays small.
+ * @stability beta
+ */
+export function GroupedMarketHeatmap({
   items, label, sizeLabel = 'Size', formatSize = defaultSize, scaleMax = 3, aspect = 1.5, convention, onSelect, labels, testId,
   path: pathProp, defaultPath, onPathChange, linkComponent, collapseBelow, listBelow = 560,
-}: MarketHeatmapProps) {
-  const words = { ...EN, ...labels };
+}: GroupedMarketHeatmapProps) {
+  const words = { ...GROUPED_EN, ...labels };
   const hintId = useId();
   const H = W / aspect;
   const tree = useMemo(() => buildHeatTree(items), [items]);

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { MarketHeatmap, type HeatmapItem } from '@punji/ui/market-heatmap';
+import type { HeatmapItem } from '@punji/ui/market-heatmap';
+import { GroupedMarketHeatmap } from '@punji/ui/market-heatmap-grouped';
 
 // Sector, industry, stock. Size is market cap in NPR crore; colour and the printed number are the day's change.
 // Each stock is a link (here a fragment; in an app, an in-app path through LinkProvider). The tiny ones fold into "+N more".
@@ -33,7 +34,7 @@ export default function Example() {
   const [path, setPath] = useState<string[]>([]);
   return (
     <>
-      <MarketHeatmap items={items} label="NSE sectors by market cap" sizeLabel="Market cap (crore)" path={path} onPathChange={setPath} />
+      <GroupedMarketHeatmap items={items} label="NSE sectors by market cap" sizeLabel="Market cap (crore)" path={path} onPathChange={setPath} />
       <p>Level: {path.length ? path.join(' > ') : 'all sectors'}.</p>
     </>
   );

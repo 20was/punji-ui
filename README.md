@@ -6,7 +6,7 @@
 </a>
 
 > [!NOTE]
-> `@punji/ui` is at 0.4.0 on npm, published from CI with provenance. It is pre-1.0: a minor version can change APIs and styles, so pin an exact version and read the [changelog](./CHANGELOG.md) before you upgrade. Each page of the docs carries a [stability level](#stability-levels); several newer modules are beta or experimental.
+> `@punji/ui` is on npm, published from CI with provenance (the npm badge below shows the latest version). It is pre-1.0: a minor version can change APIs and styles, so pin an exact version and read the [changelog](./CHANGELOG.md) before you upgrade. Each page of the docs carries a [stability level](#stability-levels); several newer modules are beta or experimental.
 
 <p align="center">
   <a href="https://github.com/20was/punji-ui/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/20was/punji-ui/actions/workflows/ci.yml/badge.svg?branch=main"></a>

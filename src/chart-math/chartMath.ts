@@ -13,6 +13,14 @@
  *   rebase             a series as percent change from its first finite value
  *   rebaseOnto         the same for a series that starts later, continuing from where a reference stood on its first date
  *   cumulativeDepth    order book levels as running quantity from the best price outward
+ *   heikinAshi         Heikin Ashi candles (TradingView help, "Heikin Ashi")
+ *   priceTransform     a price on the linear, log, percent-from-first or indexed-to-100 axis; logTicks, round ticks for a log axis
+ *   spreadLabels       label positions pushed apart so none overlap, kept inside a range
+ *   exactText          a number as plain decimal text at a stated precision; decimalsOf, the decimals a price is written with
+ *
+ * Missing, null and non-finite numbers are "no value" everywhere. They are
+ * never read as zero.
+ 
  *   drawdownOf         the fall from the running high, in percent
  *   spreadLabels       label positions pushed apart so none is closer than a gap
  *   labelClusters      which labels share horizontal space (so only those need spreading)
@@ -21,13 +29,7 @@
  *   seasonalityStats   per calendar month across years: mean, range, hit rate
  *   parseMaturity      '3M', '10Y', '52W' as years
  *   curveSlopes        the segments of a curve that fall as maturity grows
- *   heikinAshi         Heikin Ashi candles (TradingView help, "Heikin Ashi")
- *   priceTransform     a price on the linear, log, percent-from-first or indexed-to-100 axis; logTicks, round ticks for a log axis
- *   exactText          a number as plain decimal text at a stated precision; decimalsOf, the decimals a price is written with
- *
- * Missing, null and non-finite numbers are "no value" everywhere. They are
- * never read as zero.
- */
+*/
 
 const isNum = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
 
@@ -424,18 +426,6 @@ export function cumulativeDepth(levels: readonly { price: number; quantity: numb
   });
 }
 
-/**
- * The fall from the running high, in percent (0 or negative), one value per input. A gap carries the high and
- * stays `null`; a high of zero or below cannot be a base, so the point is `null`.
- */
-export function drawdownOf(values: readonly (number | null | undefined)[]): (number | null)[] {
-  let peak = -Infinity;
-  return values.map((v) => {
-    if (!isNum(v)) return null;
-    peak = Math.max(peak, v);
-    return peak > 0 ? Math.min(0, (v / peak - 1) * 100) : null;
-  });
-
 export interface HeikinAshiCandle {
   open: number;
   high: number;
@@ -526,6 +516,48 @@ export function spreadLabels(positions: readonly number[], gap: number, min: num
   const out = positions.map(() => 0);
   order.forEach((i, k) => { out[i] = placed[k]!; });
   return out;
+}
+
+/** How many decimals a price is written with (0.5 is 1, 487.25 is 2, 3 is 0), up to `cap`. Float noise past 12 significant digits is ignored. */
+export function decimalsOf(value: number, cap = 8): number {
+  if (!isNum(value)) return 0;
+  const text = Number(value.toPrecision(12)).toString();
+  if (/e/i.test(text)) return Math.min(cap, Math.max(0, -Math.floor(Math.log10(Math.abs(value)))));
+  const at = text.indexOf('.');
+  return at < 0 ? 0 : Math.min(cap, text.length - at - 1);
+}
+
+/**
+ * A number as plain decimal text with at most `decimals` places, trailing zeros kept down to `minDecimals` (default
+ * 0): no exponent, no locale, no `0.30000000000000004`, no "-0". The same text on every machine, for tables and
+ * spoken values that must be exact rather than rounded to a currency's two places.
+ */
+export function exactText(value: number, decimals: number, minDecimals = 0): string {
+  if (!isNum(value)) return String(value);
+  const d = Math.min(20, Math.max(0, Math.floor(decimals)));
+  let text = Math.abs(value) >= 1e21 ? BigInt(value).toString() : value.toFixed(d);
+  if (text.includes('.')) {
+    const keep = Math.max(0, Math.floor(minDecimals));
+    const at = text.indexOf('.');
+    let end = text.length;
+    while (end > at + 1 + keep && text[end - 1] === '0') end -= 1;
+    text = text.slice(0, end);
+    if (text.endsWith('.')) text = text.slice(0, -1);
+  }
+  return /^-0(\.0*)?$/.test(text) ? text.slice(1) : text;
+}
+
+/**
+ * The fall from the running high, in percent (0 or negative), one value per input. A gap carries the high and
+ * stays `null`; a high of zero or below cannot be a base, so the point is `null`.
+ */
+export function drawdownOf(values: readonly (number | null | undefined)[]): (number | null)[] {
+  let peak = -Infinity;
+  return values.map((v) => {
+    if (!isNum(v)) return null;
+    peak = Math.max(peak, v);
+    return peak > 0 ? Math.min(0, (v / peak - 1) * 100) : null;
+  });
 }
 
 /**
@@ -638,6 +670,7 @@ export function seasonalityStats(years: readonly { year: number; months: readonl
 }
 
 const MATURITY = /^\s*(\d+(?:\.\d+)?)\s*([DWMY])\s*$/i;
+
 /**
  * A maturity as years: '1M' is 1/12, '52W' is 1, '30Y' is 30, '90D' is 90/365. A plain number is already years.
  * `null` for anything else (including zero and negatives).
@@ -673,32 +706,4 @@ export function curveSlopes(values: readonly (number | null | undefined)[]): Cur
     if (isNum(a) && isNum(b) && b < a) out.push({ from: i - 1, to: i, change: b - a });
   }
   return out;
-
-/** How many decimals a price is written with (0.5 is 1, 487.25 is 2, 3 is 0), up to `cap`. Float noise past 12 significant digits is ignored. */
-export function decimalsOf(value: number, cap = 8): number {
-  if (!isNum(value)) return 0;
-  const text = Number(value.toPrecision(12)).toString();
-  if (/e/i.test(text)) return Math.min(cap, Math.max(0, -Math.floor(Math.log10(Math.abs(value)))));
-  const at = text.indexOf('.');
-  return at < 0 ? 0 : Math.min(cap, text.length - at - 1);
-}
-
-/**
- * A number as plain decimal text with at most `decimals` places, trailing zeros kept down to `minDecimals` (default
- * 0): no exponent, no locale, no `0.30000000000000004`, no "-0". The same text on every machine, for tables and
- * spoken values that must be exact rather than rounded to a currency's two places.
- */
-export function exactText(value: number, decimals: number, minDecimals = 0): string {
-  if (!isNum(value)) return String(value);
-  const d = Math.min(20, Math.max(0, Math.floor(decimals)));
-  let text = Math.abs(value) >= 1e21 ? BigInt(value).toString() : value.toFixed(d);
-  if (text.includes('.')) {
-    const keep = Math.max(0, Math.floor(minDecimals));
-    const at = text.indexOf('.');
-    let end = text.length;
-    while (end > at + 1 + keep && text[end - 1] === '0') end -= 1;
-    text = text.slice(0, end);
-    if (text.endsWith('.')) text = text.slice(0, -1);
-  }
-  return /^-0(\.0*)?$/.test(text) ? text.slice(1) : text;
 }

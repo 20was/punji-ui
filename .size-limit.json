@@ -332,13 +332,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "274.69 kB",
+    "limit": "287.73 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "59.08 kB",
+    "limit": "60.30 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -759,7 +759,7 @@
     "name": "chart-math (import from '@punji/ui/chart-math')",
     "path": "dist/chart-math/chartMath.js",
     "import": "*",
-    "limit": "3.10 kB",
+    "limit": "3.71 kB",
     "gzip": true
   },
   {

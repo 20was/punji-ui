@@ -31,9 +31,13 @@
 export interface PriceBar {
   /** "YYYY-MM-DD". Oldest first. */
   date: string;
+  /** The opening price as a decimal string. */
   open?: string;
+  /** The highest price as a decimal string. */
   high?: string;
+  /** The lowest price as a decimal string. */
   low?: string;
+  /** The closing price as a decimal string. */
   close: string;
 }
 
@@ -46,7 +50,9 @@ export interface BarSpan {
   fromBar: number;
   /** Index of the source bar that formed it (or last extended it). */
   toBar: number;
+  /** The date of the first source bar it covers ("YYYY-MM-DD"). */
   fromDate: string;
+  /** The date of the last source bar it covers ("YYYY-MM-DD"). */
   toDate: string;
 }
 
@@ -124,6 +130,7 @@ function boxOf(s: string, scale: number, name: string): bigint {
 // ---------------------------------------------------------------------------------------------------------- Renko
 
 export interface RenkoBrick extends BarSpan {
+  /** Which way it points. */
   direction: 'up' | 'down';
   /** The price the brick starts from. */
   open: string;
@@ -141,6 +148,7 @@ export interface RenkoOptions {
 export interface RenkoResult {
   /** The box size used, as a decimal string (the rounded ATR when `box` was `{ atr }`). */
   boxSize: string;
+  /** The bricks, oldest first. */
   bricks: RenkoBrick[];
 }
 
@@ -212,16 +220,20 @@ export function renkoBricks(bars: readonly PriceBar[], options: RenkoOptions): R
 export type KagiStyle = 'yang' | 'yin';
 
 export interface KagiPart {
+  /** The price it starts at, as a decimal string. */
   start: string;
+  /** The price it ends at, as a decimal string. */
   end: string;
   /** Yang is the thick line, yin the thin one. */
   style: KagiStyle;
 }
 
 export interface KagiLine extends BarSpan {
+  /** Which way it points. */
   direction: 'up' | 'down';
   /** Where the line starts (the previous line's end) and where it ends (its shoulder or waist). */
   start: string;
+  /** The price it ends at, as a decimal string. */
   end: string;
   /** The line as one or two pieces: it changes thickness where it passes the previous shoulder or waist. */
   parts: KagiPart[];
@@ -301,6 +313,7 @@ export interface PointFigureColumn extends BarSpan {
   direction: 'x' | 'o';
   /** The lowest and highest box, each named by its bottom edge. */
   low: string;
+  /** The highest price as a decimal string. */
   high: string;
   /** How many boxes. */
   boxes: number;
@@ -316,8 +329,11 @@ export interface PointFigureOptions {
 }
 
 export interface PointFigureResult {
+  /** The box size as a decimal string. */
   boxSize: string;
+  /** The reversal in boxes. */
   reversal: number;
+  /** The columns, oldest first. */
   columns: PointFigureColumn[];
 }
 
@@ -374,9 +390,11 @@ export function pointAndFigure(bars: readonly PriceBar[], options: PointFigureOp
 // ------------------------------------------------------------------------------------------------------ Line Break
 
 export interface LineBreakLine extends BarSpan {
+  /** Which way it points. */
   direction: 'up' | 'down';
   /** A line runs from the previous line's close (its open) to its own close. */
   open: string;
+  /** The closing price as a decimal string. */
   close: string;
 }
 
@@ -425,9 +443,13 @@ export function lineBreak(bars: readonly PriceBar[], options: LineBreakOptions =
 export interface PriceRangeBar extends BarSpan {
   /** Up when the bar closed at its high, down when it closed at its low. */
   direction: 'up' | 'down';
+  /** The opening price as a decimal string. */
   open: string;
+  /** The highest price as a decimal string. */
   high: string;
+  /** The lowest price as a decimal string. */
   low: string;
+  /** The closing price as a decimal string. */
   close: string;
 }
 

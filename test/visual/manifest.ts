@@ -200,6 +200,8 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'histogram', title: 'Histogram' },
   { id: 'correlation-matrix', title: 'CorrelationMatrix' },
   { id: 'performance-chart-layers', title: 'PerformanceChart reference, drawdown, contributions, rebase and quiet axis' },
+  { id: 'price-only-chart', title: 'PriceOnlyChart: Renko, Kagi, Point and Figure, Line Break and Range bars', layout: true },
+  { id: 'breadth-chart', title: 'BreadthChart: advance-decline and percent above a moving average', layout: true },
   // new:component inserts fixtures above this line
 ];
 

@@ -2,6 +2,8 @@ import { BalanceHistoryChart, CashFlowChart, CorrelationMatrix, DataFreshness, E
 import { Accordion, AlertListEmpty, AlertRow, AlertRowCompact, AlertRowList, AlertRowSkeleton, AlertSummary, AlertSummaryNote, AlertSummarySection, BarList, Breadcrumb, BrokerBadge, Card, CardSection, CardSectionRow, Figure, HeadlineList, InstrumentHeader, LinkRow, LinkRowList, MenuButton, MoneyDisplay, MonthStrip, PrivateAmount, RatingChangeList, RatingChangeRow, RatingChip, RatingScale, RouteAnnouncer, ScrollTable, SettingList, SettingRow, SkipLink, StatusTag, ThemeProvider, type ColumnDef, type WatchlistQuote, Watchlist } from '@punji/ui';
 import { performanceDates, performanceSeries } from '../../fixtures/market-data.ts';
 import { type ReactNode, useState } from 'react';
+import { BreadthChart, Card as PoCard, PriceOnlyChart, kagiType, lineBreakType, pointFigureType, rangeBarsType, renkoType } from '@punji/ui';
+import { sampleBars, sampleBreadthDays, sampleConstituents } from '../../fixtures/market-data.ts';
 // new:component inserts imports above this line
 
 // Visual fixtures for components scaffolded with `npm run new:component <name>` (docs/CONTRIBUTING-COMPONENT.md).
@@ -565,6 +567,46 @@ function BalanceHistoryChartFixture() {
 }
 
 
+const poBars = sampleBars(110, 3);
+const poRenko = renkoType({ box: '5' });
+const poRenkoAtr = renkoType({ box: { atr: 14 } });
+const poKagi = kagiType({ reversal: '8' });
+const poKagiPct = kagiType({ reversal: { percent: '1.5' } });
+const poPf = pointFigureType({ box: '3', reversal: 3 });
+const poLb = lineBreakType();
+const poRange = rangeBarsType({ range: '6' });
+const poFlat = [{ date: '2025-06-01', close: '100.00' }, { date: '2025-06-02', close: '100.00' }];
+
+function PriceOnlyChartFixture() {
+  return (
+    <div style={{ display: 'grid', gap: 24 }}>
+      <PoCard title="Renko, box 5.00"><PriceOnlyChart testId="vr-renko" label="Renko" bars={poBars} type={poRenko} height={220} /></PoCard>
+      <PoCard title="Renko, ATR box"><PriceOnlyChart label="Renko ATR" bars={poBars} type={poRenkoAtr} height={200} /></PoCard>
+      <PoCard title="Kagi, reversal 8.00"><PriceOnlyChart label="Kagi" bars={poBars} type={poKagi} height={220} /></PoCard>
+      <PoCard title="Kagi, reversal 1.5 percent"><PriceOnlyChart label="Kagi percent" bars={poBars} type={poKagiPct} height={200} /></PoCard>
+      <PoCard title="Point and Figure, box 3.00, three-box reversal"><PriceOnlyChart label="Point and Figure" bars={poBars} type={poPf} height={240} /></PoCard>
+      <PoCard title="Three-line break"><PriceOnlyChart label="Line Break" bars={poBars} type={poLb} height={200} /></PoCard>
+      <PoCard title="Range bars, 6.00"><PriceOnlyChart label="Range bars" bars={poBars} type={poRange} height={200} /></PoCard>
+      <PoCard title="Not enough movement"><PriceOnlyChart label="Flat" bars={poFlat} type={poRenko} /></PoCard>
+      <PoCard title="Bad price"><PriceOnlyChart label="Bad" bars={[{ date: '2025-06-01', close: 'abc' }]} type={poRenko} /></PoCard>
+    </div>
+  );
+}
+
+const bcDays = sampleBreadthDays(100);
+const bcStocks = sampleConstituents(30, 200);
+
+function BreadthChartFixture() {
+  return (
+    <div style={{ display: 'grid', gap: 24 }}>
+      <PoCard title="Advance-decline line"><BreadthChart testId="vr-ad" mode="advance-decline" label="Advance-decline line" days={bcDays} height={200} /></PoCard>
+      <PoCard title="Share above the 50-day average"><BreadthChart mode="percent-above-ma" label="Above the 50-day average" constituents={bcStocks} period={50} height={200} /></PoCard>
+      <PoCard title="One day"><BreadthChart mode="advance-decline" label="One day" days={bcDays.slice(0, 1)} height={140} /></PoCard>
+      <PoCard title="Not enough history"><BreadthChart mode="percent-above-ma" label="Too short" constituents={bcStocks} period={400} /></PoCard>
+    </div>
+  );
+}
+
 // new:component inserts fixtures above this line
 
 export const communityRegistry: Record<string, () => ReactNode> = {
@@ -610,5 +652,7 @@ export const communityRegistry: Record<string, () => ReactNode> = {
   'sankey-chart': SankeyChartFixture,
   'earnings-chart': EarningsChartFixture,
   'balance-history-chart': BalanceHistoryChartFixture,
+  'price-only-chart': PriceOnlyChartFixture,
+  'breadth-chart': BreadthChartFixture,
   // new:component inserts registry entries above this line
 };

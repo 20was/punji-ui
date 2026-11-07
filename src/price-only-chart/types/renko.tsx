@@ -7,10 +7,13 @@ export interface RenkoTypeLabels {
   up: string;
   /** Default "Down brick". */
   down: string;
+  /** The opening price, or the word for it. */
   open: string;
+  /** The closing price, or the word for it. */
   close: string;
   /** The key under the chart. Default "Up brick, hollow" and "Down brick, solid". */
   keyUp: string;
+  /** The key's words for a down element. */
   keyDown: string;
   /** Default "12 up bricks and 7 down bricks of 5.00, from 2025-11-01 to 2025-12-20." */
   summary: (info: { up: number; down: number; boxSize: string; from: string; to: string }) => string;
@@ -30,6 +33,7 @@ const EN: RenkoTypeLabels = {
 };
 
 export interface RenkoTypeOptions extends RenkoOptions {
+  /** Words in the reader's language. */
   labels?: Partial<RenkoTypeLabels>;
 }
 

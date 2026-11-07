@@ -13,14 +13,17 @@ import type { PriceBar } from '../chart-math/priceOnly.ts';
 export interface PriceOnlyElement {
   /** Stable key. */
   key: string;
+  /** Which way it points. */
   direction: 'up' | 'down';
   /** The words for its direction in the readout, the live region and the table ("Up brick", "X column, rising"). Never only a colour. */
   directionWord: string;
-  /** Its price extent, for the axis (display only: the words come from the exact strings). */
+  /** Its lowest price on the axis (display only: the words come from the exact strings). */
   low: number;
+  /** Its highest price on the axis. */
   high: number;
-  /** The first and last source date it covers ("YYYY-MM-DD"). */
+  /** The date of the first source bar it covers ("YYYY-MM-DD"). */
   fromDate: string;
+  /** The date of the last source bar it covers ("YYYY-MM-DD"). */
   toDate: string;
   /** Table cells after the direction and the dates, one per `heads` entry. */
   cells: readonly string[];
@@ -34,11 +37,13 @@ export interface PriceOnlyElement {
 export interface PriceOnlyGeometry {
   /** The plot's left and right edges in SVG px. */
   x0: number;
+  /** The plot's right edge in SVG px. */
   x1: number;
   /** The width of one element's slot. */
   slot: number;
   /** The first element drawn, and how many. */
   offset: number;
+  /** How many elements are drawn. */
   visible: number;
   /** The x of the centre of element `i`. */
   cx: (i: number) => number;
@@ -46,6 +51,7 @@ export interface PriceOnlyGeometry {
   y: (price: number) => number;
   /** The y range of the plot. */
   top: number;
+  /** The y of the bottom of the plot. */
   bottom: number;
   /** The active element or null. */
   active: number | null;
@@ -53,14 +59,17 @@ export interface PriceOnlyGeometry {
 
 /** One entry of the key under the chart: a small sample drawn with the type's own classes, and its words. */
 export interface PriceOnlyKey {
+  /** Stable key. */
   key: string;
   /** Class of the sample `<i>`. */
   className: string;
+  /** Its words. */
   label: string;
 }
 
 /** What a type builds from the bars. */
 export interface PriceOnlyBuilt {
+  /** One entry per drawn element, oldest first. */
   elements: readonly PriceOnlyElement[];
   /** Table heads after "Direction" and "Source dates". */
   heads: readonly string[];
@@ -76,6 +85,7 @@ export interface PriceOnlyBuilt {
   roleDescription: string;
   /** The least width, in px, of one element's slot. Fewer fit: the chart shows the latest and says so. */
   minSlot: number;
+  /** Draws the visible elements inside the chart's SVG. */
   draw: (g: PriceOnlyGeometry) => ReactNode;
 }
 

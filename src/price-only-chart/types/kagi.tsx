@@ -7,7 +7,9 @@ export interface KagiTypeLabels {
   up: string;
   /** Default "Down line". */
   down: string;
+  /** Where it starts, or the word for it. */
   start: string;
+  /** Where it ends, or the word for it. */
   end: string;
   /** The table head of the thickness column. Default "Thickness". */
   thickness: string;
@@ -37,6 +39,7 @@ const EN: KagiTypeLabels = {
 };
 
 export interface KagiTypeOptions extends KagiOptions {
+  /** Words in the reader's language. */
   labels?: Partial<KagiTypeLabels>;
 }
 

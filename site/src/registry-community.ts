@@ -1713,5 +1713,116 @@ export const COMMUNITY_PAGES: readonly PageDef[] = [
     uxOnly: true,
     related: ['net-worth-chart', 'cash-flow-chart', 'sankey-chart', 'chart-a11y-shell'],
   },
+  {
+    slug: 'price-only-chart',
+    stability: 'beta',
+    title: 'PriceOnlyChart',
+    lead: 'Renko, Kagi, Point and Figure, Line Break and Range bars from decimal-string prices, with the source dates of every element in a table.',
+    description: 'Price-only charts: Renko, Kagi, Point and Figure, Line Break and Range bars from exact decimals. Shapes not colour for up and down, keyboard, source-date table.',
+    group: 'data',
+    kind: 'component',
+    summary:
+      'One renderer for the five charts that drop time and draw only the price moves that matter. Pass the source bars (prices as decimal strings) and a `type` descriptor: `renkoType`, `kagiType`, `pointFigureType`, `lineBreakType` or `rangeBarsType`, each from its own subpath, so a page that draws only Renko ships only the Renko builder and drawing. The builders are pure functions in `@punji/ui/chart-price-only` (`renkoBricks`, `kagiLines`, `pointAndFigure`, `lineBreak`, `rangeBars`): prices in as decimal strings, arithmetic in scaled bigint, prices out as decimal strings with the inputs\' decimals, so a 0.1 box never drifts. Because time is gone, every element lists the source dates it covers, in the readout, the live region and the table. Up and down are shape first: hollow bricks with an up triangle against solid with a down triangle, X against O, thin against thick lines; colour only repeats them.',
+    use: [
+      'Price-action analysis that ignores time: swing structure with Renko, trend with Kagi, support and resistance with Point and Figure.',
+      'A chart type switch on a symbol page, next to `CandlestickChart`: feed both the same bars.',
+      'The pure builders on their own (`@punji/ui/chart-price-only`) for a report, an alert or your own drawing.',
+    ],
+    avoid: [
+      'Reading dates off the axis: the horizontal axis is the element order, not time. Use the table or the readout for the dates.',
+      'Tick data: the builders work on bars, as TradingView does for these types.',
+      'Passing numbers: prices are decimal strings ("487.50"); a number or "1e3" prints the reason instead of a chart.',
+      'Building the type inline on every render: hoist it or `useMemo` it, or the elements are rebuilt each time.',
+    ],
+    api: [
+      ...ui('price-only-chart', 'PriceOnlyChart', 'PriceOnlyChartProps', 'PriceOnlyChartLabels', 'PriceOnlyType', 'PriceOnlyBuilt', 'PriceOnlyElement', 'PriceOnlyGeometry', 'PriceOnlyKey', 'datesText'),
+      ...ui('renko-type', 'renkoType', 'RenkoTypeOptions', 'RenkoTypeLabels'),
+      ...ui('kagi-type', 'kagiType', 'KagiTypeOptions', 'KagiTypeLabels'),
+      ...ui('point-figure-type', 'pointFigureType', 'PointFigureTypeOptions', 'PointFigureTypeLabels'),
+      ...ui('line-break-type', 'lineBreakType', 'LineBreakTypeOptions', 'LineBreakTypeLabels'),
+      ...ui('range-bars-type', 'rangeBarsType', 'RangeBarsTypeOptions', 'RangeBarsTypeLabels'),
+      ...ui('chart-price-only', 'renkoBricks', 'kagiLines', 'pointAndFigure', 'lineBreak', 'rangeBars', 'PriceBar', 'PriceSource', 'BarSpan', 'RenkoBrick', 'RenkoOptions', 'RenkoResult', 'KagiLine', 'KagiPart', 'KagiStyle', 'KagiOptions', 'PointFigureColumn', 'PointFigureOptions', 'PointFigureResult', 'LineBreakLine', 'LineBreakOptions', 'PriceRangeBar', 'RangeBarOptions'),
+    ],
+    examples: [
+      { id: 'renko', title: 'Renko', note: 'A fixed 5.00 box and an ATR box over the same 160 sessions.' },
+      { id: 'kagi', title: 'Kagi', note: 'A fixed reversal and a percent reversal; thick yang and thin yin lines.' },
+      { id: 'point-figure', title: 'Point and Figure', note: 'Box 3.00 with a three-box reversal from closes, and box 2.00 with a two-box reversal from highs and lows.' },
+      { id: 'line-break', title: 'Line Break', note: 'Three-line and two-line break.' },
+      { id: 'range-bars', title: 'Range bars', note: 'Bars of exactly 6.00 from low to high.' },
+    ],
+    keyboard: [
+      'Tab focuses the plot. Left and Right move between elements, Home and End jump to the first and last, Escape clears.',
+      'When more elements exist than fit, the chart shows the latest and the cursor scrolls the window back to older ones.',
+      'Hover or touch reads one element in a tooltip.',
+    ],
+    accessibility: [
+      'Up and down are told apart by shape: Renko, Line Break and Range bars are hollow with an up triangle against solid with a down triangle; Point and Figure is X against O; Kagi is thick (yang) against thin (yin). The key under the chart names each; colour only repeats it.',
+      'The readout, the live region and the table say the direction in words ("Up brick", "O column, falling", "Yin, thin, then yang, thick, from 105.00") and give the source dates the element covers ("2025-11-04 to 2025-11-07").',
+      'A spoken summary gives the counts, the date span and the rule (box, reversal); the plot is one focus stop with a hint; a hidden table lists every element with exact decimals.',
+      'In forced colours the marks are drawn in the system text colour: hollow stays hollow, solid stays solid, X and O and the line weights are unchanged.',
+    ],
+    responsive: [
+      'The plot is as wide as its container (checked at 390px). Each element needs 10 to 14px; past that the chart shows the latest and says "Showing 30 of 120"; the table always lists all of them.',
+      'Axis dates are the last source date of the element and thin out to keep 64px apart.',
+    ],
+    notes: {
+      title: 'How it is built',
+      points: [
+        'Renko (TradingView help article 43000502284): box fixed or ATR (default 14, Wilder, rounded half up to the prices\' decimals); a brick forms when price moves a box beyond the last brick; turning round needs a box beyond the last brick\'s open edge, the classic two-box reversal as in aticio/renko (MIT). TradingView does not state that reversal rule; it is our choice and is stated. Source is closes, or each bar\'s low then high (up bar) or high then low (down bar).',
+        'Kagi (TradingView help article 43000502272): reversal fixed or a percent of the line\'s end, from closes. A line turns yang (thick) when it passes the previous shoulder and yin (thin) when it passes the previous waist; TradingView does not describe thickness, so that rule follows secondary sources (the LuxAlgo Kagi page) and arpitnarechania/d3-kagi (MIT). A line that crosses a shoulder or waist is split there.',
+        'Point and Figure (TradingView help article 43000502276): box size and a reversal of N boxes (3 is the classic, per ThisMatter.com). A price falls in the box at or below it; an X column reverses when price falls N boxes below its top and starts one box under that top. Algorithm shape learned from kncsolutions/dhelm-pnf-chart-generator (Apache-2.0). Box size is fixed; an ATR or percent box is not offered.',
+        'Line Break (TradingView help article 43000502273): a new line when the close passes the last line\'s end; a reversal when it passes the high or low of the previous N lines (default 3). A reversal line opens at the previous line\'s close.',
+        'Range bars: every bar\'s high minus low is exactly the range; a bar closes when price is a full range above its low or below its high, and the next bar opens at that close. The bar still forming is not drawn.',
+        'None of this was copied from GPL or LGPL code (stocktrends, PyPnF were not used). Time is dropped, so each element carries `fromBar`, `toBar` and their dates: the first bar after the previous element formed, to the bar that formed (or last extended) it.',
+        'Not verified against TradingView\'s own output: its anchor for the first brick and its handling of ties are not documented, so a chart may differ by a brick at the start.',
+      ],
+    },
+    related: ['candlestick-chart', 'chart-math', 'chart-a11y-shell', 'breadth-chart'],
+  },
+  {
+    slug: 'breadth-chart',
+    stability: 'beta',
+    title: 'BreadthChart',
+    lead: 'The advance-decline line and the share of stocks above their moving average, from daily counts or decimal-string closes.',
+    description: 'Market breadth over time: the advance-decline line and the percent of stocks above their N-day average, with exact decimals, a keyboard cursor and a data table.',
+    group: 'data',
+    kind: 'component',
+    summary:
+      'Two breadth lines on one chart. `mode="advance-decline"` plots the running total of advances minus declines from daily counts (the fields `MarketBreadth` shows, plus a date). `mode="percent-above-ma"` plots the share of constituents whose close is above their own N-day simple moving average, from each constituent\'s closes as decimal strings: a close is above when `close * N > sum of the last N closes` in bigint, so no rounding decides it, and the share is printed to a set number of decimals, rounded half up. The pure helpers `advanceDeclineLine` and `percentAboveMA` are in `@punji/ui/chart-breadth`. Built on ChartA11yShell; the 50 percent line is dashed and labelled; direction is said in words.',
+    use: [
+      'A market overview under `MarketBreadth`: the same counts over time.',
+      'Participation: does the index rise on many stocks (rising line, high share) or few?',
+      'The helpers alone, to drive an alert or a report.',
+    ],
+    avoid: [
+      'Weighted breadth by turnover or market cap: both lines count stocks, one each.',
+      'Fewer closes than the average needs: a stock counts only from its N-th close, so a long period on a short history shows nothing yet.',
+    ],
+    api: [
+      ...ui('breadth-chart', 'BreadthChart', 'BreadthChartProps', 'AdvanceDeclineChartProps', 'PercentAboveMAChartProps', 'BreadthChartLabels'),
+      ...ui('chart-breadth', 'advanceDeclineLine', 'percentAboveMA', 'BreadthDay', 'AdvanceDeclinePoint', 'BreadthConstituent', 'PercentAboveMAPoint'),
+    ],
+    examples: [
+      { id: 'advance-decline', title: 'Advance-decline line', note: 'A running total of net advances over 120 sessions.' },
+      { id: 'percent-above-ma', title: 'Above the 50-day average', note: 'The share of 40 stocks above their own average; the line starts when the first has 50 closes.' },
+    ],
+    keyboard: ['Tab focuses the plot. Left and Right move between days, Home and End jump to the first and last, Escape clears.', 'Hover or touch reads one day in a tooltip.'],
+    accessibility: [
+      'Direction is a word and a triangle wherever it is printed: "Advances led", "Declines led", "Even" for the A/D line; "Up", "Down", "No change" for the share. The line is one series; colour carries nothing.',
+      'A spoken summary gives the first and last value over the span; the live region says each day\'s counts; a hidden table lists every day with its counts, share and change.',
+      'A day with no share (no constituent has a full average yet) breaks the line and reads "none" in the table.',
+    ],
+    responsive: ['The plot is as wide as its container; date labels thin out to keep 72px apart and markers drop past 80 days.'],
+    notes: {
+      title: 'How it is built',
+      points: [
+        'The advance-decline line is the cumulative sum of advances minus declines per day, unchanged issues adding nothing. This is the textbook definition; no primary source was fetched for it (the research note marks breadth lines unverified).',
+        'Percent above a moving average counts a constituent from its N-th close on, using a simple (not exponential) average of its own last N closes, and divides by the constituents that have one on that date. Strictly above: equal does not count.',
+        'A bad close (not a non-negative decimal string) prints the reason instead of a chart.',
+      ],
+    },
+    uxOnly: true,
+    related: ['market-breadth', 'price-only-chart', 'chart-math', 'chart-a11y-shell', 'column-chart'],
+  },
   // new:component inserts pages above this line
 ];

@@ -14,14 +14,20 @@
 export interface BreadthDay {
   /** "YYYY-MM-DD". Oldest first. */
   date: string;
+  /** Stocks that rose, or the word for it. */
   advances: number;
+  /** Stocks that fell, or the word for it. */
   declines: number;
+  /** Stocks that did not change, or the word for "no change". */
   unchanged?: number;
 }
 
 export interface AdvanceDeclinePoint {
+  /** The date ("YYYY-MM-DD"), or the head of the date column. */
   date: string;
+  /** Stocks that rose, or the word for it. */
   advances: number;
+  /** Stocks that fell, or the word for it. */
   declines: number;
   /** advances - declines for the day. */
   net: number;
@@ -50,11 +56,14 @@ export function advanceDeclineLine(days: readonly BreadthDay[], options: { start
 
 /** One constituent's closes, oldest first. */
 export interface BreadthConstituent {
+  /** Stable id of the constituent. */
   id: string;
+  /** Its closes by date, oldest first. */
   closes: readonly { date: string; close: string }[];
 }
 
 export interface PercentAboveMAPoint {
+  /** The date ("YYYY-MM-DD"), or the head of the date column. */
   date: string;
   /** Constituents whose close is above their own moving average on this date. */
   above: number;

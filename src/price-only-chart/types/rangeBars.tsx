@@ -7,11 +7,17 @@ export interface RangeBarsTypeLabels {
   up: string;
   /** Default "Down bar". */
   down: string;
+  /** The opening price, or the word for it. */
   open: string;
+  /** The highest price, or the word for it. */
   high: string;
+  /** The lowest price, or the word for it. */
   low: string;
+  /** The closing price, or the word for it. */
   close: string;
+  /** The key's words for an up element. */
   keyUp: string;
+  /** The key's words for a down element. */
   keyDown: string;
   /** Default "8 up bars and 5 down bars of range 2.00, from 2025-11-01 to 2025-12-20." */
   summary: (info: { up: number; down: number; range: string; from: string; to: string }) => string;
@@ -33,6 +39,7 @@ const EN: RangeBarsTypeLabels = {
 };
 
 export interface RangeBarsTypeOptions extends RangeBarOptions {
+  /** Words in the reader's language. */
   labels?: Partial<RangeBarsTypeLabels>;
 }
 

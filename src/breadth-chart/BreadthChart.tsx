@@ -26,29 +26,41 @@ export interface BreadthChartLabels {
   empty: string;
   /** Default "Cannot draw this chart: {reason}". */
   error: (reason: string) => string;
+  /** The date ("YYYY-MM-DD"), or the head of the date column. */
   date: string;
+  /** Stocks that rose, or the word for it. */
   advances: string;
+  /** Stocks that fell, or the word for it. */
   declines: string;
+  /** Advances minus declines, or the word for it. */
   net: string;
   /** Table head of the running total. Default "A/D line". */
   line: string;
+  /** Which way it points, or the word for it. */
   direction: string;
   /** Words for the day's direction. Defaults "Advances led", "Declines led", "Even". */
   advancesLed: string;
+  /** The day's direction when declines led. */
   declinesLed: string;
+  /** The day's direction when advances equal declines. */
   even: string;
   /** Table heads of the percent mode. Defaults "Above", "Of", "Share above". */
   above: string;
+  /** Table head of the count of constituents with an average. */
   of: string;
   /** Between two counts in a sentence. Default "of". */
   outOf: string;
+  /** Table head of the share above the average. */
   share: string;
   /** Default "Change". */
   change: string;
   /** Words for the share's move against the previous day. Defaults "Up", "Down", "No change", "First day". */
   up: string;
+  /** The word for a fall. */
   down: string;
+  /** Stocks that did not change, or the word for "no change". */
   unchanged: string;
+  /** The word for the first day with a share. */
   first: string;
   /** Default "none". */
   none: string;
@@ -56,9 +68,11 @@ export interface BreadthChartLabels {
   reference: string;
   /** Names the share in the readout and table. Receives the period. Default "Above 200-day average". */
   shareName: (period: number) => string;
+  /** The keyboard hint. */
   hint: string;
   /** Spoken summary of the whole chart. */
   summaryAD: (info: { days: number; from: string; to: string; first: string; last: string; net: string }) => string;
+  /** Spoken summary of the share over the span. */
   summaryPct: (info: { period: number; from: string; to: string; first: string; last: string }) => string;
 }
 
@@ -108,6 +122,7 @@ interface Common {
 }
 
 export interface AdvanceDeclineChartProps extends Common {
+  /** Which line to draw. */
   mode: 'advance-decline';
   /** Daily counts, oldest first (the fields of `Breadth` of `MarketBreadth`, plus the date). */
   days: readonly BreadthDay[];
@@ -116,6 +131,7 @@ export interface AdvanceDeclineChartProps extends Common {
 }
 
 export interface PercentAboveMAChartProps extends Common {
+  /** Which line to draw. */
   mode: 'percent-above-ma';
   /** Each constituent's closes (decimal strings), oldest first. */
   constituents: readonly BreadthConstituent[];

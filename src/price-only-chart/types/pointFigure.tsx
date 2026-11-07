@@ -7,11 +7,15 @@ export interface PointFigureTypeLabels {
   x: string;
   /** Default "O column, falling". */
   o: string;
+  /** How many boxes, or the word for it. */
   boxes: string;
+  /** The lowest box, or the word for it. */
   lowest: string;
+  /** The highest box, or the word for it. */
   highest: string;
   /** Default "X column, rising" and "O column, falling" in the key. */
   keyX: string;
+  /** The key's words for an O column. */
   keyO: string;
   /** Default "5 columns, 3 X and 2 O, from 2025-11-01 to 2025-12-20." */
   summary: (info: { columns: number; x: number; o: number; from: string; to: string }) => string;
@@ -32,6 +36,7 @@ const EN: PointFigureTypeLabels = {
 };
 
 export interface PointFigureTypeOptions extends PointFigureOptions {
+  /** Words in the reader's language. */
   labels?: Partial<PointFigureTypeLabels>;
 }
 

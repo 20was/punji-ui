@@ -7,9 +7,13 @@ export interface LineBreakTypeLabels {
   up: string;
   /** Default "Down line". */
   down: string;
+  /** The opening price, or the word for it. */
   open: string;
+  /** The closing price, or the word for it. */
   close: string;
+  /** The key's words for an up element. */
   keyUp: string;
+  /** The key's words for a down element. */
   keyDown: string;
   /** Default "5 up lines and 3 down lines, from 2025-11-01 to 2025-12-20." */
   summary: (info: { up: number; down: number; from: string; to: string }) => string;
@@ -29,6 +33,7 @@ const EN: LineBreakTypeLabels = {
 };
 
 export interface LineBreakTypeOptions extends LineBreakOptions {
+  /** Words in the reader's language. */
   labels?: Partial<LineBreakTypeLabels>;
 }
 

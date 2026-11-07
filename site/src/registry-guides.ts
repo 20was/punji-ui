@@ -233,7 +233,7 @@ export const GUIDES: readonly PageDef[] = [
     description: 'Wrap your router link once with LinkProvider and every Punji link, button and row routes through it: React Router, Next.js Link and TanStack Router.',
     summary:
       'Punji has no router dependency. Components that take an `href` render a plain `<a>` unless you give them a link component. Wrap your router\'s link once in `LinkProvider` and Button, CardLink, StatusPill, CheckRow, ValueRow, LinkTable and PageHeader all use it for in-app paths. A `linkComponent` prop on one component still wins, and absolute web, mailto and tel addresses always stay a plain `<a>`.',
-    related: ['using', 'nextjs', 'vite', 'card-link', 'button'],
+    related: ['using', 'nextjs', 'vite', 'card-link', 'button', 'route-announcer'],
     api: [{ name: 'LinkProvider', module: 'link' }, { name: 'LinkProviderProps', module: 'link' }, { name: 'useLinkComponent', module: 'link' }, { name: 'safeHref', module: 'link' }, { name: 'LinkComponent', module: 'link' }, { name: 'LinkProps', module: 'link' }],
     guide: [
       {
@@ -297,7 +297,7 @@ export const GUIDES: readonly PageDef[] = [
     description: 'Every token is a --pu-* CSS variable in cascade layers. Switch theme, contrast and density, apply a bank brand with createTheme, and support RTL.',
     summary:
       'Components read --pu-* CSS variables, never literals, and all of them are in cascade layers. Four colour themes (light, dark and a high-contrast pair), three densities and right-to-left layout are attributes on any element; a brand is a typed `createTheme` call whose contrast is checked when it is generated. Try every mode below.',
-    related: ['accessibility-modes', 'colour-tokens', 'spacing', 'tailwind'],
+    related: ['accessibility-modes', 'colour-tokens', 'spacing', 'tailwind', 'theme-provider'],
     examples: [{ id: 'switcher', title: 'Theme, contrast, density and direction', note: 'One panel, four attributes. Everything inside follows them.' }],
     guide: [
       {

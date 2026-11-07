@@ -32,6 +32,7 @@ const ALLOW = {
   'SplitPaneProps.size': 'A measurement (the first pane in px), paired with defaultSize/onSizeChange, not the sm/md/lg scale.',
   'QrCodeProps.size': 'A measurement (the rendered side in px or a CSS length), not the sm/md/lg scale.',
   'StateGlyph.size': 'A measurement (the icon side in px), not the sm/md/lg scale.',
+  'EyeIcon.size': 'A measurement (the icon side in px), the same as StateGlyph, kept because the web kit exports EyeIcon with it.',
   'ToneIcon.tone=error': 'Names the icon shape (a cross), shared with Toast kinds; it is not a colour prop.',
   'ToneIcon.tone=success': 'Names the icon shape (a tick), shared with Toast kinds; it is not a colour prop.',
   'ScamWarningProps.copy': 'Scenario content (title, summary, warning signs) replacing the built-in research text, not interface words; the words are in `labels`.',

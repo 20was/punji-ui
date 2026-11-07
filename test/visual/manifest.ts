@@ -165,6 +165,13 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'cash-flow-chart', title: 'CashFlowChart' },
   { id: 'net-worth-chart', title: 'NetWorthChart' },
   { id: 'range-selector', title: 'RangeSelector' },
+  { id: 'theme-provider', title: 'ThemeProvider', pending: true },
+  { id: 'private-amount', title: 'PrivateAmount', pending: true },
+  { id: 'skip-link', title: 'SkipLink', pending: true },
+  { id: 'route-announcer', title: 'RouteAnnouncer', pending: true },
+  { id: 'card-section', title: 'CardSection', pending: true },
+  { id: 'setting-row', title: 'SettingRow', pending: true },
+  { id: 'link-row', title: 'LinkRow', pending: true },
   // new:component inserts fixtures above this line
 ];
 

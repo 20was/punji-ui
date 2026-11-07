@@ -193,7 +193,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       'On and off are shown by position as well as colour.',
     ],
     responsive: ['The hit area is at least 44px on touch screens. Lay the title and the switch out in a row that wraps.'],
-    related: ['checkbox', 'choice-group', 'toast'],
+    related: ['checkbox', 'choice-group', 'toast', 'setting-row'],
   },
   {
     slug: 'range-slider',
@@ -554,7 +554,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       'Navigation is always in the document; it wraps rather than hiding behind a menu button. If you add a menu button, make the open menu a dialog or a disclosure with proper state.',
     ],
     responsive: ['The sidebar layout is your CSS: `AppShell` gives the structure (.pu-shell-*) and the navigation wraps by default; this site turns the navigation into a sidebar at 900px and a drawer below it.'],
-    related: ['page-layout', 'drawer', 'tabs', 'financial-summary'],
+    related: ['page-layout', 'drawer', 'tabs', 'financial-summary', 'skip-link'],
   },
   {
     slug: 'rows',
@@ -684,14 +684,26 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     use: ['Removing a symbol from a watchlist or a beneficiary from a saved list.', 'Replacing a row (`as="li"`) or a toolbar with the question.'],
     avoid: ['Money moving or anything hard to undo: use a Sheet that repeats the amount.', 'A reversible action: do it and offer Undo in a Toast.', 'A generic "OK" on the danger button: name what goes.'],
     api: [...ui('inline-confirm', 'InlineConfirm')],
-    examples: [{ id: 'remove', title: 'Remove from a watchlist', note: 'Press Remove, then Esc or Keep it; Remove NTC deletes the row.' }],
-    keyboard: ['Focus moves to the danger button when it appears.', 'Tab moves between the two buttons. Esc cancels and stops there, so a drawer or popover around it stays open.'],
+    examples: [
+      { id: 'remove', title: 'Remove from a watchlist', note: 'Press Remove, then Esc or Keep it; Remove NTC deletes the row.' },
+      { id: 'typed', title: 'Typed confirmation and strength', note: 'strength="caution" for something the reader can start again; match asks them to type a word before the danger button works.' },
+    ],
+    keyboard: ['Focus moves to the danger button when it appears (to the field with `match`; Enter in the field confirms once the word matches).', 'Tab moves between the two buttons. Esc cancels and stops there, so a drawer or popover around it stays open.'],
     accessibility: [
       'A `role="group"` named by the title (`aria-labelledby` from id); `role="alertdialog"` when it interrupts.',
       'busy shows the confirm as loading and keeps it from being pressed twice.',
       'Pass an id so the title is linked; without a string title the group has no name.',
+      'With `match` the confirm is disabled until the typed text equals the word (case and outer spaces ignored); the field is labelled by `matchLabel`.',
     ],
     responsive: ['The two buttons sit side by side and wrap under the question on a narrow row.'],
+    notes: {
+      title: 'Migrating from the web kit',
+      points: [
+        'Web\'s `DangerConfirm` is `InlineConfirm` here: `tone="caution" | "danger"` is `strength`, `match`, `matchLabel`, `busy`, `confirm`, `cancel`, `onConfirm`, `onCancel`, `id`, `testId`, `confirmTestId`, `cancelTestId` and `fieldTestId` keep their names. `confirmMatches(typed, match)` is exported too.',
+        'Not carried over: web\'s tinted box around the question and holding Cancel while `busy`. Both are layout and can be done with `className`.',
+        '`strength` defaults to `danger`, so existing `InlineConfirm` calls are unchanged.',
+      ],
+    },
     related: ['sheet', 'toast', 'button', 'drawer'],
   },
   {
@@ -801,9 +813,10 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     examples: [
       { id: 'basic', title: 'A Dialog', note: 'Open it, press Tab, Esc or click outside; focus returns to the button.' },
       { id: 'alert', title: 'An AlertDialog', note: 'Focus starts on Cancel; Esc cancels; clicking outside does nothing.' },
+      { id: 'typed', title: 'Typed confirmation', note: 'match asks the reader to type a word first; the field takes focus and the confirm waits.' },
     ],
     keyboard: [
-      'Opening moves focus inside: an element marked `data-autofocus`, else the first control that is not destructive. An AlertDialog starts on Cancel when the confirm is destructive.',
+      'Opening moves focus inside: an element marked `data-autofocus`, else the first control that is not destructive. An AlertDialog starts on Cancel when the confirm is destructive, and on the field when it has `match`.',
       'Tab and Shift+Tab cycle inside it and never reach the page behind.',
       'Dialog: Esc and a click on the scrim close it. AlertDialog: Esc is Cancel; the scrim does nothing.',
     ],

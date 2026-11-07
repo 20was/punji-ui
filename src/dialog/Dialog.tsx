@@ -7,9 +7,11 @@
  * the title, described by the body, keep Tab inside, make the page behind inert and still, and give focus
  * back to the control that opened them. Built on the same layer as Sheet and Drawer.
  */
-import { useId, useRef, type ReactNode } from 'react';
+import { useId, useRef, useState, type ReactNode } from 'react';
 
 import { Button } from '../button/Button.tsx';
+import { confirmMatches } from '../internal/confirmMatch.ts';
+import { ConfirmField } from '../internal/ConfirmField.tsx';
 import { useFocusScope } from '../internal/focusScope.ts';
 import { useInertOthers } from '../internal/inert.ts';
 import { Portal } from '../internal/Portal.tsx';
@@ -50,6 +52,14 @@ export interface AlertDialogProps extends Shared {
   destructive?: boolean;
   /** The confirm is working: it shows loading and cannot be pressed twice. */
   busy?: boolean;
+  /** How final it is: `danger` is the danger button (the same as `destructive`), `caution` the primary button for something the reader can start again. Default: `destructive` decides. */
+  strength?: 'caution' | 'danger';
+  /** A typed confirmation: the word the reader must type before the confirm works (case and outer spaces ignored). The field takes first focus; Enter in it confirms. */
+  match?: string;
+  /** The field's label with `match` ("Type DELETE to confirm"). Default: the `match` text. */
+  matchLabel?: string;
+  /** Becomes data-testid on the typed-confirmation field. */
+  fieldTestId?: string;
 }
 
 interface LayerProps extends Shared {
@@ -98,10 +108,20 @@ export function Dialog({ open, title, body, children, actions, onClose, testId, 
 
 /**
  * A dialog that must be answered (role alertdialog): Esc cancels, the scrim does nothing, and a destructive confirm starts focus on Cancel.
+ * With `match` the reader types a word first, and the field takes focus.
  * @stability beta
  */
-export function AlertDialog({ open, title, body, onConfirm, onCancel, confirmLabel, cancelLabel = 'Cancel', destructive = false, busy, testId }: AlertDialogProps) {
+export function AlertDialog({ open, ...rest }: AlertDialogProps) {
   if (!open) return null;
+  return <OpenAlertDialog {...rest} open />;
+}
+
+function OpenAlertDialog({ title, body, onConfirm, onCancel, confirmLabel, cancelLabel = 'Cancel', destructive = false, busy, strength, match, matchLabel, fieldTestId, testId }: AlertDialogProps) {
+  const [typed, setTyped] = useState('');
+  const typing = match !== undefined;
+  const typedOk = !typing || confirmMatches(typed, match);
+  const danger = strength === 'danger' || (strength === undefined && destructive);
+  const cancelFirst = danger && !typing;
   return (
     <Portal>
       <Layer
@@ -113,11 +133,24 @@ export function AlertDialog({ open, title, body, onConfirm, onCancel, confirmLab
         onEscape={onCancel}
         foot={
           <>
-            <Button block variant="secondary" data-autofocus={destructive ? '' : undefined} onClick={onCancel}>{cancelLabel}</Button>
-            <Button block variant={destructive ? 'danger' : 'primary'} loading={busy} data-autofocus={destructive ? undefined : ''} onClick={onConfirm}>{confirmLabel}</Button>
+            <Button block variant="secondary" data-autofocus={cancelFirst ? '' : undefined} onClick={onCancel}>{cancelLabel}</Button>
+            <Button block variant={danger ? 'danger' : 'primary'} loading={busy} disabled={!typedOk} data-autofocus={cancelFirst || typing ? undefined : ''} onClick={onConfirm}>{confirmLabel}</Button>
           </>
         }
-      />
+      >
+        {typing && (
+          <ConfirmField
+            label={matchLabel ?? match}
+            value={typed}
+            onChange={setTyped}
+            dialogFocus
+            testId={fieldTestId}
+            onEnter={() => {
+              if (typedOk && !busy) onConfirm();
+            }}
+          />
+        )}
+      </Layer>
     </Portal>
   );
 }

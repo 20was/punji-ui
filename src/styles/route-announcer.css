@@ -1,0 +1,5 @@
+/* Punji UI styles.
+   Styles for RouteAnnouncer: a live region that is read out and never seen. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .pu-route-announcer { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0 }
+}

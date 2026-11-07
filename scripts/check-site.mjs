@@ -49,6 +49,7 @@ const CARD_EDGE = 4;
 const EDGE_ALLOW = {
   // 'slug' or 'slug/example': 'why the component is intentionally edge to edge',
   'app-shell': 'the skip link is position: fixed and parked above the viewport until it takes focus',
+  'skip-link': 'the skip link is position: fixed and parked above the viewport until it takes focus',
 };
 const CARD_ALLOW = {
   // 'slug' or 'slug/example': 'why text intentionally touches the box edge',

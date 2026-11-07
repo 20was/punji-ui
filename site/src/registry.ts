@@ -275,7 +275,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['Not interactive; it renders text.'],
     accessibility: ['Renders a <data> element whose value attribute holds the exact decimal, with the full currency name spoken when the symbol is shared.', 'A missing value is announced as "No value" (override with `missingLabel`).', 'Sign is text, not colour.'],
     responsive: ['Never truncates. Use compact where a column is narrow; the exact amount stays in the spoken text.'],
-    related: ['price-change', 'currency-input', 'formatters', 'metric-tile', 'fx-rate', 'money-correctness-lab'],
+    related: ['price-change', 'currency-input', 'formatters', 'metric-tile', 'fx-rate', 'money-correctness-lab', 'private-amount'],
   },
   {
     slug: 'price-change',
@@ -1463,7 +1463,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['A card is not interactive; what you put in the header action or footer is.'],
     accessibility: ['A <section> named by its title (an h2 unless `headingLevel` says 3) or by label when there is no title.', 'The description should state what the section shows or as of when.'],
     responsive: ['Cards fill their grid cell; with stretch they share a height so footers align.', '`clipDescription` keeps a long description on one line beside the header action.'],
-    related: ['card-link', 'metric-tile', 'inline-state', 'link-table'],
+    related: ['card-link', 'metric-tile', 'inline-state', 'link-table', 'card-section'],
   },
   {
     slug: 'card-link',
@@ -1483,7 +1483,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['A native link: Tab, then Enter.'],
     accessibility: ['An outgoing link says "(opens in a new tab)" after its words (`newTabLabel` overrides, for other languages).', 'The icon is decorative; the words carry the meaning.', '`ariaLabel` gives a fuller name when the words alone are vague, and must contain the visible words.'],
     responsive: ['Inline in the card header; wraps with the header on narrow widths.'],
-    related: ['card', 'link-table', 'inline-state', 'headline-list'],
+    related: ['card', 'link-table', 'inline-state', 'link-row', 'headline-list'],
   },
   {
     slug: 'link-table',

@@ -5,7 +5,7 @@ import { Button } from '../button/Button.tsx';
 import { Field } from '../fields/Fields.tsx';
 import { Select } from '../select/Select.tsx';
 import { BS_MONTHS, type NepalLanguage } from '../nepal/locale.ts';
-import { instantToNepalDate } from '../nepal/calendar.ts';
+import { bsDateStatus, instantToNepalDate } from '../nepal/calendar.ts';
 import { calendarLimits, dayNumber, displayParts, fromDayNumber, isoDate, monthLength, nextRange, rangeAvailable, requireISO, shiftMonth, storageDate, type CalendarSystem, type DateRange } from './calendarMath.ts';
 import { calendarLabels, gregorianMonths, weekDays, type CalendarLabels } from './labels.ts';
 import { useLocaleMessages } from '../locale/context.tsx';
@@ -105,7 +105,8 @@ export function Calendar(props: CalendarProps) {
   const start = dayNumber(first) - offset;
   const grid = useRef<HTMLTableElement>(null);
   useEffect(()=>{if(autoFocus)grid.current?.querySelector<HTMLButtonElement>('[data-calendar-focus="true"]')?.focus({preventScroll:true});},[autoFocus]);
-  const heading = useId(), helpId=useId();
+  const heading = useId(), helpId=useId(), noteId=useId();
+  const projectedMonth = calendar==='bikram-sambat'&&(()=>{try{return bsDateStatus({year:shown.year,month:shown.month,day:1})==='projected';}catch{return false;}})();
   const number = new Intl.NumberFormat('en-IN',{numberingSystem:digits,useGrouping:false});
   const months = calendar === 'gregory' ? props.locale ? Array.from({length:12},(_month,index)=>new Intl.DateTimeFormat(props.locale,{month:'long',timeZone:'UTC'}).format(new Date(Date.UTC(2020,index,1)))) : gregorianMonths[language] : BS_MONTHS[language];
   const weekdays = props.locale ? Array.from({length:7},(_day,index)=>new Intl.DateTimeFormat(props.locale,{weekday:'long',timeZone:'UTC'}).format(new Date(Date.UTC(2020,5,7+index)))) : weekDays[language];
@@ -154,7 +155,8 @@ export function Calendar(props: CalendarProps) {
       <div className="pu-cal-caption"><Select label={words.month} bare size="sm" value={String(shown.month)} onChange={month=>chooseMonth(shown.year,Number(month))} disabled={disabled} options={months.map((month,index)=>({value:String(index+1),label:month,disabled:shown.year===minYear&&index+1<displayParts(min,calendar).month||shown.year===maxYear&&index+1>displayParts(max,calendar).month}))}/><YearInput label={words.year} invalid={words.invalidYear} year={shown.year} min={minYear} max={maxYear} disabled={disabled} number={number} onChange={year=>chooseMonth(year,shown.month)}/></div>
       <Button iconOnly label={words.nextMonth} variant="ghost" size="md" disabled={disabled||!adjacent(1)} onClick={()=>navigate(1)}><Arrow next/></Button>
     </header>
-    <table ref={grid} className="pu-cal-grid" role="grid" aria-labelledby={heading} aria-describedby={helpId} onMouseLeave={()=>setHovered(null)} aria-multiselectable={props.mode==='range'||props.mode==='multiple'||undefined} aria-readonly={readOnly||undefined}>
+    {projectedMonth&&<p id={noteId} className="pu-cal-note" data-bs-status="projected"><span className="pu-bs-flag">{words.projected}</span> {words.projectedMonth}</p>}
+    <table ref={grid} className="pu-cal-grid" role="grid" aria-labelledby={heading} aria-describedby={projectedMonth?`${helpId} ${noteId}`:helpId} onMouseLeave={()=>setHovered(null)} aria-multiselectable={props.mode==='range'||props.mode==='multiple'||undefined} aria-readonly={readOnly||undefined}>
       <thead><tr>{Array.from({length:7},(_,index)=>(index+weekStartsOn)%7).map(day=><th key={day} scope="col" abbr={weekdays[day]}>{props.locale?new Intl.DateTimeFormat(props.locale,{weekday:'short',timeZone:'UTC'}).format(new Date(Date.UTC(2020,5,7+day))):language==='ne'?weekDays.ne[day]!.replace(/बार$/,''):weekDays.en[day]!.slice(0,2)}</th>)}</tr></thead>
       <tbody>{Array.from({length:Math.ceil((offset+count)/7)},(_,week)=><tr key={week}>{Array.from({length:7},(_cell,index)=>{
         const ordinal=start+week*7+index;

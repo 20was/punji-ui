@@ -11,7 +11,7 @@ import { useId, useState, type FormEvent, type ReactNode } from 'react';
 
 import { Button } from '../button/Button.tsx';
 import { Checkbox } from '../checkbox/Checkbox.tsx';
-import { DualDate, formatUnits } from '../internal/dualDate.tsx';
+import { DualDate, DEFAULT_BS_DATE_LABELS, formatUnits, type BsDateLabels } from '../internal/dualDate.tsx';
 import type { NepalLanguage } from '../nepal/locale.ts';
 import { OtpInput } from '../otp-input/OtpInput.tsx';
 
@@ -29,7 +29,7 @@ export interface EdisTransfer {
   settlementDate?: string;
 }
 
-export interface EdisConfirmationLabels {
+export interface EdisConfirmationLabels extends BsDateLabels {
   title: string;
   transfers: string;
   contract: string;
@@ -46,6 +46,7 @@ export interface EdisConfirmationLabels {
 }
 
 export const DEFAULT_EDIS_CONFIRMATION_LABELS: EdisConfirmationLabels = {
+  ...DEFAULT_BS_DATE_LABELS,
   title: 'Transfer sold shares',
   transfers: 'Sales to settle',
   contract: 'Contract',
@@ -147,7 +148,7 @@ export function EdisConfirmation({
             <dl className="pu-edis-meta">
               {t.contractNumber && <div><dt>{words.contract}</dt><dd>{t.contractNumber}</dd></div>}
               {t.broker && <div><dt>{words.broker}</dt><dd>{t.broker}</dd></div>}
-              {t.settlementDate && <div><dt>{words.settles}</dt><dd><DualDate value={t.settlementDate} primary={primaryCalendar} language={language} digits={digits} /></dd></div>}
+              {t.settlementDate && <div><dt>{words.settles}</dt><dd><DualDate value={t.settlementDate} primary={primaryCalendar} language={language} digits={digits} labels={words} /></dd></div>}
             </dl>
           </div>
         ))}

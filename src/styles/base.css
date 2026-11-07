@@ -28,4 +28,6 @@
     }
   }
   .kit-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0 }
+  /* "projected": a BS date the Nepal calendar committee has not published yet. A word with a dashed outline, never colour alone */
+  .pu-bs-flag { display: inline-block; margin-inline-start: var(--pu-space-1); padding: 0 var(--pu-space-1); border: 1px dashed currentcolor; border-radius: var(--pu-radius-4); font-size: var(--pu-text-xs); font-weight: 400; line-height: 1.4; color: var(--pu-color-text-muted); white-space: nowrap }
 }

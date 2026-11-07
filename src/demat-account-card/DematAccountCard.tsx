@@ -8,7 +8,7 @@
 import { useId, type ReactNode } from 'react';
 
 import { accountNumberTail } from '../banking/account.ts';
-import { DualDate } from '../internal/dualDate.tsx';
+import { DualDate, DEFAULT_BS_DATE_LABELS, type BsDateLabels } from '../internal/dualDate.tsx';
 import type { NepalLanguage } from '../nepal/locale.ts';
 import { RetryNote } from '../retry-note/RetryNote.tsx';
 import { boidParts, formatBoid, spokenBoid } from '../share-issues/boid.ts';
@@ -22,7 +22,7 @@ export const DEMAT_STATUS_LABELS: Readonly<Record<DematAccountStatus, string>> =
 
 const TONES = { active: 'gain', dormant: 'warn', suspended: 'loss', closed: undefined } as const;
 
-export interface DematAccountCardLabels {
+export interface DematAccountCardLabels extends BsDateLabels {
   boid: string;
   dpId: string;
   clientId: string;
@@ -41,6 +41,7 @@ export interface DematAccountCardLabels {
 }
 
 export const DEFAULT_DEMAT_ACCOUNT_CARD_LABELS: DematAccountCardLabels = {
+  ...DEFAULT_BS_DATE_LABELS,
   boid: 'BOID',
   dpId: 'DP ID',
   clientId: 'Client ID',
@@ -147,7 +148,7 @@ export function DematAccountCard({
       <div key={key}>
         <dt>{label}</dt>
         <dd className="pu-demat-expiry">
-          <DualDate value={date} primary={primaryCalendar} language={language} digits={digits} />
+          <DualDate value={date} primary={primaryCalendar} language={language} digits={digits} labels={words} />
           {tone && days !== null && <StatusPill size="sm" tone={tone} testId={testId ? `${testId}-${key}` : undefined}>{words.expiry(days)}</StatusPill>}
         </dd>
       </div>

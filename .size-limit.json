@@ -371,14 +371,14 @@
     "gzip": true
   },
   {
-    "name": "Nepal formatting without calendar or React",
+    "name": "Nepal formatting without React",
     "path": "dist/nepal/format.js",
     "import": "*",
     "limit": "0.89 kB",
     "gzip": true
   },
   {
-    "name": "Exact minor-unit calculations without calendar or React",
+    "name": "Exact minor-unit calculations without React",
     "path": "dist/nepal/money.js",
     "import": "*",
     "limit": "510 B",
@@ -427,14 +427,14 @@
     "gzip": true
   },
   {
-    "name": "Gregorian date-only utilities without converter or React",
+    "name": "Gregorian date-only utilities without React",
     "path": "dist/nepal/date-only.js",
     "import": "*",
     "limit": "0.72 kB",
     "gzip": true
   },
   {
-    "name": "Market display formatters without converter or React",
+    "name": "Market display formatters without React",
     "path": "dist/nepal/market-format.js",
     "import": "*",
     "limit": "570 B",
@@ -444,20 +444,20 @@
     "name": "Calendar including BS conversion and shared controls",
     "path": "dist/calendar/Calendar.js",
     "import": "*",
-    "limit": "9.25 kB",
+    "limit": "9.64 kB",
     "gzip": true
   },
   {
     "name": "Date pickers including Calendar",
     "path": "dist/date-picker/DatePicker.js",
     "import": "*",
-    "limit": "14.03 kB",
+    "limit": "14.62 kB",
     "gzip": true
   },
   {
     "name": "Calendar and date picker CSS",
     "path": "dist/css/calendar.css",
-    "limit": "1.44 kB",
+    "limit": "1.49 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -920,7 +920,7 @@
     "name": "period-selector (import from '@punji/ui/period-selector')",
     "path": "dist/period-selector/FinancialPeriodSelector.js",
     "import": "*",
-    "limit": "5.25 kB",
+    "limit": "5.48 kB",
     "gzip": true
   },
   {
@@ -1042,7 +1042,7 @@
     "name": "transaction-history with the date picker panel (all chunks)",
     "path": "dist/transaction-history/TransactionHistory.js",
     "import": "*",
-    "limit": "24.55 kB",
+    "limit": "25.17 kB",
     "gzip": true
   },
   {
@@ -1472,21 +1472,21 @@
     "name": "locale/ne Nepali pack (import from '@punji/ui/locale/ne')",
     "path": "dist/locale/ne.js",
     "import": "*",
-    "limit": "5.49 kB",
+    "limit": "5.77 kB",
     "gzip": true
   },
   {
     "name": "locale/hi Hindi pack (import from '@punji/ui/locale/hi')",
     "path": "dist/locale/hi.js",
     "import": "*",
-    "limit": "5.28 kB",
+    "limit": "5.43 kB",
     "gzip": true
   },
   {
     "name": "locale/bn Bengali pack (import from '@punji/ui/locale/bn')",
     "path": "dist/locale/bn.js",
     "import": "*",
-    "limit": "5.12 kB",
+    "limit": "5.25 kB",
     "gzip": true
   },
   {
@@ -2144,7 +2144,7 @@
     "name": "article (import * from '@punji/ui/article')",
     "path": "dist/article/Article.js",
     "import": "*",
-    "limit": "5.61 kB",
+    "limit": "6.23 kB",
     "gzip": true
   },
   {
@@ -2299,6 +2299,34 @@
     "path": "dist/css/heat-tables.css",
     "limit": "2.08 kB",
     "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "Nepal formatting without calendar or React",
+    "path": "dist/nepal/format.js",
+    "import": "*",
+    "limit": "0.89 kB",
+    "gzip": true
+  },
+  {
+    "name": "Exact minor-unit calculations without calendar or React",
+    "path": "dist/nepal/money.js",
+    "import": "*",
+    "limit": "510 B",
+    "gzip": true
+  },
+  {
+    "name": "Gregorian date-only utilities without converter or React",
+    "path": "dist/nepal/date-only.js",
+    "import": "*",
+    "limit": "0.72 kB",
+    "gzip": true
+  },
+  {
+    "name": "Market display formatters without converter or React",
+    "path": "dist/nepal/market-format.js",
+    "import": "*",
+    "limit": "570 B",
     "gzip": true
   },
   {

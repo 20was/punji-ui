@@ -143,6 +143,14 @@ function toLegs(legs: readonly PayoffChartLeg[]): PayoffLeg[] {
   }));
 }
 
+/** Widens a range outward to round tick values (the chart-math nice steps), so an automatic axis never prints a raw computed end. Never below zero. */
+function niceRange(r: { from: bigint; to: bigint }): { from: bigint; to: bigint } {
+  const { lo, hi } = niceTicks(Number(r.from), Number(r.to), 5);
+  const from = BigInt(Math.max(0, Math.floor(lo)));
+  const to = BigInt(Math.ceil(hi));
+  return { from: from < r.from ? from : r.from, to: to > r.to ? to : r.to };
+}
+
 /** The default price range: the strikes, stock entries, breakevens, current price and today's prices with a margin (60% of their spread, at least 4% of the highest), never below zero. */
 function defaultRange(legs: readonly PayoffLeg[], extras: readonly bigint[]): { from: bigint; to: bigint } {
   const refs = [...legs.filter((l) => l.kind !== 'stock').map((l) => l.strike!), ...legs.filter((l) => l.kind === 'stock').map((l) => l.premium), ...extras];
@@ -168,7 +176,7 @@ export function payoffModel(input: { legs: readonly PayoffChartLeg[]; spot?: Mon
   const legs = toLegs(input.legs);
   const todaySpots = today.map((t) => minorOf(t.spot));
   const breakevens = strategyBreakevens(legs);
-  const { from, to } = range ? { from: minorOf(range.from), to: minorOf(range.to) } : defaultRange(legs, [...(spot ? [minorOf(spot)] : []), ...todaySpots, ...breakevens.map((b) => b.minor)]);
+  const { from, to } = range ? { from: minorOf(range.from), to: minorOf(range.to) } : niceRange(defaultRange(legs, [...(spot ? [minorOf(spot)] : []), ...todaySpots, ...breakevens.map((b) => b.minor)]));
   const set = new Set<bigint>(payoffSamples(legs, from, to, 40));
   for (const extra of [...(spot ? [minorOf(spot)] : []), ...breakevens.map((b) => b.minor), ...todaySpots]) if (extra >= from && extra <= to) set.add(extra);
   const spots = [...set].toSorted((a, b) => (a < b ? -1 : a > b ? 1 : 0));

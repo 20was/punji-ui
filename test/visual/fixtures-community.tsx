@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { DataFreshness, FxRateDisplay, StatusBanner } from '../../src/index.ts';
+import { CashFlowChart, DataFreshness, FxRateDisplay, money, NetWorthChart, RangeSelector, StatusBanner, WaterfallChart } from '../../src/index.ts';
 import { Accordion, Breadcrumb, MenuButton } from '@punji/ui';
 // new:component inserts imports above this line
 
@@ -80,6 +80,56 @@ function AccordionFixture() {
   );
 }
 
+const npr = (rupees: number) => money(BigInt(rupees) * 100n, 'NPR');
+
+function WaterfallChartFixture() {
+  return (
+    <div style={{ maxWidth: 560 }}>
+      <WaterfallChart
+        label="Profit bridge"
+        steps={[
+          { key: 'open', label: 'Opening', amount: npr(500_000), total: true },
+          { key: 'sales', label: 'Sales', amount: npr(1_200_000) },
+          { key: 'cogs', label: 'Cost of sales', amount: npr(-700_000) },
+          { key: 'tax', label: 'Tax', amount: npr(-90_000) },
+          { key: 'close', label: 'Closing', amount: npr(0), total: true },
+        ]}
+      />
+    </div>
+  );
+}
+
+const flow = (key: string, i: number, o: number) => ({ key, label: key, inflow: npr(i), outflow: npr(o) });
+
+function CashFlowChartFixture() {
+  const p = flow;
+  return (
+    <div style={{ maxWidth: 560 }}>
+      <CashFlowChart label="Cash flow" periods={[p('Shr', 180_000, 120_000), p('Bha', 175_000, 140_000), p('Asw', 210_000, 260_000), p('Kar', 190_000, 150_000), p('Man', 185_000, 135_000)]} />
+    </div>
+  );
+}
+
+function NetWorthChartFixture() {
+  const m = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+  const a = [900, 940, 980, 1010, 1060, 1100];
+  const l = [300, 290, 280, 1050, 1030, 1010];
+  return (
+    <div style={{ maxWidth: 560 }}>
+      <NetWorthChart label="Net worth" points={m.map((k, i) => ({ key: k, label: k, assets: npr(a[i]! * 1000), liabilities: npr(l[i]! * 1000) }))} />
+    </div>
+  );
+}
+
+function RangeSelectorFixture() {
+  return (
+    <div style={{ display: 'grid', gap: 12, maxWidth: 390 }}>
+      <RangeSelector value="1M" onChange={() => {}} />
+      <RangeSelector value="All" onChange={() => {}} fill />
+    </div>
+  );
+}
+
 // new:component inserts fixtures above this line
 
 export const communityRegistry: Record<string, () => ReactNode> = {
@@ -89,5 +139,9 @@ export const communityRegistry: Record<string, () => ReactNode> = {
   'menu': MenuFixture,
   'breadcrumb': BreadcrumbFixture,
   'accordion': AccordionFixture,
+  'waterfall-chart': WaterfallChartFixture,
+  'cash-flow-chart': CashFlowChartFixture,
+  'net-worth-chart': NetWorthChartFixture,
+  'range-selector': RangeSelectorFixture,
   // new:component inserts registry entries above this line
 };

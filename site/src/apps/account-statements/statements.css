@@ -1,0 +1,61 @@
+/* Account statements layout and print. Colours and type from the package tokens; classes prefixed st-. */
+.st-who { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; min-width: 0; margin: 0; }
+.st-who span { color: var(--doc-ink-2); font-size: 12px; font-variant-numeric: tabular-nums; }
+.st-controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 16px; min-width: 0; }
+.st-controls > * { min-width: 0; }
+.st-step { display: flex; flex-wrap: wrap; gap: 8px; }
+.st-drift { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.st-keys { flex: 1 0 100%; margin: 0; }
+
+/* The statement is a document: a header, then sections. On screen it is a bordered sheet. */
+.st-paper { display: grid; gap: 24px; min-width: 0; padding: 20px; border: 1px solid var(--doc-rule); border-radius: 12px; background: var(--pu-color-bg); }
+.st-head { display: grid; gap: 16px; min-width: 0; padding-bottom: 16px; border-bottom: 2px solid var(--pu-color-border-strong); }
+.st-bank { margin: 0 0 2px; color: var(--doc-ink-2); font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+.st-title { margin: 0; font: 600 22px/1.25 var(--pu-font-display); }
+.st-meta { display: grid; gap: 6px 24px; margin: 0; }
+.st-meta > div { display: grid; grid-template-columns: minmax(0, 120px) minmax(0, 1fr); gap: 8px; }
+.st-meta dt { color: var(--doc-ink-2); font-size: 13px; }
+.st-meta dd { margin: 0; overflow-wrap: anywhere; }
+.st-section { min-width: 0; }
+.st-h { margin: 0 0 10px; font: 600 16px/1.3 var(--pu-font-display); }
+.st-notes-h { margin-top: 24px; }
+.st-check { margin: 12px 0 0; font-size: 14px; font-variant-numeric: tabular-nums; }
+.st-desc { display: grid; gap: 0; min-width: 0; }
+.st-desc strong { font-weight: 600; overflow-wrap: anywhere; }
+.st-desc span { color: var(--doc-ink-2); font-size: 12px; }
+.st-notes { margin: 0; padding-left: 18px; font-size: 14px; }
+.st-notes li { margin: 4px 0; }
+@media (min-width: 720px) {
+  .st-paper { padding: 28px; }
+  .st-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 639px) { .st-who span { display: none; } }
+
+/* Print or save as PDF: the statement alone. No navigation, toolbar, controls or docs frame; black on white whatever
+   the theme, so a black and white printer or a PDF reads the same; the header, summary and transactions each start a
+   page where they would otherwise be split badly; table heads repeat and no row is cut in half. Signs, words and
+   the ✓ and ! marks carry the meaning, never colour. */
+@page { size: A4; margin: 14mm; }
+@media print {
+  .doc-app-bar, .doc-app-about, .app-nav, .app-toolbar, .app-banner, .app-screen-head, .st-noprint { display: none !important; }
+  html, body, .doc-app-page, .doc-app-stage, .doc-app-main { background: white !important; color: black !important; }
+  .app-frame { display: block; min-height: 0; }
+  .app-body { padding: 0; }
+  .st-paper { display: block; padding: 0; border: 0; border-radius: 0; background: white; color: black; font-size: 11pt; }
+  .st-paper * { background: transparent !important; color: black !important; box-shadow: none !important; text-shadow: none !important; border-color: black !important; }
+  .st-paper .st-desc span, .st-paper .st-bank, .st-paper .st-meta dt { font-size: 9pt; }
+  .st-head { break-inside: avoid; margin-bottom: 8mm; }
+  .st-section { margin: 0 0 8mm; }
+  .st-break { break-before: page; }
+  .st-h { break-after: avoid; }
+  /* The table region scrolls on screen; on paper it grows to the full table. */
+  .st-paper :is(.pu-fin, .kit-tablebox, [role='region']) { overflow: visible !important; max-height: none !important; border: 0 !important; }
+  .st-paper .kit-table-group-i { display: none; }
+  .st-paper table { width: 100%; border-collapse: collapse; }
+  .st-paper thead { display: table-header-group; }
+  .st-paper tfoot { display: table-footer-group; }
+  .st-paper tr { break-inside: avoid; }
+  .st-paper :is(th, td) { border-bottom: 0.5pt solid black; }
+  .st-paper tfoot :is(th, td), .st-paper thead :is(th, td) { border-top: 1pt solid black; border-bottom: 1pt solid black; font-weight: 700; }
+  .st-paper a { text-decoration: none; }
+}

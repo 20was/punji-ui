@@ -39,9 +39,10 @@
  * every figure by row. Series are told apart by the legend and the table, not
  * by colour alone.
  */
-import { useId, type PointerEvent, type ReactNode } from 'react';
+import { type PointerEvent, type ReactNode } from 'react';
 
-import { clamp, isNum, useChartCursor, useMeasuredWidth } from '../internal/chartFrame.tsx';
+import { ChartA11yShell, ChartDataTable } from '../chart-a11y/ChartA11yShell.tsx';
+import { clamp, isNum, useMeasuredWidth } from '../internal/chartFrame.tsx';
 
 export type ColumnTone = 'chart' | 'series2' | 'series3' | 'series4' | 'neutral' | 'gain' | 'loss';
 
@@ -185,8 +186,6 @@ export function ColumnChart(props: ColumnChartProps) {
 }
 
 function ColumnPlot({ series, columns, label, format = String, formatAxis, height = 200, minSlots = 6, legend = false, axis = true, labels, mirror = false, net, interactive = true, testId }: ColumnChartProps) {
-  const hintId = useId();
-  const cursor = useChartCursor(columns.length);
   // 0 until the first measurement: the columns then lay out at their natural size, with every label shown.
   const { ref: area, width } = useMeasuredWidth(0);
 
@@ -238,15 +237,39 @@ function ColumnPlot({ series, columns, label, format = String, formatAxis, heigh
     ...(mirror ? (net ? [{ label: net.label, value: (net.format ?? format)(sums[ci]!.net) }] : []) : series.length > 1 ? [{ label: labels?.total ?? 'Total', value: format(sums[ci]!.net) }] : []),
   ];
   const spoken = (c: ColumnDatum, ci: number) => `${c.label}: ${lines(c, ci).map((l) => `${l.label} ${l.value}`).join(', ')}`;
-  const active = cursor.index === null ? null : columns[cursor.index]!;
-  const activeFrac = cursor.index === null ? 0 : (lead + cursor.index + 0.5) / slots;
-  const onPointer = (e: PointerEvent<HTMLDivElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    const ci = r.width > 0 ? Math.floor(((e.clientX - r.left) / r.width) * slots) - lead : -1;
-    cursor.pointerTo(ci >= 0 && ci < n ? ci : null);
-  };
+  const totalHead = mirror ? net?.label : series.length > 1 ? (labels?.total ?? 'Total') : undefined;
   return (
-    <figure className="kit-col" aria-label={label} data-testid={testId}>
+    <ChartA11yShell
+      className="kit-col"
+      label={label}
+      roleDescription="column chart"
+      count={n}
+      speak={(i) => spoken(columns[i]!, i)}
+      hint={labels?.hint ?? 'Use the left and right arrow keys to move between columns, Home and End to jump to the first and last.'}
+      interactive={interactive}
+      testId={testId}
+      footer={legend ? <figcaption><ColumnLegend series={series} /></figcaption> : undefined}
+      table={
+        <ChartDataTable
+          caption={label}
+          head={[labels?.period ?? 'Period', ...drawn.map((s) => s.label), ...(totalHead === undefined ? [] : [totalHead])]}
+          rows={columns.map((c, ci) => ({
+            key: c.key,
+            head: c.label,
+            cells: [...drawn.map((_, i) => cellText(c, i)), ...(mirror ? (net ? [(net.format ?? format)(sums[ci]!.net)] : []) : series.length > 1 ? [format(sums[ci]!.net)] : [])],
+          }))}
+        />
+      }
+    >
+      {({ index, pointerTo, plotProps }) => {
+        const active = index === null ? null : columns[index]!;
+        const activeFrac = index === null ? 0 : (lead + index + 0.5) / slots;
+        const onPointer = (e: PointerEvent<HTMLDivElement>) => {
+          const r = e.currentTarget.getBoundingClientRect();
+          const ci = r.width > 0 ? Math.floor(((e.clientX - r.left) / r.width) * slots) - lead : -1;
+          pointerTo(ci >= 0 && ci < n ? ci : null);
+        };
+        return (
       <div className="kit-col-frame" style={{ gridTemplateRows: `${plotH + 22}px auto`, gridTemplateColumns: axis ? 'auto minmax(0, 1fr)' : 'minmax(0, 1fr)' }}>
         {axis && (
           <div className="kit-col-y" aria-hidden="true">
@@ -260,8 +283,7 @@ function ColumnPlot({ series, columns, label, format = String, formatAxis, heigh
         )}
         {/* The plot is the one focus stop: arrow keys move through the columns, the pointer reads one. */}
         {/* oxlint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/no-noninteractive-tabindex */}
-        <div className="kit-col-plot" {...(interactive ? { tabIndex: 0, role: 'group', 'aria-label': label, 'aria-roledescription': 'column chart', 'aria-describedby': hintId,
-          onKeyDown: cursor.onKeyDown, onFocus: cursor.onFocus, onBlur: cursor.clear, onPointerMove: onPointer, onPointerDown: onPointer, onPointerLeave: () => cursor.pointerTo(null) } : {})}>
+        <div className="kit-col-plot" {...plotProps(onPointer)}>
           <div ref={area} className="kit-col-area" aria-hidden="true">
             {hasScale && ticks.filter((t) => t.v !== 0).map((t) => <span key={t.v} className="kit-col-grid" style={{ bottom: `${t.at}%` }} />)}
             <span className="kit-col-zero" style={{ bottom: `${base}%` }} />
@@ -269,7 +291,7 @@ function ColumnPlot({ series, columns, label, format = String, formatAxis, heigh
               {columns.map((c, ci) => {
                 const s = sums[ci]!;
                 return (
-                  <div key={c.key} className={`kit-col-c${cursor.index === ci ? ' lit' : ''}`} style={at(ci)} data-testid={testId ? `${testId}-${c.key}` : undefined}>
+                  <div key={c.key} className={`kit-col-c${index === ci ? ' lit' : ''}`} style={at(ci)} data-testid={testId ? `${testId}-${c.key}` : undefined}>
                     <span className="kit-col-up" style={{ bottom: `${base}%`, height: `${pct(s.up, span)}%` }}>
                       {showTotals && <b className="kit-col-v">{format(s.net)}</b>}
                       {drawn.map((sr, i) => {
@@ -290,11 +312,11 @@ function ColumnPlot({ series, columns, label, format = String, formatAxis, heigh
               })}
             </div>
           </div>
-          {interactive && active && cursor.index !== null && (
+          {interactive && active && index !== null && (
             <div className={`kit-col-tip${activeFrac > 0.5 ? ' end' : ''}`} aria-hidden="true" style={{ left: `${activeFrac * 100}%` }} data-testid={testId ? `${testId}-tip` : undefined}>
               <b>{active.label}</b>
               <dl>
-                {lines(active, cursor.index).map((l) => (
+                {lines(active, index).map((l) => (
                   <div key={l.label}>
                     <dt>{l.tone && <i className={`kit-col-t-${l.tone}`} />}{l.label}</dt>
                     <dd>{l.value}</dd>
@@ -312,38 +334,8 @@ function ColumnPlot({ series, columns, label, format = String, formatAxis, heigh
             ))}
         </div>
       </div>
-      {legend && (
-        <figcaption>
-          <ColumnLegend series={series} />
-        </figcaption>
-      )}
-      {interactive && <p className="kit-sr" id={hintId}>{labels?.hint ?? 'Use the left and right arrow keys to move between columns, Home and End to jump to the first and last.'}</p>}
-      {interactive && <div className="kit-sr" role="status" aria-live="polite" aria-atomic="true">{active && cursor.index !== null ? spoken(active, cursor.index) : ''}</div>}
-      <div className="kit-sr">
-        <table>
-          <caption>{label}</caption>
-          <thead>
-            <tr>
-              <th scope="col">{labels?.period ?? 'Period'}</th>
-              {drawn.map((s) => (
-                <th key={s.key} scope="col">{s.label}</th>
-              ))}
-              {mirror ? net && <th scope="col">{net.label}</th> : series.length > 1 && <th scope="col">{labels?.total ?? 'Total'}</th>}
-            </tr>
-          </thead>
-          <tbody>
-            {columns.map((c, ci) => (
-              <tr key={c.key}>
-                <th scope="row">{c.label}</th>
-                {drawn.map((s, i) => (
-                  <td key={s.key}>{cellText(c, i)}</td>
-                ))}
-                {mirror ? net && <td>{(net.format ?? format)(sums[ci]!.net)}</td> : series.length > 1 && <td>{format(sums[ci]!.net)}</td>}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </figure>
+        );
+      }}
+    </ChartA11yShell>
   );
 }

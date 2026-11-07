@@ -667,6 +667,26 @@
       "types": "./dist/accordion/Accordion.d.ts",
       "default": "./dist/accordion/Accordion.js"
     },
+    "./chart-a11y": {
+      "types": "./dist/chart-a11y/ChartA11yShell.d.ts",
+      "default": "./dist/chart-a11y/ChartA11yShell.js"
+    },
+    "./waterfall-chart": {
+      "types": "./dist/waterfall-chart/WaterfallChart.d.ts",
+      "default": "./dist/waterfall-chart/WaterfallChart.js"
+    },
+    "./cash-flow-chart": {
+      "types": "./dist/cash-flow-chart/CashFlowChart.d.ts",
+      "default": "./dist/cash-flow-chart/CashFlowChart.js"
+    },
+    "./net-worth-chart": {
+      "types": "./dist/net-worth-chart/NetWorthChart.d.ts",
+      "default": "./dist/net-worth-chart/NetWorthChart.js"
+    },
+    "./range-selector": {
+      "types": "./dist/range-selector/RangeSelector.d.ts",
+      "default": "./dist/range-selector/RangeSelector.js"
+    },
     "./css/*.css": {
       "types": "./dist/css/*.css.d.ts",
       "default": "./dist/css/*.css"
@@ -836,6 +856,26 @@
       "types": "./dist/table-core/tableCore.d.ts",
       "default": "./dist/table-core/tableCore.js"
     },
+    "./tanstack-table": {
+      "types": "./dist/tanstack-table/tanstackTable.d.ts",
+      "default": "./dist/tanstack-table/tanstackTable.js"
+    },
+    "./ag-grid": {
+      "types": "./dist/ag-grid/agGrid.d.ts",
+      "default": "./dist/ag-grid/agGrid.js"
+    },
+    "./mui-x-grid": {
+      "types": "./dist/mui-x-grid/muiXGrid.d.ts",
+      "default": "./dist/mui-x-grid/muiXGrid.js"
+    },
+    "./table-totals": {
+      "types": "./dist/table-totals/tableTotals.d.ts",
+      "default": "./dist/table-totals/tableTotals.js"
+    },
+    "./table-presets": {
+      "types": "./dist/table-presets/tablePresets.d.ts",
+      "default": "./dist/table-presets/tablePresets.js"
+    },
     "./table-export": {
       "types": "./dist/table-export/TableExport.d.ts",
       "default": "./dist/table-export/TableExport.js"
@@ -980,20 +1020,26 @@
   },
   "peerDependencies": {
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "@tanstack/react-table": "^9.3.1",
+    "ag-grid-community": "^36.0.0",
+    "@mui/x-data-grid": "^9.0.0"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
     "@changesets/changelog-github": "1.0.1",
     "@changesets/cli": "3.0.3",
+    "@mui/x-data-grid": "9.17.0",
     "@playwright/test": "1.64.1",
     "@size-limit/preset-small-lib": "14.3.0",
+    "@tanstack/react-table": "9.3.1",
     "@testing-library/dom": "10.4.2",
     "@testing-library/react": "16.3.3",
     "@testing-library/user-event": "14.6.8",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitest/coverage-v8": "5.0.5",
+    "ag-grid-community": "36.3.0",
     "axe-core": "4.14.0",
     "eslint": "10.14.0",
     "fast-check": "4.10.2",
@@ -1017,6 +1063,17 @@
   "overrides": {
     "eslint": {
       "minimatch": "11.0.1"
+    }
+  },
+  "peerDependenciesMeta": {
+    "@tanstack/react-table": {
+      "optional": true
+    },
+    "ag-grid-community": {
+      "optional": true
+    },
+    "@mui/x-data-grid": {
+      "optional": true
     }
   }
 }

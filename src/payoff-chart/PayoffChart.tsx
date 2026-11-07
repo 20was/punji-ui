@@ -143,11 +143,23 @@ function toLegs(legs: readonly PayoffChartLeg[]): PayoffLeg[] {
   }));
 }
 
-/** Widens a range outward to round tick values (the chart-math nice steps), so an automatic axis never prints a raw computed end. Never below zero. */
+/**
+ * Widens a range outward to round tick values (the chart-math nice steps), so an automatic axis never prints a raw
+ * computed end. It tries ever finer steps and keeps the first whose domain grows the span by at most 15%, else the
+ * tightest it found. Never below zero.
+ */
 function niceRange(r: { from: bigint; to: bigint }): { from: bigint; to: bigint } {
-  const { lo, hi } = niceTicks(Number(r.from), Number(r.to), 5);
-  const from = BigInt(Math.max(0, Math.floor(lo)));
-  const to = BigInt(Math.ceil(hi));
+  const lo0 = Number(r.from);
+  const hi0 = Number(r.to);
+  const span = hi0 - lo0 || 1;
+  let best: { lo: number; hi: number } | null = null;
+  for (const count of [4, 5, 6, 7, 8, 10, 12, 16, 20]) {
+    const { lo, hi } = niceTicks(lo0, hi0, count);
+    if (best === null || hi - lo < best.hi - best.lo) best = { lo, hi };
+    if (hi - lo <= span * 1.15) break;
+  }
+  const from = BigInt(Math.max(0, Math.floor(best!.lo)));
+  const to = BigInt(Math.ceil(best!.hi));
   return { from: from < r.from ? from : r.from, to: to > r.to ? to : r.to };
 }
 

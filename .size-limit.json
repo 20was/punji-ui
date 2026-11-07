@@ -332,7 +332,7 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "257.46 kB",
+    "limit": "267.67 kB",
     "gzip": true
   },
   {
@@ -759,14 +759,98 @@
     "name": "chart-math (import from '@punji/ui/chart-math')",
     "path": "dist/chart-math/chartMath.js",
     "import": "*",
-    "limit": "2.31 kB",
+    "limit": "3.01 kB",
     "gzip": true
   },
   {
     "name": "candlestick-chart (import from '@punji/ui/candlestick-chart')",
     "path": "dist/candlestick-chart/CandlestickChart.js",
     "import": "*",
-    "limit": "5.72 kB",
+    "limit": "7.57 kB",
+    "gzip": true
+  },
+  {
+    "name": "chart-indicators (import from '@punji/ui/chart-indicators')",
+    "path": "dist/chart-math/indicators.js",
+    "import": "*",
+    "limit": "0.9 kB",
+    "gzip": true
+  },
+  {
+    "name": "rsi-indicator (import from '@punji/ui/rsi-indicator')",
+    "path": "dist/candlestick-chart/indicators/rsi.js",
+    "import": "*",
+    "limit": "4.58 kB",
+    "gzip": true
+  },
+  {
+    "name": "macd-indicator (import from '@punji/ui/macd-indicator')",
+    "path": "dist/candlestick-chart/indicators/macd.js",
+    "import": "*",
+    "limit": "4.66 kB",
+    "gzip": true
+  },
+  {
+    "name": "bollinger-indicator (import from '@punji/ui/bollinger-indicator')",
+    "path": "dist/candlestick-chart/indicators/bollinger.js",
+    "import": "*",
+    "limit": "4.71 kB",
+    "gzip": true
+  },
+  {
+    "name": "vwap-indicator (import from '@punji/ui/vwap-indicator')",
+    "path": "dist/candlestick-chart/indicators/vwap.js",
+    "import": "*",
+    "limit": "4.41 kB",
+    "gzip": true
+  },
+  {
+    "name": "indicator-pane-view (import from '@punji/ui/indicator-pane-view')",
+    "path": "dist/candlestick-chart/IndicatorPaneView.js",
+    "import": "*",
+    "limit": "1.99 kB",
+    "gzip": true
+  },
+  {
+    "name": "candlestick-trading (import from '@punji/ui/candlestick-trading')",
+    "path": "dist/candlestick-chart/trading.js",
+    "import": "*",
+    "limit": "2.95 kB",
+    "gzip": true
+  },
+  {
+    "name": "candlestick-baseline (import from '@punji/ui/candlestick-baseline')",
+    "path": "dist/candlestick-chart/extensions/baseline.js",
+    "import": "*",
+    "limit": "3.29 kB",
+    "gzip": true
+  },
+  {
+    "name": "heikin-ashi (import from '@punji/ui/heikin-ashi')",
+    "path": "dist/candlestick-chart/extensions/heikinAshi.js",
+    "import": "*",
+    "limit": "3.24 kB",
+    "gzip": true
+  },
+  {
+    "name": "price-scales (import from '@punji/ui/price-scales')",
+    "path": "dist/candlestick-chart/extensions/priceScales.js",
+    "import": "*",
+    "limit": "4.16 kB",
+    "gzip": true
+  },
+  {
+    "name": "candlestick-events (import from '@punji/ui/candlestick-events')",
+    "path": "dist/candlestick-chart/extensions/events.js",
+    "import": "*",
+    "limit": "3.91 kB",
+    "gzip": true
+  },
+  {
+    "name": "candlestick-levels (import from '@punji/ui/candlestick-levels')",
+    "path": "dist/candlestick-chart/extensions/levels.js",
+    "import": "*",
+    "limit": "3.75 kB",
     "gzip": true
   },
   {
@@ -1118,7 +1202,7 @@
   {
     "name": "css/contrast.css (high-contrast themes, forced colours)",
     "path": "dist/css/contrast.css",
-    "limit": "2.05 kB",
+    "limit": "2.25 kB",
     "rolldown": false,
     "gzip": true
   },

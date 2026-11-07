@@ -47,9 +47,12 @@
  */
 import { memo, useEffect, useId, useMemo, useState, type CSSProperties, type PointerEvent, type ReactNode } from 'react';
 
-import { downsampleIndices, niceTicks, rebase, rebaseOnto } from '../chart-math/chartMath.ts';
+import { downsampleIndices, niceTicks, rebase, rebaseOnto, spreadLabels } from '../chart-math/chartMath.ts';
 import { ChartA11yShell } from '../chart-a11y/ChartA11yShell.tsx';
 import { ChartTooltip, clamp, isNum, shortDate, thinned, useMeasuredWidth } from '../internal/chartFrame.tsx';
+
+/** Still importable from here: it moved to chart-math, which the candlestick chart shares. */
+export { spreadLabels } from '../chart-math/chartMath.ts';
 
 export interface PerformanceSeries {
   /** Stable key (the React key and the legend's identity). */
@@ -166,24 +169,6 @@ export function drawdownOf(values: readonly (number | null | undefined)[]): (num
     peak = Math.max(peak, v);
     return peak > 0 ? Math.min(0, (v / peak - 1) * 100) : null;
   });
-}
-
-/**
- * Moves label positions apart so no two are closer than `gap`, keeping their order and staying inside
- * `[min, max]`. Returns the new positions in the input order. Pure; it never moves a lone label.
- */
-export function spreadLabels(positions: readonly number[], gap: number, min: number, max: number): number[] {
-  const order = positions.map((_, i) => i).toSorted((a, b) => positions[a]! - positions[b]! || a - b);
-  const placed = order.map((i) => clamp(positions[i]!, min, max));
-  for (let k = 1; k < placed.length; k += 1) placed[k] = Math.max(placed[k]!, placed[k - 1]! + gap);
-  // Pushed past the bottom: shift the stack back up, keeping the gaps.
-  for (let k = placed.length - 1; k >= 0; k -= 1) {
-    const limit = k === placed.length - 1 ? max : placed[k + 1]! - gap;
-    if (placed[k]! > limit) placed[k] = limit;
-  }
-  const out = positions.map(() => 0);
-  order.forEach((i, k) => { out[i] = placed[k]!; });
-  return out;
 }
 
 /**

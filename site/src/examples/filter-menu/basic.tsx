@@ -14,7 +14,8 @@ export default function Example() {
   const pick = (name: string) => () => setChosen(`${name} opens its editor.`);
   return (
     <Stack>
-      <div>
+      {/* The popover is placed against the screen, below the button when it fits. The stage keeps the room it needs, so it opens under the button instead of flipping up over the page. */}
+      <div style={{ minHeight: 400 }}>
         <Button ref={opener} variant="secondary" aria-haspopup="dialog" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
           Add filter
         </Button>

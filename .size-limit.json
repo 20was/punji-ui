@@ -248,7 +248,7 @@
     "name": "table (import from '@punji/ui/table')",
     "path": "dist/table/Table.js",
     "import": "*",
-    "limit": "2.74 kB",
+    "limit": "3 kB",
     "gzip": true
   },
   {
@@ -395,7 +395,7 @@
     "name": "Financial compositions",
     "path": "dist/financial/financial.js",
     "import": "*",
-    "limit": "7.17 kB",
+    "limit": "7.38 kB",
     "gzip": true
   },
   {
@@ -843,7 +843,7 @@
     "name": "stock-table (import from '@punji/ui/stock-table')",
     "path": "dist/stock-table/StockTable.js",
     "import": "*",
-    "limit": "10.89 kB",
+    "limit": "11.28 kB",
     "gzip": true
   },
   {
@@ -920,28 +920,28 @@
     "name": "ledger-table (import from '@punji/ui/ledger-table')",
     "path": "dist/ledger-table/LedgerTable.js",
     "import": "*",
-    "limit": "9.45 kB",
+    "limit": "9.83 kB",
     "gzip": true
   },
   {
     "name": "journal-entry (import from '@punji/ui/journal-entry')",
     "path": "dist/journal-entry/JournalEntryView.js",
     "import": "*",
-    "limit": "8.60 kB",
+    "limit": "8.92 kB",
     "gzip": true
   },
   {
     "name": "trial-balance (import from '@punji/ui/trial-balance')",
     "path": "dist/trial-balance/TrialBalance.js",
     "import": "*",
-    "limit": "9.45 kB",
+    "limit": "9.65 kB",
     "gzip": true
   },
   {
     "name": "statement-table (import from '@punji/ui/statement-table')",
     "path": "dist/statement-table/StatementTable.js",
     "import": "*",
-    "limit": "8.91 kB",
+    "limit": "9.26 kB",
     "gzip": true
   },
   {
@@ -1039,7 +1039,7 @@
     "name": "holdings-table (import from '@punji/ui/holdings-table')",
     "path": "dist/holdings-table/HoldingsTable.js",
     "import": "*",
-    "limit": "11.05 kB",
+    "limit": "11.45 kB",
     "gzip": true
   },
   {
@@ -1060,14 +1060,14 @@
     "name": "dividend-history (import from '@punji/ui/dividend-history')",
     "path": "dist/dividend-history/DividendHistory.js",
     "import": "*",
-    "limit": "13.2 kB",
+    "limit": "13.57 kB",
     "gzip": true
   },
   {
     "name": "transaction-history (import from '@punji/ui/transaction-history')",
     "path": "dist/transaction-history/TransactionHistory.js",
     "import": "*",
-    "limit": "17.88 kB",
+    "limit": "18.29 kB",
     "gzip": true,
     "entry": [
       "index"
@@ -1098,7 +1098,7 @@
     "name": "order-list (import from '@punji/ui/order-list')",
     "path": "dist/order-list/OrderList.js",
     "import": "*",
-    "limit": "9.04 kB",
+    "limit": "9.37 kB",
     "gzip": true
   },
   {
@@ -1402,14 +1402,14 @@
     "name": "aging-table (import from '@punji/ui/aging-table')",
     "path": "dist/aging-table/AgingTable.js",
     "import": "*",
-    "limit": "8.96 kB",
+    "limit": "9.33 kB",
     "gzip": true
   },
   {
     "name": "tds-summary (import from '@punji/ui/tds-summary')",
     "path": "dist/tds-summary/TdsSummary.js",
     "import": "*",
-    "limit": "9.28 kB",
+    "limit": "9.47 kB",
     "gzip": true
   },
   {

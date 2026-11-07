@@ -27,7 +27,7 @@ import { holdingsToCsv, nextHoldingSort, type Holding, type HoldingSort, type Ho
 import { ChangeFigure, Missing, percentText } from '../portfolio/shared.tsx';
 import { nepalQuoteMoney } from '../stock-table/format.ts';
 import { RetryNote } from '../retry-note/RetryNote.tsx';
-import { Cell, DataListRow, DataTable, type Column } from '../table/Table.tsx';
+import { Cell, DataListRow, DataTable, type Column, type DataTableSortLabels } from '../table/Table.tsx';
 
 export type HoldingColumn = HoldingSortKey;
 
@@ -62,6 +62,8 @@ export interface HoldingsTableProps<T extends Holding = Holding> {
   sort?: HoldingSort;
   /** Called with the sort a click on a head asks for (the rule `nextHoldingSort` implements). The table does not reorder rows: sort `holdings` yourself and pass `sort` back. */
   onSortChange?: (sort: HoldingSort) => void;
+  /** Words for the polite announcement after a user sort. Default "Sorted by Price, ascending". */
+  sortLabels?: Partial<DataTableSortLabels>;
   /** Currency and locale of the money. Default NPR, en-IN, no currency mark. */
   money?: MoneyFormatConfig;
   /** Per-instance override of which hue means up: 'green-up' or 'red-up' (absolute, never a second swap on top of the theme). Default: follow the theme's gain and loss colours (`createTheme({ finance })`), which is the one place to set the convention. */
@@ -109,7 +111,7 @@ const defaultIncomplete = (unpriced: readonly string[], noPreviousClose: readonl
  * @stability composition
  */
 export function HoldingsTable<T extends Holding = Holding>({
-  caption, holdings, totals, columns = DEFAULT_HOLDING_COLUMNS, columnLabels, labels, sort, onSortChange, money = nepalQuoteMoney, convention,
+  caption, holdings, totals, columns = DEFAULT_HOLDING_COLUMNS, columnLabels, labels, sort, onSortChange, sortLabels, money = nepalQuoteMoney, convention,
   changeLabels, weightDigits = 2, density = 'comfortable', bare, maxHeight, stack = true, renderSymbol, exportFilename, state = 'ready',
   emptyLabel = 'No holdings to show.', loadingLabel = 'Loading holdings…', errorLabel = 'Holdings could not be loaded.', retryLabel = 'Try again', onRetry, testId,
 }: HoldingsTableProps<T>) {
@@ -183,6 +185,7 @@ export function HoldingsTable<T extends Holding = Holding>({
         </div>
       )}
       <DataTable
+        sortLabels={sortLabels}
         caption={caption}
         columns={tableColumns}
         sort={sort}

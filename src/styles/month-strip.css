@@ -1,0 +1,19 @@
+/* Punji UI styles.
+   Styles for MonthStrip. Needs tokens.css and base.css (styles.css has everything). Colours, type and space from --pu-* tokens only.
+   Columns follow the strip's own width: four, six (440px) or twelve (900px). */
+@layer punji.components {
+  .pu-month-strip { display: grid; gap: var(--pu-space-3); min-width: 0; container-type: inline-size }
+  .pu-month-strip-head { margin: 0; font-size: var(--pu-text-sm); line-height: 18px; color: var(--pu-color-text-muted); font-variant-numeric: var(--pu-font-numeric) }
+  .pu-month-strip-head b { color: var(--pu-color-text); font-weight: var(--pu-font-weight-semibold) }
+  .pu-month-strip ul { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin: 0; padding: 0; list-style: none }
+  @container (min-width: 440px) { .pu-month-strip ul { grid-template-columns: repeat(6, minmax(0, 1fr)) } }
+  @container (min-width: 900px) { .pu-month-strip ul { grid-template-columns: repeat(12, minmax(0, 1fr)) } }
+  .pu-month-strip li { display: grid; justify-items: center; gap: 2px; min-width: 0; padding: var(--pu-space-2) var(--pu-space-1) var(--pu-space-1); border-top: 3px solid var(--pu-color-border) }
+  .pu-month-strip li[data-tone='gain'] { border-top-color: var(--pu-color-gain) }
+  .pu-month-strip li[data-tone='loss'] { border-top-color: var(--pu-color-loss) }
+  .pu-month-strip li span { font-size: 11px; line-height: 14px; color: var(--pu-color-text-muted) }
+  .pu-month-strip li b { font-size: var(--pu-text-sm); line-height: 18px; font-weight: var(--pu-font-weight-semibold); white-space: nowrap; font-variant-numeric: var(--pu-font-numeric); color: var(--pu-color-text-muted) }
+  .pu-month-strip li[data-tone='gain'] b { color: var(--pu-color-gain) }
+  .pu-month-strip li[data-tone='loss'] b { color: var(--pu-color-loss) }
+  .pu-month-strip-foot { margin: 0; font-size: var(--pu-text-xs); line-height: 17px; color: var(--pu-color-text-tertiary) }
+}

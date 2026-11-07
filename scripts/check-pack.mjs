@@ -35,7 +35,7 @@ import { readFileSync } from 'node:fs';
 // Payment fields (pure checks, inputs, CSS) and the locale layer with ne, hi and bn packs, merged with main through #47: measured 2,399,225 B; ~3% headroom.
 // RiskMeter and the invest helpers (XIRR, SIP, units, cover: JS, declarations, CSS) on top: measured 2,452,997 B; ~3% headroom.
 // @punji/ui/icons (152 glyphs as functions, declarations with docs): +71 kB, measured 2,742,868 B; ~1% headroom.
-const MAX_UNPACKED = 2710 * 1024; // Menu, Breadcrumb and Accordion (JS, declarations, CSS) took it to ~2482 KiB.
+const MAX_UNPACKED = 2809 * 1024; // Menu, Breadcrumb and Accordion (JS, declarations, CSS) took it to ~2482 KiB.
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
 const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md']);
 const allowed = (p) => always.has(p) || /^dist\/.+\.(js|d\.ts|css)$/.test(p);

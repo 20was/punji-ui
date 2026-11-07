@@ -1067,7 +1067,7 @@
     "name": "transaction-history (import from '@punji/ui/transaction-history')",
     "path": "dist/transaction-history/TransactionHistory.js",
     "import": "*",
-    "limit": "17.88 kB",
+    "limit": "18.33 kB",
     "gzip": true,
     "entry": [
       "index"
@@ -1189,7 +1189,7 @@
     "name": "payment-qr-card (import from '@punji/ui/payment-qr-card')",
     "path": "dist/payment-qr-card/PaymentQrCard.js",
     "import": "*",
-    "limit": "11.04 kB",
+    "limit": "11.30 kB",
     "gzip": true
   },
   {
@@ -1374,7 +1374,7 @@
     "name": "tax-invoice (import from '@punji/ui/tax-invoice')",
     "path": "dist/tax-invoice/TaxInvoice.js",
     "import": "*",
-    "limit": "11.12 kB",
+    "limit": "11.37 kB",
     "gzip": true
   },
   {

@@ -160,6 +160,13 @@ scale, with a legend. Props: `items` (`{ id, label, name?, size, change }`, chan
 on a phone), `convention`, `onSelect` (tiles become buttons), `labels`. `heatmapItemsFromQuotes(quotes, 'turnover' |
 'volume')` builds items from quotes.
 
+Grouped mode: give items a `group` path (`['Banking', 'Commercial banks']`) and optionally an `href`, and the map becomes
+sector, industry, stock. Groups have a header strip with the size-weighted change; Enter or a click on a header drills in,
+Escape or Backspace (or a breadcrumb button) goes up (`path`, `defaultPath`, `onPathChange`); stocks with an `href` are real
+links through `LinkProvider` or `linkComponent`; stocks under `collapseBelow` (1.2%) of their group fold into one "+N more"
+tile; arrow keys, Home and End move through headers and tiles (one tab stop). Under `listBelow` (560px) it is a sorted list
+instead, because a header strip and a legible tile do not both fit a phone. Without any `group` the flat map is unchanged.
+
 Pure helpers: `squarify(items, { width, height, x?, y? })` returns `{ rects, skipped }`. It is deterministic (largest
 first, ties by input position); rectangle areas are proportional to size and tile the bounds with no overlap or gap; sizes
 that are missing, zero, negative or not finite are not drawn and are listed in `skipped` (and under the map). `heatStep(change,

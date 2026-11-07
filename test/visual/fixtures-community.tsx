@@ -1,4 +1,4 @@
-import { BalanceHistoryChart, CashFlowChart, CorrelationMatrix, DataFreshness, EarningsChart, FairValueBar, FilterBar, FilterMenu, FilterMenuGroup, FilterMenuItem, FxRateDisplay, heatCell, Histogram, incomeStatementFlow, money, MonthGrid, NetWorthChart, PerformanceChart, PresetRow, PresetTile, PriceTargetChart, RangeEditor, RangeSelector, ReturnsHeatTable, SankeyChart, ScoreRadar, StatusBanner, type FilterBarValues, type MonthGridData, WaterfallChart } from '../../src/index.ts';
+import { BalanceHistoryChart, CashFlowChart, CorrelationMatrix, DataFreshness, EarningsChart, FairValueBar, FilterBar, FilterMenu, FilterMenuGroup, FilterMenuItem, FxRateDisplay, heatCell, Histogram, incomeStatementFlow, money, MarketHeatmap, MonthGrid, NetWorthChart, PerformanceChart, PresetRow, PresetTile, PriceTargetChart, ProfileRail, RangeEditor, RangeSelector, ReturnsHeatTable, SankeyChart, ScoreRadar, StatusBanner, VolumeProfile, type HeatmapItem, type FilterBarValues, type MonthGridData, WaterfallChart } from '../../src/index.ts';
 import { Accordion, AlertListEmpty, AlertRow, AlertRowCompact, AlertRowList, AlertRowSkeleton, AlertSummary, AlertSummaryNote, AlertSummarySection, BarList, Breadcrumb, BrokerBadge, Card, CardSection, CardSectionRow, Figure, HeadlineList, InstrumentHeader, LinkRow, LinkRowList, MenuButton, MoneyDisplay, MonthStrip, PrivateAmount, RatingChangeList, RatingChangeRow, RatingChip, RatingScale, RouteAnnouncer, ScrollTable, SettingList, SettingRow, SkipLink, StatusTag, ThemeProvider, type ColumnDef, type WatchlistQuote, Watchlist } from '@punji/ui';
 import { performanceDates, performanceSeries } from '../../fixtures/market-data.ts';
 import { type ReactNode, useState } from 'react';
@@ -538,6 +538,65 @@ function SankeyChartFixture() {
   );
 }
 
+const profilePrice = (minor: number) => `${Math.floor(minor / 100)}.${String(minor % 100).padStart(2, '0')}`;
+const profileY = (p: number) => 12 + ((510 - p) / 14) * 264;
+
+// Sixty made-up five-minute bars: exact decimal prices and integer volumes, from a fixed generator.
+function profileBars() {
+  let seed = 11;
+  const next = () => {
+    seed = (seed * 1103515245 + 12345) % 2147483648;
+    return seed / 2147483648;
+  };
+  const bars: { low: string; high: string; volume: bigint; buyVolume: bigint }[] = [];
+  let mid = 50_000;
+  for (let i = 0; i < 60; i += 1) {
+    mid += Math.round((next() - 0.5) * 120) + (i < 30 ? 14 : -14) + Math.round((50_500 - mid) / 40);
+    const spread = 60 + Math.round(next() * 140);
+    const crowd = 1 + Math.max(0, 8 - Math.round(Math.abs(mid - 50_500) / 120));
+    const volume = BigInt(900 + Math.round(next() * 3200)) * BigInt(crowd);
+    bars.push({ low: profilePrice(mid - spread), high: profilePrice(mid + spread), volume, buyVolume: (volume * BigInt(Math.round(35 + next() * 30))) / 100n });
+  }
+  return bars;
+}
+
+function VolumeProfileFixture() {
+  const bars = profileBars();
+  const closes = bars.map((b) => (Number(b.high) + Number(b.low)) / 2);
+  return (
+    <div style={{ display: 'grid', gap: 24, maxWidth: 720 }}>
+      <VolumeProfile bars={bars} rows={24} height={360} label="Volume at price with buy and sell" />
+      <VolumeProfile bars={bars} rows={16} height={280} valueArea={0.8} split={false} label="Volume at price, 80% value area" />
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 120px', gap: 8, alignItems: 'start' }}>
+        <svg viewBox="0 0 600 300" width="100%" height={300} preserveAspectRatio="none" role="img" aria-label="Price line" style={{ display: 'block' }}>
+          <polyline points={closes.map((c, i) => `${(i / 59) * 600},${profileY(c)}`).join(' ')} fill="none" stroke="var(--pu-color-text)" strokeWidth="2" vectorEffect="non-scaling-stroke" />
+        </svg>
+        <ProfileRail bars={bars} priceDomain={{ min: '496.00', max: '510.00' }} rows={28} height={300} paddingTop={12} paddingBottom={24} label="Volume at price rail" />
+      </div>
+    </div>
+  );
+}
+
+const hm = (id: string, group: string[], size: number, change: number | null): HeatmapItem => ({ id, label: id, name: `${id} Ltd`, group, size, change, href: `#${id}` });
+const GROUPED: HeatmapItem[] = [
+  hm('NABIL', ['Banking', 'Commercial banks'], 5200, 1.25), hm('NICA', ['Banking', 'Commercial banks'], 3900, -0.62), hm('SCBL', ['Banking', 'Commercial banks'], 3100, 0.31),
+  hm('SBL', ['Banking', 'Commercial banks'], 2600, 2.4), hm('GBIME', ['Banking', 'Commercial banks'], 2300, -1.9), hm('SHINE', ['Banking', 'Development banks'], 700, -0.4),
+  hm('GBBL', ['Banking', 'Development banks'], 520, 3.8), hm('KSBBL', ['Banking', 'Development banks'], 12, 0.9), hm('JBBL', ['Banking', 'Development banks'], 10, -0.2),
+  hm('MLBL', ['Banking', 'Development banks'], 9, 1.1), hm('NHPC', ['Hydropower', 'Generation'], 2400, -2.7), hm('UPPER', ['Hydropower', 'Generation'], 4400, 3.4),
+  hm('CHCL', ['Hydropower', 'Generation'], 1700, -0.8), hm('BPCL', ['Hydropower', 'Generation'], 1300, 0.6), hm('NLIC', ['Insurance', 'Life insurance'], 2000, -0.1),
+  hm('LICN', ['Insurance', 'Life insurance'], 1500, 0.5), hm('NICL', ['Insurance', 'Non-life insurance'], 800, -1.2), hm('NTC', ['Telecom'], 3300, 0.2),
+  { ...hm('NODATA', ['Telecom'], 120, null) }, hm('HDL', ['Manufacturing', 'Beverages'], 1900, 4.9),
+];
+
+function MarketHeatmapGroupedFixture() {
+  return (
+    <div style={{ display: 'grid', gap: 24, maxWidth: 960 }}>
+      <MarketHeatmap items={GROUPED} label="Sectors by market cap" sizeLabel="Market cap" />
+      <MarketHeatmap items={GROUPED} label="Banking, drilled in" sizeLabel="Market cap" defaultPath={['Banking']} />
+    </div>
+  );
+}
+
 function EarningsChartFixture() {
   const eps = [
     { key: 'a', label: 'Q1', estimate: '4.10', actual: '4.38' },
@@ -610,5 +669,7 @@ export const communityRegistry: Record<string, () => ReactNode> = {
   'sankey-chart': SankeyChartFixture,
   'earnings-chart': EarningsChartFixture,
   'balance-history-chart': BalanceHistoryChartFixture,
+  'volume-profile': VolumeProfileFixture,
+  'market-heatmap-grouped': MarketHeatmapGroupedFixture,
   // new:component inserts registry entries above this line
 };

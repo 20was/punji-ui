@@ -1713,5 +1713,52 @@ export const COMMUNITY_PAGES: readonly PageDef[] = [
     uxOnly: true,
     related: ['net-worth-chart', 'cash-flow-chart', 'sankey-chart', 'chart-a11y-shell'],
   },
+  {
+    slug: 'volume-profile',
+    stability: 'beta',
+    title: 'VolumeProfile',
+    lead: 'How much traded at each price, with the Point of Control and the value area marked, standalone or as a rail beside a price chart.',
+    description: 'Volume profile in React: volume at price with Point of Control, 70% value area, buy and sell split and a price-chart rail. Exact bigint volumes.',
+    group: 'data',
+    kind: 'component',
+    summary:
+      'Pass `bars` (a low and high price as decimal strings, and an exact `bigint` or integer-string volume, optionally the buyer-initiated part) and the price range is cut into equal bands. Each bar\'s volume is spread over the bands it crosses in proportion to the overlap, by largest remainder, so the bands add back up to the volume you gave to the last unit. The Point of Control is the busiest band (ties go to the band nearest the middle, then the lower). The value area is built outward from it, one band at a time, taking the larger of the band above and the band below (a tie goes to the nearer band, then the upper) until it holds at least 70% of the volume. That follows the procedure in [TradingView\'s Volume Profile help](https://www.tradingview.com/support/solutions/43000502040-volume-profile/); our stop rule is "at least the share", and the 70% is a default you can change with `valueArea`. `ProfileRail` is the same drawing without an axis, cut from the `priceDomain` you pass, to sit beside a price chart so a band is level with the same price. The maths is `volumeProfile` in chart-math, pure and tested.',
+    use: [
+      'A stock page: where the volume traded, with the value area and Point of Control beside the price chart (`ProfileRail`).',
+      'A session or a range on its own (`VolumeProfile`), with the buy and sell split when your feed has it.',
+      '`volumeProfile(bars, { rows, valueArea, range })` for the exact rows without drawing anything, for a table or an alert.',
+    ],
+    avoid: [
+      'Passing volumes as numbers above 2^53: use `bigint` or integer strings so nothing is rounded.',
+      'A logarithmic price scale: bands are equal in price, so they only line up with a linear scale.',
+      'Tick-by-tick precision from bars: a bar\'s volume is spread evenly over its range, which is an estimate. Feed finer bars for a finer profile.',
+    ],
+    api: [
+      { name: 'VolumeProfile', module: 'volume-profile' },
+      { name: 'ProfileRail', module: 'volume-profile' },
+      { name: 'volumeProfile', module: 'volume-profile' },
+      { name: 'ProfileBar', module: 'volume-profile' },
+      { name: 'VolumeProfileResult', module: 'volume-profile' },
+      { name: 'ProfileRow', module: 'volume-profile' },
+    ],
+    examples: [
+      { id: 'basic', title: 'One session', note: 'Sixty five-minute bars, 24 bands, buy (solid) against sell (hatched). The dashed lines are the value area edges, the solid line is the Point of Control.' },
+      { id: 'value-area', title: 'An 80% value area', note: 'No split; `valueArea={0.8}` and the same figures read from the pure `volumeProfile`.' },
+      { id: 'rail', title: 'Beside a price chart', note: 'A rail with the chart\'s domain, height and padding. Here the chart is a plain SVG line; the same numbers drive both.' },
+    ],
+    keyboard: [
+      'Tab focuses the plot. Up and Down (or Left and Right) step between price bands, Home and End jump to the lowest and highest, Escape clears.',
+      'Hover or touch reads one band in the line below the chart.',
+    ],
+    accessibility: [
+      'Colour is never the only cue: the Point of Control is a solid line tagged POC, the value area has dashed edges tagged VAH and VAL and a shaded band, and sell volume is hatched where buy volume is solid.',
+      'A spoken summary gives the bands, the range, the total volume, the Point of Control band and the value area with their shares; the live region says each band with its volume, share and role.',
+      'A hidden table lists every band from the highest price down: volume, share, buy, sell and role (Point of Control, Value area, Outside the value area).',
+      'Fills are existing tokens that pass the contrast gate.',
+    ],
+    responsive: ['The plot is as wide as its container. The rail is as wide as its column (about 120px works) and drops its tags and legend under 96px; the table and live region keep every figure. On a phone, place the rail under the chart or beside a short one.'],
+    uxOnly: true,
+    related: ['candlestick-chart', 'depth-chart', 'histogram', 'chart-a11y-shell'],
+  },
   // new:component inserts pages above this line
 ];

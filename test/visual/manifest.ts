@@ -72,6 +72,7 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'metric-tile', title: 'MetricTile and MetricRow', layout: true },
   { id: 'choice-compact-page', title: 'ChoiceGroup compact on the page' },
   { id: 'date-range-narrow', title: 'DateRangePicker in a narrow container' },
+  { id: 'card-flush-tables', title: 'Stacked StockTable and FinancialTable flush in a Card' },
   { id: 'stock-table', title: 'StockTable', layout: true },
   { id: 'stock-table-loading', title: 'StockTable loading', layout: true },
   { id: 'stock-table-empty', title: 'StockTable empty', layout: true },

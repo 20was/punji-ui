@@ -10,7 +10,7 @@
  *   - the visually hidden data table (`table`), so every figure can be read by row.
  * The renderer draws; the shell never measures or paints. The drawing should be `aria-hidden`.
  */
-import { useId, type HTMLAttributes, type PointerEvent, type ReactNode } from 'react';
+import { useId, type HTMLAttributes, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react';
 
 import { useChartCursor } from '../internal/chartFrame.tsx';
 
@@ -19,6 +19,10 @@ export interface ChartA11yContext {
   index: number | null;
   /** Let a pointer handler set (or clear, with null) the active position. */
   pointerTo: (index: number | null) => void;
+  /** Move the position from the keyboard on behalf of a shortcut the renderer adds (a jump to the next event). Unlike `pointerTo`, it stays when the pointer leaves. */
+  moveTo: (index: number) => void;
+  /** The shell's own key handler (arrows, Home, End, Escape), for a renderer that wraps it to add keys. */
+  onKeyDown: (event: KeyboardEvent<HTMLElement>) => void;
   /** Spread onto the plot element (the one focus stop). Pass a pointer handler that maps the event to an index. Empty when the shell is not interactive. */
   plotProps: (onPointer?: (event: PointerEvent<HTMLDivElement>) => void) => HTMLAttributes<HTMLDivElement>;
 }
@@ -78,7 +82,7 @@ export function ChartA11yShell({ label, roleDescription, count, speak, hint, sum
       : {};
   return (
     <figure className={className} aria-label={label} data-testid={testId} {...dataAttrs}>
-      {children({ index: cursor.index, pointerTo: cursor.pointerTo, plotProps })}
+      {children({ index: cursor.index, pointerTo: cursor.pointerTo, moveTo: cursor.moveTo, onKeyDown: cursor.onKeyDown, plotProps })}
       {footer}
       {interactive && <p className="kit-sr" id={hintId}>{hint ?? DEFAULT_HINT}</p>}
       {interactive && summary && <p className="kit-sr" id={summaryId}>{summary}</p>}

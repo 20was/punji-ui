@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Card, CandlestickChart, DepthChart, PerformanceChart } from '@punji/ui';
+import { Card, CandlestickChart, DepthChart, PerformanceChart, bollingerIndicator, macdIndicator, rsiIndicator, vwapIndicator } from '@punji/ui';
 import { depthAsks, depthBids, nabilCandles, performanceDates, performanceSeries, sampleCandles } from '../../fixtures/market-data.ts';
 
 // Financial chart fixtures. Data from fixtures/market-data.ts (synthetic, deterministic, never live).
@@ -59,8 +59,43 @@ function DepthFixture() {
   );
 }
 
+// Beta price-chart features: modes, scales and compare, event markers and levels, indicators. Deterministic data only.
+const tradingCandles = sampleCandles(90, 11, 487.5, '2025-06-01');
+const recentCandles = nabilCandles.slice(-40);
+const lastClose = nabilCandles.at(-1)!.close;
+const peer = performanceSeries[1]!;
+const comparePoints = performanceDates.map((date, i) => ({ date, close: peer.values[i] ?? null }));
+
+function CandlestickTradingFixture() {
+  return (
+    <Stack>
+      <Card title="Hollow candles"><CandlestickChart testId="vr-ct-hollow" label="NABIL hollow" candles={recentCandles} mode="hollow" height={200} volume={false} /></Card>
+      <Card title="Heikin Ashi"><CandlestickChart label="NABIL Heikin Ashi" candles={recentCandles} mode="heikin-ashi" height={200} volume={false} /></Card>
+      <Card title="Baseline"><CandlestickChart label="NABIL baseline" candles={recentCandles} mode="baseline" height={180} volume={false} /></Card>
+      <Card title="Area, log scale"><CandlestickChart label="NABIL area log" candles={recentCandles} mode="area" scale="log" height={180} volume={false} /></Card>
+      <Card title="Percent with a compared index"><CandlestickChart label="NABIL against NEPSE" candles={nabilCandles} scale="percent" compare={[{ label: 'NEPSE', points: comparePoints }]} height={220} volume={false} /></Card>
+      <Card title="Events and levels">
+        <CandlestickChart label="NABIL events and levels" candles={nabilCandles} height={240}
+          events={[
+            { date: nabilCandles[12]!.date, kind: 'dividend', label: 'Bonus 10%' },
+            { date: nabilCandles[28]!.date, kind: 'earnings', label: 'Q1 results' },
+            { date: nabilCandles[28]!.date, kind: 'split', label: '1:2 split' },
+            { date: nabilCandles[48]!.date, kind: 'custom', label: 'AGM' },
+          ]}
+          levels={[
+            { price: Math.round(lastClose * 0.97), label: 'Support', kind: 'support' },
+            { price: Math.round(lastClose * 0.972), label: 'Your cost', kind: 'cost-basis' },
+            { price: Math.round(lastClose * 1.015), label: 'Resistance', kind: 'resistance' },
+          ]} />
+      </Card>
+      <Card title="Bollinger and VWAP over the price, RSI and MACD panes"><CandlestickChart testId="vr-ct-indicators" label="NABIL indicators" candles={tradingCandles} height={220} indicators={[bollingerIndicator(), vwapIndicator(), rsiIndicator(), macdIndicator()]} /></Card>
+    </Stack>
+  );
+}
+
 export const chartsRegistry: Record<string, () => ReactNode> = {
   'candlestick-chart': CandlestickFixture,
+  'candlestick-trading': CandlestickTradingFixture,
   'performance-chart': PerformanceFixture,
   'depth-chart': DepthFixture,
 };

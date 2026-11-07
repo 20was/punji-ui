@@ -49,6 +49,7 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'cluster', title: 'Cluster wrapping, justify and align', layout: true },
   { id: 'code-block', title: 'CodeBlock with label, Copy and a long line', layout: true },
   { id: 'candlestick-chart', title: 'CandlestickChart', layout: true },
+  { id: 'candlestick-trading', title: 'CandlestickChart price modes, scales, events, levels and indicators', layout: true },
   { id: 'performance-chart', title: 'PerformanceChart', layout: true },
   { id: 'depth-chart', title: 'DepthChart', layout: true },
   { id: 'card-kit', title: 'Card eyebrow, size and inverse tone' },

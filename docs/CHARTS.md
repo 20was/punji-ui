@@ -33,7 +33,14 @@ Use it for OHLC per session with volume. Do not use it for a single line of clos
 | Prop | Notes |
 | --- | --- |
 | `candles` | `{ date: 'YYYY-MM-DD', open, high, low, close, volume? }`, oldest first |
-| `variant` | `'candles'` (default) or `'bars'` (OHLC ticks) |
+| `variant` | `'candles'` (default) or `'bars'` (OHLC ticks); the older spelling of `mode="bars"` |
+| `mode` | beta: `'candles'` (default), `'hollow'`, `'bars'`, `'heikin-ashi'`, `'line'`, `'area'`, `'baseline'`, `'high-low'` |
+| `scale` | beta: `'linear'` (default), `'log'`, `'percent'` (change from the first close), `'indexed'` (first close is 100) |
+| `compare` | beta: `{ label, points: { date, close }[] }[]` drawn as lines over the price, level with it on their first date; moves a linear or log axis to percent |
+| `baseline` | beta: the price a `baseline` chart divides gain from loss at (default the first close) |
+| `events` | beta: `{ date, kind: 'dividend' \| 'split' \| 'earnings' \| 'custom', label, detail? }[]` on the time axis; Shift plus Left or Right jumps between them |
+| `levels` | beta: `{ price, label, kind?: 'support' \| 'resistance' \| 'cost-basis' \| 'custom' }[]` as dashed lines with labels kept clear of each other |
+| `indicators` | beta: descriptors from `rsiIndicator`, `macdIndicator`, `bollingerIndicator`, `vwapIndicator` (each its own module) |
 | `volume` | volume pane; default on when any candle has a volume |
 | `axis` | `'category'` (default, one slot per session) or `'time'` (spaced by date, gaps stay visible) |
 | `hollowUp` | up candles as outlines, down filled |
@@ -49,7 +56,36 @@ Across a width with less than 3px per candle, candles are aggregated (first open
 volume); the readout names the range. Non-trading days: the default category axis leaves no hole; `axis="time"` shows them.
 
 Keyboard: Tab to the plot; Left and Right move one candle; Home and End; Escape. The live region says, for example
-`14 Nov: up 0.28%, Open NPR 486.20, High …, Low …, Close NPR 487.50, Volume 41,000`.
+`14 Nov: up 0.28%, Open NPR 486.20, High …, Low …, Close NPR 487.50, Volume 41,000`. The chart is built on
+`ChartA11yShell`, like the other native charts: one focus stop, a hint, a spoken summary of the whole series, a live region
+and a hidden table.
+
+### Price modes, scales, events, levels and indicators (beta)
+
+All off by default; a chart without them draws and reads as before.
+
+- **Modes.** Heikin Ashi is `heikinAshi(candles)` in chart-math, from TradingView's help: HA close = (O+H+L+C)/4, HA open =
+  (previous HA open + previous HA close)/2, HA high = max(H, HA open, HA close), HA low = min(L, HA open, HA close); the first
+  HA open is (O+C)/2. The table and live region print HA values to two more decimals than the prices were written with
+  (never rounded to the currency's two) and the live region adds the actual close. `hollow` follows TradingView: a hollow
+  body when the close is above the open, coloured by the close against the previous close, so the words say both. Direction is
+  never colour alone: it is in the readout, the live region and the table (a Direction column once `mode` is set), and
+  hollow or filled bodies, marker shapes and line dashes carry it in the drawing.
+- **Scales.** `percent` and `indexed` are measured from the first close shown; `log` uses 1, 2, 5 ticks per decade. A scale
+  the prices cannot support (log with a price at or below zero, percent or indexed with a first close at or below zero) falls
+  back to linear and says so. With `compare`, a linear or log axis becomes percent; a compared series that starts later
+  continues from where the price stood on its first date (`rebaseOnto`). The legend names every line; the table adds a
+  column per compared series.
+- **Events and levels.** Events are placed on the session of their date (or the last session before it); those outside the
+  sessions shown are listed in the events table only. A level outside the price range shown is likewise only listed in the
+  levels table. Level labels are spread apart (`spreadLabels`) so they never overlap.
+- **Indicators.** Pure functions in `@punji/ui/chart-indicators`: `rsi(closes, 14)` (Wilder smoothing; checked against the
+  StockCharts RSI worksheet), `macd(closes, 12, 26, 9)` (checked against the exact steady state of a straight line),
+  `bollinger(closes, 20, 2)` (population deviation) and `vwap(candles)` (typical price weighted by volume, from the first
+  session shown). The chart draws descriptors from `rsiIndicator`, `macdIndicator`, `bollingerIndicator` and `vwapIndicator`,
+  each its own module, so a chart that imports none ships none of them or of the pane drawing. RSI and MACD are panes below
+  the price (and volume) with a title, the latest value and axis levels; Bollinger and VWAP draw over the price (or in a pane
+  with `placement: 'pane'`). Every indicator line adds a table column and a spoken value ("RSI 14 61.20, neutral").
 
 ## PerformanceChart (`performance-chart`)
 

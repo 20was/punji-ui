@@ -259,6 +259,30 @@
       "types": "./dist/candlestick-chart/CandlestickChart.d.ts",
       "default": "./dist/candlestick-chart/CandlestickChart.js"
     },
+    "./indicator-pane-view": {
+      "types": "./dist/candlestick-chart/IndicatorPaneView.d.ts",
+      "default": "./dist/candlestick-chart/IndicatorPaneView.js"
+    },
+    "./chart-indicators": {
+      "types": "./dist/chart-math/indicators.d.ts",
+      "default": "./dist/chart-math/indicators.js"
+    },
+    "./rsi-indicator": {
+      "types": "./dist/candlestick-chart/indicators/rsi.d.ts",
+      "default": "./dist/candlestick-chart/indicators/rsi.js"
+    },
+    "./macd-indicator": {
+      "types": "./dist/candlestick-chart/indicators/macd.d.ts",
+      "default": "./dist/candlestick-chart/indicators/macd.js"
+    },
+    "./bollinger-indicator": {
+      "types": "./dist/candlestick-chart/indicators/bollinger.d.ts",
+      "default": "./dist/candlestick-chart/indicators/bollinger.js"
+    },
+    "./vwap-indicator": {
+      "types": "./dist/candlestick-chart/indicators/vwap.d.ts",
+      "default": "./dist/candlestick-chart/indicators/vwap.js"
+    },
     "./performance-chart": {
       "types": "./dist/performance-chart/PerformanceChart.d.ts",
       "default": "./dist/performance-chart/PerformanceChart.js"

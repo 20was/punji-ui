@@ -225,6 +225,7 @@ export * from './waterfall-chart/WaterfallChart.tsx';
 export * from './cash-flow-chart/CashFlowChart.tsx';
 export * from './net-worth-chart/NetWorthChart.tsx';
 export * from './range-selector/RangeSelector.tsx';
+export * from './scroll-table/ScrollTable.tsx';
 export * from './range-editor/RangeEditor.tsx';
 export * from './filter-menu/FilterMenu.tsx';
 export * from './preset-tile/PresetTile.tsx';

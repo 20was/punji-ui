@@ -1,0 +1,26 @@
+/* Punji UI styles.
+   Styles for ScrollTable. Needs tokens.css and base.css (styles.css has everything). Print rules are in table-print.css. */
+@layer punji.components {
+  .pu-scroll-table { position: relative; min-width: 0; overflow-x: auto; background: var(--pu-color-surface); border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-8) }
+  .pu-scroll-table:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
+  .pu-scroll-table table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: var(--pu-text-sm); color: var(--pu-color-text) }
+  .pu-scroll-table caption { text-align: start; padding: var(--pu-cell-y) var(--pu-cell-x); font-weight: 600 }
+  .pu-scroll-table :is(th, td) { padding: var(--pu-cell-y) var(--pu-cell-x); text-align: start; vertical-align: middle; border-bottom: 1px solid var(--pu-color-border); white-space: nowrap; background: var(--pu-color-surface) }
+  .pu-scroll-table tbody tr:last-child > * { border-bottom: 0 }
+  .pu-scroll-table thead th { position: sticky; top: 0; z-index: 1; background: var(--pu-color-surface-solid); font: 600 var(--pu-text-xs) / 1.2 var(--pu-font-body); color: var(--pu-color-text-muted) }
+  .pu-scroll-table thead th[aria-sort='ascending'], .pu-scroll-table thead th[aria-sort='descending'] { color: var(--pu-color-text) }
+  .pu-scroll-table thead th button { appearance: none; display: inline-flex; align-items: center; gap: 4px; min-height: 24px; padding: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer }
+  .pu-scroll-table thead th button:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px; border-radius: 2px }
+  .pu-scroll-table-arrow { display: inline-block; min-width: 1ch; font-weight: 400 }
+  .pu-scroll-table tbody th { font-weight: 600; color: var(--pu-color-text) }
+  .pu-scroll-table .num { text-align: end; font-variant-numeric: var(--pu-font-numeric) }
+  .pu-scroll-table tbody tr:hover > * { background: var(--pu-color-surface-subtle) }
+  .pu-scroll-table tfoot :is(th, td) { border-top: 1px solid var(--pu-color-border-control); border-bottom: 0; background: var(--pu-color-surface-subtle); font-weight: 600 }
+  .pu-scroll-table-empty { color: var(--pu-color-text-muted); white-space: normal }
+  /* The first column stays in view while the rest scrolls; its edge is a line, so the overlap reads without colour. */
+  .pu-scroll-table.sticky-first :is(tbody th, tfoot th, thead th:first-child) { position: sticky; inset-inline-start: 0; z-index: 2; box-shadow: 1px 0 0 var(--pu-color-border) }
+  .pu-scroll-table.sticky-first thead th:first-child { z-index: 3 }
+  @media (max-width: 759px) { .pu-scroll-table .hide-760 { display: none } }
+  @media (min-width: 760px) and (max-width: 1255px) { .pu-scroll-table .hide-1256 { display: none } }
+  @media (min-width: 760px) and (max-width: 1023px) { .pu-scroll-table .hide-1024 { display: none } }
+}

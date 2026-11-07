@@ -248,7 +248,7 @@
     "name": "table (import from '@punji/ui/table')",
     "path": "dist/table/Table.js",
     "import": "*",
-    "limit": "2.74 kB",
+    "limit": "2.80 kB",
     "gzip": true
   },
   {
@@ -367,7 +367,7 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "228.69 kB",
+    "limit": "233.85 kB",
     "gzip": true
   },
   {
@@ -843,7 +843,7 @@
     "name": "stock-table (import from '@punji/ui/stock-table')",
     "path": "dist/stock-table/StockTable.js",
     "import": "*",
-    "limit": "10.89 kB",
+    "limit": "11.12 kB",
     "gzip": true
   },
   {
@@ -878,7 +878,7 @@
     "name": "watchlist (import from '@punji/ui/watchlist')",
     "path": "dist/watchlist/Watchlist.js",
     "import": "*",
-    "limit": "7.70 kB",
+    "limit": "8.1 kB",
     "gzip": true
   },
   {
@@ -920,7 +920,7 @@
     "name": "ledger-table (import from '@punji/ui/ledger-table')",
     "path": "dist/ledger-table/LedgerTable.js",
     "import": "*",
-    "limit": "9.45 kB",
+    "limit": "9.5 kB",
     "gzip": true
   },
   {
@@ -941,7 +941,7 @@
     "name": "statement-table (import from '@punji/ui/statement-table')",
     "path": "dist/statement-table/StatementTable.js",
     "import": "*",
-    "limit": "8.91 kB",
+    "limit": "9.10 kB",
     "gzip": true
   },
   {
@@ -1039,7 +1039,7 @@
     "name": "holdings-table (import from '@punji/ui/holdings-table')",
     "path": "dist/holdings-table/HoldingsTable.js",
     "import": "*",
-    "limit": "11.05 kB",
+    "limit": "11.30 kB",
     "gzip": true
   },
   {
@@ -1060,7 +1060,7 @@
     "name": "dividend-history (import from '@punji/ui/dividend-history')",
     "path": "dist/dividend-history/DividendHistory.js",
     "import": "*",
-    "limit": "13.2 kB",
+    "limit": "13.48 kB",
     "gzip": true
   },
   {
@@ -1098,7 +1098,7 @@
     "name": "order-list (import from '@punji/ui/order-list')",
     "path": "dist/order-list/OrderList.js",
     "import": "*",
-    "limit": "9.04 kB",
+    "limit": "9.25 kB",
     "gzip": true
   },
   {
@@ -1402,7 +1402,7 @@
     "name": "aging-table (import from '@punji/ui/aging-table')",
     "path": "dist/aging-table/AgingTable.js",
     "import": "*",
-    "limit": "8.96 kB",
+    "limit": "8990 B",
     "gzip": true
   },
   {
@@ -1595,69 +1595,6 @@
     "gzip": true
   },
   {
-    "name": "article: Callout (import { Callout } from '@punji/ui/article')",
-    "path": "dist/article/Article.js",
-    "import": "{ Callout }",
-    "limit": "720 B",
-    "gzip": true
-  },
-  {
-    "name": "article (import * from '@punji/ui/article')",
-    "path": "dist/article/Article.js",
-    "import": "*",
-    "limit": "5.5 kB",
-    "gzip": true
-  },
-  {
-    "name": "article-toc (import * from '@punji/ui/article-toc')",
-    "path": "dist/article/extractToc.js",
-    "import": "*",
-    "limit": "570 B",
-    "gzip": true
-  },
-  {
-    "name": "faq (import * from '@punji/ui/faq')",
-    "path": "dist/faq/Faq.js",
-    "import": "*",
-    "limit": "1.7 kB",
-    "gzip": true
-  },
-  {
-    "name": "faq-json-ld (import * from '@punji/ui/faq-json-ld')",
-    "path": "dist/faq/jsonLd.js",
-    "import": "*",
-    "limit": "440 B",
-    "gzip": true
-  },
-  {
-    "name": "prompt-card (import * from '@punji/ui/prompt-card')",
-    "path": "dist/prompt-card/PromptCard.js",
-    "import": "*",
-    "limit": "560 B",
-    "gzip": true
-  },
-  {
-    "name": "Article kit CSS",
-    "path": "dist/css/article.css",
-    "limit": "1.8 kB",
-    "rolldown": false,
-    "gzip": true
-  },
-  {
-    "name": "Faq CSS",
-    "path": "dist/css/faq.css",
-    "limit": "480 B",
-    "rolldown": false,
-    "gzip": true
-  },
-  {
-    "name": "PromptCard CSS",
-    "path": "dist/css/prompt-card.css",
-    "limit": "600 B",
-    "rolldown": false,
-    "gzip": true
-  },
-  {
     "name": "fx-rate (import from '@punji/ui/fx-rate')",
     "path": "dist/fx-rate/FxRate.js",
     "import": "*",
@@ -1752,6 +1689,90 @@
     "name": "Money charts CSS",
     "path": "dist/css/money-charts.css",
     "limit": "0.6 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "scroll-table (import from '@punji/ui/scroll-table')",
+    "path": "dist/scroll-table/ScrollTable.js",
+    "import": "*",
+    "limit": "2.7 kB",
+    "gzip": true
+  },
+  {
+    "name": "ScrollTable CSS",
+    "path": "dist/css/scroll-table.css",
+    "limit": "0.8 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "Table print CSS",
+    "path": "dist/css/table-print.css",
+    "limit": "0.9 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "article: Callout (import { Callout } from '@punji/ui/article')",
+    "path": "dist/article/Article.js",
+    "import": "{ Callout }",
+    "limit": "720 B",
+    "gzip": true
+  },
+  {
+    "name": "article (import * from '@punji/ui/article')",
+    "path": "dist/article/Article.js",
+    "import": "*",
+    "limit": "5.5 kB",
+    "gzip": true
+  },
+  {
+    "name": "article-toc (import * from '@punji/ui/article-toc')",
+    "path": "dist/article/extractToc.js",
+    "import": "*",
+    "limit": "570 B",
+    "gzip": true
+  },
+  {
+    "name": "faq (import * from '@punji/ui/faq')",
+    "path": "dist/faq/Faq.js",
+    "import": "*",
+    "limit": "1.7 kB",
+    "gzip": true
+  },
+  {
+    "name": "faq-json-ld (import * from '@punji/ui/faq-json-ld')",
+    "path": "dist/faq/jsonLd.js",
+    "import": "*",
+    "limit": "440 B",
+    "gzip": true
+  },
+  {
+    "name": "prompt-card (import * from '@punji/ui/prompt-card')",
+    "path": "dist/prompt-card/PromptCard.js",
+    "import": "*",
+    "limit": "560 B",
+    "gzip": true
+  },
+  {
+    "name": "Article kit CSS",
+    "path": "dist/css/article.css",
+    "limit": "1.8 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "Faq CSS",
+    "path": "dist/css/faq.css",
+    "limit": "480 B",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "PromptCard CSS",
+    "path": "dist/css/prompt-card.css",
+    "limit": "600 B",
     "rolldown": false,
     "gzip": true
   },

@@ -115,6 +115,8 @@
 @import './alert-row.css';
 @import './alert-summary.css';
 @import './money-charts.css';
+@import './scroll-table.css';
+@import './table-print.css';
 @import './range-editor.css';
 @import './filter-menu.css';
 @import './preset-tile.css';

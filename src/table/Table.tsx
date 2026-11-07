@@ -186,7 +186,7 @@ export function DataTable<K extends string>({
     search?.onChange(next);
     if (pagination && pageIndex > 0) pagination.onPageChange(0);
   };
-  const box = ['kit-tablebox', dense && 'dense', bare && 'bare', stickToPage && 'page-sticky', stack && 'stack', selection && 'selection'].filter(Boolean).join(' ');
+  const box = ['kit-tablebox', 'pu-print-table', dense && 'dense', bare && 'bare', stickToPage && 'page-sticky', stack && 'stack', selection && 'selection'].filter(Boolean).join(' ');
   return (
     <>
       {search && (
@@ -324,7 +324,7 @@ export function DataListRow({ children, testId, rowId, selectionDisabled = false
  * page checkbox. Pass as DataTable children, one per group.
  * @stability beta
  */
-export function DataRowGroup({ label, count, expanded, onExpandedChange, cells, children, testId }: {
+export function DataRowGroup({ label, count, expanded, onExpandedChange, cells, actions, children, testId }: {
   /** The group's name, printed in its header. */
   label: ReactNode;
   /** Words after the name, e.g. "3 rows"; part of the button's name. */
@@ -335,6 +335,8 @@ export function DataRowGroup({ label, count, expanded, onExpandedChange, cells, 
   onExpandedChange: (expanded: boolean) => void;
   /** The cells after the header (subtotals, or empty cells), one per remaining column. */
   cells?: ReactNode;
+  /** Controls for the whole group (export, select all), after the disclosure button in the header cell: real buttons or links in tab order, left out of print. @stability beta */
+  actions?: ReactNode;
   /** The group's DataListRows. */
   children: ReactNode;
   /** Test id on the tbody. */
@@ -352,6 +354,7 @@ export function DataRowGroup({ label, count, expanded, onExpandedChange, cells, 
           <span>{label}</span>
           {count !== undefined && <>{' '}<span className="kit-table-group-count">{count}</span></>}
         </button>
+        {actions && <span className="pu-table-group-actions pu-no-print">{actions}</span>}
       </th>
       {cells}
     </tr>

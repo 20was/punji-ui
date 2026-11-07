@@ -1,5 +1,5 @@
 import { CashFlowChart, CorrelationMatrix, DataFreshness, FilterBar, FilterMenu, FilterMenuGroup, FilterMenuItem, FxRateDisplay, heatCell, Histogram, money, MonthGrid, NetWorthChart, PerformanceChart, PresetRow, PresetTile, RangeEditor, RangeSelector, ReturnsHeatTable, StatusBanner, type FilterBarValues, type MonthGridData, WaterfallChart } from '../../src/index.ts';
-import { Accordion, AlertListEmpty, AlertRow, AlertRowCompact, AlertRowList, AlertRowSkeleton, AlertSummary, AlertSummaryNote, AlertSummarySection, BarList, Breadcrumb, BrokerBadge, HeadlineList, InstrumentHeader, MenuButton, MonthStrip, RatingChangeList, RatingChangeRow, RatingChip, RatingScale } from '@punji/ui';
+import { Accordion, AlertListEmpty, AlertRow, AlertRowCompact, AlertRowList, AlertRowSkeleton, AlertSummary, AlertSummaryNote, AlertSummarySection, BarList, Breadcrumb, BrokerBadge, HeadlineList, InstrumentHeader, MenuButton, MonthStrip, RatingChangeList, RatingChangeRow, RatingChip, RatingScale, ScrollTable, type ColumnDef, type WatchlistQuote, Watchlist } from '@punji/ui';
 import { performanceDates, performanceSeries } from '../../fixtures/market-data.ts';
 import { type ReactNode, useState } from 'react';
 // new:component inserts imports above this line
@@ -363,6 +363,41 @@ function FilterBarFixture() {
 }
 
 
+// Sorted by value (largest first), a folded column, a missing value and exact footer totals; a second table with the sticky column scrolled.
+interface Co { s: string; name: string; cap: ReturnType<typeof money>; chg: number | null }
+const COS: Co[] = [
+  { s: 'NABIL', name: 'Nabil Bank', cap: money(13_400_000_000_00n, 'NPR'), chg: 1.2 },
+  { s: 'ADBL', name: 'Agricultural Development Bank', cap: money(6_150_000_000_00n, 'NPR'), chg: null },
+  { s: 'SCBL', name: 'Standard Chartered Bank Nepal', cap: money(5_320_000_000_00n, 'NPR'), chg: -0.5 },
+];
+const COS_COLUMNS: ColumnDef<Co, ReactNode>[] = [
+  { id: 's', header: 'Company', accessor: (c) => c.s, sortable: true, cell: (c) => <><b>{c.s}</b> {c.name}</> },
+  { id: 'chg', header: 'Today', kind: 'percent', accessor: (c) => c.chg, sortable: true, cell: (c) => (c.chg === null ? 'Not traded' : `${c.chg > 0 ? '▲ +' : '▼ '}${c.chg.toFixed(2)}%`) },
+  { id: 'cap', header: 'Value, Rs', kind: 'money', accessor: (c) => c.cap, sortable: true, aggregate: 'sum' },
+];
+function ScrollTableFixture() {
+  return (
+    <div style={{ display: 'grid', gap: 12, width: '100%' }}>
+      <ScrollTable caption="Banks by value" showCaption columns={COS_COLUMNS} rows={COS} rowKey={(c) => c.s} defaultSort={{ key: 'cap', dir: 'desc' }} totals />
+      <ScrollTable caption="Banks, empty" columns={COS_COLUMNS} rows={[]} rowKey={(c) => c.s} />
+    </div>
+  );
+}
+
+// Month and since-added columns (one missing), an actions slot, and the loading rows.
+const WQ = (symbol: string, extra: Partial<WatchlistQuote> = {}): WatchlistQuote => ({ symbol, name: `${symbol} Limited`, ltp: 51000n, previousClose: 50000n, volume: 1200, turnover: 61_200_000n, ...extra });
+const alertOn = (q: WatchlistQuote) => <button type="button" aria-label={`Alert on ${q.symbol}`}>!</button>;
+function WatchlistColumnsFixture() {
+  const list = [WQ('NABIL', { monthAgo: 46000n, addedPrice: 56000n }), WQ('NICA', { monthAgo: null, addedPrice: 51000n })];
+  return (
+    <div style={{ display: 'grid', gap: 12, width: '100%' }}>
+      <Watchlist quotes={list} label="With columns" showMonth showSinceAdded actions={alertOn} />
+      <Watchlist quotes={[]} label="Loading" loading skeletonRows={2} showMonth showSinceAdded />
+    </div>
+  );
+}
+
+
 // new:component inserts fixtures above this line
 
 export const communityRegistry: Record<string, () => ReactNode> = {
@@ -393,5 +428,7 @@ export const communityRegistry: Record<string, () => ReactNode> = {
   'filter-menu': FilterMenuFixture,
   'preset-tile': PresetTileFixture,
   'filter-bar': FilterBarFixture,
+  'scroll-table': ScrollTableFixture,
+  'watchlist-columns': WatchlistColumnsFixture,
   // new:component inserts registry entries above this line
 };

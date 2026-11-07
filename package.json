@@ -639,26 +639,6 @@
       "types": "./dist/accordion/Accordion.d.ts",
       "default": "./dist/accordion/Accordion.js"
     },
-    "./article": {
-      "types": "./dist/article/Article.d.ts",
-      "default": "./dist/article/Article.js"
-    },
-    "./article-toc": {
-      "types": "./dist/article/extractToc.d.ts",
-      "default": "./dist/article/extractToc.js"
-    },
-    "./faq-json-ld": {
-      "types": "./dist/faq/jsonLd.d.ts",
-      "default": "./dist/faq/jsonLd.js"
-    },
-    "./faq": {
-      "types": "./dist/faq/Faq.d.ts",
-      "default": "./dist/faq/Faq.js"
-    },
-    "./prompt-card": {
-      "types": "./dist/prompt-card/PromptCard.d.ts",
-      "default": "./dist/prompt-card/PromptCard.js"
-    },
     "./chart-a11y": {
       "types": "./dist/chart-a11y/ChartA11yShell.d.ts",
       "default": "./dist/chart-a11y/ChartA11yShell.js"
@@ -679,29 +659,9 @@
       "types": "./dist/range-selector/RangeSelector.d.ts",
       "default": "./dist/range-selector/RangeSelector.js"
     },
-    "./range-editor": {
-      "types": "./dist/range-editor/RangeEditor.d.ts",
-      "default": "./dist/range-editor/RangeEditor.js"
-    },
-    "./filter-menu": {
-      "types": "./dist/filter-menu/FilterMenu.d.ts",
-      "default": "./dist/filter-menu/FilterMenu.js"
-    },
-    "./preset-tile": {
-      "types": "./dist/preset-tile/PresetTile.d.ts",
-      "default": "./dist/preset-tile/PresetTile.js"
-    },
-    "./filter-bar": {
-      "types": "./dist/filter-bar/FilterBar.d.ts",
-      "default": "./dist/filter-bar/FilterBar.js"
-    },
-    "./filter-url": {
-      "types": "./dist/filter-url/FilterUrl.d.ts",
-      "default": "./dist/filter-url/FilterUrl.js"
-    },
-    "./use-url-filters": {
-      "types": "./dist/use-url-filters/useUrlFilters.d.ts",
-      "default": "./dist/use-url-filters/useUrlFilters.js"
+    "./scroll-table": {
+      "types": "./dist/scroll-table/ScrollTable.d.ts",
+      "default": "./dist/scroll-table/ScrollTable.js"
     },
     "./css/*.css": {
       "types": "./dist/css/*.css.d.ts",
@@ -963,6 +923,50 @@
     "./reconciliation-matcher": {
       "types": "./dist/reconciliation-matcher/ReconciliationMatcher.d.ts",
       "default": "./dist/reconciliation-matcher/ReconciliationMatcher.js"
+    },
+    "./article": {
+      "types": "./dist/article/Article.d.ts",
+      "default": "./dist/article/Article.js"
+    },
+    "./article-toc": {
+      "types": "./dist/article/extractToc.d.ts",
+      "default": "./dist/article/extractToc.js"
+    },
+    "./faq-json-ld": {
+      "types": "./dist/faq/jsonLd.d.ts",
+      "default": "./dist/faq/jsonLd.js"
+    },
+    "./faq": {
+      "types": "./dist/faq/Faq.d.ts",
+      "default": "./dist/faq/Faq.js"
+    },
+    "./prompt-card": {
+      "types": "./dist/prompt-card/PromptCard.d.ts",
+      "default": "./dist/prompt-card/PromptCard.js"
+    },
+    "./range-editor": {
+      "types": "./dist/range-editor/RangeEditor.d.ts",
+      "default": "./dist/range-editor/RangeEditor.js"
+    },
+    "./filter-menu": {
+      "types": "./dist/filter-menu/FilterMenu.d.ts",
+      "default": "./dist/filter-menu/FilterMenu.js"
+    },
+    "./preset-tile": {
+      "types": "./dist/preset-tile/PresetTile.d.ts",
+      "default": "./dist/preset-tile/PresetTile.js"
+    },
+    "./filter-bar": {
+      "types": "./dist/filter-bar/FilterBar.d.ts",
+      "default": "./dist/filter-bar/FilterBar.js"
+    },
+    "./filter-url": {
+      "types": "./dist/filter-url/FilterUrl.d.ts",
+      "default": "./dist/filter-url/FilterUrl.js"
+    },
+    "./use-url-filters": {
+      "types": "./dist/use-url-filters/useUrlFilters.d.ts",
+      "default": "./dist/use-url-filters/useUrlFilters.js"
     },
     "./instrument-header": {
       "types": "./dist/instrument-header/InstrumentHeader.d.ts",

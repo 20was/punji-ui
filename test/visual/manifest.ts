@@ -173,6 +173,8 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'cash-flow-chart', title: 'CashFlowChart' },
   { id: 'net-worth-chart', title: 'NetWorthChart' },
   { id: 'range-selector', title: 'RangeSelector' },
+  { id: 'scroll-table', title: 'ScrollTable' },
+  { id: 'watchlist-columns', title: 'Watchlist columns' },
   { id: 'range-editor', title: 'RangeEditor', pending: true },
   { id: 'filter-menu', title: 'FilterMenu', pending: true },
   { id: 'preset-tile', title: 'PresetTile', pending: true },

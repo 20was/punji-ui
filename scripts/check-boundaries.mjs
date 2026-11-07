@@ -4,7 +4,7 @@ import { resolve, relative, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const problems = [];
-// Pure directories and the one external dependency each may use per file.
+// Pure directories.
 const PURE = { nepal: {}, calculations: {}, money: {}, export: {}, ledger: {}, banking: {}, 'chart-math': {}, 'date-range-presets': {}, 'nepse-fees': {}, 'share-issues': {}, 'emvco-qr': {}, lending: {}, invest: {}, kyc: {}, 'nepal-address-data': {}, 'table-core': {}, 'table-presets': {}, 'table-adapters': {}, 'tanstack-table': {}, 'ag-grid': {}, 'mui-x-grid': {}, 'chart-adapters': {}, tax: {}, trust: {}, theme: {}, payments: {} };
 // Pure modules may reuse these other pure modules (never components): the exact decimal parser, minor-unit helpers and rounding.
 // The ledger helpers also reuse the calendar-date type, currency exponent and the CSV writer (all pure).
@@ -57,4 +57,4 @@ for (const [dir, allowed] of Object.entries(PURE)) {
   }
 }
 if (problems.length) throw new Error(problems.join('\n'));
-console.log(`boundaries: ${Object.keys(PURE).join(', ')} utilities have no React, component, or browser dependencies; calendar dependency isolated`);
+console.log(`boundaries: ${Object.keys(PURE).join(', ')} utilities have no React, component, or browser dependencies; no external dependencies`);

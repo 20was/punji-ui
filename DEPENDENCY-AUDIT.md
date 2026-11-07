@@ -9,24 +9,22 @@ any dependency or budget change.
 | Package | Version | Why | Size | Licence | Alternatives considered |
 |---|---|---|---|---|---|
 | `react`, `react-dom` | peer `^19.0.0` | Components | not bundled | MIT | — |
-| `@remotemerge/nepali-date-converter` | 1.2.5 (exact) | Bikram Sambat ↔ Gregorian conversion tables for the BS calendar | 26 kB unpacked; no transitive dependencies | MIT | Writing our own tables (data provenance burden); larger date libraries (rejected: pull a full date stack). See [calendar research](docs/research/calendar-2026-10-29.md) |
 
-That is the whole production tree (`npm ls --omit=dev`: one package). The converter is imported only by
-`src/nepal/calendar.ts`; `scripts/check-boundaries.mjs` fails the build if any other pure module imports
-it, so `@punji/ui/nepal/format`, `/money`, `/calculations`, `/export` and `/nepal/market-format` never
-pull calendar data.
+That is the whole production tree: `npm ls --omit=dev` lists nothing. Bikram Sambat conversion runs on
+`src/nepal/bs-data.ts` and `bs-convert.ts` (see docs/research/bs-calendar), and `scripts/check-boundaries.mjs`
+keeps every pure module, `nepal` included, free of external imports.
 
 Rules enforced in CI, not just written down:
 
-- `scripts/check-source.mjs` fails on any import outside `react`, `react-dom` and the converter, and on
-  any new entry in `dependencies` other than the reviewed converter version.
+- `scripts/check-source.mjs` fails on any import outside `react` and `react-dom`, on any entry in
+  `dependencies`, and on any BS-calendar package (`nepali-date*`, `bikram-sambat`, `ad-bs`, ...) imported or declared.
 - `scripts/check-boundaries.mjs` keeps `nepal`, `calculations`, `money` and `export` free of React,
   components and browser globals; `money` may import only `nepal/decimal`, `nepal/money` and
   `calculations/rounding`.
 - `.npmrc ignore-scripts=true`; CI installs with `npm ci --ignore-scripts`.
 - `npm run check:lockfile` (lockfile-lint): npm registry only, HTTPS, integrity hashes.
 
-Deliberately not added: date libraries (Intl and the converter cover formatting and BS), icon packs
+Deliberately not added: date libraries (Intl and our own BS table cover formatting and BS), icon packs
 (inline SVG), a decimal library (bigint minor units cover exact money; see
 [FINANCIAL.md](docs/FINANCIAL.md)), table engines and chart libraries (current needs are met by small
 owned components; the 10k-row need was met by the owned `VirtualFinancialTable`, about 5 kB gzip, measured in

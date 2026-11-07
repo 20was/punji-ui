@@ -22,7 +22,7 @@ punji-ui (this repo, source of truth)  -->  npm @punji/ui (exact version)  -->  
 - One folder per module under `src/` (for example `src/button/Button.tsx`), each with its own CSS in `src/styles/<name>.css`.
 - `package.json` `exports` entries (count them with `node -p "Object.keys(require('./package.json').exports).length"`; 137 on 2026-11-01): `.` (everything), one subpath per module (`./button`, `./table`, `./money`, `./nepal/calendar`, ...), `./styles.css`, `./tokens.css`, `./css/*.css`.
 - Every subpath value must also exist on the root barrel and be the same object (`check:exports`). Small subpaths exist so consumers do not pay for the whole kit; the root is a compatibility barrel.
-- Granular Nepal entry points: `nepal/format`, `nepal/calendar` (the only importer of the converter), `nepal/money`. `@punji/ui/money` is the currency-generic layer.
+- Granular Nepal entry points: `nepal/format`, `nepal/calendar`, `nepal/money`. `@punji/ui/money` is the currency-generic layer.
 - Output is ESM only plus `.d.ts` (`engines.node >=22.12`, React 19 peers, `sideEffects: ["**/*.css"]`). `files` ships `dist`, `CHANGELOG.md`, `THIRD_PARTY_NOTICES.md`.
 
 ## Pure versus client modules
@@ -31,13 +31,13 @@ punji-ui (this repo, source of truth)  -->  npm @punji/ui (exact version)  -->  
 | --- | --- | --- | --- |
 | Pure | `src/nepal`, `src/calculations`, `src/money`, `src/export` | No React, no `.tsx`, no browser globals; only listed imports | `scripts/check-boundaries.mjs` (in `npm run lint`) |
 | Client | Components, hooks | `'use client'` exactly when the file uses hooks, `createPortal`, inline handlers or `requestAnimationFrame` | `scripts/check-source.mjs` |
-| Any | All of `src/` | Imports only `react`, `react-dom`, the pinned converter; no `dangerouslySetInnerHTML`, `eval`, `new Function`; every export subpath has a source file; the only runtime dependency is `@remotemerge/nepali-date-converter@1.2.5` | `scripts/check-source.mjs` |
+| Any | All of `src/` | Imports only `react` and `react-dom`; no BS-calendar package may be imported or listed in `dependencies`; no `dangerouslySetInnerHTML`, `eval`, `new Function`; every export subpath has a source file; there are no runtime dependencies | `scripts/check-source.mjs` |
 
 `check-boundaries` lists:
 
 | List | Contents |
 | --- | --- |
-| `PURE` (dir: file allowed one external import) | `nepal` (`calendar.ts` may import the converter), `calculations`, `money`, `export` |
+| `PURE` (dir: no external imports) | `nepal`, `calculations`, `money`, `export` |
 | `SHARED` (pure modules a pure dir may reuse) | `money` may import `../nepal/decimal.ts`, `../nepal/money.ts`, `../calculations/rounding.ts` |
 
 Other guards: `check-css.mjs` (no raw colours in component CSS; every `var(--pu-*)` is defined in `tokens.css`), `check-exports.mjs` (see above), `check-pack.mjs` (tarball allows only `dist/**/*.{js,d.ts,css}` plus standard files, requires `THIRD_PARTY_NOTICES.md`, caps unpacked size at 2430 KiB). Exact commands: [QUALITY.md](QUALITY.md).
@@ -89,7 +89,7 @@ Sources: [docs/RESEARCH.md](docs/RESEARCH.md), [docs/research/](docs/research/),
 | Decision | Alternatives | Why |
 | --- | --- | --- |
 | This repo owns source; consumer pulls a published exact version | Reverse sync; `file:` link; `npm link`; workspaces; git dependency; committed tarball | Reverse sync overwrote library code. A registry artefact is reproducible in CI and carries provenance. Tarball only as a local loop or fallback (INTEGRATION.md section 2) |
-| Wrap `@remotemerge/nepali-date-converter@1.2.5` for BS dates | Own tables; `sbmdkl/nepali-date-converter`; larger date libraries | MIT, no transitive deps, 26 kB, strict range checks, ESM types. Isolated to `nepal/calendar` so other entry points stay light (RESEARCH.md) |
+| Own the Bikram Sambat month-length table (`src/nepal/bs-data.ts`) with per-month provenance | A BS-calendar package (the earlier choice, `@remotemerge/nepali-date-converter@1.2.5`, was removed); larger date libraries | Packages disagreed with the Rajpatra holiday notices in disputed years and silently copied earlier years past the last published one. Owning the table lets every month carry a provenance status and keeps `nepal` dependency-free (docs/research/bs-calendar) |
 | `bigint` minor units for money | Decimal library; floating point | Exact, no dependency, Intl supplies exponents (DEPENDENCY-AUDIT.md) |
 | Display ratios as `number`, kept apart from ledger maths | One numeric type | Ratios are lossy by nature; avoids implying display values are exact |
 | Date-only values separate from instants | `Date` everywhere | Avoids host-timezone drift; fiscal year derives from BS month, not a fixed July day (RESEARCH.md) |

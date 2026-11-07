@@ -1,0 +1,21 @@
+/* Punji UI styles.
+   Styles for InstrumentHeader. Needs tokens.css, base.css, money.css and states.css (styles.css has everything). Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  .pu-instrument-header { display: flex; flex-wrap: wrap; align-items: center; gap: var(--pu-space-2) var(--pu-space-3); min-width: 0 }
+  .pu-instrument-header-glyph { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--pu-radius-control); background: var(--pu-color-surface-tint); color: var(--pu-color-series-nepse) }
+  .pu-instrument-header-glyph svg { width: 20px; height: 20px }
+  .pu-instrument-header-id { flex: 1 1 8rem; min-width: 0 }
+  .pu-instrument-header-symbol { display: flex; align-items: center; gap: var(--pu-space-2); margin: 0; font: var(--pu-font-weight-bold) var(--pu-text-lg) / 1.25 var(--pu-font-display); white-space: nowrap }
+  .pu-instrument-header-tag { padding: 2px var(--pu-space-2); border-radius: var(--pu-radius-sm); background: var(--pu-color-series-nepse-soft); color: var(--pu-color-text); font: var(--pu-font-weight-semibold) var(--pu-text-xs) / 16px var(--pu-font-body) }
+  .pu-instrument-header-line { margin: 2px 0 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--pu-text-sm); line-height: 18px; color: var(--pu-color-text-muted) }
+  .pu-instrument-header-figures { flex: none; display: grid; justify-items: end; gap: 3px; text-align: end; font-variant-numeric: var(--pu-font-numeric); white-space: nowrap }
+  .pu-instrument-header-price { font: var(--pu-font-weight-bold) var(--pu-text-xl) / 1.1 var(--pu-font-body) }
+  .pu-instrument-header-note { font-size: var(--pu-text-xs); line-height: 16px; color: var(--pu-color-text-muted) }
+  .pu-instrument-header-move { display: inline-flex; align-items: center; gap: 4px; font: var(--pu-font-weight-semibold) var(--pu-text-xs) / 16px var(--pu-font-body); color: var(--pu-color-text-muted) }
+  .pu-instrument-header-move[data-direction='up'] { color: var(--pu-color-gain) }
+  .pu-instrument-header-move[data-direction='down'] { color: var(--pu-color-loss) }
+  .pu-instrument-header-actions { flex: none; display: flex; gap: var(--pu-space-2) }
+  @media (max-width: 599px) {
+    .pu-instrument-header-actions { flex-basis: 100% }
+  }
+}

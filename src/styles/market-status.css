@@ -6,4 +6,10 @@
   .pu-market-status[data-state='open'] .pu-market-status-icon circle { fill: currentColor; stroke: none }
   .pu-market-status[data-state='open'] .pu-market-status-icon path { stroke: var(--pu-color-surface) }
   .pu-market-status-note { font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+  .pu-market-status-wrap { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px var(--pu-space-3); max-width: 100% }
+  .pu-market-status-index { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 2px var(--pu-space-2); font-size: var(--pu-text-sm); font-variant-numeric: var(--pu-font-numeric); color: var(--pu-color-text-muted) }
+  .pu-market-status-index-value { color: var(--pu-color-text); font-weight: var(--pu-font-weight-semibold) }
+  .pu-market-status-index-change { display: inline-flex; align-items: center; gap: 3px; font-weight: var(--pu-font-weight-semibold) }
+  .pu-market-status-index-change[data-direction='up'] { color: var(--pu-color-gain) }
+  .pu-market-status-index-change[data-direction='down'] { color: var(--pu-color-loss) }
 }

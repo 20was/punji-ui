@@ -635,6 +635,54 @@
       "types": "./dist/accordion/Accordion.d.ts",
       "default": "./dist/accordion/Accordion.js"
     },
+    "./instrument-header": {
+      "types": "./dist/instrument-header/InstrumentHeader.d.ts",
+      "default": "./dist/instrument-header/InstrumentHeader.js"
+    },
+    "./broker-badge": {
+      "types": "./dist/broker-badge/BrokerBadge.d.ts",
+      "default": "./dist/broker-badge/BrokerBadge.js"
+    },
+    "./headline-list": {
+      "types": "./dist/headline-list/HeadlineList.d.ts",
+      "default": "./dist/headline-list/HeadlineList.js"
+    },
+    "./rating-scale": {
+      "types": "./dist/rating-scale/RatingScale.d.ts",
+      "default": "./dist/rating-scale/RatingScale.js"
+    },
+    "./rating-chip": {
+      "types": "./dist/rating-chip/RatingChip.d.ts",
+      "default": "./dist/rating-chip/RatingChip.js"
+    },
+    "./rating-change-row": {
+      "types": "./dist/rating-change-row/RatingChangeRow.d.ts",
+      "default": "./dist/rating-change-row/RatingChangeRow.js"
+    },
+    "./month-strip": {
+      "types": "./dist/month-strip/MonthStrip.d.ts",
+      "default": "./dist/month-strip/MonthStrip.js"
+    },
+    "./bar-list": {
+      "types": "./dist/bar-list/BarList.d.ts",
+      "default": "./dist/bar-list/BarList.js"
+    },
+    "./alert-row": {
+      "types": "./dist/alert-row/AlertRow.d.ts",
+      "default": "./dist/alert-row/AlertRow.js"
+    },
+    "./alert-summary": {
+      "types": "./dist/alert-summary/AlertSummary.d.ts",
+      "default": "./dist/alert-summary/AlertSummary.js"
+    },
+    "./alert-distance": {
+      "types": "./dist/alert-distance/alertDistance.d.ts",
+      "default": "./dist/alert-distance/alertDistance.js"
+    },
+    "./alert-target": {
+      "types": "./dist/alert-target/alertTarget.d.ts",
+      "default": "./dist/alert-target/alertTarget.js"
+    },
     "./css/*.css": {
       "types": "./dist/css/*.css.d.ts",
       "default": "./dist/css/*.css"

@@ -1,0 +1,15 @@
+/* Punji UI styles.
+   Styles for AlertSummary. Needs tokens.css, base.css (its .kit-inv inverse surface) and states.css (styles.css has everything). Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  .pu-alert-summary { display: grid; gap: 0; min-width: 0; padding: var(--pu-space-6); border-radius: var(--pu-radius-card) }
+  .pu-alert-summary-label { margin: 0; font-size: var(--pu-text-sm); line-height: 18px; color: var(--pu-color-text-muted) }
+  .pu-alert-summary-value { margin: var(--pu-space-1) 0 0; font: var(--pu-font-weight-medium) 36px / 40px var(--pu-font-display); letter-spacing: -0.03em; font-variant-numeric: var(--pu-font-numeric); white-space: nowrap; color: var(--pu-color-text) }
+  .pu-alert-summary[aria-busy='true'] .pu-alert-summary-value { display: flex; align-items: center; height: 40px }
+  .pu-alert-summary[aria-busy='true'] .pu-alert-summary-sub { display: flex; align-items: center; height: 18px }
+  .pu-alert-summary-sub { margin: var(--pu-space-1) 0 0; font-size: var(--pu-text-sm); line-height: 18px; color: var(--pu-color-text-muted) }
+  .pu-alert-summary-section { margin-top: var(--pu-space-4); padding-top: 14px; border-top: 1px solid var(--pu-color-border) }
+  .pu-alert-summary-section + .pu-alert-summary-section { margin-top: var(--pu-space-2) }
+  .pu-alert-summary-section h3 { margin: 0 0 6px; font-size: var(--pu-text-sm); line-height: 18px; font-weight: var(--pu-font-weight-semibold); color: var(--pu-color-text) }
+  .pu-alert-summary-note { margin: 0; font-size: var(--pu-text-sm); line-height: 18px; color: var(--pu-color-text-muted) }
+  @media (max-width: 599px) { .pu-alert-summary { padding: var(--pu-space-5) var(--pu-space-4) } }
+}

@@ -135,8 +135,8 @@ describe('Nepal presets', () => {
     const start = bsToGregorian({ year: 2083, month: 4, day: 1 });
     const iso = `${start.year}-${String(start.month).padStart(2, '0')}-${String(start.day).padStart(2, '0')}`;
     expect(gregorianToBS({ year: 2026, month: 11, day: 1 }).month).toBe(7);
-    expect(nepalFiscalYearToDate(today)).toEqual({ start: iso, end: today });
-    expect(nepalFiscalYearToDate(iso)).toEqual({ start: iso, end: iso });
+    expect(nepalFiscalYearToDate(today)).toMatchObject({ start: iso, end: today });
+    expect(nepalFiscalYearToDate(iso)).toMatchObject({ start: iso, end: iso });
   });
   it('in Asar the fiscal year is still the one that began the previous Shrawan', () => {
     const asar = bsToGregorian({ year: 2083, month: 3, day: 10 });
@@ -156,7 +156,7 @@ describe('Nepal presets', () => {
     const bs = nepalPresetRange('this-month', { today });
     const monthOne = bsToGregorian({ year: 2083, month: 7, day: 1 });
     expect(bs.start).toBe(`${monthOne.year}-${String(monthOne.month).padStart(2, '0')}-${String(monthOne.day).padStart(2, '0')}`);
-    expect(nepalPresetRange('this-month', { today, calendar: 'gregory' })).toEqual({ start: '2026-11-01', end: today });
+    expect(nepalPresetRange('this-month', { today, calendar: 'gregory' })).toMatchObject({ start: '2026-11-01', end: today });
     const last = nepalPresetRange('last-month', { today });
     expect(shiftDate(bs.start, -1)).toBe(last.end);
     expect(nepalPresetRange('year-to-date', { today }).start).toBe(`${bsToGregorian({ year: 2083, month: 1, day: 1 }).year}-04-14`);

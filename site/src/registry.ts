@@ -1012,8 +1012,8 @@ const BASE_PAGES: readonly PageDef[] = [
     keyboard: ['Arrow keys move one day (left, right) or one week (up, down); Home and End move to the week boundaries.', 'Page Up and Page Down change month; Shift with them changes year. Enter or Space selects.', 'Escape closes the popover and restores focus to the trigger; Tab leaves in form order.'],
     accessibility: ['Typed input is strict and reports errors through `error` with `aria-invalid`.', 'Selected days expose `aria-selected`, today `aria-current` and unavailable days `aria-disabled`; month changes are announced through a live heading.'],
     responsive: ['The popover fits a 390px viewport; touch targets are 44px.'],
-    notes: { title: 'Limits', points: ['BS support is bounded by the converter table; dates outside it are rejected, not guessed.', 'Not yet reviewed with VoiceOver or NVDA (see ROADMAP.md).'] },
-    related: ['currency-input', 'date-range-presets', 'button'],
+    notes: { title: 'Limits', points: ['BS support is bounded by the converter table; dates outside it are rejected, not guessed. Months from 2084 are projections: `toAD` and `bsDateStatus` from `nepal/calendar` tell you which (see the BS calendar guide).', 'Not yet reviewed with VoiceOver or NVDA (see ROADMAP.md).'] },
+    related: ['currency-input', 'date-range-presets', 'bs-calendar', 'button'],
   },
   {
     slug: 'button',
@@ -1782,6 +1782,7 @@ const BASE_PAGES: readonly PageDef[] = [
     keyboard: ['The period is a native select (arrows or type-ahead); the kind switch is a radio group (arrow keys move, Tab leaves).'],
     accessibility: ['Both controls are named (label, and `kindGroupLabel` defaulting to "<label> type").', 'The detail line is tied to the select with `aria-describedby`.'],
     responsive: ['The kind switch wraps above the select on a narrow screen.'],
+    notes: { title: 'Projected periods', points: ['The Nepal builders set `projected: true` on a period whose start or end falls in a Bikram Sambat month with no official publication yet (the end of FY 2083/84 today). The selector does not change; use the flag to mark the period. See the BS calendar guide.'] },
     related: ['date-picker', 'statement-table', 'trial-balance'],
   },
   {

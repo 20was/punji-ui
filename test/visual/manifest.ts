@@ -165,6 +165,9 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'cash-flow-chart', title: 'CashFlowChart' },
   { id: 'net-worth-chart', title: 'NetWorthChart' },
   { id: 'range-selector', title: 'RangeSelector' },
+  { id: 'score-radar', title: 'ScoreRadar five axes, eight long names at 320px, weak total' },
+  { id: 'fair-value-bar', title: 'FairValueBar under, fair, over, far above' },
+  { id: 'price-target-chart', title: 'PriceTargetChart fan and close targets' },
   // new:component inserts fixtures above this line
 ];
 

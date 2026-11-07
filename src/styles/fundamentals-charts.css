@@ -1,0 +1,94 @@
+/* Punji UI styles.
+   Styles for score-radar, fair-value-bar and price-target-chart. Needs tokens.css and base.css (styles.css has everything).
+   The frame, grid, axis, tooltip and legend come from financial-charts.css (.kit-ct). Colours from --pu-* tokens only. */
+@layer punji.components {
+  /* ScoreRadar: the shape follows the total on a loss / warn / gain scale; the number and the word carry the same fact. */
+  .pu-sr-area { display: block }
+  .pu-sr-plot.selectable { cursor: pointer }
+  .pu-sr-spoke { stroke: var(--pu-color-border-strong); stroke-width: 1 }
+  .pu-sr-spoke.on, .pu-sr-spoke.lit { stroke: var(--pu-color-text); stroke-width: 2 }
+  .pu-sr-shape { stroke-width: 2; stroke-linejoin: round }
+  .pu-sr-shape.low, .pu-sr-sw.low { fill: color-mix(in srgb, var(--pu-color-loss) 24%, transparent); stroke: var(--pu-color-loss) }
+  .pu-sr-shape.mid, .pu-sr-sw.mid { fill: color-mix(in srgb, var(--pu-color-warn) 24%, transparent); stroke: var(--pu-color-warn) }
+  .pu-sr-shape.high, .pu-sr-sw.high { fill: color-mix(in srgb, var(--pu-color-gain) 24%, transparent); stroke: var(--pu-color-gain) }
+  .pu-sr-sw { stroke-width: 2 }
+  .pu-sr-compare { fill: none; stroke: var(--pu-color-text-muted); stroke-width: 2; stroke-dasharray: 5 4; stroke-linejoin: round }
+  .pu-sr-sw-dash { stroke: var(--pu-color-text-muted); stroke-width: 2; stroke-dasharray: 5 4 }
+  .pu-sr-dot { fill: var(--pu-color-surface); stroke-width: 2 }
+  .pu-sr-dot.low { stroke: var(--pu-color-loss) }
+  .pu-sr-dot.mid { stroke: var(--pu-color-warn) }
+  .pu-sr-dot.high { stroke: var(--pu-color-gain) }
+  .pu-sr-dot.on { stroke-width: 3 }
+  .pu-sr-label { fill: var(--pu-color-text-muted); font: 500 11px / 13px var(--pu-font-body) }
+  .pu-sr-label .pu-sr-num { fill: var(--pu-color-text); font-weight: 600; font-variant-numeric: var(--pu-font-numeric) }
+  .pu-sr-label.selected, .pu-sr-label.lit { fill: var(--pu-color-text); font-weight: 700; text-decoration: underline }
+  .pu-sr-total { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: 2px 6px; margin: 0; font-size: 13px; line-height: 20px; color: var(--pu-color-text-muted) }
+  .pu-sr-total b { font-size: 20px; line-height: 24px; color: var(--pu-color-text); font-variant-numeric: var(--pu-font-numeric) }
+  .pu-sr-total-name { font-weight: 600 }
+  .pu-sr-band { margin-inline-start: 6px; font-weight: 600 }
+  .pu-sr-total.low .pu-sr-band { color: var(--pu-color-loss) }
+  .pu-sr-total.mid .pu-sr-band { color: var(--pu-color-warn) }
+  .pu-sr-total.high .pu-sr-band { color: var(--pu-color-gain) }
+  .pu-sr-legend { justify-content: center }
+  .pu-sr-legend li svg { flex: none }
+
+  /* FairValueBar: undervalued left (solid), fair in the middle, overvalued right (hatched); words and signs say the same. */
+  .pu-fvb-read { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 0 }
+  .pu-fvb-read > div { display: grid; gap: 2px; padding: 2px 6px; margin-inline: -6px; border-radius: 6px }
+  .pu-fvb-read > .is-active, .pu-fvb-gap.is-active { background: var(--pu-color-surface-tint) }
+  .pu-fvb-read dt { font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }
+  .pu-fvb-read dd { margin: 0; font: 600 18px / 24px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); color: var(--pu-color-text) }
+  .pu-fvb-gap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; margin: 0; padding: 2px 6px; margin-inline: -6px; border-radius: 6px; font-size: 14px; line-height: 20px; color: var(--pu-color-text-muted) }
+  .pu-fvb-pct { font-size: 18px; line-height: 24px; color: var(--pu-color-text); font-variant-numeric: var(--pu-font-numeric) }
+  .pu-fvb-verdict { font-weight: 600 }
+  .pu-fvb-gap.undervalued .pu-fvb-verdict { color: var(--pu-color-gain) }
+  .pu-fvb-gap.overvalued .pu-fvb-verdict { color: var(--pu-color-loss) }
+  .pu-fvb-gap.fair .pu-fvb-verdict { color: var(--pu-color-text) }
+  .pu-fvb-plot { padding-block: 30px 0; height: auto }
+  .pu-fvb-track { position: relative; height: 16px; border-radius: 8px; overflow: visible; background: var(--pu-color-surface-tint) }
+  .pu-fvb-zone { position: absolute; top: 0; bottom: 0 }
+  .pu-fvb-zone.under { border-radius: 8px 0 0 8px; background: var(--pu-color-gain-soft); box-shadow: inset 0 0 0 1px var(--pu-color-gain) }
+  .pu-fvb-zone.fair { background: var(--pu-color-surface-tint); box-shadow: inset 0 0 0 1px var(--pu-color-border-strong) }
+  .pu-fvb-zone.over { border-radius: 0 8px 8px 0; background: repeating-linear-gradient(45deg, transparent 0 3px, color-mix(in srgb, var(--pu-color-loss) 45%, transparent) 3px 5px), var(--pu-color-loss-soft); box-shadow: inset 0 0 0 1px var(--pu-color-loss) }
+  .pu-fvb-fair { position: absolute; top: -4px; bottom: -4px; width: 0; border-inline-start: 2px dashed var(--pu-color-text-muted); transform: translateX(-1px) }
+  .pu-fvb-marker { position: absolute; top: -6px; bottom: -6px; width: 4px; margin-inline-start: -2px; border-radius: 2px; background: var(--pu-color-text); outline: 2px solid var(--pu-color-surface) }
+  .pu-fvb-marker em { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 2px; padding: 0 2px; font: 600 12px / 16px var(--pu-font-body); font-style: normal; white-space: nowrap; color: var(--pu-color-text) }
+  .pu-fvb-marker em::after { content: ''; display: block; width: 0; height: 0; margin: 0 auto; border: 5px solid transparent; border-top-color: var(--pu-color-text); border-bottom: 0 }
+  .pu-fvb-marker.start em { left: 0; transform: none }
+  .pu-fvb-marker.start em::after { margin-inline: 0 auto; margin-inline-start: 0 }
+  .pu-fvb-marker.end em { left: auto; right: 0; transform: none }
+  .pu-fvb-marker.end em::after { margin-inline-start: auto }
+  .pu-fvb-scale { display: flex; justify-content: space-between; gap: 8px; margin-top: 8px; font-size: 11px; line-height: 14px; color: var(--pu-color-text-muted); font-variant-numeric: var(--pu-font-numeric) }
+  .pu-fvb-legend { gap: 4px 16px }
+  .pu-fvb-legend .pu-fvb-sw { display: inline-block; width: 14px; height: 10px; border-radius: 3px }
+  .pu-fvb-sw.under { background: var(--pu-color-gain-soft); box-shadow: inset 0 0 0 1px var(--pu-color-gain) }
+  .pu-fvb-sw.fair { background: var(--pu-color-surface-tint); box-shadow: inset 0 0 0 1px var(--pu-color-border-strong) }
+  .pu-fvb-sw.over { background: repeating-linear-gradient(45deg, transparent 0 3px, color-mix(in srgb, var(--pu-color-loss) 45%, transparent) 3px 5px), var(--pu-color-loss-soft); box-shadow: inset 0 0 0 1px var(--pu-color-loss) }
+  @media (prefers-reduced-motion: no-preference) {
+    .pu-fvb-marker { transition: left 0.2s ease-out }
+  }
+
+  /* PriceTargetChart: history is a solid line, the average target a solid thicker line, low and high dashed. */
+  .pu-pt-hist { fill: none; stroke: var(--pu-color-chart); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round }
+  .pu-pt-fan { fill: var(--pu-color-series-nepse-soft); stroke: none }
+  .pu-pt-avg { stroke: var(--pu-color-series-nepse); stroke-width: 2.5; stroke-linecap: round }
+  .pu-pt-edge { stroke: var(--pu-color-series-nepse); stroke-width: 1.5; stroke-dasharray: 5 4 }
+  .pu-pt-now { stroke: var(--pu-color-text-muted); stroke-width: 1; stroke-dasharray: 2 3 }
+  .pu-pt-nowlabel { fill: var(--pu-color-text); font: 600 11px / 14px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); paint-order: stroke; stroke: var(--pu-color-surface); stroke-width: 4px }
+  .pu-pt-dot { fill: var(--pu-color-surface); stroke: var(--pu-color-series-nepse); stroke-width: 2 }
+  .pu-pt-dot.now, .pu-pt-dot.lit { stroke: var(--pu-color-text) }
+  .pu-pt-dot.now { fill: var(--pu-color-chart) }
+  .pu-pt-dot.average { fill: var(--pu-color-series-nepse) }
+  .pu-pt-cross { stroke: var(--pu-color-text-muted); stroke-width: 1; stroke-dasharray: 2 2; pointer-events: none }
+  .pu-pt-lead { stroke: var(--pu-color-border-strong); stroke-width: 1 }
+  .pu-pt-tl { fill: var(--pu-color-text); font: 500 11px / 13px var(--pu-font-body) }
+  .pu-pt-tw { fill: var(--pu-color-text-muted); font-weight: 600 }
+  .pu-pt-tn { fill: var(--pu-color-text); font-weight: 600; font-variant-numeric: var(--pu-font-numeric) }
+  .pu-pt-sw { stroke-width: 2.5 }
+  .pu-pt-sw.hist { stroke: var(--pu-color-chart) }
+  .pu-pt-sw.avg { stroke: var(--pu-color-series-nepse) }
+  .pu-pt-sw.edge { stroke: var(--pu-color-series-nepse); stroke-width: 1.5; stroke-dasharray: 5 4 }
+  .pu-pt-legend li svg { flex: none }
+  .pu-pt-implied { margin: 0; font-size: 13px; line-height: 20px; color: var(--pu-color-text-muted) }
+  .pu-pt-implied b { color: var(--pu-color-text); font-variant-numeric: var(--pu-font-numeric) }
+}

@@ -659,6 +659,18 @@
       "types": "./dist/range-selector/RangeSelector.d.ts",
       "default": "./dist/range-selector/RangeSelector.js"
     },
+    "./score-radar": {
+      "types": "./dist/score-radar/ScoreRadar.d.ts",
+      "default": "./dist/score-radar/ScoreRadar.js"
+    },
+    "./fair-value-bar": {
+      "types": "./dist/fair-value-bar/FairValueBar.d.ts",
+      "default": "./dist/fair-value-bar/FairValueBar.js"
+    },
+    "./price-target-chart": {
+      "types": "./dist/price-target-chart/PriceTargetChart.d.ts",
+      "default": "./dist/price-target-chart/PriceTargetChart.js"
+    },
     "./css/*.css": {
       "types": "./dist/css/*.css.d.ts",
       "default": "./dist/css/*.css"

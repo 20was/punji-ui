@@ -208,3 +208,6 @@ export * from './waterfall-chart/WaterfallChart.tsx';
 export * from './cash-flow-chart/CashFlowChart.tsx';
 export * from './net-worth-chart/NetWorthChart.tsx';
 export * from './range-selector/RangeSelector.tsx';
+export * from './score-radar/ScoreRadar.tsx';
+export * from './fair-value-bar/FairValueBar.tsx';
+export * from './price-target-chart/PriceTargetChart.tsx';

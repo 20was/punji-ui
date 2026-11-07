@@ -1,8 +1,6 @@
 import type { ReactNode } from 'react';
-import { CashFlowChart, DataFreshness, FxRateDisplay, money, NetWorthChart, RangeSelector, StatusBanner, WaterfallChart } from '../../src/index.ts';
-import { Accordion, Breadcrumb, MenuButton } from '@punji/ui';
-import { AlertListEmpty, AlertRow, AlertRowCompact, AlertRowList, AlertRowSkeleton, AlertSummary, AlertSummaryNote, AlertSummarySection, BarList, BrokerBadge, HeadlineList, InstrumentHeader, MonthStrip, RatingChangeList, RatingChangeRow, RatingChip, RatingScale } from '@punji/ui';
-import { CashFlowChart, CorrelationMatrix, DataFreshness, FxRateDisplay, heatCell, Histogram, money, MonthGrid, NetWorthChart, PerformanceChart, RangeSelector, ReturnsHeatTable, StatusBanner, WaterfallChart, type MonthGridData } from '../../src/index.ts';
+import { CashFlowChart, CorrelationMatrix, DataFreshness, FxRateDisplay, heatCell, Histogram, money, MonthGrid, NetWorthChart, PerformanceChart, RangeSelector, ReturnsHeatTable, StatusBanner, type MonthGridData, WaterfallChart } from '../../src/index.ts';
+import { Accordion, AlertListEmpty, AlertRow, AlertRowCompact, AlertRowList, AlertRowSkeleton, AlertSummary, AlertSummaryNote, AlertSummarySection, BarList, Breadcrumb, BrokerBadge, HeadlineList, InstrumentHeader, MenuButton, MonthStrip, RatingChangeList, RatingChangeRow, RatingChip, RatingScale } from '@punji/ui';
 import { performanceDates, performanceSeries } from '../../fixtures/market-data.ts';
 // new:component inserts imports above this line
 

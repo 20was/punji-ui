@@ -332,7 +332,7 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "208.79 kB",
+    "limit": "212.35 kB",
     "gzip": true
   },
   {
@@ -1830,6 +1830,20 @@
     "path": "dist/css/money-charts.css",
     "limit": "0.6 kB",
     "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "icons: one icon (import { IconBell } from '@punji/ui/icons')",
+    "path": "dist/icons/Icons.js",
+    "import": "{ IconBell }",
+    "limit": "600 B",
+    "gzip": true
+  },
+  {
+    "name": "icons: Icon with every glyph (import { Icon } from '@punji/ui/icons')",
+    "path": "dist/icons/Icons.js",
+    "import": "{ Icon }",
+    "limit": "7.5 kB",
     "gzip": true
   }
 ]

@@ -33,6 +33,8 @@ const ALLOW = {
   'QrCodeProps.size': 'A measurement (the rendered side in px or a CSS length), not the sm/md/lg scale.',
   'StateGlyph.size': 'A measurement (the icon side in px), not the sm/md/lg scale.',
   'BrokerBadgeProps.size': 'A measurement (the tile side in px: 36, 40, 48, 56 or 132), kept from the web kit so the alias swap needs no screen edits; not the sm/md/lg scale.',
+  'NavIconProps.size': 'punji-web compatibility wrapper: a measurement (px side) so web call sites move over unchanged. Icon and the per-glyph components take sm/md/lg.',
+  'SettingIconProps.size': 'punji-web compatibility wrapper: a measurement (px side) so web call sites move over unchanged. Icon and the per-glyph components take sm/md/lg.',
   'ToneIcon.tone=error': 'Names the icon shape (a cross), shared with Toast kinds; it is not a colour prop.',
   'ToneIcon.tone=success': 'Names the icon shape (a tick), shared with Toast kinds; it is not a colour prop.',
   'ScamWarningProps.copy': 'Scenario content (title, summary, warning signs) replacing the built-in research text, not interface words; the words are in `labels`.',

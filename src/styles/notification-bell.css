@@ -1,0 +1,11 @@
+/* Punji UI styles.
+   Styles for NotificationBell. Needs tokens.css and base.css (styles.css has everything). Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  .pu-bell { appearance: none; position: relative; display: inline-flex; align-items: center; justify-content: center; flex: none; inline-size: var(--pu-control-lg); block-size: var(--pu-control-lg); padding: 0; border: 1px solid transparent; border-radius: var(--pu-radius-control); background: transparent; color: var(--pu-color-text-muted); cursor: pointer; transition: background-color var(--pu-motion-fast) var(--pu-ease-out), color var(--pu-motion-fast) var(--pu-ease-out) }
+  .pu-bell:hover, .pu-bell[aria-expanded='true'] { background: var(--pu-color-surface-tint); color: var(--pu-color-text) }
+  .pu-bell:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+  .pu-bell-n { position: absolute; inset-block-start: var(--pu-space-1); inset-inline-end: var(--pu-space-0-5); box-sizing: border-box; min-inline-size: 1.125rem; block-size: 1.125rem; padding-inline: var(--pu-space-1); border-radius: var(--pu-radius-full); background: var(--pu-color-loss); color: var(--pu-color-on-loss); font: 700 var(--pu-text-xs) / 1.125rem var(--pu-font-numeric); text-align: center; pointer-events: none }
+  .pu-bell-n::before { content: attr(data-n) }
+  .pu-bell-staff { position: absolute; inset-block-end: var(--pu-space-1); inset-inline-end: var(--pu-space-1); display: inline-flex; color: var(--pu-color-text-muted) }
+  @media (prefers-reduced-motion: reduce) { .pu-bell { transition: none } }
+}

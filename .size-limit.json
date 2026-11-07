@@ -332,13 +332,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "251.59 kB",
+    "limit": "257.46 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "54.68 kB",
+    "limit": "57.61 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -1521,21 +1521,28 @@
     "name": "menu (import from '@punji/ui/menu')",
     "path": "dist/menu/Menu.js",
     "import": "*",
-    "limit": "2.8 kB",
+    "limit": "3.82 kB",
     "gzip": true
   },
   {
     "name": "Menu CSS",
     "path": "dist/css/menu.css",
-    "limit": "900 B",
+    "limit": "830 B",
     "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "row-menu (import from '@punji/ui/row-menu')",
+    "path": "dist/row-menu/RowMenu.js",
+    "import": "*",
+    "limit": "5.19 kB",
     "gzip": true
   },
   {
     "name": "breadcrumb (import from '@punji/ui/breadcrumb')",
     "path": "dist/breadcrumb/Breadcrumb.js",
     "import": "*",
-    "limit": "3.3 kB",
+    "limit": "3.89 kB",
     "gzip": true
   },
   {
@@ -1556,6 +1563,104 @@
     "name": "Accordion CSS",
     "path": "dist/css/accordion.css",
     "limit": "800 B",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "notification-bell (import from '@punji/ui/notification-bell')",
+    "path": "dist/notification-bell/NotificationBell.js",
+    "import": "*",
+    "limit": "760 B",
+    "gzip": true
+  },
+  {
+    "name": "NotificationBell CSS",
+    "path": "dist/css/notification-bell.css",
+    "limit": "560 B",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "inbox-list (import from '@punji/ui/inbox-list')",
+    "path": "dist/inbox-list/InboxList.js",
+    "import": "*",
+    "limit": "2.3 kB",
+    "gzip": true
+  },
+  {
+    "name": "InboxList CSS",
+    "path": "dist/css/inbox-list.css",
+    "limit": "1.29 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "bottom-tab-bar (import from '@punji/ui/bottom-tab-bar')",
+    "path": "dist/bottom-tab-bar/BottomTabBar.js",
+    "import": "*",
+    "limit": "3.3 kB",
+    "gzip": true
+  },
+  {
+    "name": "BottomTabBar CSS",
+    "path": "dist/css/bottom-tab-bar.css",
+    "limit": "750 B",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "reorder-list (import from '@punji/ui/reorder-list')",
+    "path": "dist/reorder-list/ReorderList.js",
+    "import": "*",
+    "limit": "2.03 kB",
+    "gzip": true
+  },
+  {
+    "name": "ReorderList CSS",
+    "path": "dist/css/reorder-list.css",
+    "limit": "870 B",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "checklist (import from '@punji/ui/checklist')",
+    "path": "dist/checklist/Checklist.js",
+    "import": "*",
+    "limit": "800 B",
+    "gzip": true
+  },
+  {
+    "name": "Checklist CSS",
+    "path": "dist/css/checklist.css",
+    "limit": "850 B",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "locked-cell (import from '@punji/ui/locked-cell')",
+    "path": "dist/locked-cell/LockedCell.js",
+    "import": "*",
+    "limit": "580 B",
+    "gzip": true
+  },
+  {
+    "name": "LockedCell CSS",
+    "path": "dist/css/locked-cell.css",
+    "limit": "230 B",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "locked-preview (import from '@punji/ui/locked-preview')",
+    "path": "dist/locked-preview/LockedPreview.js",
+    "import": "*",
+    "limit": "1.16 kB",
+    "gzip": true
+  },
+  {
+    "name": "LockedPreview CSS",
+    "path": "dist/css/locked-preview.css",
+    "limit": "830 B",
     "rolldown": false,
     "gzip": true
   },

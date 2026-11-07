@@ -12,6 +12,7 @@ import { FORMS_PAGES } from './registry-forms.ts';
 import { SHOWCASE_PAGES } from './registry-showcase.ts';
 import { TRADING_PAGES } from './registry-trading.ts';
 import { COMMUNITY_PAGES } from './registry-community.ts';
+import { SHELL_PAGES } from './registry-shells.ts';
 import { WALLET_PAGES } from './registry-wallet.ts';
 import { TRUST_PAGES } from './registry-trust.ts';
 // Global payment-field kit: inputs and pure checks.
@@ -1220,7 +1221,7 @@ const BASE_PAGES: readonly PageDef[] = [
         'Not carried over: the whole-row open button, `selected`, `fresh`, the inline `confirm` row and the wide-screen column head. Wrap the symbol in your own link with `renderSymbol`. Existing `Watchlist` usage is unchanged.',
       ],
     },
-    related: ['stock-table', 'market-movers', 'company-search'],
+    related: ['stock-table', 'market-movers', 'company-search', 'reorder-list'],
   },
   {
     slug: 'market-heatmap',
@@ -1523,7 +1524,7 @@ const BASE_PAGES: readonly PageDef[] = [
     keyboard: ['Button and link rows are native controls in tab order: Enter or Space activates.', 'In a tablist, Arrow Up and Down, Home and End move focus between tabs; your `onKeyDown` runs first and can cancel that.'],
     accessibility: ['Rows render list items inside a list; a tablist needs a name (label or `labelledBy`).', 'The status is words, not colour alone; the `StatusDisc` is decorative (`aria-hidden`).', 'A pressed row reports `aria-pressed`; `ariaLabel` must contain the visible words.'],
     responsive: ['Under 600px wide the visual hides and the figure stacks over its status.'],
-    related: ['inline-state', 'step-list', 'key-stats'],
+    related: ['inline-state', 'step-list', 'key-stats', 'checklist'],
   },
   {
     slug: 'step-list',
@@ -2227,6 +2228,8 @@ const BASE_PAGES: readonly PageDef[] = [
   ...APP_PAGES,
   // Scaffolded with npm run new:component, waiting to move into a domain file.
   ...COMMUNITY_PAGES,
+  // App shells and menu parity (web migration wave 2).
+  ...SHELL_PAGES,
 ];
 
 /** The accessibility statement's generated table and note come from the pages above, so they cannot drift (a11y-matrix.ts). */

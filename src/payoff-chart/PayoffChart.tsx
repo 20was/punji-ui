@@ -22,7 +22,7 @@ import { ChartA11yShell, ChartDataTable } from '../chart-a11y/ChartA11yShell.tsx
 import { niceTicks } from '../chart-math/chartMath.ts';
 import { payoffAt, payoffSamples, strategyBreakevens, strategyExtremes, type Breakeven, type PayoffExtreme, type PayoffLeg, type PayoffLegKind, type PayoffSide } from '../chart-math/payoff.ts';
 import { ChartTooltip, clamp, isNum, useMeasuredWidth } from '../internal/chartFrame.tsx';
-import { isMoney, type Money } from '../money/money.ts';
+import { currencyExponent, isMoney, type Money } from '../money/money.ts';
 import { EmptyFigure, num, sharedCurrency, useMoneyText } from '../money-chart/shared.tsx';
 
 /** One leg of the strategy, with `Money` prices in a single currency. */
@@ -195,6 +195,8 @@ function Payoff({ legs: legInput, label, spot, today = [], todayLabel, range, lo
   const text = useMoneyText(currency, locale);
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
   const { ref, width } = useMeasuredWidth(640);
+  const compactNumber = useMemo(() => new Intl.NumberFormat(locale, { notation: 'compact', maximumFractionDigits: 1 }), [locale]);
+  const plainNumber = useMemo(() => new Intl.NumberFormat(locale, { maximumFractionDigits: currencyExponent(currency) }), [locale, currency]);
   const plotH = clamp(isNum(height) ? height : 280, 160, 520);
   const svgH = TOP + plotH + AXIS_H;
 
@@ -260,8 +262,11 @@ function Payoff({ legs: legInput, label, spot, today = [], todayLabel, range, lo
   const yHi = Math.max(...allY);
   const yPad = (yHi - yLo || 1) * 0.1;
   const yTicks = niceTicks(Math.min(yLo - (yLo < 0 ? yPad : 0), 0), Math.max(yHi + (yHi > 0 ? yPad : 0), 0) || 1, Math.max(3, Math.round(plotH / 56)));
-  const yTexts = yTicks.ticks.map((t) => (t === 0 ? text.compact(0n) : t > 0 ? text.signedCompact(BigInt(Math.round(t))) : text.signedCompact(BigInt(Math.round(t)))));
-  const axisW = Math.min(110, Math.max(...yTexts.map((t) => t.length)) * 7 + 14);
+  // Axis labels are bare numbers (K, L, Cr for en-IN) with the currency named once; every exact figure is in the facts, tooltip and table.
+  const exp = currencyExponent(currency);
+  const major = (minor: number) => minor / 10 ** exp;
+  const yTexts = yTicks.ticks.map((t) => (t === 0 ? '0' : `${t > 0 ? '+' : '−'}${compactNumber.format(Math.abs(major(t)))}`));
+  const axisW = Math.min(80, Math.max(...yTexts.map((t) => t.length)) * 7 + 14);
   const x0 = 6;
   const x1 = Math.max(x0 + 60, width - axisW);
   const fromN = num(model.from);
@@ -312,7 +317,6 @@ function Payoff({ legs: legInput, label, spot, today = [], todayLabel, range, lo
               <li><i className="pu-pay-sw profit" />{'▲'} {W.profit}</li>
               <li><i className="pu-pay-sw loss" />{'▼'} {W.loss}</li>
               <li><i className="pu-pay-sw be" />{W.breakeven}</li>
-              {spot && <li><i className="pu-pay-sw spot" />{W.currentPrice}</li>}
             </ul>
           )}
           {facts && (
@@ -363,6 +367,7 @@ function Payoff({ legs: legInput, label, spot, today = [], todayLabel, range, lo
                   <clipPath id={`${uid}l`}><rect x={x0} y={zeroY} width={Math.max(0, x1 - x0)} height={Math.max(0, TOP + plotH - zeroY)} /></clipPath>
                   <pattern id={`${uid}h`} width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" className="pu-pay-hatch" /></pattern>
                 </defs>
+                <text className="kit-ct-axis pu-pay-unit" x={x1 + 8} y={svgH - 6}>{currency}</text>
                 {yTicks.ticks.map((t, k) => (
                   <g key={t}>
                     <line className={`kit-ct-grid${t === 0 ? ' base' : ''}`} x1={x0} x2={x1} y1={yOf(t)} y2={yOf(t)} />
@@ -377,7 +382,7 @@ function Payoff({ legs: legInput, label, spot, today = [], todayLabel, range, lo
                 {hasProfit && <text className="pu-pay-zone profit" x={x0 + 6} y={TOP + 12}>{'▲ '}{W.profit}</text>}
                 {hasLoss && <text className="pu-pay-zone loss" x={x0 + 6} y={TOP + plotH - 6}>{'▼ '}{W.loss}</text>}
                 {xTicks.map((t) => (
-                  <text key={t} className="kit-ct-axis" x={clamp(xOf(t), x0 + 24, x1 - 24)} y={svgH - 6} textAnchor="middle">{text.compact(BigInt(Math.round(t)))}</text>
+                  <text key={t} className="kit-ct-axis" x={clamp(xOf(t), x0 + 24, x1 - 24)} y={svgH - 6} textAnchor="middle">{plainNumber.format(major(t))}</text>
                 ))}
                 {spotInRange && (
                   <g className="pu-pay-spot">
@@ -403,7 +408,7 @@ function Payoff({ legs: legInput, label, spot, today = [], todayLabel, range, lo
                   return (
                     <g key={b.minor.toString()} className="pu-pay-be">
                       <path d={`M${bx},${zeroY - 5} L${bx + 5},${zeroY} L${bx},${zeroY + 5} L${bx - 5},${zeroY} Z`} />
-                      <text x={clamp(bx, x0 + 40, x1 - 40)} y={below ? zeroY + 20 : zeroY - 9} textAnchor="middle">{text.compact(b.minor)}</text>
+                      <text x={clamp(bx, x0 + 40, x1 - 40)} y={below ? zeroY + 20 : zeroY - 9} textAnchor="middle">{plainNumber.format(major(Number(b.minor)))}</text>
                     </g>
                   );
                 })}

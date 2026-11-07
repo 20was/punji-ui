@@ -102,7 +102,8 @@ describe('EconomicCalendar', () => {
     expect([...table.querySelectorAll('thead th')].map((h) => flat(h.textContent))).toEqual(['Event', 'Actual', 'Forecast', 'Previous', 'Result']);
     const row = (name: string) => [...table.querySelectorAll('tbody tr')].find((tr) => tr.textContent!.includes(name))!;
     const cells = [...row('Consumer price index').children].map((c) => flat(c.textContent));
-    expect(cells[0]).toBe('14:15Consumer price indexUS · OctHigh impact');
+    // Under 760px Previous and the result fold into this cell (CSS shows one set at a time).
+    expect(cells[0]).toBe('14:15Consumer price indexUS · OctHigh impactPrevious 2.9%▲ Beat +0.2%, +6.7%');
     expect(cells.slice(1)).toEqual(['3.2%', '3.0%', '2.9%', '▲ Beat +0.2%, +6.7%']);
     expect(flat(row('Unemployment').children[0]!.textContent)).toContain('Medium impact');
     expect(flat(row('Retail').children[0]!.textContent)).toContain('Low impact');
@@ -152,7 +153,7 @@ describe('EconomicCalendar', () => {
     rerender(<EconomicCalendar caption="Macro" events={[macro[0]!]} timeZone={KTM} labels={{ beat: 'Ramro', high: 'Uchcha', impact: 'prabhav', allTimesIn: (z) => `Samay: ${z}` }} />);
     expect(screen.getByText(/Samay: Asia\/Kathmandu/)).toBeTruthy();
     expect(screen.getByText('Uchcha prabhav')).toBeTruthy();
-    expect(screen.getByText(/Ramro/)).toBeTruthy();
+    expect(screen.getAllByText(/Ramro/).length).toBeGreaterThan(0);
   });
 
   it('takes the heading level of each day', () => {
@@ -214,7 +215,7 @@ describe('EarningsCalendar', () => {
     render(<EarningsCalendar caption="Results" events={[{ id: 'f', when: '2027-04-30', symbol: 'ABC', company: 'ABC Ltd', epsActual: '1.00', epsForecast: '0.90' }]} timeZone={KTM} calendar="both" labels={{ beat: 'Ramro' }} />);
     const heading = screen.getByRole('heading', { level: 3 });
     expect(heading.querySelector('[data-bs-status="projected"]')).not.toBeNull();
-    expect(screen.getByText(/Ramro/)).toBeTruthy();
+    expect(screen.getAllByText(/Ramro/).length).toBeGreaterThan(0);
   });
 
   it('prints an empty state', () => {

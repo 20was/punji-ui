@@ -96,6 +96,18 @@ export function earningsResult(event: Pick<EarningsEvent, 'epsActual' | 'epsFore
   return { eps: compareToForecast(event.epsActual, event.epsForecast), revenue: compareToForecast(event.revenueActual, event.revenueForecast) };
 }
 
+/** EPS and revenue results for one report, each with its beat or miss in words. */
+function resultCell(e: EarningsEvent, words: CalendarWords, labels: EarningsCalendarLabels | undefined): ReactNode {
+  const { eps, revenue } = earningsResult(e);
+  if (eps.outcome === 'pending' && revenue.outcome === 'pending') return <OutcomeBadge comparison={eps} labels={words} />;
+  return (
+    <span className="pu-evt-pair">
+      <span><span className="pu-evt-metric">{labels?.eps ?? 'EPS'}</span> <OutcomeBadge comparison={eps} labels={words} /></span>
+      {(e.revenueActual !== undefined || e.revenueForecast !== undefined) && <span><span className="pu-evt-metric">{labels?.revenue ?? 'Revenue'}</span> <OutcomeBadge comparison={revenue} labels={words} unit={e.revenueUnit} showPercent /></span>}
+    </span>
+  );
+}
+
 /** The day tables' columns, built outside the component so each cell is a plain function of its row. */
 function earningsColumns(words: CalendarWords, labels: EarningsCalendarLabels | undefined, locale: string, timeZone: string): ColumnDef<EarningsEvent, ReactNode>[] {
   const session = { 'before-open': labels?.beforeOpen ?? 'Before open', during: labels?.during ?? 'During hours', 'after-close': labels?.afterClose ?? 'After close' };
@@ -110,29 +122,27 @@ function earningsColumns(words: CalendarWords, labels: EarningsCalendarLabels | 
           {isDayOnly(e.when) ? <span className="pu-evt-time none">{e.session ? session[e.session] : words.noTime}</span> : <WhenCell when={e.when} timeZone={timeZone} labels={words} />}
           <span className="pu-evt-title"><b>{e.symbol}</b> {e.company}</span>
           {e.session && !isDayOnly(e.when) && <span className="pu-evt-sub">{session[e.session]}</span>}
+          <span className="pu-evt-fold">
+            <span>{e.period ?? words.none}</span>
+            <span>{labels?.epsPrevious ?? 'EPS previous'} <b>{money(e, e.epsPrevious)}</b></span>
+            <span>{labels?.revenueActual ?? 'Revenue actual'} <b>{money(e, e.revenueActual, e.revenueUnit)}</b></span>
+            <span>{labels?.revenueForecast ?? 'Revenue forecast'} <b>{money(e, e.revenueForecast, e.revenueUnit)}</b></span>
+            {resultCell(e, words, labels)}
+          </span>
         </span>
       ),
     },
-    { id: 'period', header: labels?.period ?? 'Period', cell: (e) => e.period ?? words.none },
+    { id: 'period', hideUnder: 760, header: labels?.period ?? 'Period', cell: (e) => e.period ?? words.none },
     { id: 'epsActual', header: labels?.epsActual ?? 'EPS actual', kind: 'quantity', cell: (e) => <strong className="pu-evt-actual">{money(e, e.epsActual)}</strong> },
     { id: 'epsForecast', header: labels?.epsForecast ?? 'EPS forecast', kind: 'quantity', cell: (e) => money(e, e.epsForecast) },
-    { id: 'epsPrevious', header: labels?.epsPrevious ?? 'EPS previous', kind: 'quantity', cell: (e) => money(e, e.epsPrevious) },
-    { id: 'revenueActual', header: labels?.revenueActual ?? 'Revenue actual', kind: 'quantity', cell: (e) => <strong className="pu-evt-actual">{money(e, e.revenueActual, e.revenueUnit)}</strong> },
-    { id: 'revenueForecast', header: labels?.revenueForecast ?? 'Revenue forecast', kind: 'quantity', cell: (e) => money(e, e.revenueForecast, e.revenueUnit) },
+    { id: 'epsPrevious', hideUnder: 760, header: labels?.epsPrevious ?? 'EPS previous', kind: 'quantity', cell: (e) => money(e, e.epsPrevious) },
+    { id: 'revenueActual', hideUnder: 760, header: labels?.revenueActual ?? 'Revenue actual', kind: 'quantity', cell: (e) => <strong className="pu-evt-actual">{money(e, e.revenueActual, e.revenueUnit)}</strong> },
+    { id: 'revenueForecast', hideUnder: 760, header: labels?.revenueForecast ?? 'Revenue forecast', kind: 'quantity', cell: (e) => money(e, e.revenueForecast, e.revenueUnit) },
     {
       id: 'result',
       header: labels?.result ?? 'Result',
-      cell: (e) => {
-        const { eps, revenue } = earningsResult(e);
-        const both = eps.outcome !== 'pending' || revenue.outcome !== 'pending';
-        if (!both) return <OutcomeBadge comparison={eps} labels={words} />;
-        return (
-          <span className="pu-evt-pair">
-            <span><span className="pu-evt-metric">{labels?.eps ?? 'EPS'}</span> <OutcomeBadge comparison={eps} labels={words} /></span>
-            {(e.revenueActual !== undefined || e.revenueForecast !== undefined) && <span><span className="pu-evt-metric">{labels?.revenue ?? 'Revenue'}</span> <OutcomeBadge comparison={revenue} labels={words} unit={e.revenueUnit} showPercent /></span>}
-          </span>
-        );
-      },
+      hideUnder: 760,
+      cell: (e) => resultCell(e, words, labels),
     },
   ];
 }

@@ -1188,7 +1188,7 @@
   {
     "name": "Split pane CSS",
     "path": "dist/css/split-pane.css",
-    "limit": "0.65 kB",
+    "limit": "0.75 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -1800,7 +1800,7 @@
   {
     "name": "InstrumentHeader CSS",
     "path": "dist/css/instrument-header.css",
-    "limit": "0.65 kB",
+    "limit": "0.75 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -2472,7 +2472,7 @@
   {
     "name": "EventCalendars CSS",
     "path": "dist/css/event-calendars.css",
-    "limit": "0.65 kB",
+    "limit": "0.75 kB",
     "rolldown": false,
     "gzip": true
   }

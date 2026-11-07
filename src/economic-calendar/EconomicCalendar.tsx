@@ -103,13 +103,17 @@ function economicColumns(words: CalendarWords, labels: EconomicCalendarLabels | 
           <span className="pu-evt-title">{e.title}</span>
           {(e.country || e.period) && <span className="pu-evt-sub">{[e.country, e.period].filter(Boolean).join(' · ')}</span>}
           <ImportanceBadge level={e.importance} labels={words} suffix={labels?.impact ?? 'impact'} />
+          <span className="pu-evt-fold">
+            <span>{labels?.previous ?? 'Previous'} <b>{figure(e, e.previous)}</b></span>
+            <OutcomeBadge comparison={economicResult(e)} labels={words} unit={e.unit} />
+          </span>
         </span>
       ),
     },
     { id: 'actual', header: labels?.actual ?? 'Actual', kind: 'quantity', cell: (e) => <strong className="pu-evt-actual">{figure(e, e.actual)}</strong> },
     { id: 'forecast', header: labels?.forecast ?? 'Forecast', kind: 'quantity', cell: (e) => figure(e, e.forecast) },
-    { id: 'previous', header: labels?.previous ?? 'Previous', kind: 'quantity', cell: (e) => figure(e, e.previous) },
-    { id: 'result', header: labels?.result ?? 'Result', cell: (e) => <OutcomeBadge comparison={economicResult(e)} labels={words} unit={e.unit} /> },
+    { id: 'previous', header: labels?.previous ?? 'Previous', kind: 'quantity', hideUnder: 760, cell: (e) => figure(e, e.previous) },
+    { id: 'result', header: labels?.result ?? 'Result', hideUnder: 760, cell: (e) => <OutcomeBadge comparison={economicResult(e)} labels={words} unit={e.unit} /> },
   ];
 }
 

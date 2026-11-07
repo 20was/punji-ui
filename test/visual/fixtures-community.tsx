@@ -1,4 +1,4 @@
-import { CashFlowChart, CorrelationMatrix, DataFreshness, FilterBar, FilterMenu, FilterMenuGroup, FilterMenuItem, FxRateDisplay, heatCell, Histogram, money, MonthGrid, NetWorthChart, PerformanceChart, PresetRow, PresetTile, RangeEditor, RangeSelector, ReturnsHeatTable, StatusBanner, type FilterBarValues, type MonthGridData, WaterfallChart } from '../../src/index.ts';
+import { CashFlowChart, CorrelationMatrix, DataFreshness, FairValueBar, FilterBar, FilterMenu, FilterMenuGroup, FilterMenuItem, FxRateDisplay, heatCell, Histogram, money, MonthGrid, NetWorthChart, PerformanceChart, PresetRow, PresetTile, PriceTargetChart, RangeEditor, RangeSelector, ReturnsHeatTable, ScoreRadar, StatusBanner, type FilterBarValues, type MonthGridData, WaterfallChart } from '../../src/index.ts';
 import { Accordion, AlertListEmpty, AlertRow, AlertRowCompact, AlertRowList, AlertRowSkeleton, AlertSummary, AlertSummaryNote, AlertSummarySection, BarList, Breadcrumb, BrokerBadge, Card, CardSection, CardSectionRow, Figure, HeadlineList, InstrumentHeader, LinkRow, LinkRowList, MenuButton, MoneyDisplay, MonthStrip, PrivateAmount, RatingChangeList, RatingChangeRow, RatingChip, RatingScale, RouteAnnouncer, ScrollTable, SettingList, SettingRow, SkipLink, StatusTag, ThemeProvider, type ColumnDef, type WatchlistQuote, Watchlist } from '@punji/ui';
 import { performanceDates, performanceSeries } from '../../fixtures/market-data.ts';
 import { type ReactNode, useState } from 'react';
@@ -477,6 +477,49 @@ function LinkRowFixture() {
 }
 
 
+function ScoreRadarFixture() {
+  const five = [
+    { key: 'value', label: 'Value', score: 2, comparison: 3 },
+    { key: 'growth', label: 'Future growth', score: 4, comparison: 4 },
+    { key: 'past', label: 'Past performance', score: 5, comparison: 3 },
+    { key: 'health', label: 'Financial health', score: 6, comparison: 4 },
+    { key: 'income', label: 'Dividends', score: 4, comparison: 2 },
+  ];
+  const eight = ['Future performance outlook', 'Past performance record', 'Financial health and leverage', 'Dividend track record', 'Value against peers', 'Ownership', 'Management quality', 'Liquidity'].map((label, i) => ({ key: `k${i}`, label, score: (i * 5) % 7 }));
+  return (
+    <div style={{ display: 'grid', gap: 24, maxWidth: 560 }}>
+      <ScoreRadar label="Company scores" axes={five} labels={{ comparison: 'Sector average' }} defaultSelected="health" />
+      <div style={{ maxWidth: 320 }}>
+        <ScoreRadar label="Eight long axis names at 320px" axes={eight} />
+      </div>
+      <ScoreRadar label="Weak total" axes={five.map((a) => ({ ...a, score: 1, comparison: undefined }))} />
+    </div>
+  );
+}
+
+function FairValueBarFixture() {
+  return (
+    <div style={{ display: 'grid', gap: 28, maxWidth: 560 }}>
+      <FairValueBar label="Undervalued" price="1284.50" fairValue="1670.00" />
+      <FairValueBar label="About fair value" price="990.00" fairValue="1000.00" />
+      <FairValueBar label="Overvalued" price={money(231_050n, 'NPR')} fairValue={money(150_000n, 'NPR')} thresholds={{ undervalued: 10, overvalued: 30 }} />
+      <FairValueBar label="Far above" price="5200.00" fairValue="1000.00" />
+    </div>
+  );
+}
+
+function PriceTargetChartFixture() {
+  const closes = [1010.5, 1032, 1018.25, 1046, 1071.75, 1058, 1089.5, 1102, 1094.25, 1121.5, 1138, 1127.75];
+  const history = closes.map((c, i) => ({ date: new Date(Date.UTC(2026, i, 28)).toISOString().slice(0, 10), close: c.toFixed(2) }));
+  return (
+    <div style={{ display: 'grid', gap: 24, maxWidth: 640 }}>
+      <PriceTargetChart label="Price and analyst targets" history={history} targets={{ date: '2027-11-28', low: '1040.00', average: '1295.50', high: '1480.00' }} />
+      <PriceTargetChart label="Targets close together" height={200} history={history} targets={{ date: '2027-05-28', low: '1127.00', average: '1128.50', high: '1130.00' }} />
+    </div>
+  );
+}
+
+
 // new:component inserts fixtures above this line
 
 export const communityRegistry: Record<string, () => ReactNode> = {
@@ -516,5 +559,8 @@ export const communityRegistry: Record<string, () => ReactNode> = {
   'card-section': CardSectionFixture,
   'setting-row': SettingRowFixture,
   'link-row': LinkRowFixture,
+  'score-radar': ScoreRadarFixture,
+  'fair-value-bar': FairValueBarFixture,
+  'price-target-chart': PriceTargetChartFixture,
   // new:component inserts registry entries above this line
 };

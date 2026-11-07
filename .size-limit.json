@@ -367,13 +367,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "233.85 kB",
+    "limit": "244.56 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "53.38 kB",
+    "limit": "54.68 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -1689,6 +1689,34 @@
     "name": "Money charts CSS",
     "path": "dist/css/money-charts.css",
     "limit": "0.6 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "score-radar (import from '@punji/ui/score-radar')",
+    "path": "dist/score-radar/ScoreRadar.js",
+    "import": "*",
+    "limit": "4.6 kB",
+    "gzip": true
+  },
+  {
+    "name": "fair-value-bar (import from '@punji/ui/fair-value-bar')",
+    "path": "dist/fair-value-bar/FairValueBar.js",
+    "import": "*",
+    "limit": "3.8 kB",
+    "gzip": true
+  },
+  {
+    "name": "price-target-chart (import from '@punji/ui/price-target-chart')",
+    "path": "dist/price-target-chart/PriceTargetChart.js",
+    "import": "*",
+    "limit": "6.15 kB",
+    "gzip": true
+  },
+  {
+    "name": "Fundamentals charts CSS",
+    "path": "dist/css/fundamentals-charts.css",
+    "limit": "1.7 kB",
     "rolldown": false,
     "gzip": true
   },

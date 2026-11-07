@@ -24,6 +24,18 @@
         .doc-theme, .doc-search, .doc-menu-btn, .doc-copy, .doc-badge-copy, .doc-demo-tools { display: none !important; }
       </style>
     </noscript>
+    <!-- Cloudflare Web Analytics: cookieless page views and Web Vitals for design.punji.app (no personal data, no consent banner).
+         Allowed by the CSP in scripts/site-headers.mjs; the preview frame does not load it, so examples are not counted twice. -->
+    <script>
+      // Only the published site reports: local, preview and CI servers would send cross-origin beacons that fail.
+      if (location.hostname === 'design.punji.app') {
+        var b = document.createElement('script');
+        b.defer = true;
+        b.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+        b.setAttribute('data-cf-beacon', '{"token": "cce685dc66f949dc9b39456eb7bd74fd", "spa": true}');
+        document.head.appendChild(b);
+      }
+    </script>
   </head>
   <body>
     <div id="root"><!--app--></div>

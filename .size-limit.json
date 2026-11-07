@@ -373,7 +373,7 @@
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "51.20 kB",
+    "limit": "53.38 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -878,7 +878,7 @@
     "name": "watchlist (import from '@punji/ui/watchlist')",
     "path": "dist/watchlist/Watchlist.js",
     "import": "*",
-    "limit": "8.1 kB",
+    "limit": "8.31 kB",
     "gzip": true
   },
   {
@@ -1976,7 +1976,7 @@
     "name": "instrument-header (import from '@punji/ui/instrument-header')",
     "path": "dist/instrument-header/InstrumentHeader.js",
     "import": "*",
-    "limit": "5.65 kB",
+    "limit": "5.79 kB",
     "gzip": true
   },
   {

@@ -13,7 +13,7 @@
  */
 import type { CSSProperties, ReactNode } from 'react';
 
-import { Cell, DataListRow, DataTable, type Column } from '../table/Table.tsx';
+import { Cell, DataListRow, DataTable, type Column, type DataTableSortLabels } from '../table/Table.tsx';
 import { MoneyDisplay } from '../money-display/MoneyDisplay.tsx';
 import { PriceChange, type PriceChangeLabels } from '../price-change/PriceChange.tsx';
 import { RetryNote } from '../retry-note/RetryNote.tsx';
@@ -46,6 +46,8 @@ export interface StockTableProps<T extends Quote = Quote> {
   sort?: QuoteSort;
   /** Called with the sort a click on a column head asks for: a new column starts ascending for the symbol and descending for figures, and a repeat click on the sorted column flips its direction (the rule `nextQuoteSort` implements). The table does not reorder rows: sort `quotes` yourself and pass `sort` back. */
   onSortChange?: (sort: QuoteSort) => void;
+  /** Words for the polite announcement after a user sort. Default "Sorted by Price, ascending". */
+  sortLabels?: Partial<DataTableSortLabels>;
   /** Currency and locale of prices and turnover. Default NPR, en-IN, no currency mark. */
   money?: MoneyFormatConfig;
   /** Per-instance override of which hue means up: 'green-up' or 'red-up' (absolute, never a second swap on top of the theme). Default: follow the theme's gain and loss colours (`createTheme({ finance })`), which is the one place to set the convention. */
@@ -92,7 +94,7 @@ export interface StockTableProps<T extends Quote = Quote> {
  * @stability stable
  */
 export function StockTable<T extends Quote = Quote>({
-  caption, quotes, columns = DEFAULT_STOCK_COLUMNS, labels, sort, onSortChange, money = nepalQuoteMoney, convention, changeLabels,
+  caption, quotes, columns = DEFAULT_STOCK_COLUMNS, labels, sort, onSortChange, sortLabels, money = nepalQuoteMoney, convention, changeLabels,
   selectedSymbols, onSelectedSymbolsChange, selectLabel = (symbol) => `Select ${symbol}`, density = 'comfortable', bare, maxHeight, stickToPage,
   stack = true, live, renderSymbol, state = 'ready', emptyLabel = 'No quotes to show.', loadingLabel = 'Loading quotes…', errorLabel = 'Quotes could not be loaded.',
   retryLabel = 'Try again', onRetry, testId,
@@ -142,6 +144,7 @@ export function StockTable<T extends Quote = Quote>({
   return (
     <div className="pu-stock" data-density={density} data-testid={testId} style={style}>
       <DataTable
+        sortLabels={sortLabels}
         caption={caption}
         columns={tableColumns}
         sort={activeKey && sort ? { key: activeKey, dir: sort.dir } : undefined}

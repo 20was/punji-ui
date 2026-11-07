@@ -5,6 +5,9 @@
  * not above zero are not drawn (a rectangle of zero area cannot be seen or
  * hit) and are reported in `skipped`, in input order.
  *
+ * Bounds with no area (zero, negative or not finite width or height) draw nothing: `rects` is empty and `skipped`
+ * still lists only the unsized items. It never throws, so a container measured at width 0 on the first render is safe.
+ *
  * Every drawn rectangle's area is `size / total × bounds area`, the
  * rectangles tile the bounds with no overlap and no gap, up to floating-point
  * rounding.
@@ -29,14 +32,14 @@ function worst(row: readonly Entry[], side: number): number {
 
 export function squarify(items: readonly TreemapItem[], bounds: TreemapBounds): TreemapLayout {
   const { width, height } = bounds;
-  if (!(Number.isFinite(width) && width > 0 && Number.isFinite(height) && height > 0)) throw new RangeError('Treemap bounds need a positive width and height');
   const skipped: string[] = [];
   const valid: { id: string; size: number; index: number }[] = [];
   items.forEach((item, index) => {
     if (typeof item.size === 'number' && Number.isFinite(item.size) && item.size > 0) valid.push({ id: item.id, size: item.size, index });
     else skipped.push(item.id);
   });
-  if (valid.length === 0) return { rects: [], skipped };
+  // No drawable item, or bounds with no area (an unmeasured container at width 0, a first server render): nothing to place.
+  if (valid.length === 0 || !(Number.isFinite(width) && width > 0 && Number.isFinite(height) && height > 0)) return { rects: [], skipped };
   valid.sort((a, b) => b.size - a.size || a.index - b.index);
   // Halve before summing so a list of very large finite sizes cannot overflow to Infinity.
   const total = valid.reduce((sum, v) => sum + v.size / 2, 0) * 2;

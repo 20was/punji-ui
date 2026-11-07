@@ -1,0 +1,22 @@
+/* Punji UI styles.
+   Styles for FilterMenu. Needs tokens.css and base.css (styles.css has everything). Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  .pu-filter-menu { container-type: inline-size; min-width: 0; padding-inline: var(--pu-space-2) }
+  .pu-filter-menu-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 0 var(--pu-space-2) }
+  .pu-filter-menu-col { display: grid; align-content: start; min-width: 0 }
+  @container (max-width: 400px) { .pu-filter-menu-cols { grid-template-columns: minmax(0, 1fr) } }
+  .pu-filter-menu-group { min-width: 0; padding-block: 6px }
+  .pu-filter-menu-title { margin: 4px 10px; font: var(--pu-font-weight-semibold) 11px / 1.45 var(--pu-font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--pu-color-text-muted) }
+  .pu-filter-menu-item { appearance: none; box-sizing: border-box; display: flex; align-items: center; gap: 10px; width: 100%; min-height: 40px; padding: 6px 10px; border: 0; border-radius: var(--pu-radius-md); background: transparent; color: var(--pu-color-text); font: var(--pu-font-weight-medium) var(--pu-text-sm) / 1.35 var(--pu-font-body); text-align: start; cursor: pointer }
+  .pu-filter-menu-item:hover:not(:disabled) { background: var(--pu-color-surface-subtle) }
+  .pu-filter-menu-item:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: -2px }
+  .pu-filter-menu-item:disabled { color: var(--pu-color-text-tertiary); cursor: default }
+  .pu-filter-menu-item.on:not(.toggle) .pu-filter-menu-text { font-weight: var(--pu-font-weight-semibold); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; text-decoration-color: var(--pu-color-accent) }
+  .pu-filter-menu-text { min-width: 0; overflow-wrap: anywhere }
+  .pu-filter-menu-aside { margin-inline-start: 6px; font-size: var(--pu-text-xs); font-weight: var(--pu-font-weight-medium); color: var(--pu-color-text-muted); font-variant-numeric: var(--pu-font-numeric) }
+  .pu-filter-menu-item:disabled .pu-filter-menu-aside { color: inherit }
+  .pu-filter-menu-box { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; box-sizing: border-box; border: 1.5px solid var(--pu-color-border-control); border-radius: 5px }
+  .pu-filter-menu-item[aria-pressed='true'] .pu-filter-menu-box { border-color: transparent; background: var(--pu-color-accent-fill); color: var(--pu-color-on-accent-fill) }
+  .pu-filter-menu-note { margin: 4px 10px 6px; font-size: var(--pu-text-xs); line-height: 1.4; color: var(--pu-color-text-muted) }
+  @media (pointer: coarse) { .pu-filter-menu-item { min-height: var(--pu-tap-min) } }
+}

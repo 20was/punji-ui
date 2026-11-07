@@ -16,7 +16,7 @@ export default function Example() {
           <DataRow label="Total cost" total value={<Figure value={84670} kind="rs" />} />
         </DataRows>
       </Card>
-      <Card title="52 week range" flush>
+      <Card title="52 week range">
         <DataRows flush label="52 week range">
           <DataRow label="Price" value={<Figure value={547} kind="rs" />} bar={<MeterBar parts={[{ value: 71, tone: 'chart' }]} max={100} />} note="547.00 sits 71% of the way up" />
         </DataRows>

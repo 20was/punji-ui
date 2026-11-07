@@ -979,6 +979,118 @@
     "./reconciliation-matcher": {
       "types": "./dist/reconciliation-matcher/ReconciliationMatcher.d.ts",
       "default": "./dist/reconciliation-matcher/ReconciliationMatcher.js"
+    },
+    "./score-radar": {
+      "types": "./dist/score-radar/ScoreRadar.d.ts",
+      "default": "./dist/score-radar/ScoreRadar.js"
+    },
+    "./fair-value-bar": {
+      "types": "./dist/fair-value-bar/FairValueBar.d.ts",
+      "default": "./dist/fair-value-bar/FairValueBar.js"
+    },
+    "./price-target-chart": {
+      "types": "./dist/price-target-chart/PriceTargetChart.d.ts",
+      "default": "./dist/price-target-chart/PriceTargetChart.js"
+    },
+    "./theme-provider": {
+      "types": "./dist/theme-provider/ThemeProvider.d.ts",
+      "default": "./dist/theme-provider/ThemeProvider.js"
+    },
+    "./private-amount": {
+      "types": "./dist/private-amount/PrivateAmount.d.ts",
+      "default": "./dist/private-amount/PrivateAmount.js"
+    },
+    "./skip-link": {
+      "types": "./dist/skip-link/SkipLink.d.ts",
+      "default": "./dist/skip-link/SkipLink.js"
+    },
+    "./route-announcer": {
+      "types": "./dist/route-announcer/RouteAnnouncer.d.ts",
+      "default": "./dist/route-announcer/RouteAnnouncer.js"
+    },
+    "./card-section": {
+      "types": "./dist/card-section/CardSection.d.ts",
+      "default": "./dist/card-section/CardSection.js"
+    },
+    "./setting-row": {
+      "types": "./dist/setting-row/SettingRow.d.ts",
+      "default": "./dist/setting-row/SettingRow.js"
+    },
+    "./link-row": {
+      "types": "./dist/link-row/LinkRow.d.ts",
+      "default": "./dist/link-row/LinkRow.js"
+    },
+    "./lightweight-charts": {
+      "types": "./dist/lightweight-charts/lightweightCharts.d.ts",
+      "default": "./dist/lightweight-charts/lightweightCharts.js"
+    },
+    "./echarts": {
+      "types": "./dist/echarts/echarts.d.ts",
+      "default": "./dist/echarts/echarts.js"
+    },
+    "./scroll-table": {
+      "types": "./dist/scroll-table/ScrollTable.d.ts",
+      "default": "./dist/scroll-table/ScrollTable.js"
+    },
+    "./article": {
+      "types": "./dist/article/Article.d.ts",
+      "default": "./dist/article/Article.js"
+    },
+    "./article-toc": {
+      "types": "./dist/article/extractToc.d.ts",
+      "default": "./dist/article/extractToc.js"
+    },
+    "./faq-json-ld": {
+      "types": "./dist/faq/jsonLd.d.ts",
+      "default": "./dist/faq/jsonLd.js"
+    },
+    "./faq": {
+      "types": "./dist/faq/Faq.d.ts",
+      "default": "./dist/faq/Faq.js"
+    },
+    "./prompt-card": {
+      "types": "./dist/prompt-card/PromptCard.d.ts",
+      "default": "./dist/prompt-card/PromptCard.js"
+    },
+    "./range-editor": {
+      "types": "./dist/range-editor/RangeEditor.d.ts",
+      "default": "./dist/range-editor/RangeEditor.js"
+    },
+    "./filter-menu": {
+      "types": "./dist/filter-menu/FilterMenu.d.ts",
+      "default": "./dist/filter-menu/FilterMenu.js"
+    },
+    "./preset-tile": {
+      "types": "./dist/preset-tile/PresetTile.d.ts",
+      "default": "./dist/preset-tile/PresetTile.js"
+    },
+    "./filter-bar": {
+      "types": "./dist/filter-bar/FilterBar.d.ts",
+      "default": "./dist/filter-bar/FilterBar.js"
+    },
+    "./filter-url": {
+      "types": "./dist/filter-url/FilterUrl.d.ts",
+      "default": "./dist/filter-url/FilterUrl.js"
+    },
+    "./use-url-filters": {
+      "types": "./dist/use-url-filters/useUrlFilters.d.ts",
+      "default": "./dist/use-url-filters/useUrlFilters.js"
+    },
+    "./month-grid": {
+      "types": "./dist/month-grid/MonthGrid.d.ts",
+      "default": "./dist/month-grid/MonthGrid.js"
+    },
+    "./returns-heat-table": {
+      "types": "./dist/returns-heat-table/ReturnsHeatTable.d.ts",
+      "default": "./dist/returns-heat-table/ReturnsHeatTable.js"
+    },
+    "./histogram": {
+      "types": "./dist/histogram/Histogram.d.ts",
+      "default": "./dist/histogram/Histogram.js"
+    },
+    "./correlation-matrix": {
+      "types": "./dist/correlation-matrix/CorrelationMatrix.d.ts",
+      "default": "./dist/correlation-matrix/CorrelationMatrix.js"
     }
   },
   "files": [
@@ -1055,7 +1167,9 @@
     "react-dom": "^19.0.0",
     "@tanstack/react-table": "^9.3.1",
     "ag-grid-community": "^36.0.0",
-    "@mui/x-data-grid": "^9.0.0"
+    "@mui/x-data-grid": "^9.0.0",
+    "lightweight-charts": "^5.2.0",
+    "echarts": "^6.0.0"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
@@ -1087,7 +1201,9 @@
     "typescript": "7.0.2",
     "vite": "8.3.5",
     "vitest": "5.0.5",
-    "wrangler": "4.156.0"
+    "wrangler": "4.156.0",
+    "echarts": "6.1.0",
+    "lightweight-charts": "5.2.1"
   },
   "dependencies": {
     "@remotemerge/nepali-date-converter": "1.2.5"
@@ -1105,6 +1221,12 @@
       "optional": true
     },
     "@mui/x-data-grid": {
+      "optional": true
+    },
+    "lightweight-charts": {
+      "optional": true
+    },
+    "echarts": {
       "optional": true
     }
   }

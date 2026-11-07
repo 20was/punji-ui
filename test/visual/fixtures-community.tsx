@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react';
-import { CashFlowChart, CorrelationMatrix, DataFreshness, FxRateDisplay, heatCell, Histogram, money, MonthGrid, NetWorthChart, PerformanceChart, RangeSelector, ReturnsHeatTable, StatusBanner, type MonthGridData, WaterfallChart } from '../../src/index.ts';
+import { CashFlowChart, CorrelationMatrix, DataFreshness, FilterBar, FilterMenu, FilterMenuGroup, FilterMenuItem, FxRateDisplay, heatCell, Histogram, money, MonthGrid, NetWorthChart, PerformanceChart, PresetRow, PresetTile, RangeEditor, RangeSelector, ReturnsHeatTable, StatusBanner, type FilterBarValues, type MonthGridData, WaterfallChart } from '../../src/index.ts';
 import { Accordion, AlertListEmpty, AlertRow, AlertRowCompact, AlertRowList, AlertRowSkeleton, AlertSummary, AlertSummaryNote, AlertSummarySection, BarList, Breadcrumb, BrokerBadge, HeadlineList, InstrumentHeader, MenuButton, MonthStrip, RatingChangeList, RatingChangeRow, RatingChip, RatingScale } from '@punji/ui';
 import { performanceDates, performanceSeries } from '../../fixtures/market-data.ts';
+import { type ReactNode, useState } from 'react';
 // new:component inserts imports above this line
 
 // Visual fixtures for components scaffolded with `npm run new:component <name>` (docs/CONTRIBUTING-COMPONENT.md).
@@ -306,6 +306,63 @@ function PerformanceLayersFixture() {
 }
 
 
+function RangeEditorFixture() {
+  const [from, setFrom] = useState('5');
+  const [to, setTo] = useState('');
+  return (
+    <div style={{ display: 'grid', gap: 12, maxWidth: 440 }}>
+      <RangeEditor why='Price over earnings per share.' presets={[{ id: 'a', label: 'Under 10', from: '', to: '10' }]} track={{ min: '0', max: '60', step: '1' }} from={from} to={to} onFrom={setFrom} onTo={setTo} onClear={() => {}} applyLabel='Show 12 stocks' onApply={() => {}} />
+      <RangeEditor from='9' to='4' onFrom={() => {}} onTo={() => {}} error='To must be at least From.' onClear={() => {}} applyLabel='Show 0 stocks' onApply={() => {}} />
+    </div>
+  );
+}
+
+function FilterMenuFixture() {
+  return (
+    <div style={{ maxWidth: 440 }}>
+      <FilterMenu label='Add filter'>
+        <FilterMenuGroup title='Valuation'>
+          <FilterMenuItem on onLabel='set' onClick={() => {}}>P/E</FilterMenuItem>
+          <FilterMenuItem aside='12' onClick={() => {}}>P/B</FilterMenuItem>
+        </FilterMenuGroup>
+        <FilterMenuGroup title='Bank health' column={2} note='Choose only banks under Sector first.'>
+          <FilterMenuItem disabled onClick={() => {}}>NPL</FilterMenuItem>
+        </FilterMenuGroup>
+        <FilterMenuGroup title='Flags' column={2}>
+          <FilterMenuItem toggle on onClick={() => {}}>Breakout</FilterMenuItem>
+          <FilterMenuItem toggle onClick={() => {}}>Cash for 5 years</FilterMenuItem>
+        </FilterMenuGroup>
+      </FilterMenu>
+    </div>
+  );
+}
+
+function PresetTileFixture() {
+  return (
+    <PresetRow label='Screens'>
+      <PresetTile title='Steady dividends' count={14} line='Pays out 40 to 80% of profit.' pressed onClick={() => {}} />
+      <PresetTile title='Value' count={9} line='Under 12 times earnings.' pressed={false} onClick={() => {}} />
+      <PresetTile title='Quality' locked lockedLabel='Not included' line='High return, low debt.' pressed={false} onClick={() => {}} />
+    </PresetRow>
+  );
+}
+
+function FilterBarFixture() {
+  const [values, setValues] = useState<FilterBarValues>({ pe: { max: '12' }, sector: ['banks'], breakout: true });
+  return (
+    <FilterBar
+      fields={[
+        { kind: 'multi', id: 'sector', label: 'Sector', pinned: true, options: [{ value: 'banks', label: 'Commercial Banks' }] },
+        { kind: 'range', id: 'pe', label: 'Price to earnings', chipLabel: 'P/E' },
+        { kind: 'boolean', id: 'breakout', label: 'Breakout' },
+      ]}
+      values={values}
+      onChange={setValues}
+    />
+  );
+}
+
+
 // new:component inserts fixtures above this line
 
 export const communityRegistry: Record<string, () => ReactNode> = {
@@ -332,5 +389,9 @@ export const communityRegistry: Record<string, () => ReactNode> = {
   'histogram': HistogramFixture,
   'correlation-matrix': CorrelationMatrixFixture,
   'performance-chart-layers': PerformanceLayersFixture,
+  'range-editor': RangeEditorFixture,
+  'filter-menu': FilterMenuFixture,
+  'preset-tile': PresetTileFixture,
+  'filter-bar': FilterBarFixture,
   // new:component inserts registry entries above this line
 };

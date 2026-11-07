@@ -112,5 +112,9 @@
 @import './alert-row.css';
 @import './alert-summary.css';
 @import './money-charts.css';
+@import './range-editor.css';
+@import './filter-menu.css';
+@import './preset-tile.css';
+@import './filter-bar.css';
 @import './heat-tables.css';
 @import './contrast.css';

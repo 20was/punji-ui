@@ -639,54 +639,6 @@
       "types": "./dist/accordion/Accordion.d.ts",
       "default": "./dist/accordion/Accordion.js"
     },
-    "./instrument-header": {
-      "types": "./dist/instrument-header/InstrumentHeader.d.ts",
-      "default": "./dist/instrument-header/InstrumentHeader.js"
-    },
-    "./broker-badge": {
-      "types": "./dist/broker-badge/BrokerBadge.d.ts",
-      "default": "./dist/broker-badge/BrokerBadge.js"
-    },
-    "./headline-list": {
-      "types": "./dist/headline-list/HeadlineList.d.ts",
-      "default": "./dist/headline-list/HeadlineList.js"
-    },
-    "./rating-scale": {
-      "types": "./dist/rating-scale/RatingScale.d.ts",
-      "default": "./dist/rating-scale/RatingScale.js"
-    },
-    "./rating-chip": {
-      "types": "./dist/rating-chip/RatingChip.d.ts",
-      "default": "./dist/rating-chip/RatingChip.js"
-    },
-    "./rating-change-row": {
-      "types": "./dist/rating-change-row/RatingChangeRow.d.ts",
-      "default": "./dist/rating-change-row/RatingChangeRow.js"
-    },
-    "./month-strip": {
-      "types": "./dist/month-strip/MonthStrip.d.ts",
-      "default": "./dist/month-strip/MonthStrip.js"
-    },
-    "./bar-list": {
-      "types": "./dist/bar-list/BarList.d.ts",
-      "default": "./dist/bar-list/BarList.js"
-    },
-    "./alert-row": {
-      "types": "./dist/alert-row/AlertRow.d.ts",
-      "default": "./dist/alert-row/AlertRow.js"
-    },
-    "./alert-summary": {
-      "types": "./dist/alert-summary/AlertSummary.d.ts",
-      "default": "./dist/alert-summary/AlertSummary.js"
-    },
-    "./alert-distance": {
-      "types": "./dist/alert-distance/alertDistance.d.ts",
-      "default": "./dist/alert-distance/alertDistance.js"
-    },
-    "./alert-target": {
-      "types": "./dist/alert-target/alertTarget.d.ts",
-      "default": "./dist/alert-target/alertTarget.js"
-    },
     "./chart-a11y": {
       "types": "./dist/chart-a11y/ChartA11yShell.d.ts",
       "default": "./dist/chart-a11y/ChartA11yShell.js"
@@ -707,21 +659,29 @@
       "types": "./dist/range-selector/RangeSelector.d.ts",
       "default": "./dist/range-selector/RangeSelector.js"
     },
-    "./month-grid": {
-      "types": "./dist/month-grid/MonthGrid.d.ts",
-      "default": "./dist/month-grid/MonthGrid.js"
+    "./range-editor": {
+      "types": "./dist/range-editor/RangeEditor.d.ts",
+      "default": "./dist/range-editor/RangeEditor.js"
     },
-    "./returns-heat-table": {
-      "types": "./dist/returns-heat-table/ReturnsHeatTable.d.ts",
-      "default": "./dist/returns-heat-table/ReturnsHeatTable.js"
+    "./filter-menu": {
+      "types": "./dist/filter-menu/FilterMenu.d.ts",
+      "default": "./dist/filter-menu/FilterMenu.js"
     },
-    "./histogram": {
-      "types": "./dist/histogram/Histogram.d.ts",
-      "default": "./dist/histogram/Histogram.js"
+    "./preset-tile": {
+      "types": "./dist/preset-tile/PresetTile.d.ts",
+      "default": "./dist/preset-tile/PresetTile.js"
     },
-    "./correlation-matrix": {
-      "types": "./dist/correlation-matrix/CorrelationMatrix.d.ts",
-      "default": "./dist/correlation-matrix/CorrelationMatrix.js"
+    "./filter-bar": {
+      "types": "./dist/filter-bar/FilterBar.d.ts",
+      "default": "./dist/filter-bar/FilterBar.js"
+    },
+    "./filter-url": {
+      "types": "./dist/filter-url/FilterUrl.d.ts",
+      "default": "./dist/filter-url/FilterUrl.js"
+    },
+    "./use-url-filters": {
+      "types": "./dist/use-url-filters/useUrlFilters.d.ts",
+      "default": "./dist/use-url-filters/useUrlFilters.js"
     },
     "./css/*.css": {
       "types": "./dist/css/*.css.d.ts",
@@ -983,6 +943,70 @@
     "./reconciliation-matcher": {
       "types": "./dist/reconciliation-matcher/ReconciliationMatcher.d.ts",
       "default": "./dist/reconciliation-matcher/ReconciliationMatcher.js"
+    },
+    "./instrument-header": {
+      "types": "./dist/instrument-header/InstrumentHeader.d.ts",
+      "default": "./dist/instrument-header/InstrumentHeader.js"
+    },
+    "./broker-badge": {
+      "types": "./dist/broker-badge/BrokerBadge.d.ts",
+      "default": "./dist/broker-badge/BrokerBadge.js"
+    },
+    "./headline-list": {
+      "types": "./dist/headline-list/HeadlineList.d.ts",
+      "default": "./dist/headline-list/HeadlineList.js"
+    },
+    "./rating-scale": {
+      "types": "./dist/rating-scale/RatingScale.d.ts",
+      "default": "./dist/rating-scale/RatingScale.js"
+    },
+    "./rating-chip": {
+      "types": "./dist/rating-chip/RatingChip.d.ts",
+      "default": "./dist/rating-chip/RatingChip.js"
+    },
+    "./rating-change-row": {
+      "types": "./dist/rating-change-row/RatingChangeRow.d.ts",
+      "default": "./dist/rating-change-row/RatingChangeRow.js"
+    },
+    "./month-strip": {
+      "types": "./dist/month-strip/MonthStrip.d.ts",
+      "default": "./dist/month-strip/MonthStrip.js"
+    },
+    "./bar-list": {
+      "types": "./dist/bar-list/BarList.d.ts",
+      "default": "./dist/bar-list/BarList.js"
+    },
+    "./alert-row": {
+      "types": "./dist/alert-row/AlertRow.d.ts",
+      "default": "./dist/alert-row/AlertRow.js"
+    },
+    "./alert-summary": {
+      "types": "./dist/alert-summary/AlertSummary.d.ts",
+      "default": "./dist/alert-summary/AlertSummary.js"
+    },
+    "./alert-distance": {
+      "types": "./dist/alert-distance/alertDistance.d.ts",
+      "default": "./dist/alert-distance/alertDistance.js"
+    },
+    "./alert-target": {
+      "types": "./dist/alert-target/alertTarget.d.ts",
+      "default": "./dist/alert-target/alertTarget.js"
+    },
+    "./month-grid": {
+      "types": "./dist/month-grid/MonthGrid.d.ts",
+      "default": "./dist/month-grid/MonthGrid.js"
+    },
+    "./returns-heat-table": {
+      "types": "./dist/returns-heat-table/ReturnsHeatTable.d.ts",
+      "default": "./dist/returns-heat-table/ReturnsHeatTable.js"
+    },
+    "./histogram": {
+      "types": "./dist/histogram/Histogram.d.ts",
+      "default": "./dist/histogram/Histogram.js"
+    },
+    "./correlation-matrix": {
+      "types": "./dist/correlation-matrix/CorrelationMatrix.d.ts",
+      "default": "./dist/correlation-matrix/CorrelationMatrix.js"
     }
   },
   "files": [

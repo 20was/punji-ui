@@ -1,0 +1,27 @@
+/* Punji UI styles.
+   Styles for FilterPopover and RangeEditor. Needs tokens.css and base.css (styles.css has everything). Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  .pu-filter-popover { display: flex; flex-direction: column; min-width: 0 }
+  .pu-filter-popover-head { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: var(--pu-space-2); padding-block: var(--pu-space-3) var(--pu-space-2); padding-inline: var(--pu-space-4) var(--pu-space-3); background: var(--pu-color-surface-solid) }
+  .pu-filter-popover-head h2 { margin: 0; font: var(--pu-font-weight-semibold) var(--pu-text-base) / 1.4 var(--pu-font-body); overflow-wrap: anywhere }
+  .pu-filter-popover-close { appearance: none; flex: none; display: inline-flex; align-items: center; justify-content: center; width: var(--pu-control-md); height: var(--pu-control-md); padding: 0; border: 0; border-radius: var(--pu-radius-md); background: transparent; color: var(--pu-color-text-muted); cursor: pointer }
+  .pu-filter-popover-close:hover { background: var(--pu-color-surface-subtle); color: var(--pu-color-text) }
+  .pu-filter-popover-close:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
+  .pu-filter-popover-body { padding-block-end: var(--pu-space-4) }
+  @media (pointer: coarse) { .pu-filter-popover-close { width: var(--pu-tap-min); height: var(--pu-tap-min) } }
+
+  .pu-range-editor { display: grid; gap: var(--pu-space-3); padding-inline: var(--pu-space-4); color: var(--pu-color-text) }
+  .pu-range-editor-why { margin: 0; font-size: var(--pu-text-sm); line-height: 1.45; color: var(--pu-color-text-muted) }
+  .pu-range-editor-chart { display: grid; gap: var(--pu-space-2); min-width: 0 }
+  .pu-range-editor-chart-title { margin: 0; font-size: var(--pu-text-xs); line-height: 1.4; color: var(--pu-color-text-muted) }
+  .pu-range-editor-presets { display: flex; flex-wrap: wrap; gap: var(--pu-space-2) }
+  .pu-range-editor-preset { appearance: none; min-height: var(--pu-control-sm); padding-inline: var(--pu-space-3); border: 1px solid var(--pu-color-border-strong); border-radius: var(--pu-radius-full); background: var(--pu-color-surface); color: var(--pu-color-text); font: var(--pu-font-weight-medium) var(--pu-text-sm) / 1 var(--pu-font-body); cursor: pointer }
+  .pu-range-editor-preset:hover { background: var(--pu-color-surface-subtle) }
+  .pu-range-editor-preset[aria-pressed='true'] { border-color: transparent; background: var(--pu-color-surface-inverse); color: var(--pu-color-text-inverse) }
+  .pu-range-editor-preset:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
+  .pu-range-editor-slider { min-width: 0; padding-inline: var(--pu-space-1) }
+  .pu-range-editor-nums { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--pu-space-3); align-items: start }
+  .pu-range-editor-actions { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: var(--pu-space-2); padding-block-start: 2px }
+  .pu-range-editor-actions > * { width: 100% }
+  @media (pointer: coarse) { .pu-range-editor-preset { min-height: var(--pu-tap-min) } }
+}

@@ -559,7 +559,7 @@ export const GUIDES: readonly PageDef[] = [
         paragraphs: ['From [SECURITY.md](' + REPO + '/SECURITY.md).'],
         points: [
           'No HTML from data: no `dangerouslySetInnerHTML`, no `eval`, no inline event-handler strings. Components render text as text. `scripts/check-source.mjs` fails the build if one appears.',
-          'One reviewed runtime dependency. React is a peer; the only bundled dependency is `@remotemerge/nepali-date-converter` (MIT, pinned exactly, no transitive dependencies), loaded only by the Bikram Sambat calendar.',
+          'No runtime dependencies. React is a peer; nothing else is bundled. The Bikram Sambat calendar runs on our own audited table, and the build fails if a BS-calendar package is added.',
           'Releases you can verify: npm Trusted Publishing (OIDC, no stored token) with a provenance attestation and a CycloneDX SBOM per GitHub release. Check with `npm audit signatures` after you install.',
           'Hardened CI: pinned actions, least-privilege permissions, installs with `npm ci --ignore-scripts`, a registry-only lockfile, CodeQL, zizmor and dependency review.',
         ],

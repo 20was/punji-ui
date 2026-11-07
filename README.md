@@ -48,7 +48,7 @@ Requirements:
 - React 19 and React DOM 19 (`^19.0.0`) are peer dependencies. React 18 is not supported.
 - Node 22.12 or later for tooling and server rendering.
 - ESM only, with bundled TypeScript declarations (written against strict mode).
-- One runtime dependency: a pinned, MIT-licensed Bikram Sambat converter, imported only by `@punji/ui/nepal/calendar`. CI fails on any other. See [DEPENDENCY-AUDIT.md](DEPENDENCY-AUDIT.md).
+- Zero runtime dependencies (React and React DOM are peers). The Bikram Sambat calendar runs on our own month-length table with per-month provenance, and CI fails on any new dependency or BS-calendar package. See [DEPENDENCY-AUDIT.md](DEPENDENCY-AUDIT.md).
 - Optional peer dependencies, installed only if you use the matching adapter: `@tanstack/react-table`, `ag-grid-community`, `@mui/x-data-grid`, `lightweight-charts`, `echarts` (see [Optional integrations](#optional-integrations)). Nothing in the root export or the core bundle loads them.
 
 ## Quick start

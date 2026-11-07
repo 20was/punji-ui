@@ -53,4 +53,12 @@
   .kit-ct-tip .kit-ct-gain { color: var(--pu-color-gain) }
   .kit-ct-tip .kit-ct-loss { color: var(--pu-color-loss) }
   .kit-ct-note { margin: 0; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }
+  /* PerformanceChart layers: reference line, drawdown band, quiet axis, end labels. Off by default. */
+  .pu-ct-axis-in { paint-order: stroke; stroke: var(--pu-color-surface); stroke-width: 3px; stroke-linejoin: round }
+  .pu-ct-ref line { stroke: var(--pu-color-text-muted); stroke-width: 1.5; stroke-dasharray: 6 4 }
+  .pu-ct-ref text { fill: var(--pu-color-text); font: 600 11px / 14px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); paint-order: stroke; stroke: var(--pu-color-surface); stroke-width: 3px; stroke-linejoin: round }
+  .pu-ct-dd-area { fill: var(--pu-color-loss-soft); stroke: none }
+  .pu-ct-dd-line { fill: none; stroke: var(--pu-color-loss); stroke-width: 1.25; stroke-linejoin: round }
+  .pu-ct-end path, .pu-ct-end line { fill: none; stroke: currentColor; stroke-width: 1.5 }
+  .pu-ct-end text { fill: var(--pu-color-text); font: 600 11px / 14px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric) }
 }

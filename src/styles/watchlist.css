@@ -19,6 +19,13 @@
   .pu-watch-actions > button:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 1px }
   .pu-watch-actions > button:disabled { opacity: 0.35; cursor: default }
   .pu-watch-actions svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round }
+  /* Month and since-added figures: a second line under the row, a label before each, so a phone needs no extra width. */
+  .pu-watch-row.has-extra { flex-wrap: wrap }
+  .pu-watch-extra { order: 9; flex: 1 1 100%; display: flex; flex-wrap: wrap; gap: 4px 20px }
+  .pu-watch-fig { display: inline-flex; align-items: baseline; gap: 6px; font-size: var(--pu-text-xs); font-variant-numeric: var(--pu-font-numeric) }
+  .pu-watch-fig-label { color: var(--pu-color-text-muted) }
+  .pu-watch-row[data-skeleton]:hover { background: transparent }
+  .pu-watch-row[data-skeleton] .pu-watch-id { display: grid }
   /* Equal-width price cells keep the trend lines in one column. */
   @media (min-width: 480px) { .pu-watch-price { min-width: 7.5rem } }
   @media (max-width: 479px) { .pu-watch-row { gap: 8px; padding-block: 10px; padding-inline: 12px 8px} .pu-watch-trend { display: none } }

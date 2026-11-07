@@ -571,4 +571,114 @@ export const APP_PAGES: readonly PageDef[] = [
         'Two accounts and three months each, generated in `site/src/apps/account-statements/statements.ts` from fixed templates and a seeded generator in bigint paisa. Each month opens at the previous month\'s closing balance. No clock, nothing fetched.',
     },
   },
+  {
+    slug: 'treasury-desk',
+    title: 'Treasury desk',
+    description:
+      'A treasury desk built from Punji UI: cash across NPR and USD accounts, a 13-week forecast, a liquidity buffer against policy, payments and FX exposure.',
+    lead: 'See what cash the company has, what the next 13 weeks do to it, and the week the buffer breaks, before it does.',
+    group: 'apps',
+    kind: 'app',
+    summary:
+      'The treasurer\'s view of one company: four liquid bank accounts (three in rupees, one in US dollars) and a term deposit, 25 expected payments and 17 expected receipts over the next 13 weeks, and a policy that says liquid cash must never fall below NPR 5,00,00,000 and should stay above NPR 6,00,00,000. The position screen adds the accounts in rupees (the dollar account through the library\'s exact rate conversion) and checks the total against the forecast engine; the forecast draws money in and out per week with `CashFlowChart` and a table of opening and closing positions; the payments screen lists what is due, receipts and payments grouped with subtotals and a net; and the exposure screen nets dollars held against dollars to come and shows what the position is worth at each rate move. Two switches test the buffer: customers paying two weeks late (press S), and a supplier payment deferred by two weeks. A breach is a `StatusBanner` that names the week and the shortfall, never colour alone. The scenario you choose follows you to every screen.',
+    use: [
+      'Keep amounts as bigint minor units with their currency and convert only through `convertMoney` with a rate string and an explicit rounding mode, as `toNpr` does. Never multiply a USD amount by a float.',
+      'Give `FinancialTable` columns a `value`, an `aggregate` and a `formatAggregate`, `groupBy` for receipts and payments, and pass an independently computed control total as `expectedTotals`: the table then says "Reconciles" or how far it is off.',
+      'Feed `CashFlowChart` one period per week with `inflow` and `outflow` as positive `Money`; the chart computes the net in bigint and gives the same figures as a table.',
+    ],
+    avoid: [
+      'Treating the forecast as a promise: it is the sum of the dates you give it. A real desk reforecasts from the ledger and the bank feed every day.',
+      'Hedging, sweeps, intercompany loans and bank limits: the desk shows the policy check, not the decisions that follow from it. Deferring a payment here moves a date; it does not talk to a supplier.',
+    ],
+    api: [],
+    examples: [],
+    keyboard: [
+      '`1` to `4` open the screens; `S` switches the stress case (customers pay two weeks late) from anywhere. Plain keys never fire while you type in a field.',
+      'Defer and Undo are buttons on every supplier payment, named with the party, the amount and the days. The scenario switches are switches: Space toggles them.',
+      'The dollar rate move and the payment filter are selects: arrow keys change the choice.',
+    ],
+    accessibility: [
+      'Each screen has its own `h2` and focus moves to it from the navigation. Every alert is a `StatusBanner` with a title and the amounts in words; a breach is announced, not only coloured.',
+      'The chart has one focus stop, arrow keys step through the weeks, and the same figures are in a table. Weeks below the minimum say "Below by" with the amount and a mark; weeks above say "above".',
+      'Changes (a stress case on, a payment deferred, a rate move) are said in a polite live region.',
+    ],
+    responsive: [
+      'Wide screens: a navigation rail, four figures across, the accounts and forecast as full tables.',
+      'Phones (390 px first): a bottom tab bar, the tables stacked into labelled cards with the party first and the amount second, and the chart scaled to the width. Nothing scrolls the page sideways.',
+    ],
+    notes: {
+      title: 'Limits',
+      points: [
+        'An invented company, bank accounts, parties and rate (NPR 133.40 to the dollar, not a live quote). The session date is 1 November 2026 and nothing is fetched.',
+        'The liquid total counts only accounts marked available within a day. Whether a term deposit can be broken early, and at what penalty, is a decision this desk does not model.',
+        'A rate shock moves the dollar account and the dollar items; it does not model a bank\'s buy and sell spread.',
+      ],
+    },
+    related: ['cash-flow-chart', 'fx-rate', 'data-table', 'status-banner', 'metric-tile', 'meter-range', 'money-display', 'switch', 'select', 'hooks'],
+    app: {
+      screens: [
+        { id: 'position', title: 'Position and liquidity', summary: 'Liquid cash against the policy (`MetricRow`, `MeterBar` with a marker), every breach as a `StatusBanner`, the scenario switch, and the accounts in `FinancialTable` (`groupBy`, `expectedTotals`).' },
+        { id: 'forecast', title: '13-week forecast', summary: 'Weekly money in and out with `CashFlowChart`, and each week\'s opening, closing and standing against the minimum with in and out totals checked by `expectedTotals`.' },
+        { id: 'payments', title: 'Payments and receipts', summary: 'What is due, receipts then payments in `FinancialTable` (`groupBy`, subtotals, a net total), a filter, and Defer or Undo on a supplier payment.' },
+        { id: 'fx', title: 'Dollar exposure', summary: 'The rate (`FxRateDisplay`), the net dollar position in dollars and rupees, a limit check, and the position at each rate move, converted exactly.' },
+      ],
+      data:
+        'Hand-written fixtures in `site/src/apps/treasury-desk/treasury.ts`: five accounts, 42 expected items and a policy, in bigint paisa and cents, with the rate as a four-decimal string. No clock, no random numbers, nothing fetched.',
+    },
+  },
+  {
+    slug: 'personal-finance',
+    title: 'Personal finance',
+    description:
+      'A household finance app built from Punji UI: net worth over time, savings goals with progress, budget against actual by category and recurring bills.',
+    lead: 'Where a household stands, where it is heading, and what is due next, to the paisa.',
+    group: 'apps',
+    kind: 'app',
+    summary:
+      'A Kathmandu household\'s money in one place. Net worth over 24 months is drawn with `NetWorthChart` (assets above the line, the home loan below it) with a range selector, and the change over the range is the difference of two exact net worths. Four savings goals show progress as a percentage and a bar, in words as well: Reached, On track or Behind plan, with the monthly amount that would catch up. The budget compares each category with what was spent so far in November, says "Over by" in words where it is, and checks the column totals against the budget. Recurring bills are listed soonest first with a switch for autopay; paying one moves its next date and spends from its budget category, so Utilities can tip over its budget from the Bills screen. There is no balance-hiding toggle and no theme provider here: the library has neither yet.',
+    use: [
+      'Give `NetWorthChart` one point per month with `assets` and `liabilities` as positive `Money`; use `netWorthRows` when you need the same net figures elsewhere, so the number beside the chart is the chart\'s.',
+      'Say the standing of a goal or a category in words (`CheckRow` `status`, "Over by"), not only with a coloured bar; `MeterBar` is decorative and its figure must be printed beside it.',
+      'Keep one reducer for the figures that depend on each other (a bill paid, a budget spent), so two screens cannot disagree.',
+    ],
+    avoid: [
+      'Reading the numbers as advice: the goals\' "on track" is arithmetic on a straight monthly saving, with no returns and no inflation.',
+      'Using the app as a template for real accounts: it has no sign-in, no bank link and keeps nothing between visits.',
+    ],
+    api: [],
+    examples: [],
+    keyboard: [
+      '`1` to `4` open the screens. Plain keys never fire while you type in a field.',
+      'The range is a group of buttons (arrow keys and Enter). Autopay is a switch on every bill: Space toggles it. Pay now is a button named with the bill and the amount.',
+      'The goal and category pickers are selects; the amount fields are currency inputs that accept rupees and paisa only.',
+    ],
+    accessibility: [
+      'Each screen has its own `h2` and focus moves to it from the navigation. The chart has one focus stop, arrow keys step through the months, and the same figures are in a table.',
+      'Goals say Reached, On track or Behind plan; categories say "Over by" with the amount, and each is also a banner. A change in the net worth has its sign as text.',
+      'Adding to a goal, recording spending and paying a bill are said in a polite live region.',
+    ],
+    responsive: [
+      'Wide screens: a navigation rail, four figures across and the chart at full width.',
+      'Phones (390 px first): a bottom tab bar, goals and tables stacked into labelled rows, and the form fields in one column. Nothing scrolls the page sideways.',
+    ],
+    notes: {
+      title: 'Limits',
+      points: [
+        'An invented household. The net worth series is generated from fixed formulas with a repeating wobble standing in for market moves; the app\'s date is 15 November 2026 and nothing is fetched.',
+        'Not built, because the library has no component for it yet: masking balances with a toggle, and a theme provider (the docs site\'s own theme switch applies here).',
+        'Bills repeat on their own period only; there is no calendar of other one-off dues.',
+      ],
+    },
+    related: ['net-worth-chart', 'range-selector', 'check-list', 'meter-range', 'data-table', 'status-banner', 'metric-tile', 'currency-input', 'switch', 'select', 'hooks'],
+    app: {
+      screens: [
+        { id: 'overview', title: 'Overview', summary: 'Net worth, the change over the chosen range, assets and what is owed (`MetricRow`), `NetWorthChart` with `RangeSelector`, and assets by kind (`ShareBar`).' },
+        { id: 'goals', title: 'Goals', summary: 'Four goals in `CheckList` with a percentage, a bar and a status in words, and a form to add money to one (`CurrencyInput`).' },
+        { id: 'budget', title: 'Budget', summary: 'Budget against spent by category in `FinancialTable` with totals checked by `expectedTotals`, over-budget categories as `StatusBanner`, and a form to record spending.' },
+        { id: 'bills', title: 'Recurring bills', summary: 'Bills soonest first with an autopay `Switch` and Pay now, and what falls due in the next 30 days.' },
+      ],
+      data:
+        'Generated and hand-written fixtures in `site/src/apps/personal-finance/finance.ts`: 24 months of five asset classes and a loan, four goals, ten budget categories and eight bills, in bigint paisa. No clock, no random numbers, nothing fetched.',
+    },
+  },
 ];

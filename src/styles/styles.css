@@ -75,6 +75,7 @@
 @import './watchlist.css';
 @import './market-heatmap.css';
 @import './market-breadth.css';
+@import './price-only-charts.css';
 @import './portfolio.css';
 @import './accounting.css';
 @import './banking.css';

@@ -346,7 +346,7 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "197.70 kB",
+    "limit": "202.45 kB",
     "gzip": true
   },
   {
@@ -766,7 +766,7 @@
     "name": "column-chart (import from '@punji/ui/column-chart')",
     "path": "dist/column-chart/ColumnChart.js",
     "import": "*",
-    "limit": "3.11 kB",
+    "limit": "3.4 kB",
     "gzip": true
   },
   {
@@ -787,14 +787,14 @@
     "name": "performance-chart (import from '@punji/ui/performance-chart')",
     "path": "dist/performance-chart/PerformanceChart.js",
     "import": "*",
-    "limit": "4.58 kB",
+    "limit": "4.7 kB",
     "gzip": true
   },
   {
     "name": "depth-chart (import from '@punji/ui/depth-chart')",
     "path": "dist/depth-chart/DepthChart.js",
     "import": "*",
-    "limit": "3.17 kB",
+    "limit": "3.5 kB",
     "gzip": true
   },
   {
@@ -1039,7 +1039,7 @@
     "name": "dividend-history (import from '@punji/ui/dividend-history')",
     "path": "dist/dividend-history/DividendHistory.js",
     "import": "*",
-    "limit": "13.02 kB",
+    "limit": "13.2 kB",
     "gzip": true
   },
   {
@@ -1612,6 +1612,48 @@
     "name": "StatusBanner CSS",
     "path": "dist/css/status-banner.css",
     "limit": "0.5 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "chart-a11y (import from '@punji/ui/chart-a11y')",
+    "path": "dist/chart-a11y/ChartA11yShell.js",
+    "import": "*",
+    "limit": "1.3 kB",
+    "gzip": true
+  },
+  {
+    "name": "waterfall-chart (import from '@punji/ui/waterfall-chart')",
+    "path": "dist/waterfall-chart/WaterfallChart.js",
+    "import": "*",
+    "limit": "7.7 kB",
+    "gzip": true
+  },
+  {
+    "name": "cash-flow-chart (import from '@punji/ui/cash-flow-chart')",
+    "path": "dist/cash-flow-chart/CashFlowChart.js",
+    "import": "*",
+    "limit": "7.7 kB",
+    "gzip": true
+  },
+  {
+    "name": "net-worth-chart (import from '@punji/ui/net-worth-chart')",
+    "path": "dist/net-worth-chart/NetWorthChart.js",
+    "import": "*",
+    "limit": "7.7 kB",
+    "gzip": true
+  },
+  {
+    "name": "range-selector (import from '@punji/ui/range-selector')",
+    "path": "dist/range-selector/RangeSelector.js",
+    "import": "*",
+    "limit": "1.6 kB",
+    "gzip": true
+  },
+  {
+    "name": "Money charts CSS",
+    "path": "dist/css/money-charts.css",
+    "limit": "0.6 kB",
     "rolldown": false,
     "gzip": true
   }

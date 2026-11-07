@@ -11,6 +11,7 @@ import { FORMS_PAGES } from './registry-forms.ts';
 import { SHOWCASE_PAGES } from './registry-showcase.ts';
 import { TRADING_PAGES } from './registry-trading.ts';
 import { COMMUNITY_PAGES } from './registry-community.ts';
+import { SHELL_PAGES } from './registry-shells.ts';
 import { WALLET_PAGES } from './registry-wallet.ts';
 import { TRUST_PAGES } from './registry-trust.ts';
 // Global payment-field kit: inputs and pure checks.
@@ -992,7 +993,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['Every control is a real button in tab order.', "Alt+`ArrowUp` and Alt+`ArrowDown` on any of a row's buttons move that row; focus stays on the control you used.", "After a removal focus moves to the neighbouring row's remove button, or to the list when it was the last."],
     accessibility: ['Each change is announced ("HDL moved to position 2 of 3", "NABIL removed").', 'Buttons have names that include the symbol; change is sign, arrow and word.', 'The list is named by label.'],
     responsive: ['Rows reflow to fit a phone; `showTrend`={false} drops the trend line where space is tight.'],
-    related: ['stock-table', 'market-movers', 'company-search'],
+    related: ['stock-table', 'market-movers', 'company-search', 'reorder-list'],
   },
   {
     slug: 'market-heatmap',
@@ -1295,7 +1296,7 @@ export const PAGES: readonly PageDef[] = [
     keyboard: ['Button and link rows are native controls in tab order: Enter or Space activates.', 'In a tablist, Arrow Up and Down, Home and End move focus between tabs; your `onKeyDown` runs first and can cancel that.'],
     accessibility: ['Rows render list items inside a list; a tablist needs a name (label or `labelledBy`).', 'The status is words, not colour alone; the `StatusDisc` is decorative (`aria-hidden`).', 'A pressed row reports `aria-pressed`; `ariaLabel` must contain the visible words.'],
     responsive: ['Under 600px wide the visual hides and the figure stacks over its status.'],
-    related: ['inline-state', 'step-list', 'key-stats'],
+    related: ['inline-state', 'step-list', 'key-stats', 'checklist'],
   },
   {
     slug: 'step-list',
@@ -1999,6 +2000,8 @@ export const PAGES: readonly PageDef[] = [
   ...APP_PAGES,
   // Scaffolded with npm run new:component, waiting to move into a domain file.
   ...COMMUNITY_PAGES,
+  // App shells and menu parity (web migration wave 2).
+  ...SHELL_PAGES,
 ];
 
 /** The page's one-line lead: its own `lead`, else LEADS[slug], else the first sentence of `description`. */

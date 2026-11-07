@@ -1,0 +1,37 @@
+/* Punji UI styles.
+   Styles for InboxList. Needs tokens.css and base.css (styles.css has everything). Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  .pu-inbox { box-sizing: border-box; display: flex; flex-direction: column; inline-size: 100%; max-inline-size: 100%; min-block-size: 0; background: var(--pu-color-surface-solid); color: var(--pu-color-text); font-family: var(--pu-font-body) }
+  .pu-inbox-head { display: flex; align-items: center; gap: var(--pu-space-2); padding: var(--pu-space-3) var(--pu-space-4); border-block-end: 1px solid var(--pu-color-border-default) }
+  .pu-inbox-head h2 { margin: 0; font: 700 var(--pu-text-base) / 1.3 var(--pu-font-display) }
+  .pu-inbox-meta { flex: 1 1 auto; min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--pu-color-text-muted); font-size: var(--pu-text-xs) }
+  .pu-inbox-back, .pu-inbox-act, .pu-inbox-more { appearance: none; display: inline-flex; align-items: center; justify-content: center; min-block-size: var(--pu-control-lg); padding-inline: var(--pu-space-3); border: 0; border-radius: var(--pu-radius-control); background: transparent; color: var(--pu-color-link); font: 600 var(--pu-text-sm) / 1 var(--pu-font-body); cursor: pointer }
+  .pu-inbox-back { inline-size: var(--pu-control-lg); padding: 0; margin-inline-start: calc(var(--pu-space-2) * -1); color: var(--pu-color-text) }
+  .pu-inbox-back:dir(rtl) svg { transform: scaleX(-1) }
+  .pu-inbox-act:hover:not(:disabled), .pu-inbox-more:hover:not(:disabled), .pu-inbox-back:hover { background: var(--pu-color-surface-tint) }
+  .pu-inbox-back:focus-visible, .pu-inbox-act:focus-visible, .pu-inbox-more:focus-visible, .pu-inbox-row:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: -2px }
+  .pu-inbox-act:disabled, .pu-inbox-more:disabled { opacity: 0.5; cursor: not-allowed }
+  .pu-inbox-filter { padding: var(--pu-space-2) var(--pu-space-4) 0 }
+  .pu-inbox-note { margin: var(--pu-space-2) var(--pu-space-4) 0; padding: var(--pu-space-2) var(--pu-space-3); border-radius: var(--pu-radius-control); background: var(--pu-color-surface-subtle); color: var(--pu-color-text-muted); font-size: var(--pu-text-xs) }
+  .pu-inbox-body { flex: 1 1 auto; min-block-size: 0; overflow-y: auto; overscroll-behavior: contain }
+  .pu-inbox-foot { display: flex; justify-content: center; padding: var(--pu-space-2); border-block-start: 1px solid var(--pu-color-border-default) }
+  .pu-inbox-state { padding: var(--pu-space-6) var(--pu-space-4) }
+  .pu-inbox-group ul { margin: 0; padding: 0; list-style: none }
+  .pu-inbox-group-head { display: block; margin: 0; padding: var(--pu-space-3) var(--pu-space-4) var(--pu-space-1); color: var(--pu-color-text-muted); font: 600 var(--pu-text-xs) / 1.3 var(--pu-font-body); letter-spacing: 0.04em; text-transform: uppercase }
+  .pu-inbox-row { appearance: none; box-sizing: border-box; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: start; gap: var(--pu-space-3); inline-size: 100%; min-block-size: var(--pu-control-lg); padding: var(--pu-space-3) var(--pu-space-4); border: 0; border-block-end: 1px solid var(--pu-color-border-default); background: transparent; color: inherit; font: inherit; text-align: start; text-decoration: none; cursor: pointer }
+  .pu-inbox-row:hover { background: var(--pu-color-surface-tint) }
+  .pu-inbox-unread .pu-inbox-title { font-weight: 700 }
+  .pu-inbox-chip { display: inline-flex; align-items: center; justify-content: center; inline-size: 36px; block-size: 36px; border-radius: 10px; background: var(--pu-color-surface-subtle); color: var(--pu-color-text-muted) }
+  .pu-inbox-chip-info { background: color-mix(in srgb, var(--pu-color-info) 14%, transparent); color: var(--pu-color-info) }
+  .pu-inbox-chip-gain { background: var(--pu-color-gain-soft); color: var(--pu-color-gain) }
+  .pu-inbox-chip-warn { background: color-mix(in srgb, var(--pu-color-warn) 16%, transparent); color: var(--pu-color-warn) }
+  .pu-inbox-chip-loss { background: var(--pu-color-loss-soft); color: var(--pu-color-loss) }
+  .pu-inbox-text { display: grid; gap: var(--pu-space-0-5); min-inline-size: 0 }
+  .pu-inbox-title { font: 500 var(--pu-text-sm) / 1.4 var(--pu-font-body); overflow-wrap: anywhere }
+  .pu-inbox-body-text { color: var(--pu-color-text-muted); font-size: var(--pu-text-sm); line-height: 1.4; overflow-wrap: anywhere }
+  .pu-inbox-meta-line { color: var(--pu-color-text-muted); font-size: var(--pu-text-xs) }
+  .pu-inbox-dot { inline-size: 8px; block-size: 8px; margin-block-start: var(--pu-space-2); border-radius: var(--pu-radius-full); background: transparent }
+  .pu-inbox-unread .pu-inbox-dot { background: var(--pu-color-accent) }
+  .pu-inbox-skel { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--pu-space-3); padding: var(--pu-space-3) var(--pu-space-4) }
+  .pu-inbox-skel > span:last-child { display: grid; gap: var(--pu-space-2) }
+}

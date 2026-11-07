@@ -631,6 +631,34 @@
       "types": "./dist/breadcrumb/Breadcrumb.d.ts",
       "default": "./dist/breadcrumb/Breadcrumb.js"
     },
+    "./notification-bell": {
+      "types": "./dist/notification-bell/NotificationBell.d.ts",
+      "default": "./dist/notification-bell/NotificationBell.js"
+    },
+    "./inbox-list": {
+      "types": "./dist/inbox-list/InboxList.d.ts",
+      "default": "./dist/inbox-list/InboxList.js"
+    },
+    "./bottom-tab-bar": {
+      "types": "./dist/bottom-tab-bar/BottomTabBar.d.ts",
+      "default": "./dist/bottom-tab-bar/BottomTabBar.js"
+    },
+    "./reorder-list": {
+      "types": "./dist/reorder-list/ReorderList.d.ts",
+      "default": "./dist/reorder-list/ReorderList.js"
+    },
+    "./checklist": {
+      "types": "./dist/checklist/Checklist.d.ts",
+      "default": "./dist/checklist/Checklist.js"
+    },
+    "./locked-cell": {
+      "types": "./dist/locked-cell/LockedCell.d.ts",
+      "default": "./dist/locked-cell/LockedCell.js"
+    },
+    "./locked-preview": {
+      "types": "./dist/locked-preview/LockedPreview.d.ts",
+      "default": "./dist/locked-preview/LockedPreview.js"
+    },
     "./accordion": {
       "types": "./dist/accordion/Accordion.d.ts",
       "default": "./dist/accordion/Accordion.js"

@@ -9,7 +9,7 @@
  * Locked columns (design.punji.app/components/data-table, "Locked cells"):
  * a column whose figures are not included on this account keeps its head,
  * a LockedHead (a lock, not sortable), and each of its cells is a LockedCell
- * (the LockedCell component, pending in this package).
+ * (`@punji/ui/locked-cell`).
  *
  * `bare` drops the box (a table inside a Card); `stickToPage` keeps the head
  * in view as the page scrolls on a wide screen (the page sets

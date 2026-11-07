@@ -1,0 +1,27 @@
+/* Punji UI styles.
+   Styles for ReorderList. Needs tokens.css and base.css (styles.css has everything). Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  .pu-reorder { margin: 0; padding: 0; list-style: none; border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-lg); background: var(--pu-color-surface); color: var(--pu-color-text); font-family: var(--pu-font-body) }
+  .pu-reorder-item { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--pu-space-3); min-block-size: var(--pu-control-lg); padding: var(--pu-space-1) var(--pu-space-3) }
+  .pu-reorder-item + .pu-reorder-item { border-block-start: 1px solid var(--pu-color-border-default) }
+  .pu-reorder-buttons { grid-template-columns: minmax(0, 1fr) auto }
+  .pu-reorder-text { display: grid; min-inline-size: 0 }
+  .pu-reorder-text b { font: 700 var(--pu-text-sm) / 1.3 var(--pu-font-body) }
+  .pu-reorder-text span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--pu-color-text-muted); font-size: var(--pu-text-xs) }
+  .pu-reorder-pos { color: var(--pu-color-text-tertiary); font: 500 var(--pu-text-xs) / 1 var(--pu-font-numeric) }
+  .pu-reorder-handle, .pu-reorder-btn { appearance: none; display: inline-flex; align-items: center; justify-content: center; inline-size: var(--pu-control-lg); block-size: var(--pu-control-lg); padding: 0; border: 1px solid transparent; border-radius: var(--pu-radius-control); background: transparent; color: var(--pu-color-text-muted); cursor: grab; touch-action: none }
+  .pu-reorder-btn { border-color: var(--pu-color-border-control); cursor: pointer; touch-action: auto }
+  .pu-reorder-btns { display: inline-flex; gap: var(--pu-space-2) }
+  .pu-reorder-btn:disabled { opacity: 0.4; cursor: not-allowed }
+  .pu-reorder-handle:hover, .pu-reorder-btn:hover:not(:disabled) { background: var(--pu-color-surface-tint); color: var(--pu-color-text) }
+  .pu-reorder-handle:focus-visible, .pu-reorder-btn:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: 2px }
+  .pu-reorder-lifted { background: var(--pu-color-surface-tint); box-shadow: inset 3px 0 0 var(--pu-color-accent) }
+  .pu-reorder-lifted .pu-reorder-handle { color: var(--pu-color-accent) }
+  .pu-reorder-dragging { opacity: 0.5 }
+  .pu-reorder-before::before, .pu-reorder-after::after { content: ''; position: absolute; inset-inline: 0; block-size: 2px; background: var(--pu-color-accent) }
+  .pu-reorder-before::before { inset-block-start: -1px }
+  .pu-reorder-after::after { inset-block-end: -1px }
+  .pu-reorder-moved { animation: pu-reorder-moved 1.2s var(--pu-ease-out) }
+  @keyframes pu-reorder-moved { from { background: var(--pu-color-surface-tint) } to { background: transparent } }
+  @media (prefers-reduced-motion: reduce) { .pu-reorder-moved { animation: none; background: var(--pu-color-surface-tint) } }
+}

@@ -1,0 +1,18 @@
+/* Punji UI styles.
+   Styles for BottomTabBar. Needs tokens.css and base.css (styles.css has everything). Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  .pu-tabbar { box-sizing: border-box; inline-size: 100%; border-block-start: 1px solid var(--pu-color-border-default); background: var(--pu-color-surface-solid); color: var(--pu-color-text-muted); font-family: var(--pu-font-body); padding-block-end: env(safe-area-inset-bottom, 0px); padding-inline: env(safe-area-inset-left, 0px) env(safe-area-inset-right, 0px) }
+  .pu-tabbar-fixed { position: fixed; inset-inline: 0; inset-block-end: 0; z-index: var(--pu-z-sticky); transition: transform var(--pu-motion-base) var(--pu-ease-out) }
+  .pu-tabbar-fixed[data-hidden] { transform: translateY(100%) }
+  .pu-tabbar ul { display: flex; margin: 0; padding: 0; list-style: none }
+  .pu-tabbar li { flex: 1 1 0; min-inline-size: 0 }
+  .pu-tabbar-tab { appearance: none; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--pu-space-0-5); inline-size: 100%; min-block-size: 3.5rem; padding: var(--pu-space-1) var(--pu-space-1); border: 0; background: transparent; color: inherit; font: 600 var(--pu-text-xs) / 1.2 var(--pu-font-body); text-decoration: none; cursor: pointer; -webkit-tap-highlight-color: transparent }
+  .pu-tabbar-tab:hover { color: var(--pu-color-text) }
+  .pu-tabbar-tab[aria-current='page'] { color: var(--pu-color-accent) }
+  .pu-tabbar-tab[aria-current='page'] .pu-tabbar-label { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px }
+  .pu-tabbar-tab:focus-visible { outline: 2px solid var(--pu-color-accent); outline-offset: -4px }
+  .pu-tabbar-icon { display: inline-flex }
+  .pu-tabbar-label { max-inline-size: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+  @media (min-width: 1024px) { .pu-tabbar-fixed { display: none } }
+  @media (prefers-reduced-motion: reduce) { .pu-tabbar-fixed { transition: none } }
+}

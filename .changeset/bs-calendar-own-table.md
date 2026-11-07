@@ -1,5 +1,0 @@
----
-"@punji/ui": patch
----
-
-Bikram Sambat conversion now runs on punji-ui's own month-length table (`src/nepal/bs-data.ts`, built from Nepal Rajpatra holiday notices and cross-checked sources) and a pure day-count converter instead of `@remotemerge/nepali-date-converter`. No exported function or signature changes, and the supported range is still 1975-01-01 to 2099-12-30 BS (conversions outside it still throw). Results are identical for every day in BS 2000 to 2083 and for every other year except the disputed or projected ones: 1977, 1981, 1991 and 1998 now use the majority of independent sources (the old table was the sole or minority dissenter), and 2084 to 2099 now use the most widely shared projection (the old table copied earlier years and disagreed with every web calendar by up to 2 days). Because the projected years differ, the last convertible Gregorian day moves from 2043-04-13 to 2043-04-15 and `calendarLimits('bikram-sambat').max` follows it. 2083 Chaitra is cross-checked rather than official until the 2084 notice is published.

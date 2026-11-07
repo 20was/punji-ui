@@ -367,7 +367,7 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "202.45 kB",
+    "limit": "205280 B",
     "gzip": true
   },
   {
@@ -1060,7 +1060,7 @@
     "name": "dividend-history (import from '@punji/ui/dividend-history')",
     "path": "dist/dividend-history/DividendHistory.js",
     "import": "*",
-    "limit": "13.2 kB",
+    "limit": "13360 B",
     "gzip": true
   },
   {
@@ -1672,13 +1672,10 @@
     "gzip": true
   },
   {
-    "name": "Money charts CSS",
-    "path": "dist/css/money-charts.css",
-    "limit": "0.6 kB",
     "name": "theme-provider (import from '@punji/ui/theme-provider')",
     "path": "dist/theme-provider/ThemeProvider.js",
-    "import": "*",
     "limit": "1680 B",
+    "import": "*",
     "gzip": true
   },
   {

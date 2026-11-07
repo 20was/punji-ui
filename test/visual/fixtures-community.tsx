@@ -1,8 +1,7 @@
 import type { ReactNode } from 'react';
 import { CashFlowChart, DataFreshness, FxRateDisplay, money, NetWorthChart, RangeSelector, StatusBanner, WaterfallChart } from '../../src/index.ts';
 import { Accordion, Breadcrumb, MenuButton } from '@punji/ui';
-import { Card, CardSection, CardSectionRow, Figure, LinkRow, LinkRowList, MoneyDisplay, PrivateAmount, SettingList, SettingRow, SkipLink, StatusTag, ThemeProvider } from '@punji/ui';
-import { RouteAnnouncer } from '@punji/ui';
+import { Card, CardSection, CardSectionRow, Figure, LinkRow, LinkRowList, MoneyDisplay, PrivateAmount, RouteAnnouncer, SettingList, SettingRow, SkipLink, StatusTag, ThemeProvider } from '@punji/ui';
 // new:component inserts imports above this line
 
 // Visual fixtures for components scaffolded with `npm run new:component <name>` (docs/CONTRIBUTING-COMPONENT.md).
@@ -97,6 +96,41 @@ function WaterfallChartFixture() {
           { key: 'close', label: 'Closing', amount: npr(0), total: true },
         ]}
       />
+    </div>
+  );
+}
+
+const flow = (key: string, i: number, o: number) => ({ key, label: key, inflow: npr(i), outflow: npr(o) });
+
+function CashFlowChartFixture() {
+  const p = flow;
+  return (
+    <div style={{ maxWidth: 560 }}>
+      <CashFlowChart label="Cash flow" periods={[p('Shr', 180_000, 120_000), p('Bha', 175_000, 140_000), p('Asw', 210_000, 260_000), p('Kar', 190_000, 150_000), p('Man', 185_000, 135_000)]} />
+    </div>
+  );
+}
+
+function NetWorthChartFixture() {
+  const m = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+  const a = [900, 940, 980, 1010, 1060, 1100];
+  const l = [300, 290, 280, 1050, 1030, 1010];
+  return (
+    <div style={{ maxWidth: 560 }}>
+      <NetWorthChart label="Net worth" points={m.map((k, i) => ({ key: k, label: k, assets: npr(a[i]! * 1000), liabilities: npr(l[i]! * 1000) }))} />
+    </div>
+  );
+}
+
+function RangeSelectorFixture() {
+  return (
+    <div style={{ display: 'grid', gap: 12, maxWidth: 390 }}>
+      <RangeSelector value="1M" onChange={() => {}} />
+      <RangeSelector value="All" onChange={() => {}} fill />
+    </div>
+  );
+}
+
 // ThemeProvider and RouteAnnouncer draw nothing: the fixtures show the region the theme is applied to, and the (hidden) live region beside it.
 function ThemeProviderFixture() {
   return (
@@ -116,13 +150,6 @@ function PrivateAmountFixture() {
   );
 }
 
-const flow = (key: string, i: number, o: number) => ({ key, label: key, inflow: npr(i), outflow: npr(o) });
-
-function CashFlowChartFixture() {
-  const p = flow;
-  return (
-    <div style={{ maxWidth: 560 }}>
-      <CashFlowChart label="Cash flow" periods={[p('Shr', 180_000, 120_000), p('Bha', 175_000, 140_000), p('Asw', 210_000, 260_000), p('Kar', 190_000, 150_000), p('Man', 185_000, 135_000)]} />
 function SkipLinkFixture() {
   return (
     <div style={{ display: 'grid', gap: 8 }}>
@@ -133,13 +160,6 @@ function SkipLinkFixture() {
   );
 }
 
-function NetWorthChartFixture() {
-  const m = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-  const a = [900, 940, 980, 1010, 1060, 1100];
-  const l = [300, 290, 280, 1050, 1030, 1010];
-  return (
-    <div style={{ maxWidth: 560 }}>
-      <NetWorthChart label="Net worth" points={m.map((k, i) => ({ key: k, label: k, assets: npr(a[i]! * 1000), liabilities: npr(l[i]! * 1000) }))} />
 function RouteAnnouncerFixture() {
   return (
     <div>
@@ -149,12 +169,6 @@ function RouteAnnouncerFixture() {
   );
 }
 
-function RangeSelectorFixture() {
-  return (
-    <div style={{ display: 'grid', gap: 12, maxWidth: 390 }}>
-      <RangeSelector value="1M" onChange={() => {}} />
-      <RangeSelector value="All" onChange={() => {}} fill />
-    </div>
 function CardSectionFixture() {
   return (
     <Card flush label="Sections">

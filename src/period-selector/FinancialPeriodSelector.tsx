@@ -19,6 +19,7 @@ import { ChoiceGroup } from '../choice-group/ChoiceGroup.tsx';
 import { Select, type ControlSize } from '../select/Select.tsx';
 import type { CalendarDate } from '../nepal/date-only.ts';
 import type { FinancialPeriod } from './periods.ts';
+import { BsStatusMark, type BsDateLabels } from '../internal/dualDate.tsx';
 
 export * from './periods.ts';
 
@@ -39,6 +40,8 @@ export interface FinancialPeriodSelectorProps {
   showDetail?: boolean;
   /** Control height: sm, md (default) or lg. */
   size?: ControlSize;
+  /** Words for the "projected" marker shown when the selected period's dates are projected. */
+  labels?: Partial<BsDateLabels>;
   /** Sets `data-testid` on the root; also the prefix of the detail line's id. */
   testId?: string;
 }
@@ -48,7 +51,7 @@ const order = (date: CalendarDate) => date.year * 10000 + date.month * 100 + dat
 /**
  * @stability stable
  */
-export function FinancialPeriodSelector({ periods, value, onChange, label, kindLabels, kindGroupLabel, showDetail = true, size = 'md', testId }: FinancialPeriodSelectorProps) {
+export function FinancialPeriodSelector({ periods, value, onChange, label, kindLabels, kindGroupLabel, showDetail = true, size = 'md', labels, testId }: FinancialPeriodSelectorProps) {
   const auto = useId();
   const id = testId ?? auto;
   const selected = periods.find(period => period.id === value);
@@ -88,7 +91,7 @@ export function FinancialPeriodSelector({ periods, value, onChange, label, kindL
         aria-describedby={showDetail && selected?.detail ? detailId : undefined}
         testId={testId ? `${testId}-select` : undefined}
       />
-      {showDetail && selected?.detail && <p className="pu-period-detail" id={detailId}>{selected.detail}</p>}
+      {showDetail && selected?.detail && <p className="pu-period-detail" id={detailId}>{selected.detail}{selected.projected && <BsStatusMark status="projected" labels={labels} />}</p>}
     </div>
   );
 }

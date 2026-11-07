@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
-  AllotmentChecker, ApplyIssueForm, BoidInput, Button, CorporateActionTimeline, DematAccountCard, EdisConfirmation, IssueCard, IssueList,
+  AllotmentChecker, ApplyIssueForm, BoidInput, Button, Calendar, CorporateActionTimeline, DematAccountCard, EdisConfirmation, FinancialPeriodSelector, IssueCard, IssueList, Timeline,
+  nepalFiscalYearPeriods,
 } from '@punji/ui';
 import {
   applyAccounts, corporateEvents, dematAccounts, edisTransfers, fakeAllotment, issuesToday, savedBoids, shareIssues,
@@ -82,9 +83,23 @@ function EdisFixture() {
   return <EdisConfirmation transfers={edisTransfers} onConfirm={noop} testId="vr-edis" />;
 }
 
+// BS 2084 Baisakh is past the last month the Nepal calendar committee has published, so every BS date here is projected.
+const projectedIssue = { ...shareIssues[1]!, openDate: '2027-04-14', closeDate: '2027-04-30' };
+const projectedPeriods = nepalFiscalYearPeriods(2082, 2083);
+function ProjectedFixture() {
+  const [period, setPeriod] = useState('fy-2083');
+  return <div style={{ display: 'grid', gap: 24, maxWidth: 360 }}>
+    <Block title="IssueCard with projected BS dates"><IssueCard issue={projectedIssue} today="2027-04-12" testId="vr-projected-issue" /></Block>
+    <Block title="Timeline"><Timeline label="Projected plan" milestones={[{ date: '2027-04-30', tag: 'Close', items: ['Applications close'] }]} /></Block>
+    <Block title="FinancialPeriodSelector, fiscal year ends in a projected month"><FinancialPeriodSelector periods={projectedPeriods} value={period} onChange={(id) => setPeriod(id)} label="Reporting period" testId="vr-projected-period" /></Block>
+    <Block title="Calendar, projected BS month with a note"><Calendar label="Projected month" calendar="bikram-sambat" value={null} onChange={noop} today="2027-04-12" defaultMonth="2027-04-30" testId="vr-projected-cal" /></Block>
+  </div>;
+}
+
 export const shareIssuesRegistry: Record<string, () => ReactNode> = {
   'issue-card': IssueCardFixture,
   'issue-list': IssueListFixture,
+  'bs-projected': ProjectedFixture,
   'apply-issue-form': () => <ApplyFixture errors={false} />,
   'apply-issue-form-errors': () => <ApplyFixture errors />,
   'boid-input': BoidFixture,

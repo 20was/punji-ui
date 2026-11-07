@@ -27,7 +27,7 @@ export default function Example() {
           <DataRow label="Text" value={theme?.textStyle.color ?? '...'} />
           <DataRow label="First series" value={theme?.color[0] ?? '...'} />
           <DataRow label="Axis" value={axis(25_000_000)} />
-          <DataRow label="Tooltip" value={tip({ seriesName: 'Net', value: ['Q1', 123456789] }).replace(/<[^>]+>/g, '')} />
+          <DataRow label="Tooltip" value={<code>{tip({ seriesName: 'Net', value: ['Q1', 123456789] })}</code>} />
         </DataRows>
       </Card>
     </div>

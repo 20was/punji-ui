@@ -179,6 +179,8 @@ export const fixtures: readonly FixtureMeta[] = [
   { id: 'sankey-chart', title: 'SankeyChart' },
   { id: 'earnings-chart', title: 'EarningsChart' },
   { id: 'balance-history-chart', title: 'BalanceHistoryChart' },
+  { id: 'volume-profile', title: 'VolumeProfile split, 80% value area and ProfileRail' },
+  { id: 'market-heatmap-grouped', title: 'MarketHeatmap grouped: sectors and drilled-in banking' },
   { id: 'score-radar', title: 'ScoreRadar five axes, eight long names at 320px, weak total' },
   { id: 'fair-value-bar', title: 'FairValueBar under, fair, over, far above' },
   { id: 'price-target-chart', title: 'PriceTargetChart fan and close targets' },

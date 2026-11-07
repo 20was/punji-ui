@@ -816,7 +816,7 @@ const BASE_PAGES: readonly PageDef[] = [
     keyboard: ['Tab focuses the plot. Left and Right move one price level, Home and End jump to the lowest and highest price.'],
     accessibility: ['The focused level is announced: side, price, quantity and cumulative size.', 'Sides are named in the readout and table, not only coloured.', 'A visually hidden table lists every level with its running total.'],
     responsive: ['The plot is as wide as its container.'],
-    related: ['order-book', 'candlestick-chart'],
+    related: ['order-book', 'candlestick-chart', 'volume-profile'],
   },
   {
     slug: 'chart-math',
@@ -1245,7 +1245,7 @@ const BASE_PAGES: readonly PageDef[] = [
     keyboard: ['With `onSelect` each tile is a button in tab order: Enter or Space selects.', 'The "View data as a table" disclosure is a native details element; its table region is focusable and scrolls.'],
     accessibility: ['Every tile has a full spoken name (symbol, name, size, direction, percent), including tiles too small to show text.', 'The legend lists every step including "Unchanged" and "No change data".', 'The data table lists every item, including unsized ones.'],
     responsive: ['aspect is width over height (default 1.5); use about 1 on a phone.', 'Tiles are placed in percent of the container.'],
-    related: ['stock-table', 'market-movers', 'column-chart'],
+    related: ['stock-table', 'market-movers', 'column-chart', 'grouped-market-heatmap'],
   },
   {
     slug: 'market-breadth',

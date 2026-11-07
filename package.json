@@ -799,6 +799,14 @@
       "types": "./dist/balance-history-chart/BalanceHistoryChart.d.ts",
       "default": "./dist/balance-history-chart/BalanceHistoryChart.js"
     },
+    "./market-heatmap-grouped": {
+      "types": "./dist/market-heatmap/GroupedMarketHeatmap.d.ts",
+      "default": "./dist/market-heatmap/GroupedMarketHeatmap.js"
+    },
+    "./volume-profile": {
+      "types": "./dist/volume-profile/VolumeProfile.d.ts",
+      "default": "./dist/volume-profile/VolumeProfile.js"
+    },
     "./css/*.css": {
       "types": "./dist/css/*.css.d.ts",
       "default": "./dist/css/*.css"

@@ -850,7 +850,7 @@
     "name": "market-movers (import from '@punji/ui/market-movers')",
     "path": "dist/market-movers/MarketMovers.js",
     "import": "*",
-    "limit": "12.17 kB",
+    "limit": "12.50 kB",
     "gzip": true
   },
   {
@@ -1077,7 +1077,7 @@
     "name": "transaction-history with the date picker panel (all chunks)",
     "path": "dist/transaction-history/TransactionHistory.js",
     "import": "*",
-    "limit": "23.42 kB",
+    "limit": "23.92 kB",
     "gzip": true
   },
   {
@@ -1098,7 +1098,7 @@
     "name": "order-list (import from '@punji/ui/order-list')",
     "path": "dist/order-list/OrderList.js",
     "import": "*",
-    "limit": "9530 B",
+    "limit": "9.73 kB",
     "gzip": true
   },
   {

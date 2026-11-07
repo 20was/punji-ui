@@ -131,7 +131,6 @@ export const PORTAL_RENAMES: Readonly<Record<string, string>> = {
   '/components/flow-waterfall': 'breakdown',
   '/components/status-notice': 'inline-state',
   '/components/action-notice': 'inline-state',
-  '/components/prompt-card': 'card-link',
   '/components/health-summary': 'financial-summary',
   '/components/floor-gauge': 'meter-range',
   '/components/progress-row': 'meter-range',

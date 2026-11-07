@@ -101,5 +101,8 @@
 @import './menu.css';
 @import './breadcrumb.css';
 @import './accordion.css';
+@import './article.css';
+@import './faq.css';
+@import './prompt-card.css';
 @import './money-charts.css';
 @import './contrast.css';

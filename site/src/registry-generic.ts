@@ -215,7 +215,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       'Show the chosen range as text too, near the slider.',
     ],
     responsive: ['The slider fills its container; the thumbs are large enough for touch.'],
-    related: ['field', 'select', 'meter-range'],
+    related: ['field', 'select', 'meter-range', 'range-editor'],
   },
   {
     slug: 'choice-group',
@@ -648,7 +648,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       'The error ring is extra: the editor must say what is wrong in words.',
     ],
     responsive: ['A 36px box that wraps with its neighbours; the x keeps a 44px tap area on touch.'],
-    related: ['chip', 'popover', 'list-filter', 'status-pill'],
+    related: ['chip', 'popover', 'list-filter', 'status-pill', 'filter-bar', 'filter-menu', 'preset-tile'],
   },
   {
     slug: 'show-more',

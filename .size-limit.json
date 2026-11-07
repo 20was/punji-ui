@@ -367,13 +367,13 @@
     "name": "Everything (import * from '@punji/ui')",
     "path": "dist/index.js",
     "import": "*",
-    "limit": "212.35 kB",
+    "limit": "214 kB",
     "gzip": true
   },
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "42.84 kB",
+    "limit": "43.8 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -1690,6 +1690,76 @@
     "path": "dist/css/money-charts.css",
     "limit": "0.6 kB",
     "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "range-editor (import from '@punji/ui/range-editor')",
+    "path": "dist/range-editor/RangeEditor.js",
+    "import": "*",
+    "limit": "6.6 kB",
+    "gzip": true
+  },
+  {
+    "name": "RangeEditor CSS",
+    "path": "dist/css/range-editor.css",
+    "limit": "820 B",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "filter-menu (import from '@punji/ui/filter-menu')",
+    "path": "dist/filter-menu/FilterMenu.js",
+    "import": "*",
+    "limit": "1.12 kB",
+    "gzip": true
+  },
+  {
+    "name": "FilterMenu CSS",
+    "path": "dist/css/filter-menu.css",
+    "limit": "880 B",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "preset-tile (import from '@punji/ui/preset-tile')",
+    "path": "dist/preset-tile/PresetTile.js",
+    "import": "*",
+    "limit": "690 B",
+    "gzip": true
+  },
+  {
+    "name": "PresetTile CSS",
+    "path": "dist/css/preset-tile.css",
+    "limit": "910 B",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "filter-bar (import from '@punji/ui/filter-bar')",
+    "path": "dist/filter-bar/FilterBar.js",
+    "import": "*",
+    "limit": "9.6 kB",
+    "gzip": true
+  },
+  {
+    "name": "FilterBar CSS",
+    "path": "dist/css/filter-bar.css",
+    "limit": "230 B",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "filter-url (import from '@punji/ui/filter-url')",
+    "path": "dist/filter-url/FilterUrl.js",
+    "import": "*",
+    "limit": "2.02 kB",
+    "gzip": true
+  },
+  {
+    "name": "use-url-filters (import from '@punji/ui/use-url-filters')",
+    "path": "dist/use-url-filters/useUrlFilters.js",
+    "import": "*",
+    "limit": "2.26 kB",
     "gzip": true
   }
 ]

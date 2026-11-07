@@ -1,0 +1,28 @@
+/* Punji UI styles.
+   Styles for PresetTile and PresetRow. Needs tokens.css and base.css (styles.css has everything). Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  .pu-preset-box { container-type: inline-size; min-width: 0 }
+  .pu-preset-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--pu-space-3) }
+  @container (min-width: 1080px) { .pu-preset-row { grid-template-columns: repeat(6, minmax(0, 1fr)) } }
+  .pu-preset { appearance: none; position: relative; box-sizing: border-box; min-width: 0; min-height: 84px; display: flex; flex-direction: column; align-items: stretch; gap: 6px; padding: 14px 16px; border: 1px solid var(--pu-color-card-border); border-radius: var(--pu-radius-xl); background: var(--pu-color-surface); color: var(--pu-color-text); font: inherit; text-align: start; cursor: pointer; transition: background-color var(--pu-motion-fast) var(--pu-ease-out) }
+  .pu-preset:hover { background: var(--pu-color-surface-subtle) }
+  .pu-preset[aria-pressed='true'] { background: var(--pu-color-surface-inverse); border-color: transparent; color: var(--pu-color-text-inverse) }
+  .pu-preset:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
+  .pu-preset-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; min-width: 0 }
+  .pu-preset-title { min-width: 0; font: var(--pu-font-weight-semibold) var(--pu-text-sm) / 1.35 var(--pu-font-body); overflow-wrap: anywhere }
+  .pu-preset-count { flex: none; font: var(--pu-font-weight-semibold) var(--pu-text-sm) / 1.35 var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric) }
+  .pu-preset-lock { flex: none; display: inline-flex; align-self: center; color: var(--pu-color-text-tertiary) }
+  .pu-preset.locked .pu-preset-head { justify-content: flex-start; gap: 8px }
+  .pu-preset-line { font-size: var(--pu-text-xs); line-height: 1.4; color: var(--pu-color-text-muted) }
+  .pu-preset[aria-pressed='true'] .pu-preset-line { color: color-mix(in srgb, var(--pu-color-text-inverse) 72%, transparent) }
+  /* A phone: one sideways row of compact tiles, name and count. */
+  @container (max-width: 559px) {
+    .pu-preset-row { display: flex; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; padding: 2px; margin: -2px }
+    .pu-preset-row::-webkit-scrollbar { display: none }
+    .pu-preset { flex: none; min-height: 56px; justify-content: center; padding-block: 0; padding-inline: 16px; scroll-snap-align: start }
+    .pu-preset-head { gap: 12px; white-space: nowrap }
+    .pu-preset-line { display: none }
+  }
+  @media (pointer: coarse) { .pu-preset { min-height: var(--pu-tap-min) } }
+  @media (prefers-reduced-motion: reduce) { .pu-preset { transition: none } }
+}

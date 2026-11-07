@@ -1,7 +1,9 @@
 // Pages for components scaffolded with `npm run new:component <name>` (docs/CONTRIBUTING-COMPONENT.md). Kept apart from
 // registry.ts so contributions merge cleanly; move a page into its domain's registry file when it is reviewed.
 // Pure data (no JSX). The generator inserts each new entry above the marker line, keep it.
-import type { PageDef } from './registry.ts';
+import type { ApiRef, PageDef } from './registry.ts';
+
+const ui = (module: string, ...names: string[]): ApiRef[] => names.map((name) => ({ name, module }));
 
 export const COMMUNITY_PAGES: readonly PageDef[] = [
   {
@@ -405,6 +407,201 @@ export const COMMUNITY_PAGES: readonly PageDef[] = [
     ],
     responsive: ['Full width of its container; headers are 44px tall, and long headers wrap.'],
     related: ['tabs', 'show-more', 'card', 'menu'],
+  },
+  {
+    slug: 'range-editor',
+    title: 'RangeEditor and FilterPopover',
+    navTitle: 'RangeEditor',
+    description: 'A range filter in a popover: From and To fields, an exact-decimal range slider, quick ranges, a chart of the set and the live result on the one action.',
+    lead: 'One range filter: From, To, a slider and a chart of where the set sits, and nothing applies until you press the result.',
+    group: 'data',
+    kind: 'component',
+    stability: 'beta',
+    summary:
+      'RangeEditor is the body of one range filter: a line on what the measure is, the chart of the whole set the page hands in, quick ranges, an optional range slider, From and To fields, Clear and one primary action that says the result ("Show 3 stocks"). FilterPopover is the panel it sits in, placed under the button that opened it. The ends are exact decimal strings ("" is no limit); the slider moves over whole steps of a decimal track and writes the ends back with exact arithmetic, so a price step of 0.1 never turns into 0.30000000000000004. Nothing applies until the action is pressed.',
+    use: [
+      'A screener or list filter on one measure: price, P/E, yield, market cap.',
+      'FilterPopover for the editor and for the "Add filter" list, both under the same opener.',
+      'The `chart` slot for a Histogram of the whole set with the kept buckets filled (`@punji/ui/histogram`).',
+    ],
+    avoid: [
+      'Filters that apply as you type or drag: this is a draft with an explicit action, so a heavy query runs once.',
+      'A single value: use a Field. Choosing from a list: use a Select, or the list in a FilterBar.',
+      'Floating-point ends for money: keep the strings the editor gives you and compare them with `compareDecimals`.',
+    ],
+    api: [...ui('range-editor', 'RangeEditor', 'RangeEditorProps', 'RangeTrack', 'RangePreset', 'FilterPopover', 'FilterPopoverProps')],
+    examples: [
+      { id: 'basic', title: 'P/E in a popover', note: 'Slider, quick ranges, the chart slot and the result on the action. The chart here is six plain bars.' },
+      { id: 'price', title: 'Price in rupees', note: 'A decimal track in steps of 0.5: the slider writes exact strings, and the fields refuse a third decimal.' },
+    ],
+    keyboard: [
+      'Tab moves through the quick ranges, the two slider thumbs, From, To, Clear and the action. Each slider thumb is a native range input: arrows, Page Up/Down, Home and End.',
+      'In FilterPopover, `Esc` closes it and puts focus back on the opener; a click outside closes it without taking focus; focus starts in the first field.',
+      'From and To are number fields: type, or use the arrow keys if you give them a step.',
+    ],
+    accessibility: [
+      'FilterPopover is a named dialog (`title`) with a heading and a close button; the opener should have `aria-haspopup="dialog"` and `aria-expanded`.',
+      'The slider thumbs are named "From (slider)" and "To (slider)" and say their value in words, with "No limit" at the ends of the track; the fields stay the exact source of truth.',
+      'A range that cannot work is said in words under To (an alert) and turns the action off; colour is never the only sign.',
+      'Quick ranges are toggle buttons (`aria-pressed`); the action is described by the "why" line.',
+    ],
+    responsive: ['The panel is 360px (440px with `wide`) and never wider than the screen; on a phone it is placed under the opener and scrolls inside the screen. From and To stay side by side at 390px.'],
+    notes: {
+      title: 'Migrating from the web kit',
+      points: [
+        '`kit/RangeEditor` keeps its props: `why`, `chartTitle`, `chart`, `from`, `to`, `onFrom`, `onTo`, `fromLabel`, `toLabel`, `placeholder`, `error`, `clearLabel`, `onClear`, `applyLabel`, `onApply`, `applyOff`, `testIdPrefix`. New and optional: `presets`, `track` (the slider), `formatTrackValue`, `maxFractionDigits`, `sliderLabel`, `presetsLabel`.',
+        '`kit/FilterPopover` keeps `title`, `onClose(refocus?)`, `anchor`, `wide`, `closeLabel` and `testId`. `title` is a string (it names the dialog). It is built on `Popover`: it floats in a portal under the anchor and is clamped to the screen, so `left` is gone, and on a phone it is a panel under the opener instead of a bottom sheet. Pass `anchor` as the element (as in web) or a ref.',
+        'The classes are `pu-range-editor` and `pu-filter-popover`; web\'s `kit-red` and `kit-fpop` rules are not used.',
+        'Web passes `<Histogram>` as `chart`; `@punji/ui/histogram` is released separately, so the chart slot takes any element.',
+      ],
+    },
+    related: ['range-slider', 'filter-menu', 'filter-bar', 'popover', 'field'],
+  },
+  {
+    slug: 'filter-menu',
+    title: 'FilterMenu',
+    description: 'The grouped "Add filter" list: groups in columns, a note under a group that says why its items are off, a count or a second name beside an item, and toggles.',
+    lead: 'The "+ Add filter" list by group, with a plain-words note on why an item is off instead of a silent grey.',
+    group: 'data',
+    kind: 'component',
+    stability: 'beta',
+    summary:
+      'FilterMenu, FilterMenuGroup and FilterMenuItem make the list behind "+ Add filter". Groups sit two across on a wide panel and one under another when it is narrow. An item opens that filter\'s editor; a yes/no item is a toggle; an item that cannot be used yet is disabled and its group says why in one line, and that note is read with the item. An `aside` carries a count or the term in another language.',
+    use: [
+      'Inside a FilterPopover under an "Add filter" button.',
+      '`note` on a group whose items need something first ("Choose only banks under Sector first.").',
+      '`aside` for a count, or a second name with its own `lang`.',
+    ],
+    avoid: [
+      'Actions on a row ("Edit", "Delete"): use MenuButton.',
+      'Hiding a filter that cannot be used yet: list it, disabled, with the reason.',
+      'A long list of values to pick from: that is a checklist in the filter\'s editor.',
+    ],
+    api: [...ui('filter-menu', 'FilterMenu', 'FilterMenuProps', 'FilterMenuGroup', 'FilterMenuGroupProps', 'FilterMenuItem', 'FilterMenuItemProps')],
+    examples: [{ id: 'basic', title: 'Add filter', note: 'Two columns, a disabled group with its note, a count as an aside and a toggle.' }],
+    keyboard: [
+      'Tab enters the list; Arrow Down and Arrow Up move between the enabled items, across groups and columns in reading order; Home and End jump; Enter or Space chooses. Disabled items are skipped.',
+      'Tab leaves the menu. Esc closes the popover it sits in.',
+    ],
+    accessibility: [
+      'A named group (`label`); each FilterMenuGroup is a region named by its heading.',
+      'A disabled item is `aria-describedby` the group\'s note, so a screen reader hears the reason on the item itself.',
+      'A toggle is a button with `aria-pressed`; a range that is set shows an underline and, with `onLabel`, the word "set" for screen readers.',
+    ],
+    responsive: ['Two columns when the panel is 400px or wider (a container query), one under 400px; items are 44px tall on touch.'],
+    notes: {
+      title: 'Migrating from the web kit',
+      points: [
+        '`kit/FilterMenu`, `FilterMenuGroup` and `FilterMenuItem` keep their props (`label`, `column`, `title`, `note`, `aside`, `toggle`, `on`, `disabled`, `onClick`, test ids). Added: `onLabel`, arrow-key movement and the note tied to disabled items.',
+        'It does not import `Menu` or `Sheet`: `MenuButton` is a role="menu" popup of actions and cannot hold groups in columns, so this is its own small list. The phone sheet is the FilterPopover\'s job.',
+        'Classes are `pu-filter-menu*`; web\'s `kit-fmenu*` rules are not used.',
+      ],
+    },
+    related: ['filter-bar', 'range-editor', 'menu', 'filter-chip'],
+  },
+  {
+    slug: 'preset-tile',
+    title: 'PresetTile',
+    description: 'A saved filter preset as a pressable tile: its name, a live count of what it keeps and one line on what it asks. A locked tile shows a lock, not a count.',
+    lead: 'A ready-made screen as a tile you press: name, live count, one line. Press again to clear.',
+    group: 'data',
+    kind: 'component',
+    stability: 'beta',
+    summary:
+      'PresetTile is a ready-made set of filters as a calm tile: its name, how many items it keeps (a live count) and one line on what it asks. It is a toggle button: pressed is the inverse surface, and pressing again clears it. A locked tile carries a lock after its name and no count; a press never applies it, and the page says why. PresetRow lays the tiles out by its own width: six across when there is room, three across in a narrower column, one sideways-scrolling row of compact tiles on a phone.',
+    use: ['Starting points above a screener: "Steady dividends", "Value".', 'A count that updates as the data does: pass it, or leave it out while it loads.', '`locked` for a preset the account does not include, with `describedBy` pointing at the page\'s reason.'],
+    avoid: ['Several presets applied at once: a tile is one screen; combine filters in the bar.', 'A choice among exclusive views: use ChoiceGroup or Tabs.'],
+    api: [...ui('preset-tile', 'PresetTile', 'PresetTileProps', 'PresetRow', 'PresetRowProps')],
+    examples: [{ id: 'basic', title: 'Ready-made screens', note: 'Four tiles, one locked. Resize the page: three across, then one scrolling row.' }],
+    keyboard: ['Tab reaches each tile; Enter or Space presses it. In the phone row the row scrolls to keep the focused tile in view.'],
+    accessibility: [
+      'A button with `aria-pressed`; the name is the title and the count, and the line is read with it.',
+      'A locked tile adds `lockedLabel` for screen readers after the name; the lock icon is decorative.',
+      'The row is a named group (`label`).',
+    ],
+    responsive: ['The row measures its own width: six across at 1080px and up, three across below that, and under 560px one horizontally scrolling row of compact tiles (name and count, no line) with snap points, 56px tall.'],
+    notes: {
+      title: 'Migrating from the web kit',
+      points: [
+        '`kit/PresetTile` and `PresetRow` keep their props: `title`, `count`, `line`, `pressed`, `locked`, `lockedLabel`, `onClick`, `describedBy`, test ids.',
+        'Classes are `pu-preset*`; web\'s `kit-preset*` rules are not used.',
+      ],
+    },
+    related: ['filter-bar', 'filter-chip', 'choice-group'],
+  },
+  {
+    slug: 'filter-bar',
+    title: 'FilterBar',
+    description: 'A screener filter bar: chips for each filter that is set, a grouped Add filter list, range editors in popovers, and URL state with a link you can share.',
+    lead: 'A screener\'s filters in one row, driven by values you own: in the address, a store or useState.',
+    group: 'data',
+    kind: 'component',
+    stability: 'beta',
+    summary:
+      'FilterBar composes FilterChip, FilterMenu, FilterPopover and RangeEditor into the screener\'s filter row. You describe the filters (a range, a list to pick from, a yes/no), give it the values that are set and handle onChange; it keeps no filter state. A chip for each set filter edits it and its × removes it; "Add filter" lists every filter by group and opens its editor; a range applies from its one action with the live count ("Show 12 results"). With `useUrlFilters` the values live in the address, so a screen is a link.',
+    use: ['A screener, a fund or bond finder, any list with several filters of different kinds.', '`count` to show how many a draft would keep on the editor\'s action.', '`useUrlFilters` and `filtersToLink` for a shareable screen.'],
+    avoid: ['One filter: use a ListFilter or a Select.', 'Filters that fetch on every keystroke: the range editor applies on one action by design.', 'Floating-point money: range ends are exact decimal strings; compare them with `compareDecimals`.'],
+    api: [
+      ...ui('filter-bar', 'FilterBar', 'FilterBarProps', 'FilterBarField', 'FilterBarGroup', 'FilterBarLabels', 'FilterBarValues'),
+      ...ui('filter-url', 'filtersToSearchParams', 'searchParamsToFilters', 'filtersToLink', 'FilterSchema', 'FilterValues'),
+      ...ui('use-url-filters', 'useUrlFilters', 'UseUrlFiltersOptions', 'UseUrlFiltersResult'),
+    ],
+    examples: [
+      { id: 'screener', title: 'Screener with a shareable link', note: 'Presets, the bar, a results table and the link. Invented stocks; prices are exact strings. Copy the link and paste its query into the Filter URL page.' },
+      { id: 'basic', title: 'Values in useState', note: 'The bar alone, with its values in state.' },
+    ],
+    keyboard: [
+      'Tab moves through the chips, their × buttons and "Add filter". Enter or Space opens a chip\'s editor; `Esc` closes any popover and puts focus back on the button that opened it.',
+      'In the "Add filter" list: arrow keys move between items, Enter chooses. In a range editor: see RangeEditor.',
+    ],
+    accessibility: [
+      'The bar is a named group; each chip is a button that says it edits ("Edit P/E up to 12"); each × is named ("Remove P/E").',
+      '"Add filter" has `aria-haspopup="dialog"` and `aria-expanded`. A disabled filter is described by its group\'s note.',
+      'A range with a bad end or To below From says so under the field (an alert) and its action is off; a number with too many decimals is refused, never rounded.',
+    ],
+    responsive: ['Chips wrap onto more lines; popovers are clamped to the screen (390px fits); the range editor keeps From and To side by side.'],
+    notes: {
+      title: 'Migrating from the web kit',
+      points: [
+        'Web\'s `screener-me/FilterBar` is app code tied to its screener fields. This `FilterBar` is the generic version: describe `fields` and `groups` and own `values`; web keeps its `logic`, `text` and `link` modules, and maps its filters to `values` (or to a schema for `useUrlFilters`).',
+        'Web\'s `link.ts` stored ranges as `ranges=pe:0-12` as numbers and clamped to a track. The helper writes one parameter per filter (`pe=0..12`, `sector=a,b`, `breakout=1`) as exact decimal strings; old links keep working only if web translates them before calling `searchParamsToFilters`.',
+        'Web\'s popover is a bottom sheet under 768px; here it is a panel under the button (see RangeEditor).',
+        'Web sizes money in Arba as numbers. Here market cap is a decimal in whatever unit you choose (`formatValue` prints it); convert from API strings, not from floats.',
+      ],
+    },
+    related: ['filter-chip', 'filter-menu', 'range-editor', 'preset-tile', 'filter-url', 'stock-table'],
+  },
+  {
+    slug: 'filter-url',
+    title: 'Filter URL state',
+    navTitle: 'Filter URL',
+    description: 'A typed schema for range, multi-select and yes/no filters, and a pure router-agnostic codec to the query string, with exact decimals and a stable order.',
+    lead: 'Filters to a query string and back with any router: typed, exact for decimals, stable in order, and safe on bad input.',
+    group: 'data',
+    kind: 'utility',
+    stability: 'beta',
+    summary:
+      'A schema says which filters a screen has (`range`, `multi`, `boolean`). `filtersToSearchParams` and `searchParamsToFilters` convert between values and a query: `pe=..12`, `sector=banks,hydro`, `breakout=1`. They import no router and read no `window`, so they run on the server, in a worker and in tests. Range ends are exact decimal strings and never pass through `Number`; parameters are written by key in one order, so one state is one link; decoding never throws and the result is normalised, so a round trip changes nothing. `useUrlFilters` wraps them with two functions, `get` and `set`, for any router.',
+    use: ['The address as the single source of truth for a screener: back, forward, reload and share all work.', '`get` and `set` from Next.js, React Router, TanStack Router, a hash router, or `useState` in a test.', '`filtersToLink` for a copy-link button; `normalizeFilters` to compare two states.'],
+    avoid: ['Non-filter state (the open popover, a scroll position): keep it out of the address.', 'Secrets or account data in the query: it is visible, logged and shared.', 'Storing money as `number` in filter values: keep the decimal strings.'],
+    api: [
+      ...ui('filter-url', 'filtersToSearchParams', 'searchParamsToFilters', 'filtersToQueryString', 'filtersToLink', 'normalizeFilters', 'normalizeDecimal', 'activeFilterKeys', 'filtersEqual', 'toSearchParams', 'FilterSchema', 'FilterValues', 'RangeFilterValue', 'SearchParamsInput'),
+      ...ui('use-url-filters', 'useUrlFilters', 'UseUrlFiltersOptions', 'UseUrlFiltersResult'),
+    ],
+    examples: [{ id: 'basic', title: 'Read and write a query', note: 'Edit the query. Unknown keys and unreadable values are skipped; the written form is always the same order.' }],
+    keyboard: ['Not interactive: these are functions and a hook.'],
+    accessibility: ['No UI. The link a screen writes is plain text you can show next to a copy button; announce the copy in a status message.'],
+    responsive: ['Not visual.'],
+    notes: {
+      title: 'Rules',
+      points: [
+        'Range: `key=min..max`, either end empty for no limit, a negative end keeps its minus. An end is a plain decimal: no exponent, no grouping, no `+`, at most `fractionDigits` decimals (default 4). A range with a bad end is skipped whole, never half-applied. Optional `min` and `max` clamp; crossed ends are swapped.',
+        'Multi: `key=a,b`, each value percent-encoded on its own, deduplicated, kept to `options` and written in their order (or sorted when there are none). Boolean: `key=1` when on; off is absent.',
+        'Other query parameters (`sort`, `page`) are kept by `filtersToSearchParams(schema, values, base)` and by `useUrlFilters`. A duplicate key reads as its last value. Devanagari digits and the Unicode minus are read as ASCII.',
+        '`useUrlFilters` writes with `replace: true` by default (a slider drag is not a page); pass `replace: false` to push history entries.',
+      ],
+    },
+    related: ['filter-bar', 'range-editor', 'hooks'],
   },
   // new:component inserts pages above this line
 ];

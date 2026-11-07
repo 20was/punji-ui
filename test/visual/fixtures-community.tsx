@@ -1,4 +1,4 @@
-import { CashFlowChart, CorrelationMatrix, DataFreshness, FairValueBar, FilterBar, FilterMenu, FilterMenuGroup, FilterMenuItem, FxRateDisplay, heatCell, Histogram, money, MonthGrid, NetWorthChart, PerformanceChart, PresetRow, PresetTile, PriceTargetChart, RangeEditor, RangeSelector, ReturnsHeatTable, ScoreRadar, StatusBanner, type FilterBarValues, type MonthGridData, WaterfallChart } from '../../src/index.ts';
+import { BalanceHistoryChart, CashFlowChart, CorrelationMatrix, DataFreshness, EarningsChart, FairValueBar, FilterBar, FilterMenu, FilterMenuGroup, FilterMenuItem, FxRateDisplay, heatCell, Histogram, incomeStatementFlow, money, MonthGrid, NetWorthChart, PerformanceChart, PresetRow, PresetTile, PriceTargetChart, RangeEditor, RangeSelector, ReturnsHeatTable, SankeyChart, ScoreRadar, StatusBanner, type FilterBarValues, type MonthGridData, WaterfallChart } from '../../src/index.ts';
 import { Accordion, AlertListEmpty, AlertRow, AlertRowCompact, AlertRowList, AlertRowSkeleton, AlertSummary, AlertSummaryNote, AlertSummarySection, BarList, Breadcrumb, BrokerBadge, Card, CardSection, CardSectionRow, Figure, HeadlineList, InstrumentHeader, LinkRow, LinkRowList, MenuButton, MoneyDisplay, MonthStrip, PrivateAmount, RatingChangeList, RatingChangeRow, RatingChip, RatingScale, RouteAnnouncer, ScrollTable, SettingList, SettingRow, SkipLink, StatusTag, ThemeProvider, type ColumnDef, type WatchlistQuote, Watchlist } from '@punji/ui';
 import { performanceDates, performanceSeries } from '../../fixtures/market-data.ts';
 import { type ReactNode, useState } from 'react';
@@ -520,6 +520,51 @@ function PriceTargetChartFixture() {
 }
 
 
+const cr = (v: number) => money(BigInt(Math.round(v * 100)) * 10_000_000n, 'NPR');
+
+function SankeyChartFixture() {
+  const profit = incomeStatementFlow({
+    revenue: [{ label: 'Interest income', amount: cr(820) }, { label: 'Fees and commission', amount: cr(140) }, { label: 'Treasury and other', amount: cr(60) }],
+    costOfRevenue: cr(430),
+    operatingExpenses: [{ label: 'Staff', amount: cr(150) }, { label: 'Premises and technology', amount: cr(90) }, { label: 'Provisions', amount: cr(60) }],
+    tax: cr(80),
+  });
+  const loss = incomeStatementFlow({ revenue: [{ label: 'Sales', amount: cr(48) }], costOfRevenue: cr(35), operatingExpenses: [{ label: 'Salaries', amount: cr(14) }, { label: 'Rent', amount: cr(6) }], tax: cr(0) });
+  return (
+    <div style={{ display: 'grid', gap: 24, maxWidth: 720 }}>
+      <SankeyChart label="Income statement" nodes={profit.nodes} links={profit.links} base={profit.base} />
+      <SankeyChart label="Income statement with a net loss" nodes={loss.nodes} links={loss.links} base={loss.base} height={300} />
+    </div>
+  );
+}
+
+function EarningsChartFixture() {
+  const eps = [
+    { key: 'a', label: 'Q1', estimate: '4.10', actual: '4.38' },
+    { key: 'b', label: 'Q2', estimate: '4.35', actual: '4.30' },
+    { key: 'c', label: 'Q3', estimate: '4.60', actual: '4.95' },
+    { key: 'd', label: 'Q4', estimate: '5.20', actual: '4.72' },
+    { key: 'e', label: 'Q1n', estimate: '4.80', actual: '4.80' },
+    { key: 'f', label: 'Q2n', estimate: '5.05' },
+  ];
+  return (
+    <div style={{ display: 'grid', gap: 24, maxWidth: 560 }}>
+      <EarningsChart label="Earnings per share" currency="NPR" periods={eps} />
+      <EarningsChart label="Earnings per share as bars" variant="bars" periods={eps} />
+    </div>
+  );
+}
+
+function BalanceHistoryChartFixture() {
+  const rows = [[620, 540, 130], [700, 610, 120], [760, 700, 165], [690, 820, 210], [610, 960, 260], [540, 1120, 335]] as const;
+  return (
+    <div style={{ maxWidth: 560 }}>
+      <BalanceHistoryChart label="Debt, equity and cash" periods={rows.map(([d, e, c], i) => ({ key: String(i), label: `FY${21 + i}`, debt: cr(d), equity: cr(e), cash: cr(c) }))} />
+    </div>
+  );
+}
+
+
 // new:component inserts fixtures above this line
 
 export const communityRegistry: Record<string, () => ReactNode> = {
@@ -562,5 +607,8 @@ export const communityRegistry: Record<string, () => ReactNode> = {
   'score-radar': ScoreRadarFixture,
   'fair-value-bar': FairValueBarFixture,
   'price-target-chart': PriceTargetChartFixture,
+  'sankey-chart': SankeyChartFixture,
+  'earnings-chart': EarningsChartFixture,
+  'balance-history-chart': BalanceHistoryChartFixture,
   // new:component inserts registry entries above this line
 };

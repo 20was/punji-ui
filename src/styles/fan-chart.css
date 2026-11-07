@@ -1,0 +1,28 @@
+/* Punji UI styles.
+   Styles for FanChart. Needs tokens.css and base.css (styles.css has everything).
+   The frame, grid, axis, tooltip and legend come from financial-charts.css (.kit-ct). Colours from --pu-* tokens only. */
+@layer punji.components {
+  /* Nested bands: the outer pair is lighter, the inner pair darker. The median is the only thick solid line; the outer edges are dashed. */
+  .pu-fan-band.out { fill: color-mix(in srgb, var(--pu-color-chart) 12%, transparent); stroke: none }
+  .pu-fan-band.in { fill: color-mix(in srgb, var(--pu-color-chart) 26%, transparent); stroke: none }
+  .pu-fan-line { stroke-linejoin: round; stroke-linecap: round }
+  .pu-fan-line.median { stroke: var(--pu-color-chart); stroke-width: 2.75 }
+  .pu-fan-line.edge { stroke: var(--pu-color-chart); stroke-width: 1.5; stroke-dasharray: 5 4 }
+  .pu-fan-line.mid { stroke: var(--pu-color-chart); stroke-width: 1; opacity: 0.7 }
+  .pu-fan-goal { stroke: var(--pu-color-text); stroke-width: 1.5; stroke-dasharray: 2 4 }
+  .pu-fan-goal-label { fill: var(--pu-color-text); font: 600 11px / 14px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); paint-order: stroke; stroke: var(--pu-color-surface); stroke-width: 4px }
+  .pu-fan-lead { stroke: var(--pu-color-border-strong); stroke-width: 1 }
+  .pu-fan-tl { fill: var(--pu-color-text); font: 500 11px / 13px var(--pu-font-body) }
+  .pu-fan-tw { fill: var(--pu-color-text-muted); font-weight: 600 }
+  .pu-fan-tn { fill: var(--pu-color-text); font-weight: 600; font-variant-numeric: var(--pu-font-numeric) }
+  .pu-fan-tl.median .pu-fan-tw { fill: var(--pu-color-text) }
+  .pu-fan-cross { stroke: var(--pu-color-text-muted); stroke-width: 1; stroke-dasharray: 2 2; pointer-events: none }
+  .pu-fan-dot { fill: var(--pu-color-surface); stroke: var(--pu-color-chart); stroke-width: 2 }
+  .pu-fan-dot.median { fill: var(--pu-color-chart); stroke: var(--pu-color-text) }
+  .pu-fan-sw { stroke-width: 2 }
+  .pu-fan-sw.median { stroke: var(--pu-color-chart); stroke-width: 2.75 }
+  .pu-fan-sw.goal { stroke: var(--pu-color-text); stroke-dasharray: 2 3 }
+  .pu-fan-legend li svg { flex: none }
+  .pu-fan-legend .pu-fan-band { stroke: var(--pu-color-chart); stroke-width: 1 }
+  .pu-fan-goal-note { margin: 0; font-size: 13px; line-height: 20px; color: var(--pu-color-text-muted) }
+}

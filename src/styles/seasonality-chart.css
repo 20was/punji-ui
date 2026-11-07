@@ -1,0 +1,18 @@
+/* Punji UI styles.
+   Styles for SeasonalityChart. Needs tokens.css and base.css (styles.css has everything).
+   The frame, grid, axis, tooltip and legend come from financial-charts.css (.kit-ct). Colours from --pu-* tokens only. */
+@layer punji.components {
+  /* A bar up from zero is a rise and down is a fall; the hit rate and the "N of M" are printed under each month. */
+  .pu-sea-base { stroke: var(--pu-color-text); stroke-width: 1.5 }
+  .pu-sea-bar.gain { fill: var(--pu-color-gain) }
+  .pu-sea-bar.loss { fill: var(--pu-color-loss) }
+  .pu-sea-bar.flat { fill: var(--pu-color-text-muted) }
+  .pu-sea-whisker, .pu-sea-cap { stroke: var(--pu-color-text-muted); stroke-width: 1.5 }
+  .pu-sea-hi { fill: var(--pu-color-surface-tint) }
+  .pu-sea-none { fill: var(--pu-color-text-muted); font-size: 16px }
+  .kit-ct-axis.pu-sea-month.lit { fill: var(--pu-color-text); font-weight: 700 }
+  .pu-sea-rate { fill: var(--pu-color-text); font: 600 11px / 14px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric) }
+  .pu-sea-of { fill: var(--pu-color-text-muted); font: 500 9px / 12px var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric) }
+  .kit-ct-axis.pu-sea-rowtitle { font-weight: 600 }
+  .pu-sea-legend li svg { flex: none }
+}

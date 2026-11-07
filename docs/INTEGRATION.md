@@ -4,6 +4,8 @@ Date: 2026-10-31. A plan, not an implementation. Nothing in `punji-web` was chan
 built to write it. Items I could not check are marked **unverified**. The inventory behind it is
 [COMPONENT-INVENTORY.md](../COMPONENT-INVENTORY.md).
 
+Status (2026-11-07): this is the original plan; version numbers and the `0.0.0` state below are as of 2026-10-31. `@punji/ui` is now published (0.4.0 is current); pin the exact current version, not `0.1.0`. punji-web still does not consume the package; the current migration plan is [docs/migration](migration/README.md).
+
 Goal: `@punji/ui` (this repository) is the single source of truth for reusable UI. `punji-web` consumes
 a published, exactly pinned version of it and keeps only product-specific code.
 

@@ -1,12 +1,13 @@
 # Status, meter and list components
 
-Ten modules migrated from `punji-web` (`src/components/kit/`), each with its own subpath
+This page covers ten of the status, meter and list modules migrated from `punji-web` (`src/components/kit/`); the full set is
+in the `exports` map and on [design.punji.app](https://design.punji.app). Each has its own subpath
 (`@punji/ui/<name>`), stylesheet (`@punji/ui/css/<name>.css`, included in `styles.css`) and size budget.
 Copy is supplied by the caller; the only built-in text is two overridable English defaults
 (`Dismiss` on StepList, `(opens in a new tab)` on CardLink). Examples use synthetic NEPSE-style data.
 
-Links: every component that takes `href` also takes `linkComponent` (see `src/internal/link.tsx`); absolute
-`http(s)` addresses always render a plain `<a>`. No router is imported.
+Links: every component that takes `href` also takes `linkComponent`, or uses the router link you gave `LinkProvider`
+(`@punji/ui/link`; see `src/internal/link.tsx`); absolute `http(s)` addresses always render a plain `<a>`. No router is imported.
 
 Shared rules: tone never carries meaning alone (a status is words, a sign is in the figure); decorative graphics
 are `aria-hidden`; every focusable element has a `:focus-visible` outline.

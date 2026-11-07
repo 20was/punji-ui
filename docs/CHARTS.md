@@ -1,7 +1,11 @@
 # Financial charts
 
-Three charts and the pure math under them: `CandlestickChart`, `PerformanceChart`, `DepthChart` and `@punji/ui/chart-math`.
-All are SVG drawn by this package (no chart library), display only, deterministic (the same props give the same pixels),
+This page covers the three original charts and the pure math under them: `CandlestickChart`, `PerformanceChart`, `DepthChart` and `@punji/ui/chart-math`.
+The newer charts (waterfall, cash flow, net worth, Sankey, earnings, balance history, score radar, fair value, price target,
+returns heat table, month grid, histogram, correlation matrix) are beta and documented on [design.punji.app](https://design.punji.app);
+they share `ChartA11yShell` (`@punji/ui/chart-a11y`) and take exact `bigint` amounts. Optional canvas adapters for TradingView
+Lightweight Charts and ECharts (`@punji/ui/lightweight-charts`, `@punji/ui/echarts`) are experimental.
+All charts here are SVG drawn by this package (no chart library), display only, deterministic (the same props give the same pixels),
 and take plain numbers. Styles: `@punji/ui/css/financial-charts.css` (in `styles.css`). The examples use synthetic NEPSE-style
 data from `fixtures/market-data.ts`, not market data.
 

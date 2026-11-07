@@ -1,6 +1,7 @@
 import { rsi } from '../../chart-math/indicators.ts';
 import { IndicatorPaneView } from '../IndicatorPaneView.tsx';
 import type { ChartIndicator } from '../indicatorTypes.ts';
+import { candlestickTrading } from '../trading.tsx';
 
 export interface RsiIndicatorOptions {
   /** Sessions in the average. Default 14. */
@@ -24,6 +25,7 @@ export interface RsiIndicatorOptions {
 export function rsiIndicator({ period = 14, overbought = 70, oversold = 30, label, labels }: RsiIndicatorOptions = {}): ChartIndicator {
   const name = label ?? `RSI ${period}`;
   return {
+    engine: candlestickTrading,
     id: `rsi-${period}`,
     label: name,
     placement: 'pane',

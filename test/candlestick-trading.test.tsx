@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 
-import { bollingerIndicator, CandlestickChart, heikinAshi, macdIndicator, rsiIndicator, vwapIndicator, type Candle, type CandlestickMode } from '../src/index.ts';
+import { baselineLayer, bollingerIndicator, CandlestickChart, candlestickTrading, eventsLayer, heikinAshi, heikinAshiTransform, levelsLayer, macdIndicator, priceScales, rsiIndicator, vwapIndicator, type Candle, type CandlestickMode } from '../src/index.ts';
 import { nabilCandles, sampleCandles } from '../fixtures/market-data.ts';
 import { seriousViolations } from './axe.ts';
 
@@ -45,9 +45,9 @@ describe('CandlestickChart on ChartA11yShell', () => {
 describe('price modes', () => {
   const modes: CandlestickMode[] = ['candles', 'hollow', 'bars', 'heikin-ashi', 'line', 'area', 'baseline', 'high-low'];
   it.each(modes)('%s draws one mark per session, is operable and passes axe', async (mode) => {
-    const { container } = render(<CandlestickChart candles={few} label="X" mode={mode} />);
+    const { container } = render(<CandlestickChart candles={few} label="X" mode={mode} transform={heikinAshiTransform} />);
     expect(container.querySelectorAll('.kit-ct-c')).toHaveLength(4);
-    const drawn = { line: [1, 0], area: [1, 1], baseline: [1, 2] }[mode as 'line'] ?? [0, 0];
+    const drawn = { line: [1, 0], area: [1, 1], baseline: [1, 0] }[mode as 'line'] ?? [0, 0];
     expect([container.querySelectorAll('.pu-ct-price').length, container.querySelectorAll('.pu-ct-fill').length]).toEqual([drawn[0] === 1 ? 1 : 0, drawn[1]]);
     expect(await seriousViolations(container)).toEqual([]);
   });
@@ -74,7 +74,7 @@ describe('price modes', () => {
   it('speaks direction in words in every mode, never colour alone', async () => {
     const user = userEvent.setup();
     for (const mode of modes) {
-      const { container, unmount } = render(<CandlestickChart candles={few} label="X" mode={mode} />);
+      const { container, unmount } = render(<CandlestickChart candles={few} label="X" mode={mode} transform={heikinAshiTransform} />);
       await user.tab();
       await user.keyboard('{Home}{ArrowRight}');
       expect(live(container)).toMatch(/: (up|down|unchanged)/);
@@ -86,7 +86,7 @@ describe('price modes', () => {
   });
   it('Heikin Ashi: plots the smoothed candles and prints exact decimals in the table and live region', async () => {
     const ha = heikinAshi(few);
-    const { container } = render(<CandlestickChart candles={few} label="X" mode="heikin-ashi" formatPrice={(v) => v.toFixed(2)} />);
+    const { container } = render(<CandlestickChart candles={few} label="X" mode="heikin-ashi" transform={heikinAshiTransform} formatPrice={(v) => v.toFixed(2)} />);
     const table = tableOf(container);
     expect(heads(table)).toEqual(expect.arrayContaining(['Heikin Ashi open', 'Heikin Ashi high', 'Heikin Ashi low', 'Heikin Ashi close']));
     const rows = table.querySelectorAll('tbody tr');
@@ -102,13 +102,13 @@ describe('price modes', () => {
   });
   it('Heikin Ashi keeps decimals of a finely quoted price instead of rounding to the currency', () => {
     const fine: Candle[] = [{ date: '2025-11-10', open: 10.125, high: 10.5, low: 10, close: 10.25 }, { date: '2025-11-11', open: 10.25, high: 10.75, low: 10.2, close: 10.5 }];
-    const { container } = render(<CandlestickChart candles={fine} label="X" mode="heikin-ashi" />);
+    const { container } = render(<CandlestickChart candles={fine} label="X" mode="heikin-ashi" transform={heikinAshiTransform} />);
     const row = cells(tableOf(container).querySelectorAll('tbody tr')[0]!);
     // (10.125 + 10.5 + 10 + 10.25) / 4 = 10.21875: three source decimals, five printed, none rounded away
     expect(row.at(10)).toBe('10.21875');
   });
-  it('baseline mode names the dividing price', () => {
-    const { container } = render(<CandlestickChart candles={few} label="X" mode="baseline" baseline={102} formatPrice={(v) => `P${v}`} />);
+  it('baseline mode with its layer fills both sides of the dividing price and names it', () => {
+    const { container } = render(<CandlestickChart candles={few} label="X" mode="baseline" layers={[baselineLayer({ price: 102 })]} formatPrice={(v) => `P${v}`} />);
     expect(container.querySelector('.pu-ct-baseline-label')!.textContent).toBe('P102');
   });
   it('line, area and baseline modes with one session draw a dot', () => {
@@ -123,35 +123,35 @@ describe('price modes', () => {
 
 describe('scales', () => {
   it('percent: ticks are percent from the first close, with signs', () => {
-    const { container } = render(<CandlestickChart candles={few} label="X" scale="percent" />);
+    const { container } = render(<CandlestickChart candles={few} label="X" scales={priceScales} scale="percent" />);
     expect(axisTextOf(container).some((t) => /^[+-]?\d/.test(t) && t.endsWith('%'))).toBe(true);
     expect(heads(tableOf(container)).some((h) => h.includes('percent change'))).toBe(true);
     const last = cells(tableOf(container).querySelectorAll('tbody tr')[3]!);
     expect(last.at(6)).toBe('-0.97%');
   });
   it('indexed: the first close is 100', () => {
-    const { container } = render(<CandlestickChart candles={few} label="X" scale="indexed" />);
+    const { container } = render(<CandlestickChart candles={few} label="X" scales={priceScales} scale="indexed" />);
     const rows = tableOf(container).querySelectorAll('tbody tr');
     expect(cells(rows[0]!).at(6)).toBe('100.00');
     expect(cells(rows[3]!).at(6)).toBe('99.03');
   });
   it('log: decade ticks, and the table is unchanged', () => {
     const wide: Candle[] = [{ date: '2025-11-10', open: 10, high: 12, low: 9, close: 11 }, { date: '2025-11-11', open: 11, high: 900, low: 11, close: 800 }];
-    const { container } = render(<CandlestickChart candles={wide} label="X" scale="log" formatPrice={(v) => String(v)} />);
+    const { container } = render(<CandlestickChart candles={wide} label="X" scales={priceScales} scale="log" formatPrice={(v) => String(v)} />);
     const ticks = axisTextOf(container);
     expect(ticks).toEqual(expect.arrayContaining(['10', '100', '1000']));
     expect(heads(tableOf(container))).toEqual(['Date', 'Open', 'High', 'Low', 'Close', 'Volume']);
   });
   it('falls back to linear and says so when the prices cannot be logged', () => {
     const zero: Candle[] = [{ date: '2025-11-10', open: 0, high: 2, low: 0, close: 1 }, { date: '2025-11-11', open: 1, high: 3, low: 1, close: 2 }];
-    const { container } = render(<CandlestickChart candles={zero} label="X" scale="log" />);
+    const { container } = render(<CandlestickChart candles={zero} label="X" scales={priceScales} scale="log" />);
     expect(container.querySelector('[role="note"]')!.textContent).toContain('linear');
-    const pct = render(<CandlestickChart candles={[{ date: '2025-11-10', open: 0, high: 1, low: 0, close: 0 }]} label="Y" scale="percent" />);
+    const pct = render(<CandlestickChart candles={[{ date: '2025-11-10', open: 0, high: 1, low: 0, close: 0 }]} label="Y" scales={priceScales} scale="percent" />);
     expect(pct.container.querySelector('[role="note"]')).not.toBeNull();
   });
   it('compare: a legend, lines level at the first date, and table and live columns', async () => {
     const compare = [{ label: 'NEPSE', points: few.map((c, i) => ({ date: c.date, close: 2000 + i * 20 })) }];
-    const { container } = render(<CandlestickChart candles={few} label="NABIL" compare={compare} />);
+    const { container } = render(<CandlestickChart candles={few} label="NABIL" scales={priceScales} compare={compare} />);
     const legend = container.querySelector('.kit-ct-legend')!;
     expect(norm(legend.textContent)).toContain('NABIL');
     expect(norm(legend.textContent)).toContain('NEPSE');
@@ -166,7 +166,7 @@ describe('scales', () => {
   });
   it('compare indexed starts a later series level with the price on its first date', () => {
     const later = [{ label: 'Peer', points: [{ date: '2025-11-12', close: 50 }, { date: '2025-11-13', close: 55 }] }];
-    const { container } = render(<CandlestickChart candles={few} label="X" scale="indexed" compare={later} />);
+    const { container } = render(<CandlestickChart candles={few} label="X" scales={priceScales} scale="indexed" compare={later} />);
     const rows = tableOf(container).querySelectorAll('tbody tr');
     expect(cells(rows[0]!).at(7)).toBe('none');
     // main at 12 Nov: 101 / 103 x 100 = 98.06; Peer continues from there: 98.06 x (55/50) = 107.86
@@ -183,7 +183,7 @@ describe('events and levels', () => {
     { date: '2024-01-01', kind: 'custom' as const, label: 'Too early' },
   ];
   it('draws a marker per event with a shape per kind, and lists every event in a table', () => {
-    const { container } = render(<CandlestickChart candles={few} label="X" events={events} />);
+    const { container } = render(<CandlestickChart candles={few} label="X" layers={[eventsLayer(events)]} />);
     expect(container.querySelectorAll('.pu-ct-ev')).toHaveLength(3);
     expect(container.querySelector('.pu-ct-ev.dividend circle')).not.toBeNull();
     expect(container.querySelector('.pu-ct-ev.split polygon')).not.toBeNull();
@@ -195,7 +195,7 @@ describe('events and levels', () => {
   });
   it('Shift and the arrow keys jump between events; the live region speaks the event', async () => {
     const user = userEvent.setup();
-    const { container } = render(<CandlestickChart candles={few} label="X" events={events} />);
+    const { container } = render(<CandlestickChart candles={few} label="X" layers={[eventsLayer(events)]} />);
     await user.tab();
     await user.keyboard('{Home}');
     await user.keyboard('{Shift>}{ArrowRight}{/Shift}');
@@ -210,14 +210,14 @@ describe('events and levels', () => {
     expect(container.querySelector('.kit-sr')!.textContent).toContain('jump between events');
   });
   it('an event on a non-session date sits on the last session before it', () => {
-    const { container } = render(<CandlestickChart candles={few} label="X" events={[{ date: '2025-11-14', kind: 'custom', label: 'Holiday' }]} />);
+    const { container } = render(<CandlestickChart candles={few} label="X" layers={[eventsLayer([{ date: '2025-11-14', kind: 'custom', label: 'Holiday' }])]} />);
     expect(container.querySelectorAll('.pu-ct-ev')).toHaveLength(0);
-    const weekend = render(<CandlestickChart candles={[...few.slice(0, 2), ...few.slice(3)]} label="X" events={[{ date: '2025-11-12', kind: 'custom', label: 'Between' }]} />);
+    const weekend = render(<CandlestickChart candles={[...few.slice(0, 2), ...few.slice(3)]} label="X" layers={[eventsLayer([{ date: '2025-11-12', kind: 'custom', label: 'Between' }])]} />);
     expect(weekend.container.querySelectorAll('.pu-ct-ev')).toHaveLength(1);
   });
   it('reference levels get labels that never overlap, and a level out of range is only listed', () => {
     const levels = [{ price: 102, label: 'Support', kind: 'support' as const }, { price: 102.2, label: 'Cost', kind: 'cost-basis' as const }, { price: 102.4, label: 'Resistance', kind: 'resistance' as const }, { price: 9999, label: 'Far', kind: 'custom' as const }];
-    const { container } = render(<CandlestickChart candles={few} label="X" levels={levels} />);
+    const { container } = render(<CandlestickChart candles={few} label="X" layers={[levelsLayer(levels)]} />);
     const texts = [...container.querySelectorAll('.pu-ct-level text')];
     expect(texts).toHaveLength(3);
     const ys = texts.map((t) => Number(t.getAttribute('y'))).toSorted((a, b) => a - b);
@@ -273,11 +273,28 @@ describe('indicators', () => {
   });
   it('is accessible with every option on', async () => {
     const { container } = render(
-      <CandlestickChart candles={data} label="X" mode="heikin-ashi" scale="percent" indicators={[rsiIndicator(), macdIndicator(), bollingerIndicator(), vwapIndicator()]}
-        events={[{ date: data[10]!.date, kind: 'dividend', label: 'D' }]} levels={[{ price: 487.5, label: 'Cost', kind: 'cost-basis' }]} compare={[{ label: 'NEPSE', points: data.map((c) => ({ date: c.date, close: c.close * 4 })) }]} />,
+      <CandlestickChart candles={data} label="X" mode="heikin-ashi" transform={heikinAshiTransform} scales={priceScales} scale="percent" indicators={[rsiIndicator(), macdIndicator(), bollingerIndicator(), vwapIndicator()]}
+        layers={[eventsLayer([{ date: data[10]!.date, kind: 'dividend', label: 'D' }]), levelsLayer([{ price: 487.5, label: 'Cost', kind: 'cost-basis' }])]} compare={[{ label: 'NEPSE', points: data.map((c) => ({ date: c.date, close: c.close * 4 })) }]} />,
     );
     expect(await seriousViolations(container)).toEqual([]);
     expect(container.querySelectorAll('[tabindex="0"]')).toHaveLength(1);
+  });
+});
+
+describe('opt-in extensions', () => {
+  it('a plain chart ignores scale, compare and heikin-ashi without their modules and stays a linear candle chart', () => {
+    const { container } = render(<CandlestickChart candles={few} label="X" mode="heikin-ashi" scale="percent" compare={[{ label: 'P', points: [] }]} />);
+    expect(container.querySelectorAll('.kit-ct-c rect:not(.kit-ct-vol)')).toHaveLength(4);
+    expect(container.querySelector('.kit-ct-legend')).toBeNull();
+    expect(heads(tableOf(container)).some((h) => h.includes('Heikin') || h.includes('percent'))).toBe(false);
+  });
+  it('a layer from another source plugs in the same way', async () => {
+    const mine = { id: 'mine', engine: candlestickTrading, build: () => ({ speak: () => ['custom words'], notes: <p>a note</p>, hint: 'custom hint' }) };
+    const { container } = render(<CandlestickChart candles={few} label="X" layers={[mine]} />);
+    await userEvent.setup().tab();
+    expect(live(container)).toContain('custom words');
+    expect(container.textContent).toContain('a note');
+    expect(container.textContent).toContain('custom hint');
   });
 });
 

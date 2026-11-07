@@ -1,6 +1,7 @@
 import { bollinger } from '../../chart-math/indicators.ts';
 import { IndicatorPaneView } from '../IndicatorPaneView.tsx';
 import type { ChartIndicator } from '../indicatorTypes.ts';
+import { candlestickTrading } from '../trading.tsx';
 
 export interface BollingerIndicatorOptions {
   period?: number;
@@ -24,6 +25,7 @@ export function bollingerIndicator({ period = 20, mult = 2, placement = 'price',
   const name = label ?? `Bollinger ${period}, ${mult}`;
   const L = { upper: labels?.upper ?? 'Upper band', middle: labels?.middle ?? 'Middle band', lower: labels?.lower ?? 'Lower band' };
   return {
+    engine: candlestickTrading,
     id: `bollinger-${period}-${mult}`,
     label: name,
     placement,

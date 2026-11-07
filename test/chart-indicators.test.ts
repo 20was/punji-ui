@@ -26,6 +26,51 @@ describe('rsi', () => {
   });
 });
 
+/** A plain Wilder RSI written for the test, not sharing a line with the production code: diffs first, then the recursive moving average avg += (x - avg) / n. */
+function referenceRsi(closes: number[], n: number): (number | null)[] {
+  const gains: number[] = [];
+  const losses: number[] = [];
+  for (let i = 1; i < closes.length; i += 1) {
+    const d = closes[i]! - closes[i - 1]!;
+    gains.push(d > 0 ? d : 0);
+    losses.push(d < 0 ? -d : 0);
+  }
+  const out: (number | null)[] = closes.map(() => null);
+  let g = gains.slice(0, n).reduce((a, b) => a + b, 0) / n;
+  let l = losses.slice(0, n).reduce((a, b) => a + b, 0) / n;
+  out[n] = l === 0 ? 100 : 100 - 100 / (1 + g / l);
+  for (let i = n; i < gains.length; i += 1) {
+    g += (gains[i]! - g) / n;
+    l += (losses[i]! - l) / n;
+    out[i + 1] = l === 0 ? 100 : 100 - 100 / (1 + g / l);
+  }
+  return out;
+}
+
+const walk = (length: number, seed: number) => {
+  let s = seed;
+  const rand = () => {
+    s = (s * 1664525 + 1013904223) % 4294967296;
+    return s / 4294967296;
+  };
+  let p = 100;
+  return Array.from({ length }, () => {
+    p = Math.max(1, p * (1 + (rand() - 0.5) * 0.06));
+    return Math.round(p * 100) / 100;
+  });
+};
+describe('rsi against an independent Wilder implementation', () => {
+  it.each([[14, 1], [14, 2], [5, 3], [21, 4]])('period %i, series %i: 3,000 random-walk closes agree to 1e-9', (period, seed) => {
+    const closes = walk(3000, seed);
+    const want = referenceRsi(closes, period);
+    const got = rsi(closes, period);
+    expect(got.slice(0, period).every((v) => v === null)).toBe(true);
+    const worst = Math.max(...got.map((v, i) => (v === null ? 0 : Math.abs(v - (want[i] as number)))));
+    expect(got.filter((v) => v !== null)).toHaveLength(3000 - period);
+    expect(worst).toBeLessThan(1e-9);
+  });
+});
+
 describe('macd', () => {
   it('a straight line settles at exactly (slow - fast) / 2 times the slope, and the histogram at zero', () => {
     const line = Array.from({ length: 80 }, (_, i) => 100 + 3 * i);

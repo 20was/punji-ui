@@ -35,11 +35,11 @@ Use it for OHLC per session with volume. Do not use it for a single line of clos
 | `candles` | `{ date: 'YYYY-MM-DD', open, high, low, close, volume? }`, oldest first |
 | `variant` | `'candles'` (default) or `'bars'` (OHLC ticks); the older spelling of `mode="bars"` |
 | `mode` | beta: `'candles'` (default), `'hollow'`, `'bars'`, `'heikin-ashi'`, `'line'`, `'area'`, `'baseline'`, `'high-low'` |
-| `scale` | beta: `'linear'` (default), `'log'`, `'percent'` (change from the first close), `'indexed'` (first close is 100) |
-| `compare` | beta: `{ label, points: { date, close }[] }[]` drawn as lines over the price, level with it on their first date; moves a linear or log axis to percent |
-| `baseline` | beta: the price a `baseline` chart divides gain from loss at (default the first close) |
-| `events` | beta: `{ date, kind: 'dividend' \| 'split' \| 'earnings' \| 'custom', label, detail? }[]` on the time axis; Shift plus Left or Right jumps between them |
-| `levels` | beta: `{ price, label, kind?: 'support' \| 'resistance' \| 'cost-basis' \| 'custom' }[]` as dashed lines with labels kept clear of each other |
+| `scale` | beta: `'linear'` (default), `'log'`, `'percent'` (change from the first close), `'indexed'` (first close is 100); needs `scales={priceScales}` |
+| `scales` | beta: `priceScales` from `@punji/ui/price-scales`, the log, percent and indexed maths and compare lines; without it `scale` and `compare` are ignored |
+| `compare` | beta: `{ label, points: { date, close }[] }[]` drawn as lines over the price, level with it on their first date; moves a linear or log axis to percent (needs `scales`) |
+| `transform` | beta: `heikinAshiTransform` from `@punji/ui/heikin-ashi`, used by `mode="heikin-ashi"` (without it that mode draws plain candles) |
+| `layers` | beta: `eventsLayer(events)` (`@punji/ui/candlestick-events`: `{ date, kind: 'dividend' \| 'split' \| 'earnings' \| 'custom', label, detail? }[]` on the time axis, Shift plus Left or Right jumps between them), `levelsLayer(levels)` (`@punji/ui/candlestick-levels`: `{ price, label, kind?: 'support' \| 'resistance' \| 'cost-basis' \| 'custom' }[]` as dashed lines with labels kept clear of each other) and `baselineLayer({ price? })` (`@punji/ui/candlestick-baseline`, the fill of `mode="baseline"`) |
 | `indicators` | beta: descriptors from `rsiIndicator`, `macdIndicator`, `bollingerIndicator`, `vwapIndicator` (each its own module) |
 | `volume` | volume pane; default on when any candle has a volume |
 | `axis` | `'category'` (default, one slot per session) or `'time'` (spaced by date, gaps stay visible) |
@@ -62,7 +62,7 @@ and a hidden table.
 
 ### Price modes, scales, events, levels and indicators (beta)
 
-All off by default; a chart without them draws and reads as before.
+All off by default; a chart without them draws and reads as before. Each feature is its own module and subpath, so a plain chart does not ship it: the props above that need a module (`transform`, `scales`, `layers`, `indicators`) carry the shared engine (`@punji/ui/candlestick-trading`, about 3 kB gzipped) in with it, and a prop whose module is not imported is ignored. Write your own layer by returning `{ id, engine: candlestickTrading, build(ctx) }`.
 
 - **Modes.** Heikin Ashi is `heikinAshi(candles)` in chart-math, from TradingView's help: HA close = (O+H+L+C)/4, HA open =
   (previous HA open + previous HA close)/2, HA high = max(H, HA open, HA close), HA low = min(L, HA open, HA close); the first

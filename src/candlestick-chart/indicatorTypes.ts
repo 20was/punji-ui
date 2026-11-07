@@ -5,6 +5,8 @@
  */
 import type { ReactNode } from 'react';
 
+import type { TradingEngine } from './extensionTypes.ts';
+
 /** One session an indicator is computed from. */
 export interface IndicatorInput {
   /** The session's date as "YYYY-MM-DD". */
@@ -75,6 +77,8 @@ export interface IndicatorViewProps {
 }
 
 export interface ChartIndicator {
+  /** Carried so the chart can find the engine: set by the module that built it, not by you. */
+  engine?: TradingEngine;
   /** Stable id ("rsi-14"). Unique within a chart. */
   id: string;
   /** The pane's title and the legend name ("RSI 14"). */

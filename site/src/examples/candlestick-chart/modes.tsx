@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { CandlestickChart, type CandlestickMode } from '@punji/ui/candlestick-chart';
 import { Card } from '@punji/ui/card';
+import { baselineLayer } from '@punji/ui/candlestick-baseline';
+import { heikinAshiTransform } from '@punji/ui/heikin-ashi';
 import { nabilCandles } from '../../sample.ts';
 
-// `mode` picks how the same sessions are drawn. Heikin Ashi smooths the candles (TradingView's construction rules,
+// `mode` picks how the same sessions are drawn. Heikin Ashi (import `heikinAshiTransform` from `@punji/ui/heikin-ashi`, so a plain chart does not ship it) smooths the candles (TradingView's construction rules,
 // `heikinAshi()` in chart-math) and the table and readout print its exact values next to the real close; hollow
 // follows TradingView too: the body is hollow when the close is above the open, the colour follows the previous close.
+// Baseline adds its fill from `baselineLayer()` (`@punji/ui/candlestick-baseline`).
 // Every mode says up, down or unchanged in words, in the readout, the live region and the table.
 const MODES: readonly { id: CandlestickMode; name: string }[] = [
   { id: 'candles', name: 'Candles' },
@@ -30,7 +33,7 @@ export default function Example() {
           </button>
         ))}
       </div>
-      <CandlestickChart label={`NABIL, ${MODES.find((m) => m.id === mode)!.name}`} candles={recent} mode={mode} height={240} />
+      <CandlestickChart label={`NABIL, ${MODES.find((m) => m.id === mode)!.name}`} candles={recent} mode={mode} transform={heikinAshiTransform} layers={[baselineLayer()]} height={240} />
     </Card>
   );
 }

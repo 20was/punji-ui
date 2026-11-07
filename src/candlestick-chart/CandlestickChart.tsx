@@ -40,13 +40,16 @@
  * spell it out, and a hollow or filled body, the marker shapes and the line
  * dashes carry it in the drawing. A visually hidden table lists every candle.
  */
-import { memo, useId, useMemo, type CSSProperties, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react';
+import { memo, useMemo, type CSSProperties, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react';
 
 import { ChartA11yShell } from '../chart-a11y/ChartA11yShell.tsx';
-import { bandScale, decimalsOf, ema, exactText, heikinAshi, logTicks, niceTicks, priceTransform, rebase, rebaseOnto, reduceCandles, spreadLabels, timeScale, validateOhlc, type OhlcIssue, type PriceScaleMode } from '../chart-math/chartMath.ts';
+import { bandScale, ema, niceTicks, reduceCandles, timeScale, validateOhlc, type OhlcIssue } from '../chart-math/chartMath.ts';
 import { ChartTooltip, clamp, isNum, nprPrice, quantity, shortDate, thinned, useMeasuredWidth } from '../internal/chartFrame.tsx';
-import type { ChartIndicator, IndicatorInput, IndicatorResult } from './indicatorTypes.ts';
+import type { CandlestickLayer, CandlestickScale, CandlestickTransform, CompareSeries, LegendEntry, PriceScalesEngine } from './extensionTypes.ts';
+import type { ChartIndicator } from './indicatorTypes.ts';
+import { SERIES_TONES } from './seriesTones.ts';
 
+export type { CandlestickLayer, CandlestickScale, TradingEngine, TradingModel, TradingPlaced, CandlestickTransform, CompareLine, CompareSeries, LayerContext, LayerModel, PriceScalesEngine } from './extensionTypes.ts';
 export type { ChartIndicator, IndicatorInput, IndicatorLine, IndicatorResult, IndicatorViewProps } from './indicatorTypes.ts';
 
 export interface Candle {
@@ -75,43 +78,6 @@ export interface MovingAverage {
 
 /** How the price is drawn. */
 export type CandlestickMode = 'candles' | 'hollow' | 'bars' | 'heikin-ashi' | 'line' | 'area' | 'baseline' | 'high-low';
-
-/** How the price axis is laid out: the price, its logarithm, percent change from the first close, or indexed to 100 at the first close. */
-export type CandlestickScale = PriceScaleMode;
-
-/** Another instrument drawn over the price, for comparison. */
-export interface CompareSeries {
-  /** Its name in the legend, the readout and the table. */
-  label: string;
-  /** Closes by date ("YYYY-MM-DD"). A date the chart has no session for is ignored; a session it has no close for is a gap in the line. */
-  points: readonly { date: string; close: number | null }[];
-}
-
-export type PriceEventKind = 'dividend' | 'split' | 'earnings' | 'custom';
-
-/** Something that happened on a date: drawn on the time axis, listed in the table, reachable with Shift plus the arrow keys. */
-export interface PriceEvent {
-  /** "YYYY-MM-DD". Placed on the session of that date, or the last session before it; outside the sessions shown it is listed in the table only. */
-  date: string;
-  /** Sets the marker's shape and letter: a circle for a dividend, a diamond for a split, a square for earnings, a triangle for your own. */
-  kind: PriceEventKind;
-  /** Short name ("Bonus 10%", "Q2 results"). */
-  label: string;
-  /** More words for the readout and the table ("Book closure 14 Nov"). */
-  detail?: string;
-}
-
-export type PriceLevelKind = 'support' | 'resistance' | 'cost-basis' | 'custom';
-
-/** A horizontal reference line at a price. */
-export interface PriceLevel {
-  /** The price the line sits at, in the same units as the candles. */
-  price: number;
-  /** Printed on the line ("Support", "Your cost"). The price is added. */
-  label: string;
-  /** Sets the dash and the word in the table. Default 'custom'. */
-  kind?: PriceLevelKind;
-}
 
 export interface CandlestickChartLabels {
   /** Printed when there is nothing to draw. Default "No data". */
@@ -152,29 +118,8 @@ export interface CandlestickChartLabels {
   scaleFallback?: string;
   /** Under the chart when `compare` moved the axis to percent. Default "Comparing: the axis shows percent change from the first close." */
   compareNote?: string;
-  /** Names of the event kinds, for the table and the readout. */
-  eventKinds?: Partial<Record<PriceEventKind, string>>;
-  /** Names of the level kinds, for the table. */
-  levelKinds?: Partial<Record<PriceLevelKind, string>>;
-  /** Table heads of the events and levels tables. */
-  event?: string;
-  detail?: string;
-  kind?: string;
-  level?: string;
-  price?: string;
-  /** Default "From last close" (percent). */
-  fromClose?: string;
-  /** Captions of the two extra tables. Default "Events" and "Levels". */
-  eventsCaption?: string;
-  levelsCaption?: string;
-  /** Said once under the chart. Default "N events outside the sessions shown are listed in the table." */
-  eventsOutside?: (count: number) => string;
-  /** Said once under the chart. Default "N levels outside the price range shown are listed in the table." */
-  levelsOutside?: (count: number) => string;
   /** Spoken name of the real close next to a Heikin Ashi candle. Default "Actual close". */
   actualClose?: string;
-  /** The jump-to-event keys, added to the hint. Default "Shift and the arrow keys jump between events." */
-  eventsHint?: string;
 }
 
 export interface CandlestickChartProps {
@@ -182,20 +127,20 @@ export interface CandlestickChartProps {
   candles: readonly Candle[];
   /** Names the chart and its data table. */
   label: string;
-  /** How the price is drawn. Default 'candles' (or 'bars' with the older `variant="bars"`). 'heikin-ashi' smooths the candles (the table and the readout carry the exact Heikin Ashi values); 'line', 'area' and 'baseline' draw the close; 'high-low' draws each session's range. */
+  /** How the price is drawn. Default 'candles' (or 'bars' with the older `variant="bars"`). 'heikin-ashi' needs `transform={heikinAshiTransform}` (from `@punji/ui/heikin-ashi`) and smooths the candles, the table and the readout carry the exact Heikin Ashi values; 'line', 'area' and 'baseline' draw the close ('baseline' adds its gain and loss fill with `layers={[baselineLayer()]}` from `@punji/ui/candlestick-baseline`); 'high-low' draws each session's range. */
   mode?: CandlestickMode;
   /** The older way to pick OHLC bars: `variant="bars"` is `mode="bars"`. `mode` wins when both are given. */
   variant?: 'candles' | 'bars';
-  /** The price axis: 'linear' (default), 'log', 'percent' (change from the first close) or 'indexed' (first close is 100). With `compare`, a linear or log scale becomes percent. */
+  /** The price axis: 'linear' (default), 'log', 'percent' (change from the first close) or 'indexed' (first close is 100). Needs `scales={priceScales}`. With `compare`, a linear or log scale becomes percent. */
   scale?: CandlestickScale;
+  /** The engine behind `scale` and `compare`: pass `priceScales` from `@punji/ui/price-scales`. Without it the axis is linear and `scale` and `compare` are ignored, so a plain chart does not ship the log, percent and indexed maths. */
+  scales?: PriceScalesEngine;
+  /** Replaces the candles drawn by `mode="heikin-ashi"`: pass `heikinAshiTransform` from `@punji/ui/heikin-ashi`. Without it that mode draws plain candles. */
+  transform?: CandlestickTransform;
+  /** Extra layers: `eventsLayer(events)` from `@punji/ui/candlestick-events` (dividends, splits, earnings, your own marks; Shift and the arrow keys jump between them) and `levelsLayer(levels)` from `@punji/ui/candlestick-levels` (support, resistance, cost basis). Each is its own module, so only the ones you import ship. */
+  layers?: readonly CandlestickLayer[];
   /** Other instruments drawn as lines over the price, started level with the price on their first date. Needs a first close above zero. */
   compare?: readonly CompareSeries[];
-  /** The price a `baseline` chart divides gain from loss at, in price units. Default the first close. */
-  baseline?: number;
-  /** Dividends, splits, earnings and your own marks on the time axis. Shift and Left or Right jump between them. */
-  events?: readonly PriceEvent[];
-  /** Support, resistance and cost-basis lines. Labels are kept clear of each other; a level outside the price range shown is listed in the table instead. */
-  levels?: readonly PriceLevel[];
   /** Indicators: panes below the price or lines over it. Build them with `rsiIndicator`, `macdIndicator`, `bollingerIndicator`, `vwapIndicator` (each its own module, so only the ones you import ship). */
   indicators?: readonly ChartIndicator[];
   /** Price pane height in CSS px, clamped to 140..640. Default 280. */
@@ -224,16 +169,10 @@ export interface CandlestickChartProps {
   testId?: string;
 }
 
-const SERIES_TONES = ['var(--pu-color-series-nepse)', 'var(--pu-color-series-3)', 'var(--pu-color-series-4)', 'var(--pu-color-series-5)', 'var(--pu-color-series-6)', 'var(--pu-color-series-7)'];
-const COMPARE_DASH = ['', '6 3', '2 3', '8 3 2 3'];
-const LEVEL_DASH: Record<PriceLevelKind, string> = { support: '6 3', resistance: '2 3', 'cost-basis': '8 3 2 3', custom: '4 4' };
 /** Least room per candle; beyond it candles are aggregated. */
 const MIN_PX = 3;
 const AXIS_H = 22;
 const MAX_BODY = 24;
-const PANE_H = 76;
-const PANE_GAP = 14;
-const EVENT_H = 20;
 
 interface Item {
   candle: Candle;
@@ -256,11 +195,6 @@ const DEFAULT_ISSUES: Record<OhlcIssue, string> = {
   'low-above-body': 'low is above open or close',
   'negative-volume': 'volume is negative',
 };
-
-const DEFAULT_MODES: Record<CandlestickMode, string> = { candles: 'candles', hollow: 'hollow candles', bars: 'OHLC bars', 'heikin-ashi': 'Heikin Ashi', line: 'line', area: 'area', baseline: 'baseline', 'high-low': 'high-low' };
-const DEFAULT_SCALES: Record<CandlestickScale, string> = { linear: 'linear', log: 'logarithmic', percent: 'percent change from the first close', indexed: 'indexed to 100 at the first close' };
-const DEFAULT_EVENT_KINDS: Record<PriceEventKind, string> = { dividend: 'Dividend', split: 'Split', earnings: 'Earnings', custom: 'Event' };
-const DEFAULT_LEVEL_KINDS: Record<PriceLevelKind, string> = { support: 'Support', resistance: 'Resistance', 'cost-basis': 'Cost basis', custom: 'Level' };
 
 /*
  * Live data replaces one candle at a time (the forming session), so the checks
@@ -293,10 +227,12 @@ function smaAt(values: readonly number[], w: number, i: number): number | null {
   return sum / w;
 }
 
-/** A percent change in the scale's units: itself for percent, plus 100 for indexed. */
-const inScale = (scale: CandlestickScale, pct: number | null) => (pct === null ? null : scale === 'indexed' ? 100 + pct : pct);
-
-const signed = (v: number) => `${v > 0 ? '+' : ''}${exactText(v, 2, 2)}%`;
+/** Round linear ticks: the axis when no scales engine is given. */
+const identity = (v: number) => v;
+const linearTicks = (lo: number, hi: number, count: number, formatPrice: (price: number) => string) => {
+  const t = niceTicks(lo, hi, count);
+  return { tickT: t.ticks, loT: t.lo, hiT: t.hi, text: t.ticks.map(formatPrice) };
+};
 
 /**
  * @stability beta
@@ -325,12 +261,8 @@ export function CandlestickChart(props: CandlestickChartProps) {
 
 type Checked = { c: Candle; i: number; issues: OhlcIssue[]; time: number; entry: object };
 
-interface LegendEntry { label: string; tone: string; dash: string }
-interface PaneView { ind: ChartIndicator; result: IndicatorResult; tones: string[]; top: number }
-
-function Plot({ candles, label, mode: modeProp, variant = 'candles', scale: scaleProp = 'linear', compare = [], baseline, events = [], levels = [], indicators = [], height = 280, volume, axis = 'category', hollowUp = false, convention, averages = [], formatPrice = nprPrice, formatVolume = quantity, formatDate = shortDate, labels, testId, checked, valid, tableLimit = 500 }: CandlestickChartProps & { checked: Checked[]; valid: Checked[] }) {
+function Plot({ candles, label, mode: modeProp, variant = 'candles', scale: scaleProp = 'linear', compare = [], scales, transform, layers = [], indicators = [], height = 280, volume, axis = 'category', hollowUp = false, convention, averages = [], formatPrice = nprPrice, formatVolume = quantity, formatDate = shortDate, labels, testId, checked, valid, tableLimit = 500 }: CandlestickChartProps & { checked: Checked[]; valid: Checked[] }) {
   const { ref, width } = useMeasuredWidth(640);
-  const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
   const none = labels?.none ?? 'none';
   const mode: CandlestickMode = modeProp ?? (variant === 'bars' ? 'bars' : 'candles');
   const bodyMode = mode === 'candles' || mode === 'hollow' || mode === 'bars' || mode === 'heikin-ashi';
@@ -343,12 +275,14 @@ function Plot({ candles, label, mode: modeProp, variant = 'candles', scale: scal
   const top = 8;
   const plotH = priceH;
 
-  // The sessions as drawn: Heikin Ashi replaces the candles by their smoothed version, computed over every session before any grouping.
+  // The engine rides in on whichever opt-in module was imported (an indicator, a layer, the scales or the transform); a plain chart has none.
+  const engine = [scales, transform, ...indicators, ...layers].find((x) => x?.engine)?.engine;
+  // The sessions as drawn: a transform (Heikin Ashi) replaces the candles, over every session before any grouping.
+  const tf = engine && mode === 'heikin-ashi' ? transform : undefined;
   const drawn = useMemo<Candle[]>(() => {
     const src = valid.map((x) => x.c);
-    if (mode !== 'heikin-ashi') return src;
-    return heikinAshi(src).map((h, k) => ({ date: src[k]!.date, ...h }));
-  }, [valid, mode]);
+    return tf ? tf.apply(src) : src;
+  }, [valid, tf]);
 
   // Aggregate when the width has no room (3px each) for every candle.
   const items = useMemo(() => {
@@ -374,39 +308,10 @@ function Plot({ candles, label, mode: modeProp, variant = 'candles', scale: scal
     });
   }, [averages, valid, items]);
 
-  // Scale: what was asked, what the prices allow.
-  const base = valid[0]!.c.close;
-  const wanted: CandlestickScale = compare.length > 0 && (scaleProp === 'linear' || scaleProp === 'log') ? 'percent' : scaleProp;
-  const allPositive = valid.every((x) => x.c.low > 0);
-  const scaleOk = wanted === 'linear' || (wanted === 'log' ? allPositive : base > 0);
-  const scale: CandlestickScale = scaleOk ? wanted : 'linear';
-  const fellBack = !scaleOk;
-  const compareMoved = compare.length > 0 && scaleOk && scale !== scaleProp;
-  const T = useMemo(() => priceTransform(scale, base), [scale, base]);
-  const scaled = scale === 'percent' || scale === 'indexed';
-
-  // Other instruments, level with the price on their first shared date, in the scale's units.
-  const compared = useMemo(() => {
-    if (!scaled || compare.length === 0) return [];
-    const mainPct = rebase(valid.map((x) => x.c.close));
-    return compare.map((s, k) => {
-      const byDate = new Map<string, number | null>();
-      for (const p of s.points) byDate.set(p.date, isNum(p.close) ? p.close : null);
-      const aligned = valid.map((x) => byDate.get(x.c.date) ?? null);
-      const pct = rebaseOnto(aligned, mainPct);
-      return { label: s.label, dash: COMPARE_DASH[k % COMPARE_DASH.length]!, all: pct.map((v) => inScale(scale, v)), values: items.map((it) => inScale(scale, pct[it.to] ?? null)) };
-    });
-  }, [scaled, compare, valid, items, scale]);
-
-  // Indicators over every valid session (never the grouped ones, never Heikin Ashi).
-  const inputs = useMemo<IndicatorInput[]>(() => valid.map((x) => ({ date: x.c.date, open: x.c.open, high: x.c.high, low: x.c.low, close: x.c.close, volume: isNum(x.c.volume) ? x.c.volume : null })), [valid]);
-  const computed = useMemo(() => indicators.map((ind) => ({ ind, result: ind.compute(inputs) })), [indicators, inputs]);
-  let toneAt = averages.length;
-  const nextTone = () => SERIES_TONES[toneAt++ % SERIES_TONES.length]!;
-  const compareTones = compared.map(() => nextTone());
-  const placed = computed.map((p) => ({ ...p, tones: p.result.lines.map(() => nextTone()) }));
-  const overlays = placed.filter((p) => p.ind.placement === 'price');
-  const paneSpecs = placed.filter((p) => p.ind.placement === 'pane');
+  // Scale, compared lines, indicators, layers: the engine's, when any opt-in module was imported.
+  const m = useMemo(() => engine?.model({ label, valid, items, drawn, scaleProp, scales, transform: tf, compare, indicators, labels, formatPrice, none, toneOffset: averages.length }), [engine, label, valid, items, drawn, scaleProp, scales, tf, compare, indicators, labels, formatPrice, none, averages.length]);
+  const T = m?.T ?? identity;
+  const fmt = m?.fmt ?? formatPrice;
 
   // The price domain, in the scale's units.
   const closeOnly = mode === 'line' || mode === 'area' || mode === 'baseline';
@@ -424,21 +329,10 @@ function Plot({ candles, label, mode: modeProp, variant = 'candles', scale: scal
       hi = Math.max(hi, T(it.candle.high));
     }
   }
-  const baselinePrice = isNum(baseline) ? baseline : base;
-  if (mode === 'baseline') take(T(baselinePrice));
-  const overlayAt = overlays.map((o) => o.result.lines.map((l) => items.map((it) => {
-    const v = l.values[it.to];
-    return isNum(v) ? T(v) : null;
-  })));
-  overlayAt.forEach((ls) => ls.forEach((vs) => vs.forEach(take)));
-  compared.forEach((c) => c.values.forEach(take));
+  m?.points.forEach(take);
 
   const count = Math.max(3, Math.round(plotH / 56));
-  const ticks = scale === 'log' ? logTicks(10 ** lo, 10 ** hi, count) : niceTicks(lo, hi, count);
-  const tickT = scale === 'log' ? ticks.ticks.map((t) => Math.log10(t)) : ticks.ticks;
-  const loT = scale === 'log' ? Math.log10(ticks.lo) : ticks.lo;
-  const hiT = scale === 'log' ? Math.log10(ticks.hi) : ticks.hi;
-  const tickText = ticks.ticks.map((t) => (scale === 'percent' ? signed(t) : scale === 'indexed' ? exactText(t, 2) : formatPrice(t)));
+  const { tickT, loT, hiT, text: tickText } = m?.ticks(lo, hi, count) ?? linearTicks(lo, hi, count, formatPrice);
   const axisW = Math.min(120, Math.max(...tickText.map((t) => t.length)) * 7 + 12);
   const x0 = 4;
   const x1 = Math.max(x0 + 20, width - axisW);
@@ -448,14 +342,7 @@ function Plot({ candles, label, mode: modeProp, variant = 'candles', scale: scal
   const volTop = top + plotH + gap;
   const volY = (v: number) => volTop + volH - (v / volMax) * volH;
 
-  // Panes stacked under the price and volume, then the strip of events, then the date axis.
-  let cursorY = volTop + volH;
-  const panes: PaneView[] = paneSpecs.map((p) => {
-    const t = cursorY + PANE_GAP;
-    cursorY = t + PANE_H;
-    return { ind: p.ind, result: p.result, tones: p.tones, top: t };
-  });
-  const plotBottom = cursorY;
+  const volBottom = volTop + volH;
 
   const band = bandScale(items.length, x0, x1, 0.25);
   const time = axis === 'time' ? timeScale(items.map((it) => it.time), x0, x1) : null;
@@ -465,53 +352,18 @@ function Plot({ candles, label, mode: modeProp, variant = 'candles', scale: scal
   const labelIdx = thinned(items.length, slot, 76);
   const indexAt = (px: number) => (time ? time.nearest(px) : band.indexAt(px));
 
-  // Events: each on the item holding its session (or the last session before its date).
-  const eventKinds = { ...DEFAULT_EVENT_KINDS, ...labels?.eventKinds };
-  const levelKinds = { ...DEFAULT_LEVEL_KINDS, ...labels?.levelKinds };
-  const placedEvents = useMemo(() => {
-    const first = valid[0]!.c.date;
-    const last = valid[valid.length - 1]!.c.date;
-    return events.map((e, n) => {
-      let at = -1;
-      if (e.date >= first && e.date <= last) {
-        let a = 0;
-        let b = valid.length - 1;
-        while (a <= b) {
-          const m = (a + b) >> 1;
-          if (valid[m]!.c.date <= e.date) {
-            at = m;
-            a = m + 1;
-          } else b = m - 1;
-        }
-      }
-      const item = at < 0 ? -1 : items.findIndex((it) => it.from <= at && at <= it.to);
-      return { e, n, session: at, item };
-    });
-  }, [events, valid, items]);
-  const inRange = placedEvents.filter((p) => p.item >= 0);
-  const outsideEvents = placedEvents.length - inRange.length;
-  const eventH = inRange.length > 0 ? EVENT_H : 0;
-  const eventItems = useMemo(() => [...new Set(inRange.map((p) => p.item))].toSorted((p, q) => p - q), [inRange]);
-  const svgH = plotBottom + eventH + AXIS_H;
-  const eventsAt = (k: number) => inRange.filter((p) => p.item === k).map((p) => p.e);
-
-  // Levels inside the shown range are drawn, with their labels pushed apart; the rest are only listed.
-  const drawnLevels = levels.filter((l) => isNum(l.price) && Number.isFinite(T(l.price)) && T(l.price) >= loT && T(l.price) <= hiT);
-  const outsideLevels = levels.length - drawnLevels.length;
-  const levelY = spreadLabels(drawnLevels.map((l) => py(l.price)), 16, top + 8, top + plotH - 8);
+  // The engine places panes and layers under the price and volume, and gives back its drawing and words.
+  const placed = m?.place({ layers, formatDate, cx, yOf, loT, hiT, top, plotH, x0, x1, body, volBottom });
+  const plotBottom = placed?.paneBottom ?? volBottom;
+  const svgH = (placed?.bottom ?? volBottom) + AXIS_H;
 
   const words = { up: labels?.up ?? 'up', down: labels?.down ?? 'down', flat: labels?.flat ?? 'unchanged' };
   const L = { date: labels?.date ?? 'Date', open: labels?.open ?? 'Open', high: labels?.high ?? 'High', low: labels?.low ?? 'Low', close: labels?.close ?? 'Close', volume: labels?.volume ?? 'Volume' };
-  const modeName = { ...DEFAULT_MODES, ...labels?.modes }[mode];
-  const scaleName = { ...DEFAULT_SCALES, ...labels?.scales }[scale];
+  const modeName = labels?.modes?.[mode] ?? mode.replace('-', ' ');
   const dateText = (it: Item) => {
     const end = valid[it.to]!.c.date;
     return it.from === it.to ? formatDate(it.candle.date) : `${formatDate(it.candle.date)} – ${formatDate(end)}`;
   };
-
-  // Heikin Ashi values are printed to two more decimals than the prices were written with, never rounded to the currency's two.
-  const srcDecimals = useMemo(() => (mode === 'heikin-ashi' ? valid.reduce((m, x) => Math.max(m, decimalsOf(x.c.open, 6), decimalsOf(x.c.high, 6), decimalsOf(x.c.low, 6), decimalsOf(x.c.close, 6)), 0) : 0), [valid, mode]);
-  const fmt = (v: number): string => (mode === 'heikin-ashi' ? exactText(v, srcDecimals + 2, srcDecimals) : formatPrice(v));
 
   // Direction of an item: the body for candles and bars, the move from the previous close otherwise.
   const prevBased = mode === 'hollow' || !bodyMode;
@@ -523,18 +375,6 @@ function Plot({ candles, label, mode: modeProp, variant = 'candles', scale: scal
   };
   const bodyHollow = (k: number) => items[k]!.candle.close > items[k]!.candle.open;
 
-  const indicatorAt = (k: number) => panes.map((p) => ({ p, at: lineAt(p.result, items[k]!.to) })).concat(overlays.map((o) => ({ p: { ind: o.ind, result: o.result } as PaneView, at: lineAt(o.result, items[k]!.to) })));
-  const indicatorWords = (k: number): string[] => {
-    const out: string[] = [];
-    for (const { p, at } of indicatorAt(k)) {
-      const vals = p.result.lines.filter((l) => at[l.key] !== null && at[l.key] !== undefined).map((l) => `${l.label} ${exactText(at[l.key]!, p.result.decimals ?? 2, p.result.decimals ?? 2)}`);
-      if (vals.length === 0) continue;
-      const w = p.ind.describe?.(at, inputs[items[k]!.to]!) ?? '';
-      out.push(`${p.ind.label}: ${vals.join(', ')}${w ? `, ${w}` : ''}`);
-    }
-    return out;
-  };
-  const scaledText = (v: number) => (scale === 'percent' ? signed(T(v)) : exactText(T(v), 2, 2));
   const spoken = (k: number) => {
     const it = items[k]!;
     const c = it.candle;
@@ -546,16 +386,9 @@ function Plot({ candles, label, mode: modeProp, variant = 'candles', scale: scal
     if (closeOnly) parts.push(`${L.close} ${fmt(c.close)}`);
     else {
       parts.push(`${L.open} ${fmt(c.open)}`, `${L.high} ${fmt(c.high)}`, `${L.low} ${fmt(c.low)}`, `${L.close} ${fmt(c.close)}`);
-      if (mode === 'heikin-ashi') parts.push(`${labels?.actualClose ?? 'Actual close'} ${formatPrice(it.realClose)}`);
     }
     if (hasVolume) parts.push(`${L.volume} ${isNum(c.volume) ? formatVolume(c.volume) : none}`);
-    if (scaled) parts.push(`${scaleName} ${scaledText(it.realClose)}`);
-    compared.forEach((s) => {
-      const v = s.values[k];
-      parts.push(`${s.label} ${v === null || v === undefined ? none : scale === 'percent' ? signed(v) : exactText(v, 2, 2)}`);
-    });
-    parts.push(...indicatorWords(k));
-    for (const e of eventsAt(k)) parts.push(`${eventKinds[e.kind]}: ${e.label}${e.detail ? `, ${e.detail}` : ''}`);
+    if (placed) parts.push(...placed.speak(k));
     return parts.join(', ');
   };
 
@@ -572,21 +405,13 @@ function Plot({ candles, label, mode: modeProp, variant = 'candles', scale: scal
   const lastClose = valid[valid.length - 1]!.c.close;
   const overall = firstClose !== 0 ? ((lastClose - firstClose) / Math.abs(firstClose)) * 100 : null;
   const summary = [
-    `${valid.length} sessions from ${formatDate(valid[0]!.c.date)} to ${formatDate(valid[valid.length - 1]!.c.date)}, drawn as ${modeName}${scale === 'linear' ? '' : ` on a ${scaleName} scale`}.`,
+    `${valid.length} sessions from ${formatDate(valid[0]!.c.date)} to ${formatDate(valid[valid.length - 1]!.c.date)}, drawn as ${modeName}${m && m.scale !== 'linear' ? ` on a ${m.scaleName} scale` : ''}.`,
     `Last close ${formatPrice(lastClose)}${overall === null ? '' : `, ${words[cmp(lastClose, firstClose)]} ${Math.abs(overall).toFixed(2)}% over the period`}.`,
-    ...placed.map((p) => {
-      const at = lineAt(p.result, valid.length - 1);
-      const vals = p.result.lines.filter((l) => at[l.key] !== null && at[l.key] !== undefined).map((l) => `${l.label} ${exactText(at[l.key]!, p.result.decimals ?? 2, p.result.decimals ?? 2)}`);
-      const w = vals.length ? (p.ind.describe?.(at, inputs[valid.length - 1]!) ?? '') : '';
-      return `${p.ind.label}${p.ind.placement === 'pane' ? ' pane' : ''}: ${vals.length ? `latest ${vals.join(', ')}${w ? `, ${w}` : ''}` : 'no values yet'}.`;
-    }),
-    compared.length > 0 ? `Compared with ${compared.map((s) => s.label).join(', ')}.` : '',
-    placedEvents.length > 0 ? `${placedEvents.length} ${placedEvents.length === 1 ? 'event' : 'events'}.` : '',
-    levels.length > 0 ? `${levels.length} reference ${levels.length === 1 ? 'level' : 'levels'}: ${levels.map((l) => `${l.label} ${formatPrice(l.price)}`).join(', ')}.` : '',
+    ...(placed?.summary ?? []),
   ].filter(Boolean).join(' ');
 
   const baseHint = labels?.hint ?? 'Use the left and right arrow keys to move between candles, Home and End to jump to the first and last.';
-  const hint = eventItems.length > 0 ? `${baseHint} ${labels?.eventsHint ?? 'Shift and the arrow keys jump between events.'}` : baseHint;
+  const hint = [baseHint, ...(placed?.hint ?? [])].join(' ');
 
   // Table columns beyond the six every table has: they appear only for the options that add figures.
   const tableCols = useMemo(() => {
@@ -601,36 +426,13 @@ function Plot({ candles, label, mode: modeProp, variant = 'candles', scale: scal
         return `${words[dir]}${mode === 'hollow' ? `, ${c.close > c.open ? (labels?.hollowBody ?? 'hollow body') : (labels?.filledBody ?? 'filled body')}` : ''}`;
       });
     }
-    if (mode === 'heikin-ashi') {
-      for (const [k, name] of [['open', 'Open'], ['high', 'High'], ['low', 'Low'], ['close', 'Close']] as const) {
-        heads.push(`Heikin Ashi ${(labels?.[k] ?? name).toLowerCase()}`);
-        get.push((v) => exactText(drawn[v]![k], srcDecimals + 2, srcDecimals));
-      }
-    }
-    if (scaled) {
-      heads.push(`${L.close}: ${scaleName}`);
-      get.push((v) => (scale === 'percent' ? signed(T(valid[v]!.c.close)) : exactText(T(valid[v]!.c.close), 2, 2)));
-    }
-    compared.forEach((s) => {
-      heads.push(`${s.label}: ${scaleName}`);
-      get.push((v) => {
-        const x = s.all[v];
-        return x === null || x === undefined ? none : scale === 'percent' ? signed(x) : exactText(x, 2, 2);
-      });
-    });
-    for (const p of placed) {
-      p.result.lines.forEach((l) => {
-        heads.push(p.result.lines.length === 1 ? p.ind.label : `${p.ind.label}: ${l.label}`);
-        const d = p.result.decimals ?? 2;
-        get.push((v) => {
-          const x = l.values[v];
-          return isNum(x) ? exactText(x, d, d) : none;
-        });
-      });
+    for (const c of m?.columns ?? []) {
+      heads.push(c.head);
+      get.push(c.get);
     }
     return { heads, get };
-    // oxlint-disable-next-line react-hooks/exhaustive-deps -- words and labels are read through their props; the derived values below are what change the cells
-  }, [modeProp, mode, drawn, valid, scale, scaled, compared, placed, srcDecimals, labels, none, T, prevBased]);
+    // oxlint-disable-next-line react-hooks/exhaustive-deps -- words are read through the labels prop
+  }, [modeProp, mode, drawn, m, labels, prevBased]);
   const extras = useMemo(() => {
     if (tableCols.heads.length === 0) return null;
     const at = new Map<number, number>();
@@ -638,63 +440,8 @@ function Plot({ candles, label, mode: modeProp, variant = 'candles', scale: scal
     return { at, cells: valid.map((_, v) => tableCols.get.map((g) => g(v))) };
   }, [tableCols, valid]);
 
-  const legend: LegendEntry[] = [
-    ...(compared.length > 0 ? [{ label, tone: 'var(--pu-color-text)', dash: '' }] : []),
-    ...lines.map((l) => ({ label: l.label, tone: l.tone, dash: '' })),
-    ...compared.map((c, k) => ({ label: c.label, tone: compareTones[k]!, dash: c.dash })),
-    ...overlays.map((o) => ({ label: o.ind.label, tone: o.tones[0] ?? SERIES_TONES[0]!, dash: '' })),
-  ];
-
-  const extraTables = (
-    <>
-      {placedEvents.length > 0 && (
-        <table>
-          <caption>{`${label}: ${labels?.eventsCaption ?? 'Events'}`}</caption>
-          <thead>
-            <tr>
-              <th scope="col">{L.date}</th>
-              <th scope="col">{labels?.kind ?? 'Kind'}</th>
-              <th scope="col">{labels?.event ?? 'Event'}</th>
-              <th scope="col">{labels?.detail ?? 'Detail'}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {placedEvents.map((p) => (
-              <tr key={p.n}>
-                <th scope="row">{formatDate(p.e.date)}</th>
-                <td>{eventKinds[p.e.kind]}</td>
-                <td>{p.e.label}</td>
-                <td>{p.e.detail ?? none}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-      {levels.length > 0 && (
-        <table>
-          <caption>{`${label}: ${labels?.levelsCaption ?? 'Levels'}`}</caption>
-          <thead>
-            <tr>
-              <th scope="col">{labels?.level ?? 'Level'}</th>
-              <th scope="col">{labels?.kind ?? 'Kind'}</th>
-              <th scope="col">{labels?.price ?? 'Price'}</th>
-              <th scope="col">{labels?.fromClose ?? 'From last close'}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {levels.map((l, n) => (
-              <tr key={n}>
-                <th scope="row">{l.label}</th>
-                <td>{levelKinds[l.kind ?? 'custom']}</td>
-                <td>{isNum(l.price) ? formatPrice(l.price) : none}</td>
-                <td>{isNum(l.price) && lastClose !== 0 ? signed(((l.price - lastClose) / Math.abs(lastClose)) * 100) : none}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </>
-  );
+  const maLegend: LegendEntry[] = lines.map((l) => ({ label: l.label, tone: l.tone, dash: '' }));
+  const legend = m ? m.legend(maLegend, label) : maLegend;
 
   const style: CSSProperties = { height: svgH };
   return (
@@ -712,16 +459,13 @@ function Plot({ candles, label, mode: modeProp, variant = 'candles', scale: scal
         <>
           {aggregated && <p className="kit-ct-note">{`${valid.length} sessions shown as ${items.length} groups`}</p>}
           {skipped > 0 && <p className="kit-ct-note" role="note">{skippedText}</p>}
-          {fellBack && <p className="kit-ct-note" role="note">{labels?.scaleFallback ?? 'This scale needs prices above zero; showing a linear scale.'}</p>}
-          {compareMoved && <p className="kit-ct-note">{labels?.compareNote ?? 'Comparing: the axis shows percent change from the first close.'}</p>}
-          {outsideEvents > 0 && <p className="kit-ct-note">{(labels?.eventsOutside ?? ((n: number) => `${n} ${n === 1 ? 'event' : 'events'} outside the sessions shown ${n === 1 ? 'is' : 'are'} listed in the table.`))(outsideEvents)}</p>}
-          {outsideLevels > 0 && <p className="kit-ct-note">{(labels?.levelsOutside ?? ((n: number) => `${n} ${n === 1 ? 'level' : 'levels'} outside the price range shown ${n === 1 ? 'is' : 'are'} listed in the table.`))(outsideLevels)}</p>}
+          {placed?.notes}
         </>
       )}
       table={(
         <>
           <DataTable candles={candles} label={label} labels={labels} formatPrice={formatPrice} formatVolume={formatVolume} formatDate={formatDate} checked={checked} tableLimit={tableLimit} extraHeads={tableCols.heads} extras={extras} />
-          {extraTables}
+          {placed?.table}
         </>
       )}
     >
@@ -734,23 +478,11 @@ function Plot({ candles, label, mode: modeProp, variant = 'candles', scale: scal
         };
         const plot = ctx.plotProps(onPointer);
         const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-          if (e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey && (e.key === 'ArrowRight' || e.key === 'ArrowLeft') && eventItems.length > 0) {
-            const at = ctx.index ?? (e.key === 'ArrowRight' ? -1 : items.length);
-            const next = e.key === 'ArrowRight' ? eventItems.find((i) => i > at) : eventItems.findLast((i) => i < at);
-            e.preventDefault();
-            if (next !== undefined) ctx.moveTo(next);
-            return;
-          }
-          plot.onKeyDown?.(e);
+          if (!placed?.onKey(e, ctx.index, items.length, ctx.moveTo)) plot.onKeyDown?.(e);
         };
-        const activeEvents = active ? eventsAt(ctx.index!) : [];
-        const activeInd = active ? indicatorAt(ctx.index!) : [];
         const activeDir = active ? dirAt(ctx.index!).dir : 'flat';
         const closeY = active ? py(active.candle.close) : 0;
-        const pathOf = (vals: readonly (number | null)[], y: (v: number) => number) => vals.map((v, k) => (v === null ? '' : `${k === 0 || vals[k - 1] === null ? 'M' : 'L'}${cx(k).toFixed(1)},${y(v).toFixed(1)}`)).join(' ');
         const closePath = items.map((it, k) => `${k === 0 ? 'M' : 'L'}${cx(k).toFixed(1)},${py(it.candle.close).toFixed(1)}`).join(' ');
-        const yBase = clamp(py(baselinePrice), top, top + plotH);
-        const areaTo = (yTo: number) => `${closePath} L${cx(items.length - 1).toFixed(1)},${yTo.toFixed(1)} L${cx(0).toFixed(1)},${yTo.toFixed(1)} Z`;
         return (
           <>
             {legend.length > 0 && (
@@ -765,34 +497,15 @@ function Plot({ candles, label, mode: modeProp, variant = 'candles', scale: scal
               {/* oxlint-disable-next-line jsx-a11y/no-static-element-interactions */}
               <div className="kit-ct-plot" {...plot} onKeyDown={onKeyDown}>
                 <svg width={width} height={svgH} viewBox={`0 0 ${width} ${svgH}`} aria-hidden="true" focusable="false" data-testid={testId ? `${testId}-svg` : undefined}>
-                  {ticks.ticks.map((t, k) => (
+                  {tickT.map((t, k) => (
                     <g key={t}>
                       <line className="kit-ct-grid" x1={x0} x2={x1} y1={yOf(tickT[k]!)} y2={yOf(tickT[k]!)} />
                       <text className="kit-ct-axis" x={x1 + 8} y={yOf(tickT[k]!)} dominantBaseline="middle">{tickText[k]}</text>
                     </g>
                   ))}
                   {showVolume && <line className="kit-ct-grid" x1={x0} x2={x1} y1={volTop + volH} y2={volTop + volH} />}
-                  {overlays.map((o, n) => o.result.band && (() => {
-                    const u = o.result.lines.findIndex((l) => l.key === o.result.band!.upper);
-                    const d = o.result.lines.findIndex((l) => l.key === o.result.band!.lower);
-                    if (u < 0 || d < 0) return null;
-                    const up = overlayAt[n]![u]!;
-                    const dn = overlayAt[n]![d]!;
-                    const ks = up.map((_, k) => k).filter((k) => up[k] !== null && dn[k] !== null);
-                    if (ks.length < 2) return null;
-                    const path = `${ks.map((k, j) => `${j === 0 ? 'M' : 'L'}${cx(k).toFixed(1)},${yOf(up[k]!).toFixed(1)}`).join(' ')} ${ks.toReversed().map((k) => `L${cx(k).toFixed(1)},${yOf(dn[k]!).toFixed(1)}`).join(' ')} Z`;
-                    return <path key={`band-${o.ind.id}`} className="pu-ct-band" d={path} />;
-                  })())}
-                  {mode === 'area' && <path className="pu-ct-fill" d={areaTo(top + plotH)} />}
-                  {mode === 'baseline' && (
-                    <g>
-                      <clipPath id={`${uid}up`}><rect x={x0} y={top} width={Math.max(0, x1 - x0)} height={Math.max(0, yBase - top)} /></clipPath>
-                      <clipPath id={`${uid}dn`}><rect x={x0} y={yBase} width={Math.max(0, x1 - x0)} height={Math.max(0, top + plotH - yBase)} /></clipPath>
-                      <path className="pu-ct-fill gain" clipPath={`url(#${uid}up)`} d={areaTo(yBase)} />
-                      <path className="pu-ct-fill loss" clipPath={`url(#${uid}dn)`} d={areaTo(yBase)} />
-                      <line className="pu-ct-baseline" x1={x0} x2={x1} y1={yBase} y2={yBase} />
-                    </g>
-                  )}
+                  {mode === 'area' && <path className="pu-ct-fill" d={`${closePath} L${cx(items.length - 1).toFixed(1)},${top + plotH} L${cx(0).toFixed(1)},${top + plotH} Z`} />}
+                  {placed?.below}
                   {items.map((it, k) => {
                     const c = it.candle;
                     const hollow = mode === 'hollow' ? bodyHollow(k) : hollowUp && dirOf(c) === 'up';
@@ -808,32 +521,11 @@ function Plot({ candles, label, mode: modeProp, variant = 'candles', scale: scal
                       {items.length === 1 && <circle className="pu-ct-dot" cx={cx(0)} cy={py(items[0]!.candle.close)} r={3} />}
                     </>
                   )}
-                  {compared.map((c, k) => (
-                    <path key={c.label} className="kit-ct-ma" stroke={compareTones[k]} strokeDasharray={c.dash || undefined} d={pathOf(c.values, yOf)} />
-                  ))}
-                  {overlays.map((o, n) => o.result.lines.map((l, j) => (
-                    <path key={`${o.ind.id}-${l.key}`} className="kit-ct-ma" stroke={o.tones[j]} strokeDasharray={l.dash} d={pathOf(overlayAt[n]![j]!, yOf)} />
-                  )))}
+                  {placed?.lines}
                   {lines.map((l) => (
                     <path key={l.label} className="kit-ct-ma" stroke={l.tone} d={l.values.map((v, k) => (v === null ? '' : `${k === 0 || l.values[k - 1] === null ? 'M' : 'L'}${cx(k).toFixed(1)},${yOf(v).toFixed(1)}`)).join(' ')} />
                   ))}
-                  {drawnLevels.map((l, n) => (
-                    <g key={n} className="pu-ct-level" data-kind={l.kind ?? 'custom'}>
-                      <line x1={x0} x2={x1} y1={py(l.price)} y2={py(l.price)} strokeDasharray={LEVEL_DASH[l.kind ?? 'custom']} />
-                      <text x={x1 - 6} y={levelY[n]!} textAnchor="end" dominantBaseline="middle">{`${l.label} ${formatPrice(l.price)}`}</text>
-                    </g>
-                  ))}
-                  {mode === 'baseline' && <text className="pu-ct-baseline-label" x={x0 + 4} y={yBase - 5}>{formatPrice(baselinePrice)}</text>}
-                  {panes.map((p) => {
-                    const View = p.ind.view;
-                    return View ? <View key={p.ind.id} id={p.ind.id} label={p.ind.label} result={p.result} tones={p.tones} top={p.top} height={PANE_H} items={items} cx={cx} body={body} x0={x0} x1={x1} axisX={x1 + 8} active={active ? ctx.index : null} /> : null;
-                  })}
-                  {eventH > 0 && inRange.map((p, j) => {
-                    const sameItem = inRange.filter((q) => q.item === p.item);
-                    const slotN = sameItem.indexOf(p);
-                    const x = clamp(cx(p.item) + (slotN - (sameItem.length - 1) / 2) * 19, x0 + 8, x1 - 8);
-                    return <EventMark key={`${p.n}-${j}`} kind={p.e.kind} x={x} y={plotBottom + 10} glyph={glyphOf(eventKinds[p.e.kind], p.e.kind)} active={ctx.index === p.item} />;
-                  })}
+                  {placed?.over(ctx.index)}
                   {labelIdx.map((k) => (
                     <text key={k} className="kit-ct-axis" x={clamp(cx(k), x0 + 24, x1 - 24)} y={svgH - 6} textAnchor="middle">{formatDate(items[k]!.candle.date)}</text>
                   ))}
@@ -842,7 +534,7 @@ function Plot({ candles, label, mode: modeProp, variant = 'candles', scale: scal
                       <line x1={activeX} x2={activeX} y1={top} y2={plotBottom} />
                       <line x1={x0} x2={x1} y1={closeY} y2={closeY} />
                       <rect x={x1 + 2} y={closeY - 9} width={axisW - 4} height={18} rx={3} />
-                      <text x={x1 + 8} y={closeY} dominantBaseline="middle">{scaled ? (scale === 'percent' ? signed(T(active.candle.close)) : exactText(T(active.candle.close), 2, 2)) : fmt(active.candle.close)}</text>
+                      <text x={x1 + 8} y={closeY} dominantBaseline="middle">{(m?.priceText ?? formatPrice)(active.candle.close)}</text>
                     </g>
                   )}
                 </svg>
@@ -858,19 +550,8 @@ function Plot({ candles, label, mode: modeProp, variant = 'candles', scale: scal
                         </>
                       )}
                       <dt>{L.close}</dt><dd className={`kit-ct-${activeDir === 'flat' ? 'flat' : activeDir === 'up' ? 'gain' : 'loss'}`}>{fmt(active.candle.close)}</dd>
-                      {mode === 'heikin-ashi' && (<><dt>{labels?.actualClose ?? 'Actual close'}</dt><dd>{formatPrice(active.realClose)}</dd></>)}
                       {hasVolume && (<><dt>{L.volume}</dt><dd>{isNum(active.candle.volume) ? formatVolume(active.candle.volume) : none}</dd></>)}
-                      {scaled && (<><dt>{scale === 'percent' ? '%' : '100'}</dt><dd>{scaledText(active.realClose)}</dd></>)}
-                      {compared.map((s) => {
-                        const v = s.values[ctx.index!];
-                        return <div key={s.label}><dt>{s.label}</dt><dd>{v === null || v === undefined ? none : scale === 'percent' ? signed(v) : exactText(v, 2, 2)}</dd></div>;
-                      })}
-                      {activeInd.map(({ p, at }) => p.result.lines.filter((l) => at[l.key] !== null && at[l.key] !== undefined).map((l) => (
-                        <div key={`${p.ind.id}-${l.key}`}><dt>{p.result.lines.length === 1 ? p.ind.label : `${p.ind.label}: ${l.label}`}</dt><dd>{exactText(at[l.key]!, p.result.decimals ?? 2, p.result.decimals ?? 2)}</dd></div>
-                      )))}
-                      {activeEvents.map((e, n) => (
-                        <div key={n}><dt>{eventKinds[e.kind]}</dt><dd>{e.label}</dd></div>
-                      ))}
+                      {placed?.rows(ctx.index!).map(([a, b], n) => <div key={n}><dt>{a}</dt><dd>{b}</dd></div>)}
                     </dl>
                   </ChartTooltip>
                 )}
@@ -883,33 +564,6 @@ function Plot({ candles, label, mode: modeProp, variant = 'candles', scale: scal
   );
 }
 
-
-/** The value of each line of an indicator at one session. */
-function lineAt(result: IndicatorResult, i: number): Record<string, number | null> {
-  const out: Record<string, number | null> = {};
-  for (const l of result.lines) {
-    const v = l.values[i];
-    out[l.key] = isNum(v) ? v : null;
-  }
-  return out;
-}
-
-/** The mark's letter: the first letter of the kind's word, upper case; a dot for your own events. */
-const glyphOf = (word: string, kind: PriceEventKind) => (kind === 'custom' ? '•' : (word.trim()[0] ?? '•').toUpperCase());
-
-/** One event on the time axis. The shape (circle, diamond, square, triangle) and the letter tell the kind, so colour is not needed. */
-function EventMark({ kind, x, y, glyph, active }: { kind: PriceEventKind; x: number; y: number; glyph: string; active: boolean }) {
-  const r = 7;
-  return (
-    <g className={`pu-ct-ev ${kind}${active ? ' active' : ''}`} data-kind={kind}>
-      {kind === 'dividend' && <circle cx={x} cy={y} r={r} />}
-      {kind === 'split' && <polygon points={`${x},${y - r - 1} ${x + r + 1},${y} ${x},${y + r + 1} ${x - r - 1},${y}`} />}
-      {kind === 'earnings' && <rect x={x - r} y={y - r} width={r * 2} height={r * 2} rx={2} />}
-      {kind === 'custom' && <polygon points={`${x},${y - r - 1} ${x + r + 1},${y + r} ${x - r - 1},${y + r}`} />}
-      <text x={x} y={kind === 'custom' ? y + 3 : y} textAnchor="middle" dominantBaseline="central">{glyph}</text>
-    </g>
-  );
-}
 
 interface MarkProps {
   variant: 'candles' | 'bars' | 'highlow' | 'none';

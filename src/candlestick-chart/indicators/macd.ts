@@ -1,6 +1,7 @@
 import { macd } from '../../chart-math/indicators.ts';
 import { IndicatorPaneView } from '../IndicatorPaneView.tsx';
 import type { ChartIndicator } from '../indicatorTypes.ts';
+import { candlestickTrading } from '../trading.tsx';
 
 export interface MacdIndicatorOptions {
   fast?: number;
@@ -22,6 +23,7 @@ export function macdIndicator({ fast = 12, slow = 26, signal = 9, label, labels 
   const name = label ?? `MACD ${fast}, ${slow}, ${signal}`;
   const L = { macd: labels?.macd ?? 'MACD', signal: labels?.signal ?? 'Signal', histogram: labels?.histogram ?? 'Histogram' };
   return {
+    engine: candlestickTrading,
     id: `macd-${fast}-${slow}-${signal}`,
     label: name,
     placement: 'pane',

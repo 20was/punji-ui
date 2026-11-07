@@ -1,7 +1,10 @@
-import { CandlestickChart, type PriceEvent, type PriceLevel } from '@punji/ui/candlestick-chart';
+import { CandlestickChart } from '@punji/ui/candlestick-chart';
+import { eventsLayer, type PriceEvent } from '@punji/ui/candlestick-events';
+import { levelsLayer, type PriceLevel } from '@punji/ui/candlestick-levels';
 import { Card } from '@punji/ui/card';
 import { nabilCandles } from '../../sample.ts';
 
+// Each layer is its own module (`candlestick-events`, `candlestick-levels`), so a chart that imports neither ships neither.
 // Events sit on the time axis (a circle for a dividend, a diamond for a split, a square for earnings, a triangle for
 // your own) and are listed in a table; focus the chart and press Shift with the arrow keys to jump between them.
 // Levels are dashed lines (support dotted-dash, resistance dotted, cost basis dash-dot) whose labels never overlap.
@@ -22,7 +25,7 @@ const levels: PriceLevel[] = [
 export default function Example() {
   return (
     <Card title="NABIL, events and levels" description="Press Shift with the arrow keys to jump between events.">
-      <CandlestickChart label="NABIL with events and levels" candles={nabilCandles} events={events} levels={levels} height={260} />
+      <CandlestickChart label="NABIL with events and levels" candles={nabilCandles} layers={[eventsLayer(events), levelsLayer(levels)]} height={260} />
     </Card>
   );
 }

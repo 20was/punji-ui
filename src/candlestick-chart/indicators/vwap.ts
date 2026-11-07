@@ -1,6 +1,7 @@
 import { vwap } from '../../chart-math/indicators.ts';
 import { IndicatorPaneView } from '../IndicatorPaneView.tsx';
 import type { ChartIndicator } from '../indicatorTypes.ts';
+import { candlestickTrading } from '../trading.tsx';
 
 export interface VwapIndicatorOptions {
   /** 'price' (default): drawn over the candles. 'pane': in its own pane. */
@@ -20,6 +21,7 @@ export interface VwapIndicatorOptions {
 export function vwapIndicator({ placement = 'price', label, labels }: VwapIndicatorOptions = {}): ChartIndicator {
   const name = label ?? 'VWAP';
   return {
+    engine: candlestickTrading,
     id: 'vwap',
     label: name,
     placement,

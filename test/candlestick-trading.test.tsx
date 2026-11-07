@@ -271,14 +271,17 @@ describe('indicators', () => {
     const early = cells(tableOf(container).querySelectorAll('tbody tr')[3]!);
     expect(early.at(-1)).toBe('none');
   });
+  // axe over a chart with every layer on is slow on CI runners: keep the data just long enough for MACD (26 + 9)
+  // and give it room beyond vitest's 5 s default.
   it('is accessible with every option on', async () => {
+    const some = data.slice(0, 40);
     const { container } = render(
-      <CandlestickChart candles={data} label="X" mode="heikin-ashi" transform={heikinAshiTransform} scales={priceScales} scale="percent" indicators={[rsiIndicator(), macdIndicator(), bollingerIndicator(), vwapIndicator()]}
-        layers={[eventsLayer([{ date: data[10]!.date, kind: 'dividend', label: 'D' }]), levelsLayer([{ price: 487.5, label: 'Cost', kind: 'cost-basis' }])]} compare={[{ label: 'NEPSE', points: data.map((c) => ({ date: c.date, close: c.close * 4 })) }]} />,
+      <CandlestickChart candles={some} label="X" mode="heikin-ashi" transform={heikinAshiTransform} scales={priceScales} scale="percent" indicators={[rsiIndicator(), macdIndicator(), bollingerIndicator(), vwapIndicator()]}
+        layers={[eventsLayer([{ date: some[10]!.date, kind: 'dividend', label: 'D' }]), levelsLayer([{ price: 487.5, label: 'Cost', kind: 'cost-basis' }])]} compare={[{ label: 'NEPSE', points: some.map((c) => ({ date: c.date, close: c.close * 4 })) }]} />,
     );
     expect(await seriousViolations(container)).toEqual([]);
     expect(container.querySelectorAll('[tabindex="0"]')).toHaveLength(1);
-  });
+  }, 15_000);
 });
 
 describe('opt-in extensions', () => {

@@ -1013,7 +1013,7 @@ const BASE_PAGES: readonly PageDef[] = [
     accessibility: ['Typed input is strict and reports errors through `error` with `aria-invalid`.', 'Selected days expose `aria-selected`, today `aria-current` and unavailable days `aria-disabled`; month changes are announced through a live heading.'],
     responsive: ['The popover fits a 390px viewport; touch targets are 44px.'],
     notes: { title: 'Limits', points: ['BS support is bounded by the converter table; dates outside it are rejected, not guessed. Months from 2084 are projections: `toAD` and `bsDateStatus` from `nepal/calendar` tell you which (see the BS calendar guide).', 'Not yet reviewed with VoiceOver or NVDA (see ROADMAP.md).'] },
-    related: ['currency-input', 'date-range-presets', 'button'],
+    related: ['currency-input', 'date-range-presets', 'bs-calendar', 'button'],
   },
   {
     slug: 'button',

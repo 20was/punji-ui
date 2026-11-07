@@ -177,6 +177,6 @@ export const FORMS_PAGES: readonly PageDef[] = [
         'A preset applies immediately and does not move the open calendar; if you want the person to adjust it first, let them pick days in the calendar instead.',
       ],
     },
-    related: ['date-picker', 'period-selector', 'financial-calculations'],
+    related: ['date-picker', 'period-selector', 'bs-calendar', 'financial-calculations'],
   },
 ];

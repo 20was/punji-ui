@@ -1,0 +1,21 @@
+/* Punji UI styles.
+   Styles for BarList. Needs tokens.css, base.css and states.css (styles.css has everything). Colours, type and space from --pu-* tokens only.
+   Rows sit on their parent's surface, never as individual cards. */
+@layer punji.components {
+  .pu-bar-list { margin: 0; padding: 0; list-style: none; min-width: 0; color: var(--pu-color-text) }
+  .pu-bar-list > li + li { border-top: 1px solid var(--pu-color-card-border) }
+  .pu-bar-list-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: var(--pu-space-2) var(--pu-space-3); width: 100%; min-height: var(--pu-tap-min); padding: var(--pu-space-3) 0; border: 0; background: transparent; color: inherit; font: 400 var(--pu-text-sm) / 1.5 var(--pu-font-body); text-align: start }
+  .pu-bar-list-label { min-width: 0; overflow-wrap: anywhere }
+  .pu-bar-list-value { font-weight: var(--pu-font-weight-semibold); font-variant-numeric: var(--pu-font-numeric); white-space: nowrap }
+  .pu-bar-list-track { grid-column: 1 / -1; display: block; height: var(--pu-space-1); border-radius: 3px; overflow: hidden; background: var(--pu-color-track) }
+  .pu-bar-list-fill { display: block; width: var(--bar-list-share); height: 100%; border-radius: 3px; background: var(--pu-color-accent) }
+  .pu-bar-list[data-tone='neutral'] .pu-bar-list-fill { background: var(--pu-color-text-muted) }
+  .pu-bar-list[data-tone='info'] .pu-bar-list-fill { background: var(--pu-color-series-nepse) }
+  button.pu-bar-list-row { cursor: pointer; border-radius: var(--pu-radius-control) }
+  button.pu-bar-list-row:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: -2px }
+  button.pu-bar-list-row:hover:not(:disabled) .pu-bar-list-label { text-decoration: underline; text-underline-offset: var(--pu-space-1) }
+  button.pu-bar-list-row:disabled { cursor: default; color: var(--pu-color-text-tertiary) }
+  .pu-bar-list-loading { display: grid; gap: var(--pu-space-3); padding: var(--pu-space-3) 0; min-height: var(--pu-tap-min) }
+  .pu-bar-list-empty { padding: var(--pu-space-3) 0 }
+  .pu-bar-list-heading { margin: 0 0 var(--pu-space-1); font: 400 var(--pu-text-xs) / 1.4 var(--pu-font-body); color: var(--pu-color-text-muted) }
+}

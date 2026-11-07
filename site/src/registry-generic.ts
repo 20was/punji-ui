@@ -215,7 +215,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       'Show the chosen range as text too, near the slider.',
     ],
     responsive: ['The slider fills its container; the thumbs are large enough for touch.'],
-    related: ['field', 'select', 'meter-range'],
+    related: ['field', 'select', 'meter-range', 'range-editor', 'histogram'],
   },
   {
     slug: 'choice-group',
@@ -648,7 +648,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       'The error ring is extra: the editor must say what is wrong in words.',
     ],
     responsive: ['A 36px box that wraps with its neighbours; the x keeps a 44px tap area on touch.'],
-    related: ['chip', 'popover', 'list-filter', 'status-pill'],
+    related: ['chip', 'popover', 'list-filter', 'status-pill', 'filter-bar', 'filter-menu', 'preset-tile'],
   },
   {
     slug: 'show-more',
@@ -748,7 +748,7 @@ export const GENERIC_PAGES: readonly PageDef[] = [
       'Tone adds contrast but never the meaning: "On" and "Off" differ in words.',
     ],
     responsive: ['Does not shrink below its text; the row it ends should let the name wrap.'],
-    related: ['status-pill', 'switch', 'locked-note', 'rows'],
+    related: ['status-pill', 'switch', 'locked-note', 'rows', 'icons'],
   },
   {
     slug: 'stat-grid',
@@ -947,5 +947,43 @@ export const GENERIC_PAGES: readonly PageDef[] = [
     accessibility: ['`role="separator"` with `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, a percent `aria-valuetext`, `aria-controls` on the start pane and a required `label`.', 'When the panes stack the separator is hidden, so it leaves the tab order.'],
     responsive: ['Stacks below 640 px of container width (a container query), so it adapts to the space it is given, not the viewport. `stack={false}` keeps the split.'],
     related: ['page-layout', 'stack', 'candlestick-chart', 'order-ticket', 'trading-terminal'],
+  },
+  {
+    slug: 'icons',
+    title: 'Icons',
+    description: 'One icon set for finance screens: 150+ stroke glyphs in currentColor, an Icon by name or one tree-shaken import per glyph, decorative unless you give a label.',
+    lead: "One icon set on a shared stroke, by name or as a single import of about 400 bytes, with web's names kept.",
+    group: 'foundations',
+    kind: 'component',
+    stability: 'beta',
+    summary:
+      'Stroke icons that take the colour of the text beside them. Use `Icon` with a name for a gallery or a data-driven menu, or import one glyph (`IconBell`) so a page carries only what it draws: one icon is about 400 bytes gzipped. An icon is decorative (`aria-hidden`) unless it has a `label`, which makes it an image with that name. Sizes are `sm` 16, `md` 20 and `lg` 24 px. Most glyphs sit on a 24 grid with a 1.8 stroke; a few legacy glyphs keep the 20 or 18 grid they were drawn on so they look as they did in the web app.',
+    use: ['An icon beside a visible word: leave it decorative.', 'An icon alone in a button: name the button (`aria-label`) and keep the icon decorative, or give the icon a `label`.', '`NavIcon` and `SettingIcon` when moving punji-web screens over: they take the same props and draw the same output.'],
+    avoid: ['Meaning carried by an icon alone: pair it with a word or give it a `label`.', 'Importing `Icon` for one glyph: it carries all of them (about 7 kB gzipped). Import the glyph instead.'],
+    api: [...ui('icons', 'Icon', 'IconByNameProps', 'IconProps', 'IconSize', 'IconName', 'iconNames', 'resolveIconName', 'ICON_ALIASES', 'NavIcon', 'NavIconProps', 'SettingIcon', 'SettingIconProps')],
+    examples: [
+      { id: 'basic', title: 'Decorative and labelled', note: 'Three single-glyph imports; the last has a label, so it is an image with a name.' },
+      { id: 'gallery', title: 'Gallery', note: 'Search every name, aliases included; click one to copy it.' },
+    ],
+    keyboard: ['Icons are not interactive and not focusable.'],
+    accessibility: [
+      'Without `label` the svg is `aria-hidden="true"` and `focusable="false"`: the visible word or the button name carries the meaning.',
+      'With `label` the svg has `role="img"` and `aria-label`.',
+      'Strokes use `currentColor`, so forced-colours and dark themes follow the text colour.',
+    ],
+    responsive: ['Icons are a fixed pixel size (16, 20 or 24); the gallery wraps to the width it is given.'],
+    notes: {
+      title: 'Migrating from the web kit',
+      points: [
+        'Import from `@punji/ui/icons`. `kit/NavIcon` becomes `NavIcon` (same props, `app-ico` classes and sizes); `kit/SettingIcon` becomes `SettingIcon`. Neither needs a screen edit beyond the import.',
+        '`ui/icons.tsx`: `IconChartLine`, `IconWallet`, `IconBell` and the rest, and every `Lucide*` component, keep their names and take the same `size` number.',
+        'The second `ui/NavIcon` (CSS masks) draws as inline svg here. Its names are prefixed `site-`: `<NavIcon name="today" />` becomes `<Icon name="site-today" />`. `site-phone` is an alias of `site-features`.',
+        "Same name, different drawing in two web sets: the later one is prefixed. `SettingIcon` glyphs are `setting-<name>` (`setting-moon`, `setting-eye-off`); `ui/icons` `IconCalculator` is `calculator-keys` (the kit nav `calculator` keeps its name, exported as `IconCalculatorNav`); the inbox list's `gift` and `ticket` are `inbox-gift` and `inbox-ticket`.",
+        'Same name, same drawing: aliases. The inbox glyphs `star`, `bell` and `pulse` are `watchlist`, `alerts` and `signals` (`star`, `inbox-bell` and `pulse` resolve to them); inbox `sun`, `moon` and `eyeOff` are the nav glyphs of the same name.',
+        'Notice glyphs: `StatusNotice` is `notice-warn` and `notice-info`; `ActionNotice` rows are `notice-gift`, `notice-cash`, `notice-rights`, `notice-done`; the small close is `close-sm`; the inbox back chevron is `chev-left`.',
+        "Not included: the stock, chart and watchlist pages' own icon files (`me/pages/*/icons.tsx`), which draw product-specific marks.",
+      ],
+    },
+    related: ['status-tag', 'list-filter'],
   },
 ];

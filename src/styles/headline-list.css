@@ -1,0 +1,14 @@
+/* Punji UI styles.
+   Styles for HeadlineList. Needs tokens.css and base.css (styles.css has everything). Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  .pu-headline-list { margin: 0; padding: 0; list-style: none }
+  .pu-headline-list > li + li { border-top: 1px solid var(--pu-color-border) }
+  .pu-headline-list-row { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: var(--pu-space-3); min-height: 56px; margin: 0 calc(var(--pu-space-2) * -1); padding: 10px var(--pu-space-2); border-radius: var(--pu-radius-lg); color: var(--pu-color-text); text-decoration: none }
+  a.pu-headline-list-row { grid-template-columns: minmax(0, 1fr) 16px; cursor: pointer }
+  a.pu-headline-list-row:hover { background: var(--pu-color-surface-subtle) }
+  a.pu-headline-list-row:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: -2px }
+  .pu-headline-list-main { display: grid; gap: 3px; min-width: 0 }
+  .pu-headline-list-title { font-size: var(--pu-text-sm); font-weight: var(--pu-font-weight-medium); line-height: 20px; overflow-wrap: anywhere }
+  .pu-headline-list-line { font-size: var(--pu-text-xs); line-height: 16px; color: var(--pu-color-text-muted) }
+  .pu-headline-list-out { width: 16px; height: 16px; margin-top: 2px; color: var(--pu-color-text-tertiary) }
+}

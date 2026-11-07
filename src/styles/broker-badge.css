@@ -1,0 +1,15 @@
+/* Punji UI styles.
+   Styles for BrokerBadge. Needs tokens.css and base.css (styles.css has everything). Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  .pu-broker-badge { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; flex: none; box-sizing: border-box; width: 36px; height: 36px; border-radius: var(--pu-radius-control); background: var(--pu-color-surface-tint); color: var(--pu-color-text); font-size: 13px; font-weight: var(--pu-font-weight-semibold); line-height: 1; letter-spacing: -0.01em; font-variant-numeric: var(--pu-font-numeric); white-space: nowrap }
+  .pu-broker-badge[data-size='40'] { width: 40px; height: 40px; font-size: 14px }
+  .pu-broker-badge[data-size='48'] { width: 48px; height: 48px; font-size: 18px }
+  .pu-broker-badge[data-size='56'] { width: 56px; height: 56px; font-size: 22px }
+  .pu-broker-badge[data-size='132'] { width: 132px; height: 132px; gap: 4px; font-size: 60px; letter-spacing: -0.03em }
+  .pu-broker-badge[data-tone='inverse'] { background: var(--pu-color-surface-inverse); color: var(--pu-color-text-inverse) }
+  .pu-broker-badge[data-tone='accent'] { background: var(--pu-color-accent-fill); color: var(--pu-color-on-accent-fill) }
+  .pu-broker-badge small { font-size: var(--pu-text-xs); font-weight: var(--pu-font-weight-bold); letter-spacing: var(--pu-tracking-label); text-transform: uppercase; opacity: 0.75 }
+  @media (max-width: 599px) {
+    .pu-broker-badge[data-size='132'] { width: 84px; height: 84px; gap: 2px; font-size: 38px }
+  }
+}

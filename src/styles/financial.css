@@ -66,6 +66,7 @@
       border-bottom: 1px solid var(--pu-color-border);
     }
     .pu-fin .kit-tablebox.stack .kit-table tbody tr:last-child { border-bottom: 0 }
+    .pu-fin .kit-tablebox.stack:not(.bare, .dense) .kit-table tbody tr { padding-inline: 12px }
     .pu-fin .kit-tablebox.stack .kit-table tfoot tr {
       display: grid;
       /* The headline figure's column grows to fit an amount that never wraps (the same layout whenever it already fits). */

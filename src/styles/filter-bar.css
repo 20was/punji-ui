@@ -1,0 +1,8 @@
+/* Punji UI styles.
+   Styles for FilterBar. Needs tokens.css and base.css (styles.css has everything). Colours, type and space from --pu-* tokens only. */
+@layer punji.components {
+  .pu-filter-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--pu-space-2); min-width: 0; color: var(--pu-color-text) }
+  .pu-filter-bar > * { min-width: 0 }
+  .pu-filter-bar-list { display: grid; padding-inline: var(--pu-space-2) }
+  .pu-filter-bar-list-clear { display: flex; justify-content: flex-end; padding-block-start: var(--pu-space-1); padding-inline: var(--pu-space-2) }
+}

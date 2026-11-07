@@ -2,6 +2,8 @@
 
 Research date: 2026-11-07 (BS 2083 Kartik 21). No repo edits were made. Every number below was fetched or computed during this session. Anything not verified is marked **UNVERIFIED**.
 
+**Status:** PR 1 of 4 landed (own table in `src/nepal/bs-data.ts` and pure converter; the dependency remains only for a temporary parity test, removal is PR 4). One deviation from `proposed-table.json`: projected 2096 ships the valid 366-day variant, because the proposed row totals 364 days.
+
 Working files (all in ``):
 - `data/all.json`, `data/all-tables.csv`: every month-length table extracted (12 library tables and 2 scraped web calendars).
 - `data/disagree-1970-1999.txt`, `data/disagree-2000-2083.txt`, `data/disagree-2084-2100.txt`: every year where any two sources differ.

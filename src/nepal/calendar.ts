@@ -1,20 +1,19 @@
-import DateConverter from '@remotemerge/nepali-date-converter';
+import { bsToEpochDay, epochDayToBs, epochDayToGregorian, gregorianToEpochDay } from './bs-convert.ts';
 import { BS_MONTHS, NEPAL_TIME_ZONE, type NepalLanguage } from './locale.ts';
 import type { CalendarDate } from './date-only.ts';
 export type { CalendarDate } from './date-only.ts';
 export const BS_SUPPORTED_RANGE = { from: '1975-01-01', to: '2099-12-30' } as const;
-const iso = ({ year, month, day }: CalendarDate) => {
+const assertIntegers = ({ year, month, day }: CalendarDate) => {
   if (![year, month, day].every(Number.isInteger)) throw new RangeError('Calendar fields must be integers');
-  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 };
-/** Strict table-backed conversion. No rollover and no fixed year/day offsets. */
+/** Strict table-backed conversion. No rollover and no fixed year/day offsets. Throws outside the table. */
 export function gregorianToBS(date: CalendarDate): CalendarDate {
-  const result = new DateConverter(iso(date)).toBs();
-  return { year: result.year, month: result.month, day: result.date };
+  assertIntegers(date);
+  return epochDayToBs(gregorianToEpochDay(date));
 }
 export function bsToGregorian(date: CalendarDate): CalendarDate {
-  const result = new DateConverter(iso(date)).toAd();
-  return { year: result.year, month: result.month, day: result.date };
+  assertIntegers(date);
+  return epochDayToGregorian(bsToEpochDay(date));
 }
 export function instantToNepalDate(instant: Date | number): CalendarDate {
   const date = instant instanceof Date ? instant : new Date(instant);

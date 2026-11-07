@@ -32,7 +32,7 @@ describe('calendar math',()=>{
     expect(parseDateInput('2080-01-32','bikram-sambat')).toBeNull();
     expect(parseDateInput('2023-02-29','gregory')).toBeNull();
     for(const date of ['0001-01-01','0099-02-28','2024-02-29','9999-12-31'])expect(fromDayNumber(dayNumber(date))).toBe(date);
-    expect(calendarLimits('bikram-sambat')).toEqual({min:'1918-04-13',max:'2043-04-13'});
+    expect(calendarLimits('bikram-sambat')).toEqual({min:'1918-04-13',max:'2043-04-15'});
   });
 });
 describe('Calendar',()=>{

@@ -353,7 +353,7 @@
     "name": "Nepal utilities including calendar table",
     "path": "dist/nepal/nepal.js",
     "import": "*",
-    "limit": "4.97 kB",
+    "limit": "5.21 kB",
     "gzip": true
   },
   {
@@ -444,14 +444,14 @@
     "name": "Calendar including BS conversion and shared controls",
     "path": "dist/calendar/Calendar.js",
     "import": "*",
-    "limit": "8.8 kB",
+    "limit": "9.25 kB",
     "gzip": true
   },
   {
     "name": "Date pickers including Calendar",
     "path": "dist/date-picker/DatePicker.js",
     "import": "*",
-    "limit": "13.45 kB",
+    "limit": "14.03 kB",
     "gzip": true
   },
   {
@@ -920,7 +920,7 @@
     "name": "period-selector (import from '@punji/ui/period-selector')",
     "path": "dist/period-selector/FinancialPeriodSelector.js",
     "import": "*",
-    "limit": "4.67 kB",
+    "limit": "4.82 kB",
     "gzip": true
   },
   {
@@ -948,7 +948,7 @@
     "name": "transaction-list (import from '@punji/ui/transaction-list')",
     "path": "dist/transaction-list/TransactionList.js",
     "import": "*",
-    "limit": "10230 B",
+    "limit": "10.55 kB",
     "gzip": true
   },
   {
@@ -976,7 +976,7 @@
     "name": "bill-summary (import from '@punji/ui/bill-summary')",
     "path": "dist/bill-summary/BillSummary.js",
     "import": "*",
-    "limit": "8.9 kB",
+    "limit": "9.33 kB",
     "gzip": true
   },
   {
@@ -997,7 +997,7 @@
     "name": "portfolio (import from '@punji/ui/portfolio')",
     "path": "dist/portfolio/portfolio.js",
     "import": "*",
-    "limit": "6.57 kB",
+    "limit": "6.67 kB",
     "gzip": true
   },
   {
@@ -1025,14 +1025,14 @@
     "name": "dividend-history (import from '@punji/ui/dividend-history')",
     "path": "dist/dividend-history/DividendHistory.js",
     "import": "*",
-    "limit": "13.57 kB",
+    "limit": "14.16 kB",
     "gzip": true
   },
   {
     "name": "transaction-history (import from '@punji/ui/transaction-history')",
     "path": "dist/transaction-history/TransactionHistory.js",
     "import": "*",
-    "limit": "18.33 kB",
+    "limit": "19.03 kB",
     "gzip": true,
     "entry": [
       "index"
@@ -1042,7 +1042,7 @@
     "name": "transaction-history with the date picker panel (all chunks)",
     "path": "dist/transaction-history/TransactionHistory.js",
     "import": "*",
-    "limit": "23.92 kB",
+    "limit": "24.55 kB",
     "gzip": true
   },
   {
@@ -1259,7 +1259,7 @@
     "name": "interest-rate-table (import from '@punji/ui/interest-rate-table')",
     "path": "dist/interest-rate-table/InterestRateTable.js",
     "import": "*",
-    "limit": "3.96 kB",
+    "limit": "4.15 kB",
     "gzip": true
   },
   {
@@ -1339,7 +1339,7 @@
     "name": "tax-invoice (import from '@punji/ui/tax-invoice')",
     "path": "dist/tax-invoice/TaxInvoice.js",
     "import": "*",
-    "limit": "11.37 kB",
+    "limit": "11.78 kB",
     "gzip": true
   },
   {
@@ -2144,7 +2144,7 @@
     "name": "article (import * from '@punji/ui/article')",
     "path": "dist/article/Article.js",
     "import": "*",
-    "limit": "5.5 kB",
+    "limit": "5.61 kB",
     "gzip": true
   },
   {

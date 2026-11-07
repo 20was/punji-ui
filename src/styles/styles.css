@@ -102,4 +102,6 @@
 @import './breadcrumb.css';
 @import './accordion.css';
 @import './money-charts.css';
+@import './scroll-table.css';
+@import './table-print.css';
 @import './contrast.css';

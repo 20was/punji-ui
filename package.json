@@ -659,6 +659,10 @@
       "types": "./dist/range-selector/RangeSelector.d.ts",
       "default": "./dist/range-selector/RangeSelector.js"
     },
+    "./scroll-table": {
+      "types": "./dist/scroll-table/ScrollTable.d.ts",
+      "default": "./dist/scroll-table/ScrollTable.js"
+    },
     "./css/*.css": {
       "types": "./dist/css/*.css.d.ts",
       "default": "./dist/css/*.css"

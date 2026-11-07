@@ -373,7 +373,7 @@
   {
     "name": "styles.css (all tokens and components)",
     "path": "dist/styles.css",
-    "limit": "42.84 kB",
+    "limit": "43.3 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -878,7 +878,7 @@
     "name": "watchlist (import from '@punji/ui/watchlist')",
     "path": "dist/watchlist/Watchlist.js",
     "import": "*",
-    "limit": "7.70 kB",
+    "limit": "8.1 kB",
     "gzip": true
   },
   {
@@ -920,7 +920,7 @@
     "name": "ledger-table (import from '@punji/ui/ledger-table')",
     "path": "dist/ledger-table/LedgerTable.js",
     "import": "*",
-    "limit": "9.45 kB",
+    "limit": "9.5 kB",
     "gzip": true
   },
   {
@@ -1402,7 +1402,7 @@
     "name": "aging-table (import from '@punji/ui/aging-table')",
     "path": "dist/aging-table/AgingTable.js",
     "import": "*",
-    "limit": "8.96 kB",
+    "limit": "8990 B",
     "gzip": true
   },
   {
@@ -1689,6 +1689,27 @@
     "name": "Money charts CSS",
     "path": "dist/css/money-charts.css",
     "limit": "0.6 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "scroll-table (import from '@punji/ui/scroll-table')",
+    "path": "dist/scroll-table/ScrollTable.js",
+    "import": "*",
+    "limit": "2.7 kB",
+    "gzip": true
+  },
+  {
+    "name": "ScrollTable CSS",
+    "path": "dist/css/scroll-table.css",
+    "limit": "0.8 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "Table print CSS",
+    "path": "dist/css/table-print.css",
+    "limit": "0.9 kB",
     "rolldown": false,
     "gzip": true
   }

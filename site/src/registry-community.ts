@@ -406,5 +406,36 @@ export const COMMUNITY_PAGES: readonly PageDef[] = [
     responsive: ['Full width of its container; headers are 44px tall, and long headers wrap.'],
     related: ['tabs', 'show-more', 'card', 'menu'],
   },
+  {
+    slug: 'scroll-table',
+    title: 'ScrollTable',
+    description: 'A read-only sortable data table in a focusable scroll region: sortable heads with aria-sort, a sticky first column, tabular figures and exact footer totals.',
+    lead: 'A sortable table in its own scroll box: keyboard reachable, first column kept in view, exact money, optional totals.',
+    group: 'data',
+    kind: 'component',
+    stability: 'beta',
+    summary: 'The lighter table for reference data a page reads but does not edit: a sector\'s companies, a dividend year, a rate sheet. It is a focusable, named scroll region around a real table. Columns are table-core `ColumnDef`s, so sorting is exact (money compares as bigint minor units, missing values sort last either way) and an `aggregate` column gets a footer total. Sortable heads are buttons with `aria-sort`; figures are end-aligned and tabular; the first column is a row header that stays in view while the rest scrolls sideways. It does not paginate, search, select, group or stack rows: use DataTable or FinancialTable for those.',
+    use: ['A read-only table of 5 to a few hundred rows inside a content page: companies in a sector, dividends by year, a calculator\'s schedule.', 'Totals that must be exact: give a column `aggregate` and `totals`.', 'The replacement for a hand-rolled `<div tabindex="0" role="region"><table>` with sort buttons.'],
+    avoid: ['Pagination, search, selection, grouping or phone card rows: use DataTable or FinancialTable.', 'Thousands of rows: use VirtualFinancialTable.', 'Sorting by a formatted string: give the column an `accessor` that returns the raw value.'],
+    api: [{ name: 'ScrollTable', module: 'scroll-table' }, { name: 'ScrollTableProps', module: 'scroll-table' }, { name: 'ScrollTableSort', module: 'scroll-table' }, { name: 'ScrollTableLabels', module: 'scroll-table' }],
+    examples: [
+      { id: 'basic', title: 'Sortable, sticky first column', note: 'Sort any head; scroll sideways and the company stays. Today carries an arrow and a sign, not only a colour.' },
+      { id: 'totals', title: 'Exact footer totals', note: 'Sums bigint minor units; the caption is shown.' },
+    ],
+    keyboard: ['The region is one tab stop: focus it, then scroll with the arrow keys, Page Up and Page Down.', 'Each sortable head is a button: Tab to it, Enter or Space sorts. The first press is A to Z for words and largest first for figures; the next flips it.'],
+    accessibility: ['A real table with a caption, scoped heads and `aria-sort` (`none` on a sortable head that is not sorted).', 'The region has a name and a visible focus ring; the sort result is announced in a polite status ("Sorted by Close, descending").', 'The first column is a row header (`th scope="row"`). Direction is a sign, an arrow and a word, never colour alone: draw it in your cells.', 'Print: the region carries `pu-print-table`, so the shared table print stylesheet applies (repeated head, whole rows, no clipping, black on white).'],
+    responsive: ['The region scrolls sideways; `hideUnder: 760` folds a less important column away on a phone. It fits a 390px screen without the page scrolling.'],
+    notes: {
+      title: 'Migrating from the web kit',
+      points: [
+        'Replaces `ui/TableScroll` and the 19 hand-rolled `k-tablebox` tables (SectorDetail, DividendYear, Dividends, Calculators, Compare, the learn pages): `role="region"`, `tabIndex={0}` and the caption come from `caption`.',
+        'Web\'s `<th scope="col" className="r wide">` plus a sort button becomes a `ColumnDef`: `sortable: true`, `kind: \'price\'` (or `align: \'end\'`) and `hideUnder: 760`. The sort state, `aria-sort` and the arrow are built in; delete the `useState` and the comparator.',
+        'The comparator is table-core\'s, so a `bigint` or `Money` accessor sorts exactly. Web\'s `-1e9` stand-in for a missing value is not needed: missing sorts last in both directions.',
+        'The first column is the row header and sticky by default (web\'s `th[scope=row]` rule); pass `stickyFirstColumn={false}` to turn it off.',
+        '`cell` returns what the row prints (a `Link`, a `MoneyDisplay`); without it the accessor value prints exactly (`NPR 1234.50`).',
+      ],
+    },
+    related: ['data-table', 'table-presets', 'money-display'],
+  },
   // new:component inserts pages above this line
 ];

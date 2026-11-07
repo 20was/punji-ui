@@ -248,7 +248,7 @@
     "name": "table (import from '@punji/ui/table')",
     "path": "dist/table/Table.js",
     "import": "*",
-    "limit": "2.80 kB",
+    "limit": "3 kB",
     "gzip": true
   },
   {
@@ -298,20 +298,6 @@
     "path": "dist/mui-x-grid/muiXGrid.js",
     "import": "*",
     "limit": "4.55 kB",
-    "gzip": true
-  },
-  {
-    "name": "lightweight-charts (import from '@punji/ui/lightweight-charts')",
-    "path": "dist/lightweight-charts/lightweightCharts.js",
-    "import": "*",
-    "limit": "8.4 kB",
-    "gzip": true
-  },
-  {
-    "name": "echarts (import from '@punji/ui/echarts')",
-    "path": "dist/echarts/echarts.js",
-    "import": "*",
-    "limit": "7.6 kB",
     "gzip": true
   },
   {
@@ -409,7 +395,7 @@
     "name": "Financial compositions",
     "path": "dist/financial/financial.js",
     "import": "*",
-    "limit": "7.17 kB",
+    "limit": "7.38 kB",
     "gzip": true
   },
   {
@@ -857,14 +843,14 @@
     "name": "stock-table (import from '@punji/ui/stock-table')",
     "path": "dist/stock-table/StockTable.js",
     "import": "*",
-    "limit": "11210 B",
+    "limit": "11.28 kB",
     "gzip": true
   },
   {
     "name": "market-movers (import from '@punji/ui/market-movers')",
     "path": "dist/market-movers/MarketMovers.js",
     "import": "*",
-    "limit": "12.17 kB",
+    "limit": "12.50 kB",
     "gzip": true
   },
   {
@@ -934,28 +920,28 @@
     "name": "ledger-table (import from '@punji/ui/ledger-table')",
     "path": "dist/ledger-table/LedgerTable.js",
     "import": "*",
-    "limit": "9770 B",
+    "limit": "9.83 kB",
     "gzip": true
   },
   {
     "name": "journal-entry (import from '@punji/ui/journal-entry')",
     "path": "dist/journal-entry/JournalEntryView.js",
     "import": "*",
-    "limit": "8850 B",
+    "limit": "8.92 kB",
     "gzip": true
   },
   {
     "name": "trial-balance (import from '@punji/ui/trial-balance')",
     "path": "dist/trial-balance/TrialBalance.js",
     "import": "*",
-    "limit": "9.45 kB",
+    "limit": "9.65 kB",
     "gzip": true
   },
   {
     "name": "statement-table (import from '@punji/ui/statement-table')",
     "path": "dist/statement-table/StatementTable.js",
     "import": "*",
-    "limit": "9190 B",
+    "limit": "9.26 kB",
     "gzip": true
   },
   {
@@ -1053,7 +1039,7 @@
     "name": "holdings-table (import from '@punji/ui/holdings-table')",
     "path": "dist/holdings-table/HoldingsTable.js",
     "import": "*",
-    "limit": "11380 B",
+    "limit": "11.45 kB",
     "gzip": true
   },
   {
@@ -1074,7 +1060,7 @@
     "name": "dividend-history (import from '@punji/ui/dividend-history')",
     "path": "dist/dividend-history/DividendHistory.js",
     "import": "*",
-    "limit": "13.48 kB",
+    "limit": "13.57 kB",
     "gzip": true
   },
   {
@@ -1091,7 +1077,7 @@
     "name": "transaction-history with the date picker panel (all chunks)",
     "path": "dist/transaction-history/TransactionHistory.js",
     "import": "*",
-    "limit": "23.42 kB",
+    "limit": "23.92 kB",
     "gzip": true
   },
   {
@@ -1112,7 +1098,7 @@
     "name": "order-list (import from '@punji/ui/order-list')",
     "path": "dist/order-list/OrderList.js",
     "import": "*",
-    "limit": "9530 B",
+    "limit": "9.73 kB",
     "gzip": true
   },
   {
@@ -1416,14 +1402,14 @@
     "name": "aging-table (import from '@punji/ui/aging-table')",
     "path": "dist/aging-table/AgingTable.js",
     "import": "*",
-    "limit": "9260 B",
+    "limit": "9.33 kB",
     "gzip": true
   },
   {
     "name": "tds-summary (import from '@punji/ui/tds-summary')",
     "path": "dist/tds-summary/TdsSummary.js",
     "import": "*",
-    "limit": "9.28 kB",
+    "limit": "9.47 kB",
     "gzip": true
   },
   {
@@ -1644,6 +1630,20 @@
     "gzip": true
   },
   {
+    "name": "icons: one icon (import { IconBell } from '@punji/ui/icons')",
+    "path": "dist/icons/Icons.js",
+    "import": "{ IconBell }",
+    "limit": "600 B",
+    "gzip": true
+  },
+  {
+    "name": "icons: Icon with every glyph (import { Icon } from '@punji/ui/icons')",
+    "path": "dist/icons/Icons.js",
+    "import": "{ Icon }",
+    "limit": "7.5 kB",
+    "gzip": true
+  },
+  {
     "name": "StatusBanner CSS",
     "path": "dist/css/status-banner.css",
     "limit": "0.5 kB",
@@ -1683,6 +1683,27 @@
     "path": "dist/range-selector/RangeSelector.js",
     "import": "*",
     "limit": "1.6 kB",
+    "gzip": true
+  },
+  {
+    "name": "Money charts CSS",
+    "path": "dist/css/money-charts.css",
+    "limit": "0.6 kB",
+    "rolldown": false,
+    "gzip": true
+  },
+  {
+    "name": "lightweight-charts (import from '@punji/ui/lightweight-charts')",
+    "path": "dist/lightweight-charts/lightweightCharts.js",
+    "import": "*",
+    "limit": "8.4 kB",
+    "gzip": true
+  },
+  {
+    "name": "echarts (import from '@punji/ui/echarts')",
+    "path": "dist/echarts/echarts.js",
+    "import": "*",
+    "limit": "7.6 kB",
     "gzip": true
   },
   {
@@ -1773,27 +1794,6 @@
     "name": "LinkRow CSS",
     "path": "dist/css/link-row.css",
     "limit": "870 B",
-    "rolldown": false,
-    "gzip": true
-  },
-  {
-    "name": "icons: one icon (import { IconBell } from '@punji/ui/icons')",
-    "path": "dist/icons/Icons.js",
-    "import": "{ IconBell }",
-    "limit": "600 B",
-    "gzip": true
-  },
-  {
-    "name": "icons: Icon with every glyph (import { Icon } from '@punji/ui/icons')",
-    "path": "dist/icons/Icons.js",
-    "import": "{ Icon }",
-    "limit": "7.5 kB",
-    "gzip": true
-  },
-  {
-    "name": "Money charts CSS",
-    "path": "dist/css/money-charts.css",
-    "limit": "0.6 kB",
     "rolldown": false,
     "gzip": true
   },

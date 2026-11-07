@@ -17,7 +17,8 @@
   .kit-ct-area { position: relative; width: 100%; min-width: 0; direction: ltr }
   .kit-ct-plot { position: relative; width: 100%; height: 100%; touch-action: pan-y; border-radius: 6px }
   .kit-ct-plot:focus-visible { outline: 2px solid var(--pu-color-link); outline-offset: 2px }
-  .kit-ct-plot svg { display: block; overflow: visible; font-family: var(--pu-font-body) }
+  /* max-width: the first commit draws at a fallback width until the container is measured (a lazy chart mounts before it has a layout): the svg scales down to fit for those frames instead of overflowing the page. */
+  .kit-ct-plot svg { display: block; max-width: 100%; overflow: visible; font-family: var(--pu-font-body) }
   .kit-ct-grid { stroke: color-mix(in srgb, var(--pu-color-border-strong) 80%, transparent); stroke-dasharray: 3 3; stroke-width: 1 }
   .kit-ct-grid.base { stroke: var(--pu-color-border-strong); stroke-dasharray: none }
   .kit-ct-axis { fill: var(--pu-color-text-muted); font-size: 11px; font-variant-numeric: var(--pu-font-numeric) }

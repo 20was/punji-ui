@@ -141,6 +141,8 @@ import { useState } from 'react';
 import { Button, Live, Sparkline, VirtualFinancialTable, useDebounce } from '@punji/ui';
 import { CandlestickChart } from '@punji/ui/candlestick-chart';
 import { useHydrated } from '@punji/ui/use-hydrated';
+import { LightweightChart } from '@punji/ui/lightweight-charts';
+import { EChart } from '@punji/ui/echarts';
 
 interface Row { id: string; symbol: string; ltp: number }
 const rows: Row[] = Array.from({ length: 2000 }, (_, i) => ({ id: \`R\${i}\`, symbol: ['NABIL', 'NTC', 'NICA', 'HDL'][i % 4]!, ltp: 400 + (i % 97) }));
@@ -157,6 +159,9 @@ export function Watch() {
       <Live value={price} testId="price">{(n) => (n ?? 0).toFixed(2)}</Live>
       <span data-testid="debounced">{shown}</span>
       <Sparkline values={[1, 3, 2, price]} />
+      {/* The canvas chart adapters are opt-in subpaths: lightweight-charts and echarts are NOT installed in this app, and the build and hydration still pass (the library is passed in, never imported). */}
+      <LightweightChart library={() => Promise.reject(new Error('peer not installed'))} onError={() => undefined} label="Adapter" money={{ currency: 'NPR' }} data={[{ time: '2025-01-01', open: 1n, high: 2n, low: 1n, close: 2n }]} />
+      <EChart library={() => Promise.reject(new Error('peer not installed'))} onError={() => undefined} option={{}} label="Adapter 2" money={{ currency: 'NPR' }} points={[{ label: 'A', values: [1n] }]} seriesNames={['S']} />
       <CandlestickChart candles={candles} label="Daily" formatPrice={(p) => p.toFixed(1)} />
       <VirtualFinancialTable caption="Quotes" rows={rows} rowKey={(r) => r.id} emptyTitle="None" height={300} columns={[
         { key: 'id', label: 'Id', rowHeader: true, render: (r) => r.id },

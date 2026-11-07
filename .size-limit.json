@@ -301,6 +301,20 @@
     "gzip": true
   },
   {
+    "name": "lightweight-charts (import from '@punji/ui/lightweight-charts')",
+    "path": "dist/lightweight-charts/lightweightCharts.js",
+    "import": "*",
+    "limit": "8.4 kB",
+    "gzip": true
+  },
+  {
+    "name": "echarts (import from '@punji/ui/echarts')",
+    "path": "dist/echarts/echarts.js",
+    "import": "*",
+    "limit": "7.6 kB",
+    "gzip": true
+  },
+  {
     "name": "table-export (import from '@punji/ui/table-export')",
     "path": "dist/table-export/TableExport.js",
     "import": "*",

@@ -840,6 +840,14 @@
       "types": "./dist/mui-x-grid/muiXGrid.d.ts",
       "default": "./dist/mui-x-grid/muiXGrid.js"
     },
+    "./lightweight-charts": {
+      "types": "./dist/lightweight-charts/lightweightCharts.d.ts",
+      "default": "./dist/lightweight-charts/lightweightCharts.js"
+    },
+    "./echarts": {
+      "types": "./dist/echarts/echarts.d.ts",
+      "default": "./dist/echarts/echarts.js"
+    },
     "./table-totals": {
       "types": "./dist/table-totals/tableTotals.d.ts",
       "default": "./dist/table-totals/tableTotals.js"
@@ -991,11 +999,13 @@
     "new:component": "node scripts/new-component.mjs"
   },
   "peerDependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "@mui/x-data-grid": "^9.0.0",
     "@tanstack/react-table": "^9.3.1",
     "ag-grid-community": "^36.0.0",
-    "@mui/x-data-grid": "^9.0.0"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "lightweight-charts": "^5.2.0",
+    "echarts": "^6.0.0"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.5",
@@ -1013,10 +1023,12 @@
     "@vitest/coverage-v8": "5.0.5",
     "ag-grid-community": "36.3.0",
     "axe-core": "4.14.0",
+    "echarts": "6.1.0",
     "eslint": "10.14.0",
     "fast-check": "4.10.2",
     "jsdom": "30.1.3",
     "lightningcss": "1.33.0",
+    "lightweight-charts": "5.2.1",
     "lockfile-lint": "5.1.0",
     "oxlint": "1.89.0",
     "playwright": "1.64.1",
@@ -1045,6 +1057,12 @@
       "optional": true
     },
     "@mui/x-data-grid": {
+      "optional": true
+    },
+    "lightweight-charts": {
+      "optional": true
+    },
+    "echarts": {
       "optional": true
     }
   }

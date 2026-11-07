@@ -195,7 +195,7 @@ const wrap = (list: string[], from: string) => {
 };
 
 // Optional adapter subpaths are not re-exported from the root (opt-in, so the root never loads a grid library).
-const OFF_ROOT = new Set(['tanstack-table', 'ag-grid', 'mui-x-grid']);
+const OFF_ROOT = new Set(['tanstack-table', 'ag-grid', 'mui-x-grid', 'lightweight-charts', 'echarts']);
 
 function importLines({ page, api }: PageData): { subpath: string; root: string } {
   const byModule = new Map<string, string[]>();

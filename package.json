@@ -627,6 +627,10 @@
       "types": "./dist/menu/Menu.d.ts",
       "default": "./dist/menu/Menu.js"
     },
+    "./row-menu": {
+      "types": "./dist/row-menu/RowMenu.d.ts",
+      "default": "./dist/row-menu/RowMenu.js"
+    },
     "./breadcrumb": {
       "types": "./dist/breadcrumb/Breadcrumb.d.ts",
       "default": "./dist/breadcrumb/Breadcrumb.js"

@@ -15,8 +15,6 @@
  *     LinkProvider; `href` goes through safeHref), checkboxes or radios.
  *   - The panel floats in a portal at `--pu-z-dropdown`, below the button, and
  *     flips above it when there is not room below.
- *   - `phone="sheet"` opens the same menu as the bottom Sheet under 768px (a
- *     row's "..." menu); the sheet is modal (inert page, scroll lock, focus scope).
  *   - `MenuList` is the role="menu" list on its own (inside your Popover or Sheet),
  *     with `MenuHead`, `MenuItemRow` and `MenuSeparator` as children.
  */
@@ -25,9 +23,7 @@ import { createPortal } from 'react-dom';
 
 import { AppLink } from '../internal/link.tsx';
 import type { LinkComponent } from '../internal/link.tsx';
-import { Sheet } from '../overlay/Overlay.tsx';
 import { useControllableState } from '../use-controllable-state/useControllableState.ts';
-import { useMediaQuery } from '../use-media-query/useMediaQuery.ts';
 
 interface MenuItemBase {
   /** Unique within the menu. */
@@ -131,12 +127,6 @@ export interface MenuButtonProps {
   defaultOpen?: boolean;
   /** Called with the next state when it opens or closes. */
   onOpenChange?: (open: boolean) => void;
-  /** 'sheet': under 768px the menu opens as the bottom Sheet (44px rows, over the page) instead of a popover. Default 'popover'. */
-  phone?: 'popover' | 'sheet';
-  /** The phone sheet's heading (the row's code, "NABIL"). Defaults to `label`. */
-  sheetTitle?: ReactNode;
-  /** The phone sheet's close button name (default "Close"). */
-  closeLabel?: string;
   /** Link component for in-app `href` items; wins over LinkProvider. */
   linkComponent?: LinkComponent;
   /** Becomes data-testid on the button; the menu gets `<testId>-menu`. */
@@ -498,15 +488,13 @@ export function MenuList({ label, items, children, onLeave, onClose, onEscape, a
  * A button that opens a menu of actions (WAI-ARIA Menu Button).
  * @stability beta
  */
-export function MenuButton({ label, items, children, iconOnly = false, icon, align = 'start', disabled, open: openProp, defaultOpen = false, onOpenChange, phone = 'popover', sheetTitle, closeLabel, linkComponent, testId, className }: MenuButtonProps) {
+export function MenuButton({ label, items, children, iconOnly = false, icon, align = 'start', disabled, open: openProp, defaultOpen = false, onOpenChange, linkComponent, testId, className }: MenuButtonProps) {
   const [open, setOpen] = useControllableState<boolean>({ value: openProp, defaultValue: defaultOpen, onChange: onOpenChange, name: 'MenuButton open' });
   const [start, setStart] = useState<'first' | 'last'>('first');
   const button = useRef<HTMLButtonElement>(null);
   const menu = useRef<HTMLDivElement>(null);
   const typed = useRef<Typed>({ text: '', timer: 0 });
   const id = useId();
-  const narrow = useMediaQuery('(max-width: 767px)');
-  const sheet = phone === 'sheet' && narrow;
   const show = (from: 'first' | 'last' = 'first') => {
     setStart(from);
     setOpen(true);
@@ -518,7 +506,7 @@ export function MenuButton({ label, items, children, iconOnly = false, icon, ali
   const body = typeof children === 'function' ? children(() => close(true)) : children;
 
   useLayoutEffect(() => {
-    if (!open || sheet) return;
+    if (!open) return;
     const el = menu.current, anchor = button.current;
     if (!el || !anchor) return;
     const place = () => {
@@ -558,7 +546,7 @@ export function MenuButton({ label, items, children, iconOnly = false, icon, ali
       document.removeEventListener('pointerdown', away);
       window.clearTimeout(timer.timer);
     };
-  }, [open, sheet, align, start, setOpen]);
+  }, [open, align, start, setOpen]);
 
   const onButtonKey = (e: KeyboardEvent<HTMLButtonElement>) => {
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
@@ -581,9 +569,9 @@ export function MenuButton({ label, items, children, iconOnly = false, icon, ali
         type="button"
         id={`${id}-button`}
         className={`pu-menu-button${iconOnly ? ' pu-menu-icon' : ''}${className ? ` ${className}` : ''}`}
-        aria-haspopup={sheet ? 'dialog' : 'menu'}
+        aria-haspopup="menu"
         aria-expanded={open}
-        aria-controls={open && !sheet ? `${id}-menu` : undefined}
+        aria-controls={open ? `${id}-menu` : undefined}
         aria-label={label}
         disabled={disabled}
         onClick={() => (open ? close(true) : show())}
@@ -599,13 +587,7 @@ export function MenuButton({ label, items, children, iconOnly = false, icon, ali
           </>
         )}
       </button>
-      {sheet ? (
-        <Sheet open={open} title={sheetTitle ?? label} onClose={() => close(true)} closeLabel={closeLabel} testId={testId ? `${testId}-sheet` : undefined}>
-          <MenuList label={label} items={items} onClose={(refocus) => close(refocus ?? true)} linkComponent={linkComponent} testId={testId ? `${testId}-menu` : undefined}>
-            {body}
-          </MenuList>
-        </Sheet>
-      ) : open && typeof document !== 'undefined'
+      {open && typeof document !== 'undefined'
         ? createPortal(
             <div
               ref={menu}
@@ -629,38 +611,5 @@ export function MenuButton({ label, items, children, iconOnly = false, icon, ali
           )
         : null}
     </MenuContext.Provider>
-  );
-}
-
-export interface RowMenuProps {
-  /** The button's and the menu's name, with the row's own ("More for NABIL"). */
-  label: string;
-  /** The phone sheet's heading (the row's code, "NABIL"). */
-  title: ReactNode;
-  /** The sheet's close button name (Esc and a tap on the scrim close it too). */
-  closeLabel?: string;
-  /** The items (MenuItemRow, MenuSeparator); `close` shuts the menu. */
-  children: ReactNode | ((close: () => void) => ReactNode);
-  /** Becomes data-testid on the button; the menu gets `<testId>-menu`, the phone sheet `<testId>-sheet`. */
-  testId?: string;
-  /** Control the menu when a nested action needs to return to it. */
-  open?: boolean;
-  /** Starting state when uncontrolled. */
-  defaultOpen?: boolean;
-  /** Called with the next state. */
-  onOpenChange?: (open: boolean) => void;
-  /** Link component for in-app `to` items. */
-  linkComponent?: LinkComponent;
-}
-
-/**
- * A row's "..." menu (the web kit's RowMenu): a popover under the button, the bottom Sheet under 768px.
- * @stability beta
- */
-export function RowMenu({ label, title, closeLabel, children, testId, open, defaultOpen, onOpenChange, linkComponent }: RowMenuProps) {
-  return (
-    <MenuButton label={label} iconOnly phone="sheet" sheetTitle={title} closeLabel={closeLabel} testId={testId} open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange} linkComponent={linkComponent}>
-      {children}
-    </MenuButton>
   );
 }

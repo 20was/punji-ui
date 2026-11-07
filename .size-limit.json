@@ -1532,6 +1532,13 @@
     "gzip": true
   },
   {
+    "name": "row-menu (import from '@punji/ui/row-menu')",
+    "path": "dist/row-menu/RowMenu.js",
+    "import": "*",
+    "limit": "6 kB",
+    "gzip": true
+  },
+  {
     "name": "breadcrumb (import from '@punji/ui/breadcrumb')",
     "path": "dist/breadcrumb/Breadcrumb.js",
     "import": "*",

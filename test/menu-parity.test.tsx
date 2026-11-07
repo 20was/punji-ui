@@ -3,7 +3,7 @@ import { userEvent } from '@testing-library/user-event';
 import { useState } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { MenuButton, MenuHead, MenuItemRow, MenuList, MenuSeparator, RowMenu } from '../src/index.ts';
+import { MenuButton, MenuHead, MenuItemRow, MenuList, MenuSeparator, RowMenu, SheetMenuButton } from '../src/index.ts';
 import type { MenuItem } from '../src/index.ts';
 import { seriousViolations } from './axe.ts';
 
@@ -121,7 +121,7 @@ describe('phone sheet', () => {
   it('stays a popover on a wide screen', async () => {
     phone(false);
     const user = userEvent.setup();
-    render(<MenuButton label="Actions for NABIL" iconOnly phone="sheet" sheetTitle="NABIL" items={rows(() => {})} />);
+    render(<SheetMenuButton label="Actions for NABIL" iconOnly sheetTitle="NABIL" items={rows(() => {})} />);
     const button = screen.getByRole('button', { name: 'Actions for NABIL' });
     expect(button.getAttribute('aria-haspopup')).toBe('menu');
     await user.click(button);
@@ -135,7 +135,7 @@ describe('phone sheet', () => {
     const spy = vi.fn<() => void>();
     render(
       <>
-        <MenuButton label="Actions for NABIL" iconOnly phone="sheet" sheetTitle="NABIL" items={rows(spy)} />
+        <SheetMenuButton label="Actions for NABIL" iconOnly sheetTitle="NABIL" items={rows(spy)} />
         <button type="button">outside</button>
       </>,
     );
@@ -159,7 +159,7 @@ describe('phone sheet', () => {
   it('closes on Escape and returns focus to the button', async () => {
     phone(true);
     const user = userEvent.setup();
-    render(<MenuButton label="Actions" phone="sheet" items={rows(() => {})} />);
+    render(<SheetMenuButton label="Actions" items={rows(() => {})} />);
     const button = screen.getByRole('button', { name: 'Actions' });
     await user.click(button);
     expect(screen.getByRole('dialog')).toBeTruthy();

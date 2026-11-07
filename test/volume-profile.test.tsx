@@ -31,7 +31,7 @@ describe('VolumeProfile', () => {
     widthOf(520);
     const { container } = render(<VolumeProfile bars={BARS} rows={10} label="Volume at price" locale="en-US" />);
     const total = BARS.reduce((s, b) => s + (b.volume as bigint), 0n);
-    expect(total.toLocaleString('en-US')).toBe('123,456,789,012,345,698,901'.replace('698,901', '698,901'));
+    expect(total.toLocaleString('en-US')).toBe('123,456,789,012,345,698,901');
     const sum = [...container.querySelectorAll('tbody tr')].reduce((s, tr) => s + BigInt(tr.children[1]!.textContent!.replaceAll(',', '')), 0n);
     expect(sum).toBe(total);
     expect(container.textContent).toContain(`total volume ${total.toLocaleString('en-US')}`);

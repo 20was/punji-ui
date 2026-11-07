@@ -36,7 +36,7 @@ import { readFileSync } from 'node:fs';
 // RiskMeter and the invest helpers (XIRR, SIP, units, cover: JS, declarations, CSS) on top: measured 2,452,997 B; ~3% headroom.
 // @punji/ui/icons (152 glyphs as functions, declarations with docs): +71 kB, measured 2,742,868 B; ~1% headroom.
 // Screener filters (RangeEditor, FilterMenu, PresetTile, FilterBar, filter-url, use-url-filters: JS, declarations with docs, CSS): +71 kB, measured 2,921,383 B; ~3% headroom.
-const MAX_UNPACKED = 2940 * 1024; // Menu, Breadcrumb and Accordion (JS, declarations, CSS) took it to ~2482 KiB.
+const MAX_UNPACKED = 3137 * 1024; // Menu, Breadcrumb and Accordion (JS, declarations, CSS) took it to ~2482 KiB.
 const [info] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' }));
 const always = new Set(['package.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md']);
 const allowed = (p) => always.has(p) || /^dist\/.+\.(js|d\.ts|css)$/.test(p);

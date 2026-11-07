@@ -6,6 +6,7 @@ export * from './dialog/Dialog.tsx';
 export * from './drawer/Drawer.tsx';
 export * from './drawer-screen/DrawerScreen.tsx';
 export * from './floating-tooltip/FloatingTooltip.tsx';
+export * from './icons/Icons.tsx';
 export * from './info-tip/InfoTip.tsx';
 export * from './list-filter/ListFilter.tsx';
 export * from './popover/Popover.tsx';

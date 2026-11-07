@@ -5,6 +5,7 @@
 // Adding a page = one entry here + one example file per variant in
 // site/src/examples/<slug>/<id>.tsx. See site/README.md.
 
+import { buildMatrix, matrixNote } from './a11y-matrix.ts';
 import { GUIDES } from './registry-guides.ts';
 import { GENERIC_PAGES } from './registry-generic.ts';
 import { FORMS_PAGES } from './registry-forms.ts';
@@ -164,6 +165,13 @@ export interface GuideCode {
   text?: string;
 }
 
+/** A table in a guide. Cells take the same inline `code` and [link](/path/) markup as paragraphs. */
+export interface GuideTable {
+  caption: string;
+  head: readonly string[];
+  rows: readonly (readonly string[])[];
+}
+
 export interface GuideSection {
   id: string;
   title: string;
@@ -172,11 +180,14 @@ export interface GuideSection {
   /** A bulleted list under the paragraphs, same inline markup. */
   points?: readonly string[];
   code?: readonly GuideCode[];
+  /** A table after the list. A section with `generated: 'a11y-matrix'` gets its table and a note from the component pages (a11y-matrix.ts). */
+  table?: GuideTable;
+  generated?: 'a11y-matrix';
 }
 
 const ui = (module: string, ...names: string[]): ApiRef[] => names.map((name) => ({ name, module }));
 
-export const PAGES: readonly PageDef[] = [
+const BASE_PAGES: readonly PageDef[] = [
   ...GUIDES,
   {
     slug: 'colour-tokens',
@@ -2127,6 +2138,13 @@ export const PAGES: readonly PageDef[] = [
   // Scaffolded with npm run new:component, waiting to move into a domain file.
   ...COMMUNITY_PAGES,
 ];
+
+/** The accessibility statement's generated table and note come from the pages above, so they cannot drift (a11y-matrix.ts). */
+export const PAGES: readonly PageDef[] = BASE_PAGES.map((page) =>
+  page.guide?.some((s) => s.generated)
+    ? { ...page, guide: page.guide.map((s) => (s.generated === 'a11y-matrix' ? { ...s, paragraphs: [...s.paragraphs, matrixNote(BASE_PAGES)], table: buildMatrix(BASE_PAGES) } : s)) }
+    : page,
+);
 
 /** The page's one-line lead: its own `lead`, else LEADS[slug], else the first sentence of `description`. */
 export const leadOf = (page: PageDef): string => page.lead ?? LEADS[page.slug] ?? (page.description.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? page.description);

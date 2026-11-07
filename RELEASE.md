@@ -2,7 +2,7 @@
 
 How an npm release works as implemented at the current `main`.
 
-> **Published:** `@punji/ui@0.2.0` on 2026-11-02 (and `0.1.0` on 2026-11-01) through `release.yml` with npm Trusted Publishing and SLSA provenance (GitHub releases `v0.2.0` and `v0.1.0`, each with the CycloneDX SBOM attached). Later releases follow the flow below: merge PRs with changesets, then review and merge the `chore(release): version packages` PR, then approve the `npm` environment.
+> **Published:** `@punji/ui@0.4.0` is the latest (0.3.0 and 0.4.0 on 2026-11-07, 0.2.0 on 2026-11-02, 0.1.0 on 2026-11-01) through `release.yml` with npm Trusted Publishing and SLSA provenance (GitHub releases `v0.1.0` to `v0.4.0`, each with the CycloneDX SBOM attached). Later releases follow the flow below: merge PRs with changesets, then review and merge the `chore(release): version packages` PR, then approve the `npm` environment.
 
 ## Flow
 

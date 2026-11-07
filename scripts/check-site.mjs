@@ -32,6 +32,10 @@ let cell = 0;
 const failures = [];
 const checked = { variants: 0, tabs: 0 };
 const fail = (message) => { failures.push(message); console.error(`FAIL ${message}`); };
+// Apps are late chunks: the server HTML is on screen first, and a click or key before React hydrates it is lost. React
+// stamps __reactProps$ on a DOM node when it adopts it, so "hydrated" is observable; wait for it instead of repeating
+// the input until it takes (a repeated toggle undoes itself).
+const hydrated = (page, testId) => page.waitForFunction((id) => { const el = document.querySelector(`[data-testid="${id}"]`); return !!el && Object.keys(el).some((k) => k.startsWith('__reactProps$')); }, testId, { timeout: 20000 });
 const routes = [{ slug: '', title: 'Overview', path: '/' }, ...PAGES.map((p) => ({ ...p, path: pagePath(p) }))];
 const HOME_H1 = 'React components for money, markets and ledgers.';
 const flagCounts = { edge: 0, clip: 0, dup: 0, icon: 0, card: 0, edgeAllowed: 0, cardAllowed: 0 };
@@ -272,6 +276,7 @@ try {
           await page.goto(`${base}${pagePath(app)}`);
           await page.locator('#page-title').waitFor();
           await page.addScriptTag({ content: axeSource });
+          await hydrated(page, `screen-${app.app.screens[0].id}`);
           for (const screen of app.app.screens) {
             const name = `app ${app.slug} ${width} ${theme} #${screen.id}`;
             await page.getByTestId(`screen-${screen.id}`).click();
@@ -342,6 +347,7 @@ try {
     // the app chrome is gone, sections start a page and the text is black.
     await t.goto(`${base}/apps/reconciliation-desk/#queue`);
     await t.locator('[data-screen="queue"] [data-screen-title]').waitFor();
+    await hydrated(t, 'rc-match');
     for (const n of ['1', '2', '3']) await t.getByRole('checkbox', { name: new RegExp(`Select Salary transfer ${n} of 3`) }).check();
     await t.getByRole('checkbox', { name: /Select Staff salary batch/ }).check();
     await t.getByTestId('rc-match').click();
@@ -351,6 +357,7 @@ try {
     if ((await t.getByText('Reconciles').count()) < 2) fail('reconciliation desk: the report totals do not reconcile with the closing balances');
     await t.goto(`${base}/apps/account-statements/`);
     await t.getByTestId('st-paper').waitFor();
+    await hydrated(t, 'st-drift');
     await t.getByTestId('st-drift').click();
     if (!(await t.getByTestId('st-print').isDisabled())) fail('account statements: a statement that does not reconcile can be printed');
     await t.getByTestId('st-drift').click();
@@ -363,11 +370,12 @@ try {
     // pushes Utilities over its budget, which the budget screen then says.
     await t.goto(`${base}/apps/treasury-desk/`);
     await t.getByTestId('td-alert-warn').waitFor({ timeout: 5000 }).catch(() => fail('treasury desk: the base case does not warn about the target buffer'));
-    // The app is a late chunk: its server HTML shows at once and a key pressed before it hydrates is lost, so press until it takes.
-    for (let i = 0; i < 20 && !(await t.getByTestId('td-alert-danger').isVisible()); i++) {
-      await t.keyboard.press('s');
-      await t.waitForTimeout(250);
-    }
+    // The app is a late chunk: its server HTML shows at once and a key pressed before it hydrates is lost. Wait for the
+    // app to say it is hydrated (its hotkeys are attached), press S exactly once (it toggles, so never twice), and assert
+    // on the switch's observable state, then on the banner.
+    await t.locator('[data-testid="td-scenario-note"][data-hydrated="true"]').waitFor({ timeout: 15000 }).catch(() => fail('treasury desk: the app did not hydrate'));
+    await t.keyboard.press('s');
+    await t.locator('[data-testid="td-stress"][aria-checked="true"]').waitFor({ timeout: 15000 }).catch(() => fail('treasury desk: S did not switch the stress case on'));
     await t.getByTestId('td-alert-danger').waitFor({ timeout: 5000 }).catch(() => fail('treasury desk: the stress case (S) did not breach the buffer'));
     await t.getByTestId('screen-payments').click();
     await t.locator('[data-screen="payments"] [data-screen-title]').waitFor();
@@ -380,6 +388,7 @@ try {
     if ((await t.getByText('Reconciles').count()) < 2) fail('treasury desk: the forecast totals do not reconcile with the items');
     await t.goto(`${base}/apps/personal-finance/#bills`);
     await t.locator('[data-screen="bills"] [data-screen-title]').waitFor();
+    await hydrated(t, 'pf-pay-power');
     for (const id of ['power', 'internet', 'mobile']) await t.getByTestId(`pf-pay-${id}`).click();
     await t.getByTestId('screen-budget').click();
     await t.locator('[data-screen="budget"] [data-screen-title]').waitFor();
@@ -390,6 +399,7 @@ try {
     // on Home is the old balance less the bill plus its cashback.
     await t.goto(`${base}/apps/retail-banking/`);
     await t.getByTestId('rb-total').waitFor();
+    await hydrated(t, 'screen-transfer');
     const totalBefore = await t.getByTestId('rb-total').textContent();
     await t.getByTestId('screen-transfer').click();
     await t.locator('[data-screen="transfer"] [data-screen-title]').waitFor();
@@ -409,13 +419,12 @@ try {
     if (Math.round((rupees(totalBefore) - rupees(totalAfter)) * 100) !== 150_000) fail(`retail banking: Home total went from ${totalBefore} to ${totalAfter}, not down by Rs 1,500`);
     await t.goto(`${base}/apps/digital-wallet/#bills`);
     await t.locator('[data-screen="bills"] [data-screen-title]').waitFor();
-    // The bills screen loads on demand; fill and fetch again if a busy machine dropped the first attempt.
-    for (let attempt = 0; attempt < 3; attempt += 1) {
-      await t.getByTestId('dw-electricity-id').fill('1234567');
-      await t.getByTestId('dw-electricity-fetch').click();
-      if (await t.locator('[data-testid="dw-electricity-bill"][data-state="ready"]').waitFor({ timeout: 5000 }).then(() => true, () => false)) break;
-      if (attempt === 2) fail('digital wallet: the electricity bill did not load');
-    }
+    // The bills screen loads on demand: wait until it is the current screen and its field is hydrated, then act once.
+    await t.locator('[data-testid="screen-bills"][aria-current="page"]').waitFor({ timeout: 20000 });
+    await hydrated(t, 'dw-electricity-fetch');
+    await t.getByTestId('dw-electricity-id').fill('1234567');
+    await t.getByTestId('dw-electricity-fetch').click();
+    await t.locator('[data-testid="dw-electricity-bill"][data-state="ready"]').waitFor({ timeout: 15000 }).catch(() => fail('digital wallet: the electricity bill did not load'));
     await t.getByTestId('dw-electricity-pay').click({ timeout: 10000 });
     await t.locator('[data-testid="dw-pin"] button').first().focus();
     await t.keyboard.type('2580');

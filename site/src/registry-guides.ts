@@ -233,7 +233,7 @@ export const GUIDES: readonly PageDef[] = [
     description: 'Wrap your router link once with LinkProvider and every Punji link, button and row routes through it: React Router, Next.js Link and TanStack Router.',
     summary:
       'Punji has no router dependency. Components that take an `href` render a plain `<a>` unless you give them a link component. Wrap your router\'s link once in `LinkProvider` and Button, CardLink, StatusPill, CheckRow, ValueRow, LinkTable and PageHeader all use it for in-app paths. A `linkComponent` prop on one component still wins, and absolute web, mailto and tel addresses always stay a plain `<a>`.',
-    related: ['using', 'nextjs', 'vite', 'card-link', 'button'],
+    related: ['using', 'nextjs', 'vite', 'card-link', 'button', 'route-announcer'],
     api: [{ name: 'LinkProvider', module: 'link' }, { name: 'LinkProviderProps', module: 'link' }, { name: 'useLinkComponent', module: 'link' }, { name: 'safeHref', module: 'link' }, { name: 'LinkComponent', module: 'link' }, { name: 'LinkProps', module: 'link' }],
     guide: [
       {
@@ -297,7 +297,7 @@ export const GUIDES: readonly PageDef[] = [
     description: 'Every token is a --pu-* CSS variable in cascade layers. Switch theme, contrast and density, apply a bank brand with createTheme, and support RTL.',
     summary:
       'Components read --pu-* CSS variables, never literals, and all of them are in cascade layers. Four colour themes (light, dark and a high-contrast pair), three densities and right-to-left layout are attributes on any element; a brand is a typed `createTheme` call whose contrast is checked when it is generated. Try every mode below.',
-    related: ['accessibility-modes', 'colour-tokens', 'spacing', 'tailwind'],
+    related: ['accessibility-modes', 'colour-tokens', 'spacing', 'tailwind', 'theme-provider'],
     examples: [{ id: 'switcher', title: 'Theme, contrast, density and direction', note: 'One panel, four attributes. Everything inside follows them.' }],
     guide: [
       {
@@ -551,7 +551,7 @@ export const GUIDES: readonly PageDef[] = [
     description: 'What the package does to stay safe (no HTML from strings, one dependency, signed releases) and what stays yours: formula injection, masking, server validation.',
     summary:
       'Components render text as text, the package has one reviewed runtime dependency and releases carry provenance. Client-side checks are conveniences: validate and authorise on the server, neutralise exports, and mask sensitive values before they reach a component.',
-    related: ['csv-export', 'ledger-helpers', 'currency-input', 'using'],
+    related: ['csv-export', 'ledger-helpers', 'currency-input', 'accessibility', 'using'],
     guide: [
       {
         id: 'package',
@@ -600,6 +600,171 @@ export const GUIDES: readonly PageDef[] = [
         title: 'Reporting a vulnerability',
         paragraphs: [
           'Do not open a public issue. Report privately through GitHub (Security, then Report a vulnerability, on the [repository](https://github.com/20was/punji-ui/security/advisories/new)) or email contact@punji.app with "SECURITY" in the subject. You get an acknowledgement within 3 working days and a first assessment within 10. Until 1.0 only the latest `0.x` receives fixes.',
+        ],
+      },
+    ],
+  }),
+  guide({
+    slug: 'accessibility',
+    title: 'Accessibility',
+    lead: 'WCAG 2.2 AA target, what is tested, every component, known gaps and screen-reader scripts.',
+    description: 'Accessibility statement for Punji UI: WCAG 2.2 AA target, what is tested automatically, a per-component table, known gaps and screen-reader test scripts.',
+    summary:
+      'Punji UI targets WCAG 2.2 level AA. This page says what is checked automatically on every build, lists the keyboard and screen-reader behaviour of every component from the same data as the component pages, names the gaps, and gives the screen-reader scripts for five money tasks. No manual assistive-technology testing has been run yet, and no result below claims otherwise.',
+    related: ['security', 'theming', 'inline-confirm', 'currency-input', 'data-table'],
+    guide: [
+      {
+        id: 'target',
+        title: 'Target and status',
+        paragraphs: [
+          'The target is WCAG 2.2 level AA for the components, plus the matching WAI-ARIA Authoring Practices (APG) pattern where one exists. It is a target, not a certification: the checks below were written and run by the maintainers, no third-party audit has been done, and automated tools find only part of the WCAG criteria. Do not read this page as a claim of conformance.',
+          'Your app is responsible for its own conformance. A component library can supply labels, roles and keyboard behaviour, but page structure, headings, link text, error wording and translations are yours to get right.',
+        ],
+      },
+      {
+        id: 'automated',
+        title: 'What is verified automatically',
+        paragraphs: ['Each of these runs in CI or in the lint step of `npm run verify`. The source for each is in the repository.'],
+        points: [
+          'axe-core in the unit tests (vitest, jsdom): many component test files run axe and fail on serious or critical violations. jsdom has no layout, so the colour-contrast rule is switched off there.',
+          'axe-core in a real browser (Playwright, Chromium): every visual fixture, in the light and dark themes, at 390 and 1440 px wide, with colour contrast on (`test/visual/specs/a11y.spec.ts`). The high-contrast themes are drawn in the `theme-modes` fixture and checked by the contrast script below, not by a separate axe sweep.',
+          'axe-core on this documentation site (`scripts/check-site.mjs`): every page, every example variant and every tab, at 390 and 1440 px, light and dark, plus a check that nothing overflows sideways.',
+          'Contrast gate (`scripts/check-contrast.mjs`, part of `npm run lint`): 65 colour pairs in each of the four themes (light, dark, light-hc, dark-hc) pass, and it fails the build if a pair drops below its threshold. Text needs 4.5:1 in light and dark (WCAG 1.4.3) and 7:1 in the high-contrast themes (the AAA level, 1.4.6); non-text parts need 3:1 and 4.5:1 (1.4.11). Gain and loss colours must also differ in luminance by at least 1.4:1, so direction is never hue alone. The lowest text ratios today are 4.61 in light, 4.90 in dark, 8.09 in light-hc and 7.34 in dark-hc.',
+          'Keyboard tests: unit and Playwright specs drive combobox, select, drawer and dialog focus trap and Escape, popover, command palette, tabs, tables and the date picker with the keyboard. They cover those controls, not every component.',
+          'Reduced motion: 17 stylesheets switch animation off under `prefers-reduced-motion: reduce`, the `useMediaQuery` hook is tested against that query, and the live-figure flash is tested to show the new value without animating. There is no sweep that proves every animation honours it.',
+          'Direction is never colour alone: components that show a gain or a loss draw a sign, an arrow and a spoken word, and a missing amount is announced as "No value", never as zero.',
+        ],
+      },
+      {
+        id: 'focus',
+        title: 'Focus management in overlays',
+        paragraphs: [
+          'Dialog, alert dialog and Drawer set up three things in a fixed order: the rest of the page becomes `inert`, then page scroll is locked, then a focus scope traps Tab and handles Escape. React runs effect clean-ups in the same order, so on close the page is made live again before focus returns to the element that opened the overlay. Without that order focus can be sent to an element that is still inert and is lost. The order is written into the source (`src/dialog/Dialog.tsx`, `src/drawer/Drawer.tsx`) and the overlay tests cover the trap and the return of focus.',
+        ],
+      },
+      {
+        id: 'matrix',
+        title: 'Components: pattern, keyboard and screen reader',
+        paragraphs: [
+          'This table is generated from the accessibility, keyboard, spoken, pattern and stability fields of each component page. It is not typed by hand. A test (`test/accessibility-statement.test.ts`) fails if a component page is missing the keyboard or accessibility notes the table needs, so the statement cannot quietly go stale.',
+        ],
+        generated: 'a11y-matrix',
+      },
+      {
+        id: 'gaps',
+        title: 'Known gaps and limitations',
+        paragraphs: ['Stated plainly. Most are also in [QUALITY.md](' + REPO + '/QUALITY.md) or [docs/THEMING.md](' + REPO + '/docs/THEMING.md).'],
+        points: [
+          'No manual screen-reader testing has been done: not VoiceOver, NVDA, JAWS or TalkBack. The expected announcements on this page come from reading the code and the tests. The scripts below exist so that this can be done and the results recorded.',
+          'No third-party accessibility audit, and no formal VPAT or Accessibility Conformance Report.',
+          'Browsers: the automated browser checks run in Chromium only. Firefox and WebKit are not tested.',
+          'Not tested: browser zoom, text-spacing overrides (WCAG 1.4.4, 1.4.12), 200% reflow, and Windows High Contrast / forced colours. Forced-colours rules exist and are checked by unit tests and fixtures, but not on a Windows machine.',
+          'Touch target size (44 px on coarse pointers) and focus ring visibility are checked by review, not by an automated test.',
+          'DataTable and FinancialTable mark the sorted column with `aria-sort`, but pressing a sort button does not announce the change in a live region. VirtualFinancialTable does (a polite status such as "Sorted by Price descending"). Whether the sorted state is read after activating the button depends on the screen reader and is one of the scripted checks below.',
+          'InlineConfirm has no typed-confirmation mode (there is no `match` prop in this version), so a confirmation that asks the person to type a word cannot be built with it; the scripted confirm task covers the two-step button confirm only.',
+          'Most components do not name an APG pattern in the table above: many are native elements or compositions, but the registry does not say so per component, and that is a documentation gap.',
+          'The date picker and the Bikram Sambat calendar have keyboard tests but no VoiceOver or NVDA check ([docs/CALENDAR.md](' + REPO + '/docs/CALENDAR.md)).',
+          'Spoken words in Nepali (labels such as "up", "down", "No value") are supplied through `labels` props with English defaults; the Nepali wording has not had a native-speaker review.',
+          'Charts expose a figure, a keyboard cursor, a live region and a hidden data table (see [ChartA11yShell](/components/chart-a11y-shell/)), but the experience has not been tried with a screen reader.',
+        ],
+      },
+      {
+        id: 'report',
+        title: 'Reporting an accessibility problem',
+        paragraphs: [
+          'Open an issue using the [bug report form](https://github.com/20was/punji-ui/issues/new?template=bug_report.yml) and put "Accessibility" at the start of the title. Say which component, which browser and screen reader (with versions), what you did, what was announced and what you expected. If you cannot use GitHub, email contact@punji.app with "Accessibility" in the subject. Barriers that block a money task (reading a balance, entering an amount, confirming a payment) are treated as bugs, not enhancements.',
+        ],
+      },
+      {
+        id: 'sr-results',
+        title: 'Screen-reader results',
+        paragraphs: [
+          'These are scripted checks for five money tasks. The expected announcements come from the component code and tests listed with each script; they are predictions. Nobody has run these scripts on a real screen reader yet, so every result is "Expected — awaiting manual verification". When someone runs one, they replace that result with Pass, Fail or Partial, add the date, the software versions and what was actually heard, and link the issue for any failure.',
+          'Planned pairs: VoiceOver with Safari on macOS, and NVDA with Firefox on Windows. TalkBack with Chrome on Android is a later addition.',
+        ],
+        table: {
+          caption: 'Screen-reader results for five money tasks',
+          head: ['Task', 'Component', 'VoiceOver + Safari', 'NVDA + Firefox', 'Date tested'],
+          rows: [
+            ['1. Read a balance', '[MoneyDisplay](/components/money-display/)', 'Expected — awaiting manual verification', 'Expected — awaiting manual verification', 'Not yet run'],
+            ['2. Compare gain and loss', '[PriceChange](/components/price-change/)', 'Expected — awaiting manual verification', 'Expected — awaiting manual verification', 'Not yet run'],
+            ['3. Enter an amount', '[CurrencyInput](/components/currency-input/)', 'Expected — awaiting manual verification', 'Expected — awaiting manual verification', 'Not yet run'],
+            ['4. Sort a table by amount', '[DataTable and FinancialTable](/components/data-table/)', 'Expected — awaiting manual verification', 'Expected — awaiting manual verification', 'Not yet run'],
+            ['5. Confirm a destructive action', '[InlineConfirm](/components/inline-confirm/)', 'Expected — awaiting manual verification', 'Expected — awaiting manual verification', 'Not yet run'],
+          ],
+        },
+      },
+      {
+        id: 'sr-task-1',
+        title: 'Script 1: read a balance',
+        paragraphs: [
+          'Open the [MoneyDisplay](/components/money-display/) page. Source: `src/money-display/MoneyDisplay.tsx`; the spoken output is recorded on the page.',
+          'Result: Expected — awaiting manual verification. Date tested: ____-__-__. Software and versions: ________. What was heard: ________.',
+        ],
+        points: [
+          'Move the reading cursor onto the balance example (VoiceOver: VO+Right Arrow; NVDA: Down Arrow in browse mode).',
+          'Expected: the amount is read once, as words with the full currency name, for example "1,234.50 Nepalese rupees". The shortened symbol alone is not read, because several currencies share it, and the visible text is hidden from the screen reader so the amount is not read twice.',
+          'Move to an example with a missing amount. Expected: "No value", never "zero" and never a bare dash.',
+          'Record the phrase actually heard, including whether the sign of a negative balance is spoken.',
+        ],
+      },
+      {
+        id: 'sr-task-2',
+        title: 'Script 2: compare gain and loss',
+        paragraphs: [
+          'Open the [PriceChange](/components/price-change/) page and the [holdings table](/components/holdings-table/). Source: `src/price-change/PriceChange.tsx`.',
+          'Result: Expected — awaiting manual verification. Date tested: ____-__-__. Software and versions: ________. What was heard: ________.',
+        ],
+        points: [
+          'Read a gain, a loss and an unchanged value in turn.',
+          'Expected: each starts with a direction word and then the amount and percent, for example "up 5.50 (5.50%)", "down 5.50 (5.50%)" and "unchanged". The arrow icon is hidden from the screen reader and the visible sign is not read as well, so the direction is heard once. The words come from the `labels` prop and the amount wording follows the currency display setting.',
+          'In the holdings table, move through a row. Expected: the same wording inside the cells, so a loss is never distinguishable by colour alone.',
+          'Record whether a listener can tell gain from loss without seeing the screen.',
+        ],
+      },
+      {
+        id: 'sr-task-3',
+        title: 'Script 3: enter an amount in CurrencyInput',
+        paragraphs: [
+          'Open the [CurrencyInput](/components/currency-input/) page. Source: `src/currency-input/CurrencyInput.tsx` and the shared field in `src/fields/Fields.tsx`.',
+          'Result: Expected — awaiting manual verification. Date tested: ____-__-__. Software and versions: ________. What was heard: ________.',
+        ],
+        points: [
+          'Tab to the field. Expected: the label with the currency name and the field type, for example "Amount (Nepalese rupees), edit text", then the hint if there is one (it is linked with `aria-describedby`).',
+          'Type 1234.5. Expected: the digits are echoed as typed. Grouping separators appear in the visible value; note whether they are spoken.',
+          'Type a letter. Expected: the character is refused and the value does not change; note whether anything is announced.',
+          'Tab away. Expected: the value is completed to the currency decimals (1,234.50); note whether the change is announced.',
+          'Trigger the error example. Expected: the error is announced as soon as it appears (it is a `role="alert"`), the field reads as invalid, and the error replaces the hint in the description.',
+        ],
+      },
+      {
+        id: 'sr-task-4',
+        title: 'Script 4: sort a FinancialTable by amount',
+        paragraphs: [
+          'Open the [DataTable and FinancialTable](/components/data-table/) page, holdings example. Source: `src/table/Table.tsx`; tests in `test/data-display.test.tsx`.',
+          'Result: Expected — awaiting manual verification. Date tested: ____-__-__. Software and versions: ________. What was heard: ________.',
+        ],
+        points: [
+          'Navigate into the table. Expected: the table is announced with its caption and size, and each cell is read with its column header.',
+          'Tab to the Amount column header button and press Enter or Space.',
+          'Expected: the header is exposed as sorted ascending (`aria-sort="ascending"` on the column header; the arrow glyph is hidden). Press again for descending.',
+          'Known gap to verify: this table has no live region for the sort change. Record whether the screen reader says anything on activation, and whether re-reading the header reports "sorted ascending" or "sorted descending". A silent activation is expected to be a Fail until a status message is added.',
+          'Move down the Amount column. Expected: figures are read in the new order, each with its column header.',
+        ],
+      },
+      {
+        id: 'sr-task-5',
+        title: 'Script 5: confirm a destructive action',
+        paragraphs: [
+          'Open the [InlineConfirm](/components/inline-confirm/) page. Source: `src/inline-confirm/InlineConfirm.tsx`. This version has no typed-confirmation mode, so the script covers the two-step button confirm.',
+          'Result: Expected — awaiting manual verification. Date tested: ____-__-__. Software and versions: ________. What was heard: ________.',
+        ],
+        points: [
+          'Activate the control that starts the action (for example Remove).',
+          'Expected: focus moves to the danger button, and the screen reader announces its name (for example "Remove NABIL, button") together with the group, which is named by its title (for example "Remove NABIL?").',
+          'Press Tab. Expected: focus moves to the way-back button ("Keep it"). Press Escape. Expected: the confirmation closes and any drawer or popover around it stays open.',
+          'Start again and press the danger button while it is busy. Expected: it is shown as loading and cannot be pressed twice.',
+          'Record whether the title is read when focus lands (it depends on the group name being linked by `id`).',
         ],
       },
     ],

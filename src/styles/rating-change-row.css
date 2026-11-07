@@ -1,0 +1,62 @@
+/* Punji UI styles.
+   Styles for RatingChangeRow, RatingChangeList and RatingChangeHead. Needs tokens.css, base.css, check-row.css, rating-chip.css and rating-scale.css (styles.css has everything). Colours, type and space from --pu-* tokens only.
+   The list's own width (a container query) decides the layout, not the viewport: a panel, a page and a phone read alike. */
+@layer punji.components {
+  .pu-rating-change-list, .pu-rating-change-head { container-type: inline-size; min-width: 0 }
+  .pu-rating-change-list > ul { margin: 0; padding: 0; list-style: none }
+  .pu-rating-change-list > ul > li { display: block }
+  .pu-rating-change-list + .pu-rating-change-list { margin-top: var(--pu-space-2) }
+  .pu-rating-change-list-head { display: flex; align-items: center; gap: var(--pu-space-3); min-height: 52px; padding: var(--pu-space-2) var(--pu-space-3) }
+  .pu-rating-change-list-head .kit-disc { width: 28px; height: 28px; border-radius: 9px }
+  .pu-rating-change-list-head :is(h2, h3) { margin: 0; font: var(--pu-font-weight-semibold) 15px / 20px var(--pu-font-display); color: var(--pu-color-text) }
+  .pu-rating-change-count { font-size: var(--pu-text-sm); color: var(--pu-color-text-muted); font-variant-numeric: var(--pu-font-numeric) }
+
+  .pu-rating-change-head-in, .pu-rating-change { display: grid; grid-template-columns: 36px minmax(0, 1fr) minmax(184px, 236px) 96px minmax(96px, auto) 18px; column-gap: var(--pu-space-4); align-items: center }
+  .pu-rating-change-head-in { min-height: 32px; padding: 0 var(--pu-space-3); font-size: var(--pu-text-xs); line-height: 16px; color: var(--pu-color-text-tertiary) }
+  .pu-rating-change-head-in [data-end] { text-align: end }
+  .pu-rating-change { box-sizing: border-box; width: 100%; min-height: 72px; padding: 10px var(--pu-space-3); border: 0; border-top: 1px solid var(--pu-color-card-border); border-radius: 0; background: transparent; color: var(--pu-color-text); font: inherit; text-align: start; text-decoration: none }
+  :is(a, button).pu-rating-change { cursor: pointer }
+  :is(a, button).pu-rating-change:hover { background: color-mix(in srgb, var(--pu-color-text) 4%, transparent) }
+  .pu-rating-change:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: -2px; border-radius: var(--pu-radius-md) }
+  .pu-rating-change-id { display: flex; flex-direction: column; min-width: 0 }
+  .pu-rating-change-id > b { font-size: 15px; line-height: 20px; font-weight: var(--pu-font-weight-semibold); white-space: nowrap }
+  .pu-rating-change-id > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--pu-text-sm); line-height: 18px; color: var(--pu-color-text-muted) }
+  .pu-rating-change-move { display: flex; flex-wrap: wrap; align-items: center; gap: 6px var(--pu-space-2); min-width: 0 }
+  .pu-rating-change-arrow { flex: none; color: var(--pu-color-text-tertiary) }
+  .pu-rating-change-scale { display: block; min-width: 0 }
+  .pu-rating-change-figure { display: flex; flex-direction: column; align-items: flex-end; text-align: end; white-space: nowrap; font-variant-numeric: var(--pu-font-numeric) }
+  .pu-rating-change-figure > b { font-size: 15px; line-height: 20px; font-weight: var(--pu-font-weight-semibold) }
+  .pu-rating-change-figure > small { font-size: var(--pu-text-xs); line-height: 16px; color: var(--pu-color-text-muted) }
+  .pu-rating-change-chevron { display: flex; color: var(--pu-color-text-tertiary) }
+  .pu-rating-change-chips { display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 6px }
+
+  /* Held: the title and its name on one line, one chip at the end; two to a row on a wide list. */
+  .pu-rating-change[data-variant='held'] { grid-template-columns: minmax(0, 1fr) auto; min-height: 48px; padding: var(--pu-space-2) var(--pu-space-3) }
+  .pu-rating-change[data-variant='held'] .pu-rating-change-id { flex-direction: row; align-items: baseline; gap: 10px }
+  .pu-rating-change[data-variant='held'] .pu-rating-change-id > b { font-size: 14px }
+  .pu-rating-change[data-variant='held'] .pu-rating-change-move { flex-wrap: nowrap; justify-content: flex-end }
+  .pu-rating-change[data-variant='held'] .pu-rating-change-move[data-sub] { flex-direction: column; align-items: flex-end; gap: 2px }
+  .pu-rating-change[data-variant='held'] .pu-rating-change-move > small { font-size: var(--pu-text-xs); line-height: 16px; color: var(--pu-color-text-muted); white-space: nowrap }
+  @container (min-width: 600px) {
+    .pu-rating-change-list[data-variant='held'] > ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--pu-space-6) }
+  }
+
+  /* A list too narrow for every column: the scale leaves first (the chips say the same), so the name keeps its room. */
+  @container (min-width: 600px) and (max-width: 699px) {
+    .pu-rating-change-head-in, .pu-rating-change { grid-template-columns: 36px minmax(0, 1fr) minmax(184px, auto) minmax(96px, auto) 18px }
+    .pu-rating-change-head-in > :nth-child(4), .pu-rating-change-scale { display: none }
+  }
+  @container (max-width: 599px) {
+    .pu-rating-change-head-in { display: none }
+    .pu-rating-change { grid-template-columns: 36px minmax(0, 1fr) auto; grid-template-areas: 'tile id fig' 'tile move move'; row-gap: var(--pu-space-2); align-items: start; padding: var(--pu-space-3) var(--pu-space-1) }
+    .pu-rating-change > .kit-disc { grid-area: tile }
+    .pu-rating-change-id { grid-area: id }
+    .pu-rating-change-figure { grid-area: fig }
+    .pu-rating-change-move { grid-area: move }
+    .pu-rating-change-scale, .pu-rating-change-chevron { display: none }
+    .pu-rating-change[data-variant='held'] { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: none; align-items: center; padding: var(--pu-space-2) var(--pu-space-1) }
+    .pu-rating-change[data-variant='held'] :is(.pu-rating-change-id, .pu-rating-change-move) { grid-area: auto }
+    .pu-rating-change-list-head { padding: var(--pu-space-2) var(--pu-space-1) }
+  }
+  @media (pointer: coarse) { .pu-rating-change[data-variant='held'] { min-height: var(--pu-tap-min) } }
+}

@@ -6,10 +6,15 @@
   .kit-card.flush { gap: 0; padding: 0; overflow: hidden }
   .kit-card-h { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; min-height: 32px; min-width: 0 }
   .kit-card.flush > .kit-card-h { padding: 14px 16px 10px }
-  .kit-card.flush > :is(.kit-tablebox, .kit-group) { border: 0; border-radius: 0; background: transparent }
+  .kit-card.flush > :is(.kit-tablebox, .kit-group), .kit-card.flush > :is(.pu-stock, .pu-fin, .pu-ledger) > .kit-tablebox { border: 0; border-radius: 0; background: transparent }
+  /* A table set flush in a card keeps its stacked phone rows (and totals) in line with the card's 16px header inset,
+     whatever the table's own stacking rules say (bare tables add no padding of their own). */
+  :is(.kit-card.flush > .kit-tablebox, .kit-card.flush > :is(.pu-stock, .pu-fin, .pu-ledger) > .kit-tablebox, .kit-card.flush > [role='tabpanel'] > .kit-tablebox, .kit-card.flush > [role='tabpanel'] > :is(.pu-stock, .pu-fin, .pu-ledger) > .kit-tablebox).stack .kit-table :is(tbody, tfoot) tr { padding-inline: 16px }
+  :is(.kit-card.flush > .kit-tablebox, .kit-card.flush > :is(.pu-stock, .pu-fin, .pu-ledger) > .kit-tablebox, .kit-card.flush > [role='tabpanel'] > .kit-tablebox, .kit-card.flush > [role='tabpanel'] > :is(.pu-stock, .pu-fin, .pu-ledger) > .kit-tablebox).stack.selection .kit-table tbody tr { padding-inline-start: 44px }
+  :is(.kit-card.flush > .kit-tablebox, .kit-card.flush > :is(.pu-stock, .pu-fin, .pu-ledger) > .kit-tablebox, .kit-card.flush > [role='tabpanel'] > .kit-tablebox, .kit-card.flush > [role='tabpanel'] > :is(.pu-stock, .pu-fin, .pu-ledger) > .kit-tablebox).stack.selection .kit-table tbody tr > .kit-table-selection-cell { inset-inline-start: 16px }
   .kit-card-t { min-width: 0; flex: 1 1 6rem }
   .kit-card-ic { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--pu-radius-16); background: var(--pu-color-surface-tint); color: var(--pu-color-series-nepse) }
-  .kit-card.flush > [role='tabpanel'] > .kit-tablebox { border: 0; border-radius: 0; background: transparent }
+  .kit-card.flush > [role='tabpanel'] > .kit-tablebox, .kit-card.flush > [role='tabpanel'] > :is(.pu-stock, .pu-fin, .pu-ledger) > .kit-tablebox { border: 0; border-radius: 0; background: transparent }
   .kit-card-t :is(h2, h3) { margin: 0; font: 600 15px / 20px var(--pu-font-display); color: var(--pu-color-text) }
   .kit-card-t p.kit-card-eyebrow { margin: 0 0 6px; font: 600 12px / 1.3 var(--pu-font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--pu-color-text-muted) }
   .kit-card.kit-card-lg .kit-card-t :is(h2, h3) { font: 600 24px / 1.2 var(--pu-font-display); letter-spacing: -0.02em }

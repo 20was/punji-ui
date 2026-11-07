@@ -1,0 +1,39 @@
+/* Punji UI styles.
+   Styles for SettingRow and SettingList. Needs tokens.css and base.css (styles.css has everything). */
+@layer punji.components {
+  .pu-set { display: grid; gap: 6px; min-width: 0 }
+  .pu-set + .pu-set { border-block-start: 1px solid var(--pu-color-card-border); padding-block-start: 6px }
+  .pu-set-row { box-sizing: border-box; width: 100%; display: flex; align-items: center; gap: 14px; min-height: 56px; padding-block: 6px; padding-inline: 0; border: 0; border-radius: 0; background: transparent; color: var(--pu-color-text); font: inherit; text-align: start; text-decoration: none }
+  .pu-set-row.is-link { cursor: pointer; padding-inline: 8px; margin-inline: -8px; width: calc(100% + 16px); border-radius: var(--pu-radius-12) }
+  .pu-set-row.is-link:hover { background: var(--pu-color-surface-subtle) }
+  .pu-set-row.is-link:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: -2px }
+  .pu-set-lab { flex: 1 1 auto; min-width: 0; cursor: pointer }
+  .pu-set.is-off .pu-set-lab { cursor: default }
+  .pu-set-t { flex: 1 1 auto; display: flex; flex-direction: column; gap: 2px; min-width: 0 }
+  .pu-set-t > b { font-size: 15px; line-height: 20px; font-weight: 600 }
+  .pu-set-t > span { font-size: 13px; line-height: 18px; color: var(--pu-color-text-muted) }
+  .pu-set-t > b, .pu-set-t > span { overflow-wrap: anywhere }
+  .pu-set-end { flex: none; display: flex; align-items: center; color: var(--pu-color-text-tertiary) }
+  .pu-set-note { margin: 0 0 4px; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }
+  .pu-set.has-icon > .pu-set-note { margin-inline-start: 50px }
+  .pu-set-list { display: grid; min-width: 0 }
+  .pu-set-list > .kit-confirm { margin: 0 0 8px }
+  .pu-set-row.is-link[disabled] { cursor: default; opacity: 0.6 }
+  .pu-set-row.is-link[disabled]:hover { background: transparent }
+  .pu-set-tr { transition: transform var(--pu-motion-fast) var(--pu-ease-out) }
+  [dir='rtl'] .pu-set-tr:not(.ext) { transform: scaleX(-1) }
+  .pu-set-row.open .pu-set-tr { transform: rotate(180deg) }
+  .pu-set-spin { width: 16px; height: 16px }
+  .pu-set.danger .pu-set-t > b { color: var(--pu-color-loss) }
+  .pu-set.lg .pu-set-row { gap: 16px; min-height: 72px }
+  .pu-set.lg .pu-set-t > b { font: 700 18px / 24px var(--pu-font-display); letter-spacing: -0.01em }
+  .pu-set.lg .pu-set-t > span { font-size: 14px; line-height: 20px }
+  @media (max-width: 699px) {
+    .pu-set-row.is-link { min-height: 64px }
+    .pu-set-row.stack { flex-wrap: wrap; row-gap: 10px }
+    .pu-set-row.stack > .pu-set-t { flex-basis: calc(100% - 50px) }
+    .pu-set.has-icon .pu-set-row.stack > .pu-set-end { margin-inline-start: 50px }
+    .pu-set-list > .kit-confirm .kit-btn { min-height: var(--pu-control-lg) }
+  }
+  @media (prefers-reduced-motion: reduce) { .pu-set-tr { transition: none } }
+}

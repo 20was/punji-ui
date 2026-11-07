@@ -842,6 +842,87 @@ export const GUIDES: readonly PageDef[] = [
     ],
   }),
   guide({
+    slug: 'bs-calendar',
+    navTitle: 'BS calendar',
+    title: 'Bikram Sambat calendar data',
+    lead: 'Where every Bikram Sambat month length comes from, which dates are official, and how to ask for the provenance.',
+    description: 'Punji UI owns its Bikram Sambat month table. Each month is official, cross-checked, unverified or projected; toBS and toAD return that status with a policy.',
+    summary:
+      'The Bikram Sambat calendar has no formula: each year\'s month lengths are fixed by Nepal\'s calendar committee and published about a year ahead. Punji UI keeps one reviewed table of 1975 to 2099, records for every month how well it is known, and never extrapolates past it. `toBS` and `toAD` return that status with the date, and a `policy` decides what happens for months that are not verified.',
+    related: ['date-picker', 'date-range-presets', 'period-selector', 'formatters'],
+    guide: [
+      {
+        id: 'model',
+        title: 'The provenance model',
+        paragraphs: ['Every month of every year in the table carries one status, and every year lists its sources, strongest first.'],
+        table: {
+          caption: 'Month status',
+          head: ['Status', 'Meaning', 'Range today'],
+          rows: [
+            ['`official`', 'Derived from a Nepal Rajpatra Part 5 Home Ministry holiday notice (the Saturdays of every month).', 'BS 2080-01 to 2083-11'],
+            ['`cross-checked`', 'Two or more independent sources agree (Hamro Patro, rat32, libraries), no primary notice read yet.', 'BS 2000 to 2079, and 2083 Chaitra until the 2084 notice'],
+            ['`unverified`', 'A disputed year or library consensus only; the majority value is shipped.', 'BS 1975 to 1999, and 2062 Baisakh and Jestha'],
+            ['`projected`', 'A future year with no official publication. The most widely shared projection is shipped.', 'BS 2084 to 2099'],
+          ],
+        },
+        points: [
+          '`BS_TABLE_RANGE` is the whole table (1975-01-01 to 2099-12-30 BS). Outside it every conversion throws; nothing is extrapolated.',
+          '`BS_VERIFIED_RANGE` is the largest contiguous official-or-cross-checked span (2062-03-01 to 2083-12-30). `BS_OFFICIAL_THROUGH` is the last day with a primary source (2083-11-30).',
+          'Month lengths are facts, not a formula. Two projected sources can disagree by a day, so a projected date is a best estimate, not a promise.',
+        ],
+      },
+      {
+        id: 'api',
+        title: 'Asking for the provenance',
+        paragraphs: [
+          '`toBS(ad, options?)` and `toAD(bs, options?)` from `@punji/ui/nepal/calendar` return `{ date, status, projected, verified, sources }`, where `date` is the converted date, `status` the month\'s provenance and `sources` the year\'s sources. `bsDateStatus(bs)` returns only the status.',
+          'The `policy` option says what to do for a projected or unverified month. Outside the table the call always throws a `RangeError` (or returns `null` under `\'null\'`).',
+        ],
+        table: {
+          caption: 'policy',
+          head: ['Policy', 'Projected or unverified month'],
+          rows: [
+            ['`\'flag\'` (default)', 'Returns the result with `projected: true` or `verified: false`.'],
+            ['`\'throw\'`', 'Throws a `BsProvenanceError` (a `RangeError`) naming the status.'],
+            ['`\'null\'`', 'Returns `null`. Also returned for a date outside the table.'],
+            ['`\'allow\'`', 'Returns the result without a gate. The status is still on it.'],
+          ],
+        },
+        code: [{
+          label: 'Refuse a projected date, show a verified one',
+          text: "import { toAD, bsDateStatus } from '@punji/ui/nepal/calendar';\n\nconst due = toAD({ year: 2084, month: 1, day: 15 });\n// { date: { year: 2027, month: 4, day: 28 }, status: 'projected', projected: true, verified: false, sources: [...] }\nif (due?.projected) showNote('Projected: the calendar for 2084 is not official yet.');\n\ntoAD({ year: 2084, month: 1, day: 15 }, { policy: 'throw' }); // BsProvenanceError\ntoAD({ year: 2084, month: 1, day: 15 }, { policy: 'null' });  // null\nbsDateStatus({ year: 2082, month: 5, day: 10 });              // 'official'",
+        }],
+      },
+      {
+        id: 'fiscal',
+        title: 'The fiscal year and projected periods',
+        paragraphs: [
+          'The Nepal fiscal year runs from 1 Shrawan to the end of Asar, so a fiscal year\'s last month is in the next BS year. `getNepalFiscalPeriod` returns `projected: true` when the start or the end falls in a projected month. Today that is FY 2083/84, whose Asar 2084 end is projected until the 2084 calendar is published. `nepalFiscalYearPeriods`, `nepalFiscalQuarterPeriods` and `nepalFiscalMonthPeriods` (each `FinancialPeriod`) and the `nepalDateRangePresets` outputs carry the same `projected` flag so a screen can mark the period.',
+        ],
+      },
+      {
+        id: 'update',
+        title: 'The yearly Rajpatra update',
+        paragraphs: ['The table changes once a year, when the next year\'s holiday notice appears in Nepal Rajpatra Part 5 (between Magh 29 and Chaitra 2 in recent years). The research and the full process are in [docs/research/bs-calendar](' + REPO + '/docs/research/bs-calendar/README.md).'],
+        points: [
+          'Trigger: the Home Ministry holiday notice for the next year, and the calendar committee\'s approval news.',
+          'Transcribe the notice\'s Saturday list and the Baisakh 1 weekday into a test fixture with its Rajpatra volume, number and date.',
+          'Derive the month lengths from the Saturdays (11 months of the new year, plus Chaitra of the previous year).',
+          'Cross-check against Hamro Patro and a second calendar. Any disagreement blocks the release until resolved.',
+          'Mark the year and the previous Chaitra `official`, bump `BS_DATA_VERSION` and `BS_OFFICIAL_THROUGH`, and add a changeset.',
+          'Run the behaviour diff: if any date that was official or cross-checked changes, the release is blocked.',
+        ],
+      },
+      {
+        id: 'why-not-a-package',
+        title: 'Why not a package',
+        paragraphs: [
+          'We compared the BS month tables of the libraries and calendar sites we could find against each other. They disagree in dozens of months, some copy earlier years to fill the future, and none cites a primary source per year. A dependency would hide that. An owned table lets us record where each month came from, tell you when a date is a projection, and change one row when the Rajpatra notice arrives, with a test that shows which dates moved.',
+        ],
+      },
+    ],
+  }),
+  guide({
     slug: 'versioning',
     navTitle: 'Versioning and stability',
     title: 'Versioning and stability',

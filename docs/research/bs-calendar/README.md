@@ -2,7 +2,7 @@
 
 Research date: 2026-11-07 (BS 2083 Kartik 21). No repo edits were made. Every number below was fetched or computed during this session. Anything not verified is marked **UNVERIFIED**.
 
-**Status:** PR 1 of 4 landed (own table in `src/nepal/bs-data.ts` and pure converter; the dependency remains only for a temporary parity test, removal is PR 4). One deviation from `proposed-table.json`: projected 2096 ships the valid 366-day variant, because the proposed row totals 364 days.
+**Status:** PR 1 of 4 landed (own table in `src/nepal/bs-data.ts` and pure converter; the dependency remains only for a temporary parity test, removal is PR 4). `proposed-table.json` and `.csv` now match the shipped table for 2096 (the valid 366-day variant 31,32,31,32,31,30,30,30,29,29,30,31; the 5-source variant summed to 364 and was rejected). PR 2 of 4 adds the provenance API (`toBS`, `toAD`, `bsDateStatus`) and the `projected` flag on fiscal periods.
 
 Working files (all in ``):
 - `data/all.json`, `data/all-tables.csv`: every month-length table extracted (12 library tables and 2 scraped web calendars).

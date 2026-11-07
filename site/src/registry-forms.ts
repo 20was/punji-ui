@@ -171,6 +171,7 @@ export const FORMS_PAGES: readonly PageDef[] = [
     notes: {
       title: 'Limits',
       points: [
+        'Each Nepal preset carries `projected` (on the preset and on its `range`): true when the start or end falls in a BS month with no official publication yet, as the end of FY 2083/84 is. See [Bikram Sambat calendar data](/get-started/bs-calendar/).',
         'Nepal functions need dates inside BS 1975 to 2099 and throw a RangeError otherwise. A fiscal year is a Shrawan to Asar year in BS; it does not follow July 16.',
         'The Nepali labels have not had a native editorial review yet. Override any label with `labels`.',
         'A preset applies immediately and does not move the open calendar; if you want the person to adjust it first, let them pick days in the calendar instead.',

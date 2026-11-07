@@ -97,6 +97,24 @@ const layoutProbe = ({ edge, cardEdge, scoped, narrow }) => {
   const describe = (el) => `${el.tagName.toLowerCase()}${el.className && typeof el.className === 'string' ? `.${el.className.trim().split(/\s+/)[0]}` : ''}`;
   cardProbe();
   if (!stage) return out;
+  // (a) one theme control per preview stage: the sun and moon pair in the toolbar, one settings menu, and no second
+  // theme picker (a select) anywhere on the page.
+  for (const demo of document.querySelectorAll('.doc-demo')) {
+    const themes = demo.querySelectorAll('[role=group][aria-label="Preview theme"]').length;
+    const menus = demo.querySelectorAll('[data-testid=preview-settings]').length;
+    if (themes !== 1 || menus !== 1) out.push({ kind: 'dup', text: `a preview stage has ${themes} theme controls and ${menus} settings menus; each must have exactly one` });
+  }
+  if (document.querySelector('select[data-testid=preview-theme]')) out.push({ kind: 'dup', text: 'a second theme control (select) is on the page' });
+  // (b) a bare table sits on its container's surface: its head must not paint a different opaque colour (the white strip).
+  const opaque = (el) => { const c = getComputedStyle(el).backgroundColor; const m = c.match(/rgba?\(([^)]+)\)/); if (!m) return null; const p = m[1].split(/[ ,/]+/).filter(Boolean); return Number(p[3] ?? 1) >= 0.99 ? p.slice(0, 3).join(',') : null; };
+  for (const tableBox of stage.querySelectorAll('.kit-tablebox.bare')) {
+    const head = tableBox.querySelector('thead th, thead td');
+    if (!head) continue;
+    const own = opaque(head) ?? opaque(head.parentElement) ?? opaque(head.closest('thead'));
+    let ground = null;
+    for (let a = tableBox; a && !ground; a = a.parentElement) ground = opaque(a);
+    if (own && ground && own !== ground) out.push({ kind: 'dup', text: `a bare table's head paints rgb(${own}) on a rgb(${ground}) container` });
+  }
   const box = stage.getBoundingClientRect();
   // Not drawn: display none, a closed <details> body, a visually hidden (1px) box such as a stacked table's head.
   const visible = (el) => {
@@ -486,6 +504,20 @@ try {
   await page.getByRole('group', { name: 'Preview theme', exact: true }).getByRole('button', { name: 'Dark preview' }).click();
   if ((await page.locator('.doc-stage').getAttribute('data-theme')) !== 'dark') fail('preview theme: Dark preview did not set data-theme on the stage');
   if ((await page.locator('html').getAttribute('data-theme')) === 'dark') fail('preview theme: the page theme changed too');
+
+  // Preview settings menu: opens from the toolbar button, High contrast keeps the chosen light or dark, Escape closes it
+  // and returns focus to the button, Reset restores the defaults.
+  const settingsButton = page.getByRole('button', { name: 'Preview settings', exact: true });
+  await settingsButton.click();
+  if ((await settingsButton.getAttribute('aria-expanded')) !== 'true') fail('preview settings: the button did not open the menu');
+  await page.getByLabel('High contrast').check();
+  if ((await page.locator('.doc-stage').getAttribute('data-theme')) !== 'dark-hc') fail('preview settings: High contrast did not give dark-hc on a dark preview');
+  await page.getByRole('button', { name: 'Reset', exact: true }).click();
+  if ((await page.locator('.doc-stage').getAttribute('data-theme')) !== null) fail('preview settings: Reset did not follow the site theme again');
+  await page.keyboard.press('Escape');
+  if ((await settingsButton.getAttribute('aria-expanded')) !== 'false') fail('preview settings: Escape did not close the menu');
+  if (!(await settingsButton.evaluate((el) => el === document.activeElement))) fail('preview settings: Escape did not return focus to the button');
+  await page.getByRole('group', { name: 'Preview theme', exact: true }).getByRole('button', { name: 'Dark preview' }).click();
 
   // Phone width: the example runs in its own 375 px viewport (a same-origin iframe), so the package's viewport media
   // queries and matchMedia apply; the frame follows the preview theme, grows to its content, passes axe, and takes focus.

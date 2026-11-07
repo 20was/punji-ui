@@ -27,7 +27,7 @@ const COLUMNS: Record<MoverKind, readonly StockColumn[]> = {
 };
 
 export interface MarketMoversProps<T extends Quote = Quote>
-  extends Pick<StockTableProps<T>, 'money' | 'convention' | 'changeLabels' | 'renderSymbol' | 'live' | 'state' | 'onRetry' | 'retryLabel' | 'errorLabel' | 'loadingLabel' | 'density'> {
+  extends Pick<StockTableProps<T>, 'money' | 'convention' | 'labels' | 'changeLabels' | 'renderSymbol' | 'live' | 'state' | 'onRetry' | 'retryLabel' | 'errorLabel' | 'loadingLabel' | 'density'> {
   /** Every quote to rank, not a pre-ranked list: `rankMovers` picks each tab's rows from it. */
   quotes: readonly T[];
   /** Names the tab list and the table ("Market movers"). */

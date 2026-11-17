@@ -94,6 +94,11 @@
     .pu-lie-table tbody td.pu-lie-vat { grid-column: 3; grid-row: 2; display: grid; place-items: center; text-align: center }
     .pu-lie-table tbody td.pu-lie-amount { grid-column: 1 / 3; grid-row: 3; text-align: start; font-weight: 600 }
     .pu-lie-table tbody td.pu-lie-remove { grid-column: 3; grid-row: 3; justify-self: center }
+    /* Short visible labels over the figures; the inputs keep their own accessible names. */
+    .pu-lie-table tbody td[data-label]::before { content: attr(data-label); display: block; margin-bottom: 2px; font: 500 var(--pu-text-xs) / 1.3 var(--pu-font-body); color: var(--pu-color-text-muted); white-space: normal }
+    .pu-lie-table tbody td.pu-lie-vat { align-self: end; justify-items: center }
+    .pu-lie-table tbody td.pu-lie-vat .pu-lie-check { margin-top: 6px }
+    .pu-lie-table tbody td.pu-lie-amount { align-self: end }
   }
 
   /* IncomeTaxCalculator */

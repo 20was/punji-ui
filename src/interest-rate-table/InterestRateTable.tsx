@@ -118,9 +118,9 @@ export function InterestRateTable({ rates, caption, description, calendar = 'ad'
     rows.push(
       <tr key={rate.id} data-change={direction ?? undefined}>
         <th scope="row"><span className="pu-rates-product">{rate.product}</span>{rate.note && <span className="pu-rates-note">{rate.note}</span>}</th>
-        <td className="pu-rates-rate">{valid ? `${showDigits(rate.ratePercent, digits)}%` : '—'}</td>
+        <td className="pu-rates-rate" data-label={words.rate}>{valid ? `${showDigits(rate.ratePercent, digits)}%` : '—'}</td>
         {changes && (
-          <td className="pu-rates-change">
+          <td className="pu-rates-change" data-label={words.change}>
             {direction ? (
               <span className="pu-rates-delta">
                 <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false"><path d={ARROWS[direction]} /></svg>
@@ -129,7 +129,7 @@ export function InterestRateTable({ rates, caption, description, calendar = 'ad'
             ) : '—'}
           </td>
         )}
-        <td className="pu-rates-date"><time dateTime={parseCalendarDate(rate.effectiveFrom) ? rate.effectiveFrom : undefined}>{dateText(rate.effectiveFrom, calendar, language, digits, words.unknownDate)}</time></td>
+        <td className="pu-rates-date" data-label={words.effective}><time dateTime={parseCalendarDate(rate.effectiveFrom) ? rate.effectiveFrom : undefined}>{dateText(rate.effectiveFrom, calendar, language, digits, words.unknownDate)}</time></td>
       </tr>,
     );
   }

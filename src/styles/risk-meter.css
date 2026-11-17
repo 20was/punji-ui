@@ -3,10 +3,10 @@
    (styles.css has everything). Tones run from the gain colour (lowest) through the warning colour to the loss colour
    (highest); the level is always printed in words beside them. */
 @layer punji.components {
-  .pu-risk { --risk-t0: var(--pu-color-gain); --risk-t1: color-mix(in srgb, var(--pu-color-gain) 55%, var(--pu-color-warn-accent)); --risk-t2: var(--pu-color-warn-accent); --risk-t3: color-mix(in srgb, var(--pu-color-warn-accent) 50%, var(--pu-color-loss)); --risk-t4: color-mix(in srgb, var(--pu-color-warn-accent) 20%, var(--pu-color-loss)); --risk-t5: var(--pu-color-loss) }
+  .pu-risk { --risk-t0: var(--pu-color-gain); --risk-t1: var(--pu-heat-risk-1, color-mix(in srgb, var(--pu-color-gain) 55%, var(--pu-color-warn-accent))); --risk-t2: var(--pu-color-warn-accent); --risk-t3: var(--pu-heat-risk-3, color-mix(in srgb, var(--pu-color-warn-accent) 50%, var(--pu-color-loss))); --risk-t4: var(--pu-heat-risk-4, color-mix(in srgb, var(--pu-color-warn-accent) 20%, var(--pu-color-loss))); --risk-t5: var(--pu-color-loss) }
   .pu-risk[data-variant='gauge'] { display: grid; justify-items: center; gap: var(--pu-space-1); width: 100%; max-width: 220px; min-width: 0 }
   .pu-risk-dial { display: block; width: 100%; height: auto; overflow: visible }
-  .pu-risk-seg { fill: none; stroke-width: 11; opacity: 0.38 }
+  .pu-risk-seg { fill: none; stroke-width: 11; opacity: var(--pu-heat-seg-opacity, 0.38) }
   .pu-risk-seg[data-current] { opacity: 1; stroke-width: 14 }
   .pu-risk-seg[data-tone='0'] { stroke: var(--risk-t0) }
   .pu-risk-seg[data-tone='1'] { stroke: var(--risk-t1) }

@@ -345,7 +345,7 @@
   {
     "name": "tokens.css",
     "path": "dist/tokens.css",
-    "limit": "2.1 kB",
+    "limit": "2.44 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -1195,7 +1195,7 @@
   {
     "name": "theme (import from '@punji/ui/theme')",
     "path": "dist/theme/theme.js",
-    "limit": "2.6 kB",
+    "limit": "2.74 kB",
     "import": "*",
     "gzip": true
   },
@@ -1401,7 +1401,7 @@
   {
     "name": "css/lending.css",
     "path": "dist/css/lending.css",
-    "limit": "2.59 kB",
+    "limit": "2.89 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -1464,7 +1464,7 @@
   {
     "name": "css/tax.css (TaxInvoice, LineItemEditor, PanInput, IncomeTaxCalculator, Payslip, AgingTable, TdsSummary)",
     "path": "dist/css/tax.css",
-    "limit": "2.38 kB",
+    "limit": "2.47 kB",
     "rolldown": false,
     "gzip": true
   },
@@ -2381,7 +2381,7 @@
   {
     "name": "Heat tables CSS",
     "path": "dist/css/heat-tables.css",
-    "limit": "2.08 kB",
+    "limit": "2.20 kB",
     "rolldown": false,
     "gzip": true
   },

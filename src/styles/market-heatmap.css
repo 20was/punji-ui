@@ -17,12 +17,12 @@
   .pu-heat-tile > :is(button, div) > .kit-sr { white-space: nowrap }
   .pu-heat-tile[data-size='sm'] > :is(button, div) { padding: 2px 4px }
   .pu-heat-tile[data-size='sm'] .pu-heat-sym { font-size: 11px }
-  :is(.pu-heat-tile, .pu-heat-legend i)[data-step='1'] { background: color-mix(in srgb, var(--heat-up) 12%, var(--pu-color-surface)) }
-  :is(.pu-heat-tile, .pu-heat-legend i)[data-step='2'] { background: color-mix(in srgb, var(--heat-up) 24%, var(--pu-color-surface)) }
-  :is(.pu-heat-tile, .pu-heat-legend i)[data-step='3'] { background: color-mix(in srgb, var(--heat-up) 38%, var(--pu-color-surface)) }
-  :is(.pu-heat-tile, .pu-heat-legend i)[data-step='-1'] { background: color-mix(in srgb, var(--heat-down) 12%, var(--pu-color-surface)) }
-  :is(.pu-heat-tile, .pu-heat-legend i)[data-step='-2'] { background: color-mix(in srgb, var(--heat-down) 24%, var(--pu-color-surface)) }
-  :is(.pu-heat-tile, .pu-heat-legend i)[data-step='-3'] { background: color-mix(in srgb, var(--heat-down) 38%, var(--pu-color-surface)) }
+  :is(.pu-heat-tile, .pu-heat-legend i)[data-step='1'] { background: var(--pu-heat-gain-1, color-mix(in srgb, var(--heat-up) 12%, var(--pu-color-surface))) }
+  :is(.pu-heat-tile, .pu-heat-legend i)[data-step='2'] { background: var(--pu-heat-gain-2, color-mix(in srgb, var(--heat-up) 24%, var(--pu-color-surface))) }
+  :is(.pu-heat-tile, .pu-heat-legend i)[data-step='3'] { background: var(--pu-heat-gain-3, color-mix(in srgb, var(--heat-up) 38%, var(--pu-color-surface))) }
+  :is(.pu-heat-tile, .pu-heat-legend i)[data-step='-1'] { background: var(--pu-heat-loss-1, color-mix(in srgb, var(--heat-down) 12%, var(--pu-color-surface))) }
+  :is(.pu-heat-tile, .pu-heat-legend i)[data-step='-2'] { background: var(--pu-heat-loss-2, color-mix(in srgb, var(--heat-down) 24%, var(--pu-color-surface))) }
+  :is(.pu-heat-tile, .pu-heat-legend i)[data-step='-3'] { background: var(--pu-heat-loss-3, color-mix(in srgb, var(--heat-down) 38%, var(--pu-color-surface))) }
   :is(.pu-heat-tile, .pu-heat-legend i)[data-step='0'] { background: var(--pu-color-surface-tint) }
   .pu-heat-legend i[data-step='none'] { background: repeating-linear-gradient(135deg, var(--pu-color-surface-tint) 0 3px, var(--pu-color-surface) 3px 6px) }
   .pu-heat-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0; padding: 0; list-style: none; font-size: 12px; line-height: 16px; color: var(--pu-color-text-muted) }
@@ -50,12 +50,12 @@
   .pu-heat-group[data-header='off'] .pu-heat-ghead:focus-visible { opacity: 1 }
   .pu-heat-ghead:hover { background: color-mix(in srgb, var(--pu-color-text) 8%, var(--pu-color-surface-tint)) }
   .pu-heat-ghead:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: -3px }
-  .pu-heat-group[data-step='1'] .pu-heat-ghead { background: color-mix(in srgb, var(--heat-up) 12%, var(--pu-color-surface)) }
-  .pu-heat-group[data-step='2'] .pu-heat-ghead { background: color-mix(in srgb, var(--heat-up) 24%, var(--pu-color-surface)) }
-  .pu-heat-group[data-step='3'] .pu-heat-ghead { background: color-mix(in srgb, var(--heat-up) 38%, var(--pu-color-surface)) }
-  .pu-heat-group[data-step='-1'] .pu-heat-ghead { background: color-mix(in srgb, var(--heat-down) 12%, var(--pu-color-surface)) }
-  .pu-heat-group[data-step='-2'] .pu-heat-ghead { background: color-mix(in srgb, var(--heat-down) 24%, var(--pu-color-surface)) }
-  .pu-heat-group[data-step='-3'] .pu-heat-ghead { background: color-mix(in srgb, var(--heat-down) 38%, var(--pu-color-surface)) }
+  .pu-heat-group[data-step='1'] .pu-heat-ghead { background: var(--pu-heat-gain-1, color-mix(in srgb, var(--heat-up) 12%, var(--pu-color-surface))) }
+  .pu-heat-group[data-step='2'] .pu-heat-ghead { background: var(--pu-heat-gain-2, color-mix(in srgb, var(--heat-up) 24%, var(--pu-color-surface))) }
+  .pu-heat-group[data-step='3'] .pu-heat-ghead { background: var(--pu-heat-gain-3, color-mix(in srgb, var(--heat-up) 38%, var(--pu-color-surface))) }
+  .pu-heat-group[data-step='-1'] .pu-heat-ghead { background: var(--pu-heat-loss-1, color-mix(in srgb, var(--heat-down) 12%, var(--pu-color-surface))) }
+  .pu-heat-group[data-step='-2'] .pu-heat-ghead { background: var(--pu-heat-loss-2, color-mix(in srgb, var(--heat-down) 24%, var(--pu-color-surface))) }
+  .pu-heat-group[data-step='-3'] .pu-heat-ghead { background: var(--pu-heat-loss-3, color-mix(in srgb, var(--heat-down) 38%, var(--pu-color-surface))) }
   /* A host page may colour every link; the words inside a tile keep the text colour so they stay readable on the tint. */
   .pu-heat-grouped :is(.pu-heat-tile > a, .pu-heat-row-main:is(a)) > :is(.pu-heat-sym, .pu-heat-chg, .pu-heat-row-sub, .kit-sr) { color: var(--pu-color-text) }
   .pu-heat-tile > a { appearance: none; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 2px; width: 100%; height: 100%; margin: 0; padding: 4px 6px; box-sizing: border-box; text-decoration: none; overflow: hidden }
@@ -74,12 +74,12 @@
   .pu-heat-row-main .pu-heat-chg { grid-area: chg; font-size: 13px }
   .pu-heat-row-main .pu-heat-row-sub { grid-area: sub; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: var(--pu-color-text) }
   .pu-heat-row-main .kit-sr { grid-area: sub }
-  .pu-heat-row[data-step='1'] { background: color-mix(in srgb, var(--heat-up) 12%, var(--pu-color-surface)) }
-  .pu-heat-row[data-step='2'] { background: color-mix(in srgb, var(--heat-up) 24%, var(--pu-color-surface)) }
-  .pu-heat-row[data-step='3'] { background: color-mix(in srgb, var(--heat-up) 38%, var(--pu-color-surface)) }
-  .pu-heat-row[data-step='-1'] { background: color-mix(in srgb, var(--heat-down) 12%, var(--pu-color-surface)) }
-  .pu-heat-row[data-step='-2'] { background: color-mix(in srgb, var(--heat-down) 24%, var(--pu-color-surface)) }
-  .pu-heat-row[data-step='-3'] { background: color-mix(in srgb, var(--heat-down) 38%, var(--pu-color-surface)) }
+  .pu-heat-row[data-step='1'] { background: var(--pu-heat-gain-1, color-mix(in srgb, var(--heat-up) 12%, var(--pu-color-surface))) }
+  .pu-heat-row[data-step='2'] { background: var(--pu-heat-gain-2, color-mix(in srgb, var(--heat-up) 24%, var(--pu-color-surface))) }
+  .pu-heat-row[data-step='3'] { background: var(--pu-heat-gain-3, color-mix(in srgb, var(--heat-up) 38%, var(--pu-color-surface))) }
+  .pu-heat-row[data-step='-1'] { background: var(--pu-heat-loss-1, color-mix(in srgb, var(--heat-down) 12%, var(--pu-color-surface))) }
+  .pu-heat-row[data-step='-2'] { background: var(--pu-heat-loss-2, color-mix(in srgb, var(--heat-down) 24%, var(--pu-color-surface))) }
+  .pu-heat-row[data-step='-3'] { background: var(--pu-heat-loss-3, color-mix(in srgb, var(--heat-down) 38%, var(--pu-color-surface))) }
   .pu-heat-subtotal th, .pu-heat-subtotal td { font-weight: 600; background: var(--pu-color-surface-tint) }
   @media (prefers-reduced-motion: no-preference) {
     .pu-heat-level { animation: pu-heat-in 140ms ease-out }

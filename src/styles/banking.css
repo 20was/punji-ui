@@ -10,6 +10,13 @@
   .pu-acct-btn:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 1px }
   .pu-acct-btn[aria-pressed='true'] { color: var(--pu-color-text); background: var(--pu-color-surface-tint) }
   @media (pointer: coarse) { .pu-acct-btn { width: var(--pu-tap-min); height: var(--pu-tap-min) } }
+  /* In a ValueRow the masked number is wide and never wraps: let the row wrap instead, so the name and helper read in full
+     and the number drops under them (aligned to the end) when the two do not fit side by side. */
+  .kit-value-row:has(.pu-acct) { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px }
+  .kit-value-row:has(.pu-acct) > .lead { flex: none }
+  .kit-value-row:has(.pu-acct) > .main { flex: 1 1 8rem }
+  .kit-value-row:has(.pu-acct) > .side { flex: 0 0 auto; margin-inline-start: auto }
+  .kit-value-row:has(.pu-acct) .line { overflow: visible; white-space: normal; text-overflow: clip }
 
   /* BankAccountCard */
   .pu-bank { max-width: 26rem }

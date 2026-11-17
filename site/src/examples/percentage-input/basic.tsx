@@ -26,7 +26,7 @@ export default function Example() {
         }}
       />
       <p className="doc-muted">
-        On {formatMoney(ORDER_VALUE, nepalMoneyConfig())}: fee {fee === null ? 'n/a' : formatMoney(fee, nepalMoneyConfig())} · <code>{change?.basisPoints == null ? 'null' : `${change.basisPoints}n`}</code> basis points
+        On {formatMoney(ORDER_VALUE, nepalMoneyConfig())}: fee {fee === null ? 'n/a' : formatMoney(fee, nepalMoneyConfig())} · <code>{change?.basisPoints == null ? 'null' : String(change.basisPoints)}</code> basis points
       </p>
     </Stack>
   );

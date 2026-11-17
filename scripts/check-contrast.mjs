@@ -28,7 +28,10 @@ function block(css, needle) {
 const light = block(tokens, ":root,\n  [data-theme='light'] {");
 const darkOnly = block(tokens, "\n  [data-theme='dark'] {");
 const darkMedia = block(tokens, ":root:not([data-theme='light']) {");
-const dark = new Map([...light, ...darkOnly]);
+// The dark heat scale (--pu-heat-*) sits in its own rules so a high-contrast theme never inherits it.
+const heatDark = block(tokens, ":root[data-theme='dark'],");
+const heatMedia = block(tokens, ':root:not([data-theme]) {');
+const dark = new Map([...light, ...darkOnly, ...heatDark]);
 const themes = {
   light: { vars: light, text: 4.5, ui: 3 },
   dark: { vars: dark, text: 4.5, ui: 3 },
@@ -100,7 +103,8 @@ const GAIN_LOSS_APART = 1.4;
 const problems = [];
 const report = {};
 const colour = (vars, name, base) => {
-  const raw = vars.get(`--pu-color-${name}`);
+  let raw = vars.get(name.startsWith('heat-') ? `--pu-${name}` : `--pu-color-${name}`);
+  for (let hops = 0; raw && /^var\(--[\w-]+\)$/.test(raw) && hops < 4; hops++) raw = vars.get(raw.slice(4, -1));
   const c = raw && parse(raw);
   if (!c) throw new Error(`check-contrast: --pu-color-${name} is not a plain colour (${raw})`);
   return c[3] < 1 ? over(c, base) : c;
@@ -124,6 +128,26 @@ for (const [theme, { vars, text, ui, own }] of Object.entries(themes)) {
     report[theme].push({ fg: 'text', bg: `${hue} ${pct}% heat cell`, kind: 'text', ratio: Math.round(r * 100) / 100, min: text });
     if (r < text) problems.push(`${theme}: --pu-color-text on ${pct}% --pu-color-${hue} is ${r.toFixed(2)}:1, needs ${text}:1 (heat cell)`);
   }
+  // Dark heat scale: printed values (--pu-color-text) stay readable on every step, gain and loss, so a heat cell is never
+  // chosen for its colour alone; only the dark themes define it (light keeps the surface mix checked above).
+  if (vars.has('--pu-heat-gain-1') && vars.get('--pu-heat-gain-1') !== 'initial') {
+    for (const role of ['gain', 'loss']) {
+      for (let step = 1; step <= 4; step++) {
+        const cell = colour(vars, `heat-${role}-${step}`, surface);
+        const r = ratio(colour(vars, 'text', cell), cell);
+        report[theme].push({ fg: 'text', bg: `heat-${role}-${step}`, kind: 'text', ratio: Math.round(r * 100) / 100, min: text });
+        if (r < text) problems.push(`${theme}: --pu-color-text on --pu-heat-${role}-${step} is ${r.toFixed(2)}:1, needs ${text}:1 (dark heat scale)`);
+      }
+    }
+    // The strongest step against the neutral midpoint (--pu-color-surface-tint) is the scale's visible spread.
+    for (const role of ['gain', 'loss']) {
+      const spread = ratio(colour(vars, `heat-${role}-4`, surface), colour(vars, 'surface-tint', surface));
+      report[theme].push({ fg: `heat-${role}-4`, bg: 'surface-tint', kind: 'apart', ratio: Math.round(spread * 100) / 100, min: 1.5 });
+      if (spread < 1.5) problems.push(`${theme}: --pu-heat-${role}-4 is only ${spread.toFixed(2)}:1 from the neutral midpoint, so the scale reads flat`);
+    }
+    const gl = ratio(colour(vars, 'heat-gain-4', surface), colour(vars, 'heat-loss-4', surface));
+    if (gl < 1.2) problems.push(`${theme}: --pu-heat-gain-4 vs --pu-heat-loss-4 is ${gl.toFixed(2)}:1 in luminance, needs 1.2:1`);
+  }
   // Gain and loss must differ in lightness as well as hue, so they stay apart without colour vision (hue-only pairs sat near 1.08:1).
   const [gain, loss] = [colour(vars, 'gain', page), colour(vars, 'loss', page)];
   const apart = ratio(gain, loss);
@@ -138,6 +162,8 @@ for (const [auto, theme, label] of [[autoLight, 'light-hc', 'prefers-contrast li
   for (const [name, value] of auto) if (themes[theme].own.get(name) !== value) problems.push(`contrast.css: ${name} in the ${label} block differs from [data-theme='${theme}']`);
 }
 for (const name of autoLight.keys()) if (!autoDark.has(name)) problems.push(`contrast.css: ${name} is set by the prefers-contrast light block but not the dark one`);
+for (const [name, value] of heatDark) if (heatMedia.get(name) !== value) problems.push(`tokens.css: ${name} differs between [data-theme='dark'] and the prefers-color-scheme block (heat scale)`);
+for (const name of heatMedia.keys()) if (!heatDark.has(name)) problems.push(`tokens.css: ${name} is only in the prefers-color-scheme heat block`);
 for (const [name, value] of darkOnly) if (darkMedia.get(name) !== value) problems.push(`tokens.css: ${name} differs between [data-theme='dark'] and the prefers-color-scheme block`);
 for (const name of darkMedia.keys()) if (!darkOnly.has(name)) problems.push(`tokens.css: ${name} is only in the prefers-color-scheme block`);
 

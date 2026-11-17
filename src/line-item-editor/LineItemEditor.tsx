@@ -180,20 +180,20 @@ export function LineItemEditor({
                   <td className="pu-lie-desc">
                     <Field label={`${words.description}, ${words.line(n)}`} hideLabel size="md" value={line.description} onChange={(description) => update(line.id, { description })} data-focus-key={`desc-${line.id}`} testId={testId ? `${testId}-desc-${index}` : undefined} />
                   </td>
-                  <td className="pu-lie-qty">
+                  <td className="pu-lie-qty" data-label={words.quantity}>
                     <Field label={`${words.quantity}, ${words.line(n)}`} hideLabel size="md" inputMode="decimal" autoComplete="off" value={line.quantity} onChange={(quantity) => update(line.id, { quantity })} testId={testId ? `${testId}-qty-${index}` : undefined} />
                   </td>
-                  <td className="pu-lie-rate">
+                  <td className="pu-lie-rate" data-label={words.rate}>
                     <CurrencyInput label={`${words.rate}, ${words.line(n)}`} hideLabel size="md" showCurrency={false} preset={money} value={line.rate} onValueChange={(change) => update(line.id, { rate: change.value })}
                       onBlur={() => { if (totalText) setAnnouncement(words.totalNow(totalText)); }} testId={testId ? `${testId}-rate-${index}` : undefined} />
                   </td>
                   {showTaxable && (
-                    <td className="pu-lie-vat">
+                    <td className="pu-lie-vat" data-label={words.vat}>
                       <input type="checkbox" className="pu-lie-check" checked={line.taxable !== false} onChange={(event) => update(line.id, { taxable: event.target.checked })}
                         aria-label={`${words.vat}, ${words.line(n)}`} data-testid={testId ? `${testId}-vat-${index}` : undefined} />
                     </td>
                   )}
-                  <td className="num pu-lie-amount">
+                  <td className="num pu-lie-amount" data-label={words.amount}>
                     {net === undefined ? <span className="pu-lie-pending" title={words.incomplete}><span aria-hidden="true">—</span><span className="kit-sr">{words.incomplete}</span></span> : sum(net, `amount-${index}`)}
                   </td>
                   <td className="pu-lie-remove">

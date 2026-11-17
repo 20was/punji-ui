@@ -1,0 +1,5 @@
+---
+'@punji/ui': patch
+---
+
+Layout and dark-theme colour fixes from the docs visual pass. AccountNumber in a ValueRow wraps under the name instead of squeezing it to three lines. InterestRateTable product names no longer break mid-word (the table scrolls sideways first). LineItemEditor stacks cleanly on a phone: description, then quantity, rate and VAT tick, then the amount and remove button. The LoanCalculator Years/Months toggle lines up with the Tenure input. RatingScale legend labels fit without breaking, and the RemittanceTracker Track button matches the input's height. In the dark themes the heat colours (MarketHeatmap, GroupedMarketHeatmap, MonthGrid, ReturnsHeatTable, the PerformanceChart drawdown band, RiskMeter) use a clearer green and red scale out from a neutral grey, with printed values at 4.5:1 or better on every step; the light themes are unchanged. New tokens `--pu-heat-gain-1` to `-4`, `--pu-heat-loss-1` to `-4`, `--pu-heat-band`, `--pu-heat-risk-1`, `-3`, `-4` and `--pu-heat-seg-opacity` are set in the dark themes only.

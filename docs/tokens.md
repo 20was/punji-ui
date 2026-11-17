@@ -204,6 +204,17 @@ follows `dir`. Full table and touch-target rules: [THEMING.md](THEMING.md#densit
 | `--pu-row-min` | `48px` | `36px` | `56px` |
 | `--pu-dir` | `1` | `-1` under `dir="rtl"` | - |
 
+## Dark heat scale
+
+In the dark themes the heat colours (MarketHeatmap, GroupedMarketHeatmap, MonthGrid, ReturnsHeatTable, RiskMeter and the
+PerformanceChart drawdown band) use a diverging scale out from the neutral grey `--pu-color-surface-tint`:
+`--pu-heat-gain-1` to `-4` (green) and `--pu-heat-loss-1` to `-4` (red), stronger toward step 4. `--pu-color-text` is
+4.5:1 or better on every step (`scripts/check-contrast.mjs`). `--pu-heat-band` (drawdown band), `--pu-heat-risk-1`, `-3`
+and `-4` (RiskMeter) and `--pu-heat-seg-opacity` are set the same way. They are unset in the light themes, where the
+components keep mixing `--pu-color-gain` and `--pu-color-loss` into the surface. `createTheme({ finance: 'red-up' })`
+swaps the gain and loss steps; any other `finance` palette unsets them, so the heat colours follow that palette's own
+gain and loss.
+
 ## Gain and loss colour convention
 
 `--pu-color-gain` and `--pu-color-loss` are what a rise and a fall look like; components read only these. The theme sets

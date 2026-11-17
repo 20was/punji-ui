@@ -4,7 +4,9 @@ This page covers the three original charts and the pure math under them: `Candle
 The newer charts (waterfall, cash flow, net worth, Sankey, earnings, balance history, score radar, fair value, price target,
 returns heat table, month grid, histogram, correlation matrix) are beta and documented on [design.punji.app](https://design.punji.app);
 they share `ChartA11yShell` (`@punji/ui/chart-a11y`) and take exact `bigint` amounts. Optional canvas adapters for TradingView
-Lightweight Charts and ECharts (`@punji/ui/lightweight-charts`, `@punji/ui/echarts`) are experimental.
+Lightweight Charts, ECharts and KLineChart (`@punji/ui/lightweight-charts`, `@punji/ui/echarts`, `@punji/ui/klinecharts`) are experimental.
+The derivatives charts `PayoffChart` and `VolatilitySmile` are beta (see below), and `EconomicCalendar` and `EarningsCalendar` are
+DataTable-style compositions on `ScrollTable`, not charts.
 All charts here are SVG drawn by this package (no chart library), display only, deterministic (the same props give the same pixels),
 and take plain numbers. Styles: `@punji/ui/css/financial-charts.css` (in `styles.css`). The examples use synthetic NEPSE-style
 data from `fixtures/market-data.ts`, not market data.
@@ -111,6 +113,73 @@ Cumulative bid and ask step areas around the mid price, with the spread under th
 `OrderBookDepth`, in any order: they are sorted best first, equal prices merged, invalid levels dropped. One side empty draws
 that side only. A crossed book (best bid at or above best ask) draws both sides, shows no mid price and says so. Left and Right
 move one price level; the readout says side, price, quantity and cumulative size.
+
+## Price-only charts (`price-only-chart`, beta)
+
+```tsx
+import { PriceOnlyChart } from '@punji/ui/price-only-chart';
+import { renkoType } from '@punji/ui/renko-type';
+
+const box5 = renkoType({ box: '5' }); // hoist or useMemo
+<PriceOnlyChart label="NABIL, 5 rupee Renko" bars={bars} type={box5} />
+```
+
+Renko, Kagi, Point and Figure, Line Break and Range bars drop time and draw only the price moves that matter. One renderer,
+`PriceOnlyChart`, takes `bars` (`{ date, open?, high?, low?, close }` with prices as **decimal strings**) and a `type`
+descriptor from its own subpath (`renko-type`, `kagi-type`, `point-figure-type`, `line-break-type`, `range-bars-type`), so a
+page ships only the type it draws. The elements come from pure builders in `chart-price-only` (`renkoBricks`, `kagiLines`,
+`pointAndFigure`, `lineBreak`, `rangeBars`): scaled bigint inside, decimal strings out (the scale is the most decimals any
+input carries). Every element carries `fromBar`, `toBar`, `fromDate` and `toDate`, the source bars it covers; the readout, the
+live region and the hidden table print them, since the axis is no longer time. Up and down are shape first (hollow brick with
+an up triangle against solid with a down triangle, X against O, thin against thick) and always words too.
+
+Rules, with sources (TradingView's help is primary; d3-kagi MIT, aticio/renko MIT and dhelm-pnf Apache-2.0 were read for the
+algorithm shapes, no GPL or LGPL code was used):
+
+| Type | Rule | Source |
+| --- | --- | --- |
+| Renko | box fixed or ATR (14, Wilder, rounded half up to the prices' decimals); a brick per box beyond the last brick; a reversal needs a box beyond the last brick's open edge (two-box). Source close, or low then high on an up bar and high then low on a down bar | tradingview.com/support/solutions/43000502284; reversal rule is ours, as aticio/renko |
+| Kagi | reversal fixed or percent of the line's end, from closes; yang when a line passes the previous shoulder, yin when it passes the previous waist, split at that price | tradingview.com/support/solutions/43000502272; thickness from secondary sources and d3-kagi |
+| Point and Figure | box size, reversal of N boxes (3); a price falls in the box at or below it; a column reverses N boxes under its top, starting one box below it | in.tradingview.com/support/solutions/43000502276, thismatter.com; dhelm-pnf for the shape |
+| Line Break | a close past the last line adds a line; a reversal needs a close past the high or low of the last N lines (3) | tradingview.com/support/solutions/43000502273 |
+| Range bars | every bar's high minus low is exactly the range; the next bar opens at the close; the forming bar is not drawn | the standard definition |
+
+Unverified: TradingView's own first-brick anchor and tie handling are not documented, so a chart can differ by a brick at the
+start; the advance-decline and percent-above-average definitions below follow the textbook, not a fetched primary source.
+
+## BreadthChart (`breadth-chart`, beta)
+
+```tsx
+<BreadthChart mode="advance-decline" label="NEPSE A/D" days={days} />
+<BreadthChart mode="percent-above-ma" label="Above 200-day" constituents={stocks} period={200} />
+```
+
+`advance-decline` plots the running total of advances minus declines (`advanceDeclineLine`, the counts `MarketBreadth` shows plus
+a date). `percent-above-ma` plots the share of constituents whose close is above their own simple N-day average
+(`percentAboveMA`): a close is above when `close * N > sum of the last N closes` in bigint, and the share prints as an exact
+decimal, rounded half up. Both helpers are importable on their own from `chart-breadth`.
+
+## Derivatives and calendars (beta)
+
+`PayoffChart` (`payoff-chart`) draws the profit or loss at expiry of a strategy of long or short calls, puts and stock with
+`Money` strikes and premiums. The payoff is piecewise linear, so the line passes through every strike and is exact; the pure
+maths is in `@punji/ui/chart-payoff` (`payoffAt`, `strategyBreakevens` as exact bigint ratios, `strategyExtremes` with
+`unlimited` where the slope above the highest strike is not zero, `payoffSamples`). An optional dashed "today" line takes
+values you priced yourself: no pricing model ships. `VolatilitySmile` (`volatility-smile`) plots implied volatility by strike,
+delta or moneyness for several expiries and prints the same numbers as an expiry-by-strike table; IVs are percent decimal
+strings you supply. Both never rely on colour (hatched loss, words and signs; marker shapes and dashes per expiry).
+
+`EconomicCalendar` and `EarningsCalendar` group releases and results by day in a required, printed time zone, compare actual
+with forecast in bigint ("Beat", "Missed", "In line", "Awaiting"), and print days in AD, BS or both through the library's own
+calendar, marking a projected BS month. Each day is a `ScrollTable`.
+
+## KLineChart adapter (experimental)
+
+`@punji/ui/klinecharts` mounts a KLineChart v10 canvas inside `ChartA11yShell`, following the Lightweight Charts adapter: an
+optional peer (`klinecharts`), a `library` prop or lazy loader, no runtime import, Punji tokens as `styles`, exact money on the
+axis (a registered Y axis), the crosshair and the tooltip, and streaming through the ref. KLineChart is Apache-2.0 with no
+on-screen attribution; keep its LICENSE and NOTICE if you redistribute it. KLineChart has no public call to move its own
+crosshair, so the keyboard cursor reads bars aloud and in the table without drawing on the canvas.
 
 ## Gain and loss colour convention
 

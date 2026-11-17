@@ -32,6 +32,10 @@ let cell = 0;
 const failures = [];
 const checked = { variants: 0, tabs: 0 };
 const fail = (message) => { failures.push(message); console.error(`FAIL ${message}`); };
+// Apps are late chunks: the server HTML is on screen first, and a click or key before React hydrates it is lost. React
+// stamps __reactProps$ on a DOM node when it adopts it, so "hydrated" is observable; wait for it instead of repeating
+// the input until it takes (a repeated toggle undoes itself).
+const hydrated = (page, testId) => page.waitForFunction((id) => { const el = document.querySelector(`[data-testid="${id}"]`); return !!el && Object.keys(el).some((k) => k.startsWith('__reactProps$')); }, testId, { timeout: 20000 });
 const routes = [{ slug: '', title: 'Overview', path: '/' }, ...PAGES.map((p) => ({ ...p, path: pagePath(p) }))];
 const HOME_H1 = 'React components for money, markets and ledgers.';
 const flagCounts = { edge: 0, clip: 0, dup: 0, icon: 0, card: 0, edgeAllowed: 0, cardAllowed: 0 };
@@ -97,6 +101,24 @@ const layoutProbe = ({ edge, cardEdge, scoped, narrow }) => {
   const describe = (el) => `${el.tagName.toLowerCase()}${el.className && typeof el.className === 'string' ? `.${el.className.trim().split(/\s+/)[0]}` : ''}`;
   cardProbe();
   if (!stage) return out;
+  // (a) one theme control per preview stage: the sun and moon pair in the toolbar, one settings menu, and no second
+  // theme picker (a select) anywhere on the page.
+  for (const demo of document.querySelectorAll('.doc-demo')) {
+    const themes = demo.querySelectorAll('[role=group][aria-label="Preview theme"]').length;
+    const menus = demo.querySelectorAll('[data-testid=preview-settings]').length;
+    if (themes !== 1 || menus !== 1) out.push({ kind: 'dup', text: `a preview stage has ${themes} theme controls and ${menus} settings menus; each must have exactly one` });
+  }
+  if (document.querySelector('select[data-testid=preview-theme]')) out.push({ kind: 'dup', text: 'a second theme control (select) is on the page' });
+  // (b) a bare table sits on its container's surface: its head must not paint a different opaque colour (the white strip).
+  const opaque = (el) => { const c = getComputedStyle(el).backgroundColor; const m = c.match(/rgba?\(([^)]+)\)/); if (!m) return null; const p = m[1].split(/[ ,/]+/).filter(Boolean); return Number(p[3] ?? 1) >= 0.99 ? p.slice(0, 3).join(',') : null; };
+  for (const tableBox of stage.querySelectorAll('.kit-tablebox.bare')) {
+    const head = tableBox.querySelector('thead th, thead td');
+    if (!head) continue;
+    const own = opaque(head) ?? opaque(head.parentElement) ?? opaque(head.closest('thead'));
+    let ground = null;
+    for (let a = tableBox; a && !ground; a = a.parentElement) ground = opaque(a);
+    if (own && ground && own !== ground) out.push({ kind: 'dup', text: `a bare table's head paints rgb(${own}) on a rgb(${ground}) container` });
+  }
   const box = stage.getBoundingClientRect();
   // Not drawn: display none, a closed <details> body, a visually hidden (1px) box such as a stacked table's head.
   const visible = (el) => {
@@ -254,6 +276,7 @@ try {
           await page.goto(`${base}${pagePath(app)}`);
           await page.locator('#page-title').waitFor();
           await page.addScriptTag({ content: axeSource });
+          await hydrated(page, `screen-${app.app.screens[0].id}`);
           for (const screen of app.app.screens) {
             const name = `app ${app.slug} ${width} ${theme} #${screen.id}`;
             await page.getByTestId(`screen-${screen.id}`).click();
@@ -324,6 +347,7 @@ try {
     // the app chrome is gone, sections start a page and the text is black.
     await t.goto(`${base}/apps/reconciliation-desk/#queue`);
     await t.locator('[data-screen="queue"] [data-screen-title]').waitFor();
+    await hydrated(t, 'rc-match');
     for (const n of ['1', '2', '3']) await t.getByRole('checkbox', { name: new RegExp(`Select Salary transfer ${n} of 3`) }).check();
     await t.getByRole('checkbox', { name: /Select Staff salary batch/ }).check();
     await t.getByTestId('rc-match').click();
@@ -333,6 +357,7 @@ try {
     if ((await t.getByText('Reconciles').count()) < 2) fail('reconciliation desk: the report totals do not reconcile with the closing balances');
     await t.goto(`${base}/apps/account-statements/`);
     await t.getByTestId('st-paper').waitFor();
+    await hydrated(t, 'st-drift');
     await t.getByTestId('st-drift').click();
     if (!(await t.getByTestId('st-print').isDisabled())) fail('account statements: a statement that does not reconcile can be printed');
     await t.getByTestId('st-drift').click();
@@ -345,11 +370,12 @@ try {
     // pushes Utilities over its budget, which the budget screen then says.
     await t.goto(`${base}/apps/treasury-desk/`);
     await t.getByTestId('td-alert-warn').waitFor({ timeout: 5000 }).catch(() => fail('treasury desk: the base case does not warn about the target buffer'));
-    // The app is a late chunk: its server HTML shows at once and a key pressed before it hydrates is lost, so press until it takes.
-    for (let i = 0; i < 20 && !(await t.getByTestId('td-alert-danger').isVisible()); i++) {
-      await t.keyboard.press('s');
-      await t.waitForTimeout(250);
-    }
+    // The app is a late chunk: its server HTML shows at once and a key pressed before it hydrates is lost. Wait for the
+    // app to say it is hydrated (its hotkeys are attached), press S exactly once (it toggles, so never twice), and assert
+    // on the switch's observable state, then on the banner.
+    await t.locator('[data-testid="td-scenario-note"][data-hydrated="true"]').waitFor({ timeout: 15000 }).catch(() => fail('treasury desk: the app did not hydrate'));
+    await t.keyboard.press('s');
+    await t.locator('[data-testid="td-stress"][aria-checked="true"]').waitFor({ timeout: 15000 }).catch(() => fail('treasury desk: S did not switch the stress case on'));
     await t.getByTestId('td-alert-danger').waitFor({ timeout: 5000 }).catch(() => fail('treasury desk: the stress case (S) did not breach the buffer'));
     await t.getByTestId('screen-payments').click();
     await t.locator('[data-screen="payments"] [data-screen-title]').waitFor();
@@ -362,6 +388,7 @@ try {
     if ((await t.getByText('Reconciles').count()) < 2) fail('treasury desk: the forecast totals do not reconcile with the items');
     await t.goto(`${base}/apps/personal-finance/#bills`);
     await t.locator('[data-screen="bills"] [data-screen-title]').waitFor();
+    await hydrated(t, 'pf-pay-power');
     for (const id of ['power', 'internet', 'mobile']) await t.getByTestId(`pf-pay-${id}`).click();
     await t.getByTestId('screen-budget').click();
     await t.locator('[data-screen="budget"] [data-screen-title]').waitFor();
@@ -372,6 +399,7 @@ try {
     // on Home is the old balance less the bill plus its cashback.
     await t.goto(`${base}/apps/retail-banking/`);
     await t.getByTestId('rb-total').waitFor();
+    await hydrated(t, 'screen-transfer');
     const totalBefore = await t.getByTestId('rb-total').textContent();
     await t.getByTestId('screen-transfer').click();
     await t.locator('[data-screen="transfer"] [data-screen-title]').waitFor();
@@ -391,13 +419,12 @@ try {
     if (Math.round((rupees(totalBefore) - rupees(totalAfter)) * 100) !== 150_000) fail(`retail banking: Home total went from ${totalBefore} to ${totalAfter}, not down by Rs 1,500`);
     await t.goto(`${base}/apps/digital-wallet/#bills`);
     await t.locator('[data-screen="bills"] [data-screen-title]').waitFor();
-    // The bills screen loads on demand; fill and fetch again if a busy machine dropped the first attempt.
-    for (let attempt = 0; attempt < 3; attempt += 1) {
-      await t.getByTestId('dw-electricity-id').fill('1234567');
-      await t.getByTestId('dw-electricity-fetch').click();
-      if (await t.locator('[data-testid="dw-electricity-bill"][data-state="ready"]').waitFor({ timeout: 5000 }).then(() => true, () => false)) break;
-      if (attempt === 2) fail('digital wallet: the electricity bill did not load');
-    }
+    // The bills screen loads on demand: wait until it is the current screen and its field is hydrated, then act once.
+    await t.locator('[data-testid="screen-bills"][aria-current="page"]').waitFor({ timeout: 20000 });
+    await hydrated(t, 'dw-electricity-fetch');
+    await t.getByTestId('dw-electricity-id').fill('1234567');
+    await t.getByTestId('dw-electricity-fetch').click();
+    await t.locator('[data-testid="dw-electricity-bill"][data-state="ready"]').waitFor({ timeout: 15000 }).catch(() => fail('digital wallet: the electricity bill did not load'));
     await t.getByTestId('dw-electricity-pay').click({ timeout: 10000 });
     await t.locator('[data-testid="dw-pin"] button').first().focus();
     await t.keyboard.type('2580');
@@ -486,6 +513,20 @@ try {
   await page.getByRole('group', { name: 'Preview theme', exact: true }).getByRole('button', { name: 'Dark preview' }).click();
   if ((await page.locator('.doc-stage').getAttribute('data-theme')) !== 'dark') fail('preview theme: Dark preview did not set data-theme on the stage');
   if ((await page.locator('html').getAttribute('data-theme')) === 'dark') fail('preview theme: the page theme changed too');
+
+  // Preview settings menu: opens from the toolbar button, High contrast keeps the chosen light or dark, Escape closes it
+  // and returns focus to the button, Reset restores the defaults.
+  const settingsButton = page.getByRole('button', { name: 'Preview settings', exact: true });
+  await settingsButton.click();
+  if ((await settingsButton.getAttribute('aria-expanded')) !== 'true') fail('preview settings: the button did not open the menu');
+  await page.getByLabel('High contrast').check();
+  if ((await page.locator('.doc-stage').getAttribute('data-theme')) !== 'dark-hc') fail('preview settings: High contrast did not give dark-hc on a dark preview');
+  await page.getByRole('button', { name: 'Reset', exact: true }).click();
+  if ((await page.locator('.doc-stage').getAttribute('data-theme')) !== null) fail('preview settings: Reset did not follow the site theme again');
+  await page.keyboard.press('Escape');
+  if ((await settingsButton.getAttribute('aria-expanded')) !== 'false') fail('preview settings: Escape did not close the menu');
+  if (!(await settingsButton.evaluate((el) => el === document.activeElement))) fail('preview settings: Escape did not return focus to the button');
+  await page.getByRole('group', { name: 'Preview theme', exact: true }).getByRole('button', { name: 'Dark preview' }).click();
 
   // Phone width: the example runs in its own 375 px viewport (a same-origin iframe), so the package's viewport media
   // queries and matchMedia apply; the frame follows the preview theme, grows to its content, passes axe, and takes focus.

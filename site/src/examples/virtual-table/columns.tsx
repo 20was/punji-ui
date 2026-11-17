@@ -25,7 +25,7 @@ export default function Example() {
     { key: 'buyer', label: 'Buyer', num: true, width: 84, render: (t) => t.buyer },
     { key: 'seller', label: 'Seller', num: true, width: 84, render: (t) => t.seller },
     { key: 'quantity', label: 'Units', num: true, width: 96, render: (t) => t.quantity.toLocaleString('en-IN') },
-    { key: 'rate', label: 'Rate', num: true, width: 120, render: (t) => npr.format(t.rate) },
+    { key: 'rate', label: 'Rate', num: true, width: 140, render: (t) => npr.format(t.rate) },
     { key: 'amount', label: 'Amount', num: true, width: 150, pin: pinRight ? 'right' : undefined, resizable: false, render: (t) => npr.format(t.amount) },
   ];
   return (

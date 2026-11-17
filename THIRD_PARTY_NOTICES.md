@@ -35,3 +35,13 @@ SOFTWARE.
 
 > TradingView Lightweight Charts™
 > Copyright (с) 2025 TradingView, Inc. https://www.tradingview.com/
+
+## KLineChart (optional peer, not bundled)
+
+`@punji/ui/klinecharts` is an adapter for `klinecharts`, which this package does not ship or install. That library is Apache-2.0 (Copyright lihu). The licence asks that a copy you redistribute keep its LICENSE and NOTICE files, which npm installs with the package; it has no on-screen attribution or link requirement, and the adapter draws none. The library's NOTICE file also credits TradingView, Inc., whose Lightweight Charts code KLineChart builds on:
+
+> KLineChart
+> Copyright (c) 2019 lihu
+>
+> TradingView Lightweight Charts
+> Copyright (с) 2019 TradingView, Inc. https://www.tradingview.com

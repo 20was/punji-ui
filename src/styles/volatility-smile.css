@@ -1,0 +1,54 @@
+/* Punji UI styles.
+   Styles for VolatilitySmile. Needs tokens.css and base.css (styles.css has everything).
+   The frame, grid, axis, tooltip and legend come from financial-charts.css (.kit-ct). Colours from --pu-* tokens only.
+   Each expiry differs by marker shape and dash as well as hue; every grid cell prints its number, so the shade only repeats it.
+   The darkest shade (40% of the series hue) is the one checked against the text colour in scripts/check-contrast.mjs. */
+@layer punji.components {
+  /* Before the container is measured the svg has its fallback width: never let that widen the page. */
+  .pu-vs .kit-ct-plot svg { max-width: 100% }
+  .pu-vs-c { --vs-hue: var(--pu-color-chart) }
+  .pu-vs-c.nepse, .pu-vs-sw.nepse, .pu-vs-key.nepse { --vs-hue: var(--pu-color-series-nepse) }
+  .pu-vs-c.s3, .pu-vs-sw.s3, .pu-vs-key.s3 { --vs-hue: var(--pu-color-series-3) }
+  .pu-vs-c.s4, .pu-vs-sw.s4, .pu-vs-key.s4 { --vs-hue: var(--pu-color-series-4) }
+  .pu-vs-c.s5, .pu-vs-sw.s5, .pu-vs-key.s5 { --vs-hue: var(--pu-color-series-5) }
+  .pu-vs-c.s6, .pu-vs-sw.s6, .pu-vs-key.s6 { --vs-hue: var(--pu-color-series-6) }
+  .pu-vs-sw.chart, .pu-vs-key.chart { --vs-hue: var(--pu-color-chart) }
+  .pu-vs-curve { stroke: var(--vs-hue); stroke-width: 2.25; stroke-linejoin: round; stroke-linecap: butt }
+  .pu-vs-mark { fill: var(--pu-color-surface); stroke: var(--vs-hue); stroke-width: 2 }
+  .pu-vs-mark.stroke { fill: none; stroke-width: 2.25; stroke-linecap: round }
+  .pu-vs-mark.on { fill: var(--vs-hue) }
+  .pu-vs-mark.stroke.on { stroke-width: 3.25 }
+  .pu-vs-end { fill: var(--pu-color-text); font: 600 10px / 12px var(--pu-font-body); paint-order: stroke; stroke: var(--pu-color-surface); stroke-width: 3px; stroke-linejoin: round }
+  .pu-vs-cursor { stroke: var(--pu-color-text); stroke-width: 1 }
+  .pu-vs-ref line { stroke: var(--pu-color-text-muted); stroke-width: 1.5; stroke-dasharray: 3 3 }
+  .pu-vs-ref text { fill: var(--pu-color-text-muted); font: 600 10px / 12px var(--pu-font-body); paint-order: stroke; stroke: var(--pu-color-surface); stroke-width: 3px; stroke-linejoin: round }
+  .pu-vs-axis-title { font-weight: 600 }
+
+  .pu-vs-legend li { display: inline-flex; align-items: center; gap: 6px }
+  .pu-vs-sw { flex: none; overflow: visible }
+
+  /* The grid: expiries down, strikes across. */
+  .pu-vs-box { margin-top: 12px; min-width: 0; max-width: 100%; border: 1px solid var(--pu-color-border-default); border-radius: var(--pu-radius-12); background: var(--pu-color-surface) }
+  .pu-vs-scroll { overflow-x: auto; border-radius: inherit }
+  .pu-vs-scroll:focus-visible { outline: 2px solid var(--pu-color-focus-ring); outline-offset: 2px }
+  .pu-vs-table { width: 100%; border-collapse: separate; border-spacing: 2px; font: var(--pu-text-sm) / 1.3 var(--pu-font-body); font-variant-numeric: var(--pu-font-numeric); color: var(--pu-color-text) }
+  .pu-vs-caption { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap }
+  .pu-vs-table th, .pu-vs-table td { padding: 8px 8px; text-align: center; white-space: nowrap }
+  .pu-vs-table thead th { font-size: var(--pu-text-xs); font-weight: 600; color: var(--pu-color-text-muted) }
+  .pu-vs-table .pu-vs-corner, .pu-vs-table .pu-vs-rh { position: sticky; inset-inline-start: 0; z-index: 1; min-width: 7rem; padding-inline: 12px 8px; text-align: start; background: var(--pu-color-surface); font-weight: 600 }
+  .pu-vs-table .pu-vs-rh { color: var(--pu-color-text) }
+  .pu-vs-key { display: inline-block; width: 10px; height: 10px; margin-inline-end: 8px; vertical-align: -1px; background: var(--vs-hue, var(--pu-color-chart)) }
+  .pu-vs-key.circle { border-radius: 50% }
+  .pu-vs-key.square { border-radius: 1px }
+  .pu-vs-key.triangle { clip-path: polygon(50% 0, 100% 100%, 0 100%) }
+  .pu-vs-key.diamond { clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%) }
+  .pu-vs-key.cross { clip-path: polygon(20% 0, 50% 30%, 80% 0, 100% 20%, 70% 50%, 100% 80%, 80% 100%, 50% 70%, 20% 100%, 0 80%, 30% 50%, 0 20%) }
+  .pu-vs-key.plus { clip-path: polygon(35% 0, 65% 0, 65% 35%, 100% 35%, 100% 65%, 65% 65%, 65% 100%, 35% 100%, 35% 65%, 0 65%, 0 35%, 35% 35%) }
+  .pu-vs-cell { min-width: 4.5rem; border-radius: var(--pu-radius-4); font-weight: 600; background: var(--pu-color-surface-tint) }
+  .pu-vs-cell[data-band='1'] { background: color-mix(in srgb, var(--pu-color-series-nepse) 10%, var(--pu-color-surface)) }
+  .pu-vs-cell[data-band='2'] { background: color-mix(in srgb, var(--pu-color-series-nepse) 18%, var(--pu-color-surface)) }
+  .pu-vs-cell[data-band='3'] { background: color-mix(in srgb, var(--pu-color-series-nepse) 28%, var(--pu-color-surface)) }
+  .pu-vs-cell[data-band='4'] { background: color-mix(in srgb, var(--pu-color-series-nepse) 40%, var(--pu-color-surface)) }
+  .pu-vs-cell[data-empty] { background: transparent; box-shadow: inset 0 0 0 1px var(--pu-color-border-default) }
+  .pu-vs-none { font-weight: 400; font-size: var(--pu-text-xs); color: var(--pu-color-text-muted) }
+}

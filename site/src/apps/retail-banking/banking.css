@@ -2,6 +2,7 @@
 .rb-today { display: grid; gap: 0; margin: 0; font-size: 13px; line-height: 1.3; }
 .rb-today-bank { font: 600 15px/1.2 var(--pu-font-display); }
 .rb-switches { gap: 8px 16px; }
+.rb-switch { display: inline-flex; align-items: center; gap: 8px; }
 .rb-offline { padding: 10px 14px; border: 1px solid var(--pu-color-warn-accent); border-radius: 10px; background: var(--pu-color-surface-tint); font-size: 14px; }
 
 .rb-hero { display: grid; gap: 4px; padding: 18px; border-radius: var(--pu-radius-card); background: var(--pu-color-surface-inverse); color: var(--pu-color-text-inverse); }

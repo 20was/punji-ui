@@ -1,6 +1,6 @@
-import { BalanceHistoryChart, CashFlowChart, CorrelationMatrix, DataFreshness, EarningsChart, FairValueBar, FanChart, FilterBar, FilterMenu, FilterMenuGroup, FilterMenuItem, FxRateDisplay, GroupedMarketHeatmap, heatCell, Histogram, incomeStatementFlow, money, MonthGrid, NetWorthChart, PerformanceChart, PresetRow, PresetTile, PriceTargetChart, ProfileRail, RangeEditor, RangeSelector, ReturnsHeatTable, RiskReturnScatter, RollingReturnsChart, SankeyChart, ScoreRadar, SeasonalityChart, StatusBanner, StyleGrid, type FilterBarValues, type HeatmapItem, type MonthGridData, VolumeProfile, WaterfallChart, YieldCurveChart } from '../../src/index.ts';
-import { Accordion, AlertListEmpty, AlertRow, AlertRowCompact, AlertRowList, AlertRowSkeleton, AlertSummary, AlertSummaryNote, AlertSummarySection, BarList, Breadcrumb, BrokerBadge, Card, CardSection, CardSectionRow, Figure, HeadlineList, InstrumentHeader, LinkRow, LinkRowList, MenuButton, MoneyDisplay, MonthStrip, PrivateAmount, RatingChangeList, RatingChangeRow, RatingChip, RatingScale, RouteAnnouncer, ScrollTable, SettingList, SettingRow, SkipLink, StatusTag, ThemeProvider, type ColumnDef, type WatchlistQuote, Watchlist } from '@punji/ui';
-import { performanceDates, performanceSeries } from '../../fixtures/market-data.ts';
+import { BalanceHistoryChart, CashFlowChart, CorrelationMatrix, DataFreshness, EarningsCalendar, EarningsChart, EconomicCalendar, FairValueBar, FanChart, FilterBar, FilterMenu, FilterMenuGroup, FilterMenuItem, FxRateDisplay, GroupedMarketHeatmap, heatCell, Histogram, incomeStatementFlow, money, MonthGrid, NetWorthChart, PayoffChart, PerformanceChart, PresetRow, PresetTile, PriceTargetChart, ProfileRail, RangeEditor, RangeSelector, ReturnsHeatTable, RiskReturnScatter, RollingReturnsChart, SankeyChart, ScoreRadar, SeasonalityChart, StatusBanner, StyleGrid, type FilterBarValues, type HeatmapItem, type MonthGridData, VolatilitySmile, VolumeProfile, WaterfallChart, YieldCurveChart } from '../../src/index.ts';
+import { Accordion, AlertListEmpty, AlertRow, AlertRowCompact, AlertRowList, AlertRowSkeleton, AlertSummary, AlertSummaryNote, AlertSummarySection, BarList, Breadcrumb, BreadthChart, BrokerBadge, Card, Card as PoCard, CardSection, CardSectionRow, Figure, HeadlineList, InstrumentHeader, kagiType, lineBreakType, LinkRow, LinkRowList, MenuButton, MoneyDisplay, MonthStrip, pointFigureType, PriceOnlyChart, PrivateAmount, rangeBarsType, RatingChangeList, RatingChangeRow, RatingChip, RatingScale, renkoType, RouteAnnouncer, ScrollTable, SettingList, SettingRow, SkipLink, StatusTag, ThemeProvider, type ColumnDef, type WatchlistQuote, Watchlist } from '@punji/ui';
+import { performanceDates, performanceSeries, sampleBars, sampleBreadthDays, sampleConstituents } from '../../fixtures/market-data.ts';
 import { type ReactNode, useState } from 'react';
 // new:component inserts imports above this line
 
@@ -701,6 +701,134 @@ function SeasonalityChartFixture() {
 }
 
 
+const poBars = sampleBars(110, 3);
+const poRenko = renkoType({ box: '5' });
+const poRenkoAtr = renkoType({ box: { atr: 14 } });
+const poKagi = kagiType({ reversal: '8' });
+const poKagiPct = kagiType({ reversal: { percent: '1.5' } });
+const poPf = pointFigureType({ box: '3', reversal: 3 });
+const poLb = lineBreakType();
+const poRange = rangeBarsType({ range: '6' });
+const poFlat = [{ date: '2025-06-01', close: '100.00' }, { date: '2025-06-02', close: '100.00' }];
+
+function PriceOnlyChartFixture() {
+  return (
+    <div style={{ display: 'grid', gap: 24 }}>
+      <PoCard title="Renko, box 5.00"><PriceOnlyChart testId="vr-renko" label="Renko" bars={poBars} type={poRenko} height={220} /></PoCard>
+      <PoCard title="Renko, ATR box"><PriceOnlyChart label="Renko ATR" bars={poBars} type={poRenkoAtr} height={200} /></PoCard>
+      <PoCard title="Kagi, reversal 8.00"><PriceOnlyChart label="Kagi" bars={poBars} type={poKagi} height={220} /></PoCard>
+      <PoCard title="Kagi, reversal 1.5 percent"><PriceOnlyChart label="Kagi percent" bars={poBars} type={poKagiPct} height={200} /></PoCard>
+      <PoCard title="Point and Figure, box 3.00, three-box reversal"><PriceOnlyChart label="Point and Figure" bars={poBars} type={poPf} height={240} /></PoCard>
+      <PoCard title="Three-line break"><PriceOnlyChart label="Line Break" bars={poBars} type={poLb} height={200} /></PoCard>
+      <PoCard title="Range bars, 6.00"><PriceOnlyChart label="Range bars" bars={poBars} type={poRange} height={200} /></PoCard>
+      <PoCard title="Not enough movement"><PriceOnlyChart label="Flat" bars={poFlat} type={poRenko} /></PoCard>
+      <PoCard title="Bad price"><PriceOnlyChart label="Bad" bars={[{ date: '2025-06-01', close: 'abc' }]} type={poRenko} /></PoCard>
+    </div>
+  );
+}
+
+const bcDays = sampleBreadthDays(100);
+const bcStocks = sampleConstituents(30, 200);
+
+function BreadthChartFixture() {
+  return (
+    <div style={{ display: 'grid', gap: 24 }}>
+      <PoCard title="Advance-decline line"><BreadthChart testId="vr-ad" mode="advance-decline" label="Advance-decline line" days={bcDays} height={200} /></PoCard>
+      <PoCard title="Share above the 50-day average"><BreadthChart mode="percent-above-ma" label="Above the 50-day average" constituents={bcStocks} period={50} height={200} /></PoCard>
+      <PoCard title="One day"><BreadthChart mode="advance-decline" label="One day" days={bcDays.slice(0, 1)} height={140} /></PoCard>
+      <PoCard title="Not enough history"><BreadthChart mode="percent-above-ma" label="Too short" constituents={bcStocks} period={400} /></PoCard>
+    </div>
+  );
+}
+
+
+function PayoffChartFixture() {
+  return (
+    <div style={{ display: 'grid', gap: 24, maxWidth: 640 }}>
+      <PayoffChart
+        label="Bull call spread"
+        spot={npr(22140)}
+        legs={[
+          { kind: 'call', side: 'long', quantity: 1, multiplier: 50, strike: npr(22000), premium: npr(310) },
+          { kind: 'call', side: 'short', quantity: 1, multiplier: 50, strike: npr(22500), premium: npr(120) },
+        ]}
+      />
+      <PayoffChart
+        label="Long straddle with today's value"
+        spot={npr(22140)}
+        todayLabel="Today (model)"
+        today={[
+          { spot: npr(21000), value: npr(31_000) },
+          { spot: npr(21500), value: npr(9_000) },
+          { spot: npr(22000), value: npr(-6_000) },
+          { spot: npr(22500), value: npr(8_000) },
+          { spot: npr(23000), value: npr(30_000) },
+        ]}
+        legs={[
+          { kind: 'call', side: 'long', quantity: 1, multiplier: 50, strike: npr(22000), premium: npr(260) },
+          { kind: 'put', side: 'long', quantity: 1, multiplier: 50, strike: npr(22000), premium: npr(240) },
+        ]}
+      />
+      <PayoffChart label="Naked short call" legs={[{ kind: 'call', side: 'short', quantity: 1, multiplier: 50, strike: npr(22000), premium: npr(260) }]} height={200} />
+    </div>
+  );
+}
+
+function VolatilitySmileFixture() {
+  return (
+    <div style={{ display: 'grid', gap: 24, maxWidth: 640 }}>
+      <VolatilitySmile
+        label="Index options implied volatility by strike"
+        reference={{ x: '22140', label: 'Spot' }}
+        curves={[
+          { key: 'nov', label: '28 Nov', points: [{ x: '21500', iv: '17.80' }, { x: '21750', iv: '16.10' }, { x: '22000', iv: '14.95' }, { x: '22250', iv: '14.20' }, { x: '22500', iv: '14.60' }] },
+          { key: 'dec', label: '26 Dec', points: [{ x: '21500', iv: '18.40' }, { x: '21750', iv: '17.15' }, { x: '22000', iv: '16.30' }, { x: '22250', iv: '15.85' }, { x: '22500', iv: '16.05' }] },
+          { key: 'jan', label: '30 Jan', points: [{ x: '21500', iv: '19.10' }, { x: '22000', iv: '17.40' }, { x: '22500', iv: '17.25' }] },
+        ]}
+      />
+      <VolatilitySmile label="By delta" xKind="delta" grid={false} height={200} curves={[{ key: '1m', label: '1 month', points: [{ x: '0.10', iv: '21.50' }, { x: '0.50', iv: '14.80' }, { x: '0.90', iv: '18.90' }] }]} />
+    </div>
+  );
+}
+
+function EconomicCalendarFixture() {
+  return (
+    <div style={{ display: 'grid', gap: 24, maxWidth: 760 }}>
+      <EconomicCalendar
+        caption="Macro releases this week"
+        timeZone="Asia/Kathmandu"
+        calendar="both"
+        events={[
+          { id: 'cpi', when: '2026-11-12T13:30:00Z', title: 'Consumer price index, year on year', country: 'US', period: 'Oct', importance: 'high', actual: '3.2', forecast: '3.0', previous: '2.9', unit: '%' },
+          { id: 'jobless', when: '2026-11-12T13:30:00Z', title: 'Initial jobless claims', country: 'US', importance: 'medium', actual: '231', forecast: '225', previous: '227', unit: ' K', better: 'lower' },
+          { id: 'nrb', when: '2026-11-13T05:00:00Z', title: 'Policy rate decision', country: 'Nepal', importance: 'high', forecast: '5.50', previous: '5.50', unit: '%' },
+          { id: 'retail', when: '2026-11-13', title: 'Retail sales, month on month', importance: 'low', actual: '0.4', forecast: '0.4', previous: '0.1', unit: '%' },
+          { id: 'later', when: '2027-04-30T06:00:00Z', title: 'Remittance inflows', country: 'Nepal', importance: 'medium', forecast: '1.2', unit: '%' },
+        ]}
+      />
+    </div>
+  );
+}
+
+function EarningsCalendarFixture() {
+  return (
+    <div style={{ display: 'grid', gap: 24, maxWidth: 1040 }}>
+      <EarningsCalendar
+        caption="Quarterly results this week"
+        timeZone="Asia/Kathmandu"
+        calendar="both"
+        events={[
+          { id: 'nabil', when: '2026-11-12', session: 'before-open', symbol: 'NABIL', company: 'Nabil Bank', period: 'Q1 FY27', currency: 'NPR', epsActual: '4.38', epsForecast: '4.10', epsPrevious: '3.95', revenueActual: '12.4', revenueForecast: '12.9', revenueUnit: ' bn' },
+          { id: 'nica', when: '2026-11-12T09:30:00Z', symbol: 'NICA', company: 'NIC Asia Bank', period: 'Q1 FY27', currency: 'NPR', epsActual: '3.10', epsForecast: '3.10', epsPrevious: '2.80' },
+          { id: 'hdl', when: '2026-11-16', session: 'after-close', symbol: 'HDL', company: 'Himalayan Distillery', period: 'Q1 FY27', currency: 'NPR', epsForecast: '12.00', epsPrevious: '11.20' },
+          { id: 'abc', when: '2027-04-30', symbol: 'ABC', company: 'ABC Finance', period: 'Q3 FY27', currency: 'NPR', epsForecast: '1.40' },
+        ]}
+      />
+    </div>
+  );
+}
+
+
 // new:component inserts fixtures above this line
 
 export const communityRegistry: Record<string, () => ReactNode> = {
@@ -754,5 +882,11 @@ export const communityRegistry: Record<string, () => ReactNode> = {
   'yield-curve-chart': YieldCurveChartFixture,
   'style-grid': StyleGridFixture,
   'seasonality-chart': SeasonalityChartFixture,
+  'price-only-chart': PriceOnlyChartFixture,
+  'breadth-chart': BreadthChartFixture,
+  'payoff-chart': PayoffChartFixture,
+  'volatility-smile': VolatilitySmileFixture,
+  'economic-calendar': EconomicCalendarFixture,
+  'earnings-calendar': EarningsCalendarFixture,
   // new:component inserts registry entries above this line
 };

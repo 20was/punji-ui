@@ -16,7 +16,7 @@ const columns: VirtualColumn<SampleTrade>[] = [
   { key: 'buyer', label: 'Buyer', num: true, width: 84, sortable: true, render: (t) => t.buyer },
   { key: 'seller', label: 'Seller', num: true, width: 84, sortable: true, render: (t) => t.seller },
   { key: 'quantity', label: 'Units', num: true, width: 96, sortable: true, render: (t) => t.quantity.toLocaleString('en-IN') },
-  { key: 'rate', label: 'Rate', num: true, width: 120, sortable: true, render: (t) => npr.format(t.rate) },
+  { key: 'rate', label: 'Rate', num: true, width: 140, sortable: true, render: (t) => npr.format(t.rate) },
   { key: 'amount', label: 'Amount', num: true, width: 150, sortable: true, render: (t) => npr.format(t.amount) },
 ];
 const read = {

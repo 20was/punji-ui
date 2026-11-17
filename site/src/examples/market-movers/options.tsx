@@ -1,7 +1,7 @@
 import { MarketMovers } from '@punji/ui/market-movers';
 import { quotes } from '../../sample.ts';
 
-// Most active ranked by shares traded, three rows a tab, red-up convention, Nepali tab names.
+// Most active ranked by shares traded, three rows a tab, red-up convention, Nepali tab and column names.
 export default function Example() {
   return (
     <MarketMovers
@@ -12,6 +12,7 @@ export default function Example() {
       limit={3}
       convention="red-up"
       density="compact"
+      labels={{ symbol: 'सेयर', ltp: 'अन्तिम मूल्य', change: 'परिवर्तन', volume: 'कारोबार संख्या', turnover: 'कारोबार रकम' }}
       tabLabels={{ gainers: 'वृद्धि', losers: 'ह्रास', active: 'सक्रिय' }}
       emptyLabels={{ gainers: 'आज कुनै वृद्धि छैन', losers: 'आज कुनै ह्रास छैन', active: 'कारोबार छैन' }}
     />

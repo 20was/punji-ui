@@ -1,6 +1,6 @@
 {
   "name": "@punji/ui",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Finance-first React design system: exact bigint money, stock-market tables, ledgers and Nepal-first locale (NPR, BS calendar), any currency.",
   "license": "MIT",
   "author": "Punji",
@@ -258,6 +258,58 @@
     "./candlestick-chart": {
       "types": "./dist/candlestick-chart/CandlestickChart.d.ts",
       "default": "./dist/candlestick-chart/CandlestickChart.js"
+    },
+    "./candlestick-trading": {
+      "types": "./dist/candlestick-chart/trading.d.ts",
+      "default": "./dist/candlestick-chart/trading.js"
+    },
+    "./candlestick-baseline": {
+      "types": "./dist/candlestick-chart/extensions/baseline.d.ts",
+      "default": "./dist/candlestick-chart/extensions/baseline.js"
+    },
+    "./heikin-ashi": {
+      "types": "./dist/candlestick-chart/extensions/heikinAshi.d.ts",
+      "default": "./dist/candlestick-chart/extensions/heikinAshi.js"
+    },
+    "./price-scales": {
+      "types": "./dist/candlestick-chart/extensions/priceScales.d.ts",
+      "default": "./dist/candlestick-chart/extensions/priceScales.js"
+    },
+    "./candlestick-events": {
+      "types": "./dist/candlestick-chart/extensions/events.d.ts",
+      "default": "./dist/candlestick-chart/extensions/events.js"
+    },
+    "./candlestick-levels": {
+      "types": "./dist/candlestick-chart/extensions/levels.d.ts",
+      "default": "./dist/candlestick-chart/extensions/levels.js"
+    },
+    "./indicator-pane-view": {
+      "types": "./dist/candlestick-chart/IndicatorPaneView.d.ts",
+      "default": "./dist/candlestick-chart/IndicatorPaneView.js"
+    },
+    "./chart-indicators": {
+      "types": "./dist/chart-math/indicators.d.ts",
+      "default": "./dist/chart-math/indicators.js"
+    },
+    "./chart-payoff": {
+      "types": "./dist/chart-math/payoff.d.ts",
+      "default": "./dist/chart-math/payoff.js"
+    },
+    "./rsi-indicator": {
+      "types": "./dist/candlestick-chart/indicators/rsi.d.ts",
+      "default": "./dist/candlestick-chart/indicators/rsi.js"
+    },
+    "./macd-indicator": {
+      "types": "./dist/candlestick-chart/indicators/macd.d.ts",
+      "default": "./dist/candlestick-chart/indicators/macd.js"
+    },
+    "./bollinger-indicator": {
+      "types": "./dist/candlestick-chart/indicators/bollinger.d.ts",
+      "default": "./dist/candlestick-chart/indicators/bollinger.js"
+    },
+    "./vwap-indicator": {
+      "types": "./dist/candlestick-chart/indicators/vwap.d.ts",
+      "default": "./dist/candlestick-chart/indicators/vwap.js"
     },
     "./performance-chart": {
       "types": "./dist/performance-chart/PerformanceChart.d.ts",
@@ -751,29 +803,21 @@
       "types": "./dist/balance-history-chart/BalanceHistoryChart.d.ts",
       "default": "./dist/balance-history-chart/BalanceHistoryChart.js"
     },
-    "./fan-chart": {
-      "types": "./dist/fan-chart/FanChart.d.ts",
-      "default": "./dist/fan-chart/FanChart.js"
+    "./payoff-chart": {
+      "types": "./dist/payoff-chart/PayoffChart.d.ts",
+      "default": "./dist/payoff-chart/PayoffChart.js"
     },
-    "./rolling-returns-chart": {
-      "types": "./dist/rolling-returns-chart/RollingReturnsChart.d.ts",
-      "default": "./dist/rolling-returns-chart/RollingReturnsChart.js"
+    "./volatility-smile": {
+      "types": "./dist/volatility-smile/VolatilitySmile.d.ts",
+      "default": "./dist/volatility-smile/VolatilitySmile.js"
     },
-    "./risk-return-scatter": {
-      "types": "./dist/risk-return-scatter/RiskReturnScatter.d.ts",
-      "default": "./dist/risk-return-scatter/RiskReturnScatter.js"
+    "./economic-calendar": {
+      "types": "./dist/economic-calendar/EconomicCalendar.d.ts",
+      "default": "./dist/economic-calendar/EconomicCalendar.js"
     },
-    "./yield-curve-chart": {
-      "types": "./dist/yield-curve-chart/YieldCurveChart.d.ts",
-      "default": "./dist/yield-curve-chart/YieldCurveChart.js"
-    },
-    "./style-grid": {
-      "types": "./dist/style-grid/StyleGrid.d.ts",
-      "default": "./dist/style-grid/StyleGrid.js"
-    },
-    "./seasonality-chart": {
-      "types": "./dist/seasonality-chart/SeasonalityChart.d.ts",
-      "default": "./dist/seasonality-chart/SeasonalityChart.js"
+    "./earnings-calendar": {
+      "types": "./dist/earnings-calendar/EarningsCalendar.d.ts",
+      "default": "./dist/earnings-calendar/EarningsCalendar.js"
     },
     "./css/*.css": {
       "types": "./dist/css/*.css.d.ts",
@@ -1084,6 +1128,10 @@
       "types": "./dist/echarts/echarts.d.ts",
       "default": "./dist/echarts/echarts.js"
     },
+    "./klinecharts": {
+      "types": "./dist/klinecharts/klinecharts.d.ts",
+      "default": "./dist/klinecharts/klinecharts.js"
+    },
     "./scroll-table": {
       "types": "./dist/scroll-table/ScrollTable.d.ts",
       "default": "./dist/scroll-table/ScrollTable.js"
@@ -1148,53 +1196,65 @@
       "types": "./dist/correlation-matrix/CorrelationMatrix.d.ts",
       "default": "./dist/correlation-matrix/CorrelationMatrix.js"
     },
-    "./candlestick-trading": {
-      "types": "./dist/candlestick-chart/trading.d.ts",
-      "default": "./dist/candlestick-chart/trading.js"
+    "./chart-price-only": {
+      "types": "./dist/chart-math/priceOnly.d.ts",
+      "default": "./dist/chart-math/priceOnly.js"
     },
-    "./candlestick-baseline": {
-      "types": "./dist/candlestick-chart/extensions/baseline.d.ts",
-      "default": "./dist/candlestick-chart/extensions/baseline.js"
+    "./chart-breadth": {
+      "types": "./dist/chart-math/breadth.d.ts",
+      "default": "./dist/chart-math/breadth.js"
     },
-    "./heikin-ashi": {
-      "types": "./dist/candlestick-chart/extensions/heikinAshi.d.ts",
-      "default": "./dist/candlestick-chart/extensions/heikinAshi.js"
+    "./price-only-chart": {
+      "types": "./dist/price-only-chart/PriceOnlyChart.d.ts",
+      "default": "./dist/price-only-chart/PriceOnlyChart.js"
     },
-    "./price-scales": {
-      "types": "./dist/candlestick-chart/extensions/priceScales.d.ts",
-      "default": "./dist/candlestick-chart/extensions/priceScales.js"
+    "./renko-type": {
+      "types": "./dist/price-only-chart/types/renko.d.ts",
+      "default": "./dist/price-only-chart/types/renko.js"
     },
-    "./candlestick-events": {
-      "types": "./dist/candlestick-chart/extensions/events.d.ts",
-      "default": "./dist/candlestick-chart/extensions/events.js"
+    "./kagi-type": {
+      "types": "./dist/price-only-chart/types/kagi.d.ts",
+      "default": "./dist/price-only-chart/types/kagi.js"
     },
-    "./candlestick-levels": {
-      "types": "./dist/candlestick-chart/extensions/levels.d.ts",
-      "default": "./dist/candlestick-chart/extensions/levels.js"
+    "./point-figure-type": {
+      "types": "./dist/price-only-chart/types/pointFigure.d.ts",
+      "default": "./dist/price-only-chart/types/pointFigure.js"
     },
-    "./indicator-pane-view": {
-      "types": "./dist/candlestick-chart/IndicatorPaneView.d.ts",
-      "default": "./dist/candlestick-chart/IndicatorPaneView.js"
+    "./line-break-type": {
+      "types": "./dist/price-only-chart/types/lineBreak.d.ts",
+      "default": "./dist/price-only-chart/types/lineBreak.js"
     },
-    "./chart-indicators": {
-      "types": "./dist/chart-math/indicators.d.ts",
-      "default": "./dist/chart-math/indicators.js"
+    "./range-bars-type": {
+      "types": "./dist/price-only-chart/types/rangeBars.d.ts",
+      "default": "./dist/price-only-chart/types/rangeBars.js"
     },
-    "./rsi-indicator": {
-      "types": "./dist/candlestick-chart/indicators/rsi.d.ts",
-      "default": "./dist/candlestick-chart/indicators/rsi.js"
+    "./breadth-chart": {
+      "types": "./dist/breadth-chart/BreadthChart.d.ts",
+      "default": "./dist/breadth-chart/BreadthChart.js"
     },
-    "./macd-indicator": {
-      "types": "./dist/candlestick-chart/indicators/macd.d.ts",
-      "default": "./dist/candlestick-chart/indicators/macd.js"
+    "./fan-chart": {
+      "types": "./dist/fan-chart/FanChart.d.ts",
+      "default": "./dist/fan-chart/FanChart.js"
     },
-    "./bollinger-indicator": {
-      "types": "./dist/candlestick-chart/indicators/bollinger.d.ts",
-      "default": "./dist/candlestick-chart/indicators/bollinger.js"
+    "./rolling-returns-chart": {
+      "types": "./dist/rolling-returns-chart/RollingReturnsChart.d.ts",
+      "default": "./dist/rolling-returns-chart/RollingReturnsChart.js"
     },
-    "./vwap-indicator": {
-      "types": "./dist/candlestick-chart/indicators/vwap.d.ts",
-      "default": "./dist/candlestick-chart/indicators/vwap.js"
+    "./risk-return-scatter": {
+      "types": "./dist/risk-return-scatter/RiskReturnScatter.d.ts",
+      "default": "./dist/risk-return-scatter/RiskReturnScatter.js"
+    },
+    "./yield-curve-chart": {
+      "types": "./dist/yield-curve-chart/YieldCurveChart.d.ts",
+      "default": "./dist/yield-curve-chart/YieldCurveChart.js"
+    },
+    "./style-grid": {
+      "types": "./dist/style-grid/StyleGrid.d.ts",
+      "default": "./dist/style-grid/StyleGrid.js"
+    },
+    "./seasonality-chart": {
+      "types": "./dist/seasonality-chart/SeasonalityChart.d.ts",
+      "default": "./dist/seasonality-chart/SeasonalityChart.js"
     },
     "./market-heatmap-grouped": {
       "types": "./dist/market-heatmap/GroupedMarketHeatmap.d.ts",
@@ -1279,6 +1339,7 @@
     "@tanstack/react-table": "^9.3.1",
     "ag-grid-community": "^36.0.0",
     "echarts": "^6.0.0",
+    "klinecharts": "^10.1.0",
     "lightweight-charts": "^5.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
@@ -1303,6 +1364,7 @@
     "eslint": "10.14.0",
     "fast-check": "4.10.2",
     "jsdom": "30.1.3",
+    "klinecharts": "10.1.0",
     "lightningcss": "1.33.0",
     "lightweight-charts": "5.2.1",
     "lockfile-lint": "5.1.0",
@@ -1336,6 +1398,9 @@
       "optional": true
     },
     "echarts": {
+      "optional": true
+    },
+    "klinecharts": {
       "optional": true
     }
   }
